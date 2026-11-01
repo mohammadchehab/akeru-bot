@@ -53,13 +53,13 @@ if (NodeFS.existsSync(depotWorkflowDirectory)) {
 
 assertContains(
   desktopArtifactConfig,
-  '"Akeru-Bot-${version}-${arch}.${ext}"',
-  "Desktop artifacts do not use the Akeru Bot release name.",
+  '"IsnadiBot-${version}-${arch}.${ext}"',
+  "Desktop artifacts do not use the IsnadiBot release name.",
 );
 
 assertContains(
   desktopArtifactConfig,
-  '"Akeru-Bot-${version}-x64.${ext}"',
+  '"IsnadiBot-${version}-x64.${ext}"',
   "Linux desktop artifacts do not use the advertised x64 release name.",
 );
 
@@ -83,7 +83,7 @@ for (const [needle, label] of [
   ["label: Linux x64 AppImage", "Linux x64 AppImage"],
   ["runner: macos-26", "GitHub-hosted Apple Silicon macOS runner"],
   ["runner: windows-2025", "GitHub-hosted Windows runner"],
-  ["runner: tenki-standard-medium-4c-8g", "4-vCPU Tenki Linux runner"],
+  ["runner: ubuntu-24.04", "GitHub-hosted Linux runner"],
   [
     "apple-actions/import-codesign-certs@5142e029c445c10ffc7149d172e540235a065466",
     "pinned Developer ID certificate import",
@@ -123,7 +123,7 @@ for (const [needle, label] of [
   ["label: Linux x64 AppImage", "Linux x64 AppImage"],
   ["runner: macos-26", "GitHub-hosted Apple Silicon macOS runner"],
   ["runner: windows-2025", "GitHub-hosted Windows runner"],
-  ["runner: tenki-standard-medium-4c-8g", "Tenki Linux runner"],
+  ["runner: ubuntu-24.04", "GitHub-hosted Linux runner"],
   ["macOS signing credentials must be either complete or absent.", "macOS signing mode"],
   [
     "Stable macOS releases require the complete Developer ID signing credential set.",
@@ -164,10 +164,9 @@ assertOmits(
 );
 
 for (const [needle, label] of [
-  ['cron: "17 */3 * * *"', "three-hour nightly schedule"],
   ["scripts/nightly-release.ts", "nightly release selection"],
   ["--prerelease --latest=false", "non-latest nightly release"],
-  ["runs-on: tenki-standard-small-2c-4g", "Tenki release control plane"],
+  ["runs-on: ubuntu-24.04", "GitHub-hosted release control plane"],
 ] as const) {
   assertContains(releaseWorkflow, needle, `Release workflow is missing ${label}.`);
 }
@@ -253,15 +252,11 @@ for (const [needle, label] of [
   assertOmits(ciWorkflow, needle, `CI workflow still contains ${label}.`);
 }
 
-assertContains(
-  ciWorkflow,
-  "runs-on: tenki-standard-medium-4c-8g",
-  "CI does not use 4-vCPU Tenki runners.",
-);
-
-assertOmits(ciWorkflow, "runs-on: ubuntu-24.04", "GitHub-hosted Linux runners");
+assertContains(ciWorkflow, "runs-on: ubuntu-24.04", "CI does not use GitHub-hosted Linux runners.");
 
 assertOmits(ciWorkflow, "depot-", "Depot runners");
+
+assertOmits(releaseWorkflow, "schedule:", "a scheduled nightly release");
 
 assertOmits(releaseSmokeWorkflow, "depot-", "Depot runners");
 
