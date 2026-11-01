@@ -6,7 +6,7 @@
 Draft pull requests do not use a runner. A new revision cancels the older run for that pull request.
 Maintainers can also dispatch the workflow manually for diagnostics. The workflow uses one 4-vCPU
 `tenki-standard-medium-4c-8g` Linux runner.
-Issue-label, PR-vouch, and PR-size jobs also use Tenki Linux runners through GitHub Actions.
+Issue-label and PR-size jobs also use Tenki Linux runners through GitHub Actions.
 
 - **Repository checks.** The job rejects external local dependencies, installs the committed
   lockfile once, checks lint and formatting, runs workspace type checks,
