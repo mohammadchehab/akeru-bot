@@ -18,6 +18,14 @@ Start with the [roadmap](ROADMAP.md). Every item there is open for a collaborato
 
 Want to help regularly? Say so in an issue.
 
+### Plugins and providers
+
+New plugins and providers start with a proposal, using the plugin and provider proposal forms:
+the [plugin proposal](https://github.com/mohammadchehab/isnadibot/issues/new?template=plugin_proposal.yml)
+or the [provider proposal](https://github.com/mohammadchehab/isnadibot/issues/new?template=provider_proposal.yml).
+Read the [plugin directory admission rules](plugins/README.md) before you submit a plugin. Open the
+pull request once the proposal is accepted.
+
 ## Pull requests
 
 - **One concern per PR.** If the description says "also", it's probably two PRs.

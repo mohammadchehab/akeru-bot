@@ -156,16 +156,19 @@ describe("plugin contribution policy", () => {
 
   it("keeps issue routing and the accepted-proposal PR exception coherent", () => {
     const issueConfig = yaml(".github/ISSUE_TEMPLATE/config.yml") as {
+      blank_issues_enabled: boolean;
       contact_links: Array<{ name: string; url: string }>;
     };
 
     const contributionGuide = text("CONTRIBUTING.md");
     const pullRequestTemplate = text(".github/pull_request_template.md");
 
-    expect(issueConfig.contact_links.find((link) => link.name === "Feature request")?.url).toBe(
-      "https://github.com/opencoredev/akeru-bot/discussions/categories/ideas",
+    // Ideas arrive as plain issues; the roadmap lists work open to collaborators.
+    expect(issueConfig.blank_issues_enabled).toBe(true);
+    expect(issueConfig.contact_links.find((link) => link.name === "Roadmap")?.url).toBe(
+      "https://github.com/mohammadchehab/isnadibot/blob/main/ROADMAP.md",
     );
-    expect(contributionGuide).toContain("opencoredev/akeru-bot/discussions");
+    expect(contributionGuide).toContain("ROADMAP.md");
     expect(contributionGuide).toContain("plugin and provider proposal forms");
     expect(contributionGuide).toContain("issues/new?template=plugin_proposal.yml");
     expect(contributionGuide).toContain("issues/new?template=provider_proposal.yml");
