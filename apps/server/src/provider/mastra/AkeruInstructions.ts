@@ -22,7 +22,7 @@ export function resolveAkeruInstructions(
   const name =
     isBotConversation && "botName" in state && Predicate.isString(state.botName)
       ? state.botName
-      : "Akeru";
+      : "Isnadi";
 
   const personalityTone =
     isBotConversation && "personalityTone" in state && Predicate.isNumber(state.personalityTone)

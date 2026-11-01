@@ -8,7 +8,7 @@ export interface AkeruInstructionContext {
 }
 
 function botName(name: string | undefined): string {
-  return name?.trim().replace(/\s+/g, " ") || "Akeru";
+  return name?.trim().replace(/\s+/g, " ") || "Isnadi";
 }
 
 function currentDate(now: DateTime.DateTime): string {
