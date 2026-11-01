@@ -2,7 +2,7 @@ import { type ThemeDefinition } from "./types.ts";
 
 export const AKERU_PAPER_THEME: ThemeDefinition = {
   id: "akeru-paper",
-  label: "Akeru Paper",
+  label: "Isnadi Paper",
   appearance: "light",
   colors: {
     canvas: "oklch(0.985 0.001 85)",

@@ -6,7 +6,7 @@ import { type ThemeDefinition } from "./types.ts";
  */
 export const AKERU_NOIR_THEME: ThemeDefinition = {
   id: "akeru-noir",
-  label: "Akeru Noir",
+  label: "Isnadi Noir",
   appearance: "light",
   colors: {
     canvas: "oklch(0.99 0.001 286.375)",

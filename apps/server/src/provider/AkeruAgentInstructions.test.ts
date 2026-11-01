@@ -35,6 +35,11 @@ describe("Akeru personality instructions", () => {
     expect(instructions).toContain("The center may range widely");
   });
 
+  it("introduces an unnamed bot as Isnadi", () => {
+    expect(createAkeruBotInstructions({ now })).toContain("You are Isnadi,");
+    expect(createAkeruBotInstructions({ name: "  ", now })).toContain("You are Isnadi,");
+  });
+
   it("represents intermediate slider values as real blends", () => {
     const instructions = createAkeruBotInstructions({ now, personalityTone: 40 });
 

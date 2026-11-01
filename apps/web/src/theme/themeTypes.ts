@@ -9,7 +9,7 @@ import {
 
 export const AKERU_PAPER_THEME_ID = "akeru-paper" as const;
 
-export const AKERU_PAPER_THEME_LABEL = "Akeru Paper";
+export const AKERU_PAPER_THEME_LABEL = "Isnadi Paper";
 
 export const T3_CHAT_THEME_ID = "akeru-chat" as const;
 
@@ -17,7 +17,7 @@ export const T3_CHAT_THEME_ID = "akeru-chat" as const;
 // the alias table below.
 export const LEGACY_T3_CHAT_THEME_ID = "t3-chat";
 
-export const T3_CHAT_THEME_LABEL = "Akeru Chat";
+export const T3_CHAT_THEME_LABEL = "Isnadi Chat";
 
 export const GROVE_THEME_ID = "grove" as const;
 
