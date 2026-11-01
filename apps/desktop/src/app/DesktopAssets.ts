@@ -68,12 +68,12 @@ const sourceTreeIconPaths = {
   dev: {
     ico: ["apps", "web", "public", "favicon.ico"],
     macPng: ["assets", "prod", "akeru-macos-1024.png"],
-    universalPng: ["apps", "marketing", "public", "icon.png"],
+    universalPng: ["assets", "prod", "app-icon.png"],
   },
   prod: {
     ico: ["apps", "web", "public", "favicon.ico"],
     macPng: ["assets", "prod", "akeru-macos-1024.png"],
-    universalPng: ["apps", "marketing", "public", "icon.png"],
+    universalPng: ["assets", "prod", "app-icon.png"],
   },
 } as const;
 

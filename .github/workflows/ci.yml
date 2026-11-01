@@ -137,9 +137,6 @@ jobs:
           test -f apps/desktop/dist-electron/preload.cjs
           grep -nE "desktopBridge|getLocalEnvironmentBootstrap|PICK_FOLDER_CHANNEL|wsUrl" apps/desktop/dist-electron/preload.cjs
 
-      - name: Build marketing site
-        run: vp run build:marketing
-
       - name: Test shipped desktop and shared packages
         run: vp run --parallel --concurrency-limit 4 --filter '!akeru-bot' --filter '!@akeru/monorepo' --filter '!@akeru/mobile' test
 

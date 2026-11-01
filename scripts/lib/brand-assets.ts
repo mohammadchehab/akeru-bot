@@ -1,8 +1,8 @@
 export const BRAND_ASSET_PATHS = {
-  productionIosIconPng: "apps/marketing/public/icon.png",
+  productionIosIconPng: "assets/prod/app-icon.png",
   productionMacIconPng: "assets/prod/akeru-macos-1024.png",
   productionMacIconComposer: "assets/prod/akeru.icon",
-  productionLinuxIconPng: "apps/marketing/public/icon.png",
+  productionLinuxIconPng: "assets/prod/app-icon.png",
   productionWindowsIconIco: "apps/web/public/favicon.ico",
   productionWebFaviconIco: "apps/web/public/favicon.ico",
   productionWebFavicon16Png: "apps/web/public/favicon-16x16.png",

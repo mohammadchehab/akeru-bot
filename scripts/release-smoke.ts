@@ -98,8 +98,6 @@ for (const [needle, label] of [
   ["test -f apps/server/dist/legal/LICENSE", "CLI project license"],
   ["test -f apps/server/dist/legal/THIRD_PARTY_NOTICES.md", "CLI third-party notice"],
   ["test -f apps/server/dist/legal/licenses/Apache-2.0.txt", "CLI license bundle"],
-  ["vp run --filter @akeru/marketing typecheck", "marketing typecheck"],
-  ["vp run --filter @akeru/marketing build", "marketing build"],
 ] as const) {
   assertContains(releaseSmokeWorkflow, needle, `Release smoke workflow is missing ${label}.`);
 }

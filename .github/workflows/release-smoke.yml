@@ -262,27 +262,3 @@ jobs:
 
       - name: Dry-run CLI package
         run: node apps/server/scripts/cli.ts publish --dry-run --app-version "$RELEASE_VERSION" --verbose
-
-  marketing:
-    name: Marketing site
-    needs: release_smoke
-    runs-on: tenki-standard-medium-4c-8g
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Vite+
-        uses: voidzero-dev/setup-vp@v1
-        with:
-          node-version-file: package.json
-          cache: true
-          run-install: |
-            args:
-              - --filter=@akeru/marketing...
-
-      - name: Typecheck marketing site
-        run: vp run --filter @akeru/marketing typecheck
-
-      - name: Build marketing site
-        run: vp run --filter @akeru/marketing build
