@@ -1,72 +1,45 @@
 # Contributing
 
-## Read This First
+## We're looking for collaborators
 
-We are not actively accepting contributions right now.
+IsnadiBot is young and actively looking for people to build it with. If you like local-first
+software, AI agents, Electron, React, or Effect, there's room for you here, whether you want to fix
+one bug or own a whole feature.
 
-You can still report a bug or open a PR, but please do so knowing there is a high chance we close it, defer it forever, or never look at it.
+Start with the [roadmap](ROADMAP.md). Every item there is open for a collaborator to pick up.
 
-Feature requests and proposals belong in [Akeru Bot Ideas discussions](https://github.com/opencoredev/akeru-bot/discussions/categories/ideas), not issues. Plugin and provider contributions are the exception. Start with the [plugin proposal](https://github.com/opencoredev/akeru-bot/issues/new?template=plugin_proposal.yml) or [provider proposal](https://github.com/opencoredev/akeru-bot/issues/new?template=provider_proposal.yml). Read the [plugin directory admission rules](plugins/README.md) before you submit a plugin.
+## How to get involved
 
-If that sounds annoying, that is because it is. This project is still early and we are trying to keep scope, quality, and direction under control.
+1. **Pick something.** Choose a roadmap item, or open an issue describing a bug or an idea.
+2. **Say hello first.** Comment on the issue, or open one, before you start anything bigger than a
+   small fix. We'll agree on the approach so your time isn't wasted.
+3. **Build it.** Follow [Build and run](README.md#build-and-run) to get a local environment.
+4. **Open a pull request.** We'll review it and work through it with you.
 
-PRs are automatically labeled with a `size:*` diff size based on changed lines.
+Want to help regularly? Say so in an issue.
 
-## What We Are Most Likely To Accept
+## Pull requests
 
-Small, focused bug fixes.
+- **One concern per PR.** If the description says "also", it's probably two PRs.
+- **Explain what changed and why.** The problem in a sentence or two, then how you fixed it.
+- **Show UI changes.** Include before/after screenshots, and a short video for motion or timing.
+- **Add tests for behavior changes.** Run the tests you touched with `vp test run <files>`, and lint
+  them with `vp lint <paths>`.
+- **Record a release decision.** Run `pnpm changeset` and write a short user-facing summary (`patch`
+  for fixes, `minor` for features, `major` for breaking changes). Use `pnpm changeset --empty` for
+  docs, tests, and refactors.
+- **Use conventional commit titles**, such as `fix(web): new chats no longer spike CPU`.
 
-Small reliability fixes.
+[AGENTS.md](AGENTS.md) holds the full engineering rules: architecture, lint, testing, and how to run
+dev servers safely. It's written for coding agents, but it's the best map of the codebase for people
+too.
 
-Small performance improvements.
+## Coding with agents
 
-Tightly scoped maintenance work that clearly improves the project without changing its direction.
+Most changes here are written with a coding agent, and yours can be too. You're still responsible
+for the result. Review the diff, run it, and make sure the tests prove what the PR claims.
 
-## What We Are Least Likely To Accept
+## Credit
 
-Large PRs.
-
-Drive-by feature work.
-
-Opinionated rewrites.
-
-Anything that expands product scope without us asking for it first.
-
-If you open a 1,000+ line PR full of new features, we will probably close it quickly and remember that you ignored the clearly written instructions.
-
-## If You Still Want To Open A PR
-
-Keep it small.
-
-Explain exactly what changed.
-
-Explain exactly why the change should exist.
-
-Do not mix unrelated fixes together.
-
-If the PR makes anything resembling a UI change, include clear before/after images.
-
-If the change depends on motion, timing, transitions, or interaction details, include a short video.
-
-If we have to guess what changed, we are much less likely to review it.
-
-Every pull request must also record its release decision. Run `pnpm changeset`, select one of the
-Akeru product packages, and write a short user-facing summary. Use `patch` for compatible fixes,
-`minor` for compatible features, and `major` only for a breaking change. The product packages ship
-as one fixed-version release train, so selecting one is enough. For documentation, tests,
-refactors, and internal-only tooling, run `pnpm changeset --empty`. CI rejects pull requests that
-omit this decision.
-
-## Discuss Changes First
-
-If you are thinking about a non-trivial change, start a discussion first. Issues are reserved for bug reports and the plugin and provider proposal forms.
-
-That still does not mean we will want the PR, but it gives you a chance to avoid wasting your time.
-
-## Be Realistic
-
-Opening a PR does not create an obligation on our side.
-
-We may close it. We may ignore it. We may ask you to shrink it. We may reimplement the idea ourselves later.
-
-If you are fine with that, proceed.
+IsnadiBot builds on [Akeru Bot](https://github.com/opencoredev/akeru-bot) and
+[T3 Code](https://t3.codes). Fixes that would help those projects too are worth sending upstream.

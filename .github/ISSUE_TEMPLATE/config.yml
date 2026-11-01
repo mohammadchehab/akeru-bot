@@ -1,8 +1,8 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: Feature request
-    url: https://github.com/opencoredev/akeru-bot/discussions/categories/ideas
-    about: Suggest an improvement or new capability in Discussions.
+  - name: Roadmap
+    url: https://github.com/mohammadchehab/isnadibot/blob/main/ROADMAP.md
+    about: Features open for collaborators. Comment on an item's issue to claim it.
   - name: Custom MCP setup
-    url: https://github.com/opencoredev/akeru-bot/blob/main/docs/user/plugins.md
+    url: https://github.com/mohammadchehab/isnadibot/blob/main/docs/user/plugins.md
     about: Connect an experimental, duplicate, generic, or narrow MCP server without a directory proposal.
