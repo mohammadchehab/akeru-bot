@@ -16,7 +16,6 @@ the task commands.
   loads the web bundle over the `akeru://` protocol, and owns SSH-managed remote environments.
 - `apps/mobile` (`@akeru/mobile`): Expo/React Native client. Same client runtime composition as
   web, different platform layer and UI.
-- `apps/marketing` (`@akeru/marketing`): Astro marketing site.
 
 ## packages
 

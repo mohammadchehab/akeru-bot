@@ -61,7 +61,6 @@ anything. Dispatch it from GitHub Actions with a version such as `0.0.0-smoke.0`
 - Windows builds one unsigned x64 NSIS installer.
 - Linux builds one unsigned x64 AppImage.
 - The CLI build includes the web client, then completes a package publish dry-run.
-- The marketing site passes its type check and production build.
 
 Each desktop job uploads its artifact to the workflow run for seven days. The workflow does not
 create tags, create GitHub releases, publish npm packages, deploy a site, update AUR, or send
@@ -107,8 +106,6 @@ vp run check:public-dependencies
 vp test run scripts/check-public-dependencies.test.ts scripts/resolve-previous-release-tag.test.ts
 vp run release:smoke
 vp run build:desktop
-vp run --filter @akeru/marketing typecheck
-vp run --filter @akeru/marketing build
 ```
 
 Run the CLI package dry-run after the server build has produced `apps/server/dist/client`:

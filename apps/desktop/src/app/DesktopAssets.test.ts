@@ -47,8 +47,7 @@ describe("DesktopAssets", () => {
       const fileSystemLayer = FileSystem.layerNoop({
         exists: (path) =>
           Effect.succeed(
-            String(path).includes("/apps/web/public/") ||
-              String(path).includes("/apps/marketing/public/"),
+            String(path).includes("/apps/web/public/") || String(path).includes("/assets/prod/"),
           ),
       });
 
@@ -63,7 +62,7 @@ describe("DesktopAssets", () => {
       const icons = yield* assets.iconPaths;
 
       assert.match(Option.getOrThrow(icons.ico), /apps\/web\/public\/favicon\.ico$/);
-      assert.match(Option.getOrThrow(icons.png), /apps\/marketing\/public\/icon\.png$/);
+      assert.match(Option.getOrThrow(icons.png), /assets\/prod\/app-icon\.png$/);
       assert.isTrue(Option.isNone(icons.icns));
     }),
   );

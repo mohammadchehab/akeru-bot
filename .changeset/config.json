@@ -9,7 +9,7 @@
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
-  "ignore": ["@akeru/marketing", "@akeru/mobile"],
+  "ignore": ["@akeru/mobile"],
   "updateInternalDependencies": "patch",
   "bumpVersionsWithWorkspaceProtocolOnly": true,
   "privatePackages": { "version": true, "tag": false }
