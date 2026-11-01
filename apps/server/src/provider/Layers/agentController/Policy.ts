@@ -174,7 +174,7 @@ export function disabledProviderError(
 ): ProviderValidationError {
   return new ProviderValidationError({
     operation,
-    issue: `Provider instance '${providerInstanceId}' is disabled in Akeru Bot settings.`,
+    issue: `Provider instance '${providerInstanceId}' is disabled in IsnadiBot settings.`,
   });
 }
 

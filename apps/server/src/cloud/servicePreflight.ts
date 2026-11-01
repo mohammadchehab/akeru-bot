@@ -29,7 +29,7 @@ export function runServicePreflight(input: {
       status: "blocked",
       version,
       reason:
-        "This release requires a newer Akeru Bot service launcher. Update it on the server machine.",
+        "This release requires a newer IsnadiBot service launcher. Update it on the server machine.",
     };
   }
 

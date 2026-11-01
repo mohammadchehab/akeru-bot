@@ -14,7 +14,7 @@ it("reports the installed service version and host paths", () => {
   assert.equal(
     formatServiceStatus(status, "0.0.29"),
     [
-      "Akeru Bot service",
+      "IsnadiBot service",
       "  Status: installed · akeru-bot@0.0.29",
       "  Unit: /home/me/.config/systemd/user/akeru-bot.service",
       "  Logs: /home/me/.t3/userdata/logs/boot-service.log",

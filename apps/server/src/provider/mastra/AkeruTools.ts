@@ -63,7 +63,7 @@ export const productFeedbackToolInputSchema: StandardSchemaWithJSON<ProductFeedb
 export const productFeedbackTool = createTool({
   id: AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
   description:
-    "Draft anonymous Akeru Bot product feedback for the user to review and send. This tool never sends feedback.",
+    "Draft anonymous IsnadiBot product feedback for the user to review and send. This tool never sends feedback.",
   inputSchema: productFeedbackToolInputSchema,
   requireApproval: true,
   execute: async () => ({ status: "draft-opened" as const }),

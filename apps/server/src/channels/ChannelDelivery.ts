@@ -29,7 +29,7 @@ import { runtimeKey, randomId, channelProviderName } from "./ChannelSecrets.ts";
 import { replaceBinding, withChannelOperation } from "./ChannelOperations.ts";
 
 /**
- * Appends the server-advertised "Open in Akeru" link to an external reply.
+ * Appends the server-advertised "Open in IsnadiBot" link to an external reply.
  * Only the server-resolved public origin is used; the browser origin is never
  * substituted, so remote clients see the link only when the server can be
  * reached at it.
@@ -45,8 +45,8 @@ export const channelReplyTextWithFooter = (
 
   // Posts go out as plain strings; only Discord renders Markdown link syntax.
   return provider === "discord"
-    ? `${text}\n\n[Open in Akeru](${url})`
-    : `${text}\n\nOpen in Akeru: ${url}`;
+    ? `${text}\n\n[Open in IsnadiBot](${url})`
+    : `${text}\n\nOpen in IsnadiBot: ${url}`;
 };
 
 export const CHANNEL_SENT_MESSAGE_RECOVERY_LIMIT = 128;

@@ -1,6 +1,6 @@
 <svg width="1080" height="760" viewBox="0 0 540 380" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!--
-    Akeru Bot DMG background. Finder places the app icon at (130,220) and the
+    IsnadiBot DMG background. Finder places the app icon at (130,220) and the
     Applications folder at (410,220), 80px each, with black labels beneath.
     The ink sky is an ordered (Bayer 8x8) dither on a 2px grid so it stays
     crisp under sips at 1x and 2x without SVG filters. Palette is Akeru Paper:
@@ -154,14 +154,14 @@ M24 216h2v2h-2z
 "/>
 
   <g font-family="'Iowan Old Style', 'Charter', 'Hoefler Text', Georgia, serif" fill="#ECE8DF">
-    <text x="34" y="60" font-size="32" font-weight="500" letter-spacing="-0.7">akeru</text>
+    <text x="34" y="60" font-size="32" font-weight="500" letter-spacing="-0.7">IsnadiBot</text>
   </g>
 
   <!-- A loose, open arrow reads like a drawn instruction rather than UI chrome. -->
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
     <path d="M190 228 C233 210 282 206 340 226" stroke="#1E1B18" stroke-width="1.4" opacity="0.22"/>
-    <path d="M190 225 C233 207 282 203 340 223" stroke="#8B6FC9" stroke-width="4"/>
-    <path d="M328 210 C334 216 338 221 340 223 C334 226 328 229 321 231" stroke="#8B6FC9" stroke-width="4"/>
+    <path d="M190 225 C233 207 282 203 340 223" stroke="#456B41" stroke-width="4"/>
+    <path d="M328 210 C334 216 338 221 340 223 C334 226 328 229 321 231" stroke="#456B41" stroke-width="4"/>
   </g>
 
   <text x="270" y="340" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif" font-size="10.5" font-weight="500" letter-spacing="0.1" fill="#67615B">Drag to Applications to install</text>

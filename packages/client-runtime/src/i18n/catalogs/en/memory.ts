@@ -4,8 +4,8 @@ export const memoryCatalog = {
   "Approval needed": "Approval needed",
   "Load older routine notes": "Load older routine notes",
   "Loading older routine notes…": "Loading older routine notes…",
-  "Open Akeru Bot on web or desktop to review this feedback draft.":
-    "Open Akeru Bot on web or desktop to review this feedback draft.",
+  "Open IsnadiBot on web or desktop to review this feedback draft.":
+    "Open IsnadiBot on web or desktop to review this feedback draft.",
   "Product feedback": "Product feedback",
   "Retry older routine notes": "Retry older routine notes",
   "Waiting for approval…": "Waiting for approval…",
@@ -135,8 +135,8 @@ export const memoryCatalog = {
     "Start a chat with this bot to see and edit what it remembers.",
   "Notes the bot writes on its own as this chat grows, so it can recall earlier parts of a long conversation. They only apply to this chat.":
     "Notes the bot writes on its own as this chat grows, so it can recall earlier parts of a long conversation. They only apply to this chat.",
-  "Allow feedback you submit to reach the Akeru feedback service. Submissions may be kept for up to 90 days.":
-    "Allow feedback you submit to reach the Akeru feedback service. Submissions may be kept for up to 90 days.",
+  "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.":
+    "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.",
   "Enable product feedback": "Enable product feedback",
   "Where submitted product feedback is sent. Use HTTPS or loopback HTTP.":
     "Where submitted product feedback is sent. Use HTTPS or loopback HTTP.",

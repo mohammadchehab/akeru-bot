@@ -206,5 +206,5 @@ export const resolveServerEnvironmentLabel = Effect.fn("resolveServerEnvironment
     return hostname;
   }
 
-  return normalizeLabel(input.cwdBaseName) ?? "Akeru environment";
+  return normalizeLabel(input.cwdBaseName) ?? "IsnadiBot environment";
 });

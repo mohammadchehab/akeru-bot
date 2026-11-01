@@ -347,7 +347,7 @@ describe("ProviderCommandReactor", () => {
 
     await harness.waitFor(() => harness.failDelegation.mock.calls.length === 1);
     await harness.drain();
-    const detail = "Provider instance 'codex' is disabled in Akeru Bot settings.";
+    const detail = "Provider instance 'codex' is disabled in IsnadiBot settings.";
     expect(harness.failDelegation).toHaveBeenCalledWith({
       threadId: ThreadId.make("thread-1"),
       error: `Configured bot could not start: ${detail}`,

@@ -193,7 +193,7 @@ export function makeBridge() {
           : Effect.fail(
               new ProviderValidationError({
                 operation,
-                issue: `Provider instance '${instanceId}' is disabled in Akeru Bot settings.`,
+                issue: `Provider instance '${instanceId}' is disabled in IsnadiBot settings.`,
               }),
             );
       };

@@ -354,7 +354,7 @@ export function BotSettingsForm({
 
           <SettingsRow
             title={t("Channels")}
-            description={t("Where this bot answers outside Akeru Bot.")}
+            description={t("Where this bot answers outside IsnadiBot.")}
             control={
               <Button
                 variant="outline"

@@ -434,7 +434,7 @@ export function connectionSettingsViews(settings: ReturnType<typeof useDesktopBa
         {desktopWslState.enabled ? (
           <SettingsRow
             title="WSL only"
-            description="Stop the Windows backend and run only the WSL backend. Useful if you develop entirely inside WSL and don't want a second backend process. Akeru Bot restarts when you change this."
+            description="Stop the Windows backend and run only the WSL backend. Useful if you develop entirely inside WSL and don't want a second backend process. IsnadiBot restarts when you change this."
             className="bg-muted/20 pl-7 sm:pl-8"
             control={
               <Switch

@@ -4,8 +4,8 @@ export const memoryCatalog = {
   "Approval needed": "需要批准",
   "Load older routine notes": "加载更早的例行任务记录",
   "Loading older routine notes…": "正在加载更早的例行任务记录…",
-  "Open Akeru Bot on web or desktop to review this feedback draft.":
-    "在网页或桌面版打开 Akeru Bot 以审阅此反馈草稿。",
+  "Open IsnadiBot on web or desktop to review this feedback draft.":
+    "在网页或桌面版打开 IsnadiBot 以审阅此反馈草稿。",
   "Product feedback": "产品反馈",
   "Retry older routine notes": "重试加载例行任务记录",
   "Waiting for approval…": "正在等待批准…",
@@ -131,8 +131,8 @@ export const memoryCatalog = {
     "与这个机器人开始聊天，即可查看和编辑它记住的内容。",
   "Notes the bot writes on its own as this chat grows, so it can recall earlier parts of a long conversation. They only apply to this chat.":
     "随着聊天变长，机器人会自动写下这些笔记，以便回忆长对话中较早的内容。它们只适用于此聊天。",
-  "Allow feedback you submit to reach the Akeru feedback service. Submissions may be kept for up to 90 days.":
-    "允许你提交的反馈发送到 Akeru 反馈服务。提交内容最多可能保留 90 天。",
+  "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.":
+    "允许你提交的反馈发送到 IsnadiBot 反馈服务。提交内容最多可能保留 90 天。",
   "Enable product feedback": "启用产品反馈",
   "Where submitted product feedback is sent. Use HTTPS or loopback HTTP.":
     "提交的产品反馈发送到的地址。请使用 HTTPS 或回环 HTTP 地址。",

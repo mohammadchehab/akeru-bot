@@ -437,7 +437,7 @@ describe("AkeruDelegationRuntime", () => {
       state: "failed",
       turnId: CHILD_TURN_ID,
       error: [
-        "ProviderValidationError: Provider instance 'codex' is disabled in Akeru Bot settings.",
+        "ProviderValidationError: Provider instance 'codex' is disabled in IsnadiBot settings.",
         "    at disabledProviderError (file:///srv/akeru/apps/server/src/provider/Layers/AgentController.ts:584:10)",
         "    at ensureSessionForThread (file:///srv/akeru/apps/server/src/orchestration/Layers/ProviderCommandReactor.ts:1282:28)",
       ].join("\n"),
@@ -445,7 +445,7 @@ describe("AkeruDelegationRuntime", () => {
 
     await failed.runtime.send(parent(), request() as never);
     await failed.runtime.drain();
-    const message = "Provider instance 'codex' is disabled in Akeru Bot settings.";
+    const message = "Provider instance 'codex' is disabled in IsnadiBot settings.";
     expect(failed.state.delegations.at(-1)).toMatchObject({
       phase: { _tag: "Failed", failure: { failureCode: "child_failed", message } },
     });

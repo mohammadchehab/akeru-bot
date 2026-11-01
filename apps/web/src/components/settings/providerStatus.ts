@@ -45,7 +45,7 @@ export function getProviderSummary(provider: ServerProvider | undefined) {
       headline: "Disabled",
       detail:
         provider.message ??
-        "This provider is installed but disabled for new sessions in Akeru Bot.",
+        "This provider is installed but disabled for new sessions in IsnadiBot.",
     };
   }
 

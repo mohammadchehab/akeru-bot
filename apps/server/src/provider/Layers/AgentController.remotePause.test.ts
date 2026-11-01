@@ -471,7 +471,7 @@ describe("AgentControllerLive", () => {
         assert.equal(error._tag, "ProviderValidationError");
 
         if (Predicate.isTagged(error, "ProviderValidationError")) {
-          assert.include(error.issue, "disabled in Akeru Bot settings");
+          assert.include(error.issue, "disabled in IsnadiBot settings");
         }
 
         expect(mastra.sendMessage).not.toHaveBeenCalled();

@@ -280,7 +280,7 @@ export const makeOpenCodeTextGeneration = Effect.fn("makeOpenCodeTextGeneration"
         const session = yield* Effect.tryPromise({
           try: () =>
             client.session.create({
-              title: `Akeru Bot ${input.operation}`,
+              title: `IsnadiBot ${input.operation}`,
               permission: [{ permission: "*", pattern: "*", action: "deny" }],
             }),
           catch: (cause) =>

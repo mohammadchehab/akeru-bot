@@ -13,10 +13,10 @@ describe("readableErrorDetail", () => {
       readableErrorDetail(
         new ProviderValidationError({
           operation: "AgentController.inspectEngine",
-          issue: "Provider instance 'codex' is disabled in Akeru Bot settings.",
+          issue: "Provider instance 'codex' is disabled in IsnadiBot settings.",
         }),
       ),
-    ).toBe("Provider instance 'codex' is disabled in Akeru Bot settings.");
+    ).toBe("Provider instance 'codex' is disabled in IsnadiBot settings.");
   });
 
   it("keeps only the detail of request and controller errors", () => {

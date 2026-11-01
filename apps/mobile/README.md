@@ -1,7 +1,7 @@
-# Akeru Bot Mobile
+# IsnadiBot Mobile
 
 > [!WARNING]
-> Akeru Bot Mobile is currently in development and is not distributed yet. If you want to try it out, you can build it from source.
+> IsnadiBot Mobile is currently in development and is not distributed yet. If you want to try it out, you can build it from source.
 
 ## Quickstart
 
@@ -10,8 +10,8 @@
 
 This app has two variants:
 
-- `development`: Expo dev client, installable side-by-side as `Akeru Bot Dev`
-- `production`: store/release build as `Akeru Bot`
+- `development`: Expo dev client, installable side-by-side as `IsnadiBot Dev`
+- `production`: store/release build as `IsnadiBot`
 
 Run commands from `apps/mobile`.
 

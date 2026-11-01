@@ -19,7 +19,7 @@ const xcode = require(xcodePath);
 
 const { addWidgetAssetCatalog } = require("../plugins/lib/addWidgetAssetCatalog.cjs");
 
-const pbxprojPath = path.join(__dirname, "..", "ios", "AkeruBotDev.xcodeproj", "project.pbxproj");
+const pbxprojPath = path.join(__dirname, "..", "ios", "IsnadiBotDev.xcodeproj", "project.pbxproj");
 
 const proj = xcode.project(pbxprojPath);
 

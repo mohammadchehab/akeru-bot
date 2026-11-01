@@ -120,11 +120,11 @@ export function resolveLinuxSecretStorageUnavailableMessage(input: {
 }
 
 function getGnomeKeyringRemediationMessage(): string {
-  return "Akeru Bot could not access GNOME Keyring to save this environment credential. Install and start GNOME Keyring, then restart Akeru Bot.";
+  return "IsnadiBot could not access GNOME Keyring to save this environment credential. Install and start GNOME Keyring, then restart IsnadiBot.";
 }
 
 function getKWalletRemediationMessage(): string {
-  return "Akeru Bot could not access KWallet to save this environment credential. Enable the KDE wallet subsystem in System Settings, then restart Akeru Bot.";
+  return "IsnadiBot could not access KWallet to save this environment credential. Enable the KDE wallet subsystem in System Settings, then restart IsnadiBot.";
 }
 
 // Advisory only: this picks between the GNOME Keyring and KWallet wording in the failure notice. It

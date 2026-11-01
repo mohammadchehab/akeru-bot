@@ -46,7 +46,7 @@ export const repairRemoteDoctor = Effect.fn("remote.doctor.repair")(function* (i
   if (!input.remote) {
     return yield* new RemoteDoctorError({
       reason: "not-remote",
-      detail: "This environment is not an Akeru Remote install.",
+      detail: "This environment is not an IsnadiBot Remote install.",
     });
   }
 

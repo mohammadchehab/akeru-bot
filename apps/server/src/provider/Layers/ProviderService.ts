@@ -551,7 +551,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
         Match.tag("Disabled", () =>
           toValidationError(
             operation,
-            `Provider instance '${instanceId}' is disabled in Akeru Bot settings.`,
+            `Provider instance '${instanceId}' is disabled in IsnadiBot settings.`,
           ),
         ),
         Match.tag("Missing", () =>

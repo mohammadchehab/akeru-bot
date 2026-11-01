@@ -1,11 +1,11 @@
 export const connectionsCatalog = {
   "Retire Railway VMs before changing access": "更改访问权限前请清理 Railway 虚拟机",
   "Open Railway dashboard": "打开 Railway 控制台",
-  "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. Akeru preserves saved VM identities and will not silently create replacements.":
-    "更改或移除凭据不会停止或删除 Railway 虚拟机，它们可能继续产生费用。请先停止活动的机器人会话，然后在 Railway 控制台中打开环境，并在移除访问权限前销毁不再需要的虚拟机。如果正在轮换令牌，请保留对同一环境的访问权限，以便重新连接现有虚拟机。Akeru 会保留已保存的虚拟机标识，不会自动创建替代虚拟机。",
+  "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. IsnadiBot preserves saved VM identities and will not silently create replacements.":
+    "更改或移除凭据不会停止或删除 Railway 虚拟机，它们可能继续产生费用。请先停止活动的机器人会话，然后在 Railway 控制台中打开环境，并在移除访问权限前销毁不再需要的虚拟机。如果正在轮换令牌，请保留对同一环境的访问权限，以便重新连接现有虚拟机。IsnadiBot 会保留已保存的虚拟机标识，不会自动创建替代虚拟机。",
   "Environment ID": "环境 ID",
-  "Akeru pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.":
-    "在支持的情况下，Akeru 会暂停空闲的远程沙箱。Railway 虚拟机会持续运行，直到被清理。",
+  "IsnadiBot pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.":
+    "在支持的情况下，IsnadiBot 会暂停空闲的远程沙箱。Railway 虚拟机会持续运行，直到被清理。",
   "Add Environment": "添加环境",
   "Add environment": "添加环境",
   "All environments": "全部环境",
@@ -236,8 +236,8 @@ export const connectionsCatalog = {
   "Archive exported": "归档已导出",
   "Could not export archive": "无法导出归档",
   "Could not import archive": "无法导入归档",
-  "{filename}. Review what Akeru Bot will restore on this environment.":
-    "{filename}。请查看 Akeru Bot 将在此环境中恢复的内容。",
+  "{filename}. Review what IsnadiBot will restore on this environment.":
+    "{filename}。请查看 IsnadiBot 将在此环境中恢复的内容。",
   "After restore, sign in to providers and reconnect imported MCP servers on this device.":
     "恢复后，请在此设备上登录提供商，并重新连接导入的 MCP 服务器。",
   "Allows scoped background probes while any subscribed client remains connected.":
@@ -255,12 +255,12 @@ export const connectionsCatalog = {
     "{mode}。正在将 OTEL 跟踪导出到 {tracesUrl}，将指标导出到 {metricsUrl}。",
   "{mode}. Exporting OTEL traces to {url}.": "{mode}。正在将 OTEL 跟踪导出到 {url}。",
   "{mode}. Exporting OTEL metrics to {url}.": "{mode}。正在将 OTEL 指标导出到 {url}。",
-  "Export Akeru settings, project links, and history, or restore them on another environment. Project files and credentials are not included.":
-    "导出 Akeru 设置、项目关联和历史记录，或在其他环境中恢复它们。不包含项目文件和凭据。",
+  "Export IsnadiBot settings, project links, and history, or restore them on another environment. Project files and credentials are not included.":
+    "导出 IsnadiBot 设置、项目关联和历史记录，或在其他环境中恢复它们。不包含项目文件和凭据。",
   Import: "导入",
   Export: "导出",
   "Exporting...": "正在导出…",
-  "Import Akeru archive": "导入 Akeru 归档",
+  "Import IsnadiBot archive": "导入 IsnadiBot 归档",
   "Open {provider} settings": "打开 {provider} 设置",
   "{provider} needs {requirement}": "{provider} 需要 {requirement}",
   "The provider needs {requirement}": "提供商需要 {requirement}",
@@ -320,8 +320,8 @@ export const connectionsCatalog = {
   "The provider check failed. Reconnect and try again.": "提供商检查失败。请重新连接后重试。",
   "Connect a subscription or API key. Credentials stay on this environment.":
     "连接订阅或 API 密钥。凭据会保留在此环境中。",
-  "Connect an xAI login for Grok. Akeru cannot verify SuperGrok or X Premium+.":
-    "为 Grok 连接 xAI 登录。Akeru 无法验证 SuperGrok 或 X Premium+。",
+  "Connect an xAI login for Grok. IsnadiBot cannot verify SuperGrok or X Premium+.":
+    "为 Grok 连接 xAI 登录。IsnadiBot 无法验证 SuperGrok 或 X Premium+。",
   Unsupported: "不支持",
   "Not connected": "未连接",
   "OAuth connected": "已通过 OAuth 连接",
@@ -346,7 +346,8 @@ export const connectionsCatalog = {
   "Connect to an environment first.": "请先连接到环境。",
   "The server rejected these sandbox settings.": "服务器拒绝了这些沙盒设置。",
   "Bots without an override use this sandbox.": "未单独设置的机器人将使用此沙盒。",
-  "Akeru pauses remote sandboxes when bots are idle.": "机器人空闲时，Akeru 会暂停远程沙盒。",
+  "IsnadiBot pauses remote sandboxes when bots are idle.":
+    "机器人空闲时，IsnadiBot 会暂停远程沙盒。",
   "Sandbox providers": "沙盒提供商",
   "Run bots on the environment computer. Always available; no credentials needed.":
     "在环境所在的计算机上运行机器人。始终可用，无需凭据。",
@@ -415,7 +416,7 @@ export const connectionsCatalog = {
     "在上方搜索 Composio 应用。Composio 负责各应用的登录，你的机器人可以使用已连接的账号。",
   "Add your own Composio API key to connect apps such as Slack or Notion. Composio handles each app's sign-in.":
     "添加你自己的 Composio API 密钥，以连接 Slack 或 Notion 等应用。Composio 负责各应用的登录。",
-  "The key is stored only on this Akeru Bot server.": "密钥仅存储在此 Akeru Bot 服务器上。",
+  "The key is stored only on this IsnadiBot server.": "密钥仅存储在此 IsnadiBot 服务器上。",
   "Custom MCP servers": "自定义 MCP 服务器",
   "Add server": "添加服务器",
   "Add a local command or remote URL to use your own MCP server.":
@@ -442,9 +443,9 @@ export const connectionsCatalog = {
   "Health checks for this environment": "此环境的健康检查",
   "Refresh remote health": "刷新远程健康状态",
   "No environment connected": "未连接环境",
-  "Connect to an Akeru Bot environment to set up channels.": "连接到 Akeru Bot 环境以设置频道。",
-  "This device can chat with {name} but can't change its channels. Open Akeru Bot on the computer that runs it to connect a channel.":
-    "此设备可以与 {name} 聊天，但无法更改其频道。请在运行它的电脑上打开 Akeru Bot 来连接频道。",
+  "Connect to an IsnadiBot environment to set up channels.": "连接到 IsnadiBot 环境以设置频道。",
+  "This device can chat with {name} but can't change its channels. Open IsnadiBot on the computer that runs it to connect a channel.":
+    "此设备可以与 {name} 聊天，但无法更改其频道。请在运行它的电脑上打开 IsnadiBot 来连接频道。",
   "Add a Slack, Telegram, Discord, WhatsApp, or iMessage connection first. Then assign it to this bot here.":
     "请先添加 Slack、Telegram、Discord、WhatsApp 或 iMessage 连接，然后在这里将其分配给此机器人。",
   "Your workspace is still loading. Try again in a moment.": "你的工作区仍在加载。请稍后再试。",

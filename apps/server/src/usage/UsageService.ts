@@ -411,7 +411,7 @@ export const make = Effect.gen(function* () {
           (cause) =>
             new UsageReadError({
               reason: "scanFailed",
-              detail: "Akeru provider usage could not be read.",
+              detail: "IsnadiBot provider usage could not be read.",
               cause,
             }),
         ),

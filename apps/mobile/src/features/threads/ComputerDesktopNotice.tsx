@@ -55,7 +55,7 @@ export function ComputerDesktopNotice(props: {
           {t("{name}'s computer is running", { name: bot.name })}
         </Text>
         <Text className="text-xs text-foreground-muted">
-          {t("Open Akeru Bot on a desktop or in a web browser to watch or take control of it.")}
+          {t("Open IsnadiBot on a desktop or in a web browser to watch or take control of it.")}
         </Text>
       </View>
     </View>

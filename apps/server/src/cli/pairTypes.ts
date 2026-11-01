@@ -25,7 +25,7 @@ export class NoRunningServerError extends Schema.TaggedErrorClass<NoRunningServe
 ) {
   override get message(): string {
     return [
-      "No running Akeru Bot server found.",
+      "No running IsnadiBot server found.",
       ...this.checkedStatePaths.map((statePath) => `  checked ${statePath}`),
       "Start one with `npx akeru-bot serve`.",
     ].join("\n");
@@ -57,7 +57,7 @@ export class ServesOtherEnvironmentError extends Schema.TaggedErrorClass<ServesO
   { servePort: Schema.Number },
 ) {
   override get message(): string {
-    return `Tailscale Serve on HTTPS port ${String(this.servePort)} already fronts a different Akeru Bot server. Pass --tailscale-serve-port to publish this one on another port.`;
+    return `Tailscale Serve on HTTPS port ${String(this.servePort)} already fronts a different IsnadiBot server. Pass --tailscale-serve-port to publish this one on another port.`;
   }
 }
 
@@ -75,7 +75,7 @@ export class ServePortOccupiedError extends Schema.TaggedErrorClass<ServePortOcc
   { servePort: Schema.Number },
 ) {
   override get message(): string {
-    return `HTTPS port ${String(this.servePort)} on the tailnet already serves something that is not an Akeru Bot server. Pass --tailscale-serve-port to publish this one on another port.`;
+    return `HTTPS port ${String(this.servePort)} on the tailnet already serves something that is not an IsnadiBot server. Pass --tailscale-serve-port to publish this one on another port.`;
   }
 }
 

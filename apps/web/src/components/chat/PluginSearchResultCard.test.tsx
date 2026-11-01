@@ -52,7 +52,7 @@ describe("PluginSearchResultCard", () => {
     expect(markup).not.toContain("Suggested");
     expect(markup).not.toContain("View all");
     expect(markup).not.toContain("Browse plugins");
-    expect(markup).not.toContain(">Akeru<");
+    expect(markup).not.toContain(">IsnadiBot<");
   });
 
   it("uses the Composio logo endpoint when the top result omits a logo", () => {

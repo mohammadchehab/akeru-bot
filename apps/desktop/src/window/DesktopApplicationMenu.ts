@@ -66,7 +66,7 @@ const checkForUpdatesFromMenu = Effect.gen(function* () {
     yield* electronDialog.showMessageBox({
       type: "info",
       title: "You're up to date!",
-      message: `Akeru Bot ${updateState.currentVersion} is currently the newest version available.`,
+      message: `IsnadiBot ${updateState.currentVersion} is currently the newest version available.`,
       buttons: ["OK"],
     });
   } else if (updateState.status === "error") {

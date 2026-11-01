@@ -518,7 +518,7 @@ async function main(): Promise<void> {
   const baseDir = readAliasedEnv(process.env, "HOME");
 
   if (baseDir === undefined) {
-    throw new Error("AKERU_HOME is required by the Akeru Bot service launcher.");
+    throw new Error("AKERU_HOME is required by the IsnadiBot service launcher.");
   }
 
   const statePath = NodePath.join(baseDir, "runtime", SERVICE_STATE_FILE);

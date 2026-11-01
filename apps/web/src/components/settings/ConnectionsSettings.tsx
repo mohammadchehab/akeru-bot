@@ -198,8 +198,8 @@ export function ConnectionsSettings() {
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   {pendingDesktopServerExposureMode === "network-accessible"
-                    ? "Akeru Bot will restart to expose this environment over the network."
-                    : "Akeru Bot will restart and limit this environment back to this machine."}
+                    ? "IsnadiBot will restart to expose this environment over the network."
+                    : "IsnadiBot will restart and limit this environment back to this machine."}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -258,15 +258,15 @@ export function ConnectionsSettings() {
                 <AlertDialogDescription>
                   {pendingWslChange?.kind === "disable"
                     ? pendingWslChange.wasWslOnly
-                      ? "Akeru Bot will restart on the Windows backend. Chats and projects opened against WSL stay safe inside the distro and become available again when you re-enable WSL."
-                      : "The WSL backend will stop. Chats and projects opened against WSL stay safe inside the distro, but they'll be unavailable in Akeru Bot until you re-enable WSL."
+                      ? "IsnadiBot will restart on the Windows backend. Chats and projects opened against WSL stay safe inside the distro and become available again when you re-enable WSL."
+                      : "The WSL backend will stop. Chats and projects opened against WSL stay safe inside the distro, but they'll be unavailable in IsnadiBot until you re-enable WSL."
                     : pendingWslChange?.kind === "distro"
-                      ? "Akeru Bot will restart the WSL backend on the new distro. Sessions still running on the current distro will be interrupted."
+                      ? "IsnadiBot will restart the WSL backend on the new distro. Sessions still running on the current distro will be interrupted."
                       : pendingWslChange?.kind === "enable"
                         ? "Run the WSL backend alongside the Windows one, or stop the Windows backend and use only WSL? You can change this later from Settings."
                         : pendingWslChange?.nextValue
-                          ? "Akeru Bot will restart and start only the WSL backend. Your Windows-side projects won't be accessible until you turn this off again."
-                          : "Akeru Bot will restart and bring the Windows backend back up alongside WSL."}
+                          ? "IsnadiBot will restart and start only the WSL backend. Your Windows-side projects won't be accessible until you turn this off again."
+                          : "IsnadiBot will restart and bring the Windows backend back up alongside WSL."}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -352,7 +352,7 @@ export function ConnectionsSettings() {
               <AlertDialogHeader>
                 <AlertDialogTitle>Disable Tailscale HTTPS?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Akeru Bot will restart the local backend without Tailscale Serve.
+                  IsnadiBot will restart the local backend without Tailscale Serve.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -391,7 +391,7 @@ export function ConnectionsSettings() {
               <DialogHeader>
                 <DialogTitle>Set up Tailscale HTTPS?</DialogTitle>
                 <DialogDescription>
-                  Akeru Bot will restart the local backend with Tailscale Serve enabled and ask
+                  IsnadiBot will restart the local backend with Tailscale Serve enabled and ask
                   Tailscale to proxy HTTPS traffic to this backend.
                 </DialogDescription>
               </DialogHeader>
@@ -459,7 +459,7 @@ export function ConnectionsSettings() {
         <SettingsSection title="This environment">
           <SettingsRow
             title="Pairing and device access"
-            description="This device can use your bots, but it can't create pairing links or sign other devices out. Do that from Akeru Bot on the computer that runs this server."
+            description="This device can use your bots, but it can't create pairing links or sign other devices out. Do that from IsnadiBot on the computer that runs this server."
           />
         </SettingsSection>
       )}

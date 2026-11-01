@@ -67,7 +67,7 @@ export function deriveHomeEmptyState(props: {
   ) {
     return {
       title: "Could not load chats",
-      detail: `${catalogState.shellSnapshotError} Akeru keeps trying. Try again to reconnect now.`,
+      detail: `${catalogState.shellSnapshotError} IsnadiBot keeps trying. Try again to reconnect now.`,
       loading: false,
       retry: true,
     };

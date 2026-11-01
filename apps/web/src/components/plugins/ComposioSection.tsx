@@ -360,7 +360,7 @@ export function ComposioSection({
           ) : null}
         </form>
         <p className="text-xs text-muted-foreground">
-          {t("The key is stored only on this Akeru Bot server.")}
+          {t("The key is stored only on this IsnadiBot server.")}
         </p>
         {configured ? (
           <ComposioAccounts

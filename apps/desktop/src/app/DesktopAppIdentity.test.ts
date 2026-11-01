@@ -146,7 +146,7 @@ const withIdentity = <A, E, R>(
 };
 
 describe("DesktopAppIdentity", () => {
-  it.effect("uses a fresh Akeru Bot userData directory instead of T3 Code", () =>
+  it.effect("keeps the akeru-bot userData directory under the IsnadiBot name", () =>
     withIdentity(
       Effect.gen(function* () {
         const identity = yield* DesktopAppIdentity.DesktopAppIdentity;
@@ -209,8 +209,12 @@ describe("DesktopAppIdentity", () => {
         const identity = yield* DesktopAppIdentity.DesktopAppIdentity;
         yield* identity.configure;
 
-        assert.deepEqual(calls.setName, ["Akeru Bot (Alpha)"]);
-        assert.equal(calls.setAboutPanelOptions[0]?.applicationName, "Akeru Bot (Alpha)");
+        assert.deepEqual(calls.setName, ["IsnadiBot"]);
+        assert.equal(calls.setAboutPanelOptions[0]?.applicationName, "IsnadiBot");
+        assert.equal(
+          calls.setAboutPanelOptions[0]?.credits,
+          "Based on Akeru Bot and T3 Code (MIT).",
+        );
         assert.equal(calls.setAboutPanelOptions[0]?.applicationVersion, "1.2.3");
         assert.equal(calls.setAboutPanelOptions[0]?.version, "0123456789ab");
         // Packaged: the bundle's own icon stands, so a custom one the user

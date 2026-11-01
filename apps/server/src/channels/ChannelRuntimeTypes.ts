@@ -149,7 +149,7 @@ export interface ChannelRuntimeDependencies {
   /**
    * Public https origin the operator advertises for this environment
    * (`--public-origin`/`T3CODE_PUBLIC_ORIGIN`). Drives provider webhook URLs and
-   * the "Open in Akeru" reply footer. Never derived from a bind address or a
+   * the "Open in IsnadiBot" reply footer. Never derived from a bind address or a
    * client-supplied origin; undefined means no public origin is configured.
    */
   readonly publicOrigin?: string | undefined;

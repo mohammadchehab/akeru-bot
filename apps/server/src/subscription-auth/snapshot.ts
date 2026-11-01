@@ -238,7 +238,7 @@ export function buildProviderAccessCapabilities(
       accessMethod: "subscription-oauth" as const,
       health: "unsupported" as const,
       apiAccess: "separate" as const,
-      nextAction: "Akeru cannot distinguish this plan from the shared xAI login.",
+      nextAction: "IsnadiBot cannot distinguish this plan from the shared xAI login.",
     },
     {
       id: "x-premium-plus",
@@ -246,7 +246,7 @@ export function buildProviderAccessCapabilities(
       accessMethod: "subscription-oauth" as const,
       health: "unsupported" as const,
       apiAccess: "separate" as const,
-      nextAction: "Akeru cannot verify this plan from the shared xAI login.",
+      nextAction: "IsnadiBot cannot verify this plan from the shared xAI login.",
     },
     ...(apiKeyRows.length > 0
       ? apiKeyRows
@@ -280,7 +280,7 @@ export function buildProviderAccessCapabilities(
       apiAccess: "not-applicable" as const,
       nextAction: "Use the browser session only for this task.",
       temporary: true,
-      repairAction: "Add a shopping connector when Akeru supports one.",
+      repairAction: "Add a shopping connector when IsnadiBot supports one.",
     },
     {
       id: "booking-browser",
@@ -290,7 +290,7 @@ export function buildProviderAccessCapabilities(
       apiAccess: "not-applicable" as const,
       nextAction: "Use the browser session only for this approved booking.",
       temporary: true,
-      repairAction: "Add a calendar or booking connector when Akeru supports one.",
+      repairAction: "Add a calendar or booking connector when IsnadiBot supports one.",
     },
   ].map((row) => ({ dependentBots: [], dependentRoutines: [], ...row }));
 }

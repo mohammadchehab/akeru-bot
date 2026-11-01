@@ -105,102 +105,104 @@ describe("channel runtime", () => {
       }),
   );
 
-  it.effect("appends the Open in Akeru footer only from a server-advertised public origin", () =>
-    Effect.gen(function* () {
-      const url = `https://akeru.example.com/bots/${BOT_ID}`;
+  it.effect(
+    "appends the Open in IsnadiBot footer only from a server-advertised public origin",
+    () =>
+      Effect.gen(function* () {
+        const url = `https://akeru.example.com/bots/${BOT_ID}`;
 
-      const cases = [
-        {
-          provider: "whatsapp" as const,
-          externalThreadId: "whatsapp:phone-number-id:15551234567",
-          externalSenderId: "15551234567",
-          connect: whatsappConnect(BOT_ID),
-          withOrigin: `Approved answer\n\nOpen in Akeru: ${url}`,
-        },
-        {
-          provider: "slack" as const,
-          externalThreadId: "slack:C1:1.000",
-          externalSenderId: "U1",
-          connect: slackConnect(BOT_ID),
-          withOrigin: `Approved answer\n\nOpen in Akeru: ${url}`,
-        },
-        {
-          provider: "telegram" as const,
-          externalThreadId: "telegram:42:7",
-          externalSenderId: "42",
-          connect: telegramConnect(BOT_ID),
-          withOrigin: `Approved answer\n\nOpen in Akeru: ${url}`,
-        },
-        {
-          provider: "imessage" as const,
-          externalThreadId: "imessage:any;+15551234567",
-          externalSenderId: "+15551234567",
-          connect: imessageConnect(BOT_ID),
-          withOrigin: `Approved answer\n\nOpen in Akeru: ${url}`,
-        },
-        {
-          provider: "discord" as const,
-          externalThreadId: "discord:guild-1:channel-1",
-          externalSenderId: "user-1",
-          connect: discordConnect(BOT_ID),
-          withOrigin: `Approved answer\n\n[Open in Akeru](${url})`,
-        },
-      ];
+        const cases = [
+          {
+            provider: "whatsapp" as const,
+            externalThreadId: "whatsapp:phone-number-id:15551234567",
+            externalSenderId: "15551234567",
+            connect: whatsappConnect(BOT_ID),
+            withOrigin: `Approved answer\n\nOpen in IsnadiBot: ${url}`,
+          },
+          {
+            provider: "slack" as const,
+            externalThreadId: "slack:C1:1.000",
+            externalSenderId: "U1",
+            connect: slackConnect(BOT_ID),
+            withOrigin: `Approved answer\n\nOpen in IsnadiBot: ${url}`,
+          },
+          {
+            provider: "telegram" as const,
+            externalThreadId: "telegram:42:7",
+            externalSenderId: "42",
+            connect: telegramConnect(BOT_ID),
+            withOrigin: `Approved answer\n\nOpen in IsnadiBot: ${url}`,
+          },
+          {
+            provider: "imessage" as const,
+            externalThreadId: "imessage:any;+15551234567",
+            externalSenderId: "+15551234567",
+            connect: imessageConnect(BOT_ID),
+            withOrigin: `Approved answer\n\nOpen in IsnadiBot: ${url}`,
+          },
+          {
+            provider: "discord" as const,
+            externalThreadId: "discord:guild-1:channel-1",
+            externalSenderId: "user-1",
+            connect: discordConnect(BOT_ID),
+            withOrigin: `Approved answer\n\n[Open in IsnadiBot](${url})`,
+          },
+        ];
 
-      for (const entry of cases) {
-        const build = (publicOrigin?: string | null) => {
-          const messageId = MessageId.make(`${entry.provider}-reply-footer`);
+        for (const entry of cases) {
+          const build = (publicOrigin?: string | null) => {
+            const messageId = MessageId.make(`${entry.provider}-reply-footer`);
 
-          const threadId = channelThreadId(
-            BOT_ID,
-            PROJECT_ID,
-            entry.provider,
-            entry.externalThreadId,
-          );
+            const threadId = channelThreadId(
+              BOT_ID,
+              PROJECT_ID,
+              entry.provider,
+              entry.externalThreadId,
+            );
 
-          const posts: Array<{ readonly externalThreadId: string; readonly text: string }> = [];
+            const posts: Array<{ readonly externalThreadId: string; readonly text: string }> = [];
 
-          const harness = makeHarness({
-            threads: [
-              makeThread(threadId, BOT_ID, [
-                makeMessage(MessageId.make(`${entry.provider}-inbound`), "user", "Question", {
-                  provider: entry.provider,
-                  externalThreadId: entry.externalThreadId,
-                  externalSenderId: entry.externalSenderId,
-                }),
-                makeMessage(messageId, "assistant", "Approved answer"),
-              ]),
-            ],
-            post: async (target, text) => void posts.push({ externalThreadId: target, text }),
-            ...(publicOrigin !== undefined ? { publicOrigin } : {}),
+            const harness = makeHarness({
+              threads: [
+                makeThread(threadId, BOT_ID, [
+                  makeMessage(MessageId.make(`${entry.provider}-inbound`), "user", "Question", {
+                    provider: entry.provider,
+                    externalThreadId: entry.externalThreadId,
+                    externalSenderId: entry.externalSenderId,
+                  }),
+                  makeMessage(messageId, "assistant", "Approved answer"),
+                ]),
+              ],
+              post: async (target, text) => void posts.push({ externalThreadId: target, text }),
+              ...(publicOrigin !== undefined ? { publicOrigin } : {}),
+            });
+
+            return { harness, posts, messageId, threadId };
+          };
+
+          const withoutOrigin = build(null);
+          yield* connectChannel(withoutOrigin.harness.dependencies, entry.connect);
+          yield* sendChannelMessage(withoutOrigin.harness.dependencies, {
+            botId: BOT_ID,
+            threadId: withoutOrigin.threadId,
+            messageId: withoutOrigin.messageId,
           });
+          expect(withoutOrigin.posts).toEqual([
+            { externalThreadId: entry.externalThreadId, text: "Approved answer" },
+          ]);
 
-          return { harness, posts, messageId, threadId };
-        };
-
-        const withoutOrigin = build(null);
-        yield* connectChannel(withoutOrigin.harness.dependencies, entry.connect);
-        yield* sendChannelMessage(withoutOrigin.harness.dependencies, {
-          botId: BOT_ID,
-          threadId: withoutOrigin.threadId,
-          messageId: withoutOrigin.messageId,
-        });
-        expect(withoutOrigin.posts).toEqual([
-          { externalThreadId: entry.externalThreadId, text: "Approved answer" },
-        ]);
-
-        const withOrigin = build("https://akeru.example.com/");
-        yield* connectChannel(withOrigin.harness.dependencies, entry.connect);
-        yield* sendChannelMessage(withOrigin.harness.dependencies, {
-          botId: BOT_ID,
-          threadId: withOrigin.threadId,
-          messageId: withOrigin.messageId,
-        });
-        expect(withOrigin.posts).toEqual([
-          { externalThreadId: entry.externalThreadId, text: entry.withOrigin },
-        ]);
-      }
-    }),
+          const withOrigin = build("https://akeru.example.com/");
+          yield* connectChannel(withOrigin.harness.dependencies, entry.connect);
+          yield* sendChannelMessage(withOrigin.harness.dependencies, {
+            botId: BOT_ID,
+            threadId: withOrigin.threadId,
+            messageId: withOrigin.messageId,
+          });
+          expect(withOrigin.posts).toEqual([
+            { externalThreadId: entry.externalThreadId, text: entry.withOrigin },
+          ]);
+        }
+      }),
   );
 
   it.effect("projects delivery transitions onto the assistant message", () =>

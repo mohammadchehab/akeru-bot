@@ -11,7 +11,7 @@ function readInjectedDesktopAppBranding(): DesktopAppBranding | null {
 
 const injectedDesktopAppBranding = readInjectedDesktopAppBranding();
 
-export const APP_BASE_NAME = injectedDesktopAppBranding?.baseName ?? "Akeru Bot";
+export const APP_BASE_NAME = injectedDesktopAppBranding?.baseName ?? "IsnadiBot";
 
 export const APP_STAGE_LABEL =
   injectedDesktopAppBranding?.stageLabel ?? (import.meta.env.DEV ? "Dev" : "Alpha");

@@ -61,8 +61,8 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
     assert.equal(DESKTOP_UPDATE_CHANNEL, "latest");
   });
 
-  it("uses the Akeru Bot product name", () => {
-    assert.equal(resolveDesktopProductName(), "Akeru Bot (Alpha)");
+  it("uses the IsnadiBot product name", () => {
+    assert.equal(resolveDesktopProductName(), "IsnadiBot");
   });
 
   it("uses the Akeru package identity for Electron safe storage", () => {

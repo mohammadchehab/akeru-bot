@@ -1,7 +1,7 @@
 export const settingsCatalog = {
   "API token": "API 令牌",
-  "Akeru Bot runs locally. Provider prompts and enabled online features still send data to their listed services.":
-    "Akeru Bot 在本地运行。提供商提示词和已启用的在线功能仍会将数据发送到其列出的服务。",
+  "IsnadiBot runs locally. Provider prompts and enabled online features still send data to their listed services.":
+    "IsnadiBot 在本地运行。提供商提示词和已启用的在线功能仍会将数据发送到其列出的服务。",
   "All providers": "全部提供商",
   Analytics: "分析",
   "Anonymous analytics": "匿名分析",
@@ -164,8 +164,8 @@ export const settingsCatalog = {
   "Increase provider health interval": "延长提供商健康检查间隔",
   "Refresh provider availability, versions, auth state, and model metadata.":
     "刷新提供商的可用性、版本、认证状态和模型元数据。",
-  "Enter an absolute folder path, or open Akeru Bot on desktop.":
-    "请输入文件夹的绝对路径，或在桌面版中打开 Akeru Bot。",
+  "Enter an absolute folder path, or open IsnadiBot on desktop.":
+    "请输入文件夹的绝对路径，或在桌面版中打开 IsnadiBot。",
   "Missing providers": "缺少的提供商",
   "Settings breadcrumb": "设置导航路径",
   "Check for Updates": "检查更新",
@@ -247,13 +247,13 @@ export const settingsCatalog = {
     "Claude Pro 或 Max 订阅不包含 Anthropic API 访问权限。",
   "Anthropic limits Claude use per 5-hour session and per week. Max allows more use than Pro.":
     "Anthropic 按每 5 小时会话和每周限制 Claude 用量。Max 的额度高于 Pro。",
-  "SuperGrok or X Premium+ on your xAI account. Akeru cannot see which plan the account has.":
-    "你的 xAI 账号上的 SuperGrok 或 X Premium+。Akeru 无法查看该账号使用的套餐。",
+  "SuperGrok or X Premium+ on your xAI account. IsnadiBot cannot see which plan the account has.":
+    "你的 xAI 账号上的 SuperGrok 或 X Premium+。IsnadiBot 无法查看该账号使用的套餐。",
   "Grok models.": "Grok 模型。",
   "SuperGrok and X Premium+ do not include xAI API credits.":
     "SuperGrok 和 X Premium+ 不包含 xAI API 额度。",
-  "xAI does not publish Grok limits that Akeru can show.":
-    "xAI 没有公布 Akeru 可以显示的 Grok 限制。",
+  "xAI does not publish Grok limits that IsnadiBot can show.":
+    "xAI 没有公布 IsnadiBot 可以显示的 Grok 限制。",
   "Kimi For Coding membership.": "Kimi For Coding 会员。",
   "Or a Kimi For Coding API key from the Kimi Code console.":
     "也可以使用 Kimi Code 控制台中的 Kimi For Coding API 密钥。",
@@ -336,8 +336,8 @@ export const settingsCatalog = {
   "{count} shortcut shares its keys with another command.": "{count} 个快捷键与其他命令共用按键。",
   "{count} shortcuts share their keys with another command.":
     "{count} 个快捷键与其他命令共用按键。",
-  "Your browser can claim some shortcuts before Akeru Bot sees them. The desktop app receives all of them.":
-    "浏览器可能会在 Akeru Bot 收到之前占用某些快捷键。桌面应用可以收到所有快捷键。",
+  "Your browser can claim some shortcuts before IsnadiBot sees them. The desktop app receives all of them.":
+    "浏览器可能会在 IsnadiBot 收到之前占用某些快捷键。桌面应用可以收到所有快捷键。",
   "Show all shortcuts": "显示所有快捷键",
   "Restore default settings?": "恢复默认设置？",
   "This will reset: {settings}.": "这将重置：{settings}。",

@@ -30,7 +30,7 @@ describe("RootRouteErrorView", () => {
     expect(markup).toContain('aria-labelledby="root-error-title"');
     expect(markup).toContain("<h1");
     expect(markup).toContain("This view failed to load");
-    expect(markup).toContain("Retry this view. If it fails again, reload Akeru Bot.");
+    expect(markup).toContain("Retry this view. If it fails again, reload IsnadiBot.");
     expect(markup).toContain("bots.filter is not a function");
     expect(markup).toContain("Technical details");
     expect(markup).toContain('tabindex="0"');

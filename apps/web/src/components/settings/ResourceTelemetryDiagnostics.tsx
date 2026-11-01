@@ -242,7 +242,7 @@ export function ResourceTelemetryDiagnostics() {
           <div className="flex flex-col gap-3 border-b border-border/60 bg-linear-to-r from-muted/45 via-muted/20 to-transparent px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div>
               <div className="text-10px font-semibold uppercase tracking-caps-widest text-muted-foreground/70">
-                Akeru Bot system footprint
+                IsnadiBot system footprint
               </div>
               <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted-foreground">
                 Live native counters for the server, providers, terminals, desktop processes, and
@@ -525,7 +525,7 @@ export function ResourceTelemetryDiagnostics() {
         <div className="overflow-hidden rounded-2xl border border-border/70 bg-card shadow-hairline">
           <div className="bg-muted/15 px-4 py-3 text-11px leading-relaxed text-muted-foreground sm:px-5">
             Native counters identify which process is reading or writing. These application-level
-            counters identify known Akeru Bot operations so process spikes can be correlated with
+            counters identify known IsnadiBot operations so process spikes can be correlated with
             specific persistence and logging paths.
           </div>
           <AttributionTable entries={snapshot?.attribution.entries ?? []} />

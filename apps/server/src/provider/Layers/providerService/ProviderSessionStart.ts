@@ -90,7 +90,7 @@ export function createProviderSessionStart(deps: {
         if (!instanceInfo.enabled) {
           return yield* toValidationError(
             "ProviderService.startSession",
-            `Provider instance '${resolvedInstanceId}' is disabled in Akeru Bot settings.`,
+            `Provider instance '${resolvedInstanceId}' is disabled in IsnadiBot settings.`,
           );
         }
 

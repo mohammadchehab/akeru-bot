@@ -404,7 +404,7 @@ describe("buildCodexDeveloperInstructions", () => {
     });
 
     NodeAssert.ok(instructions.startsWith(codexDefaultModeDeveloperInstructions(true)));
-    NodeAssert.match(instructions, /Akeru Bot/);
+    NodeAssert.match(instructions, /IsnadiBot/);
     NodeAssert.match(instructions, /Codex harness/);
     NodeAssert.match(instructions, /as gpt-5\.3-codex with high reasoning effort/);
   });
@@ -454,7 +454,7 @@ describe("Akeru browser developer instructions", () => {
     for (const instructions of [codexDefaultModeDeveloperInstructions(false)]) {
       NodeAssert.doesNotMatch(instructions, /preview_status/);
       NodeAssert.doesNotMatch(instructions, /preview_open/);
-      NodeAssert.doesNotMatch(instructions, /Akeru Bot collaborative browser/);
+      NodeAssert.doesNotMatch(instructions, /IsnadiBot collaborative browser/);
       // Steering away from other browser automation must go with the tools;
       // keeping it would leave the model talked out of its only option.
       NodeAssert.doesNotMatch(instructions, /Do not switch to global browser skills/);

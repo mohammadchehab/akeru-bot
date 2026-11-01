@@ -88,11 +88,11 @@ const PROVIDER_COPY: Readonly<Record<GuidedProvider, ProviderCopy>> = {
   },
   xai: {
     unlockedBy:
-      "SuperGrok or X Premium+ on your xAI account. Akeru cannot see which plan the account has.",
+      "SuperGrok or X Premium+ on your xAI account. IsnadiBot cannot see which plan the account has.",
     alternative: "Or an xAI API key, billed separately by xAI.",
     models: "Grok models.",
     apiAccess: "SuperGrok and X Premium+ do not include xAI API credits.",
-    limits: "xAI does not publish Grok limits that Akeru can show.",
+    limits: "xAI does not publish Grok limits that IsnadiBot can show.",
     connect: "Choose Connect and sign in with the xAI account that has SuperGrok or X Premium+.",
   },
   "kimi-for-coding": {

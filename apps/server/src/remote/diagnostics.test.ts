@@ -80,7 +80,7 @@ describe("Akeru Remote diagnostics", () => {
       const report = await runRemoteDoctor({ baseDir, repair: false, platform: "win32" });
       expect(report.checks.find((check) => check.id === "service")).toMatchObject({
         status: "pass",
-        message: "Akeru server answers its HTTP health check.",
+        message: "IsnadiBot server answers its HTTP health check.",
       });
       expect(NodeFS.readFileSync(probed, "utf8")).toContain(
         "http://127.0.0.1:4555/.well-known/t3/environment",

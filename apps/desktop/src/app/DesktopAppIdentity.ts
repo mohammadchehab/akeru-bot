@@ -136,6 +136,7 @@ export const make = Effect.gen(function* () {
       applicationName: environment.displayName,
       applicationVersion: environment.appVersion,
       version: Option.getOrElse(commitHash, () => "unknown"),
+      credits: "Based on Akeru Bot and T3 Code (MIT).",
     });
 
     if (environment.platform === "win32") {

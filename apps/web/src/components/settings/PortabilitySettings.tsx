@@ -181,7 +181,7 @@ export function PortabilitySettings() {
       toastManager.add({
         type: "error",
         title: t("Folder picker unavailable"),
-        description: t("Enter an absolute folder path, or open Akeru Bot on desktop."),
+        description: t("Enter an absolute folder path, or open IsnadiBot on desktop."),
       });
 
       return;
@@ -260,7 +260,7 @@ export function PortabilitySettings() {
       <SettingsRow
         {...searchableSetting("data-portability", t)}
         description={t(
-          "Export Akeru settings, project links, and history, or restore them on another environment. Project files and credentials are not included.",
+          "Export IsnadiBot settings, project links, and history, or restore them on another environment. Project files and credentials are not included.",
         )}
         control={
           <div className="flex items-center gap-1.5">
@@ -285,7 +285,7 @@ export function PortabilitySettings() {
               className="sr-only"
               type="file"
               accept=".archive,application/json"
-              aria-label={t("Import Akeru archive")}
+              aria-label={t("Import IsnadiBot archive")}
               onChange={(event) => {
                 const file = event.currentTarget.files?.[0];
                 event.currentTarget.value = "";
@@ -314,7 +314,7 @@ export function PortabilitySettings() {
           <DialogHeader>
             <DialogTitle>{t("Restore preview")}</DialogTitle>
             <DialogDescription>
-              {t("{filename}. Review what Akeru Bot will restore on this environment.", {
+              {t("{filename}. Review what IsnadiBot will restore on this environment.", {
                 filename: importState?.filename ?? "",
               })}
             </DialogDescription>

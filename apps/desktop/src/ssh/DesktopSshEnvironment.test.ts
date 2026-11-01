@@ -31,7 +31,7 @@ describe("sshEnvironment", () => {
     assert.equal(cause.message, "Failed to present SSH password prompt for devbox.");
     assert.equal(
       DesktopSshEnvironment.toSshPasswordPromptError(cause).message,
-      "Akeru Bot window is not available for SSH authentication.",
+      "IsnadiBot window is not available for SSH authentication.",
     );
   });
 

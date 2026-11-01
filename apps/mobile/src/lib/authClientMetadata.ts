@@ -8,7 +8,7 @@ export function authClientMetadata(appVersion?: string): AuthClientPresentationM
   const deviceModel = Device.modelName?.trim();
 
   return {
-    label: "Akeru Bot Mobile",
+    label: "IsnadiBot Mobile",
     deviceType: "mobile",
     ...Match.value(Platform.OS).pipe(
       Match.when("ios", () => ({ os: "iOS" })),

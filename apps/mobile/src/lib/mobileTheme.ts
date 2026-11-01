@@ -27,7 +27,7 @@ export const MOBILE_THEME_OPTIONS: ReadonlyArray<{
   readonly id: MobileThemeId;
   readonly label: string;
 }> = [
-  { id: DEFAULT_MOBILE_THEME_ID, label: "Akeru Classic" },
+  { id: DEFAULT_MOBILE_THEME_ID, label: "IsnadiBot Classic" },
   ...BUILT_IN_THEMES.map((theme) => ({ id: themeIdFromString(theme.id), label: theme.label })),
 ];
 

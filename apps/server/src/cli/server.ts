@@ -20,13 +20,13 @@ export const runServerCommand = (
   });
 
 export const startCommand = Command.make("start", { ...sharedServerCommandFlags }).pipe(
-  Command.withDescription("Run the Akeru Bot server."),
+  Command.withDescription("Run the IsnadiBot server."),
   Command.withHandler((flags) => runServerCommand(flags)),
 );
 
 export const serveCommand = Command.make("serve", { ...sharedServerCommandFlags }).pipe(
   Command.withDescription(
-    "Run the Akeru Bot server without opening a browser and print headless pairing details.",
+    "Run the IsnadiBot server without opening a browser and print headless pairing details.",
   ),
   Command.withHandler((flags) =>
     runServerCommand(flags, {

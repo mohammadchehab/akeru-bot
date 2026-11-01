@@ -129,7 +129,7 @@ describe("ThreadErrorBanner", () => {
 
   it("turns a disabled provider exception into an actionable message", () => {
     const error =
-      "ProviderValidationError: Provider validation failed in AgentController.inspectEngine: Provider instance 'codex' is disabled in Akeru Bot settings. at DisabledProviderError (file:///home/leo/app.ts:1:2)";
+      "ProviderValidationError: Provider validation failed in AgentController.inspectEngine: Provider instance 'codex' is disabled in IsnadiBot settings. at DisabledProviderError (file:///home/leo/app.ts:1:2)";
 
     expect(presentThreadError(error)).toEqual({
       title: "ChatGPT is turned off",

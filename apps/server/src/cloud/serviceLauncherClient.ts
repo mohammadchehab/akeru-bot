@@ -35,7 +35,7 @@ export class ServiceLauncherClientError extends Schema.TaggedErrorClass<ServiceL
       case "decode-context":
         return "The service launcher supplied invalid startup context.";
       case "version-mismatch":
-        return "The service launcher started a different Akeru Bot version.";
+        return "The service launcher started a different IsnadiBot version.";
       case "ipc-unavailable":
         return "The service launcher IPC channel is unavailable.";
       case "unmanaged":

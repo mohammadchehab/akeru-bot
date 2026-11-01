@@ -95,7 +95,7 @@ export const checkClaudeProviderStatus = Effect.fn("checkClaudeProviderStatus")(
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Claude is disabled in Akeru Bot settings.",
+        message: "Claude is disabled in IsnadiBot settings.",
       },
     });
   }
@@ -273,7 +273,7 @@ export const pendingClaudeProvider = (
           version: null,
           status: "warning",
           auth: { status: "unknown" },
-          message: "Claude is disabled in Akeru Bot settings.",
+          message: "Claude is disabled in IsnadiBot settings.",
         },
       });
     }

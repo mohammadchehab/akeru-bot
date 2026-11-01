@@ -117,7 +117,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       assert.notProperty(mac, "asarUnpack");
       assert.notProperty(linux, "asarUnpack");
       assert.notProperty(win, "asarUnpack");
-      assert.equal(linux.artifactName, "Akeru-Bot-${version}-x64.${ext}");
+      assert.equal(linux.artifactName, "IsnadiBot-${version}-x64.${ext}");
       assert.deepStrictEqual(win.extraResources, [
         {
           from: "apps/desktop/prod-resources/resource-monitor",
@@ -135,7 +135,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       // packages never claim the development scheme.
       assert.deepStrictEqual(win.protocols, [
         {
-          name: "Akeru Bot",
+          name: "IsnadiBot",
           schemes: ["akeru"],
         },
       ]);
@@ -153,7 +153,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
         "**/node_modules/.bin/**",
       ]);
       assert.deepStrictEqual(mac.dmg, {
-        title: "Akeru Bot (Alpha) 1.2.3 Installer",
+        title: "IsnadiBot 1.2.3 Installer",
         background: "dmg/dmg-background-latest.png",
         window: { width: 540, height: 412 },
         contents: [
@@ -167,7 +167,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       // entry advertises MimeType=x-scheme-handler/akeru; for OAuth deep links.
       assert.deepStrictEqual(linux.linux?.protocols, [
         {
-          name: "Akeru Bot",
+          name: "IsnadiBot",
           schemes: ["akeru", "akeru-dev"],
         },
       ]);
@@ -305,7 +305,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       assert.match(String(mac.sign), /\/scripts\/sign-macos\.ts$/);
       assert.deepStrictEqual(mac.protocols, [
         {
-          name: "Akeru Bot",
+          name: "IsnadiBot",
           schemes: ["akeru", "akeru-dev"],
         },
       ]);

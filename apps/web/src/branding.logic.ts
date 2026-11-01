@@ -2,11 +2,10 @@ export function formatAppDisplayName(input: {
   readonly baseName: string;
   readonly stageLabel: string;
 }): string {
-  if (input.stageLabel.trim().toLowerCase() === "latest") {
-    return input.baseName;
-  }
-
-  return `${input.baseName} (${input.stageLabel})`;
+  // Only development builds carry their stage in the name, e.g. "IsnadiBot (Dev)".
+  return input.stageLabel.trim().toLowerCase() === "dev"
+    ? `${input.baseName} (${input.stageLabel})`
+    : input.baseName;
 }
 
 export function resolveServerBackedAppStageLabel(input: {

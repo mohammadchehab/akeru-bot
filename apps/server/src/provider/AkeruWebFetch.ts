@@ -346,7 +346,7 @@ export async function akeruWebSearchUnavailable(input: {
     status: "unavailable" as const,
     query: input.query,
     results: [],
-    reason: "Web search is not available for this bot's provider in Akeru yet.",
+    reason: "Web search is not available for this bot's provider in IsnadiBot yet.",
     suggestion: "Use WebFetch with a URL you already know.",
   };
 }

@@ -25,14 +25,14 @@ function checkedMenuState(checked: boolean) {
 
 /** Initials for the profile circle, derived from the environment scope. */
 function profileInitials(label: string | null): string {
-  const source = (label ?? "Akeru").trim();
+  const source = (label ?? "IsnadiBot").trim();
   const parts = source.split(/[\s-_.]+/).filter((part) => /[a-z0-9]/i.test(part));
 
   if (parts.length >= 2) {
     return `${parts[0]![0]!}${parts[1]![0]!}`.toUpperCase();
   }
 
-  return source.slice(0, 2).toUpperCase() || "AK";
+  return source.slice(0, 2).toUpperCase() || "IB";
 }
 
 /**

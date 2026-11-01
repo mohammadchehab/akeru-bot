@@ -104,7 +104,7 @@ export const MAX_THREAD_TITLE_CONTEXT_CHARS = 8_000;
 export const MAX_FIRST_USER_TITLE_CONTEXT_CHARS = 2_000;
 
 export const STARTUP_RECOVERY_INPUT = [
-  "The Akeru server restarted while you were handling the current request.",
+  "The IsnadiBot server restarted while you were handling the current request.",
   "Continue the existing request from the last durable conversation state.",
   "Inspect the current workspace and tool state before acting, and do not repeat side effects that already completed.",
   "If an approval or question was open, recreate it only if it is still needed.",

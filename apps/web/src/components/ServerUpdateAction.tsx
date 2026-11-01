@@ -139,7 +139,7 @@ export function ServerUpdateAction({
       toastManager.add({
         type: "success",
         title: `${serverLabel} updated`,
-        description: `Reconnected on Akeru Bot ${result.value.targetVersion}.`,
+        description: `Reconnected on IsnadiBot ${result.value.targetVersion}.`,
       });
     } finally {
       pendingUpdateEnvironmentIds.delete(environmentId);

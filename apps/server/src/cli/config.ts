@@ -69,7 +69,7 @@ export const hostFlag = Flag.string("host").pipe(
 
 export const baseDirFlag = Flag.string("base-dir").pipe(
   Flag.withDescription(
-    "Explicit Akeru Bot data directory; runtime state is stored under userdata (equivalent to AKERU_HOME).",
+    "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to AKERU_HOME).",
   ),
   Flag.optional,
 );

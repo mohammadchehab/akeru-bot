@@ -94,7 +94,7 @@ export function toSshPasswordPromptError(
     Match.tag(
       "DesktopSshPromptWindowUnavailableError",
       "DesktopSshPromptPresentationError",
-      () => "Akeru Bot window is not available for SSH authentication.",
+      () => "IsnadiBot window is not available for SSH authentication.",
     ),
     Match.tag(
       "DesktopSshPromptTimedOutError",

@@ -25,7 +25,7 @@ const makeEnvironment = (
     platform: "linux",
     isPackaged: true,
     isDevelopment: false,
-    displayName: "Akeru Bot (Alpha)",
+    displayName: "IsnadiBot",
     linuxWmClass: "akeru-bot",
     linuxApplicationsDir: "/home/alice/.local/share/applications",
     appDataDirectory: "/home/alice/.config",
@@ -123,13 +123,13 @@ const emptyRecording = (): RecordedRegistration => ({
 describe("DesktopLinuxUrlHandler", () => {
   it("renders a scheme-handler desktop entry with freedesktop Exec quoting", () => {
     const entry = DesktopLinuxUrlHandler.renderUrlHandlerDesktopEntry({
-      displayName: "Akeru Bot (Dev)",
+      displayName: "IsnadiBot (Dev)",
       execTarget: '/home/al ice/Apps/T3 "100%" $HOME\\x.AppImage',
       schemes: ["akeru"],
     });
 
     assert.include(entry, "[Desktop Entry]");
-    assert.include(entry, "Name=Akeru Bot (Dev)");
+    assert.include(entry, "Name=IsnadiBot (Dev)");
     // Exec composes both escaping layers: a literal backslash becomes four
     // backslashes in the file, a quote three characters, a dollar sign two
     // backslashes plus the sign.

@@ -87,7 +87,7 @@ describe("product feedback submission", () => {
       ok: false,
       rejection: {
         reason: "internal",
-        message: "Akeru could not send the feedback. Your draft is still available.",
+        message: "IsnadiBot could not send the feedback. Your draft is still available.",
       },
     });
   });

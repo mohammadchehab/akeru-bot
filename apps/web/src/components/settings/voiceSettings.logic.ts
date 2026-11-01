@@ -93,7 +93,7 @@ export function voiceSetupProblem(
   if (missing.length > 0) {
     const names = missing.map((provider) => VOICE_API_PROVIDER_LABELS[provider]).join(" and ");
 
-    return `Connect ${names} under API connections before starting a call. Akeru will not switch to another provider or billing source.`;
+    return `Connect ${names} under API connections before starting a call. IsnadiBot will not switch to another provider or billing source.`;
   }
 
   if (settings.provider === "composed" && selectedSynthesisVoice(settings) === undefined) {

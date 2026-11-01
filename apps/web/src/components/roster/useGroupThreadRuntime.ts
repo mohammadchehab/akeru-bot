@@ -243,7 +243,7 @@ export function useGroupThreadRuntime(groupId: string) {
         files.some((file) => resolveBotFileAttachment(file)?.type === "file") &&
         !readEnvironmentSupportsFileAttachments(activeProject.environmentId)
       ) {
-        setError(localFailure("Update the connected Akeru server to attach files."));
+        setError(localFailure("Update the connected IsnadiBot server to attach files."));
 
         return false;
       }

@@ -17,7 +17,7 @@ export const rosterCatalog = {
   Plugins: "Plugins",
   Project: "Project",
   "Project Grouping": "Project Grouping",
-  "Review Akeru Bot policies": "Review Akeru Bot policies",
+  "Review IsnadiBot policies": "Review IsnadiBot policies",
   "Show skills in slash menu": "Show skills in slash menu",
   "Sort projects": "Sort projects",
   "Change project from {project}": "Change project from {project}",
@@ -52,7 +52,7 @@ export const rosterCatalog = {
   Avatar: "Avatar",
   "{shape} avatar": "{shape} avatar",
   "Could not create your bot.": "Could not create your bot.",
-  "Set up Akeru Bot": "Set up Akeru Bot",
+  "Set up IsnadiBot": "Set up IsnadiBot",
   "your bot": "your bot",
   "Personal planning": "Personal planning",
   "One or two sentences is plenty. Your bot works the rest out from there.":
@@ -62,8 +62,8 @@ export const rosterCatalog = {
   "Read through the project to find where this belongs":
     "Read through the project to find where this belongs",
   "Your bot": "Your bot",
-  "Retry this view. If it fails again, reload Akeru Bot.":
-    "Retry this view. If it fails again, reload Akeru Bot.",
+  "Retry this view. If it fails again, reload IsnadiBot.":
+    "Retry this view. If it fails again, reload IsnadiBot.",
   "New bot": "New bot",
   "New group": "New group",
   "Archive bot": "Archive bot",
@@ -182,7 +182,7 @@ export const rosterCatalog = {
   "What this bot has spent so far.": "What this bot has spent so far.",
   "Where this bot runs commands and edits files.": "Where this bot runs commands and edits files.",
   "Manage bot tools": "Manage bot tools",
-  "Where this bot answers outside Akeru Bot.": "Where this bot answers outside Akeru Bot.",
+  "Where this bot answers outside IsnadiBot.": "Where this bot answers outside IsnadiBot.",
   "Manage bot channels": "Manage bot channels",
   "No channels": "No channels",
   "{name} bot sidebar": "{name} bot sidebar",
@@ -262,8 +262,8 @@ export const rosterCatalog = {
   "Could not choose project folder": "Could not choose project folder",
   "Could not use project folder": "Could not use project folder",
   "Project locations": "Project locations",
-  "Choose an existing folder for each project. Akeru Bot links the project to the folder without copying its files.":
-    "Choose an existing folder for each project. Akeru Bot links the project to the folder without copying its files.",
+  "Choose an existing folder for each project. IsnadiBot links the project to the folder without copying its files.":
+    "Choose an existing folder for each project. IsnadiBot links the project to the folder without copying its files.",
   "Also include skills in the / command menu. Skills always appear when you type $.":
     "Also include skills in the / command menu. Skills always appear when you type $.",
   "skills in slash menu": "skills in slash menu",
@@ -279,8 +279,8 @@ export const rosterCatalog = {
     "The computer is no longer available. The bot's work may have ended.",
   "You see the screen the bot works on. Pictures are streamed while this window is open and are not saved.":
     "You see the screen the bot works on. Pictures are streamed while this window is open and are not saved.",
-  "Open Akeru Bot on a desktop or in a web browser to watch or take control of it.":
-    "Open Akeru Bot on a desktop or in a web browser to watch or take control of it.",
+  "Open IsnadiBot on a desktop or in a web browser to watch or take control of it.":
+    "Open IsnadiBot on a desktop or in a web browser to watch or take control of it.",
   "Advanced > Bot inbox": "Advanced > Bot inbox",
   "Lasting details this bot has learned about you. It reads them in every chat.":
     "Lasting details this bot has learned about you. It reads them in every chat.",
@@ -295,8 +295,8 @@ export const rosterCatalog = {
   "Set up how this bot works with you.": "Set up how this bot works with you.",
   "Allow bots to use the in-app browser for research, previews, and interactive web tasks.":
     "Allow bots to use the in-app browser for research, previews, and interactive web tasks.",
-  "Akeru Bot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.":
-    "Akeru Bot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.",
+  "IsnadiBot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.":
+    "IsnadiBot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.",
   "Negate group": "Negate group",
   "Remove negated group": "Remove negated group",
   "Remove group": "Remove group",

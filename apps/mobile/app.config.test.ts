@@ -4,11 +4,11 @@ import { expect, it } from "vite-plus/test";
 const configUrl = new URL("./app.config.ts", import.meta.url).href;
 
 it.each([
-  ["development", "Akeru Bot Dev", ["akeru-dev", "akeru"], "dev.leodoes.akeru.dev"],
-  ["production", "Akeru Bot", ["akeru"], "dev.leodoes.akeru"],
-  ["", "Akeru Bot", ["akeru"], "dev.leodoes.akeru"],
-  ["preview", "Akeru Bot", ["akeru"], "dev.leodoes.akeru"],
-  [" development ", "Akeru Bot", ["akeru"], "dev.leodoes.akeru"],
+  ["development", "IsnadiBot Dev", ["akeru-dev", "akeru"], "dev.leodoes.akeru.dev"],
+  ["production", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
+  ["", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
+  ["preview", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
+  [" development ", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
 ])(
   "resolves APP_VARIANT=%j without changing app identity",
   (appVariant, name, scheme, identifier) => {

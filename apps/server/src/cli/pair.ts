@@ -76,7 +76,7 @@ export const pairCommand = Command.make("pair", {
   qr: qrFlag,
 }).pipe(
   Command.withDescription(
-    "Mint a pairing token for a running Akeru Bot server and print it as a QR code.",
+    "Mint a pairing token for a running IsnadiBot server and print it as a QR code.",
   ),
   Command.withHandler((flags) =>
     Effect.gen(function* () {

@@ -342,7 +342,7 @@ export function createProviderCommandMocks(
         return Effect.fail(
           new ProviderValidationError({
             operation: "AgentController.inspectEngine",
-            issue: `Provider instance '${engine.provider}' is disabled in Akeru Bot settings.`,
+            issue: `Provider instance '${engine.provider}' is disabled in IsnadiBot settings.`,
           }),
         );
       }

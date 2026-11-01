@@ -81,14 +81,14 @@ const RELEASE_ASSETS = {
 
 const VARIANT_CONFIG = {
   development: {
-    appName: "Akeru Bot Dev",
+    appName: "IsnadiBot Dev",
     scheme: "akeru-dev",
     iosBundleIdentifier: "dev.leodoes.akeru.dev",
     androidPackage: "dev.leodoes.akeru.dev",
     assets: DEVELOPMENT_ASSETS,
   },
   production: {
-    appName: "Akeru Bot",
+    appName: "IsnadiBot",
     scheme: "akeru",
     iosBundleIdentifier: "dev.leodoes.akeru",
     androidPackage: "dev.leodoes.akeru",
@@ -131,7 +131,7 @@ const widgetsPlugin: NonNullable<ExpoConfig["plugins"]>[number] = [
       {
         name: "AgentActivity",
         displayName: "Bot Work",
-        description: "Shows current bot work in Akeru Bot.",
+        description: "Shows current bot work in IsnadiBot.",
         supportedFamilies: ["systemSmall", "systemMedium", "accessoryRectangular"],
       },
     ],
@@ -166,7 +166,7 @@ const sharingPlugin: NonNullable<ExpoConfig["plugins"]>[number] = [
 // names on Android so React Native and the native composer use one set of
 // family names without waiting for runtime font loading.
 
-const MICROPHONE_PERMISSION = "Allow Akeru Bot to use your microphone to dictate messages.";
+const MICROPHONE_PERMISSION = "Allow IsnadiBot to use your microphone to dictate messages.";
 
 const config: ExpoConfig = {
   name: variant.appName,
@@ -207,7 +207,7 @@ const config: ExpoConfig = {
         NSAllowsArbitraryLoads: true,
       },
       NSLocalNetworkUsageDescription:
-        "Allow Akeru Bot to connect to Akeru Bot servers on your local network or tailnet.",
+        "Allow IsnadiBot to connect to IsnadiBot servers on your local network or tailnet.",
       ITSAppUsesNonExemptEncryption: false,
       // The App Store screenshot harness rotates the iPad interface from
       // inside the app (CI denies osascript the Accessibility access that
@@ -309,7 +309,7 @@ const config: ExpoConfig = {
     [
       "expo-camera",
       {
-        cameraPermission: "Allow Akeru Bot to access your camera so you can scan pairing QR codes.",
+        cameraPermission: "Allow IsnadiBot to access your camera so you can scan pairing QR codes.",
         microphonePermission: MICROPHONE_PERMISSION,
         barcodeScannerEnabled: true,
         recordAudioAndroid: false,

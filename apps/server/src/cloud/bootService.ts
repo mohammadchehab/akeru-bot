@@ -107,7 +107,7 @@ export class BootServiceInstallError extends Schema.TaggedErrorClass<BootService
   { cause: Schema.Defect() },
 ) {
   override get message(): string {
-    return "Could not set up the Akeru Bot background service.";
+    return "Could not set up the IsnadiBot background service.";
   }
 }
 

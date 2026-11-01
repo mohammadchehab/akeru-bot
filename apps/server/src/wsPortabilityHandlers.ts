@@ -131,7 +131,7 @@ export const createWsPortabilityHandlers = ({
           ) {
             return yield* portabilityError(
               "apply",
-              new Error("Akeru state changed after the preview. Review the archive again."),
+              new Error("IsnadiBot state changed after the preview. Review the archive again."),
             );
           }
 
