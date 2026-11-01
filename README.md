@@ -1,33 +1,67 @@
-# Akeru Bot
+<p align="center">
+  <img src=".github/assets/isnadibot-mark.svg" width="96" height="96" alt="IsnadiBot logo">
+</p>
 
-Akeru Bot is an open-source, self-hosted alternative to Grok Bot. It is an independent fork of [T3 Code](https://t3.codes). Thank you to the T3 Code team and contributors. Akeru Bot is not affiliated with [xAI](https://x.ai), Grok, or [ping.gg](https://ping.gg).
+<h1 align="center">IsnadiBot</h1>
 
-Run named Grok bots from your own desktop, server, or browser client. Akeru also connects to Claude, Codex, Kimi For Coding, and OpenCode. Conversations, bot profiles, settings, secrets, and logs live in `~/.akeru`. They do not share T3 Code's `~/.t3` database.
+<p align="center">
+  Named AI teammates on your own machine. Bring your own Claude, ChatGPT, Grok, or Kimi subscription.
+</p>
 
-Do not push or publish this fork unless Leo asks.
+<!-- Screenshot of the rebranded app goes here once the IsnadiBot rebrand lands. -->
 
-## Run locally
+IsnadiBot is a local-first desktop app for working with named bots. Each bot has its own
+instructions, tools, and memory. Put several in a group chat and they work together. A desktop app,
+a browser client, and a mobile client all connect to the same environment.
 
-Requires Node.js `^24.13.1` for contributor setup. To run the packaged server instead, see
-[Install and first run](docs/user/install.md).
+IsnadiBot has no hosted account and provides no model access. You connect a subscription you
+already have.
 
-Install Vite+:
+## What you can do
+
+- **Bots with their own identity.** Give each bot a name, instructions, an engine, and memory. See
+  [bots](docs/user/bots.md) and [memory](docs/user/memory.md).
+- **Group chats.** Add several bots to one chat. The group's boss answers by default; type `@` and a
+  bot's name to ask that bot instead. See [chats](docs/user/chats.md).
+- **Your providers.** Claude, Codex (ChatGPT), Grok, Kimi For Coding, and OpenCode. See
+  [providers](docs/user/providers.md).
+- **Plugins and channels.** Connect tools, and let bots answer outside the app. See
+  [plugins](docs/user/plugins.md) and [channels](docs/user/channels.md).
+- **Work from anywhere.** Reach your environment over your local network, SSH, or Tailscale, from
+  the browser or your phone. See [remote access](docs/user/remote-access.md).
+
+## Build and run
+
+IsnadiBot doesn't publish releases yet. Build it from source with Node.js `^24.13.1` and
+[Vite+](https://vite.plus):
 
 ```bash
 curl -fsSL https://vite.plus | bash
-```
-
-Then:
-
-```bash
 vp i
 vp run dev
 ```
 
-Development state defaults to `<worktree>/.akeru/userdata` in a linked worktree and
-`~/.akeru/dev` in the main checkout. See [dev state directories](docs/internals/scripts.md#dev-state-directories)
-for explicit-home and environment precedence. The installed T3 Code app keeps using `~/.t3`.
+To build the macOS app (Apple Silicon), install Rust and run:
+
+```bash
+pnpm dist:desktop:dmg:arm64
+```
+
+The disk image is written to `release/`.
+
+Your chats, bots, settings, secrets, and logs stay on your machine in `~/.akeru`. The folder keeps
+its upstream name so data carries over from Akeru Bot.
+
+## Credits
+
+IsnadiBot is a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot), which is itself a fork
+of [T3 Code](https://t3.codes). Thank you to the Akeru Bot and T3 Code maintainers and contributors,
+who built nearly all of this.
+
+IsnadiBot is not affiliated with OpenCore, Akeru Bot, T3 Tools, ping.gg, xAI, Anthropic, OpenAI, or
+Moonshot AI.
 
 ## License
 
-[MIT](./LICENSE). Third-party terms are listed in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+[MIT](./LICENSE). The original copyright notice is kept as the license requires. Third-party terms
+are listed in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
