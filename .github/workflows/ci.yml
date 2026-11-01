@@ -1,4 +1,4 @@
-# Tenki CI validates pull requests before they reach main.
+# GitHub-hosted CI validates pull requests before they reach main.
 
 name: CI
 
@@ -24,7 +24,7 @@ jobs:
   check:
     name: Repository checks
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}
-    runs-on: tenki-standard-medium-4c-8g
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Checkout

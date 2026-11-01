@@ -67,7 +67,7 @@ describe("CI workflow budget", () => {
     expect(ci.jobs.check?.if).toBe(
       "${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}",
     );
-    expect(ci.jobs.check?.["runs-on"]).toBe("tenki-standard-medium-4c-8g");
+    expect(ci.jobs.check?.["runs-on"]).toBe("ubuntu-24.04");
     expect(ci.jobs.check?.steps.find((step) => step.name === "Checkout")?.with?.ref).toBe(
       "${{ inputs.expected_sha || github.sha }}",
     );
@@ -157,7 +157,7 @@ describe("CI workflow budget", () => {
       contents: "write",
       "pull-requests": "write",
     });
-    expect(versionJob?.["runs-on"]).toBe("tenki-standard-medium-4c-8g");
+    expect(versionJob?.["runs-on"]).toBe("ubuntu-24.04");
     expect(versionJob?.steps.some((step) => step.uses?.includes("changesets/action@"))).toBe(false);
     const version = versionJob?.steps.find((step) => step.id === "version");
     expect(version?.run).toContain("pnpm release:version");
@@ -190,7 +190,7 @@ describe("CI workflow budget", () => {
     );
 
     expect(text).not.toContain("depot-");
-    expect(text).toContain("tenki-standard-medium-4c-8g");
+    expect(text).toContain("ubuntu-24.04");
     expect(text).toContain("runner: macos-26");
     expect(text).toContain("windows-2025");
     expect(Object.keys(releaseSmoke.jobs).length).toBeGreaterThan(0);
@@ -260,7 +260,7 @@ describe("CI workflow budget", () => {
     expect(
       remote.strategy.matrix.include.map((entry) => [entry.runner, entry.platform, entry.arch]),
     ).toEqual([
-      ["tenki-standard-medium-4c-8g", "linux", "x64"],
+      ["ubuntu-24.04", "linux", "x64"],
       ["macos-26", "darwin", "arm64"],
       ["windows-2025", "win32", "x64"],
     ]);

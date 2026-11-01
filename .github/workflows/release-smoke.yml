@@ -1,4 +1,4 @@
-# GitHub Actions builds smoke artifacts on Tenki and GitHub-hosted runners.
+# GitHub Actions builds smoke artifacts on GitHub-hosted runners.
 # It does not publish or release them.
 
 name: Release artifact smoke
@@ -22,7 +22,7 @@ concurrency:
 jobs:
   release_smoke:
     name: Release configuration
-    runs-on: tenki-standard-medium-4c-8g
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -67,7 +67,7 @@ jobs:
             extension: exe
             rust_target: x86_64-pc-windows-msvc
           - label: Linux x64 AppImage
-            runner: tenki-standard-medium-4c-8g
+            runner: ubuntu-24.04
             platform: linux
             target: AppImage
             arch: x64
@@ -220,7 +220,7 @@ jobs:
 
       - name: Launch macOS DMG
         if: matrix.platform == 'mac'
-        run: vp run test:desktop-packaged-mac -- "release/Akeru-Bot-$RELEASE_VERSION-arm64.dmg"
+        run: vp run test:desktop-packaged-mac -- "release/IsnadiBot-$RELEASE_VERSION-arm64.dmg"
 
       - name: Upload smoke artifact
         uses: actions/upload-artifact@v7
@@ -233,7 +233,7 @@ jobs:
   cli:
     name: CLI package
     needs: release_smoke
-    runs-on: tenki-standard-medium-4c-8g
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       RELEASE_VERSION: ${{ inputs.version }}

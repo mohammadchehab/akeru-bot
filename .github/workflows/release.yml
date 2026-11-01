@@ -1,10 +1,9 @@
-# Tenki and required native runners build stable and nightly desktop releases.
+# GitHub-hosted runners build stable and nightly desktop releases.
 
 name: Stable and nightly releases
 
 on:
-  schedule:
-    - cron: "17 */3 * * *"
+  # No scheduled nightlies: this fork has no signing credentials yet. Run manually.
   workflow_dispatch:
   push:
     branches: [main]
@@ -25,7 +24,7 @@ concurrency:
 jobs:
   preflight:
     name: Release preflight
-    runs-on: tenki-standard-small-2c-4g
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     outputs:
       publish: ${{ steps.version.outputs.publish }}
@@ -133,7 +132,7 @@ jobs:
             arch: x64
             rust_target: x86_64-pc-windows-msvc
           - label: Linux x64 AppImage
-            runner: tenki-standard-medium-4c-8g
+            runner: ubuntu-24.04
             platform: linux
             target: AppImage
             arch: x64
@@ -290,7 +289,7 @@ jobs:
           APPLE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
           APPLE_API_ISSUER: ${{ secrets.APPSTORE_ISSUER_ID }}
         run: |
-          dmg="release/Akeru-Bot-$RELEASE_VERSION-arm64.dmg"
+          dmg="release/IsnadiBot-$RELEASE_VERSION-arm64.dmg"
           xcrun notarytool submit "$dmg" --key "$APPLE_API_KEY" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER" --wait
           xcrun stapler staple "$dmg"
           xcrun stapler validate "$dmg"
@@ -309,7 +308,7 @@ jobs:
         if: matrix.platform == 'mac' && env.MACOS_SIGNED != 'true'
         shell: bash
         run: |
-          dmg="release/Akeru-Bot-$RELEASE_VERSION-arm64.dmg"
+          dmg="release/IsnadiBot-$RELEASE_VERSION-arm64.dmg"
           mount_point="$RUNNER_TEMP/akeru-unsigned-dmg"
           mkdir -p "$mount_point"
           hdiutil attach "$dmg" -nobrowse -readonly -mountpoint "$mount_point"
@@ -330,7 +329,7 @@ jobs:
 
       - name: Launch macOS DMG
         if: matrix.platform == 'mac'
-        run: vp run test:desktop-packaged-mac -- "release/Akeru-Bot-$RELEASE_VERSION-arm64.dmg"
+        run: vp run test:desktop-packaged-mac -- "release/IsnadiBot-$RELEASE_VERSION-arm64.dmg"
 
       - name: Upload desktop assets
         uses: actions/upload-artifact@v7
@@ -356,7 +355,7 @@ jobs:
         # Native runners, because the server ships native modules. These are the only targets
         # scripts/install-remote.sh and scripts/install-remote.ps1 accept.
         include:
-          - runner: tenki-standard-medium-4c-8g
+          - runner: ubuntu-24.04
             platform: linux
             arch: x64
           - runner: macos-26
@@ -399,7 +398,7 @@ jobs:
     name: Publish release
     needs: [preflight, desktop, remote]
     if: needs.preflight.outputs.publish == 'true'
-    runs-on: tenki-standard-small-2c-4g
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
       GH_TOKEN: ${{ github.token }}
@@ -421,10 +420,10 @@ jobs:
         run: node scripts/verify-release-assets.ts release "$RELEASE_VERSION"
       - name: Create stable GitHub Release
         if: env.RELEASE_CHANNEL == 'stable'
-        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "Akeru Bot $RELEASE_TAG" --generate-notes
+        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "IsnadiBot $RELEASE_TAG" --generate-notes
       - name: Create nightly GitHub Release
         if: env.RELEASE_CHANNEL == 'nightly'
-        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "Akeru Bot nightly $RELEASE_VERSION" --prerelease --latest=false --generate-notes
+        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "IsnadiBot nightly $RELEASE_VERSION" --prerelease --latest=false --generate-notes
       - name: Update the next version PR
         if: env.RELEASE_CHANNEL == 'stable'
         run: gh workflow run version-packages.yml --ref main

@@ -19,7 +19,7 @@ concurrency:
 jobs:
   version:
     name: Update version PR
-    runs-on: tenki-standard-medium-4c-8g
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
