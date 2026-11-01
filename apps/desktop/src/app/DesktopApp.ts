@@ -135,7 +135,7 @@ const handleFatalStartupError = Effect.fn("desktop.startup.handleFatalStartupErr
 
   if (!wasQuitting) {
     yield* electronDialog.showErrorBox(
-      "Akeru Bot failed to start",
+      "IsnadiBot failed to start",
       `Stage: ${stage}\n${message}${detail}`,
     );
   }

@@ -134,7 +134,7 @@ export const renderTerminalQrCode = (value: string, margin = 2): string => {
 
 export const formatHeadlessServeOutput = (accessInfo: HeadlessServeAccessInfo): string =>
   [
-    "Akeru Bot server is ready.",
+    "IsnadiBot server is ready.",
     `Connection string: ${accessInfo.connectionString}`,
     `Token: ${accessInfo.token}`,
     `Pairing URL: ${accessInfo.pairingUrl}`,
@@ -144,12 +144,12 @@ export const formatHeadlessServeOutput = (accessInfo: HeadlessServeAccessInfo): 
   ].join("\n");
 
 /**
- * First-boot output for an Akeru Remote install. The link carries administrative scopes, so the
+ * First-boot output for an IsnadiBot Remote install. The link carries administrative scopes, so the
  * text says so plainly; it is printed only while no admin client has been paired.
  */
 export const formatRemoteFirstBootOutput = (accessInfo: HeadlessServeAccessInfo): string =>
   [
-    "Akeru Remote is ready and no admin client has been paired yet.",
+    "IsnadiBot Remote is ready and no admin client has been paired yet.",
     "Open this link on the phone or computer you will manage this machine from.",
     "It grants admin scope: that device can pair and revoke other clients and change Connections.",
     "It works once. Pair more devices later with `akeru pair`.",
@@ -161,7 +161,7 @@ export const formatRemoteFirstBootOutput = (accessInfo: HeadlessServeAccessInfo)
   ].join("\n");
 
 export const REMOTE_ALREADY_PAIRED_OUTPUT =
-  "Akeru Remote is ready. An admin client is already paired; run `akeru pair` to add a device.";
+  "IsnadiBot Remote is ready. An admin client is already paired; run `akeru pair` to add a device.";
 
 /**
  * Prints one admin pairing link when a remote install starts with no admin client paired, and a

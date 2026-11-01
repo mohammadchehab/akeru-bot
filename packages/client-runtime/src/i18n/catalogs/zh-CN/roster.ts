@@ -17,7 +17,7 @@ export const rosterCatalog = {
   Plugins: "插件",
   Project: "项目",
   "Project Grouping": "项目分组",
-  "Review Akeru Bot policies": "查看 Akeru Bot 政策",
+  "Review IsnadiBot policies": "查看 IsnadiBot 政策",
   "Show skills in slash menu": "在斜杠菜单中显示技能",
   "Sort projects": "排序项目",
   "Change project from {project}": "更改项目（当前：{project}）",
@@ -50,7 +50,7 @@ export const rosterCatalog = {
   Avatar: "头像",
   "{shape} avatar": "{shape} 头像",
   "Could not create your bot.": "无法创建你的机器人。",
-  "Set up Akeru Bot": "设置 Akeru Bot",
+  "Set up IsnadiBot": "设置 IsnadiBot",
   "your bot": "你的机器人",
   "Personal planning": "个人规划",
   "One or two sentences is plenty. Your bot works the rest out from there.":
@@ -59,8 +59,8 @@ export const rosterCatalog = {
   "your routine": "你的日常安排",
   "Read through the project to find where this belongs": "通读项目，找到该改动的位置",
   "Your bot": "你的机器人",
-  "Retry this view. If it fails again, reload Akeru Bot.":
-    "请重试此视图。如果再次失败，请重新加载 Akeru Bot。",
+  "Retry this view. If it fails again, reload IsnadiBot.":
+    "请重试此视图。如果再次失败，请重新加载 IsnadiBot。",
   "New bot": "新建机器人",
   "New group": "新建群组",
   "Archive bot": "归档机器人",
@@ -173,7 +173,7 @@ export const rosterCatalog = {
   "What this bot has spent so far.": "此机器人目前的用量。",
   "Where this bot runs commands and edits files.": "此机器人运行命令和编辑文件的地方。",
   "Manage bot tools": "管理机器人工具",
-  "Where this bot answers outside Akeru Bot.": "此机器人在 Akeru Bot 之外回复的地方。",
+  "Where this bot answers outside IsnadiBot.": "此机器人在 IsnadiBot 之外回复的地方。",
   "Manage bot channels": "管理机器人频道",
   "No channels": "没有频道",
   "{name} bot sidebar": "{name} 机器人侧边栏",
@@ -249,8 +249,8 @@ export const rosterCatalog = {
   "Could not choose project folder": "无法选择项目文件夹",
   "Could not use project folder": "无法使用该项目文件夹",
   "Project locations": "项目位置",
-  "Choose an existing folder for each project. Akeru Bot links the project to the folder without copying its files.":
-    "为每个项目选择一个现有文件夹。Akeru Bot 会将项目关联到该文件夹，不会复制其中的文件。",
+  "Choose an existing folder for each project. IsnadiBot links the project to the folder without copying its files.":
+    "为每个项目选择一个现有文件夹。IsnadiBot 会将项目关联到该文件夹，不会复制其中的文件。",
   "Also include skills in the / command menu. Skills always appear when you type $.":
     "在 / 命令菜单中也显示技能。输入 $ 时始终会显示技能。",
   "skills in slash menu": "斜杠菜单中的技能",
@@ -264,8 +264,8 @@ export const rosterCatalog = {
     "这台电脑已不可用。机器人的工作可能已经结束。",
   "You see the screen the bot works on. Pictures are streamed while this window is open and are not saved.":
     "你看到的是机器人正在使用的屏幕。画面仅在此窗口打开时传输，且不会被保存。",
-  "Open Akeru Bot on a desktop or in a web browser to watch or take control of it.":
-    "请在桌面端或网页浏览器中打开 Akeru Bot，以观看或接管这台电脑。",
+  "Open IsnadiBot on a desktop or in a web browser to watch or take control of it.":
+    "请在桌面端或网页浏览器中打开 IsnadiBot，以观看或接管这台电脑。",
   "Advanced > Bot inbox": "高级 > 机器人收件箱",
   "Lasting details this bot has learned about you. It reads them in every chat.":
     "这个机器人了解到的关于你的长期信息。它会在每次聊天中读取这些内容。",
@@ -279,8 +279,8 @@ export const rosterCatalog = {
   "Set up how this bot works with you.": "设置这个机器人与你协作的方式。",
   "Allow bots to use the in-app browser for research, previews, and interactive web tasks.":
     "允许机器人使用应用内浏览器进行调研、预览和交互式网页任务。",
-  "Akeru Bot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.":
-    "Akeru Bot 暂时无法识别此条件。它仍然可以保存，但除非运行时提供该条件，否则可能不会匹配。",
+  "IsnadiBot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.":
+    "IsnadiBot 暂时无法识别此条件。它仍然可以保存，但除非运行时提供该条件，否则可能不会匹配。",
   "Negate group": "取反条件组",
   "Remove negated group": "移除取反条件组",
   "Remove group": "移除条件组",

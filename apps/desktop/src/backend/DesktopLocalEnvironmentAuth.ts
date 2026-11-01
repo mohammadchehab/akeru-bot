@@ -77,7 +77,7 @@ export const make = Effect.gen(function* () {
           httpBaseUrl: config.httpBaseUrl.href,
           credential,
           clientMetadata: {
-            label: "Akeru Bot Desktop",
+            label: "IsnadiBot Desktop",
             deviceType: "desktop",
           },
         }).pipe(

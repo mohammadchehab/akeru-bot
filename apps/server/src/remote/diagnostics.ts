@@ -156,8 +156,8 @@ export async function runRemoteDoctor(input: {
           : "Container HTTP health check failed."
         : !serviceManaged
           ? serviceHealthy
-            ? "Akeru server answers its HTTP health check."
-            : "Akeru server does not answer its HTTP health check."
+            ? "IsnadiBot server answers its HTTP health check."
+            : "IsnadiBot server does not answer its HTTP health check."
           : serviceHealthy
             ? "Background service is active."
             : "Background service is not active.",
@@ -186,7 +186,7 @@ export async function runRemoteDoctor(input: {
       check(
         "disk",
         "warning",
-        "Akeru storage has not been created yet. It appears after the server first starts.",
+        "IsnadiBot storage has not been created yet. It appears after the server first starts.",
       ),
     );
   } else
@@ -203,7 +203,7 @@ export async function runRemoteDoctor(input: {
         ),
       );
     } catch (cause) {
-      checks.push(check("disk", "fail", `Could not inspect Akeru storage: ${String(cause)}`));
+      checks.push(check("disk", "fail", `Could not inspect IsnadiBot storage: ${String(cause)}`));
     }
 
   if (NodeFS.existsSync(dbPath)) {
@@ -513,7 +513,7 @@ export async function runRemoteDoctor(input: {
 
 export function renderRemoteDoctor(report: RemoteDoctorReportValue): string {
   return [
-    `Akeru Remote doctor: ${report.overall}`,
+    `IsnadiBot Remote doctor: ${report.overall}`,
     ...report.checks.map((entry) => `  ${entry.status.padEnd(7)} ${entry.id}: ${entry.message}`),
     ...(report.repairsApplied.length > 0
       ? [`  repaired: ${report.repairsApplied.join(", ")}`]

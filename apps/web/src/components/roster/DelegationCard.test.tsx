@@ -405,7 +405,7 @@ describe("DelegationCard", () => {
       throw new Error("Expected a failed delegation");
 
     const message =
-      "Ren could not start: Provider instance 'codex' is disabled in Akeru Bot settings.";
+      "Ren could not start: Provider instance 'codex' is disabled in IsnadiBot settings.";
 
     const markup = renderToStaticMarkup(
       <DelegationCard

@@ -175,7 +175,7 @@ function EnvironmentSandboxSettingsPanel({
         <SettingsRow
           {...searchableSetting("sandbox-auto-idle", t)}
           description={t(
-            "Akeru pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.",
+            "IsnadiBot pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.",
           )}
           control={<Switch checked disabled aria-label={t("Auto-idle")} />}
         />
@@ -296,7 +296,7 @@ function EnvironmentSandboxSettingsPanel({
             <DialogTitle>{t("Retire Railway VMs before changing access")}</DialogTitle>
             <DialogDescription>
               {t(
-                "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. Akeru preserves saved VM identities and will not silently create replacements.",
+                "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. IsnadiBot preserves saved VM identities and will not silently create replacements.",
               )}
             </DialogDescription>
           </DialogHeader>

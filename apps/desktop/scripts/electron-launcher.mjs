@@ -1,4 +1,4 @@
-// This file mostly exists because we want dev mode to say "Akeru Bot (Dev)" instead of "electron"
+// This file mostly exists because we want dev mode to say "IsnadiBot (Dev)" instead of "electron"
 
 import * as Predicate from "effect/Predicate";
 import * as NodeChildProcess from "node:child_process";
@@ -21,7 +21,7 @@ const devBundleIdSuffix = NodePath.basename(repoRoot)
   .toLowerCase()
   .replaceAll(/[^a-z0-9]+/g, "");
 
-export const APP_DISPLAY_NAME = isDevelopment ? "Akeru Bot (Dev)" : "Akeru Bot (Alpha)";
+export const APP_DISPLAY_NAME = isDevelopment ? "IsnadiBot (Dev)" : "IsnadiBot";
 
 export const APP_BUNDLE_ID = isDevelopment
   ? `dev.leodoes.akeru.dev.${devBundleIdSuffix || "local"}`
@@ -247,7 +247,7 @@ function patchMainBundleInfoPlist(appBundlePath, iconPath, executableName) {
   setPlistString(
     infoPlistPath,
     "NSMicrophoneUsageDescription",
-    "Akeru Bot uses the microphone for calls and dictation with your bots.",
+    "IsnadiBot uses the microphone for calls and dictation with your bots.",
   );
   setPlistJson(infoPlistPath, "CFBundleURLTypes", [
     {
@@ -376,7 +376,7 @@ function buildMacLauncher(electronBinaryPath) {
   if (isDevelopment) {
     // Keep Electron's native executable inside the branded bundle. Launching the
     // node_modules copy makes macOS associate the process (and Dock label) with
-    // Electron.app even though this bundle's Info.plist has the Akeru Bot name.
+    // Electron.app even though this bundle's Info.plist has the IsnadiBot name.
     // Its conventional executable name also keeps Electron's default-app runtime
     // in development mode instead of making app.isPackaged report true.
     writeDevelopmentLauncherScript(launcherBinaryPath, runtimeElectronBinaryPath);

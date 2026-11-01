@@ -92,7 +92,7 @@ export function categoryLabel(category: ResourceTelemetryProcessCategory): strin
     case "resource-monitor":
       return "Monitor";
     case "unknown-t3":
-      return "Akeru Bot process";
+      return "IsnadiBot process";
   }
 }
 

@@ -57,9 +57,9 @@ export function PolicyNotice() {
     <Dialog open={open}>
       <DialogPopup showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>Review Akeru Bot policies</DialogTitle>
+          <DialogTitle>Review IsnadiBot policies</DialogTitle>
           <DialogDescription>
-            Akeru Bot runs locally. Provider prompts and enabled online features still send data to
+            IsnadiBot runs locally. Provider prompts and enabled online features still send data to
             their listed services.
           </DialogDescription>
         </DialogHeader>

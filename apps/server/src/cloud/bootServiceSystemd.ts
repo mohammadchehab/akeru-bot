@@ -38,7 +38,7 @@ export function renderBootServiceUnit(plan: BootServicePlan): string {
   // The user manager has no reliable network-online target; server networking retries itself.
   return [
     "[Unit]",
-    "Description=Akeru Bot server",
+    "Description=IsnadiBot server",
     "StartLimitIntervalSec=300",
     "StartLimitBurst=5",
     "",

@@ -23,7 +23,7 @@ export const DICTATION_RECORDING: RecordingOptions = {
 };
 
 const PERMISSION_DENIED =
-  "Microphone permission was denied. Allow it for Akeru Bot in your device settings.";
+  "Microphone permission was denied. Allow it for IsnadiBot in your device settings.";
 
 /**
  * Records one dictation to a temporary file, returns its bytes on stop, and always deletes the file.
@@ -78,7 +78,7 @@ export const startExpoDictationCapture: DictationDependencies["capture"] = async
 
   const appSubscription = AppState.addEventListener("change", (state) => {
     if (!disposed && state !== "active") {
-      onError(new Error("Dictation stopped because Akeru Bot left the foreground."));
+      onError(new Error("Dictation stopped because IsnadiBot left the foreground."));
     }
   });
 

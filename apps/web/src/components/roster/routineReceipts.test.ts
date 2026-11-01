@@ -254,11 +254,11 @@ describe("deriveRoutineReceipts", () => {
 describe("routineReceiptLabelText", () => {
   it("drops the sentence end the label adds back", () => {
     const text = routineReceiptLabelText(
-      "Routine paused: routines are disabled in Akeru Bot settings.",
+      "Routine paused: routines are disabled in IsnadiBot settings.",
     );
 
     expect(createTranslator("en").translate("{text}. Open Routines", { text })).toBe(
-      "Routine paused: routines are disabled in Akeru Bot settings. Open Routines",
+      "Routine paused: routines are disabled in IsnadiBot settings. Open Routines",
     );
     expect(routineReceiptLabelText("Did it run?  ")).toBe("Did it run");
     expect(routineReceiptLabelText("例行任务已暂停。")).toBe("例行任务已暂停");

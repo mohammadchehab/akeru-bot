@@ -54,4 +54,4 @@ export const remoteDoctorCommand = Command.make(
 
       yield* Console.log(output);
     }),
-).pipe(Command.withDescription("Run typed Akeru Remote diagnostics."));
+).pipe(Command.withDescription("Run typed IsnadiBot Remote diagnostics."));

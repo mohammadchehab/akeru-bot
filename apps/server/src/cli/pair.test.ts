@@ -455,7 +455,7 @@ describe("akeru pair", () => {
       assert.equal(exit.cause.reasons.filter(Cause.isFailReason).length, 1);
       assert.isFalse(Runtime.getErrorReported(Cause.squash(exit.cause)));
       const rendered = errorLines.at(-1) ?? "";
-      assert.include(rendered, "No running Akeru Bot server found.");
+      assert.include(rendered, "No running IsnadiBot server found.");
       assert.include(rendered, "npx akeru-bot serve");
     }).pipe(Effect.provide(NodeServices.layer)),
   );
@@ -487,7 +487,7 @@ describe("akeru pair", () => {
         assert.isAbove(errorLines.length, 0);
         // Expected errors print their message only; stack frames belong to defects.
         const rendered = errorLines.at(-1) ?? "";
-        assert.include(rendered, "No running Akeru Bot server found.");
+        assert.include(rendered, "No running IsnadiBot server found.");
         assert.notMatch(rendered, /\n\s+at /);
       }),
     ).pipe(Effect.provide(NodeServices.layer)),
@@ -517,7 +517,7 @@ describe("akeru pair", () => {
         Predicate.isObjectOrArray(error) && "cause" in error ? error.cause : error,
       );
 
-      assert.include(rendered, "No running Akeru Bot server found.");
+      assert.include(rendered, "No running IsnadiBot server found.");
     }).pipe(Effect.provide(NodeServices.layer)),
   );
 });

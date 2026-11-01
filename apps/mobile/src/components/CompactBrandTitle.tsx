@@ -48,7 +48,7 @@ export function CompactBrandTitle(
   return (
     <View
       aria-level={1}
-      accessibilityLabel="Akeru Bot, Bots"
+      accessibilityLabel="IsnadiBot, Bots"
       accessible
       role="heading"
       style={{
@@ -68,7 +68,7 @@ export function CompactBrandTitle(
           letterSpacing: -0.5,
         }}
       >
-        Akeru Bot
+        IsnadiBot
       </Text>
       <View
         style={{

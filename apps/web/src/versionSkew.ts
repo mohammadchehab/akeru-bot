@@ -66,7 +66,7 @@ export function resolveVersionMismatch(
   return {
     clientVersion: normalizedClientVersion,
     serverVersion: normalizedServerVersion,
-    hint: "Version mismatch. Try syncing the client and server to the same Akeru Bot version.",
+    hint: "Version mismatch. Try syncing the client and server to the same IsnadiBot version.",
   };
 }
 

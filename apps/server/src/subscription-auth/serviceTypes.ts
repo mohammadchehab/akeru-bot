@@ -195,8 +195,8 @@ export function oauthFailureKind(cause: unknown): "request" | "revoked" {
 /** Shown on every row while the store serves the last good state over a damaged file. */
 export function lastGoodWarning(error: SubscriptionCredentialStoreError): string {
   return error.reason === "unreadable"
-    ? "Saved subscription credentials could not be reread. Akeru Bot keeps using the credentials it loaded earlier. Check the secrets directory permissions."
-    : "Saved subscription credentials changed on disk and are damaged. Akeru Bot keeps using the credentials it loaded earlier; the next sign-in or sign-out rewrites the file.";
+    ? "Saved subscription credentials could not be reread. IsnadiBot keeps using the credentials it loaded earlier. Check the secrets directory permissions."
+    : "Saved subscription credentials changed on disk and are damaged. IsnadiBot keeps using the credentials it loaded earlier; the next sign-in or sign-out rewrites the file.";
 }
 
 /** Status for every provider when the credential file was damaged before any good load. */

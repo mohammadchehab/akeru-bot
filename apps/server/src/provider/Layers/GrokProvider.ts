@@ -83,7 +83,7 @@ export function buildInitialGrokProviderSnapshot(
           version: null,
           status: "warning",
           auth: { status: "unknown" },
-          message: "Grok is disabled in Akeru Bot settings.",
+          message: "Grok is disabled in IsnadiBot settings.",
         },
       });
     }
@@ -268,7 +268,7 @@ export const checkGrokProviderStatus = Effect.fn("checkGrokProviderStatus")(func
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Grok is disabled in Akeru Bot settings.",
+        message: "Grok is disabled in IsnadiBot settings.",
       },
     });
   }

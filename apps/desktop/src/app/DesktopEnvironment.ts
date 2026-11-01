@@ -90,7 +90,7 @@ export class DesktopEnvironment extends Context.Service<
   }
 >()("@akeru/desktop/app/DesktopEnvironment") {}
 
-const APP_BASE_NAME = "Akeru Bot";
+const APP_BASE_NAME = "IsnadiBot";
 
 function resolveDesktopAppStageLabel(input: {
   readonly isDevelopment: boolean;
@@ -113,7 +113,8 @@ function resolveDesktopAppBranding(input: {
   return {
     baseName: APP_BASE_NAME,
     stageLabel,
-    displayName: `${APP_BASE_NAME} (${stageLabel})`,
+    // Only development builds carry their stage in the name, e.g. "IsnadiBot (Dev)".
+    displayName: stageLabel === "Dev" ? `${APP_BASE_NAME} (${stageLabel})` : APP_BASE_NAME,
     isPackaged: input.isPackaged,
   };
 }

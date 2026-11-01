@@ -9,7 +9,7 @@ export function AkeruWordmark({ className, ...props }: ComponentProps<"span">) {
       className={cn("truncate text-xl leading-none tracking-tight font-brand-serif", className)}
       {...props}
     >
-      akeru
+      IsnadiBot
     </span>
   );
 }

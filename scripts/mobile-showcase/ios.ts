@@ -35,9 +35,9 @@ export async function buildIos(): Promise<string> {
     "xcodebuild",
     [
       "-workspace",
-      NodePath.join(MOBILE_ROOT, "ios/AkeruBot.xcworkspace"),
+      NodePath.join(MOBILE_ROOT, "ios/IsnadiBot.xcworkspace"),
       "-scheme",
-      "AkeruBot",
+      "IsnadiBot",
       "-configuration",
       "Debug",
       "-sdk",

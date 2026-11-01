@@ -57,7 +57,7 @@ export function RootRouteErrorView({
             {t("This view failed to load")}
           </h1>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {t("Retry this view. If it fails again, reload Akeru Bot.")}
+            {t("Retry this view. If it fails again, reload IsnadiBot.")}
           </p>
 
           <div className="mt-5 flex flex-wrap justify-center gap-2">

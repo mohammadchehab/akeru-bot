@@ -1,5 +1,5 @@
 included:
-  - ios/AkeruBotDev
+  - ios/IsnadiBotDev
   - modules/t3-composer-editor/ios
   - modules/t3-native-controls/ios
 

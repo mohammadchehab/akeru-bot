@@ -68,7 +68,7 @@ export function ImportPreview({
           <h3 className="text-xs font-semibold text-foreground">{t("Project locations")}</h3>
           <p className="text-xs text-muted-foreground">
             {t(
-              "Choose an existing folder for each project. Akeru Bot links the project to the folder without copying its files.",
+              "Choose an existing folder for each project. IsnadiBot links the project to the folder without copying its files.",
             )}
           </p>
           {preview.projectFolders.map((project) => (

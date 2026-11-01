@@ -55,7 +55,7 @@ describe("presentThreadError", () => {
 
   it("names the credential a custom instance is missing instead of asking for feedback", () => {
     expect(
-      presentThreadError("This Codex instance needs OPENAI_API_KEY for the Akeru harness.", {
+      presentThreadError("This Codex instance needs OPENAI_API_KEY for the IsnadiBot harness.", {
         providerName: "Work Codex",
       }),
     ).toMatchObject({

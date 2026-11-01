@@ -57,7 +57,7 @@ export function UnknownWhenVariableWarning({
       />
       <TooltipPopup side="top" variant="keybinding-warning" className="max-w-72 whitespace-normal">
         {t(
-          "Akeru Bot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.",
+          "IsnadiBot does not recognize this condition yet. It can still be saved, but it may not match unless the runtime provides it.",
         )}
       </TooltipPopup>
     </Tooltip>

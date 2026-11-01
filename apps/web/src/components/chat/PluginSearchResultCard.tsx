@@ -51,7 +51,7 @@ function recommendationProviderLabel(recommendation: AkeruPluginRecommendation):
   if (recommendation.source === "composio") return "Composio";
   const plugin = DIRECTORY_PLUGINS.get(recommendation.id);
 
-  return plugin?.connection.type === "brokered" ? plugin.connection.broker.name : "Akeru";
+  return plugin?.connection.type === "brokered" ? plugin.connection.broker.name : "IsnadiBot";
 }
 
 function recommendationUsesComposio(recommendation: AkeruPluginRecommendation): boolean {

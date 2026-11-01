@@ -53,7 +53,7 @@ describe("deriveHomeEmptyState", () => {
     ).toEqual({
       title: "Could not load chats",
       detail:
-        "Could not synchronize environment data. Akeru keeps trying. Try again to reconnect now.",
+        "Could not synchronize environment data. IsnadiBot keeps trying. Try again to reconnect now.",
       loading: false,
       retry: true,
     });

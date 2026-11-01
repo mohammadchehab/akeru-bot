@@ -1,11 +1,11 @@
 export const connectionsCatalog = {
   "Retire Railway VMs before changing access": "Retire Railway VMs before changing access",
   "Open Railway dashboard": "Open Railway dashboard",
-  "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. Akeru preserves saved VM identities and will not silently create replacements.":
-    "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. Akeru preserves saved VM identities and will not silently create replacements.",
+  "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. IsnadiBot preserves saved VM identities and will not silently create replacements.":
+    "Changing or removing credentials does not stop or delete Railway VMs. They can keep accruing charges. Stop active bot sessions, then open your environment in the Railway dashboard and destroy any VMs you no longer need before removing access. If you are rotating a token, keep access to the same environment to reconnect to existing VMs. IsnadiBot preserves saved VM identities and will not silently create replacements.",
   "Environment ID": "Environment ID",
-  "Akeru pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.":
-    "Akeru pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.",
+  "IsnadiBot pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.":
+    "IsnadiBot pauses idle remote sandboxes when supported. Railway VMs keep running until cleanup.",
   "Add Environment": "Add Environment",
   "Add environment": "Add environment",
   "All environments": "All environments",
@@ -255,8 +255,8 @@ export const connectionsCatalog = {
   "Archive exported": "Archive exported",
   "Could not export archive": "Could not export archive",
   "Could not import archive": "Could not import archive",
-  "{filename}. Review what Akeru Bot will restore on this environment.":
-    "{filename}. Review what Akeru Bot will restore on this environment.",
+  "{filename}. Review what IsnadiBot will restore on this environment.":
+    "{filename}. Review what IsnadiBot will restore on this environment.",
   "After restore, sign in to providers and reconnect imported MCP servers on this device.":
     "After restore, sign in to providers and reconnect imported MCP servers on this device.",
   "Allows scoped background probes while any subscribed client remains connected.":
@@ -274,12 +274,12 @@ export const connectionsCatalog = {
     "{mode}. Exporting OTEL traces to {tracesUrl} and metrics to {metricsUrl}.",
   "{mode}. Exporting OTEL traces to {url}.": "{mode}. Exporting OTEL traces to {url}.",
   "{mode}. Exporting OTEL metrics to {url}.": "{mode}. Exporting OTEL metrics to {url}.",
-  "Export Akeru settings, project links, and history, or restore them on another environment. Project files and credentials are not included.":
-    "Export Akeru settings, project links, and history, or restore them on another environment. Project files and credentials are not included.",
+  "Export IsnadiBot settings, project links, and history, or restore them on another environment. Project files and credentials are not included.":
+    "Export IsnadiBot settings, project links, and history, or restore them on another environment. Project files and credentials are not included.",
   Import: "Import",
   Export: "Export",
   "Exporting...": "Exporting...",
-  "Import Akeru archive": "Import Akeru archive",
+  "Import IsnadiBot archive": "Import IsnadiBot archive",
   "Open {provider} settings": "Open {provider} settings",
   "{provider} needs {requirement}": "{provider} needs {requirement}",
   "The provider needs {requirement}": "The provider needs {requirement}",
@@ -342,8 +342,8 @@ export const connectionsCatalog = {
     "The provider check failed. Reconnect and try again.",
   "Connect a subscription or API key. Credentials stay on this environment.":
     "Connect a subscription or API key. Credentials stay on this environment.",
-  "Connect an xAI login for Grok. Akeru cannot verify SuperGrok or X Premium+.":
-    "Connect an xAI login for Grok. Akeru cannot verify SuperGrok or X Premium+.",
+  "Connect an xAI login for Grok. IsnadiBot cannot verify SuperGrok or X Premium+.":
+    "Connect an xAI login for Grok. IsnadiBot cannot verify SuperGrok or X Premium+.",
   Unsupported: "Unsupported",
   "Not connected": "Not connected",
   "OAuth connected": "OAuth connected",
@@ -369,8 +369,8 @@ export const connectionsCatalog = {
   "Connect to an environment first.": "Connect to an environment first.",
   "The server rejected these sandbox settings.": "The server rejected these sandbox settings.",
   "Bots without an override use this sandbox.": "Bots without an override use this sandbox.",
-  "Akeru pauses remote sandboxes when bots are idle.":
-    "Akeru pauses remote sandboxes when bots are idle.",
+  "IsnadiBot pauses remote sandboxes when bots are idle.":
+    "IsnadiBot pauses remote sandboxes when bots are idle.",
   "Sandbox providers": "Sandbox providers",
   "Run bots on the environment computer. Always available; no credentials needed.":
     "Run bots on the environment computer. Always available; no credentials needed.",
@@ -444,8 +444,8 @@ export const connectionsCatalog = {
     "Search above to find Composio apps. Composio handles each app's sign-in, and your bots can use connected accounts.",
   "Add your own Composio API key to connect apps such as Slack or Notion. Composio handles each app's sign-in.":
     "Add your own Composio API key to connect apps such as Slack or Notion. Composio handles each app's sign-in.",
-  "The key is stored only on this Akeru Bot server.":
-    "The key is stored only on this Akeru Bot server.",
+  "The key is stored only on this IsnadiBot server.":
+    "The key is stored only on this IsnadiBot server.",
   "Custom MCP servers": "Custom MCP servers",
   "Add server": "Add server",
   "Add a local command or remote URL to use your own MCP server.":
@@ -472,10 +472,10 @@ export const connectionsCatalog = {
   "Health checks for this environment": "Health checks for this environment",
   "Refresh remote health": "Refresh remote health",
   "No environment connected": "No environment connected",
-  "Connect to an Akeru Bot environment to set up channels.":
-    "Connect to an Akeru Bot environment to set up channels.",
-  "This device can chat with {name} but can't change its channels. Open Akeru Bot on the computer that runs it to connect a channel.":
-    "This device can chat with {name} but can't change its channels. Open Akeru Bot on the computer that runs it to connect a channel.",
+  "Connect to an IsnadiBot environment to set up channels.":
+    "Connect to an IsnadiBot environment to set up channels.",
+  "This device can chat with {name} but can't change its channels. Open IsnadiBot on the computer that runs it to connect a channel.":
+    "This device can chat with {name} but can't change its channels. Open IsnadiBot on the computer that runs it to connect a channel.",
   "Add a Slack, Telegram, Discord, WhatsApp, or iMessage connection first. Then assign it to this bot here.":
     "Add a Slack, Telegram, Discord, WhatsApp, or iMessage connection first. Then assign it to this bot here.",
   "Your workspace is still loading. Try again in a moment.":

@@ -53,7 +53,7 @@ export const SUBSCRIPTION_PROVIDERS: readonly SubscriptionProviderDefinition[] =
     id: "xai",
     label: "Grok",
     subscription: "Shared xAI login",
-    description: "Connect an xAI login for Grok. Akeru cannot verify SuperGrok or X Premium+.",
+    description: "Connect an xAI login for Grok. IsnadiBot cannot verify SuperGrok or X Premium+.",
     icon: GrokIcon,
   },
   {

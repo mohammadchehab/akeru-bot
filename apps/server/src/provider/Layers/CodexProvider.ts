@@ -63,7 +63,7 @@ const pendingCodexProvider = (codexSettings: CodexSettings): Effect.Effect<Serve
           version: null,
           status: "warning",
           auth: { status: "unknown" },
-          message: "Codex is disabled in Akeru Bot settings.",
+          message: "Codex is disabled in IsnadiBot settings.",
         },
       });
     }
@@ -152,7 +152,7 @@ export const checkCodexProviderStatus = Effect.fn("checkCodexProviderStatus")(fu
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Codex is disabled in Akeru Bot settings.",
+        message: "Codex is disabled in IsnadiBot settings.",
       },
     });
   }

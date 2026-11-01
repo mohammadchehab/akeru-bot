@@ -21,7 +21,7 @@ const CliRuntimeLayer = Layer.mergeAll(NodeServices.layer, NetService.layer);
 
 export const makeCli = () =>
   Command.make("akeru", { ...sharedServerCommandFlags }).pipe(
-    Command.withDescription("Run the Akeru Bot server."),
+    Command.withDescription("Run the IsnadiBot server."),
     Command.withHandler((flags) => runServerCommand(flags)),
     Command.withSubcommands([
       startCommand,

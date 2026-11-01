@@ -31,7 +31,7 @@ export const IOS_SIMULATOR_ARCH = NodeProcess.arch === "arm64" ? "arm64" : "x86_
 
 export const IOS_APP_PATH = NodePath.join(
   MOBILE_ROOT,
-  ".showcase/ios-derived-data/Build/Products/Debug-iphonesimulator/AkeruBot.app",
+  ".showcase/ios-derived-data/Build/Products/Debug-iphonesimulator/IsnadiBot.app",
 );
 
 export const ANDROID_APK_PATH = NodePath.join(

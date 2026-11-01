@@ -124,13 +124,13 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
   )(function* (input, reportProgress = () => Effect.void) {
     if (capability === "desktop-managed") {
       return yield* failWith(
-        "This server is managed by the Akeru Bot desktop app on its machine; update the desktop app to update it.",
+        "This server is managed by the IsnadiBot desktop app on its machine; update the desktop app to update it.",
       );
     }
 
     if (capability === null) {
       return yield* failWith(
-        "Remote updates require the Akeru Bot background service. Run `akeru service install` on the server machine.",
+        "Remote updates require the IsnadiBot background service. Run `akeru service install` on the server machine.",
       );
     }
 

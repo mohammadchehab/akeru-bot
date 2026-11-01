@@ -369,7 +369,7 @@ export function KeybindingsSettingsPanel() {
               <p className="flex items-start gap-2 px-1 text-xs leading-relaxed text-muted-foreground">
                 <InfoIcon className="mt-0.5 size-3.5 shrink-0" />
                 {t(
-                  "Your browser can claim some shortcuts before Akeru Bot sees them. The desktop app receives all of them.",
+                  "Your browser can claim some shortcuts before IsnadiBot sees them. The desktop app receives all of them.",
                 )}
               </p>
             ) : null}

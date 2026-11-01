@@ -46,7 +46,7 @@ describe("buildThreadTitlePrompt", () => {
     expect(result.prompt).toContain("Investigate reconnect regressions after session restore");
     expect(result.prompt).not.toContain("Attachment metadata:");
     expect(result.prompt).toContain(
-      "Generate a title that will help the user recognize this Akeru Bot thread weeks later.",
+      "Generate a title that will help the user recognize this IsnadiBot thread weeks later.",
     );
     expect(result.prompt).toContain(
       "Title the subject and outcome. Discard incidental instructions.",
@@ -86,7 +86,7 @@ describe("buildThreadTitlePrompt", () => {
     });
 
     expect(result.prompt).toContain(
-      "Regenerate the title for an existing Akeru Bot thread so the user can recognize it weeks later.",
+      "Regenerate the title for an existing IsnadiBot thread so the user can recognize it weeks later.",
     );
     expect(result.prompt).toContain('The previous title was "Investigate reconnect regressions".');
     expect(result.prompt).toContain(

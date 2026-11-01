@@ -98,7 +98,7 @@ export const make = Effect.fn("makeProcessDiagnostics")(function* () {
           pid: input.pid,
           signal: input.signal,
           signaled: false,
-          message: Option.some("Refusing to signal the Akeru Bot server process."),
+          message: Option.some("Refusing to signal the IsnadiBot server process."),
         };
       }
 
@@ -137,7 +137,7 @@ export const make = Effect.fn("makeProcessDiagnostics")(function* () {
           signal: input.signal,
           signaled: false,
           message: Option.some(
-            `Process ${input.pid} is not a signalable Akeru Bot backend descendant.`,
+            `Process ${input.pid} is not a signalable IsnadiBot backend descendant.`,
           ),
         };
       }

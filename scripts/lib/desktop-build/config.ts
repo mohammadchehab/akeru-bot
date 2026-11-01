@@ -212,7 +212,7 @@ export function resolvePackageManagerUserAgent(packageManager: string): string {
 }
 
 export function resolveDesktopProductName(): string {
-  return desktopPackageJson.productName ?? "Akeru Bot";
+  return desktopPackageJson.productName ?? "IsnadiBot";
 }
 
 export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
@@ -234,8 +234,8 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     productName: resolveDesktopProductName(),
     artifactName:
       platform === "linux"
-        ? "Akeru-Bot-${version}-x64.${ext}"
-        : "Akeru-Bot-${version}-${arch}.${ext}",
+        ? "IsnadiBot-${version}-x64.${ext}"
+        : "IsnadiBot-${version}-${arch}.${ext}",
     electronLanguages: [...DESKTOP_ELECTRON_LANGUAGES],
     files: [...DESKTOP_FILE_EXCLUSIONS, ...(platform === "mac" ? MAC_FILE_EXCLUSIONS : [])],
     directories: {
@@ -280,11 +280,11 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       category: "public.app-category.developer-tools",
       extendInfo: {
         NSMicrophoneUsageDescription:
-          "Akeru Bot uses the microphone for calls and dictation with your bots.",
+          "IsnadiBot uses the microphone for calls and dictation with your bots.",
       },
       protocols: [
         {
-          name: "Akeru Bot",
+          name: "IsnadiBot",
           schemes: ["akeru", "akeru-dev"],
         },
       ],
@@ -342,7 +342,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       // akeru:// OAuth callbacks to the app.
       protocols: [
         {
-          name: "Akeru Bot",
+          name: "IsnadiBot",
           schemes: ["akeru", "akeru-dev"],
         },
       ],
@@ -367,7 +367,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     // and claiming akeru-dev would steal it from a developer's local build.
     buildConfig.protocols = [
       {
-        name: "Akeru Bot",
+        name: "IsnadiBot",
         schemes: ["akeru"],
       },
     ];

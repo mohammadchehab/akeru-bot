@@ -20,7 +20,7 @@ import {
 } from "./versionSkew";
 
 const MISMATCH_HINT =
-  "Version mismatch. Try syncing the client and server to the same Akeru Bot version.";
+  "Version mismatch. Try syncing the client and server to the same IsnadiBot version.";
 
 describe("versionSkew", () => {
   beforeEach(() => {

@@ -34,10 +34,10 @@ export function MobilePolicyNotice() {
     <Modal visible={visible} transparent animationType="fade" statusBarTranslucent>
       <View className="flex-1 items-center justify-center bg-backdrop px-8">
         <View className="w-full rounded-[24px] bg-card px-6 pb-4 pt-5">
-          <AppText className="text-lg font-t3-medium">{t("Review Akeru Bot policies")}</AppText>
+          <AppText className="text-lg font-t3-medium">{t("Review IsnadiBot policies")}</AppText>
           <AppText className="mt-2 text-sm text-foreground-secondary">
             {t(
-              "Akeru Bot runs locally. Provider prompts and enabled online features still send data to their listed services.",
+              "IsnadiBot runs locally. Provider prompts and enabled online features still send data to their listed services.",
             )}
           </AppText>
           <View className="mt-5 flex-row flex-wrap justify-end gap-1">

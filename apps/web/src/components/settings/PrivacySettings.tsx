@@ -65,7 +65,7 @@ export function PrivacySettingsPanel() {
         <SettingsRow
           {...searchableSetting("privacy-product-feedback", t)}
           description={t(
-            "Allow feedback you submit to reach the Akeru feedback service. Submissions may be kept for up to 90 days.",
+            "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.",
           )}
           control={
             <Switch

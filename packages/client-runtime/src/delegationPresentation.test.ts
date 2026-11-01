@@ -204,14 +204,14 @@ describe("presentDelegation failure text", () => {
       failure: {
         failureCode: "internal",
         message:
-          "ProviderValidationError: Provider instance 'codex' is disabled in Akeru Bot settings.\n" +
+          "ProviderValidationError: Provider instance 'codex' is disabled in IsnadiBot settings.\n" +
           "    at disabledProviderError (file:///srv/akeru/apps/server/src/provider/Layers/AgentController.ts:584:10)",
       },
     });
 
     expect(presentDelegation(failed).outcome).toEqual({
       kind: "failure",
-      text: "Provider instance 'codex' is disabled in Akeru Bot settings.",
+      text: "Provider instance 'codex' is disabled in IsnadiBot settings.",
     });
   });
 });

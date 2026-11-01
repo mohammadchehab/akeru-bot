@@ -238,7 +238,7 @@ export function BotChannelsSheet({
         <BotSideSheetEmpty
           icon={UnplugIcon}
           title={t("No environment connected")}
-          description={t("Connect to an Akeru Bot environment to set up channels.")}
+          description={t("Connect to an IsnadiBot environment to set up channels.")}
         />
       ) : access === "pending" ? (
         <div className="flex justify-center py-12">
@@ -249,7 +249,7 @@ export function BotChannelsSheet({
           icon={LockIcon}
           title={t("Channels are managed on the host")}
           description={t(
-            "This device can chat with {name} but can't change its channels. Open Akeru Bot on the computer that runs it to connect a channel.",
+            "This device can chat with {name} but can't change its channels. Open IsnadiBot on the computer that runs it to connect a channel.",
             { name: bot.name },
           )}
         />

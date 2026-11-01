@@ -115,7 +115,7 @@ export function presentThreadError(
   const provider = context.providerName;
 
   const missingCredential = error.match(
-    /This .+? instance needs (.+?)(?: for the Akeru harness)?\.(?:\s|$)/,
+    /This .+? instance needs (.+?)(?: for the (?:Akeru|IsnadiBot) harness)?\.(?:\s|$)/,
   );
 
   if (missingCredential?.[1]) {

@@ -575,7 +575,7 @@ describe("channel runtime", () => {
       expect(posts).toEqual([
         {
           externalThreadId,
-          text: `Approved answer\n\nOpen in Akeru: https://akeru.example/bots/${BOT_ID}`,
+          text: `Approved answer\n\nOpen in IsnadiBot: https://akeru.example/bots/${BOT_ID}`,
         },
       ]);
     }),

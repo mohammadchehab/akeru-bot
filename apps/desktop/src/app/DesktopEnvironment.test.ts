@@ -123,7 +123,7 @@ describe("DesktopEnvironment", () => {
       const environment = yield* makeEnvironment(
         {
           isPackaged: true,
-          appPath: "/Applications/Akeru Bot.app/Contents/Resources/app.asar",
+          appPath: "/Applications/IsnadiBot.app/Contents/Resources/app.asar",
         },
         { T3CODE_PORT: "3773" },
       );
@@ -146,27 +146,31 @@ describe("DesktopEnvironment", () => {
     }),
   );
 
-  it.effect("brands Dev and stable display names as Akeru Bot", () =>
-    Effect.gen(function* () {
-      const development = yield* makeEnvironment(
-        {},
-        { VITE_DEV_SERVER_URL: "http://localhost:5173" },
-      );
+  it.effect(
+    "brands Dev and stable builds as IsnadiBot while keeping the existing data directories",
+    () =>
+      Effect.gen(function* () {
+        const development = yield* makeEnvironment(
+          {},
+          { VITE_DEV_SERVER_URL: "http://localhost:5173" },
+        );
 
-      const alpha = yield* makeEnvironment();
+        const alpha = yield* makeEnvironment();
 
-      assert.equal(development.displayName, "Akeru Bot (Dev)");
-      assert.equal(alpha.displayName, "Akeru Bot (Alpha)");
-      assert.deepEqual(alpha.branding, {
-        baseName: "Akeru Bot",
-        stageLabel: "Alpha",
-        displayName: "Akeru Bot (Alpha)",
-        isPackaged: false,
-      });
-      assert.equal(alpha.userDataDirName, "akeru-bot");
-      assert.equal(development.userDataDirName, "akeru-bot-dev");
-      assert.equal(alpha.legacyUserDataDirName, "Akeru Bot (Alpha)");
-    }),
+        assert.equal(development.displayName, "IsnadiBot (Dev)");
+        assert.equal(alpha.displayName, "IsnadiBot");
+        assert.deepEqual(alpha.branding, {
+          baseName: "IsnadiBot",
+          stageLabel: "Alpha",
+          displayName: "IsnadiBot",
+          isPackaged: false,
+        });
+        assert.equal(alpha.userDataDirName, "akeru-bot");
+        assert.equal(development.userDataDirName, "akeru-bot-dev");
+        // The rename must not move user data: both directory names predate IsnadiBot.
+        assert.equal(alpha.legacyUserDataDirName, "Akeru Bot (Alpha)");
+        assert.equal(development.legacyUserDataDirName, "Akeru Bot (Dev)");
+      }),
   );
 
   it.effect("uses a configured app user model id override", () =>

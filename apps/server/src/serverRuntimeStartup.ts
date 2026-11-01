@@ -207,7 +207,7 @@ export const make = (options?: StartupOptions) =>
 
             if (serverConfig.mode !== "desktop") {
               yield* Effect.logInfo(
-                "Authentication required. Open Akeru Bot using the pairing URL.",
+                "Authentication required. Open IsnadiBot using the pairing URL.",
               ).pipe(Effect.annotateLogs({ pairingUrl: startupBrowserTarget }));
             }
 

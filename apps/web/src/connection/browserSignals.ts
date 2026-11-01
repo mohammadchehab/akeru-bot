@@ -60,7 +60,7 @@ export function clientMetadata() {
   const platform = navigator.platform.trim();
 
   return {
-    label: desktop ? "Akeru Bot Desktop" : "Akeru Bot Web",
+    label: desktop ? "IsnadiBot Desktop" : "IsnadiBot Web",
     deviceType: "desktop" as const,
     ...(platform === "" ? {} : { os: platform }),
     surface: desktop ? ("desktop" as const) : ("web" as const),

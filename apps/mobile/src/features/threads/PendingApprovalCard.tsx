@@ -76,7 +76,7 @@ export function PendingApprovalCard(props: PendingApprovalCardProps) {
       ) : props.approval.detail ? (
         <Text className="font-sans text-sm leading-normal text-neutral-600 dark:text-neutral-400">
           {isProductFeedback
-            ? t("Open Akeru Bot on web or desktop to review this feedback draft.")
+            ? t("Open IsnadiBot on web or desktop to review this feedback draft.")
             : props.approval.detail}
         </Text>
       ) : null}

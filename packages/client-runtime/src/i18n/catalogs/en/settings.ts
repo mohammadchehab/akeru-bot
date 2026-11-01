@@ -1,7 +1,7 @@
 export const settingsCatalog = {
   "API token": "API token",
-  "Akeru Bot runs locally. Provider prompts and enabled online features still send data to their listed services.":
-    "Akeru Bot runs locally. Provider prompts and enabled online features still send data to their listed services.",
+  "IsnadiBot runs locally. Provider prompts and enabled online features still send data to their listed services.":
+    "IsnadiBot runs locally. Provider prompts and enabled online features still send data to their listed services.",
   "All providers": "All providers",
   Analytics: "Analytics",
   "Anonymous analytics": "Anonymous analytics",
@@ -169,8 +169,8 @@ export const settingsCatalog = {
   "Increase provider health interval": "Increase provider health interval",
   "Refresh provider availability, versions, auth state, and model metadata.":
     "Refresh provider availability, versions, auth state, and model metadata.",
-  "Enter an absolute folder path, or open Akeru Bot on desktop.":
-    "Enter an absolute folder path, or open Akeru Bot on desktop.",
+  "Enter an absolute folder path, or open IsnadiBot on desktop.":
+    "Enter an absolute folder path, or open IsnadiBot on desktop.",
   "Missing providers": "Missing providers",
   "Settings breadcrumb": "Settings breadcrumb",
   "Check for Updates": "Check for Updates",
@@ -252,13 +252,13 @@ export const settingsCatalog = {
     "A Claude Pro or Max subscription does not include Anthropic API access.",
   "Anthropic limits Claude use per 5-hour session and per week. Max allows more use than Pro.":
     "Anthropic limits Claude use per 5-hour session and per week. Max allows more use than Pro.",
-  "SuperGrok or X Premium+ on your xAI account. Akeru cannot see which plan the account has.":
-    "SuperGrok or X Premium+ on your xAI account. Akeru cannot see which plan the account has.",
+  "SuperGrok or X Premium+ on your xAI account. IsnadiBot cannot see which plan the account has.":
+    "SuperGrok or X Premium+ on your xAI account. IsnadiBot cannot see which plan the account has.",
   "Grok models.": "Grok models.",
   "SuperGrok and X Premium+ do not include xAI API credits.":
     "SuperGrok and X Premium+ do not include xAI API credits.",
-  "xAI does not publish Grok limits that Akeru can show.":
-    "xAI does not publish Grok limits that Akeru can show.",
+  "xAI does not publish Grok limits that IsnadiBot can show.":
+    "xAI does not publish Grok limits that IsnadiBot can show.",
   "Kimi For Coding membership.": "Kimi For Coding membership.",
   "Or a Kimi For Coding API key from the Kimi Code console.":
     "Or a Kimi For Coding API key from the Kimi Code console.",
@@ -347,8 +347,8 @@ export const settingsCatalog = {
     "{count} shortcut shares its keys with another command.",
   "{count} shortcuts share their keys with another command.":
     "{count} shortcuts share their keys with another command.",
-  "Your browser can claim some shortcuts before Akeru Bot sees them. The desktop app receives all of them.":
-    "Your browser can claim some shortcuts before Akeru Bot sees them. The desktop app receives all of them.",
+  "Your browser can claim some shortcuts before IsnadiBot sees them. The desktop app receives all of them.":
+    "Your browser can claim some shortcuts before IsnadiBot sees them. The desktop app receives all of them.",
   "Show all shortcuts": "Show all shortcuts",
   "Restore default settings?": "Restore default settings?",
   "This will reset: {settings}.": "This will reset: {settings}.",
