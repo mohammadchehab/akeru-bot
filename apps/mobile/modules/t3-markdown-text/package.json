@@ -1,5 +1,5 @@
 {
-  "name": "@akeru/mobile-markdown-text",
+  "name": "@isnadi/mobile-markdown-text",
   "version": "0.0.0",
   "private": true,
   "source": "./index.ts",

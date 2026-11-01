@@ -1,12 +1,12 @@
 import { Predicate } from "effect";
 import { useCallback } from "react";
-import { type DesktopSshEnvironmentTarget, type EnvironmentId } from "@akeru/contracts";
+import { type DesktopSshEnvironmentTarget, type EnvironmentId } from "@isnadi/contracts";
 import {
   type AtomCommand,
   type AtomCommandResult,
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { stackedThreadToast, toastManager } from "../ui/toast";
 import { environmentCatalog } from "~/connection/catalog";
 import {

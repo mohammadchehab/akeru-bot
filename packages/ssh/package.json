@@ -1,5 +1,5 @@
 {
-  "name": "@akeru/ssh",
+  "name": "@isnadi/ssh",
   "version": "0.0.4",
   "private": true,
   "type": "module",
@@ -30,8 +30,8 @@
     "test": "vp test run"
   },
   "dependencies": {
-    "@akeru/contracts": "workspace:*",
-    "@akeru/shared": "workspace:*",
+    "@isnadi/contracts": "workspace:*",
+    "@isnadi/shared": "workspace:*",
     "effect": "catalog:"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import { it as effectIt } from "@effect/vitest";
 
-import type { DesktopPreviewRecordingFrame } from "@akeru/contracts";
+import type { DesktopPreviewRecordingFrame } from "@isnadi/contracts";
 
 import * as Cause from "effect/Cause";
 

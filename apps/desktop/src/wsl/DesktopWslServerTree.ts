@@ -56,7 +56,7 @@ export class DesktopWslServerTree extends Context.Service<
     // server.asar on first use.
     readonly ensure: Effect.Effect<WslServerTreeResult>;
   }
->()("@akeru/desktop/wsl/DesktopWslServerTree") {}
+>()("@isnadi/desktop/wsl/DesktopWslServerTree") {}
 
 // Child scheduling stays here instead of inside `visit`, so nested directories
 // cannot create independent concurrency pools. The LIFO work list also keeps

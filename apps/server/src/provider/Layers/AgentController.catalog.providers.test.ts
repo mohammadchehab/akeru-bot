@@ -5,8 +5,8 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import type { AgentControllerEvent } from "@mastra/core/agent-controller";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   ApprovalRequestId,
   BotId,
   EnvironmentId,
@@ -15,7 +15,7 @@ import {
   ProjectId,
   ThreadId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -119,8 +119,8 @@ describe("AgentControllerLive", () => {
       const botId = BotId.make("bot-mcp-gate-legacy");
 
       const access = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId: ProjectId.make("project-mcp-gate-legacy"),
         workspaceRoot: "/workspace/mcp-gate-legacy",

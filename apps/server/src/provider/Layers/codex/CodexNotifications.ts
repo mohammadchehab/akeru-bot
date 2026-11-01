@@ -5,7 +5,7 @@ import {
   type ProviderRequestKind,
   type ProviderSession,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

@@ -6,7 +6,7 @@ import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
-import { GrokSettings } from "@akeru/contracts";
+import { GrokSettings } from "@isnadi/contracts";
 import { ServerConfig } from "../../../config.ts";
 import { makeGrokAdapter } from "../GrokAdapter.ts";
 

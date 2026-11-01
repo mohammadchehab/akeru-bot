@@ -1,4 +1,4 @@
-import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@akeru/contracts";
+import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@isnadi/contracts";
 import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 import {

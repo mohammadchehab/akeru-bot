@@ -1,5 +1,5 @@
-import type { ThreadId } from "@akeru/contracts";
-import { RotatingFileSink } from "@akeru/shared/logging";
+import type { ThreadId } from "@isnadi/contracts";
+import { RotatingFileSink } from "@isnadi/shared/logging";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import type { ResourceAttribution } from "../../../resourceTelemetry/ResourceAttribution.ts";

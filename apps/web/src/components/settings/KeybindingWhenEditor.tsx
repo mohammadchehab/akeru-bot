@@ -1,4 +1,4 @@
-import { type KeybindingWhenNode } from "@akeru/contracts";
+import { type KeybindingWhenNode } from "@isnadi/contracts";
 import { CircleXIcon, MinusIcon, PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useI18n } from "../../i18n";

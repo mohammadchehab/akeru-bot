@@ -1,12 +1,12 @@
-import { BotId, type AkeruBotUsageSnapshot, type EnvironmentId } from "@akeru/contracts";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { BotId, type IsnadiBotUsageSnapshot, type EnvironmentId } from "@isnadi/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 import { useMemo } from "react";
 
 import { useI18n } from "../../i18n";
 import { botUsageEnvironment } from "../../state/botUsage";
 import { useEnvironmentQuery } from "../../state/query";
 
-type UsageMeasurement = AkeruBotUsageSnapshot["measurements"]["input"];
+type UsageMeasurement = IsnadiBotUsageSnapshot["measurements"]["input"];
 
 type Translate = ReturnType<typeof useI18n>["t"];
 

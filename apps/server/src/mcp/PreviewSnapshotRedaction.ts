@@ -1,12 +1,12 @@
-import type { PreviewAutomationResponse } from "@akeru/contracts";
+import type { PreviewAutomationResponse } from "@isnadi/contracts";
 import { decodeJson } from "../json.ts";
 import * as Predicate from "effect/Predicate";
 import {
   PreviewAutomationRecordingArtifact,
   PreviewAutomationSnapshot,
   type PreviewAutomationOperation,
-} from "@akeru/contracts";
-import { redactSensitiveText } from "@akeru/shared/sensitiveDataRedaction";
+} from "@isnadi/contracts";
+import { redactSensitiveText } from "@isnadi/shared/sensitiveDataRedaction";
 import * as Schema from "effect/Schema";
 import { PNG } from "pngjs";
 

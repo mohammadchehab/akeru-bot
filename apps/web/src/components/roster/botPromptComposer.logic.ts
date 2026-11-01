@@ -1,8 +1,8 @@
-import { createTranslator, type TranslationParams } from "@akeru/client-runtime/i18n";
+import { createTranslator, type TranslationParams } from "@isnadi/client-runtime/i18n";
 import {
   type ComposerBotMention,
   resolveComposerBotMention,
-} from "@akeru/shared/composerBotMentions";
+} from "@isnadi/shared/composerBotMentions";
 
 import type { ComposerProviderCatalog } from "../chat/composerProviderMenuItems";
 import { botPromptCommandTrigger } from "./botPromptCommands.logic";

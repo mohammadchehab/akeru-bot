@@ -9,7 +9,7 @@
  *
  * @module ProviderServiceLive
  */
-import { ThreadId, type ProviderInstanceId } from "@akeru/contracts";
+import { ThreadId, type ProviderInstanceId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

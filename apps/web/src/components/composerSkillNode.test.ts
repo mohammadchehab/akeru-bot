@@ -1,4 +1,4 @@
-import type { ServerProviderSkill } from "@akeru/contracts";
+import type { ServerProviderSkill } from "@isnadi/contracts";
 import {
   $createParagraphNode,
   $createTextNode,

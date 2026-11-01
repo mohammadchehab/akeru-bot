@@ -1,5 +1,5 @@
 import * as NodeCrypto from "node:crypto";
-import type { BotId } from "@akeru/contracts";
+import type { BotId } from "@isnadi/contracts";
 
 import type { BotInboxService } from "./service.ts";
 

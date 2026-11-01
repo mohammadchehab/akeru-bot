@@ -31,7 +31,7 @@
   },
   "connection": {
     "type": "verification-pending",
-    "blocker": "A live Akeru Codex tool call still needs verification with a signed-in disposable environment."
+    "blocker": "A live Isnadi Codex tool call still needs verification with a signed-in disposable environment."
   },
   "authentication": "none",
   "requiredCredentials": [],

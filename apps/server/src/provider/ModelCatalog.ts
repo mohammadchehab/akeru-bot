@@ -1,6 +1,6 @@
 import { reasoningCapabilities } from "./ReasoningOptions.ts";
 /**
- * ModelCatalog — the provider models Akeru offers, their display names, and
+ * ModelCatalog — the provider models Isnadi offers, their display names, and
  * which of them are current versus legacy.
  *
  * The data comes from models.dev (see `modelCatalogData.ts`). A trimmed copy
@@ -14,7 +14,7 @@ import { reasoningCapabilities } from "./ReasoningOptions.ts";
  * before publishing, so every path that produces models (pending, probe,
  * error fallbacks) is classified the same way.
  */
-import type { ProviderDriverKind, ServerProviderModel } from "@akeru/contracts";
+import type { ProviderDriverKind, ServerProviderModel } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -172,7 +172,7 @@ export class ModelCatalog extends Context.Service<
      * a periodic health check republish their snapshot from this. */
     readonly changes: Stream.Stream<ModelCatalogData>;
   }
->()("akeru-bot/provider/ModelCatalog") {}
+>()("isnadibot/provider/ModelCatalog") {}
 
 /** Constant service for tests and callers that only need the bundled data. */
 export const BundledOnlyModelCatalog: ModelCatalog["Service"] = {

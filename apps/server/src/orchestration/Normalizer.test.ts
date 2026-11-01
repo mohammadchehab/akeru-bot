@@ -6,7 +6,7 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { canonicalizeClientCommandTimestamps } from "./Normalizer.ts";
 

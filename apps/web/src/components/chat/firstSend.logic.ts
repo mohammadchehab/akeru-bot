@@ -1,4 +1,4 @@
-import type { StartThreadTurnInput } from "@akeru/client-runtime/operations";
+import type { StartThreadTurnInput } from "@isnadi/client-runtime/operations";
 import type { DraftThreadEnvMode } from "../../composerDraftStore";
 
 type FirstSendTurnInput = Required<

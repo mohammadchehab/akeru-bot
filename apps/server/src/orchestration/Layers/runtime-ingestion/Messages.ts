@@ -1,4 +1,4 @@
-import { MessageId, ThreadId, TurnId, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { MessageId, ThreadId, TurnId, type ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

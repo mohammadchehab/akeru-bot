@@ -8,10 +8,10 @@
  * Targets are ordered most-reachable first (tailnet name works from anywhere
  * on the tailnet; `<hostname>.local` only on the same LAN).
  */
-import { type RemoteOpenTarget } from "@akeru/contracts";
-import { HostProcessHostname } from "@akeru/shared/hostProcess";
-import * as NetService from "@akeru/shared/Net";
-import { readTailscaleStatus } from "@akeru/tailscale";
+import { type RemoteOpenTarget } from "@isnadi/contracts";
+import { HostProcessHostname } from "@isnadi/shared/hostProcess";
+import * as NetService from "@isnadi/shared/Net";
+import { readTailscaleStatus } from "@isnadi/tailscale";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -24,7 +24,7 @@ export class RemoteOpenTargets extends Context.Service<
   {
     readonly resolveTargets: () => Effect.Effect<ReadonlyArray<RemoteOpenTarget>>;
   }
->()("akeru-bot/environment/RemoteOpenTargets") {}
+>()("isnadibot/environment/RemoteOpenTargets") {}
 
 export const make = Effect.gen(function* () {
   const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;

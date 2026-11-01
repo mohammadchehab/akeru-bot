@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { ThreadId } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { ThreadId } from "@isnadi/contracts";
 import { beforeEach, describe, expect, it } from "vite-plus/test";
 import { useComposerDraftStore } from "./composerDraftStore";
 import {

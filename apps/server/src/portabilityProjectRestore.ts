@@ -4,12 +4,12 @@ import {
   type PortabilityProjectFolderMap,
   type PortabilityProjectData,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   isWindowsAbsolutePath,
   normalizeProjectPathForComparison,
   normalizeProjectPathForDispatch,
-} from "@akeru/shared/path";
+} from "@isnadi/shared/path";
 
 import { portableProjectData } from "./portabilitySafety.ts";
 import { portableId } from "./portabilityArchive.ts";

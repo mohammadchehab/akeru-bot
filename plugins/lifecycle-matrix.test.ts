@@ -113,7 +113,7 @@ describe("milestone 13 plugin lifecycle matrix", () => {
       platforms: ["macos"],
       connection: {
         type: "verification-pending",
-        blocker: expect.stringContaining("live Akeru Codex tool call"),
+        blocker: expect.stringContaining("live Isnadi Codex tool call"),
       },
     });
     expect(byId.get("paper")).toMatchObject({

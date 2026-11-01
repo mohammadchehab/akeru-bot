@@ -1,19 +1,19 @@
-import { type BotId, ThreadId, type AkeruDelegationRecord } from "@akeru/contracts";
+import { type BotId, ThreadId, type IsnadiDelegationRecord } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 
-import { isWorkerThreadId } from "../../AkeruWorkerRuntime.ts";
+import { isWorkerThreadId } from "../../IsnadiWorkerRuntime.ts";
 
 import type { SessionLifecycleDependencies } from "./SessionLifecycleDependencies.ts";
 
 export function createSessionContext(
   deps: Pick<SessionLifecycleDependencies, "projectionSnapshotQuery" | "workerRuntime" | "wired">,
 ) {
-  const isOpenDelegation = (delegation: AkeruDelegationRecord) =>
+  const isOpenDelegation = (delegation: IsnadiDelegationRecord) =>
     !["Completed", "Failed", "Canceled"].includes(delegation.phase._tag);
 
-  const isChildOf = (delegation: AkeruDelegationRecord, threadId: ThreadId) =>
+  const isChildOf = (delegation: IsnadiDelegationRecord, threadId: ThreadId) =>
     "childThreadId" in delegation.phase && delegation.phase.childThreadId === threadId;
 
   // Resolves the thread's bot, group boss, and delegation links with by-id

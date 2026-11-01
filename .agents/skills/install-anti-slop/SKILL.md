@@ -5,7 +5,7 @@ description: Install, configure, update, or upgrade vendored anti-slop Oxlint pl
 
 # Install or update anti-slop
 
-> **In Akeru Bot.** Anti-slop is already installed. The copy lives in `oxlint-plugin-anti-slop/`,
+> **In IsnadiBot.** Anti-slop is already installed. The copy lives in `oxlint-plugin-anti-slop/`,
 > its provenance and local changes in `oxlint-plugin-anti-slop/README.md`, and its rule list in
 > `ANTI_SLOP_RULES` in the root `vite.config.ts`. Always take the update path. This vendored
 > skill omits upstream's bundled `assets/` and `scripts/install.mjs`, so stage incoming source by

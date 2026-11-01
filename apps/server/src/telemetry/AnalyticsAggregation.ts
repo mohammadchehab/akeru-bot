@@ -8,7 +8,7 @@ import {
   type UsageClientType,
   type UsageOperatingSystem,
   type UsageSandboxProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 
 export const BUCKET_HOURS = 3;

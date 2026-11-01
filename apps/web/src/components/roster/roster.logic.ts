@@ -1,12 +1,12 @@
 import { Match } from "effect";
-import type { OrchestrationThreadShell } from "@akeru/contracts";
+import type { OrchestrationThreadShell } from "@isnadi/contracts";
 import {
   isGroupBotMember,
   isGroupPersonMember,
   type GroupPersonMembership,
-} from "@akeru/contracts";
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import type { TimestampFormat } from "@akeru/contracts/settings";
+} from "@isnadi/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import type { TimestampFormat } from "@isnadi/contracts/settings";
 import { threadJumpIndexFromCommand } from "../../keybindings";
 import { formatShortTimestamp, parseTimestampDate } from "../../timestampFormat";
 import type { RosterItemRef } from "./rosterDrop.logic";

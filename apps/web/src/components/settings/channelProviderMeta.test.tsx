@@ -1,4 +1,4 @@
-import { ChannelConnectionId } from "@akeru/contracts";
+import { ChannelConnectionId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildChannelConnectionSaveInput } from "./ChannelSetupDialog";

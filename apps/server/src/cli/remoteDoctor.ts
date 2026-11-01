@@ -1,5 +1,5 @@
-import { RemoteDoctorReport } from "@akeru/contracts";
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { RemoteDoctorReport } from "@isnadi/contracts";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -16,14 +16,14 @@ import {
 const encodeDoctorReport = Schema.encodeEffect(Schema.fromJsonString(RemoteDoctorReport));
 
 /**
- * Akeru Remote diagnostics read only Akeru's home: an explicit `--base-dir`, then `AKERU_HOME`,
- * then `~/.akeru`. An ambient `T3CODE_HOME` is ignored so T3 Code's `~/.t3` is never inspected
+ * Isnadi Remote diagnostics read only Isnadi's home: an explicit `--base-dir`, then `ISNADI_HOME`,
+ * then `~/.isnadi`. An ambient `T3CODE_HOME` is ignored so T3 Code's `~/.t3` is never inspected
  * or repaired by accident.
  */
 export const remoteDoctorHome = (
   baseDirFlag: Option.Option<string>,
   env: Readonly<Record<string, string | undefined>>,
-): string | undefined => Option.getOrUndefined(baseDirFlag) ?? env.AKERU_HOME;
+): string | undefined => Option.getOrUndefined(baseDirFlag) ?? env.ISNADI_HOME;
 
 export const remoteDoctorCommand = Command.make(
   "__remote-doctor",

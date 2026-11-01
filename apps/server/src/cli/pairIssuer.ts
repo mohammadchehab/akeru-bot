@@ -1,5 +1,5 @@
-import { AuthAdministrativeScopes, AuthStandardClientScopes } from "@akeru/contracts";
-import { DEFAULT_TAILSCALE_SERVE_PORT } from "@akeru/tailscale";
+import { AuthAdministrativeScopes, AuthStandardClientScopes } from "@isnadi/contracts";
+import { DEFAULT_TAILSCALE_SERVE_PORT } from "@isnadi/tailscale";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

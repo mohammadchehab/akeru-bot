@@ -7,34 +7,34 @@ import {
 } from "./testUtils/entityMemoryRepository.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { EntityMemoryRepository } from "../Services/EntityMemoryRepository.ts";
 import { resolveMemoryArchivePartitions } from "../EntityMemoryAccess.ts";
-import { exportAkeruMemory } from "../MemoryExport.ts";
-import { applyAkeruMemoryImport, previewAkeruMemoryImport } from "../MemoryImport.ts";
+import { exportIsnadiMemory } from "../MemoryExport.ts";
+import { applyIsnadiMemoryImport, previewIsnadiMemoryImport } from "../MemoryImport.ts";
 
 it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("previews and atomically imports a new authorized history", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const partitions = yield* resolveMemoryArchivePartitions(botAccess, "bot");
-      const rootId = AkeruMemoryRootId.make("import-root");
+      const rootId = IsnadiMemoryRootId.make("import-root");
 
       const first = makeRevision("import-1", "bot:user", {
         rootId,
-        supersededById: AkeruMemoryId.make("import-2"),
+        supersededById: IsnadiMemoryId.make("import-2"),
         fact: "import-search-marker first",
       });
 
@@ -87,7 +87,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const partitions = yield* resolveMemoryArchivePartitions(botAccess, "bot");
-      const rootId = AkeruMemoryRootId.make("stale-import-root");
+      const rootId = IsnadiMemoryRootId.make("stale-import-root");
       const archived = makeRevision("stale-import-archive", "bot:user", { rootId });
 
       const preview = yield* repository.previewImport!({
@@ -121,7 +121,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const partitions = yield* resolveMemoryArchivePartitions(botAccess, "bot");
-      const rootId = AkeruMemoryRootId.make("invalid-chain-root");
+      const rootId = IsnadiMemoryRootId.make("invalid-chain-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("invalid-chain-local", "bot:user", { rootId }),
@@ -161,11 +161,11 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const forged = {
         ...makeRevision("forged-kind-1", "bot:user", {
-          rootId: AkeruMemoryRootId.make("forged-kind-root"),
+          rootId: IsnadiMemoryRootId.make("forged-kind-root"),
         }),
         // The bot entity id with a forged kind must not pass the owner check.
         entityKind: "project" as const,
-        entityId: AkeruMemoryEntityId.make("bot"),
+        entityId: IsnadiMemoryEntityId.make("bot"),
       };
 
       const exit = yield* repository.previewImport!({
@@ -185,16 +185,16 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const forged = makeRevision("forged-import", "project:other", {
         partition: {
-          tenantId: AkeruMemoryTenantId.make("foreign-tenant"),
+          tenantId: IsnadiMemoryTenantId.make("foreign-tenant"),
           scope: "bot",
-          partitionId: AkeruMemoryPartitionId.make("foreign-bot"),
+          partitionId: IsnadiMemoryPartitionId.make("foreign-bot"),
         },
         visibility: "shared",
         entityKind: "project",
-        entityId: AkeruMemoryEntityId.make("foreign-project"),
+        entityId: IsnadiMemoryEntityId.make("foreign-project"),
         sourceThreadId: ThreadId.make("foreign-thread"),
         authorBotId: BotId.make("foreign-bot"),
-        initiatingUserId: AkeruMemoryUserId.make("foreign-user"),
+        initiatingUserId: IsnadiMemoryUserId.make("foreign-user"),
         affectedBotIds: [BotId.make("foreign-bot")],
       });
 
@@ -243,10 +243,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         partition: {
           tenantId: botAccess.tenantId,
           scope: "bot-user",
-          partitionId: AkeruMemoryPartitionId.make("foreign-bot-user"),
+          partitionId: IsnadiMemoryPartitionId.make("foreign-bot-user"),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make("foreign-bot"),
+        entityId: IsnadiMemoryEntityId.make("foreign-bot"),
       });
 
       const exit = yield* repository.previewImport!({
@@ -264,7 +264,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const repository = yield* EntityMemoryRepository;
       const alice = privateAccess("bot-collision-alice");
       const bob = privateAccess("bot-collision-bob");
-      const rootId = AkeruMemoryRootId.make("collision-root");
+      const rootId = IsnadiMemoryRootId.make("collision-root");
 
       const privateRevision = (access: typeof alice, id: string, fact: string) =>
         makeRevision(id, "bot", {
@@ -273,10 +273,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partition: {
             tenantId: access.tenantId,
             scope: "bot",
-            partitionId: AkeruMemoryPartitionId.make(access.botId),
+            partitionId: IsnadiMemoryPartitionId.make(access.botId),
           },
           entityKind: "bot",
-          entityId: AkeruMemoryEntityId.make(access.botId),
+          entityId: IsnadiMemoryEntityId.make(access.botId),
           sourceThreadId: access.threadId,
           authorBotId: access.botId,
           affectedBotIds: [access.botId],
@@ -302,7 +302,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       assert.isTrue(Predicate.isTagged(replaced, "Failure"));
 
       if (Predicate.isTagged(replaced, "Failure")) {
-        assert.include(Cause.pretty(replaced.cause), "AkeruMemoryAccessDenied");
+        assert.include(Cause.pretty(replaced.cause), "IsnadiMemoryAccessDenied");
       }
 
       const current = yield* repository.getCurrent({ access: alice, rootId });
@@ -314,17 +314,17 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const roundtripAccess = privateAccess("bot-archive-roundtrip");
-      const rootId = AkeruMemoryRootId.make("archive-roundtrip-root");
+      const rootId = IsnadiMemoryRootId.make("archive-roundtrip-root");
 
       const durable = makeRevision("archive-roundtrip-revision", "bot", {
         rootId,
         partition: {
           tenantId: roundtripAccess.tenantId,
           scope: "bot",
-          partitionId: AkeruMemoryPartitionId.make(roundtripAccess.botId!),
+          partitionId: IsnadiMemoryPartitionId.make(roundtripAccess.botId!),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(roundtripAccess.botId!),
+        entityId: IsnadiMemoryEntityId.make(roundtripAccess.botId!),
         sourceThreadId: roundtripAccess.threadId,
         authorBotId: roundtripAccess.botId,
         initiatingUserId: roundtripAccess.userId,
@@ -333,7 +333,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.insert({ access: roundtripAccess, revision: durable });
 
-      const archive = yield* exportAkeruMemory({
+      const archive = yield* exportIsnadiMemory({
         repository,
         access: roundtripAccess,
         target: "bot",
@@ -363,14 +363,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.deleteRoot({ access: roundtripAccess, rootId });
 
-      const preview = yield* previewAkeruMemoryImport({
+      const preview = yield* previewIsnadiMemoryImport({
         repository,
         access: roundtripAccess,
         target: "bot",
         archive,
       });
 
-      const result = yield* applyAkeruMemoryImport({
+      const result = yield* applyIsnadiMemoryImport({
         repository,
         access: roundtripAccess,
         target: "bot",
@@ -402,7 +402,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const alice = {
         ...privateAccess("alice-private-import"),
-        userId: AkeruMemoryUserId.make("alice-user"),
+        userId: IsnadiMemoryUserId.make("alice-user"),
         projectId: ProjectId.make("project-privatize-import"),
         legacyWorkspaceOwnerProjectId: ProjectId.make("project-privatize-import"),
       };
@@ -413,17 +413,17 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         legacyWorkspaceOwnerProjectId: alice.projectId,
       };
 
-      const rootId = AkeruMemoryRootId.make("import-privatize-root");
+      const rootId = IsnadiMemoryRootId.make("import-privatize-root");
 
       const original = makeRevision("import-privatize-1", "project", {
         rootId,
         partition: {
           tenantId: alice.tenantId,
           scope: "project",
-          partitionId: AkeruMemoryPartitionId.make(alice.projectId),
+          partitionId: IsnadiMemoryPartitionId.make(alice.projectId),
         },
         entityKind: "project",
-        entityId: AkeruMemoryEntityId.make(alice.projectId),
+        entityId: IsnadiMemoryEntityId.make(alice.projectId),
         sourceThreadId: alice.threadId,
         authorBotId: alice.botId,
         initiatingUserId: alice.userId,
@@ -433,7 +433,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.insert({ access: alice, revision: original });
 
-      const projectArchive = yield* exportAkeruMemory({
+      const projectArchive = yield* exportIsnadiMemory({
         repository,
         access: alice,
         target: "project",
@@ -444,14 +444,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.deleteRoot({ access: alice, rootId });
 
-      const projectPreview = yield* previewAkeruMemoryImport({
+      const projectPreview = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
         archive: projectArchive,
       });
 
-      yield* applyAkeruMemoryImport({
+      yield* applyIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -471,12 +471,12 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: imported.revision,
           scope: "bot",
         },
-        memoryId: AkeruMemoryId.make("import-privatize-2"),
+        memoryId: IsnadiMemoryId.make("import-privatize-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
 
-      const botArchive = yield* exportAkeruMemory({
+      const botArchive = yield* exportIsnadiMemory({
         repository,
         access: bob,
         target: "bot",
@@ -487,7 +487,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.deleteRoot({ access: bob, rootId });
 
-      const botPreview = yield* previewAkeruMemoryImport({
+      const botPreview = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "bot",
@@ -499,7 +499,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         ["new"],
       );
 
-      const result = yield* applyAkeruMemoryImport({
+      const result = yield* applyIsnadiMemoryImport({
         repository,
         access: bob,
         target: "bot",
@@ -538,7 +538,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const alice = accessFor("bot-private-history-alice");
       const bob = accessFor("bot-private-history-bob");
-      const rootId = AkeruMemoryRootId.make("private-history-root");
+      const rootId = IsnadiMemoryRootId.make("private-history-root");
       yield* repository.insert({
         access: alice,
         revision: makeRevision("private-history-1", "bot", {
@@ -547,10 +547,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partition: {
             tenantId: alice.tenantId,
             scope: "bot",
-            partitionId: AkeruMemoryPartitionId.make(alice.botId),
+            partitionId: IsnadiMemoryPartitionId.make(alice.botId),
           },
           entityKind: "bot",
-          entityId: AkeruMemoryEntityId.make(alice.botId),
+          entityId: IsnadiMemoryEntityId.make(alice.botId),
           sourceThreadId: alice.threadId,
           authorBotId: alice.botId,
           affectedBotIds: [alice.botId],
@@ -564,7 +564,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           fact: "Deploys use the shared release checklist.",
         },
-        memoryId: AkeruMemoryId.make("private-history-2"),
+        memoryId: IsnadiMemoryId.make("private-history-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -576,7 +576,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           scope: "project",
         },
-        memoryId: AkeruMemoryId.make("private-history-3"),
+        memoryId: IsnadiMemoryId.make("private-history-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -588,13 +588,13 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 3,
           fact: "Deploys use the shared release checklist and require approval.",
         },
-        memoryId: AkeruMemoryId.make("private-history-4"),
+        memoryId: IsnadiMemoryId.make("private-history-4"),
         updatedAt: "2026-08-30T22:32:00.000Z",
         sharedProjectApproval: "approved",
       });
 
       const exportAs = (access: typeof alice) =>
-        exportAkeruMemory({
+        exportIsnadiMemory({
           repository,
           access,
           target: "project",
@@ -626,7 +626,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         [1, 2, 3, 4],
       );
 
-      const existingPreview = yield* previewAkeruMemoryImport({
+      const existingPreview = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -638,7 +638,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         ["conflicting"],
       );
 
-      const replaceAlice = yield* applyAkeruMemoryImport({
+      const replaceAlice = yield* applyIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -656,7 +656,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       );
       yield* repository.deleteRoot({ access: alice, rootId });
 
-      const preview = yield* previewAkeruMemoryImport({
+      const preview = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -668,7 +668,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         ["new"],
       );
 
-      const result = yield* applyAkeruMemoryImport({
+      const result = yield* applyIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -683,9 +683,9 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         assert.equal(restored.id, "private-history-4");
         assert.equal(restored.revision, 2);
         assert.equal(restored.partition.scope, "project");
-        assert.equal(restored.partition.partitionId, AkeruMemoryPartitionId.make(projectId));
+        assert.equal(restored.partition.partitionId, IsnadiMemoryPartitionId.make(projectId));
         assert.equal(restored.entityKind, "project");
-        assert.equal(restored.entityId, AkeruMemoryEntityId.make(projectId));
+        assert.equal(restored.entityId, IsnadiMemoryEntityId.make(projectId));
         assert.equal(restored.visibility, "shared");
         assert.equal(restored.authorBotId, alice.botId);
         assert.equal(restored.sourceThreadId, alice.threadId);
@@ -731,12 +731,12 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           fact: "A divergent local edit.",
         },
-        memoryId: AkeruMemoryId.make("private-history-local"),
+        memoryId: IsnadiMemoryId.make("private-history-local"),
         updatedAt: "2026-08-30T23:01:00.000Z",
         sharedProjectApproval: "approved",
       });
 
-      const conflicting = yield* previewAkeruMemoryImport({
+      const conflicting = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -747,7 +747,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         conflicting.items.map((item) => item.classification),
         ["conflicting"],
       );
-      yield* applyAkeruMemoryImport({
+      yield* applyIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -758,7 +758,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       yield* assertRestored;
       const restoredArchive = yield* exportAs(bob);
 
-      const restoredPreview = yield* previewAkeruMemoryImport({
+      const restoredPreview = yield* previewIsnadiMemoryImport({
         repository,
         access: bob,
         target: "project",
@@ -776,7 +776,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const access = { ...botAccess, projectId: ProjectId.make("project-pending-archive") };
-      const rootId = AkeruMemoryRootId.make("pending-archive-roundtrip-root");
+      const rootId = IsnadiMemoryRootId.make("pending-archive-roundtrip-root");
       const encodeJson = <Value>(value: Value) => JSON.stringify(value) as string;
 
       const pending = makeRevision("pending-archive-roundtrip-1", "project", {
@@ -784,10 +784,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         partition: {
           tenantId: access.tenantId,
           scope: "project",
-          partitionId: AkeruMemoryPartitionId.make(access.projectId),
+          partitionId: IsnadiMemoryPartitionId.make(access.projectId),
         },
         entityKind: "project",
-        entityId: AkeruMemoryEntityId.make(access.projectId),
+        entityId: IsnadiMemoryEntityId.make(access.projectId),
         visibility: "shared",
         approvalState: "pending",
       });
@@ -812,7 +812,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         ${encodeJson(pending.affectedBotIds)}
       )`;
 
-      const archive = yield* exportAkeruMemory({
+      const archive = yield* exportIsnadiMemory({
         repository,
         access: access,
         target: "project",
@@ -824,14 +824,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       assert.isTrue(archive.revisions.some(({ revision }) => revision.rootId === rootId));
       yield* repository.deleteRoot({ access: access, rootId });
 
-      const preview = yield* previewAkeruMemoryImport({
+      const preview = yield* previewIsnadiMemoryImport({
         repository,
         access: access,
         target: "project",
         archive,
       });
 
-      yield* applyAkeruMemoryImport({
+      yield* applyIsnadiMemoryImport({
         repository,
         access: access,
         target: "project",
@@ -850,7 +850,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: restored.revision,
           decision: "approve",
         },
-        memoryId: AkeruMemoryId.make("pending-archive-roundtrip-2"),
+        memoryId: IsnadiMemoryId.make("pending-archive-roundtrip-2"),
         updatedAt: "2026-08-30T23:01:00.000Z",
         sharedProjectApproval: "approved",
       });

@@ -1,9 +1,9 @@
-import { ThreadId, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { ThreadId, type ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
-import { isTemporaryWorktreeBranch } from "@akeru/shared/git";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
+import { isTemporaryWorktreeBranch } from "@isnadi/shared/git";
 import type { createContext } from "./Context.ts";
 import type { createDependencies } from "./Dependencies.ts";
 

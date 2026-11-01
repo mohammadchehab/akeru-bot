@@ -85,7 +85,7 @@ jobs:
           run-install: false
 
       - name: Install desktop dependencies
-        run: vp install --frozen-lockfile --filter=@akeru/desktop... --filter=akeru-bot... --filter=@akeru/scripts...
+        run: vp install --frozen-lockfile --filter=@isnadi/desktop... --filter=isnadibot... --filter=@isnadi/scripts...
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -201,7 +201,7 @@ jobs:
           xcrun stapler validate "$dmg"
           spctl --assess --type open --context context:primary-signature --verbose=2 "$dmg"
 
-          mount_point="$RUNNER_TEMP/akeru-dmg"
+          mount_point="$RUNNER_TEMP/isnadi-dmg"
           mkdir -p "$mount_point"
           hdiutil attach "$dmg" -nobrowse -readonly -mountpoint "$mount_point"
           cleanup() {
@@ -225,7 +225,7 @@ jobs:
       - name: Upload smoke artifact
         uses: actions/upload-artifact@v7
         with:
-          name: akeru-bot-${{ matrix.platform }}-${{ matrix.arch }}
+          name: isnadibot-${{ matrix.platform }}-${{ matrix.arch }}
           path: release/*.${{ matrix.extension }}
           if-no-files-found: error
           retention-days: 7
@@ -248,14 +248,14 @@ jobs:
           cache: true
           run-install: |
             args:
-              - --filter=akeru-bot...
-              - --filter=@akeru/web...
-              - --filter=@akeru/scripts...
+              - --filter=isnadibot...
+              - --filter=@isnadi/web...
+              - --filter=@isnadi/scripts...
 
       - name: Build CLI package
         run: |
           node scripts/update-release-package-versions.ts "$RELEASE_VERSION"
-          vp run --filter akeru-bot build
+          vp run --filter isnadibot build
           test -f apps/server/dist/legal/LICENSE
           test -f apps/server/dist/legal/THIRD_PARTY_NOTICES.md
           test -f apps/server/dist/legal/licenses/Apache-2.0.txt

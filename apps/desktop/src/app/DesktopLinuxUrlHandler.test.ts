@@ -26,7 +26,7 @@ const makeEnvironment = (
     isPackaged: true,
     isDevelopment: false,
     displayName: "IsnadiBot",
-    linuxWmClass: "akeru-bot",
+    linuxWmClass: "isnadibot",
     linuxApplicationsDir: "/home/alice/.local/share/applications",
     appDataDirectory: "/home/alice/.config",
     appImagePath: Option.some("/home/alice/Applications/T3-Code.AppImage"),
@@ -226,7 +226,7 @@ describe("DesktopLinuxUrlHandler", () => {
     );
   });
 
-  it.effect("rewrites mimeapps.list when a retired scheme still points at Akeru", () => {
+  it.effect("rewrites mimeapps.list when a retired scheme still points at Isnadi", () => {
     const recorded = emptyRecording();
 
     return Effect.gen(function* () {
@@ -249,7 +249,7 @@ describe("DesktopLinuxUrlHandler", () => {
     });
   });
 
-  it.effect("leaves mimeapps.list alone when no retired scheme points at Akeru", () => {
+  it.effect("leaves mimeapps.list alone when no retired scheme points at Isnadi", () => {
     const recorded = emptyRecording();
 
     return Effect.gen(function* () {

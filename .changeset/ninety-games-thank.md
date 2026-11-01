@@ -1,5 +1,5 @@
 ---
-"akeru-bot": patch
+"isnadibot": patch
 ---
 
 Keep deeply nested tool payloads within projection limits and preserve dispatch defects and interruptions.

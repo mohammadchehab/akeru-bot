@@ -4,7 +4,7 @@ import * as SqlClient from "effect/unstable/sql/SqlClient";
 export default Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
 
-  // Some development databases used these migration slots before the Akeru
+  // Some development databases used these migration slots before the Isnadi
   // projections landed. Repair the missing base tables and ownership columns
   // here so those databases can continue without deleting their state.
   yield* sql`

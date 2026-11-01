@@ -1,5 +1,5 @@
-import { BearerConnectionTarget, PrimaryConnectionTarget } from "@akeru/client-runtime/connection";
-import { EnvironmentId, PRIMARY_LOCAL_ENVIRONMENT_ID } from "@akeru/contracts";
+import { BearerConnectionTarget, PrimaryConnectionTarget } from "@isnadi/client-runtime/connection";
+import { EnvironmentId, PRIMARY_LOCAL_ENVIRONMENT_ID } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

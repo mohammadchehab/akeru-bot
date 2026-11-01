@@ -1,4 +1,4 @@
-const AKERU_BROWSER_TOOL_INSTRUCTIONS = `
+const ISNADI_BROWSER_TOOL_INSTRUCTIONS = `
 
 ## IsnadiBot collaborative browser
 
@@ -17,7 +17,7 @@ Do not switch to global browser skills, Chrome, Node REPL browser automation, st
  * the only browser automation it still has.
  */
 const browserToolInstructions = (browserToolsAvailable: boolean): string =>
-  browserToolsAvailable ? AKERU_BROWSER_TOOL_INSTRUCTIONS : "";
+  browserToolsAvailable ? ISNADI_BROWSER_TOOL_INSTRUCTIONS : "";
 
 export const codexDefaultModeDeveloperInstructions = (
   browserToolsAvailable: boolean,
@@ -48,7 +48,7 @@ function toSingleLine(value: string): string {
 export function buildCodexDeveloperInstructions(
   runtime: CodexRuntimeInfo,
   /**
-   * Whether the `akeru` MCP server is attached to this turn. Callers derive
+   * Whether the `isnadi` MCP server is attached to this turn. Callers derive
    * it from the session's actual MCP configuration rather than re-reading the
    * setting, so the prompt cannot claim tools the turn doesn't have.
    */

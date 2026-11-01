@@ -1,12 +1,12 @@
 import * as Data from "effect/Data";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
 import {
   EnvironmentId,
   type PreviewNavStatus,
   PreviewEvent,
   type PreviewSessionSnapshot,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   applyPreviewServerEvent as applyPreviewServerEventImpl,
   resetPreviewStateForTests,

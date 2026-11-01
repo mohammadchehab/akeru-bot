@@ -13,11 +13,11 @@ const APP_VARIANT = resolveAppVariant(repoEnv.APP_VARIANT);
 
 const isIosPersonalTeamBuild = repoEnv.T3CODE_IOS_PERSONAL_TEAM === "1";
 
-const appleTeamId = repoEnv.AKERU_APPLE_TEAM_ID?.trim();
+const appleTeamId = repoEnv.ISNADI_APPLE_TEAM_ID?.trim();
 
-const expoProjectId = repoEnv.AKERU_EXPO_PROJECT_ID?.trim();
+const expoProjectId = repoEnv.ISNADI_EXPO_PROJECT_ID?.trim();
 
-const expoOwner = repoEnv.AKERU_EXPO_OWNER?.trim();
+const expoOwner = repoEnv.ISNADI_EXPO_OWNER?.trim();
 
 const personalTeamBundleIdentifier = repoEnv.T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID?.trim();
 
@@ -43,15 +43,15 @@ if (
 }
 
 if (appleTeamId && !APPLE_TEAM_ID_PATTERN.test(appleTeamId)) {
-  throw new Error("AKERU_APPLE_TEAM_ID must be a 10-character Apple team identifier.");
+  throw new Error("ISNADI_APPLE_TEAM_ID must be a 10-character Apple team identifier.");
 }
 
 if (expoProjectId && !EXPO_PROJECT_ID_PATTERN.test(expoProjectId)) {
-  throw new Error("AKERU_EXPO_PROJECT_ID must be an Expo project UUID.");
+  throw new Error("ISNADI_EXPO_PROJECT_ID must be an Expo project UUID.");
 }
 
 if (expoOwner && !EXPO_OWNER_PATTERN.test(expoOwner)) {
-  throw new Error("AKERU_EXPO_OWNER must be an Expo account name.");
+  throw new Error("ISNADI_EXPO_OWNER must be an Expo account name.");
 }
 
 const DEVELOPMENT_ASSETS = {
@@ -60,8 +60,8 @@ const DEVELOPMENT_ASSETS = {
   splashIcon: fromRepoRoot(BRAND_ASSET_PATHS.productionIosIconPng),
   androidAdaptiveForeground: fromRepoRoot(BRAND_ASSET_PATHS.productionIosIconPng),
   androidAdaptiveBackgroundColor: "#F4F1EA",
-  androidMonochromeIcon: "./assets/android-akeru-monochrome.png",
-  androidNotificationIcon: "./assets/android-akeru-monochrome.png",
+  androidMonochromeIcon: "./assets/android-isnadi-monochrome.png",
+  androidNotificationIcon: "./assets/android-isnadi-monochrome.png",
   androidNotificationColor: "#F4F1EA",
 } as const;
 
@@ -74,8 +74,8 @@ const RELEASE_ASSETS = {
   splashIcon: fromRepoRoot(BRAND_ASSET_PATHS.productionIosIconPng),
   androidAdaptiveForeground: fromRepoRoot(BRAND_ASSET_PATHS.productionIosIconPng),
   androidAdaptiveBackgroundColor: "#F4F1EA",
-  androidMonochromeIcon: "./assets/android-akeru-monochrome.png",
-  androidNotificationIcon: "./assets/android-akeru-monochrome.png",
+  androidMonochromeIcon: "./assets/android-isnadi-monochrome.png",
+  androidNotificationIcon: "./assets/android-isnadi-monochrome.png",
   androidNotificationColor: "#F4F1EA",
 } as const;
 
@@ -83,15 +83,15 @@ const VARIANT_CONFIG = {
   development: {
     appName: "IsnadiBot Dev",
     scheme: "akeru-dev",
-    iosBundleIdentifier: "dev.leodoes.akeru.dev",
-    androidPackage: "dev.leodoes.akeru.dev",
+    iosBundleIdentifier: "dev.leodoes.isnadi.dev",
+    androidPackage: "dev.leodoes.isnadi.dev",
     assets: DEVELOPMENT_ASSETS,
   },
   production: {
     appName: "IsnadiBot",
     scheme: "akeru",
-    iosBundleIdentifier: "dev.leodoes.akeru",
-    androidPackage: "dev.leodoes.akeru",
+    iosBundleIdentifier: "dev.leodoes.isnadi",
+    androidPackage: "dev.leodoes.isnadi",
     assets: RELEASE_ASSETS,
   },
 } as const;
@@ -170,7 +170,7 @@ const MICROPHONE_PERMISSION = "Allow IsnadiBot to use your microphone to dictate
 
 const config: ExpoConfig = {
   name: variant.appName,
-  slug: "akeru-bot",
+  slug: "isnadibot",
   platforms: ["ios", "android"],
   scheme: variant.scheme === "akeru" ? ["akeru"] : [variant.scheme, "akeru"],
   version: "1.0.4",

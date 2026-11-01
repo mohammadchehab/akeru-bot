@@ -7,7 +7,7 @@ import type {
   McpServerId,
   ProviderAccessStatus,
   ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import type { ProviderStatus, RequestHealthStatus, SubscriptionProviderId } from "./service.ts";
 

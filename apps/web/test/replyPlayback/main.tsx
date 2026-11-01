@@ -5,7 +5,7 @@ import {
   createReplyPlaybackController,
   createReplyReadoutPreference,
   replyMarkdownToSpokenText,
-} from "@akeru/client-runtime/reply-playback";
+} from "@isnadi/client-runtime/reply-playback";
 import {
   MessageControls,
   type MessageReactionOption,

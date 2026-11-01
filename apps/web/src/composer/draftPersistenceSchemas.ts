@@ -7,7 +7,7 @@ import {
   PreviewAnnotationPayloadSchema,
   RuntimeMode,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as Effect from "effect/Effect";
 import { DraftThreadEnvModeSchema } from "./draftTypes";

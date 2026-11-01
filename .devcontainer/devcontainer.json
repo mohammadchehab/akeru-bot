@@ -1,5 +1,5 @@
 {
-  "name": "Akeru Bot Dev",
+  "name": "IsnadiBot Dev",
   "image": "debian:bookworm",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},

@@ -11,8 +11,8 @@ import {
   EnvironmentOrchestrationHttpApi,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
+} from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as DateTime from "effect/DateTime";

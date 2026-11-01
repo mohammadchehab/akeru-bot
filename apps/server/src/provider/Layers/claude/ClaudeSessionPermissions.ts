@@ -14,11 +14,11 @@ import {
   type ProviderUserInputAnswers,
   type RuntimeMode,
   type UserInputQuestion,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   CLAUDE_RESUME_COMPACTION_NEVER_ANSWER,
   formatClaudeResumeCompactionQuestion,
-} from "@akeru/shared/claudeCompaction";
+} from "@isnadi/shared/claudeCompaction";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Ref from "effect/Ref";
@@ -234,7 +234,7 @@ export function createClaudeSessionPermissions(deps: {
       return { behavior: "cancelled" as const };
     }
 
-    // The question copy lives in @akeru/shared/claudeCompaction because
+    // The question copy lives in @isnadi/shared/claudeCompaction because
     // the web client recognizes this exact text (and the "never" answer)
     // to mirror a permanent dismissal.
     const question = formatClaudeResumeCompactionQuestion({

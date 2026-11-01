@@ -1,5 +1,5 @@
 import { type McpServerConfig } from "@mastra/code-sdk/mcp/index";
-import { type McpServer, type OrchestrationReadModel } from "@akeru/contracts";
+import { type McpServer, type OrchestrationReadModel } from "@isnadi/contracts";
 import { getMcpRuntimeHeaders, mcpServerNeedsBrowserAttachment } from "../../McpServerConfig.ts";
 import type { BotBrowserAttachment } from "../../botBrowser.ts";
 
@@ -23,7 +23,7 @@ export function toMcpServerConfigs(
 }
 
 /**
- * Projects one persisted Akeru MCP registration into the Mastra connection
+ * Projects one persisted Isnadi MCP registration into the Mastra connection
  * recipe. Authentication headers are transient runtime state and therefore
  * never become part of the persisted contract record.
  */
@@ -37,9 +37,9 @@ export function toMcpServerConfig(
     const browserAttachment =
       browser && mcpServerNeedsBrowserAttachment(server, browser.availableToHostedPlugins)
         ? {
-            AKERU_BROWSER_MCP_URL: browser.browserUrl,
-            AKERU_BROWSER_MCP_SESSION_ID: browser.mcpSessionId,
-            AKERU_BROWSER_MCP_HEADERS: JSON.stringify(browser.localRequestHeaders),
+            ISNADI_BROWSER_MCP_URL: browser.browserUrl,
+            ISNADI_BROWSER_MCP_SESSION_ID: browser.mcpSessionId,
+            ISNADI_BROWSER_MCP_HEADERS: JSON.stringify(browser.localRequestHeaders),
           }
         : undefined;
 

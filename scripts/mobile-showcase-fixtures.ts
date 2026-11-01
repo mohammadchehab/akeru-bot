@@ -36,8 +36,8 @@ export function RemoteHandoffCard(props: { machine: string; latencyMs: number })
 export const SHOWCASE_PROJECTS = [
   {
     id: "t3code",
-    title: "Akeru Bot",
-    directory: "akeru-bot",
+    title: "IsnadiBot",
+    directory: "isnadibot",
     repositoryUrl: "https://github.com/opencoredev/akeru-bot.git",
   },
   {
@@ -80,9 +80,9 @@ export const SHOWCASE_THREADS = [
     branch: "feat/remote-command-center",
     minutesAgo: 3,
     request:
-      "Give Akeru Bot a remote-first command center. Make three machines feel one tap away, keep agent work in sync, and make every handoff feel instant.",
+      "Give IsnadiBot a remote-first command center. Make three machines feel one tap away, keep agent work in sync, and make every handoff feel instant.",
     response:
-      "Akeru Bot now treats every machine like it is right here in the room. ✦\n\n- Moonbase, Suspense Station, and Kernel Cabin stay live together\n- Every chat follows you without losing a single line\n- Agent work remains perfectly in sync across devices\n- Handoffs land before your train of thought can wander\n\nI also ran the changed workspace: **612 tests passed**.",
+      "IsnadiBot now treats every machine like it is right here in the room. ✦\n\n- Moonbase, Suspense Station, and Kernel Cabin stay live together\n- Every chat follows you without losing a single line\n- Agent work remains perfectly in sync across devices\n- Handoffs land before your train of thought can wander\n\nI also ran the changed workspace: **612 tests passed**.",
   },
   {
     id: "pocket-command-center",

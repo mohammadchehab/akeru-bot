@@ -1,4 +1,4 @@
-import type { PreviewAutomationPressInput } from "@akeru/contracts";
+import type { PreviewAutomationPressInput } from "@isnadi/contracts";
 
 interface KeyDefinition {
   readonly code: string;

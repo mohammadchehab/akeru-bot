@@ -1,5 +1,5 @@
-import { EnvironmentId, USAGE_CONTRACT_VERSION, UsageDay } from "@akeru/contracts";
-import { mergeUsage } from "@akeru/shared/usageMerge";
+import { EnvironmentId, USAGE_CONTRACT_VERSION, UsageDay } from "@isnadi/contracts";
+import { mergeUsage } from "@isnadi/shared/usageMerge";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";

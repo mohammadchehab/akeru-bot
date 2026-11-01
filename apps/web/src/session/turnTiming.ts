@@ -1,4 +1,4 @@
-import { type OrchestrationLatestTurn } from "@akeru/contracts";
+import { type OrchestrationLatestTurn } from "@isnadi/contracts";
 import type { Thread } from "../types";
 
 type LatestTurnTiming = Pick<OrchestrationLatestTurn, "turnId" | "startedAt" | "completedAt">;

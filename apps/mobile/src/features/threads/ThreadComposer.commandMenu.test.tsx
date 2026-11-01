@@ -9,7 +9,7 @@ import {
   ProviderInstanceId,
   ThreadId,
   type ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { isValidElement, type ReactNode, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { ComposerCommandItem } from "./ComposerCommandPopover";
@@ -106,7 +106,7 @@ vi.mock("../../components/ProviderIcon", () => ({ ProviderIcon: "ProviderIcon" }
 vi.mock("../../lib/useThemeColor", () => ({ useThemeColor: () => "#000000" }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useMobileI18n: () => ({ t: translator.translate, plural: translator.plural }) };

@@ -1,5 +1,5 @@
 {
-  "name": "akeru-bot",
+  "name": "isnadibot",
   "version": "0.2.1",
   "license": "MIT",
   "repository": {
@@ -8,7 +8,7 @@
     "directory": "apps/server"
   },
   "bin": {
-    "akeru": "./dist/bin.mjs"
+    "isnadi": "./dist/bin.mjs"
   },
   "files": [
     "dist"
@@ -62,11 +62,11 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@akeru/contracts": "workspace:*",
-    "@akeru/shared": "workspace:*",
-    "@akeru/tailscale": "workspace:*",
-    "@akeru/web": "workspace:*",
     "@effect/vitest": "catalog:",
+    "@isnadi/contracts": "workspace:*",
+    "@isnadi/shared": "workspace:*",
+    "@isnadi/tailscale": "workspace:*",
+    "@isnadi/web": "workspace:*",
     "@types/bun": "1.3.14",
     "@types/node": "catalog:",
     "@types/pngjs": "6.0.5",

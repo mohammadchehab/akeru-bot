@@ -1,4 +1,4 @@
-import { readHostedPairingRequest } from "@akeru/shared/remote";
+import { readHostedPairingRequest } from "@isnadi/shared/remote";
 import * as Schema from "effect/Schema";
 
 type PairingUrlParts = { host: string; code: string };

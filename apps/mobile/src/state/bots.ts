@@ -1,7 +1,7 @@
 import { Schema } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { createBotEnvironmentAtoms } from "@akeru/client-runtime/state/bots";
-import type { EnvironmentId, OrchestrationBot, OrchestrationGroup } from "@akeru/contracts";
+import { createBotEnvironmentAtoms } from "@isnadi/client-runtime/state/bots";
+import type { EnvironmentId, OrchestrationBot, OrchestrationGroup } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 import { useMemo } from "react";
 import { environmentCatalog } from "../connection/catalog";

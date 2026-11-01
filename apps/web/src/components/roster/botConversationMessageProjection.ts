@@ -1,6 +1,6 @@
 import { useAtomValue } from "@effect/atom-react";
-import { parseThreadKey, threadKey } from "@akeru/client-runtime/state/entities";
-import type { OrchestrationMessage, ScopedThreadRef } from "@akeru/contracts";
+import { parseThreadKey, threadKey } from "@isnadi/client-runtime/state/entities";
+import type { OrchestrationMessage, ScopedThreadRef } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 
 import { environmentThreadDetails } from "../../state/threads";

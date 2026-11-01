@@ -1,4 +1,4 @@
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
 
@@ -21,7 +21,7 @@ import {
 
 const bot: Bot = {
   id: "bot-akeru",
-  name: "Akeru",
+  name: "Isnadi",
   title: "Generalist",
   label: null,
   description: null,
@@ -183,7 +183,7 @@ describe("voice call UI", () => {
       />,
     );
 
-    expect(enabled).toContain('aria-label="Call Akeru"');
+    expect(enabled).toContain('aria-label="Call Isnadi"');
 
     expect(
       renderToStaticMarkup(
@@ -323,7 +323,7 @@ describe("voice call UI", () => {
       callId: "call-1",
       status: "live",
       botId: BotId.make("bot-akeru"),
-      botName: "Akeru",
+      botName: "Isnadi",
       startedAt: "2026-08-27T00:00:00.000Z",
     };
 
@@ -339,7 +339,7 @@ describe("voice call UI", () => {
           callId: "call-1",
           status: "live",
           botId: BotId.make("bot-akeru"),
-          botName: "Akeru",
+          botName: "Isnadi",
           startedAt,
         }}
         reconnecting
@@ -349,7 +349,7 @@ describe("voice call UI", () => {
       />,
     );
 
-    expect(html).toContain('aria-label="Return to call with Akeru"');
+    expect(html).toContain('aria-label="Return to call with Isnadi"');
     expect(html).toContain('aria-label="Hang up"');
     expect(html).toContain("Reconnecting");
     expect(html).toContain("1:05");
@@ -357,10 +357,10 @@ describe("voice call UI", () => {
 
   it("keeps a cancel control visible while a call starts", () => {
     const html = renderToStaticMarkup(
-      <VoiceCallStartingBarView botName="Akeru" onCancel={() => {}} />,
+      <VoiceCallStartingBarView botName="Isnadi" onCancel={() => {}} />,
     );
 
-    expect(html).toContain("Calling Akeru");
-    expect(html).toContain('aria-label="Cancel call to Akeru"');
+    expect(html).toContain("Calling Isnadi");
+    expect(html).toContain('aria-label="Cancel call to Isnadi"');
   });
 });

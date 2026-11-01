@@ -63,7 +63,7 @@ assertContains(
   "Linux desktop artifacts do not use the advertised x64 release name.",
 );
 
-assertContains(serverCli, '"akeru-bot",', "CLI publishing does not select the Akeru package.");
+assertContains(serverCli, '"isnadibot",', "CLI publishing does not select the Isnadi package.");
 
 assertContains(
   serverCli,
@@ -93,7 +93,7 @@ for (const [needle, label] of [
   ["xcrun stapler staple", "DMG ticket stapling"],
   ["codesign --verify", "app signature verification"],
   ["spctl --assess", "Gatekeeper verification"],
-  ["vp run --filter akeru-bot build", "CLI and web build"],
+  ["vp run --filter isnadibot build", "CLI and web build"],
   ["--dry-run", "CLI package dry-run"],
   ["test -f apps/server/dist/legal/LICENSE", "CLI project license"],
   ["test -f apps/server/dist/legal/THIRD_PARTY_NOTICES.md", "CLI third-party notice"],
@@ -270,8 +270,8 @@ assertOmits(
 
 assertContains(
   desktopArtifactConfig,
-  'const DESKTOP_APP_ID = "dev.leodoes.akeru"',
-  "Akeru desktop bundle identifier is missing.",
+  'const DESKTOP_APP_ID = "dev.leodoes.isnadi"',
+  "Isnadi desktop bundle identifier is missing.",
 );
 
 assertContains(
@@ -352,4 +352,4 @@ function readFromTemp(relativePath: string): string {
   return NodeFS.readFileSync(NodePath.join(tempRoot, relativePath), "utf8");
 }
 
-Effect.runSync(Console.log("Akeru release smoke checks passed."));
+Effect.runSync(Console.log("Isnadi release smoke checks passed."));

@@ -1,8 +1,8 @@
 import { Match, Predicate } from "effect";
-import type { AuthSessionState } from "@akeru/contracts";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { HostedPairingRequest } from "@akeru/shared/remote";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import type { AuthSessionState } from "@isnadi/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { HostedPairingRequest } from "@isnadi/shared/remote";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import React, { startTransition, useEffect, useRef, useState, useCallback } from "react";
 
 import {

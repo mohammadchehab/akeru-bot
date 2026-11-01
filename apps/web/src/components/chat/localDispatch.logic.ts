@@ -1,4 +1,4 @@
-import { type TurnId } from "@akeru/contracts";
+import { type TurnId } from "@isnadi/contracts";
 import type { ComposerSubmissionIntent } from "../../composer-logic";
 import { type ChatMessage, type SessionPhase, type Thread } from "../../types";
 

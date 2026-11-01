@@ -1,4 +1,4 @@
-import { ApprovalRequestId, type ScopedThreadRef } from "@akeru/contracts";
+import { ApprovalRequestId, type ScopedThreadRef } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { rosterApprovalResponseKey } from "./useRosterPendingApproval";

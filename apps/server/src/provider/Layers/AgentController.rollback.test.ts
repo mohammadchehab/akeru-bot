@@ -1,14 +1,14 @@
-import { DelegationId, type AkeruDelegationRecord } from "@akeru/contracts";
+import { DelegationId, type IsnadiDelegationRecord } from "@isnadi/contracts";
 import {
   projectionQueryFixture,
   providerRuntimeContext,
 } from "./test-support/projectionFixtures.ts";
-import type { AkeruMastraState } from "../AkeruMastraHarness.ts";
+import type { IsnadiMastraState } from "../IsnadiMastraHarness.ts";
 
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
 import type { MastraDBMessage, Session } from "@mastra/core/agent-controller";
-import { MessageId, ProviderDriverKind, ThreadId, TurnId } from "@akeru/contracts";
+import { MessageId, ProviderDriverKind, ThreadId, TurnId } from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -18,7 +18,7 @@ import * as Option from "effect/Option";
 import { assert, describe, expect, vi } from "vite-plus/test";
 import { ServerConfig } from "../../config.ts";
 import { AgentController } from "../Services/AgentController.ts";
-import { makeAkeruMastraHarness, type AkeruMastraHarness } from "../AkeruMastraHarness.ts";
+import { makeIsnadiMastraHarness, type IsnadiMastraHarness } from "../IsnadiMastraHarness.ts";
 import { type AgentControllerLiveOptions } from "./AgentController.ts";
 import * as ProjectionSnapshotQuery from "../../orchestration/Services/ProjectionSnapshotQuery.ts";
 import {
@@ -102,13 +102,13 @@ describe("AgentControllerLive", () => {
       const dispatchStarted = Promise.withResolvers<void>();
       const finishDispatch = Promise.withResolvers<void>();
       const dispatchAborted = Promise.withResolvers<void>();
-      const sessions: Session<AkeruMastraState>[] = [];
-      let harness: AkeruMastraHarness | undefined;
+      const sessions: Session<IsnadiMastraState>[] = [];
+      let harness: IsnadiMastraHarness | undefined;
       let failRestart = false;
 
       const factory: NonNullable<AgentControllerLiveOptions["makeMastraHarness"]> = (options) =>
         Effect.gen(function* () {
-          const real = yield* makeAkeruMastraHarness(options);
+          const real = yield* makeIsnadiMastraHarness(options);
           harness = real;
           yield* Effect.promise(() =>
             real.rebuildConversation!(
@@ -307,7 +307,7 @@ describe("AgentControllerLive", () => {
       const delegatedParentThreadId = ThreadId.make("thread-delegated-parent");
       const orphanThreadId = ThreadId.make("worker-thread-restricted");
 
-      const parentDelegation: AkeruDelegationRecord = {
+      const parentDelegation: IsnadiDelegationRecord = {
         delegationId: DelegationId.make("delegation-restricted"),
         parentDelegationId: null,
         parentBotId: bossBotId,

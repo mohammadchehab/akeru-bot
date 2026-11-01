@@ -1,4 +1,4 @@
-import { type EnvironmentId, type McpServerId, WS_METHODS } from "@akeru/contracts";
+import { type EnvironmentId, type McpServerId, WS_METHODS } from "@isnadi/contracts";
 import { type EnvironmentRpcInput } from "../rpc/client.ts";
 
 export type ServerUpdateStage = "downloading" | "installing" | "resuming";

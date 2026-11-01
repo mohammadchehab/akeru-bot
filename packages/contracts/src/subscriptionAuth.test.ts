@@ -175,7 +175,7 @@ describe("subscription auth contracts", () => {
               kind: "connector-failure",
               status: "open",
               botId: "bot-akeru",
-              botName: "Akeru",
+              botName: "Isnadi",
               taskOrRoutine: "Morning research",
               lastFailure: "The provider request failed.",
               nextAction: "Reconnect the provider.",

@@ -2,7 +2,7 @@ import {
   ApprovalRequestId,
   type ProviderApprovalDecision,
   type ProviderUserInputAnswers,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";

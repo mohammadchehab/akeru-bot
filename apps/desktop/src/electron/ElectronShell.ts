@@ -1,6 +1,6 @@
 import { flow } from "effect/Function";
 import * as Schema from "effect/Schema";
-import { REMOTE_CAPABLE_EDITOR_IDS, remoteSchemeForEditor } from "@akeru/contracts";
+import { REMOTE_CAPABLE_EDITOR_IDS, remoteSchemeForEditor } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -81,7 +81,7 @@ export class ElectronShell extends Context.Service<
     ) => Effect.Effect<boolean>;
     readonly copyText: (text: string) => Effect.Effect<void>;
   }
->()("@akeru/desktop/electron/ElectronShell") {}
+>()("@isnadi/desktop/electron/ElectronShell") {}
 
 export const make = ElectronShell.of({
   openExternal: (rawUrl) =>

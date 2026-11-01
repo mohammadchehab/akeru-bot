@@ -3,8 +3,8 @@ import {
   DEFAULT_PROVIDER_INTERACTION_MODE,
   ThreadId,
   ProviderInstanceId,
-} from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as NodeServices from "@effect/platform-node/NodeServices";

@@ -5,7 +5,7 @@ import {
   reportAtomCommandResult,
   settlePromise,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import type {
   AppUpdateCheckOptions,
   AppUpdateClient,

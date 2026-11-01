@@ -1,4 +1,4 @@
-import { type ThemeAppearance, type ThemeColors } from "@akeru/shared/themePalettes";
+import { type ThemeAppearance, type ThemeColors } from "@isnadi/shared/themePalettes";
 import { decodeThemeColors } from "./themeFiles";
 
 /**

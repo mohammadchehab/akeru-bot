@@ -6,7 +6,7 @@ import { compile } from "tailwindcss";
 import { readAppStyles } from "./styles.test-support";
 import { afterEach, expect, it as unitIt, vi } from "vite-plus/test";
 import {
-  AKERU_PAPER_THEME,
+  ISNADI_PAPER_THEME,
   applyThemeColorPreview,
   applyThemePalette,
   getThemeColorsForMode,
@@ -32,8 +32,8 @@ unitIt.each(["light", "dark"] as const)(
       },
     });
 
-    applyThemePalette(AKERU_PAPER_THEME.id, appearance);
-    const colors = getThemeColorsForMode(AKERU_PAPER_THEME, appearance)!;
+    applyThemePalette(ISNADI_PAPER_THEME.id, appearance);
+    const colors = getThemeColorsForMode(ISNADI_PAPER_THEME, appearance)!;
     expect(properties.get("--app-theme-terminal-scrollbar")).toBe(colors.terminalScrollbar);
     expect(properties.get("--app-theme-terminal-scrollbar-hover")).toBe(
       colors.terminalScrollbarHover,

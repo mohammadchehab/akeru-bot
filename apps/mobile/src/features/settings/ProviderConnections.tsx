@@ -11,7 +11,7 @@ import type {
   SubscriptionAuthStartResult,
   SubscriptionProviderId,
   SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   anyProviderHealthChecking,
   apiKeyStartInput,
@@ -21,12 +21,12 @@ import {
   providerConnectionLabel,
   providerUsesApiKey,
   providerSupportsBaseUrl,
-} from "@akeru/client-runtime/provider-auth";
-import { providerAccessModelNames } from "@akeru/client-runtime/provider-access";
+} from "@isnadi/client-runtime/provider-auth";
+import { providerAccessModelNames } from "@isnadi/client-runtime/provider-access";
 import {
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 
 import { AppText as Text } from "../../components/AppText";
 import { ProviderAccessSummary } from "./ProviderAccessSummary";

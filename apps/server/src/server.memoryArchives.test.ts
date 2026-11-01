@@ -2,21 +2,21 @@ import * as NodeCrypto from "node:crypto";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
-  type AkeruMemoryArchiveV2,
-  type AkeruMemoryRevision,
-  type AkeruMemoryThreadAccess,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
+  type IsnadiMemoryArchiveV2,
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryThreadAccess,
   BotId,
   MessageId,
   ProjectId,
   ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -57,7 +57,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(exportError._tag, "AkeruMemoryOperationError");
+      assert.equal(exportError._tag, "IsnadiMemoryOperationError");
 
       const invalidArchive = {
         schemaVersion: 2,
@@ -83,7 +83,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(previewError._tag, "AkeruMemoryOperationError");
+      assert.equal(previewError._tag, "IsnadiMemoryOperationError");
 
       const applyError = yield* Effect.flip(
         Effect.scoped(
@@ -99,7 +99,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(applyError._tag, "AkeruMemoryOperationError");
+      assert.equal(applyError._tag, "IsnadiMemoryOperationError");
 
       // Existing V3 memory.documents.* methods remain available while T17
       // migrates the client to the durable archive RPCs.
@@ -111,7 +111,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(v3Error._tag, "AkeruMemoryOperationError");
+      assert.equal(v3Error._tag, "IsnadiMemoryOperationError");
 
       // A read-scoped token can export and preview, while apply requires the
       // operate scope declared by RpcAuthorization.
@@ -159,8 +159,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const foreignBotId = BotId.make("bot-memory-other");
       const foreignThreadId = ThreadId.make("thread-memory-other");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/memory-archive";
       let repositoryRef: EntityMemoryRepositoryShape | undefined;
 
@@ -178,8 +178,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       });
 
       const access = (
-        overrides: Partial<AkeruMemoryThreadAccess> = {},
-      ): AkeruMemoryThreadAccess => ({
+        overrides: Partial<IsnadiMemoryThreadAccess> = {},
+      ): IsnadiMemoryThreadAccess => ({
         tenantId,
         userId,
         threadId,
@@ -195,18 +195,18 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
 
       const threadRevision = (
         id: string,
-        overrides: Partial<AkeruMemoryRevision> = {},
-      ): AkeruMemoryRevision => ({
-        id: AkeruMemoryId.make(id),
-        rootId: AkeruMemoryRootId.make(id),
+        overrides: Partial<IsnadiMemoryRevision> = {},
+      ): IsnadiMemoryRevision => ({
+        id: IsnadiMemoryId.make(id),
+        rootId: IsnadiMemoryRootId.make(id),
         revision: 1,
         partition: {
           tenantId,
           scope: "thread",
-          partitionId: AkeruMemoryPartitionId.make(threadId),
+          partitionId: IsnadiMemoryPartitionId.make(threadId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: { marker: id },
         fact: `WS durable memory marker ${id}`,
@@ -233,7 +233,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         partition: {
           tenantId,
           scope: "bot",
-          partitionId: AkeruMemoryPartitionId.make(botId),
+          partitionId: IsnadiMemoryPartitionId.make(botId),
         },
         entityKind: "bot",
         sourceThreadId: null,
@@ -441,9 +441,9 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       // archive keeps a valid manifest so the failure is authorization, not a
       // checksum error.
       const forgeArchive = (
-        overrides: Partial<AkeruMemoryArchiveV2>,
-        revisionPatch?: (revision: AkeruMemoryRevision) => AkeruMemoryRevision,
-      ): AkeruMemoryArchiveV2 => {
+        overrides: Partial<IsnadiMemoryArchiveV2>,
+        revisionPatch?: (revision: IsnadiMemoryRevision) => IsnadiMemoryRevision,
+      ): IsnadiMemoryArchiveV2 => {
         const revisions = archive.revisions.map(({ revision }) => {
           const next = revisionPatch ? revisionPatch(revision) : revision;
 
@@ -496,12 +496,12 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         };
       };
 
-      const mismatchedArchives: ReadonlyArray<AkeruMemoryArchiveV2> = [
+      const mismatchedArchives: ReadonlyArray<IsnadiMemoryArchiveV2> = [
         forgeArchive({ anchorThreadId: foreignThreadId }, (revision) => ({
           ...revision,
           partition: {
             ...revision.partition,
-            partitionId: AkeruMemoryPartitionId.make(foreignThreadId),
+            partitionId: IsnadiMemoryPartitionId.make(foreignThreadId),
           },
           sourceThreadId: foreignThreadId,
         })),
@@ -510,10 +510,10 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
           ...revision,
           partition: {
             ...revision.partition,
-            partitionId: AkeruMemoryPartitionId.make(foreignProjectId),
+            partitionId: IsnadiMemoryPartitionId.make(foreignProjectId),
           },
           entityKind: "project" as const,
-          entityId: AkeruMemoryEntityId.make(foreignProjectId),
+          entityId: IsnadiMemoryEntityId.make(foreignProjectId),
         })),
       ];
 
@@ -530,7 +530,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
           ),
         );
 
-        assert.equal(previewError._tag, "AkeruMemoryOperationError");
+        assert.equal(previewError._tag, "IsnadiMemoryOperationError");
       }
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
@@ -541,8 +541,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const threadId = ThreadId.make("thread-memory-clear");
       const botId = BotId.make("bot-memory-clear");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/memory-clear";
       const cleared: Array<ThreadId> = [];
       const botWrites: Array<string> = [];
@@ -568,7 +568,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         respondingBotId: null,
       });
 
-      const access: AkeruMemoryThreadAccess = {
+      const access: IsnadiMemoryThreadAccess = {
         tenantId,
         userId,
         threadId,
@@ -581,17 +581,17 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         groupMemberBotIds: [],
       };
 
-      const revision = (id: string, scope: "thread" | "bot"): AkeruMemoryRevision => ({
-        id: AkeruMemoryId.make(id),
-        rootId: AkeruMemoryRootId.make(id),
+      const revision = (id: string, scope: "thread" | "bot"): IsnadiMemoryRevision => ({
+        id: IsnadiMemoryId.make(id),
+        rootId: IsnadiMemoryRootId.make(id),
         revision: 1,
         partition: {
           tenantId,
           scope,
-          partitionId: AkeruMemoryPartitionId.make(scope === "thread" ? threadId : botId),
+          partitionId: IsnadiMemoryPartitionId.make(scope === "thread" ? threadId : botId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: {},
         fact: `Durable fact ${id}`,

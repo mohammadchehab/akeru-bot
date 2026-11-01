@@ -1,14 +1,14 @@
 # External channels
 
-External channels connect a messaging conversation to normal Akeru orchestration. A channel adapter never calls a provider agent directly.
+External channels connect a messaging conversation to normal Isnadi orchestration. A channel adapter never calls a provider agent directly.
 
 ## Durable model
 
 A reusable connection profile contains safe display data. Credentials live in the environment secret store. A bot binding selects the provider, connection, and project.
 
-An external conversation maps to a deterministic Akeru thread using the bot, project, provider, and provider conversation identity. A provider message identity derives the turn command and message identities. The orchestration command receipt makes repeated delivery idempotent across process restarts.
+An external conversation maps to a deterministic Isnadi thread using the bot, project, provider, and provider conversation identity. A provider message identity derives the turn command and message identities. The orchestration command receipt makes repeated delivery idempotent across process restarts.
 
-The Akeru thread is the conversation. A turn is one unit of work. There is no channel session model or separate external inbox.
+The Isnadi thread is the conversation. A turn is one unit of work. There is no channel session model or separate external inbox.
 
 ## Runtime boundary
 
@@ -21,27 +21,27 @@ The Akeru thread is the conversation. A turn is one unit of work. There is no ch
 - sender identity and display name;
 - supported text content.
 
-The runtime dispatches `thread.create` when the deterministic thread does not exist, then dispatches `thread.turn.start`. Provider selection, tools, memory, permission mode, usage limits, delegation, checkpoints, and projections follow the normal Akeru path.
+The runtime dispatches `thread.create` when the deterministic thread does not exist, then dispatches `thread.turn.start`. Provider selection, tools, memory, permission mode, usage limits, delegation, checkpoints, and projections follow the normal Isnadi path.
 
 After a channel-originated turn completes, provider runtime ingestion resolves the final owner reply and queues external delivery. `ChannelDeliveryStore` claims delivery before provider I/O. Bot binding recovery metadata stays bounded and does not replace the delivery store.
 
 ## Delivery recovery
 
-The delivery store retains an unfinished claim when provider acceptance is unknown. Akeru does not retry that post automatically, including after reconnect. A fixed binding warning exposes the unresolved state without exposing provider error details. Confirmed message IDs in the binding are limited to 128; the delivery store remains authoritative after an ID leaves that list.
+The delivery store retains an unfinished claim when provider acceptance is unknown. Isnadi does not retry that post automatically, including after reconnect. A fixed binding warning exposes the unresolved state without exposing provider error details. Confirmed message IDs in the binding are limited to 128; the delivery store remains authoritative after an ID leaves that list.
 
 `sendChannelMessage` mirrors each delivery transition onto the assistant message as `channelDelivery` (`pending`, `sent`, `failed`, `unknown`) through the internal `thread.channel-delivery.set` command. On startup, restore reconciliation marks each still-`requested` claim `unknown` when its projected state is `pending` or missing, and a post that lands before its mark-sent write fails records `sent` before the original error propagates. The projector and `projection_thread_messages.channel_delivery` column both carry the state, and the snapshot query left-joins `channel_deliveries` so older databases that lack the projected field still read `requested` as `pending` and `sent` as `sent`. Web and mobile render the state under each channel-originated reply via `channelDeliveryLabel` in `channelOriginPresentation.ts`.
 
-External replies gain an "Open in Akeru" footer only when the operator sets an explicit public origin (`--public-origin` or `T3CODE_PUBLIC_ORIGIN`). A `--host` bind address is never used: publishing a LAN or tailnet bind into a third-party chat would leak an address that is dead or private outside that network. The value is never read from browser origins or request headers. The link targets `/bots/<botId>` on that origin.
+External replies gain an "Open in Isnadi" footer only when the operator sets an explicit public origin (`--public-origin` or `T3CODE_PUBLIC_ORIGIN`). A `--host` bind address is never used: publishing a LAN or tailnet bind into a third-party chat would leak an address that is dead or private outside that network. The value is never read from browser origins or request headers. The link targets `/bots/<botId>` on that origin.
 
 The shipped Slack, Discord, and Telegram post wrappers recognize specific structured rejection errors. Only a rejection that proves no text was accepted releases a claim for retry. Slack SDK request retries are disabled so an earlier accepted attempt cannot be hidden by a later rejection.
 
-WhatsApp can fail after accepting an earlier text chunk, and its adapter does not retain enough structured error data to prove rejection. Photon has internal retries that Akeru cannot classify as unaccepted. These adapters keep all post errors ambiguous. This is not an exactly-once delivery guarantee.
+WhatsApp can fail after accepting an earlier text chunk, and its adapter does not retain enough structured error data to prove rejection. Photon has internal retries that Isnadi cannot classify as unaccepted. These adapters keep all post errors ambiguous. This is not an exactly-once delivery guarantee.
 
 ## Conversation policy
 
-Telegram, iMessage, and WhatsApp accept direct messages only. Slack and Discord accept direct messages and direct bot mentions in platform threads. Discord passes empty `mentionRoleIds` and `respondToChannelIds` and disables global mentions, so ambient `DISCORD_*` environment variables cannot widen the policy. A first Discord mention outside a thread creates a platform thread on that message. Slack connect probes the app-level token with `apps.connections.open` before saving the binding. Only a Slack auth error (`invalid_auth`, `not_authed`, `token_revoked`, and similar) fails with the `credentials` category. Network failures, HTTP error pages, and other Slack errors fail with "Slack could not be reached" and the `network` category. After the first Slack or Discord mention, the adapter subscribes to that platform thread. Later replies continue the same Akeru thread.
+Telegram, iMessage, and WhatsApp accept direct messages only. Slack and Discord accept direct messages and direct bot mentions in platform threads. Discord passes empty `mentionRoleIds` and `respondToChannelIds` and disables global mentions, so ambient `DISCORD_*` environment variables cannot widen the policy. A first Discord mention outside a thread creates a platform thread on that message. Slack connect probes the app-level token with `apps.connections.open` before saving the binding. Only a Slack auth error (`invalid_auth`, `not_authed`, `token_revoked`, and similar) fails with the `credentials` category. Network failures, HTTP error pages, and other Slack errors fail with "Slack could not be reached" and the `network` category. After the first Slack or Discord mention, the adapter subscribes to that platform thread. Later replies continue the same Isnadi thread.
 
-External senders do not become paired people or in-app group members. The assigned bot remains the only external reply owner. It can use normal Akeru delegation, but child bots and provider subagents do not post to the external channel. Finished delegated work reaches the channel only through the assigned bot's next turn. Akeru starts no follow-up turn when the work finishes, so the external sender sees the result in the reply to their next message. Channel turns receive those results as plain text; see [Channel turns](delegation.md#channel-turns).
+External senders do not become paired people or in-app group members. The assigned bot remains the only external reply owner. It can use normal Isnadi delegation, but child bots and provider subagents do not post to the external channel. Finished delegated work reaches the channel only through the assigned bot's next turn. Isnadi starts no follow-up turn when the work finishes, so the external sender sees the result in the reply to their next message. Channel turns receive those results as plain text; see [Channel turns](delegation.md#channel-turns).
 
 ## Quiet status signals
 
@@ -72,7 +72,7 @@ A `ChannelBinding` reports health through `status`, `lastError`, `failureCategor
 
 `watchTransportExit` persists `needs-reconnect` with the `network` category when a transport that exposes `settled` stops on its own. Today that is the Discord and Photon gateway listeners. The `bot.update` it dispatches pushes the change to every subscribed client, so a dead channel stops reading as connected without a refresh. A disconnect or replacement retires the transport first, so its exit writes nothing. Telegram, Slack, and WhatsApp transports do not report an exit; their health changes only through commands, restore, and the read-time check above.
 
-`channelRepairAction` in `@akeru/client-runtime/channel-presentation` maps status plus category to one repair: wait, connect, reconnect, update credentials, choose a project, check delivery, or set a public URL. For a `connected` binding it offers update credentials for `credentials`, reconnect for `network` or `restore`, and check delivery for `delivery-unknown`. Clients should render that action instead of interpreting `lastError`.
+`channelRepairAction` in `@isnadi/client-runtime/channel-presentation` maps status plus category to one repair: wait, connect, reconnect, update credentials, choose a project, check delivery, or set a public URL. For a `connected` binding it offers update credentials for `credentials`, reconnect for `network` or `restore`, and check delivery for `delivery-unknown`. Clients should render that action instead of interpreting `lastError`.
 
 Web renders health through `apps/web/src/components/settings/ChannelStatus.tsx`, shared by Settings > Bot channels and the bot Channels sheet. `ChannelStatusBadge` names the state, `ChannelStatusNotice` shows the fixed `lastError` text or the WhatsApp public URL explanation, and `ChannelRepairButton` renders the one action from `channelRepairAction`. Check delivery links to the connection's `managementUrl`, so the card hides its separate provider link for that action. Setting a public URL has no button because the client cannot fix it. The notice shows the webhook URL only when the connection profile carries a server-built `webhookUrl`; the web reads that field optionally and never derives it from the browser origin, which may be a private address.
 
@@ -114,7 +114,7 @@ Per-provider channel work, per-connection operations, connection settings, and p
 
 Every new `channel.attach` command names a live project explicitly. The server validates that the project is live before starting the provider runtime, so channel turns cannot silently move between workspaces. Existing bindings without a project remain readable and are shown as needing confirmation; operators can use `channel.change-project` to select a replacement. If a selected project is deleted or unavailable, the binding becomes `blocked` with the repair message “Choose another project” and inbound replies remain blocked until reassigned.
 
-`channel.change-project` validates the target project, the binding, saved credentials, and identity availability before it stops the running runtime. If the new project fails to start, the server restarts the previous project when that binding was connected. If neither starts, the binding stays on its previous project with a failed or blocked status, so it is never half-switched. Clients share the picker rules in `@akeru/client-runtime/channel-presentation`: `channelBindingNeedsProject`, `channelPickerProjectId` (explicit choice, then the running project, then the `defaultProjectIdForBot` hint), and `canChangeChannelProject`. Web Settings, the bot Channels sheet, and the mobile chat Channels section all repair through `botEnvironment.channels.changeProject`.
+`channel.change-project` validates the target project, the binding, saved credentials, and identity availability before it stops the running runtime. If the new project fails to start, the server restarts the previous project when that binding was connected. If neither starts, the binding stays on its previous project with a failed or blocked status, so it is never half-switched. Clients share the picker rules in `@isnadi/client-runtime/channel-presentation`: `channelBindingNeedsProject`, `channelPickerProjectId` (explicit choice, then the running project, then the `defaultProjectIdForBot` hint), and `canChangeChannelProject`. Web Settings, the bot Channels sheet, and the mobile chat Channels section all repair through `botEnvironment.channels.changeProject`.
 
 ## WhatsApp reachability
 

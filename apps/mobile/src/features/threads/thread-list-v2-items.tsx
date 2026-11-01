@@ -1,8 +1,11 @@
 import { Predicate } from "effect";
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import type { EnvironmentThreadSearchMatch } from "@akeru/client-runtime/state/thread-search";
-import { canSnooze, resolveSnoozePresets } from "@akeru/client-runtime/state/thread-settled";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
+import type { EnvironmentThreadSearchMatch } from "@isnadi/client-runtime/state/thread-search";
+import { canSnooze, resolveSnoozePresets } from "@isnadi/client-runtime/state/thread-settled";
 import type { MenuAction } from "@react-native-menu/menu";
 import { memo, useCallback, useEffect, useMemo, useState, type ComponentProps } from "react";
 import { Alert, Pressable, useWindowDimensions, View } from "react-native";

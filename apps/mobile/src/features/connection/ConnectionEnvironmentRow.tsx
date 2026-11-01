@@ -1,8 +1,8 @@
 import { useMobileI18n } from "../../lib/i18n";
 import { SymbolView } from "../../components/AppSymbol";
-import { translateConnectionStatus } from "@akeru/client-runtime/i18n";
-import type { AtomCommandResult } from "@akeru/client-runtime/state/runtime";
-import type { EnvironmentId } from "@akeru/contracts";
+import { translateConnectionStatus } from "@isnadi/client-runtime/i18n";
+import type { AtomCommandResult } from "@isnadi/client-runtime/state/runtime";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { useCallback, useState } from "react";

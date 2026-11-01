@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
 
 /**
  * One configured codex instance with one default model keeps model resolution

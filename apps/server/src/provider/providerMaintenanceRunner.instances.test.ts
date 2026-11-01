@@ -1,12 +1,12 @@
 import * as Predicate from "effect/Predicate";
 import { describe } from "vite-plus/test";
 import { it, assert } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { ChildProcessSpawner } from "effect/unstable/process";
-import { HostProcessEnvironment, HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { SpawnExecutableResolution } from "@akeru/shared/shell";
+import { HostProcessEnvironment, HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { SpawnExecutableResolution } from "@isnadi/shared/shell";
 import { providerMaintenanceCapabilities } from "./providerMaintenance.ts";
 import { makeproviderMaintenanceRunnerTestSupport } from "./test-support/providerMaintenanceRunner.ts";
 

@@ -2,21 +2,21 @@ import * as Match from "effect/Match";
 import * as NodeCrypto from "node:crypto";
 
 import {
-  AkeruMemoryPartitionId,
-  type AkeruMemoryPartition,
-  type AkeruMemoryThreadAccess,
-  type AkeruMemoryVisibility,
+  IsnadiMemoryPartitionId,
+  type IsnadiMemoryPartition,
+  type IsnadiMemoryThreadAccess,
+  type IsnadiMemoryVisibility,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
-export interface AuthorizedMemoryPartition extends AkeruMemoryPartition {
-  readonly visibility: AkeruMemoryVisibility;
+export interface AuthorizedMemoryPartition extends IsnadiMemoryPartition {
+  readonly visibility: IsnadiMemoryVisibility;
 }
 
-export class AkeruMemoryAccessDenied extends Schema.TaggedErrorClass<AkeruMemoryAccessDenied>()(
-  "AkeruMemoryAccessDenied",
+export class IsnadiMemoryAccessDenied extends Schema.TaggedErrorClass<IsnadiMemoryAccessDenied>()(
+  "IsnadiMemoryAccessDenied",
   { reason: Schema.String },
 ) {
   override get message(): string {
@@ -25,26 +25,26 @@ export class AkeruMemoryAccessDenied extends Schema.TaggedErrorClass<AkeruMemory
 }
 
 const partition = (
-  input: AkeruMemoryThreadAccess,
-  scope: AkeruMemoryPartition["scope"],
+  input: IsnadiMemoryThreadAccess,
+  scope: IsnadiMemoryPartition["scope"],
   partitionId: string,
-  visibility: AkeruMemoryVisibility,
+  visibility: IsnadiMemoryVisibility,
 ): AuthorizedMemoryPartition => ({
   tenantId: input.tenantId,
   scope,
-  partitionId: AkeruMemoryPartitionId.make(partitionId),
+  partitionId: IsnadiMemoryPartitionId.make(partitionId),
   visibility,
 });
 
-export function deriveAkeruWorkspaceId(projectId: ProjectId): AkeruMemoryPartitionId {
-  return AkeruMemoryPartitionId.make(`workspace:${projectId}`);
+export function deriveIsnadiWorkspaceId(projectId: ProjectId): IsnadiMemoryPartitionId {
+  return IsnadiMemoryPartitionId.make(`workspace:${projectId}`);
 }
 
-const workspacePartitions = (input: AkeruMemoryThreadAccess) => {
+const workspacePartitions = (input: IsnadiMemoryThreadAccess) => {
   const canonical = partition(
     input,
     "workspace",
-    deriveAkeruWorkspaceId(input.projectId),
+    deriveIsnadiWorkspaceId(input.projectId),
     "shared",
   );
 
@@ -62,8 +62,8 @@ const workspacePartitions = (input: AkeruMemoryThreadAccess) => {
 };
 
 export function resolveAuthorizedMemoryPartitions(
-  input: AkeruMemoryThreadAccess,
-): Effect.Effect<ReadonlyArray<AuthorizedMemoryPartition>, AkeruMemoryAccessDenied> {
+  input: IsnadiMemoryThreadAccess,
+): Effect.Effect<ReadonlyArray<AuthorizedMemoryPartition>, IsnadiMemoryAccessDenied> {
   if (input.groupId !== null) {
     const respondingBotId = input.respondingBotId ?? input.botId;
 
@@ -72,7 +72,7 @@ export function resolveAuthorizedMemoryPartitions(
       !input.groupMemberBotIds.some((memberBotId) => memberBotId === respondingBotId)
     ) {
       return Effect.fail(
-        new AkeruMemoryAccessDenied({
+        new IsnadiMemoryAccessDenied({
           reason: "The responding bot is not a current member of this thread's group.",
         }),
       );
@@ -105,9 +105,9 @@ export function resolveAuthorizedMemoryPartitions(
 }
 
 export function resolveMemoryArchivePartitions(
-  input: AkeruMemoryThreadAccess,
+  input: IsnadiMemoryThreadAccess,
   target: "thread" | "bot" | "project" | "workspace" | "all",
-): Effect.Effect<ReadonlyArray<AuthorizedMemoryPartition>, AkeruMemoryAccessDenied> {
+): Effect.Effect<ReadonlyArray<AuthorizedMemoryPartition>, IsnadiMemoryAccessDenied> {
   return resolveAuthorizedMemoryPartitions(input).pipe(
     Effect.flatMap((partitions) => {
       const selected = Match.value(target).pipe(
@@ -129,7 +129,7 @@ export function resolveMemoryArchivePartitions(
       return selected.length > 0
         ? Effect.succeed(selected)
         : Effect.fail(
-            new AkeruMemoryAccessDenied({
+            new IsnadiMemoryAccessDenied({
               reason: `The ${target} memory target is not available to this thread.`,
             }),
           );

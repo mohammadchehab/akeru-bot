@@ -1,5 +1,5 @@
 import { assert, it } from "@effect/vitest";
-import { RoutineRunId, ThreadId } from "@akeru/contracts";
+import { RoutineRunId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as SqlClient from "effect/unstable/sql/SqlClient";

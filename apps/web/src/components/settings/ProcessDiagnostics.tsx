@@ -1,4 +1,4 @@
-import type { ServerProcessDiagnosticsEntry, ServerProcessSignal } from "@akeru/contracts";
+import type { ServerProcessDiagnosticsEntry, ServerProcessSignal } from "@isnadi/contracts";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { Button } from "../ui/button";

@@ -1,9 +1,9 @@
-import { type AkeruWorkspaceState, type AkeruRemoteSession } from "../BotWorkspaceTypes.ts";
+import { type IsnadiWorkspaceState, type IsnadiRemoteSession } from "../BotWorkspaceTypes.ts";
 import { credential } from "../BotWorkspaceLifecycle.ts";
 
 export function vercelWorkspaceState(
   status: import("@vercel/sandbox").Sandbox["status"],
-): AkeruWorkspaceState {
+): IsnadiWorkspaceState {
   if (status === "running") return "running";
 
   if (status === "failed" || status === "aborted") return "missing";
@@ -14,7 +14,7 @@ export function vercelWorkspaceState(
 export function vercel(
   initial: import("@vercel/sandbox").Sandbox,
   environment: Readonly<Record<string, string>> = {},
-): AkeruRemoteSession {
+): IsnadiRemoteSession {
   let sandbox = initial;
 
   return {

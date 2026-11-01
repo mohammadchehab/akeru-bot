@@ -5,8 +5,8 @@ import {
   type OrchestrationSession,
   type OrchestrationThreadShell,
   type RuntimeMode,
-} from "@akeru/contracts";
-import { stripWorktreeBranchPrefix, WORKTREE_BRANCH_PREFIX } from "@akeru/shared/git";
+} from "@isnadi/contracts";
+import { stripWorktreeBranchPrefix, WORKTREE_BRANCH_PREFIX } from "@isnadi/shared/git";
 import * as Cause from "effect/Cause";
 import * as Duration from "effect/Duration";
 import * as Schema from "effect/Schema";

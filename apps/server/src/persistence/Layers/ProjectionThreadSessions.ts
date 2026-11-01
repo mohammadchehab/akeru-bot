@@ -5,7 +5,7 @@ import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 import * as Struct from "effect/Struct";
 
-import { McpServerId } from "@akeru/contracts";
+import { McpServerId } from "@isnadi/contracts";
 
 import { toPersistenceSqlError } from "../Errors.ts";
 

@@ -1,4 +1,4 @@
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { describe, it, assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
@@ -11,9 +11,9 @@ import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 import * as CodexErrors from "effect-codex-app-server/errors";
-import { type ServerSettings as ContractServerSettings } from "@akeru/contracts";
+import { type ServerSettings as ContractServerSettings } from "@isnadi/contracts";
 import { ChildProcessSpawner } from "effect/unstable/process";
-import { deepMerge } from "@akeru/shared/Struct";
+import { deepMerge } from "@isnadi/shared/Struct";
 import { checkCodexProviderStatus } from "./CodexProvider.ts";
 import * as ModelCatalog from "../ModelCatalog.ts";
 import * as OpenCodeRuntime from "../opencodeRuntime.ts";
@@ -370,7 +370,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
               assert.strictEqual(codexPersonal?.installed, true);
               assert.strictEqual(
                 codexPersonal?.message,
-                "This Codex instance needs OPENAI_API_KEY for the Akeru harness.",
+                "This Codex instance needs OPENAI_API_KEY for the Isnadi harness.",
               );
               assert.ok((codexPersonal?.models.length ?? 0) > 0);
             }).pipe(Effect.provide(runtimeServices));

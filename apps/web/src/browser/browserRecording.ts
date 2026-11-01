@@ -4,7 +4,7 @@ import type {
   DesktopPreviewRecordingArtifact,
   DesktopPreviewRecordingFrame,
   ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { Atom } from "effect/unstable/reactivity";
 import { previewBridge } from "~/components/preview/previewBridge";

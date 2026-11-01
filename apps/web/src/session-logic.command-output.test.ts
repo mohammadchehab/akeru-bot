@@ -1,5 +1,5 @@
 import type * as Schema from "effect/Schema";
-import { EventId, TurnId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { EventId, TurnId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveWorkLogEntries } from "./session-logic";

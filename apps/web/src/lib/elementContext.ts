@@ -1,5 +1,5 @@
-import { type ThreadId } from "@akeru/contracts";
-import type { PickedElementPayload, PickedElementStackFrame } from "@akeru/contracts";
+import { type ThreadId } from "@isnadi/contracts";
+import type { PickedElementPayload, PickedElementStackFrame } from "@isnadi/contracts";
 
 const ELEMENT_CONTEXT_HTML_PREVIEW_LIMIT = 4000;
 

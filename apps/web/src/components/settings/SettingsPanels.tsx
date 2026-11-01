@@ -10,8 +10,8 @@ import {
   MAX_GLASS_OPACITY,
   MIN_APPEARANCE_CONTRAST,
   MIN_GLASS_OPACITY,
-} from "@akeru/contracts/settings";
-import { resolveServerBackgroundActivitySettings } from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/contracts/settings";
+import { resolveServerBackgroundActivitySettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Equal from "effect/Equal";
 import * as Exit from "effect/Exit";
 import {
@@ -42,7 +42,7 @@ import {
 } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { useI18n } from "../../i18n";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import {
   decodeProductFeedbackEndpoint,
   resetBackgroundActivitySettings,

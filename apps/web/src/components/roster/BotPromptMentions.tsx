@@ -1,6 +1,6 @@
 import { Match } from "effect";
-import type { EnvironmentId } from "@akeru/contracts";
-import { rankComposerThreadMentions } from "@akeru/shared/composerThreadMentions";
+import type { EnvironmentId } from "@isnadi/contracts";
+import { rankComposerThreadMentions } from "@isnadi/shared/composerThreadMentions";
 import { AtSignIcon, FileIcon, GlobeIcon, MessageSquareIcon, XIcon } from "lucide-react";
 import {
   type KeyboardEvent,

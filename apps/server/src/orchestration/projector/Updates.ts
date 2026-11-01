@@ -4,8 +4,8 @@ import type {
   OrchestrationEvent,
   OrchestrationGroup,
   ThreadId,
-} from "@akeru/contracts";
-import { OrchestrationMessage, OrchestrationThread } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { OrchestrationMessage, OrchestrationThread } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { toProjectorDecodeError, type OrchestrationProjectorDecodeError } from "../Errors.ts";

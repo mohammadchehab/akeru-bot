@@ -6,8 +6,8 @@ import {
   type EditorId,
   type FileManagerRevealKind,
   type LaunchEditorInput,
-} from "@akeru/contracts";
-import { isCommandAvailable, resolveSpawnCommand } from "@akeru/shared/shell";
+} from "@isnadi/contracts";
+import { isCommandAvailable, resolveSpawnCommand } from "@isnadi/shared/shell";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -53,7 +53,7 @@ export class ExternalLauncher extends Context.Service<
      */
     readonly launchEditor: (input: LaunchEditorInput) => Effect.Effect<void, ExternalLauncherError>;
   }
->()("akeru-bot/process/externalLauncher") {}
+>()("isnadibot/process/externalLauncher") {}
 
 const launchAndUnref = Effect.fn("externalLauncher.launchAndUnref")(function* (
   launch: ProcessLaunch,
@@ -196,6 +196,6 @@ export {
   ExternalLauncherUnknownEditorError,
   ExternalLauncherUnsupportedEditorError,
   isExternalLauncherError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export type { LaunchEditorInput };

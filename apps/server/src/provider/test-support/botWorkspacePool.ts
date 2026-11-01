@@ -1,6 +1,6 @@
 import { LocalFilesystem, LocalSandbox, Workspace } from "@mastra/core/workspace";
 import { vi } from "vite-plus/test";
-import type { AkeruBotWorkspace } from "../botWorkspace.ts";
+import type { IsnadiBotWorkspace } from "../botWorkspace.ts";
 
 export function makebotWorkspacePoolTestSupport() {
   const localWorkspace = () =>
@@ -9,7 +9,7 @@ export function makebotWorkspacePoolTestSupport() {
       sandbox: new LocalSandbox({ workingDirectory: process.cwd() }),
     });
 
-  function remoteWorkspace(overrides: Partial<AkeruBotWorkspace> = {}): AkeruBotWorkspace {
+  function remoteWorkspace(overrides: Partial<IsnadiBotWorkspace> = {}): IsnadiBotWorkspace {
     return {
       id: "akeru-persistent",
       provider: "tenki",

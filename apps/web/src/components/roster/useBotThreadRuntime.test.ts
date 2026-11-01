@@ -1,5 +1,5 @@
 import type { RuntimeThreadFixture } from "../test-support/fixtures";
-import { ApprovalRequestId, EnvironmentId, ThreadId } from "@akeru/contracts";
+import { ApprovalRequestId, EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { reactHookHarness as hooks } from "../../test/reactHookHarness";

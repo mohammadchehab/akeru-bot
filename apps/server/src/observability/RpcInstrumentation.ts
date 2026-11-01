@@ -1,5 +1,5 @@
 import type { RawMetricAttributes } from "./Attributes.ts";
-import { WS_METHODS } from "@akeru/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";

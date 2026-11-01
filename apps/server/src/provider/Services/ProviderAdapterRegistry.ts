@@ -19,7 +19,7 @@
  *
  * @module ProviderAdapterRegistry
  */
-import type { ProviderDriverKind, ProviderInstanceId, ServerProvider } from "@akeru/contracts";
+import type { ProviderDriverKind, ProviderInstanceId, ServerProvider } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as PubSub from "effect/PubSub";
@@ -117,4 +117,4 @@ export interface ProviderAdapterRegistryShape {
 export class ProviderAdapterRegistry extends Context.Service<
   ProviderAdapterRegistry,
   ProviderAdapterRegistryShape
->()("akeru-bot/provider/Services/ProviderAdapterRegistry") {}
+>()("isnadibot/provider/Services/ProviderAdapterRegistry") {}

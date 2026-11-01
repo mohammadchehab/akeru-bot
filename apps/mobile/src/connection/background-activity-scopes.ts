@@ -1,5 +1,5 @@
-import type { EnvironmentRpcSubscriptionObservation } from "@akeru/client-runtime/rpc";
-import { type BackgroundScope, EnvironmentId, WS_METHODS } from "@akeru/contracts";
+import type { EnvironmentRpcSubscriptionObservation } from "@isnadi/client-runtime/rpc";
+import { type BackgroundScope, EnvironmentId, WS_METHODS } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 interface RetainedScope {

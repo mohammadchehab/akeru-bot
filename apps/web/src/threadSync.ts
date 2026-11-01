@@ -1,4 +1,4 @@
-import type { EnvironmentThreadStatus } from "@akeru/client-runtime/state/threads";
+import type { EnvironmentThreadStatus } from "@isnadi/client-runtime/state/threads";
 
 export type ThreadSyncPhase = "loading" | "syncing";
 

@@ -5,7 +5,7 @@ import type {
   ComputerEvent,
   ComputerSession,
   ComputerState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   initialComputerViewerState,

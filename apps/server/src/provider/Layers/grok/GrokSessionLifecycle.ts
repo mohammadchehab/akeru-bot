@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
 import type * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawner";
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 import type { AcpSessionRuntimeOptions } from "../../acp/AcpSessionRuntime.ts";
 import {
   ApprovalRequestId,
@@ -14,7 +14,7 @@ import {
   RuntimeRequestId,
   type ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 
 import * as Deferred from "effect/Deferred";
@@ -221,7 +221,7 @@ export function createGrokSessionLifecycle(deps: {
           childProcessSpawner: deps.childProcessSpawner,
           cwd,
           ...(resumeSessionId ? { resumeSessionId } : {}),
-          clientInfo: { name: "akeru-bot", version: "0.0.0" },
+          clientInfo: { name: "isnadibot", version: "0.0.0" },
           ...(mcpServers.length > 0 ? { mcpServers } : {}),
           ...acpNativeLoggers,
         }).pipe(

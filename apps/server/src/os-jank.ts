@@ -1,12 +1,12 @@
-import { PRODUCT_HOME_DIRNAME } from "@akeru/shared/devHome";
-import { HostProcessEnvironment, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { resolveProductHomeDir } from "@isnadi/shared/productHome";
+import { HostProcessEnvironment, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import {
   listLoginShellCandidates,
   mergePathEntries,
   readPathFromLoginShell,
   readPathFromLaunchctl,
   resolveWindowsEnvironment,
-} from "@akeru/shared/shell";
+} from "@isnadi/shared/shell";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
@@ -113,10 +113,10 @@ export const expandHomePath = Effect.fn(function* (input: string) {
 });
 
 export const resolveBaseDir = Effect.fn(function* (raw: string | undefined) {
-  const { join, resolve } = yield* Path.Path;
+  const { resolve } = yield* Path.Path;
 
   if (!raw || raw.trim().length === 0) {
-    return join(NodeOS.homedir(), PRODUCT_HOME_DIRNAME);
+    return yield* resolveProductHomeDir(NodeOS.homedir());
   }
 
   return resolve(yield* expandHomePath(raw.trim()));

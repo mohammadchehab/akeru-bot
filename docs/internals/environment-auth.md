@@ -1,8 +1,8 @@
 # Environment authentication
 
-> For maintainers. Using Akeru Bot? See [remote access](../user/remote-access.md).
+> For maintainers. Using IsnadiBot? See [remote access](../user/remote-access.md).
 
-Each Akeru Bot server authenticates its own clients. There is no hosted account or third-party trust
+Each IsnadiBot server authenticates its own clients. There is no hosted account or third-party trust
 boundary.
 
 ## Scopes

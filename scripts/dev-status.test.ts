@@ -34,7 +34,7 @@ function fixture(linked = true) {
 }
 
 function writeRuntime(root: string, extra = {}) {
-  const dir = NodePath.join(root, ".akeru", "userdata");
+  const dir = NodePath.join(root, ".isnadi", "userdata");
   NodeFS.mkdirSync(dir, { recursive: true });
   const file = NodePath.join(dir, "server-runtime.json");
   NodeFS.writeFileSync(
@@ -69,13 +69,13 @@ describe("dev status home", () => {
       const status = yield* resolveDevStatusHome({
         cwd,
         userHome: "/users/test",
-        env: { T3CODE_HOME: "/live", AKERU_HOME: "/other-live" },
+        env: { T3CODE_HOME: "/live", ISNADI_HOME: "/other-live" },
       });
 
       expect(status).toEqual({
         worktree: root,
-        home: NodePath.join(root, ".akeru"),
-        dataDir: NodePath.join(root, ".akeru/userdata"),
+        home: NodePath.join(root, ".isnadi"),
+        dataDir: NodePath.join(root, ".isnadi/userdata"),
       });
       expect(NodeFS.existsSync(status.home)).toBe(false);
     }).pipe(Effect.provide(NodeServices.layer)),
@@ -88,10 +88,10 @@ describe("dev status home", () => {
       const status = yield* resolveDevStatusHome({
         cwd: root,
         userHome: "/users/test",
-        env: { AKERU_HOME: "/ignored-by-dev-runner" },
+        env: { ISNADI_HOME: "/ignored-by-dev-runner" },
       });
 
-      expect(status.dataDir).toBe("/users/test/.akeru/dev");
+      expect(status.dataDir).toBe("/users/test/.isnadi/dev");
     }).pipe(Effect.provide(NodeServices.layer)),
   );
 
@@ -128,7 +128,7 @@ describe("dev status home", () => {
         env: {},
       });
 
-      expect(blank.dataDir).toBe(NodePath.join(linked, ".akeru/userdata"));
+      expect(blank.dataDir).toBe(NodePath.join(linked, ".isnadi/userdata"));
     }).pipe(Effect.provide(NodeServices.layer)),
   );
 });

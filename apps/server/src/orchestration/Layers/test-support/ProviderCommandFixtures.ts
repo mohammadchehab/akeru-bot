@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { type OrchestrationEvent } from "@akeru/contracts";
-import { ApprovalRequestId, DelegationId, MessageId, ProjectId, TurnId } from "@akeru/contracts";
+import { type OrchestrationEvent } from "@isnadi/contracts";
+import { ApprovalRequestId, DelegationId, MessageId, ProjectId, TurnId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import { deriveServerPaths } from "../../../config.ts";

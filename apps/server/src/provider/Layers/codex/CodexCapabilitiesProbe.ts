@@ -9,8 +9,8 @@ import * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawne
 import * as CodexClient from "effect-codex-app-server/client";
 import * as CodexSchema from "effect-codex-app-server/schema";
 import * as CodexErrors from "effect-codex-app-server/errors";
-import type { ServerProviderModel, ServerProviderSkill } from "@akeru/contracts";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import type { ServerProviderModel, ServerProviderSkill } from "@isnadi/contracts";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import { codexAppServerArgs } from "../codexLaunchArgs.ts";
 import { expandHomePath } from "../../../pathExpansion.ts";
 import packageJson from "../../../../package.json" with { type: "json" };
@@ -127,7 +127,7 @@ export function buildCodexInitializeParams(): CodexSchema.V1InitializeParams {
   return {
     clientInfo: {
       name: "akeru_bot_desktop",
-      title: "Akeru Bot Desktop",
+      title: "IsnadiBot Desktop",
       version: packageJson.version,
     },
     capabilities: {
@@ -196,7 +196,7 @@ export const probeCodexAppServerProvider = Effect.fn("probeCodexAppServerProvide
     const initialize = yield* client.request("initialize", {
       clientInfo: {
         name: "akeru_bot_desktop",
-        title: "Akeru Bot Desktop",
+        title: "IsnadiBot Desktop",
         version: "0.1.0",
       },
       capabilities: {

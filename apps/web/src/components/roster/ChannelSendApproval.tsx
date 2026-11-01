@@ -6,8 +6,8 @@ import type {
   MessageId,
   OrchestrationMessage,
   ThreadId,
-} from "@akeru/contracts";
-import { channelDeliveryLabel } from "@akeru/client-runtime/channel-origin-presentation";
+} from "@isnadi/contracts";
+import { channelDeliveryLabel } from "@isnadi/client-runtime/channel-origin-presentation";
 import { useState } from "react";
 
 import { useI18n } from "~/i18n";

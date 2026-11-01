@@ -1,4 +1,4 @@
-import { createAssetEnvironmentAtoms } from "@akeru/client-runtime/state/assets";
+import { createAssetEnvironmentAtoms } from "@isnadi/client-runtime/state/assets";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

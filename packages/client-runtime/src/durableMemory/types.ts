@@ -1,9 +1,9 @@
 import {
-  type AkeruMemoryApprovalState,
-  type AkeruMemoryArchiveTarget,
-  type AkeruMemoryDeletionState,
-  type AkeruMemoryScope,
-} from "@akeru/contracts";
+  type IsnadiMemoryApprovalState,
+  type IsnadiMemoryArchiveTarget,
+  type IsnadiMemoryDeletionState,
+  type IsnadiMemoryScope,
+} from "@isnadi/contracts";
 import {
   createTranslator,
   type MessageKey,
@@ -24,7 +24,7 @@ export interface DurableMemoryTranslator {
 export const englishTranslator: DurableMemoryTranslator = createTranslator("en");
 
 /** Durable-archive scopes a client offers. Workspace stays internal to project-level memory. */
-export type DurableMemoryExportScope = Exclude<AkeruMemoryArchiveTarget, "workspace">;
+export type DurableMemoryExportScope = Exclude<IsnadiMemoryArchiveTarget, "workspace">;
 
 export const DURABLE_MEMORY_EXPORT_SCOPES: ReadonlyArray<{
   readonly scope: DurableMemoryExportScope;
@@ -46,7 +46,7 @@ export const DURABLE_MEMORY_INSPECT_SCOPES = DURABLE_MEMORY_EXPORT_SCOPES.filter
   (option) => option.scope !== "all",
 );
 
-export const DURABLE_MEMORY_SCOPE_LABELS: Readonly<Record<AkeruMemoryScope, MessageKey>> = {
+export const DURABLE_MEMORY_SCOPE_LABELS: Readonly<Record<IsnadiMemoryScope, MessageKey>> = {
   user: "You",
   "bot-user": "Bot, about you",
   bot: "Bot",
@@ -57,7 +57,7 @@ export const DURABLE_MEMORY_SCOPE_LABELS: Readonly<Record<AkeruMemoryScope, Mess
 };
 
 export const DURABLE_MEMORY_APPROVAL_LABELS: Readonly<
-  Record<AkeruMemoryApprovalState, MessageKey>
+  Record<IsnadiMemoryApprovalState, MessageKey>
 > = {
   pending: "Waiting for approval",
   approved: "Approved",
@@ -65,7 +65,7 @@ export const DURABLE_MEMORY_APPROVAL_LABELS: Readonly<
 };
 
 export const DURABLE_MEMORY_DELETION_LABELS: Readonly<
-  Record<AkeruMemoryDeletionState, MessageKey>
+  Record<IsnadiMemoryDeletionState, MessageKey>
 > = {
   active: "Active",
   tombstoned: "Forgotten",

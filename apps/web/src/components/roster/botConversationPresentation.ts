@@ -1,6 +1,6 @@
-import { channelProviderLabel as sharedChannelProviderLabel } from "@akeru/client-runtime/channel-presentation";
-import { formatDate } from "@akeru/client-runtime/i18n";
-import type { OrchestrationMessage } from "@akeru/contracts";
+import { channelProviderLabel as sharedChannelProviderLabel } from "@isnadi/client-runtime/channel-presentation";
+import { formatDate } from "@isnadi/client-runtime/i18n";
+import type { OrchestrationMessage } from "@isnadi/contracts";
 import type { RosterPresence } from "./roster.logic";
 
 export const channelProviderLabel = sharedChannelProviderLabel;

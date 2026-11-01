@@ -7,7 +7,7 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -47,7 +47,7 @@ export const resolveAutoBootstrapWelcomeTargets = Effect.gen(function* () {
   let bootstrapProjectId: ProjectId | undefined;
   let bootstrapThreadId: ThreadId | undefined;
 
-  // Akeru Bot always lands in a chat: with no active project, a bot click
+  // IsnadiBot always lands in a chat: with no active project, a bot click
   // would dead-end at the add-project wall, so first run provisions a
   // workspace from the server cwd even without the explicit flag.
   let shouldBootstrap = serverConfig.autoBootstrapProjectFromCwd;

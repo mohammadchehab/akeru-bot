@@ -3,7 +3,7 @@ import {
   type AtomCommandResult,
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { useI18n } from "../../i18n";
 import { toastManager } from "../ui/toast";
 

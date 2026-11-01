@@ -1,13 +1,13 @@
 # SQLite fixtures
 
-Load this reference when inspecting or seeding isolated Akeru Bot state. Use deterministic visual fixtures for repeatable checks; use application commands to verify business behavior.
+Load this reference when inspecting or seeding isolated IsnadiBot state. Use deterministic visual fixtures for repeatable checks; use application commands to verify business behavior.
 
 ## Repeatable visual fixtures
 
 Create a fresh empty home and seed a scenario before starting the server:
 
 ```bash
-FIXTURE_HOME=$(mktemp -d /tmp/akeru-ui.XXXXXX)
+FIXTURE_HOME=$(mktemp -d /tmp/isnadi-ui.XXXXXX)
 vp run dev:fixture --base-dir "$FIXTURE_HOME" --case populated
 vp run dev --home-dir "$FIXTURE_HOME"
 ```
@@ -16,7 +16,7 @@ Start the final command as a background task. Retain the printed home and task h
 
 Cases are `empty`, `populated`, and `edge`. The fixture command runs migrations and creates deterministic projection data without provider calls. Populated data includes a bot and completed chats; edge data adds empty states, a long title, and an archived chat.
 
-The command accepts only an empty directory or its own unused fixture directory. Repeated offline runs replace projection data and back up an existing database. After the app adds credentials, provider state, or events, create a fresh fixture home rather than resetting it. The helper refuses a running database, shared Akeru home paths, and redirected fixture state.
+The command accepts only an empty directory or its own unused fixture directory. Repeated offline runs replace projection data and back up an existing database. After the app adds credentials, provider state, or events, create a fresh fixture home rather than resetting it. The helper refuses a running database, shared Isnadi home paths, and redirected fixture state.
 
 These are display fixtures, not a coherent event history. Use the app's commands for tests of edits, persistence, projection rebuilds, or server behavior. For a data-specific defect, take a read-only `VACUUM INTO` snapshot as described in `AGENTS.md`.
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@effect/vitest";
 
-import { MessageId, type ChannelDeliveryState, type OrchestrationMessage } from "@akeru/contracts";
+import { MessageId, type ChannelDeliveryState, type OrchestrationMessage } from "@isnadi/contracts";
 import {
   channelDeliveryLabel,
   channelOriginForAssistantMessage,

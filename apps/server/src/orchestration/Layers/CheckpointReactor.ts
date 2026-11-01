@@ -1,11 +1,11 @@
-import { type OrchestrationEvent, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { type OrchestrationEvent, type ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import type * as PlatformError from "effect/PlatformError";
 import * as Stream from "effect/Stream";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import { CheckpointReactor, type CheckpointReactorShape } from "../Services/CheckpointReactor.ts";
 import { forkParked } from "../../serverActivation.ts";
 import type { CheckpointStoreError } from "../../checkpointing/Errors.ts";

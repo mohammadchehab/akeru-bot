@@ -1,6 +1,6 @@
-import { type FileManagerRevealKind } from "@akeru/contracts";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { isCommandAvailable } from "@akeru/shared/shell";
+import { type FileManagerRevealKind } from "@isnadi/contracts";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { isCommandAvailable } from "@isnadi/shared/shell";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";

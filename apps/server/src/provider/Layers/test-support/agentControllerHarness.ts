@@ -1,9 +1,9 @@
-import type { AkeruMastraHarness } from "../../AkeruMastraHarness.ts";
+import type { IsnadiMastraHarness } from "../../IsnadiMastraHarness.ts";
 import { sessionFixture } from "./partialFixtures.ts";
-import type { AkeruMastraState } from "../../AkeruMastraHarness.ts";
+import type { IsnadiMastraState } from "../../IsnadiMastraHarness.ts";
 
 import type { AgentControllerEvent, MastraDBMessage } from "@mastra/core/agent-controller";
-import { McpServerId } from "@akeru/contracts";
+import { McpServerId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { vi } from "vite-plus/test";
 import { type AgentControllerLiveOptions } from "../AgentController.ts";
@@ -50,7 +50,7 @@ export function mastraHarnessFixture() {
   const listeners = new Set<(event: AgentControllerEvent) => void>();
   let modeId = "build";
   let modelId = "openai/gpt-5.6-sol";
-  let state: AkeruMastraState = {};
+  let state: IsnadiMastraState = {};
   let resolveSend: (() => void) | undefined;
   const rejectSends: Array<(cause: unknown) => void> = [];
   let sendMessageCount = 0;
@@ -73,7 +73,7 @@ export function mastraHarnessFixture() {
   const session = sessionFixture({
     state: {
       get: () => state,
-      set: vi.fn(async (next: AkeruMastraState) => {
+      set: vi.fn(async (next: IsnadiMastraState) => {
         state = next;
       }),
     },
@@ -109,7 +109,7 @@ export function mastraHarnessFixture() {
   const deleteSession = vi.fn(async () => true);
 
   const observeExternalTurn = vi.fn(
-    async (_input: Parameters<NonNullable<AkeruMastraHarness["observeExternalTurn"]>>[0]) =>
+    async (_input: Parameters<NonNullable<IsnadiMastraHarness["observeExternalTurn"]>>[0]) =>
       undefined,
   );
 

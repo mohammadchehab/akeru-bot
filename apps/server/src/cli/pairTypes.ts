@@ -27,7 +27,7 @@ export class NoRunningServerError extends Schema.TaggedErrorClass<NoRunningServe
     return [
       "No running IsnadiBot server found.",
       ...this.checkedStatePaths.map((statePath) => `  checked ${statePath}`),
-      "Start one with `npx akeru-bot serve`.",
+      "Start one with `npx isnadibot serve`.",
     ].join("\n");
   }
 }

@@ -1,4 +1,4 @@
-import { AKERU_CREATE_ROUTINE_TOOL_NAME, ApprovalRequestId } from "@akeru/contracts";
+import { ISNADI_CREATE_ROUTINE_TOOL_NAME, ApprovalRequestId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -149,7 +149,7 @@ describe("ComposerPendingApprovalPanel", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-routine"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-08-31T00:00:00.000Z",
           detail: "Review routine",
           args: {
@@ -177,7 +177,7 @@ describe("ComposerPendingApprovalPanel", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-weekly-routine"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-08-31T00:00:00.000Z",
           args: {
             name: "Friday review",
@@ -200,7 +200,7 @@ describe("ComposerPendingApprovalPanel", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-daily-routine"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-09-27T00:00:00.000Z",
           args: {
             name: "Morning quote",
@@ -224,7 +224,7 @@ describe("ComposerPendingApprovalPanel", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-routine-empty"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-09-27T00:00:00.000Z",
           detail: "Review routine",
         }}
@@ -247,7 +247,7 @@ describe("ComposerPendingApprovalPanel", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-routine-partial"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-09-27T00:00:00.000Z",
           args: {
             name: "Morning quote",

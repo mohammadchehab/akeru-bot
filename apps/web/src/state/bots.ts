@@ -1,5 +1,5 @@
-import { createBotEnvironmentAtoms } from "@akeru/client-runtime/state/bots";
-import type { EnvironmentId, OrchestrationBot, OrchestrationGroup } from "@akeru/contracts";
+import { createBotEnvironmentAtoms } from "@isnadi/client-runtime/state/bots";
+import type { EnvironmentId, OrchestrationBot, OrchestrationGroup } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 

@@ -1,10 +1,10 @@
 import { Predicate } from "effect";
-import { threadDelegations } from "@akeru/client-runtime/delegation-presentation";
-import { botChatTimeline } from "@akeru/client-runtime/state/bot-chat-timeline";
-import { pendingMemoryApprovals } from "@akeru/client-runtime/durable-memory";
+import { threadDelegations } from "@isnadi/client-runtime/delegation-presentation";
+import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
+import { pendingMemoryApprovals } from "@isnadi/client-runtime/durable-memory";
 import { useAtomValue } from "@effect/atom-react";
-import { presentThreadError } from "@akeru/client-runtime/errors";
-import { type EnvironmentId } from "@akeru/contracts";
+import { presentThreadError } from "@isnadi/client-runtime/errors";
+import { type EnvironmentId } from "@isnadi/contracts";
 import { Fragment, useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { selectOpenBotInboxItems } from "../../botInbox";
@@ -29,7 +29,7 @@ import { useI18n } from "~/i18n";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
 import { useOptionalVoiceCall } from "../voice/VoiceCall";
-import { threadSilentRun } from "@akeru/client-runtime/silent-run";
+import { threadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { botActivityUpdate, BotActivityStatus } from "./BotActivityStatus";
 import { ChatReplyContext } from "../markdown/generative/chatReplyContext";
 import { deriveBotActivity } from "./botActivityStatus.logic";
@@ -64,7 +64,7 @@ import {
 } from "./botEngineSelection";
 import { ProviderConnectCard, providerConnectStep } from "../chat/ProviderConnectCard";
 import { useSubscriptionStatuses } from "../settings/ProvidersPanel";
-import { buildBotStepMeters } from "@akeru/client-runtime/bot-step-usage";
+import { buildBotStepMeters } from "@isnadi/client-runtime/bot-step-usage";
 import { useGroupPresence } from "./botPresence";
 import { groupBotMembers, isCurrentGroupPerson } from "./roster.logic";
 import { useMessageArrivals } from "./messageArrival";

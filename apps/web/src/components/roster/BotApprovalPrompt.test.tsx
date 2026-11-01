@@ -1,8 +1,8 @@
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   ApprovalRequestId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
 
@@ -79,7 +79,7 @@ describe("BotApprovalPrompt", () => {
         approval={{
           requestId: ApprovalRequestId.make("review-routine-quote"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-09-27T00:00:00.000Z",
           detail: "Review routine",
           args: {
@@ -110,8 +110,8 @@ describe("BotApprovalPrompt", () => {
   });
 
   it.each([
-    [AKERU_CREATE_ROUTINE_TOOL_NAME, "Review routine", "Create routine"],
-    [AKERU_PRODUCT_FEEDBACK_TOOL_NAME, "Review product feedback", "Add to feedback draft"],
+    [ISNADI_CREATE_ROUTINE_TOOL_NAME, "Review routine", "Create routine"],
+    [ISNADI_PRODUCT_FEEDBACK_TOOL_NAME, "Review product feedback", "Add to feedback draft"],
   ] as const)("keeps the specific review UI for %s", (toolName, heading, acceptLabel) => {
     const markup = renderToStaticMarkup(
       <BotApprovalPrompt

@@ -3,8 +3,8 @@ import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { McpSchema, McpServer, Tool } from "effect/unstable/ai";
 import {
-  AKERU_MEMORY_TOOL_DESCRIPTION,
-  AkeruMemoryToolInputSchema,
+  ISNADI_MEMORY_TOOL_DESCRIPTION,
+  IsnadiMemoryToolInputSchema,
 } from "../memory/BotMemoryToolHandlers.ts";
 import * as McpInvocationContext from "./McpInvocationContext.ts";
 import * as McpMemoryToolSession from "./McpMemoryToolSession.ts";
@@ -15,14 +15,14 @@ import {
   MemoryMcpExecutionError,
 } from "./McpToolSchema.ts";
 
-export const decodeMemoryToolInput = Schema.decodeUnknownEffect(AkeruMemoryToolInputSchema);
+export const decodeMemoryToolInput = Schema.decodeUnknownEffect(IsnadiMemoryToolInputSchema);
 
 export const registerMemoryTool = Effect.fn("McpHttpServer.registerMemoryTool")(function* () {
   const server = yield* McpServer.McpServer;
 
   const memoryTool = Tool.make("memory", {
-    description: AKERU_MEMORY_TOOL_DESCRIPTION,
-    parameters: AkeruMemoryToolInputSchema,
+    description: ISNADI_MEMORY_TOOL_DESCRIPTION,
+    parameters: IsnadiMemoryToolInputSchema,
     success: Schema.Unknown,
   });
 

@@ -1,8 +1,8 @@
-import type { AkeruControllerHarness } from "../../mastra/AkeruHarnessTypes.ts";
+import type { IsnadiControllerHarness } from "../../mastra/IsnadiHarnessTypes.ts";
 import type { AgentControllerShape } from "../../Services/AgentController.ts";
 import { ThreadIdBrand, toProviderSession } from "./Policy.ts";
 
-import { type ProviderRuntimeEvent } from "@akeru/contracts";
+import { type ProviderRuntimeEvent } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
@@ -32,7 +32,7 @@ export function createAuxiliaryOperations({
   legacyBufferedTerminals,
   drainLegacyTerminals,
 }: {
-  readonly bundle: AkeruControllerHarness;
+  readonly bundle: IsnadiControllerHarness;
   readonly runMastra: <A>(
     operation: string,
     run: (signal: AbortSignal) => Promise<A>,

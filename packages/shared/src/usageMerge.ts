@@ -14,7 +14,7 @@ import type {
   UsageProviderPlanLimits,
   UsageSourceFingerprint,
   UsageSummary,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface EnvironmentUsage {
   readonly environmentId: EnvironmentId;

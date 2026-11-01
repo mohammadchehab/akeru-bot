@@ -1,5 +1,5 @@
-import { type ChatAttachment, type ProjectId, ThreadId } from "@akeru/contracts";
-import { isTemporaryWorktreeBranch } from "@akeru/shared/git";
+import { type ChatAttachment, type ProjectId, ThreadId } from "@isnadi/contracts";
+import { isTemporaryWorktreeBranch } from "@isnadi/shared/git";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

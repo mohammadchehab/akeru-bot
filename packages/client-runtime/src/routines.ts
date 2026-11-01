@@ -14,8 +14,8 @@ import type {
   RoutineSandbox,
   RoutineSchedule,
   RoutineSkillAssignment,
-} from "@akeru/contracts";
-import { withoutErrorStack } from "@akeru/shared/errorText";
+} from "@isnadi/contracts";
+import { withoutErrorStack } from "@isnadi/shared/errorText";
 
 import { createTranslator, type MessageKey } from "./i18n/index.ts";
 
@@ -73,7 +73,7 @@ export interface RoutineAdapterItem {
   readonly procedureApproved: boolean;
   readonly enabled: boolean;
   readonly paused: boolean;
-  /** Akeru paused it after a blocked or failed run, not the user. */
+  /** Isnadi paused it after a blocked or failed run, not the user. */
   readonly pausedByAkeru: boolean;
   readonly nextRunAt: string | null;
   readonly lastRunAt: string | null;
@@ -287,7 +287,7 @@ export function routineStatus(routine: RoutineAdapterItem): RoutineStatusResult 
 }
 
 /**
- * Why a routine is not running on schedule, or null when it is. A routine Akeru paused
+ * Why a routine is not running on schedule, or null when it is. A routine Isnadi paused
  * points to the Bot inbox, where its cause is waiting.
  */
 export function routineStateNote(routine: RoutineAdapterItem): (MessageKey & string) | null {
@@ -410,7 +410,7 @@ export interface RoutineApprovalSummary {
 }
 
 /**
- * What a bot's `akeru_create_routine` request proposes, read defensively from the raw
+ * What a bot's `isnadi_create_routine` request proposes, read defensively from the raw
  * tool arguments so a malformed request still renders as a reviewable approval.
  */
 export function routineApprovalSummary(

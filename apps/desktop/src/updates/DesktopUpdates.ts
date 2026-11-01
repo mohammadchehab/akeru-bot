@@ -3,7 +3,7 @@ import {
   type DesktopUpdateChannel,
   type DesktopUpdateCheckResult,
   type DesktopUpdateState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -94,7 +94,7 @@ export class DesktopUpdates extends Context.Service<
     readonly download: Effect.Effect<DesktopUpdateActionResult>;
     readonly install: Effect.Effect<DesktopUpdateActionResult>;
   }
->()("@akeru/desktop/updates/DesktopUpdates") {}
+>()("@isnadi/desktop/updates/DesktopUpdates") {}
 
 const {
   logInfo: logUpdaterInfo,

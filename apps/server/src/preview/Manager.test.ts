@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import { it } from "@effect/vitest";
-import { type PreviewEvent, ThreadId } from "@akeru/contracts";
-import { PreviewUrlNormalizationError } from "@akeru/shared/preview";
+import { type PreviewEvent, ThreadId } from "@isnadi/contracts";
+import { PreviewUrlNormalizationError } from "@isnadi/shared/preview";
 import { Effect, Fiber, PubSub, Stream } from "effect";
 import { expect } from "vite-plus/test";
 

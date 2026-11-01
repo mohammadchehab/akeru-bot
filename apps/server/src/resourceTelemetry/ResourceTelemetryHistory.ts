@@ -6,7 +6,7 @@ import type {
   ResourceTelemetryHistoryBucket,
   ResourceTelemetryProcess,
   ResourceTelemetryProcessSummary,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 

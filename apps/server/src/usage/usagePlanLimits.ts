@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { SubscriptionProviderId, UsageProviderPlanLimits } from "@akeru/contracts";
+import type { SubscriptionProviderId, UsageProviderPlanLimits } from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";

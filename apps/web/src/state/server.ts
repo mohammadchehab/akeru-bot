@@ -6,14 +6,14 @@ import {
   type ServerLifecycleWelcomePayload,
   type ServerProvider,
   type ServerSettings,
-} from "@akeru/contracts";
-import { createServerEnvironmentAtoms } from "@akeru/client-runtime/state/server";
-import { createEnvironmentServerConfigsAtom } from "@akeru/client-runtime/state/shell";
+} from "@isnadi/contracts";
+import { createServerEnvironmentAtoms } from "@isnadi/client-runtime/state/server";
+import { createEnvironmentServerConfigsAtom } from "@isnadi/client-runtime/state/shell";
 import {
   filterProvidersBySubscriptionConnection,
   withRefreshableSubscriptionLogin,
-} from "@akeru/client-runtime/provider-auth";
-import { DEFAULT_RESOLVED_KEYBINDINGS } from "@akeru/shared/keybindings";
+} from "@isnadi/client-runtime/provider-auth";
+import { DEFAULT_RESOLVED_KEYBINDINGS } from "@isnadi/shared/keybindings";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 

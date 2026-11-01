@@ -36,15 +36,15 @@ The following official documentation was checked on September 7, 2026, and reche
 | Cartesia   | [File transcription](https://docs.cartesia.ai/api-reference/stt/transcribe), [synthesis formats](https://docs.cartesia.ai/build-with-cartesia/capability-guides/tts-output-audio-format), [voices](https://docs.cartesia.ai/api-reference/voices/list) | Versioned API. Batch transcription uses `ink-whisper`; live transcription uses other models. `/tts/bytes` accepts a bounded transcript and a voice ID.                                             |
 | Fish Audio | [Synthesis](https://docs.fish.audio/api-reference/endpoint/openapi-v1/text-to-speech), [voice discovery](https://docs.fish.audio/api-reference/endpoint/model/list-models)                                                                             | Explicit inference-model header; `/model` lists voice assets whose `_id` becomes `reference_id`. An unknown model header can silently fall back upstream, so selections must be validated locally. |
 
-Fish also documents [beta file transcription](https://docs.fish.audio/api-reference/endpoint/openapi-v1/speech-to-text). This is not evidence of live transcription or full realtime conversation support. Akeru does not use it.
+Fish also documents [beta file transcription](https://docs.fish.audio/api-reference/endpoint/openapi-v1/speech-to-text). This is not evidence of live transcription or full realtime conversation support. Isnadi does not use it.
 
 The September 25 recheck found:
 
 - OpenAI still documents `POST /v1/realtime/calls`. `gpt-4o-mini-transcribe` remains available, though OpenAI now recommends newer transcription models. OpenAI returns 429 for both rate limits and exhausted billing.
 - ElevenLabs returns 402 for insufficient credits and 429 for rate limits.
 - Cartesia's current API version needs no voice mode field.
-- Fish `/model` without `self=true` lists public voices as well as the account's own. Akeru keeps that behavior so users can pick public voices.
-- ElevenLabs, Cartesia, and Fish all offer hosted conversation agents. Akeru does not use them, because they would replace the bot's own agent.
+- Fish `/model` without `self=true` lists public voices as well as the account's own. Isnadi keeps that behavior so users can pick public voices.
+- ElevenLabs, Cartesia, and Fish all offer hosted conversation agents. Isnadi does not use them, because they would replace the bot's own agent.
 
 ## Agent execution and approvals
 

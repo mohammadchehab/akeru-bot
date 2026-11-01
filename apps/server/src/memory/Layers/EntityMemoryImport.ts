@@ -1,10 +1,10 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeCrypto from "node:crypto";
-import { AkeruMemoryEntityId, AkeruMemoryRevision, AkeruMemoryRootId } from "@akeru/contracts";
+import { IsnadiMemoryEntityId, IsnadiMemoryRevision, IsnadiMemoryRootId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { toPersistenceSqlError } from "../../persistence/Errors.ts";
 import {
-  AkeruMemoryAccessDenied,
+  IsnadiMemoryAccessDenied,
   resolveAuthorizedMemoryPartitions,
   type AuthorizedMemoryPartition,
 } from "../EntityMemoryAccess.ts";
@@ -35,7 +35,7 @@ export const entityMemoryImport = (dependencies: {
       isRevisionAuthorized,
     } = dependencies;
 
-    const fingerprint = (revision: AkeruMemoryRevision, prefix = false) => {
+    const fingerprint = (revision: IsnadiMemoryRevision, prefix = false) => {
       const value = prefix ? { ...revision, updatedAt: null, supersededById: null } : revision;
 
       return NodeCrypto.createHash("sha256").update(encodeMemoryArchiveJson(value)).digest("hex");
@@ -44,7 +44,7 @@ export const entityMemoryImport = (dependencies: {
     const normalizeImport = Effect.fn("EntityMemoryRepository.normalizeImport")(function* (input: {
       readonly access: Parameters<typeof resolveAuthorizedMemoryPartitions>[0];
       readonly partitions: ReadonlyArray<AuthorizedMemoryPartition>;
-      readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+      readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
     }) {
       const authorized = yield* resolveAuthorizedMemoryPartitions(input.access);
 
@@ -61,7 +61,7 @@ export const entityMemoryImport = (dependencies: {
         input.partitions.length === 0 ||
         input.partitions.some((candidate) => !isAuthorized(candidate))
       ) {
-        return yield* new AkeruMemoryAccessDenied({
+        return yield* new IsnadiMemoryAccessDenied({
           reason: "The import target is not authorized for this thread.",
         });
       }
@@ -77,13 +77,13 @@ export const entityMemoryImport = (dependencies: {
         botUserPartition.visibility === "private";
 
       if (input.partitions.length !== 1 && !isBotAuthorityPair) {
-        return yield* new AkeruMemoryAccessDenied({
+        return yield* new IsnadiMemoryAccessDenied({
           reason: "Import one thread, bot, project, or workspace authority domain at a time.",
         });
       }
 
       const authorBotId = input.access.respondingBotId ?? input.access.botId;
-      const normalized: AkeruMemoryRevision[] = [];
+      const normalized: IsnadiMemoryRevision[] = [];
 
       for (const revision of input.revisions) {
         const selected =
@@ -94,7 +94,7 @@ export const entityMemoryImport = (dependencies: {
               : botPartition;
 
         if (!selected) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: "An imported memory scope is not valid for the selected target.",
           });
         }
@@ -156,7 +156,7 @@ export const entityMemoryImport = (dependencies: {
               revision.affectedBotIds.some((botId) => !expectedAffected.has(botId)) ||
               revision.affectedBotIds.length !== expectedAffected.size))
         ) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: "The archive record belongs to a different memory owner.",
           });
         }
@@ -189,36 +189,36 @@ export const entityMemoryImport = (dependencies: {
           selected.scope === "project"
             ? {
                 entityKind: "project" as const,
-                entityId: AkeruMemoryEntityId.make(input.access.projectId),
+                entityId: IsnadiMemoryEntityId.make(input.access.projectId),
               }
             : selected.scope === "workspace"
               ? {
                   entityKind: "workspace" as const,
-                  entityId: AkeruMemoryEntityId.make(selected.partitionId),
+                  entityId: IsnadiMemoryEntityId.make(selected.partitionId),
                 }
               : selected.scope === "bot-user" || selected.scope === "user"
                 ? {
                     entityKind: "user" as const,
-                    entityId: AkeruMemoryEntityId.make(input.access.userId),
+                    entityId: IsnadiMemoryEntityId.make(input.access.userId),
                   }
                 : selected.scope === "bot"
                   ? {
                       entityKind: "bot" as const,
-                      entityId: AkeruMemoryEntityId.make(input.access.botId!),
+                      entityId: IsnadiMemoryEntityId.make(input.access.botId!),
                     }
                   : selected.scope === "thread" && input.access.groupId !== null
                     ? {
                         entityKind: "group" as const,
-                        entityId: AkeruMemoryEntityId.make(input.access.groupId),
+                        entityId: IsnadiMemoryEntityId.make(input.access.groupId),
                       }
                     : selected.scope === "thread" && input.access.botId !== null
                       ? {
                           entityKind: "bot" as const,
-                          entityId: AkeruMemoryEntityId.make(input.access.botId),
+                          entityId: IsnadiMemoryEntityId.make(input.access.botId),
                         }
                       : {
                           entityKind: "project" as const,
-                          entityId: AkeruMemoryEntityId.make(input.access.projectId),
+                          entityId: IsnadiMemoryEntityId.make(input.access.projectId),
                         };
 
         normalized.push({
@@ -239,7 +239,7 @@ export const entityMemoryImport = (dependencies: {
         });
       }
 
-      const roots = new Map<string, AkeruMemoryRevision[]>();
+      const roots = new Map<string, IsnadiMemoryRevision[]>();
 
       for (const revision of normalized) {
         const history = roots.get(revision.rootId) ?? [];
@@ -278,10 +278,10 @@ export const entityMemoryImport = (dependencies: {
       function* (input: {
         readonly access: Parameters<typeof resolveAuthorizedMemoryPartitions>[0];
         readonly partitions: ReadonlyArray<AuthorizedMemoryPartition>;
-        readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+        readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
       }) {
         const revisions = yield* normalizeImport(input);
-        const roots = new Map<string, Array<AkeruMemoryRevision>>();
+        const roots = new Map<string, Array<IsnadiMemoryRevision>>();
 
         for (const revision of revisions) {
           const group = roots.get(revision.rootId) ?? [];
@@ -313,7 +313,7 @@ export const entityMemoryImport = (dependencies: {
           .sort(([left], [right]) => left.localeCompare(right))
           .map(([rootId, unsorted]) => {
             const incoming = [...unsorted].sort((left, right) => left.revision - right.revision);
-            const brandedRootId = incoming[0]?.rootId ?? AkeruMemoryRootId.make(rootId);
+            const brandedRootId = incoming[0]?.rootId ?? IsnadiMemoryRootId.make(rootId);
 
             const current = local
               .filter((revision) => revision.rootId === rootId)
@@ -483,7 +483,7 @@ export const entityMemoryImport = (dependencies: {
                   // Replacing a root deletes its whole local history, so every local revision
                   // must be authorized the same way permanent deletion requires.
                   if (!local.every(isRevisionAuthorized(authorized))) {
-                    return yield* new AkeruMemoryAccessDenied({
+                    return yield* new IsnadiMemoryAccessDenied({
                       reason: "Every historical revision must be authorized before it is replaced.",
                     });
                   }
@@ -526,7 +526,7 @@ export const entityMemoryImport = (dependencies: {
           .pipe(
             Effect.mapError((cause) =>
               Predicate.isTagged(cause, "EntityMemoryImportError") ||
-              Predicate.isTagged(cause, "AkeruMemoryAccessDenied")
+              Predicate.isTagged(cause, "IsnadiMemoryAccessDenied")
                 ? cause
                 : toPersistenceSqlError("EntityMemoryRepository.applyImport:query")(cause),
             ),

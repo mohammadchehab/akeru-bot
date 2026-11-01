@@ -1,4 +1,4 @@
-import type { ChatAttachment, EnvironmentId } from "@akeru/contracts";
+import type { ChatAttachment, EnvironmentId } from "@isnadi/contracts";
 import { FileTextIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 

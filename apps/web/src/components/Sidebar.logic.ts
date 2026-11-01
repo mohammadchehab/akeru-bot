@@ -1,4 +1,4 @@
-import type { SidebarProjectSortOrder } from "@akeru/contracts/settings";
+import type { SidebarProjectSortOrder } from "@isnadi/contracts/settings";
 import {
   getThreadSortTimestamp,
   toSortableTimestamp,

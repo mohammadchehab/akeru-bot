@@ -1,8 +1,8 @@
 import {
   resolveSnoozePresets,
   type SnoozePresetId,
-} from "@akeru/client-runtime/state/thread-settled";
-import type { ScopedThreadRef } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/thread-settled";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { type ChatPaletteAction } from "../../chatActionsRegistry";
 import { type ChatActions } from "../../hooks/useChatActions";
 import { useI18n } from "../../i18n";

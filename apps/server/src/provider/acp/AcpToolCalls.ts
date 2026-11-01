@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import type * as EffectAcpSchema from "effect-acp/schema";
-import { deriveToolActivityPresentation } from "@akeru/shared/toolActivity";
-import type { ToolLifecycleItemType } from "@akeru/contracts";
+import { deriveToolActivityPresentation } from "@isnadi/shared/toolActivity";
+import type { ToolLifecycleItemType } from "@isnadi/contracts";
 
 import { isRecord } from "./AcpProtocolValues.ts";
 import {

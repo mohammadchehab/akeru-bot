@@ -1,8 +1,8 @@
 # Glossary
 
-> For maintainers. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers. Using IsnadiBot? See [docs/user](../user/).
 
-This is a living glossary for Akeru Bot. It explains what common terms mean in this codebase.
+This is a living glossary for IsnadiBot. It explains what common terms mean in this codebase.
 
 ## Table of contents
 
@@ -135,7 +135,7 @@ A thread with queued, running, or blocked delegations. Derived by `isThreadWaiti
 
 ### Channels
 
-External channels connect a messaging conversation (Telegram, Slack, Discord, iMessage, or WhatsApp) to normal Akeru orchestration. See [channels.md](./channels.md) and the [user guide](../user/channels.md).
+External channels connect a messaging conversation (Telegram, Slack, Discord, iMessage, or WhatsApp) to normal Isnadi orchestration. See [channels.md](./channels.md) and the [user guide](../user/channels.md).
 
 #### Channel connection profile
 
@@ -151,7 +151,7 @@ The provenance record on a thread or message that came from an external channel:
 
 #### Channel delivery
 
-The per-reply delivery state (`pending`, `sent`, `failed`, `unknown`) mirrored from the durable delivery store onto each channel-originated assistant message. `unknown` means provider acceptance could not be proven; Akeru never reposts it automatically.
+The per-reply delivery state (`pending`, `sent`, `failed`, `unknown`) mirrored from the durable delivery store onto each channel-originated assistant message. `unknown` means provider acceptance could not be proven; Isnadi never reposts it automatically.
 
 ### Dictation
 
@@ -188,7 +188,7 @@ A client-local preference for interface copy. Web, Electron, and native mobile e
 
 ## Provider runtime
 
-The live backend agent implementation and its event stream. Desktop turns cross [AgentController][25]. Codex, Claude, Grok, Kimi, and OpenCode Go use Akeru's Mastra Core controller, custom workspace and MCP tools, exact-instance server-owned access, and normalized Mastra runtime events. Standard OpenCode remains the explicit compatibility runtime because its API exposes an OpenCode-owned agent session rather than a raw model transport. The adapter contract is [ProviderAdapter.ts][15], and the overview is in [providers.md][16].
+The live backend agent implementation and its event stream. Desktop turns cross [AgentController][25]. Codex, Claude, Grok, Kimi, and OpenCode Go use Isnadi's Mastra Core controller, custom workspace and MCP tools, exact-instance server-owned access, and normalized Mastra runtime events. Standard OpenCode remains the explicit compatibility runtime because its API exposes an OpenCode-owned agent session rather than a raw model transport. The adapter contract is [ProviderAdapter.ts][15], and the overview is in [providers.md][16].
 
 #### Provider
 

@@ -4,7 +4,7 @@ import {
   ThreadId,
   TurnId,
   type OrchestrationThreadShell,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

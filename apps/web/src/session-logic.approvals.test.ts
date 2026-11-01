@@ -1,4 +1,4 @@
-import { type OrchestrationThreadActivity } from "@akeru/contracts";
+import { type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { derivePendingApprovals, derivePendingUserInputs } from "./session-logic";
 import { makeActivity } from "./session-logic.test-support";

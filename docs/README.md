@@ -1,6 +1,6 @@
-# Akeru Bot docs
+# IsnadiBot docs
 
-## Using Akeru Bot
+## Using IsnadiBot
 
 - [Install and first run](./user/install.md)
 - [Configure bots](./user/bots.md)
@@ -30,7 +30,7 @@ Mobile app: [apps/mobile/README.md](../apps/mobile/README.md)
 
 ---
 
-## Working on Akeru Bot
+## Working on IsnadiBot
 
 Everything below is for maintainers. Setup lives in the [root README](../README.md);
 policy in [CONTRIBUTING.md](../CONTRIBUTING.md); agent rules in [AGENTS.md](../AGENTS.md).

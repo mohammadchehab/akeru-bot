@@ -1,11 +1,11 @@
 import { Predicate } from "effect";
-import type { AtomCommandResult } from "@akeru/client-runtime/state/runtime";
+import type { AtomCommandResult } from "@isnadi/client-runtime/state/runtime";
 import type {
   EnvironmentId,
   PreviewCloseInput,
   PreviewSessionSnapshot,
   ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { beginPreviewSessionClose, cancelPreviewSessionClose } from "~/previewStateStore";
 

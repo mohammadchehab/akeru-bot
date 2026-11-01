@@ -3,7 +3,7 @@ import {
   type KeybindingShortcut,
   type KeybindingWhenNode,
   type ResolvedKeybindingsConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { resolveShortcutCommand, type ShortcutEventLike } from "./keybindings";
 
 // The matcher is command-agnostic; these fixtures exercise it through a few

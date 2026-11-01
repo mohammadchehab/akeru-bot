@@ -7,11 +7,11 @@ import {
   DesktopEnvironmentBootstrapSchema,
   DesktopSshEnvironmentEnsureResultSchema,
   DesktopPreviewTabStateSchema,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import * as Predicate from "effect/Predicate";
-import type { DesktopBridge } from "@akeru/contracts";
+import type { DesktopBridge } from "@isnadi/contracts";
 import { contextBridge, ipcRenderer } from "electron";
 
 import * as IpcChannels from "./ipc/channels.ts";

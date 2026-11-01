@@ -12,7 +12,7 @@ import {
   MessageId,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

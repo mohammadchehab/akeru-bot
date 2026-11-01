@@ -1,16 +1,16 @@
 import {
-  AkeruDelegationProviderUnsupportedError,
+  IsnadiDelegationProviderUnsupportedError,
   ProviderInstanceId,
   type OrchestrationCommand,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   DELEGATION_DRIVER_KINDS,
   driverSupportsDelegation,
-} from "@akeru/shared/delegationProviders";
+} from "@isnadi/shared/delegationProviders";
 import * as Schema from "effect/Schema";
 import { describe, expect, it } from "vite-plus/test";
 
-import type { AkeruDelegationChildOutcome } from "./AkeruDelegationRuntime.ts";
+import type { IsnadiDelegationChildOutcome } from "./IsnadiDelegationRuntime.ts";
 import {
   CHILD_BOT_ID,
   CHILD_TURN_ID,
@@ -24,7 +24,7 @@ import {
   thread,
 } from "./testUtils/delegationHarness.ts";
 
-const isProviderUnsupported = Schema.is(AkeruDelegationProviderUnsupportedError);
+const isProviderUnsupported = Schema.is(IsnadiDelegationProviderUnsupportedError);
 
 // Every provider instance in this matrix is named after its driver kind.
 const onDriver = (driverKind: string) => {
@@ -43,7 +43,7 @@ const onDriver = (driverKind: string) => {
 };
 
 function harnessFor(initial: ReturnType<typeof snapshot>) {
-  const child = Promise.withResolvers<AkeruDelegationChildOutcome>();
+  const child = Promise.withResolvers<IsnadiDelegationChildOutcome>();
 
   const test = harness(initial, undefined, {
     awaitChild: () => child.promise,

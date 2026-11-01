@@ -31,7 +31,7 @@ import {
   TurnId,
   type ChannelBinding,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it } from "@effect/vitest";
 import { describe, expect } from "vite-plus/test";

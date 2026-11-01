@@ -39,7 +39,7 @@ entitlement, and native Sign in with Apple entitlement; builds without this opt-
 
 ```bash
 T3CODE_IOS_PERSONAL_TEAM=1 \
-T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID=dev.example.akeru.dev \
+T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID=dev.example.isnadi.dev \
 vp run ios:dev
 ```
 
@@ -53,7 +53,7 @@ The Personal Team equivalent also needs a unique bundle identifier:
 
 ```bash
 T3CODE_IOS_PERSONAL_TEAM=1 \
-T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID=dev.example.akeru \
+T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID=dev.example.isnadi \
 vp run ios:release
 ```
 

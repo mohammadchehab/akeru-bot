@@ -5,7 +5,7 @@ import {
   EventId,
   VoiceCallError,
   type OrchestrationEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
 import { vi } from "vite-plus/test";
@@ -101,7 +101,7 @@ const now = "2026-08-27T00:00:00.000Z";
 
 const bot = {
   botId,
-  name: "Akeru",
+  name: "Isnadi",
   title: "Generalist",
   label: null,
   description: "Helps Leo get work done.",

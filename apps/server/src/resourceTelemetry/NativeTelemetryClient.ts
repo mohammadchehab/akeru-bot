@@ -5,8 +5,8 @@ import type {
   ResourceMonitorHelloEvent,
   ResourceMonitorProcessTableEntry,
   ResourceMonitorSnapshotEvent,
-} from "@akeru/contracts";
-import { RESOURCE_MONITOR_PROTOCOL_VERSION } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { RESOURCE_MONITOR_PROTOCOL_VERSION } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";

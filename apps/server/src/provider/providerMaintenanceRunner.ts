@@ -7,8 +7,8 @@ import {
   type ServerProvider,
   type ServerProviderUpdatedPayload,
   type ServerProviderUpdateState,
-} from "@akeru/contracts";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+} from "@isnadi/contracts";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Data from "effect/Data";
@@ -57,7 +57,7 @@ export interface ProviderMaintenanceRunnerShape {
 export class ProviderMaintenanceRunner extends Context.Service<
   ProviderMaintenanceRunner,
   ProviderMaintenanceRunnerShape
->()("akeru-bot/provider/providerMaintenanceRunner") {}
+>()("isnadibot/provider/providerMaintenanceRunner") {}
 
 class ProviderMaintenanceCommandError extends Data.TaggedError("ProviderMaintenanceCommandError")<{
   readonly message: string;

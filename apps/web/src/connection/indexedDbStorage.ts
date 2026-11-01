@@ -1,5 +1,5 @@
-import { ConnectionTransientError } from "@akeru/client-runtime/connection";
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { ConnectionTransientError } from "@isnadi/client-runtime/connection";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 const DATABASE_NAME = "akeru:connection-runtime";

@@ -21,7 +21,7 @@ import {
   RoutineRunId,
   SkillAssignmentId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -88,5 +88,5 @@ export class OrchestrationCommandReceiptRepository extends Context.Service<
   OrchestrationCommandReceiptRepository,
   OrchestrationCommandReceiptRepositoryShape
 >()(
-  "akeru-bot/persistence/Services/OrchestrationCommandReceipts/OrchestrationCommandReceiptRepository",
+  "isnadibot/persistence/Services/OrchestrationCommandReceipts/OrchestrationCommandReceiptRepository",
 ) {}

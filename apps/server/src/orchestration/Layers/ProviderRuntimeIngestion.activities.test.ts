@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it as effectIt } from "@effect/vitest";
 import { afterEach, describe, expect, it } from "vite-plus/test";

@@ -5,7 +5,7 @@ import {
   type PreviewRenderedViewportSize,
   type PreviewViewportSetting,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   PreviewAutomationOverlayTimeoutError,
   PreviewAutomationViewportTimeoutError,

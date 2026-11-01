@@ -6,7 +6,7 @@ import {
   type ImageGenerationSettings,
   type ImageProviderStatus,
   type UnifiedSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { visitElements } from "../test-support/reactTree";

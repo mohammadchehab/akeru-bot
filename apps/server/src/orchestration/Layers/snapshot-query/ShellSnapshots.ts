@@ -1,4 +1,4 @@
-import { type OrchestrationThreadShell } from "@akeru/contracts";
+import { type OrchestrationThreadShell } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Effect from "effect/Effect";
 import * as Result from "effect/Result";

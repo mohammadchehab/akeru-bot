@@ -6,7 +6,7 @@ import {
   extractToolCommand,
   stripTrailingExitCode,
   extractWorkLogItemType,
-} from "@akeru/client-runtime/work-log-command";
+} from "@isnadi/client-runtime/work-log-command";
 
 export function normalizeCompactToolLabel(value: string): string {
   return value.replace(/\s+(?:complete|completed)\s*$/i, "").trim();

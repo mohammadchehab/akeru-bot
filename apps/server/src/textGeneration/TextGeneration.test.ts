@@ -1,4 +1,4 @@
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as PubSub from "effect/PubSub";
@@ -6,8 +6,8 @@ import * as Result from "effect/Result";
 import * as Stream from "effect/Stream";
 import { describe, expect } from "vite-plus/test";
 
-import { ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 
 import type { ProviderInstance } from "../provider/ProviderDriver.ts";
 import * as ProviderInstanceRegistry from "../provider/Services/ProviderInstanceRegistry.ts";

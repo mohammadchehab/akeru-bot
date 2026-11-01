@@ -2,7 +2,7 @@ import {
   EnvironmentHttpCommonError,
   ProjectId,
   type ClientOrchestrationCommand,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { HttpClientError } from "effect/unstable/http";
 

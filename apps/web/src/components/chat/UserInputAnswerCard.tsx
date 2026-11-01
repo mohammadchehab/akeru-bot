@@ -1,4 +1,4 @@
-import type { AnsweredUserInputQuestion } from "@akeru/client-runtime/user-input-answers";
+import type { AnsweredUserInputQuestion } from "@isnadi/client-runtime/user-input-answers";
 import { CheckIcon, PencilLineIcon } from "lucide-react";
 import { useI18n } from "~/i18n";
 

@@ -1,7 +1,7 @@
 import * as NodeEvents from "node:events";
 import type * as Schema from "effect/Schema";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import type { DesktopUpdateState } from "@akeru/contracts";
+import type { DesktopUpdateState } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

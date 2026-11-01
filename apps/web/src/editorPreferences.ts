@@ -1,9 +1,9 @@
-import { EDITORS, EditorId, EnvironmentId } from "@akeru/contracts";
+import { EDITORS, EditorId, EnvironmentId } from "@isnadi/contracts";
 import {
   mapAtomCommandResult,
   type AtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import * as Cause from "effect/Cause";
 import * as Schema from "effect/Schema";
 import { AsyncResult } from "effect/unstable/reactivity";

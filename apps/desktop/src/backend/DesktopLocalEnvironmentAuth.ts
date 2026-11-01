@@ -1,5 +1,5 @@
-import { bootstrapRemoteBearerSession } from "@akeru/client-runtime/authorization";
-import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@akeru/contracts";
+import { bootstrapRemoteBearerSession } from "@isnadi/client-runtime/authorization";
+import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -41,7 +41,7 @@ export class DesktopLocalEnvironmentAuth extends Context.Service<
   {
     readonly getBearerToken: Effect.Effect<string, DesktopLocalEnvironmentAuthError>;
   }
->()("@akeru/desktop/backend/DesktopLocalEnvironmentAuth") {}
+>()("@isnadi/desktop/backend/DesktopLocalEnvironmentAuth") {}
 
 export const make = Effect.gen(function* () {
   const pool = yield* DesktopBackendPool.DesktopBackendPool;

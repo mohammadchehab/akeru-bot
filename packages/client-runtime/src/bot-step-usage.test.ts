@@ -1,4 +1,4 @@
-import { EventId, TurnId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { EventId, TurnId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildBotStepMeters, formatBotStepEngine } from "./bot-step-usage.ts";

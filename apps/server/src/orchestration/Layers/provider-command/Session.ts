@@ -1,6 +1,6 @@
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   type ChatAttachment,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   type ModelSelection,
@@ -10,7 +10,7 @@ import {
   ThreadId,
   type ProviderSession,
   SANDBOX_PROVIDER_CREDENTIALS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Equal from "effect/Equal";
@@ -357,8 +357,8 @@ export function createSession({
         ...(project
           ? {
               memoryAccess: {
-                tenantId: AkeruMemoryTenantId.make("local"),
-                userId: AkeruMemoryUserId.make("owner"),
+                tenantId: IsnadiMemoryTenantId.make("local"),
+                userId: IsnadiMemoryUserId.make("owner"),
                 threadId,
                 projectId: thread.projectId,
                 workspaceRoot: project.workspaceRoot,

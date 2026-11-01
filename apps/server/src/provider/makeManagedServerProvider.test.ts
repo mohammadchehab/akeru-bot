@@ -4,8 +4,8 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   type ServerProvider,
-} from "@akeru/contracts";
-import { createModelCapabilities } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { createModelCapabilities } from "@isnadi/shared/model";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";

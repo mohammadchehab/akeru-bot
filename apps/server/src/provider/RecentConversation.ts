@@ -1,8 +1,8 @@
 import type { MastraDBMessage } from "@mastra/core/agent-controller";
 
-export const AKERU_RECENT_TURN_LIMIT = 30;
+export const ISNADI_RECENT_TURN_LIMIT = 30;
 
-export const AKERU_RECENT_TOKEN_LIMIT = 64_000;
+export const ISNADI_RECENT_TOKEN_LIMIT = 64_000;
 
 interface ConversationTurn {
   readonly messages: ReadonlyArray<MastraDBMessage>;
@@ -52,8 +52,8 @@ export function selectRecentConversation(
   } = {},
 ): ReadonlyArray<MastraDBMessage> {
   const requiredMessageIds = options.requiredMessageIds ?? new Set<string>();
-  const turnLimit = options.turnLimit ?? AKERU_RECENT_TURN_LIMIT;
-  const tokenLimit = options.tokenLimit ?? AKERU_RECENT_TOKEN_LIMIT;
+  const turnLimit = options.turnLimit ?? ISNADI_RECENT_TURN_LIMIT;
+  const tokenLimit = options.tokenLimit ?? ISNADI_RECENT_TOKEN_LIMIT;
   const turns = conversationTurns(messages, requiredMessageIds);
   const selected = new Set<number>();
   let selectedTokens = 0;

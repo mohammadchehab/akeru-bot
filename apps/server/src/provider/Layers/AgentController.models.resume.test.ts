@@ -9,7 +9,7 @@ import {
   ProviderDriverKind,
   ThreadId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -23,7 +23,7 @@ import { ServerConfig } from "../../config.ts";
 import { layerTest as serverSettingsLayerTest } from "../../serverSettings.ts";
 import { EntityMemoryRepository } from "../../memory/Services/EntityMemoryRepository.ts";
 import { AgentController } from "../Services/AgentController.ts";
-import { makeAkeruMastraHarness } from "../AkeruMastraHarness.ts";
+import { makeIsnadiMastraHarness } from "../IsnadiMastraHarness.ts";
 import { LegacyProviderBridge } from "../Services/LegacyProviderBridge.ts";
 import type { ProviderServiceShape } from "../Services/ProviderService.ts";
 import { agentControllerLayerWith, type AgentControllerLiveOptions } from "./AgentController.ts";
@@ -188,11 +188,11 @@ describe("AgentControllerLive", () => {
 
 describe("AgentControllerLive", () => {
   it.effect(
-    "runs a real Mastra turn for Kimi through AkeruKimiProvider and a fake transport",
+    "runs a real Mastra turn for Kimi through IsnadiKimiProvider and a fake transport",
     () => {
       // This is the causal-flow proof the mocked-harness tests cannot give:
       // `sendTurn` drives the real Mastra Session, the resolved model is the
-      // real `akeruKimiProvider` Anthropic transport, the scripted SSE reply
+      // real `isnadiKimiProvider` Anthropic transport, the scripted SSE reply
       // produces a `tool_approval_required`, the controller response resumes
       // the run, and `turn.completed` lands through the real event pipeline.
       const bridge = makeBridge();
@@ -287,7 +287,7 @@ describe("AgentControllerLive", () => {
       });
 
       const layer = agentControllerLayerWith({
-        makeMastraHarness: makeAkeruMastraHarness,
+        makeMastraHarness: makeIsnadiMastraHarness,
         makeBotBrowser: () => ({
           tools: {},
           attachment: async () => undefined,
@@ -326,7 +326,7 @@ describe("AgentControllerLive", () => {
           botConversation: true,
         });
         // No cwd and sandbox: "none" would keep the model's tool list empty;
-        // the harness is verified with the real Akeru tool surface, so use a
+        // the harness is verified with the real Isnadi tool surface, so use a
         // local workspace rooted at the repo checkout.
         yield* controller.startSession(kimiThreadId, {
           threadId: kimiThreadId,

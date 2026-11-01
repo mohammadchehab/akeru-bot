@@ -1,9 +1,9 @@
 import { DateTime } from "effect";
 import { vi } from "vite-plus/test";
-import { ascii, type AkeruRemoteSession } from "../botWorkspace.ts";
+import { ascii, type IsnadiRemoteSession } from "../botWorkspace.ts";
 
 export function makebotWorkspaceTestSupport() {
-  function remoteSession(providerId: string): AkeruRemoteSession {
+  function remoteSession(providerId: string): IsnadiRemoteSession {
     return {
       providerId,
       inspect: async () => "running",

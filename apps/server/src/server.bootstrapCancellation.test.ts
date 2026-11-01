@@ -5,7 +5,7 @@ import {
   type OrchestrationCommand,
   OrchestrationDispatchCommandError,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Cause from "effect/Cause";
 import * as Deferred from "effect/Deferred";

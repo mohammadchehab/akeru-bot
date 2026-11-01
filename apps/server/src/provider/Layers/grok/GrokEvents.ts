@@ -1,4 +1,4 @@
-import { EventId, type ProviderRuntimeEvent, type ThreadId, TurnId } from "@akeru/contracts";
+import { EventId, type ProviderRuntimeEvent, type ThreadId, TurnId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

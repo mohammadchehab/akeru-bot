@@ -1,5 +1,5 @@
 import * as NodeCrypto from "node:crypto";
-import { EventId } from "@akeru/contracts";
+import { EventId } from "@isnadi/contracts";
 
 export function nowIso(): string {
   return new Date().toISOString();

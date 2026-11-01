@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ApprovalRequestId, CommandId, RuntimeRequestId, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ApprovalRequestId, CommandId, RuntimeRequestId, ThreadId } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asThreadId,
@@ -41,7 +41,7 @@ describe("ProviderRuntimeIngestion", () => {
       expect.objectContaining({
         kind: "approval-request",
         status: "open",
-        botName: "Akeru",
+        botName: "Isnadi",
         taskOrRoutine: "Morning research",
         lastFailure: "Allow the booking command?",
       }),

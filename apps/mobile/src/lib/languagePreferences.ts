@@ -1,5 +1,5 @@
 import { flow, Option, Predicate, Schema } from "effect";
-import { availableLanguages, resolveLocale } from "@akeru/client-runtime/i18n";
+import { availableLanguages, resolveLocale } from "@isnadi/client-runtime/i18n";
 
 export const normalizeLanguagePreference = flow(
   Schema.decodeUnknownOption(Schema.String),

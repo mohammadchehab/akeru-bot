@@ -22,7 +22,7 @@ The page has one row for ChatGPT and one for Grok. Each row shows:
 
 A row without a connected subscription says only that, next to **Connect**.
 
-While the rows load, they read **Checking**. If Akeru cannot reach the
+While the rows load, they read **Checking**. If Isnadi cannot reach the
 environment, they read **Unavailable** and the page offers **Retry**.
 
 You can turn on either provider, both, or neither. A provider needs a
@@ -38,7 +38,7 @@ subscription, select **Connect**. Both open that provider's sign-in under
 **Settings > Providers** for the same environment.
 
 **Disconnect** signs the subscription out of the environment. Chats that use
-the same subscription are signed out too, so Akeru asks before it disconnects.
+the same subscription are signed out too, so Isnadi asks before it disconnects.
 To stop using a provider for images but keep chatting with it, turn the
 provider off instead.
 
@@ -67,8 +67,8 @@ Image settings are not in the chat composer.
 ## Asking a bot for an image
 
 Ask any bot for a picture in a direct chat or a group chat. The bot calls
-Akeru's image tool, which sends the request to the bot's own image provider,
-or to the default provider when the bot has no choice of its own. On Akeru's
+Isnadi's image tool, which sends the request to the bot's own image provider,
+or to the default provider when the bot has no choice of its own. On Isnadi's
 runtime the tool asks for your approval first; standard OpenCode bots follow
 their own tool permission setting. You can
 also name a provider in your request, for example "make it with Grok". A
@@ -95,7 +95,7 @@ To edit, attach an image to your message and ask for the change. The bot can
 also edit an image that is already in the chat. ChatGPT accepts up to four
 images for one edit. Grok accepts one and returns one edited image.
 
-If the provider the bot tried first fails, Akeru does not quietly send your
+If the provider the bot tried first fails, Isnadi does not quietly send your
 image to the other provider. The bot tells you which provider it would use
 instead, and only tries it after you agree.
 

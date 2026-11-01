@@ -8,7 +8,7 @@ import {
   PreviewTabId,
   ThreadId,
   TrimmedNonEmptyString,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 export interface PreviewAutomationOperationContext {

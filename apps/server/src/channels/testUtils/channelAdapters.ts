@@ -117,7 +117,7 @@ vi.mock("@chat-adapter/slack", async (importOriginal) => {
 
       adapter.initialize = async (chat) => {
         if (externalAdapters.slackIdentityAvailable) {
-          Object.assign(adapter, { _botUserId: "U-AKERU" });
+          Object.assign(adapter, { _botUserId: "U-ISNADI" });
         }
 
         externalAdapters.slackAdapter = adapter;
@@ -169,7 +169,7 @@ vi.mock("@chat-adapter/discord", async (importOriginal) => {
       adapter.getUser = async (userId) => {
         if (externalAdapters.discordIdentityFails) throw new Error("Discord identity failed");
 
-        return { userId, userName: "akeru-discord", fullName: "Akeru Discord", isBot: true };
+        return { userId, userName: "akeru-discord", fullName: "Isnadi Discord", isBot: true };
       };
 
       adapter.disconnect = async () => {

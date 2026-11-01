@@ -1,8 +1,8 @@
-import { AkeruUsageReservationId, type ChatAttachment, ThreadId } from "@akeru/contracts";
+import { IsnadiUsageReservationId, type ChatAttachment, ThreadId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
-import { AKERU_TURN_USAGE_RESERVATION_TOKENS } from "../../../usage/BotUsageLedger.ts";
+import { ISNADI_TURN_USAGE_RESERVATION_TOKENS } from "../../../usage/BotUsageLedger.ts";
 import {
   type ProviderIntentEvent,
   turnRequestKeyForEvent,
@@ -184,7 +184,7 @@ export function createTurns({
             .getById({ botId: respondingBotId })
             .pipe(Effect.map(Option.getOrUndefined));
 
-    const reservationId = AkeruUsageReservationId.make(`turn:${event.eventId}`);
+    const reservationId = IsnadiUsageReservationId.make(`turn:${event.eventId}`);
 
     const reserved =
       respondingBotId === null
@@ -197,7 +197,7 @@ export function createTurns({
               threadId: thread.id,
               turnId: null,
               category: "turn",
-              maximumTokens: AKERU_TURN_USAGE_RESERVATION_TOKENS,
+              maximumTokens: ISNADI_TURN_USAGE_RESERVATION_TOKENS,
               provider:
                 [
                   thread.session?.providerName,

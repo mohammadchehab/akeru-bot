@@ -28,7 +28,7 @@ export class ElectronPowerMonitor extends Context.Service<
       listener: (limit: number) => void,
     ) => Effect.Effect<void, never, Scope.Scope>;
   }
->()("@akeru/desktop/electron/ElectronPowerMonitor") {}
+>()("@isnadi/desktop/electron/ElectronPowerMonitor") {}
 
 const onSimpleEvent: ElectronPowerMonitor["Service"]["onSimpleEvent"] = (eventName, listener) =>
   Effect.acquireRelease(

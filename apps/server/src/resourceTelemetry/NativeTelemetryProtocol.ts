@@ -4,11 +4,11 @@ import type {
   ResourceMonitorHelloEvent,
   ResourceMonitorSnapshotEvent,
   ResourceTelemetrySourceStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   ResourceMonitorCommand as ResourceMonitorCommandSchema,
   ResourceMonitorEvent as ResourceMonitorEventSchema,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
 

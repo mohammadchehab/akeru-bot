@@ -4,7 +4,7 @@ import * as Predicate from "effect/Predicate";
  * can be opened from a phone, another laptop, or by whoever is reviewing the
  * work.
  *
- * Thin wrapper over `@akeru/tailscale` (the same client the server's own
+ * Thin wrapper over `@isnadi/tailscale` (the same client the server's own
  * `--tailscale-serve` uses). What it adds is dev-share semantics: replacing a
  * stale mapping left by a killed run, and refusing to serve over routes it
  * could not remove.
@@ -21,7 +21,7 @@ import {
   readTailscaleStatus,
   type TailscaleCommandError,
   type TailscaleStderrDiagnostic,
-} from "@akeru/tailscale";
+} from "@isnadi/tailscale";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import type { ChildProcessSpawner } from "effect/unstable/process";

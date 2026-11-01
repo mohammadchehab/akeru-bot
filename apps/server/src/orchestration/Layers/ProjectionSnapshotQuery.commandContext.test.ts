@@ -1,4 +1,4 @@
-import { CommandId, ThreadId } from "@akeru/contracts";
+import { CommandId, ThreadId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Predicate from "effect/Predicate";
 import * as Effect from "effect/Effect";

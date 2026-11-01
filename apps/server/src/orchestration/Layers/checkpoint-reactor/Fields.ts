@@ -1,4 +1,4 @@
-import { TurnId, type OrchestrationEvent, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { TurnId, type OrchestrationEvent, type ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 

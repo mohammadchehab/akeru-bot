@@ -20,12 +20,12 @@ import {
   PreviewSessionLookupError,
   type PreviewSessionSnapshot,
   type PreviewViewportSetting,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   isPreviewUrlNormalizationError,
   newPreviewTabId,
   normalizePreviewUrl,
-} from "@akeru/shared/preview";
+} from "@isnadi/shared/preview";
 import * as NodeCrypto from "node:crypto";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -59,7 +59,7 @@ export class PreviewManager extends Context.Service<
     readonly streamEvents: (input: PreviewEventsSubscribeInput) => Stream.Stream<PreviewEvent>;
     readonly subscribeEvents: Effect.Effect<PubSub.Subscription<PreviewEvent>, never, Scope.Scope>;
   }
->()("akeru-bot/preview/Manager/PreviewManager") {}
+>()("isnadibot/preview/Manager/PreviewManager") {}
 
 /**
  * Frame events carry a full-viewport PNG, so a subscriber scoped to one chat

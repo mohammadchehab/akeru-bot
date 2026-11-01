@@ -7,7 +7,7 @@ import {
   type ProviderApprovalDecision,
   type ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

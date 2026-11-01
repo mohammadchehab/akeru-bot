@@ -2,14 +2,14 @@ import { Predicate, Option, Schema } from "effect";
 import {
   isServerProviderUnavailability,
   latestTurnFailure,
-} from "@akeru/client-runtime/provider-availability";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/provider-availability";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import type {
   OrchestrationLatestTurn,
   OrchestrationSession,
   OrchestrationThreadActivity,
   ServerProviderUnavailability,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const decodeWarningPayload = Schema.decodeUnknownOption(
   Schema.Struct({

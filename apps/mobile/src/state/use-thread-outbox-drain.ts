@@ -1,13 +1,16 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import type { AtomCommandResult } from "@akeru/client-runtime/state/runtime";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
+import type { AtomCommandResult } from "@isnadi/client-runtime/state/runtime";
 import {
   CommandId,
   DEFAULT_LOCAL_EXECUTION_MODE,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   type MessageId,
-} from "@akeru/contracts";
-import { buildTemporaryWorktreeBranchName } from "@akeru/shared/git";
+} from "@isnadi/contracts";
+import { buildTemporaryWorktreeBranchName } from "@isnadi/shared/git";
 import * as Cause from "effect/Cause";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 import { useCallback, useEffect, useRef, useState } from "react";

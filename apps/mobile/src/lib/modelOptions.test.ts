@@ -2,13 +2,13 @@ import { Schema } from "effect";
 import { makeMobileServerConfig } from "./mobile-fixtures.test-support";
 import { describe, expect, it } from "vite-plus/test";
 
-import { catalogRegistry, createTranslator } from "@akeru/client-runtime/i18n";
+import { catalogRegistry, createTranslator } from "@isnadi/client-runtime/i18n";
 import {
   ServerProvider,
   ServerProviderModel,
   ProviderInstanceId,
   type ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   buildModelOptions,

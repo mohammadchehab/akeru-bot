@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { FAVICON_DATA_URL_MAX_LENGTH } from "@akeru/contracts";
+import { FAVICON_DATA_URL_MAX_LENGTH } from "@isnadi/contracts";
 import { MAX_FAVICON_RESPONSE_BYTES } from "./FaviconSource.ts";
 import {
   sourceDimensions,

@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { EnvironmentProject } from "@akeru/client-runtime/state/shell";
-import { mapAtomCommandResult } from "@akeru/client-runtime/state/runtime";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
+import { mapAtomCommandResult } from "@isnadi/client-runtime/state/runtime";
 import {
   ThreadId,
   type ModelSelection,
   type ProviderInteractionMode,
   type RuntimeMode,
-} from "@akeru/contracts";
-import { buildTemporaryWorktreeBranchName } from "@akeru/shared/git";
+} from "@isnadi/contracts";
+import { buildTemporaryWorktreeBranchName } from "@isnadi/shared/git";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 

@@ -3,7 +3,7 @@ import { TrimmedNonEmptyString } from "./baseSchemas.ts";
 
 /**
  * Hosting provider detected from a git remote URL. Repository identities
- * record it so projects on different machines can be matched; Akeru has no
+ * record it so projects on different machines can be matched; Isnadi has no
  * hosting integrations.
  */
 export const SourceControlProviderKind = Schema.Literals([

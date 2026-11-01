@@ -1,12 +1,12 @@
 import type {
-  AkeruPluginSearchResult,
+  IsnadiPluginSearchResult,
   MessageId,
   OrchestrationMessage,
   ScopedThreadRef,
-} from "@akeru/contracts";
-import type { ReplyPlaybackSession } from "@akeru/client-runtime/reply-playback";
+} from "@isnadi/contracts";
+import type { ReplyPlaybackSession } from "@isnadi/client-runtime/reply-playback";
 
-import type { BotStepMeterData } from "@akeru/client-runtime/bot-step-usage";
+import type { BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
 import type { ChannelApprovalTarget } from "./ChannelSendApproval";
 import type { Bot } from "./types";
 import type { MessageReactionHandler } from "./useMessageReactionUpdater";
@@ -15,7 +15,7 @@ export type MessageReplyHandler = (messageId: MessageId, label: string, text: st
 
 export interface PluginResultEntry {
   readonly id: string;
-  readonly result: AkeruPluginSearchResult;
+  readonly result: IsnadiPluginSearchResult;
 }
 
 /** Props of the memoized assistant row, compared by `assistantRowPropsEqual`. */

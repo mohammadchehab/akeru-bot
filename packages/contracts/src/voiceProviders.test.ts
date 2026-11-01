@@ -72,7 +72,7 @@ describe("voice provider contracts", () => {
       call: {
         callId: "call",
         botId: "bot",
-        botName: "Akeru",
+        botName: "Isnadi",
         status: "live",
         startedAt: "2026-08-27T00:00:00.000Z",
       },

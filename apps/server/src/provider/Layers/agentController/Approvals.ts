@@ -1,28 +1,28 @@
 import * as Predicate from "effect/Predicate";
-import type { ProviderApprovalDecision } from "@akeru/contracts";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import type { ProviderApprovalDecision } from "@isnadi/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 
 import {
   EventId,
   RuntimeRequestId,
   TurnId,
-  AKERU_TOOL_CATALOG,
-  type AkeruCreateRoutineInput,
+  ISNADI_TOOL_CATALOG,
+  type IsnadiCreateRoutineInput,
   type ProviderRuntimeEvent,
   ThreadId,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-} from "@akeru/contracts";
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
-import { akeruActionNeedsApproval } from "../../AkeruMastraHarness.ts";
+import { isnadiActionNeedsApproval } from "../../IsnadiMastraHarness.ts";
 
 import type { PendingWaiters } from "../../PendingWaiters.ts";
 
-import { isMemoryToolId } from "../../AkeruToolRuntime.ts";
+import { isMemoryToolId } from "../../IsnadiToolRuntime.ts";
 
 import { isCodexComputerUseTool } from "../../CodexComputerUse.ts";
 
@@ -45,7 +45,7 @@ export function createApprovals(deps: {
   readonly pendingRoutineRequests: PendingWaiters<
     {
       readonly threadId: string;
-      readonly input: AkeruCreateRoutineInput;
+      readonly input: IsnadiCreateRoutineInput;
       readonly timezone: string;
     },
     unknown,
@@ -74,7 +74,7 @@ export function createApprovals(deps: {
   readonly creatingRoutineReviews: Map<string, string>;
   readonly routineDispatcher: RoutineDraftDispatcher["Service"] | undefined;
   readonly ThreadIdBrand: (value: string) => ThreadId;
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly approvalDecision: (decision: ProviderApprovalDecision) => "approve" | "decline";
   readonly runMastra: <A>(
     operation: string,
@@ -224,22 +224,22 @@ export function createApprovals(deps: {
     }
 
     const { name: toolName, input: toolInput } = toolRequest;
-    const akeruTool = AKERU_TOOL_CATALOG.find((tool) => tool.id === toolName);
-    const runtimeToolId = akeruTool?.id ?? (isMemoryToolId(toolName) ? toolName : undefined);
+    const isnadiTool = ISNADI_TOOL_CATALOG.find((tool) => tool.id === toolName);
+    const runtimeToolId = isnadiTool?.id ?? (isMemoryToolId(toolName) ? toolName : undefined);
 
     const acceptForSession =
       input.decision === "acceptForSession" &&
       !runtimeToolId &&
       !isCodexComputerUseTool(toolName) &&
-      !akeruActionNeedsApproval(toolName, toolInput) &&
-      toolName !== AKERU_PRODUCT_FEEDBACK_TOOL_NAME;
+      !isnadiActionNeedsApproval(toolName, toolInput) &&
+      toolName !== ISNADI_PRODUCT_FEEDBACK_TOOL_NAME;
 
     const enableAutoReview =
       input.decision === "acceptAlways" &&
       !isCodexComputerUseTool(toolName) &&
-      !akeruActionNeedsApproval(toolName, toolInput) &&
-      toolName !== AKERU_PRODUCT_FEEDBACK_TOOL_NAME &&
-      toolName !== AKERU_CREATE_ROUTINE_TOOL_NAME;
+      !isnadiActionNeedsApproval(toolName, toolInput) &&
+      toolName !== ISNADI_PRODUCT_FEEDBACK_TOOL_NAME &&
+      toolName !== ISNADI_CREATE_ROUTINE_TOOL_NAME;
 
     const target = pendingApproval.toolName;
 

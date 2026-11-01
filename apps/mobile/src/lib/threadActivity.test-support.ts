@@ -2,7 +2,7 @@ import {
   ProviderInstanceId,
   type OrchestrationThread,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export function makeActivity(
   input: Partial<OrchestrationThreadActivity> &

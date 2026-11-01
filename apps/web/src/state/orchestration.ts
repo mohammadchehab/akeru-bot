@@ -1,4 +1,4 @@
-import { createOrchestrationEnvironmentAtoms } from "@akeru/client-runtime/state/orchestration";
+import { createOrchestrationEnvironmentAtoms } from "@isnadi/client-runtime/state/orchestration";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

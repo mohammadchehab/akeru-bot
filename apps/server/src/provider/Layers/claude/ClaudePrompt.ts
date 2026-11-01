@@ -1,10 +1,10 @@
 import { type SettingSource, type SDKUserMessage } from "@anthropic-ai/claude-agent-sdk";
-import { ProviderInstanceId, type ProviderSendTurnInput } from "@akeru/contracts";
+import { ProviderInstanceId, type ProviderSendTurnInput } from "@isnadi/contracts";
 import {
   applyClaudePromptEffortPrefix,
   getModelSelectionStringOptionValue,
   resolvePromptInjectedEffort,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import { resolveAttachmentPath } from "../../../attachmentStore.ts";

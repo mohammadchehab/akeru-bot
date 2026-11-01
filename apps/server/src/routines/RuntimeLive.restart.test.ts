@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   BotId,
   CommandId,
   DelegationId,
@@ -10,7 +10,7 @@ import {
   RoutineRunId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -92,7 +92,7 @@ const serverLayer = (dbPath: string) =>
 const scheduledRun = (key: string, childThreadId: ThreadId, scheduledFor: string) => {
   const runId = RoutineRunId.make(`routine:${ROUTINE_ID}:${scheduledFor}`);
 
-  const delegation: AkeruDelegationRecord = {
+  const delegation: IsnadiDelegationRecord = {
     delegationId: DelegationId.make(`delegation-${key}`),
     parentDelegationId: null,
     parentBotId: OWNER_BOT_ID,

@@ -5,20 +5,20 @@ import * as NodePath from "node:path";
 
 import { afterEach, assert, describe, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   GroupId,
   ProjectId,
   ThreadId,
-  type AkeruMemoryRevision,
-  type AkeruMemoryScope,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryScope,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import { BotMemoryStore } from "./BotMemory.ts";
 import * as Effect from "effect/Effect";
@@ -29,9 +29,9 @@ const NodeFS = NodeFSP;
 
 const directories: string[] = [];
 
-const access = (bot = "bot-1"): AkeruMemoryThreadAccess => ({
-  tenantId: AkeruMemoryTenantId.make("local"),
-  userId: AkeruMemoryUserId.make("owner"),
+const access = (bot = "bot-1"): IsnadiMemoryThreadAccess => ({
+  tenantId: IsnadiMemoryTenantId.make("local"),
+  userId: IsnadiMemoryUserId.make("owner"),
   threadId: ThreadId.make("thread-1"),
   projectId: ProjectId.make("project-1"),
   workspaceRoot: "/workspace",
@@ -43,36 +43,36 @@ const access = (bot = "bot-1"): AkeruMemoryThreadAccess => ({
 
 const revision = (
   id: string,
-  scope: AkeruMemoryScope,
+  scope: IsnadiMemoryScope,
   fact: string,
   entityId = Match.value(scope).pipe(
     Match.when("group", () => "group-1"),
     Match.when("bot", () => "bot-1"),
     Match.orElse(() => "owner"),
   ),
-  overrides: Partial<AkeruMemoryRevision> = {},
-): AkeruMemoryRevision => ({
-  id: AkeruMemoryId.make(id),
-  rootId: AkeruMemoryRootId.make(id),
+  overrides: Partial<IsnadiMemoryRevision> = {},
+): IsnadiMemoryRevision => ({
+  id: IsnadiMemoryId.make(id),
+  rootId: IsnadiMemoryRootId.make(id),
   revision: 1,
   partition: {
-    tenantId: AkeruMemoryTenantId.make("local"),
+    tenantId: IsnadiMemoryTenantId.make("local"),
     scope,
-    partitionId: AkeruMemoryPartitionId.make(`${scope}:${entityId}`),
+    partitionId: IsnadiMemoryPartitionId.make(`${scope}:${entityId}`),
   },
   entityKind: Match.value(scope).pipe(
     Match.when("bot", (): "bot" => "bot"),
     Match.when("group", (): "group" => "group"),
     Match.orElse((): "user" => "user"),
   ),
-  entityId: AkeruMemoryEntityId.make(entityId),
+  entityId: IsnadiMemoryEntityId.make(entityId),
   kind: "fact",
   value: {},
   fact,
   sourceThreadId: ThreadId.make("thread-1"),
   sourceMessageId: null,
   authorBotId: BotId.make("bot-1"),
-  initiatingUserId: AkeruMemoryUserId.make("owner"),
+  initiatingUserId: IsnadiMemoryUserId.make("owner"),
   createdAt: "2026-09-13T12:00:00.000Z",
   confirmedAt: "2026-09-13T12:00:00.000Z",
   updatedAt: "2026-09-13T12:00:00.000Z",
@@ -114,7 +114,7 @@ describe("legacy Markdown memory migration", () => {
           revision("group-note", "group", "Keep the group note."),
         ];
 
-        const revisions: AkeruMemoryRevision[] = [];
+        const revisions: IsnadiMemoryRevision[] = [];
 
         for (const scopeAccess of legacyMemoryMigrationAccesses(groupAccess)) {
           const partitions = yield* resolveAuthorizedMemoryPartitions(scopeAccess);

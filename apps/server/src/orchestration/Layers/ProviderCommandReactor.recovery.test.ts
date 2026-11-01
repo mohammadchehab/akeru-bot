@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Deferred from "effect/Deferred";
 import { it as effectIt } from "@effect/vitest";

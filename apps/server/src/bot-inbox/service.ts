@@ -3,7 +3,7 @@ import * as Schema from "effect/Schema";
 import * as NodeCrypto from "node:crypto";
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
-import { AkeruMemoryApprovalRequest, BotId } from "@akeru/contracts";
+import { IsnadiMemoryApprovalRequest, BotId } from "@isnadi/contracts";
 
 export const BOT_INBOX_KINDS = [
   "oauth-expired",
@@ -36,7 +36,7 @@ export interface BotInboxItem {
   readonly resolvedFailureAt?: string;
   readonly occurrenceCount: number;
   // Set on approval requests that ask to save shared memory.
-  readonly memoryApproval?: AkeruMemoryApprovalRequest;
+  readonly memoryApproval?: IsnadiMemoryApprovalRequest;
 }
 
 const InboxItem = Schema.Struct({
@@ -56,7 +56,7 @@ const InboxItem = Schema.Struct({
   lastFailedRequestAt: Schema.optionalKey(Schema.String),
   resolvedFailureAt: Schema.optionalKey(Schema.String),
   occurrenceCount: Schema.Number,
-  memoryApproval: Schema.optionalKey(AkeruMemoryApprovalRequest),
+  memoryApproval: Schema.optionalKey(IsnadiMemoryApprovalRequest),
 });
 
 const decodeInbox = Schema.decodeUnknownSync(Schema.fromJsonString(Schema.Array(InboxItem)), {

@@ -8,7 +8,7 @@ import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 import * as Scope from "effect/Scope";
 import {
-  AkeruMemoryOperationError,
+  IsnadiMemoryOperationError,
   type AuthAccessStreamEvent,
   AuthSessionId,
   ClientSurface,
@@ -28,7 +28,7 @@ import {
   SubscriptionProviderId,
   McpServerAuthenticationError,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { HttpServerRequest } from "effect/unstable/http";
 import * as WorkspaceEntries from "./workspace/WorkspaceEntries.ts";
 import * as WorkspaceFileSystem from "./workspace/WorkspaceFileSystem.ts";
@@ -65,7 +65,7 @@ export const portabilityError = (operation: "export" | "preview" | "apply", caus
   });
 
 export const memoryOperationError = (operation: string, cause: unknown) =>
-  new AkeruMemoryOperationError({
+  new IsnadiMemoryOperationError({
     operation,
     detail:
       cause instanceof Error

@@ -6,7 +6,7 @@ import {
   CHATGPT_REALTIME_VOICE_MODEL,
   TrimmedNonEmptyString,
   type ChatGptRealtimeVoice,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { readVoiceResponse } from "./VoiceAdapters.ts";
 

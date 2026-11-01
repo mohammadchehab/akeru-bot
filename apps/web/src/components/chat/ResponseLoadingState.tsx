@@ -6,7 +6,7 @@ import { cn } from "~/lib/utils";
 /*
  * The one status line a waiting turn gets: a 3x3 meter, a shimmering label, and
  * an elapsed timer in tabular figures. Adapted from the "Drive" loading state in
- * Beautiful UI (MIT © 2026 Shane Levine). Akeru keeps the chevron wavefront but
+ * Beautiful UI (MIT © 2026 Shane Levine). Isnadi keeps the chevron wavefront but
  * plays it once: the meter sweeps right when it appears and whenever the step
  * label changes, then rests on a lit chevron. Nothing loops while a turn runs.
  *

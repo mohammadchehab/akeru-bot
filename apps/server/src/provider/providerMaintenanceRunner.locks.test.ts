@@ -1,6 +1,6 @@
 import { describe } from "vite-plus/test";
 import { it, assert } from "@effect/vitest";
-import { type ServerProvider } from "@akeru/contracts";
+import { type ServerProvider } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

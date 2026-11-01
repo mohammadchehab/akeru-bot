@@ -1,6 +1,6 @@
 import * as Match from "effect/Match";
-import { EnvironmentHttpCommonError } from "@akeru/contracts";
-import type { EnvironmentHttpCommonError as EnvironmentHttpCommonErrorType } from "@akeru/contracts";
+import { EnvironmentHttpCommonError } from "@isnadi/contracts";
+import type { EnvironmentHttpCommonError as EnvironmentHttpCommonErrorType } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { HttpClientError } from "effect/unstable/http";
 

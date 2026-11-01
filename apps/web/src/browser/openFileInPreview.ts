@@ -1,13 +1,13 @@
 import { hasTag } from "~/lib/taggedUnion";
-import type { AssetResource } from "@akeru/contracts";
+import type { AssetResource } from "@isnadi/contracts";
 import type {
   AssetCreateUrlResult,
   EnvironmentId,
   PreviewOpenInput,
   PreviewSessionSnapshot,
   ScopedThreadRef,
-} from "@akeru/contracts";
-import { type AtomCommandResult, mapAtomCommandResult } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/contracts";
+import { type AtomCommandResult, mapAtomCommandResult } from "@isnadi/client-runtime/state/runtime";
 import * as Cause from "effect/Cause";
 import * as Data from "effect/Data";
 import { AsyncResult } from "effect/unstable/reactivity";

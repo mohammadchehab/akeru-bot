@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Sink from "effect/Sink";

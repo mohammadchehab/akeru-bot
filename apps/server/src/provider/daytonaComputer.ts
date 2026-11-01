@@ -2,7 +2,7 @@ import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
 import type { Sandbox } from "@daytona/sdk";
 import { Schema } from "effect";
-import { ComputerFrame, type ComputerAction, COMPUTER_FRAME_MAX_BYTES } from "@akeru/contracts";
+import { ComputerFrame, type ComputerAction, COMPUTER_FRAME_MAX_BYTES } from "@isnadi/contracts";
 import { MAX_SCREENSHOT_BYTES, redactComputerScreenshot } from "../mcp/PreviewSnapshotRedaction.ts";
 
 const decodeFrame = Schema.decodeUnknownSync(ComputerFrame);

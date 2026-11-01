@@ -23,7 +23,7 @@ import { componentLogger } from "./DesktopObservability.ts";
 export const URL_HANDLER_DESKTOP_ENTRY_NAME = "akeru-url-handler.desktop";
 
 // Schemes older releases claimed for this same handler entry. Their defaults
-// must be released on upgrade or t3code:// links keep launching Akeru.
+// must be released on upgrade or t3code:// links keep launching Isnadi.
 export const RETIRED_URL_HANDLER_SCHEMES = ["t3code", "t3code-dev"] as const;
 
 // Removes our handler entry from mimeapps.list associations for retired
@@ -128,7 +128,7 @@ export class DesktopLinuxUrlHandler extends Context.Service<
   {
     readonly register: Effect.Effect<void>;
   }
->()("@akeru/desktop/app/DesktopLinuxUrlHandler") {}
+>()("@isnadi/desktop/app/DesktopLinuxUrlHandler") {}
 
 export const make = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;

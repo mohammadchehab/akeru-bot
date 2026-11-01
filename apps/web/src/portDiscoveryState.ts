@@ -4,8 +4,8 @@ import {
   type DiscoveredLocalServer,
   type EnvironmentId,
   type ThreadId,
-} from "@akeru/contracts";
-import { isLoopbackHost } from "@akeru/shared/preview";
+} from "@isnadi/contracts";
+import { isLoopbackHost } from "@isnadi/shared/preview";
 import { useMemo } from "react";
 
 import { previewEnvironment } from "./state/preview";

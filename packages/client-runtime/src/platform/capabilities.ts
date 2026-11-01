@@ -4,7 +4,7 @@ import {
   type DesktopSshEnvironmentBootstrap,
   type DesktopSshEnvironmentTarget,
   EnvironmentId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as Option from "effect/Option";
@@ -27,14 +27,14 @@ export class ClientPresentation extends Context.Service<
     readonly metadata: AuthClientPresentationMetadata;
     readonly scopes: ReadonlyArray<AuthEnvironmentScope>;
   }
->()("@akeru/client-runtime/platform/capabilities/ClientPresentation") {}
+>()("@isnadi/client-runtime/platform/capabilities/ClientPresentation") {}
 
 export class PrimaryEnvironmentAuth extends Context.Service<
   PrimaryEnvironmentAuth,
   {
     readonly bearerToken: Effect.Effect<Option.Option<string>, ConnectionAttemptError>;
   }
->()("@akeru/client-runtime/platform/capabilities/PrimaryEnvironmentAuth") {}
+>()("@isnadi/client-runtime/platform/capabilities/PrimaryEnvironmentAuth") {}
 
 export class SshEnvironmentGateway extends Context.Service<
   SshEnvironmentGateway,
@@ -51,4 +51,4 @@ export class SshEnvironmentGateway extends Context.Service<
       target: DesktopSshEnvironmentTarget,
     ) => Effect.Effect<void, ConnectionAttemptError>;
   }
->()("@akeru/client-runtime/platform/capabilities/SshEnvironmentGateway") {}
+>()("@isnadi/client-runtime/platform/capabilities/SshEnvironmentGateway") {}

@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { OrchestrationThreadActivity } from "@akeru/contracts";
+import type { OrchestrationThreadActivity } from "@isnadi/contracts";
 import { asRecord, asTrimmedString } from "./ActivityPayloadBounds.ts";
 
 /**

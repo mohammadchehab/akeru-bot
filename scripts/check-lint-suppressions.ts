@@ -2,7 +2,7 @@
 import * as NodeChildProcess from "node:child_process";
 import * as NodeURL from "node:url";
 
-// A file-wide `oxlint-disable` also silences akeru/no-lint-suppressions, so CI scans the
+// A file-wide `oxlint-disable` also silences isnadi/no-lint-suppressions, so CI scans the
 // tracked sources directly. Vendored and generated code is fixed at its source instead.
 const SUPPRESSION_PATTERN =
   "(//|/\\*+|\\{/\\*+)\\s*((eslint|oxlint)-(disable|enable)|@ts-(ignore|nocheck|expect-error)|@effect-diagnostics)";
@@ -14,7 +14,7 @@ const EXCLUDED_PATHSPECS = [
   ":!**/_generated/**",
   ":!**/*.gen.ts",
   ":!apps/web/public/mockServiceWorker.js",
-  ":!oxlint-plugin-akeru/rules/no-lint-suppressions*.ts",
+  ":!oxlint-plugin-isnadi/rules/no-lint-suppressions*.ts",
   ":!scripts/check-lint-suppressions*.ts",
 ];
 

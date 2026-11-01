@@ -1,4 +1,4 @@
-import type { ProviderOptionDescriptor, RuntimeMode } from "@akeru/contracts";
+import type { ProviderOptionDescriptor, RuntimeMode } from "@isnadi/contracts";
 
 /**
  * Desktop-oriented effort keywords that don't belong in the phone picker.

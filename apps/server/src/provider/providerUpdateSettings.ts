@@ -1,4 +1,4 @@
-import type { ServerSettings } from "@akeru/contracts";
+import type { ServerSettings } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Equal from "effect/Equal";
 import * as Stream from "effect/Stream";

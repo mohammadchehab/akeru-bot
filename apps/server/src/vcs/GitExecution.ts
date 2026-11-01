@@ -5,7 +5,7 @@ import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import * as Stream from "effect/Stream";
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
-import { GitCommandError } from "@akeru/contracts";
+import { GitCommandError } from "@isnadi/contracts";
 import { gitCommandDuration, gitCommandsTotal, withMetrics } from "../observability/Metrics.ts";
 import type * as GitVcsDriver from "./GitVcsDriver.ts";
 import {

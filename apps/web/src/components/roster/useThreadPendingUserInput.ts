@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { ApprovalRequestId, ScopedThreadRef } from "@akeru/contracts";
+import type { ApprovalRequestId, ScopedThreadRef } from "@isnadi/contracts";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {

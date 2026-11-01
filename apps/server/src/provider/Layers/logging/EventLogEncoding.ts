@@ -3,7 +3,7 @@ import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
 
 import type * as Path from "effect/Path";
-import { errorTag } from "@akeru/shared/observability";
+import { errorTag } from "@isnadi/shared/observability";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { toSafeThreadAttachmentSegment } from "../../../attachmentStore.ts";

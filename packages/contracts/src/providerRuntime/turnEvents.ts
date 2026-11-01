@@ -1,5 +1,5 @@
 import * as Schema from "effect/Schema";
-import { AkeruToolReceipt } from "../akeruTools/receipts.ts";
+import { IsnadiToolReceipt } from "../isnadiTools/receipts.ts";
 import { IsoDateTime, NonNegativeInt, RuntimeTaskId } from "../baseSchemas.ts";
 import {
   TrimmedNonEmptyStringSchema,
@@ -366,7 +366,7 @@ const ToolDeniedPayload = Schema.Struct({
 
 export type ToolDeniedPayload = typeof ToolDeniedPayload.Type;
 
-const ToolReceiptPayload = AkeruToolReceipt;
+const ToolReceiptPayload = IsnadiToolReceipt;
 
 export type ToolReceiptPayload = typeof ToolReceiptPayload.Type;
 

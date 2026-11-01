@@ -1,6 +1,6 @@
 import { recordLookup } from "../recordLookup";
 import { Predicate, Schema } from "effect";
-import type { SubscriptionProviderId } from "@akeru/contracts";
+import type { SubscriptionProviderId } from "@isnadi/contracts";
 
 import type { BotAvatar, BotBlobShape } from "../roster/types";
 import { BLOB_SHAPES, isBotAvatarColor } from "../roster/roster.logic";

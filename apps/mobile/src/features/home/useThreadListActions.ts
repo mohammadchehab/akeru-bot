@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import { canSnooze } from "@akeru/client-runtime/state/thread-settled";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
+import { canSnooze } from "@isnadi/client-runtime/state/thread-settled";
 import * as Cause from "effect/Cause";
 import { useCallback, useRef } from "react";
 import { Alert } from "react-native";
@@ -10,7 +10,7 @@ import {
   pinOrderKeyBetween,
   planPinnedMove,
   sortPinnedThreadsByOrderKey,
-} from "@akeru/client-runtime/state/thread-sort";
+} from "@isnadi/client-runtime/state/thread-sort";
 import { appAtomRegistry } from "../../state/atom-registry";
 import { environmentThreadShells, threadEnvironment } from "../../state/threads";
 import { useAtomCommand } from "../../state/use-atom-command";

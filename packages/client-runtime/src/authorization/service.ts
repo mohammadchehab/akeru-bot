@@ -1,4 +1,4 @@
-import { EnvironmentId, type ExecutionEnvironmentDescriptor } from "@akeru/contracts";
+import { EnvironmentId, type ExecutionEnvironmentDescriptor } from "@isnadi/contracts";
 import { resolveRemoteWebSocketConnectionUrl } from "./remote.ts";
 import { environmentMismatchError, mapRemoteEnvironmentError } from "../connection/errors.ts";
 import type { ConnectionAttemptError } from "../connection/model.ts";
@@ -31,7 +31,7 @@ export class RemoteEnvironmentAuthorization extends Context.Service<
       readonly bearerToken: string;
     }) => Effect.Effect<AuthorizedRemoteEnvironment, ConnectionAttemptError>;
   }
->()("@akeru/client-runtime/authorization/service/RemoteEnvironmentAuthorization") {}
+>()("@isnadi/client-runtime/authorization/service/RemoteEnvironmentAuthorization") {}
 
 const BEARER_DESCRIPTOR_CACHE_TTL_MS = 10_000;
 

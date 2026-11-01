@@ -1,6 +1,6 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
 import * as Schema from "effect/Schema";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { COMPOSER_DRAFT_STORAGE_KEY, useComposerDraftStore, DraftId } from "./composerDraftStore";
 import { removeLocalStorageItem, setLocalStorageItem } from "./hooks/useLocalStorage";

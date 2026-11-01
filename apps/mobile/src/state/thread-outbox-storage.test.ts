@@ -1,6 +1,6 @@
 import { Match } from "effect";
 import { describe, expect, it } from "@effect/vitest";
-import { MessageId, ProjectId } from "@akeru/contracts";
+import { MessageId, ProjectId } from "@isnadi/contracts";
 import { AtomRegistry } from "effect/unstable/reactivity";
 import { onTestFinished, vi } from "vite-plus/test";
 import {

@@ -1,6 +1,6 @@
 import * as NodeFS from "node:fs";
 
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
 
@@ -42,7 +42,7 @@ const threadRef = {
 const render = (expanded: boolean) =>
   renderToStaticMarkup(
     <BotBrowserPreview
-      botName="Akeru"
+      botName="Isnadi"
       threadRef={threadRef}
       expanded={expanded}
       visible

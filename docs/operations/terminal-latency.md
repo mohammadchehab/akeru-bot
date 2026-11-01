@@ -1,7 +1,7 @@
 # Terminal latency measurement (retired)
 
-Akeru Bot no longer has a user terminal or server PTY sessions. The terminal drawer,
-latency measurement flag, and `window.__akeruTerminalLatencyReport()` hook are no longer
+IsnadiBot no longer has a user terminal or server PTY sessions. The terminal drawer,
+latency measurement flag, and `window.__isnadiTerminalLatencyReport()` hook are no longer
 available. The former measurement procedure does not apply to current builds.
 
 The surviving Ghostty renderer is used only for the local Settings font preview. See

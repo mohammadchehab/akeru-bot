@@ -1,4 +1,4 @@
-import type { AdvertisedEndpoint, DesktopWslState } from "@akeru/contracts";
+import type { AdvertisedEndpoint, DesktopWslState } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import {
   applyWslEnableSelection,

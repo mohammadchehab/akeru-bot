@@ -3,7 +3,7 @@
 import type { MutableProviderConfig } from "./providerConfig";
 
 import { providerConfig, type ProviderConfig } from "./providerConfig";
-import type { ProviderInstanceConfig } from "@akeru/contracts";
+import type { ProviderInstanceConfig } from "@isnadi/contracts";
 
 import { Predicate } from "effect";
 
@@ -14,7 +14,7 @@ import type {
   ProviderSettingsFormAnnotation,
   ProviderSettingsFormControl,
   ProviderSettingsFormSchemaAnnotation,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { cn } from "../../lib/utils";
 import { DraftInput } from "../ui/draft-input";

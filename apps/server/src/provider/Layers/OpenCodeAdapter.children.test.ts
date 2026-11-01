@@ -3,8 +3,8 @@ import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import { beforeEach } from "vite-plus/test";
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import {
   OpenCodeAdapter,
   asThreadId,

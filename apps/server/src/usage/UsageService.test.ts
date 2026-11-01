@@ -1,13 +1,13 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   ProviderDriverKind,
   ThreadId,
-  type AkeruUsageEntry,
+  type IsnadiUsageEntry,
   type SubscriptionProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -103,9 +103,9 @@ const makeFixture = Effect.fnUntraced(function* (response: Effect.Effect<Respons
   return { service, fetches: () => fetches };
 });
 
-function entry(provider: string): AkeruUsageEntry {
+function entry(provider: string): IsnadiUsageEntry {
   return {
-    reservationId: AkeruUsageReservationId.make(`usage-${provider}`),
+    reservationId: IsnadiUsageReservationId.make(`usage-${provider}`),
     sourceKey: `turn:${provider}`,
     botId: BotId.make("bot-1"),
     threadId: ThreadId.make("thread-1"),
@@ -125,7 +125,7 @@ function entry(provider: string): AkeruUsageEntry {
 }
 
 describe("usageRecordFromEntry", () => {
-  it("drops ledger usage when its provider is not connected in Akeru", () => {
+  it("drops ledger usage when its provider is not connected in Isnadi", () => {
     expect(UsageService.usageRecordFromEntry(entry("codex"), new Set())).toBeNull();
   });
 

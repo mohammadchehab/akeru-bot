@@ -12,9 +12,9 @@ const readPort = (env: Record<string, string>) =>
     .pipe(Effect.map(Option.getOrUndefined));
 
 describe("aliasedEnv", () => {
-  it.effect("reads the AKERU_ name", () =>
+  it.effect("reads the ISNADI_ name", () =>
     Effect.gen(function* () {
-      expect(yield* readPort({ AKERU_PORT: "4100" })).toBe(4100);
+      expect(yield* readPort({ ISNADI_PORT: "4100" })).toBe(4100);
     }),
   );
 
@@ -24,9 +24,9 @@ describe("aliasedEnv", () => {
     }),
   );
 
-  it.effect("prefers the AKERU_ name when both are set", () =>
+  it.effect("prefers the ISNADI_ name when both are set", () =>
     Effect.gen(function* () {
-      expect(yield* readPort({ AKERU_PORT: "4100", T3CODE_PORT: "4200" })).toBe(4100);
+      expect(yield* readPort({ ISNADI_PORT: "4100", T3CODE_PORT: "4200" })).toBe(4100);
     }),
   );
 
@@ -38,10 +38,10 @@ describe("aliasedEnv", () => {
 });
 
 describe("readAliasedEnv", () => {
-  it("prefers AKERU_ and falls back to T3CODE_", () => {
-    expect(readAliasedEnv({ AKERU_HOME: "/a", T3CODE_HOME: "/b" }, "HOME")).toBe("/a");
+  it("prefers ISNADI_ and falls back to T3CODE_", () => {
+    expect(readAliasedEnv({ ISNADI_HOME: "/a", T3CODE_HOME: "/b" }, "HOME")).toBe("/a");
     expect(readAliasedEnv({ T3CODE_HOME: "/b" }, "HOME")).toBe("/b");
-    expect(readAliasedEnv({ AKERU_HOME: "  ", T3CODE_HOME: "/b" }, "HOME")).toBe("/b");
+    expect(readAliasedEnv({ ISNADI_HOME: "  ", T3CODE_HOME: "/b" }, "HOME")).toBe("/b");
     expect(readAliasedEnv({}, "HOME")).toBeUndefined();
   });
 });

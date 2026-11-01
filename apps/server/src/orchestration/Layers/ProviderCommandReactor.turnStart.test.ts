@@ -1,11 +1,11 @@
-import { ComposioOperationError, ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ComposioOperationError, ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Deferred from "effect/Deferred";
 import { it as effectIt } from "@effect/vitest";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import { ProviderAdapterRequestError } from "../../provider/Errors.ts";
-import { AKERU_TURN_USAGE_RESERVATION_TOKENS } from "../../usage/BotUsageLedger.ts";
+import { ISNADI_TURN_USAGE_RESERVATION_TOKENS } from "../../usage/BotUsageLedger.ts";
 import {
   asMessageId,
   createProviderCommandHarness,
@@ -151,14 +151,14 @@ describe("ProviderCommandReactor", () => {
         ),
       );
       const usage = yield* Effect.promise(() => harness.summarizeBotUsage());
-      expect(usage.reservedTokens).toBe(AKERU_TURN_USAGE_RESERVATION_TOKENS);
+      expect(usage.reservedTokens).toBe(ISNADI_TURN_USAGE_RESERVATION_TOKENS);
       expect(usage.entries).toContainEqual(
         expect.objectContaining({
           botId: "bot-1",
           threadId: "thread-1",
           turnId: "turn-1",
           state: "reserved",
-          reservedTokens: AKERU_TURN_USAGE_RESERVATION_TOKENS,
+          reservedTokens: ISNADI_TURN_USAGE_RESERVATION_TOKENS,
         }),
       );
     }),
@@ -224,7 +224,7 @@ describe("ProviderCommandReactor", () => {
 
       const usage = yield* Effect.promise(() => harness.summarizeBotUsage());
       expect(harness.sendTurn).toHaveBeenCalledTimes(1);
-      expect(usage.consumedTokens).toBe(AKERU_TURN_USAGE_RESERVATION_TOKENS);
+      expect(usage.consumedTokens).toBe(ISNADI_TURN_USAGE_RESERVATION_TOKENS);
       expect(usage.reservedTokens).toBe(0);
       expect(usage.entries[0]).toMatchObject({
         state: "unavailable",

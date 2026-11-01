@@ -1,6 +1,6 @@
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
-import { AkeruBotUsageSummary } from "@akeru/contracts";
+import { IsnadiBotUsageSummary } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -25,7 +25,7 @@ import {
 } from "./BotUsageRows.ts";
 
 export class BotUsageLedger extends Context.Service<BotUsageLedger, BotUsageLedgerShape>()(
-  "akeru-bot/usage/BotUsageLedger",
+  "isnadibot/usage/BotUsageLedger",
 ) {}
 
 const make = Effect.gen(function* () {
@@ -674,11 +674,11 @@ const make = Effect.gen(function* () {
   } satisfies BotUsageLedgerShape;
 });
 
-const decodeUsageSummary = Schema.decodeUnknownEffect(AkeruBotUsageSummary);
+const decodeUsageSummary = Schema.decodeUnknownEffect(IsnadiBotUsageSummary);
 
 export const BotUsageLedgerLive = Layer.effect(BotUsageLedger, make);
 
-export { AKERU_TURN_USAGE_RESERVATION_TOKENS } from "./BotUsageLedgerTypes.ts";
+export { ISNADI_TURN_USAGE_RESERVATION_TOKENS } from "./BotUsageLedgerTypes.ts";
 
 export type { ReserveBotUsageInput } from "./BotUsageLedgerTypes.ts";
 

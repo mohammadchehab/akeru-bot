@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodePath from "node:path";
 import { NodeServices } from "@effect/platform-node";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderDriverKind, ProviderInstanceId, TextGenerationError } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, TextGenerationError } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -12,7 +12,7 @@ import { beforeEach, vi } from "vite-plus/test";
 
 import { ServerConfig } from "../config.ts";
 import { makeHarnessTextGeneration } from "./HarnessTextGeneration.ts";
-import * as Harness from "../provider/AkeruMastraHarness.ts";
+import * as Harness from "../provider/IsnadiMastraHarness.ts";
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 
 const { generate, agents } = vi.hoisted(() => ({ generate: vi.fn(), agents: vi.fn() }));
@@ -84,7 +84,7 @@ describe("HarnessTextGeneration", () => {
           expect(yield* Fiber.join(fiber)).toMatchObject({
             _tag: "TextGenerationError",
             operation,
-            detail: "Akeru writing request timed out.",
+            detail: "Isnadi writing request timed out.",
           });
           expect(signal.aborted).toBe(true);
         }),
@@ -259,7 +259,7 @@ describe("HarnessTextGeneration", () => {
     Effect.scoped(
       Effect.gen(function* () {
         const config = yield* ServerConfig;
-        const resolver = vi.spyOn(Harness, "resolveAkeruMastraModel");
+        const resolver = vi.spyOn(Harness, "resolveIsnadiMastraModel");
         const instanceId = ProviderInstanceId.make("codex");
 
         const writer = yield* makeHarnessTextGeneration({

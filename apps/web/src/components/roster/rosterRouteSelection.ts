@@ -1,7 +1,7 @@
 import {
   AVAILABLE_CONNECTION_STATE,
   type SupervisorConnectionState,
-} from "@akeru/client-runtime/connection";
+} from "@isnadi/client-runtime/connection";
 
 import type { Bot } from "./types";
 

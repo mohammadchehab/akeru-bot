@@ -1,8 +1,8 @@
 import { Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import type { PreparedConnection } from "@akeru/client-runtime/connection";
-import type { EnvironmentId } from "@akeru/contracts";
-import type { ServerConfig } from "@akeru/contracts";
+import type { PreparedConnection } from "@isnadi/client-runtime/connection";
+import type { EnvironmentId } from "@isnadi/contracts";
+import type { ServerConfig } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";

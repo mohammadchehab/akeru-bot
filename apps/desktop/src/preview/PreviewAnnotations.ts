@@ -1,7 +1,7 @@
 import type {
   DesktopPreviewAnnotationTheme,
   PreviewAnnotationSubmissionResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { webContents } from "electron";
 

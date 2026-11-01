@@ -6,7 +6,7 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-// Akeru Remote release assets. The installers in scripts/install-remote.sh and
+// Isnadi Remote release assets. The installers in scripts/install-remote.sh and
 // scripts/install-remote.ps1 download exactly these names; keep the three in sync.
 export const REMOTE_TARGETS = [
   { platform: "linux", arch: "x64" },
@@ -16,9 +16,9 @@ export const REMOTE_TARGETS = [
 
 export type RemoteTarget = (typeof REMOTE_TARGETS)[number];
 
-export const REMOTE_MANIFEST = "AKERU-REMOTE-MANIFEST.txt";
+export const REMOTE_MANIFEST = "ISNADI-REMOTE-MANIFEST.txt";
 
-export const REMOTE_MANIFEST_SIGNATURE = "AKERU-REMOTE-MANIFEST.sig";
+export const REMOTE_MANIFEST_SIGNATURE = "ISNADI-REMOTE-MANIFEST.sig";
 
 export const REMOTE_INSTALLERS = ["install-remote.sh", "install-remote.ps1"] as const;
 
@@ -32,7 +32,7 @@ const scriptsDirectory = import.meta.dirname;
 export function remoteArchiveName(version: string, target: RemoteTarget): string {
   const extension = target.platform === "win32" ? "zip" : "tar.gz";
 
-  return `Akeru-Remote-${version}-${target.platform}-${target.arch}.${extension}`;
+  return `Isnadi-Remote-${version}-${target.platform}-${target.arch}.${extension}`;
 }
 
 export function expectedRemoteAssetNames(version: string): readonly string[] {
@@ -49,7 +49,7 @@ export function remoteTargetFor(platform: string, arch: string): RemoteTarget {
     (candidate) => candidate.platform === platform && candidate.arch === arch,
   );
 
-  if (!target) throw new Error(`Akeru Remote is not published for ${platform} ${arch}.`);
+  if (!target) throw new Error(`Isnadi Remote is not published for ${platform} ${arch}.`);
 
   return target;
 }
@@ -62,25 +62,25 @@ while [ -L "$self" ]; do
   case "$link" in /*) self="$link" ;; *) self="$(dirname "$self")/$link" ;; esac
 done
 root="$(CDPATH= cd -- "$(dirname "$self")" && pwd)"
-# Akeru state lives in AKERU_HOME or ~/.akeru. The server reads T3CODE_HOME, so it is derived here
+# Isnadi state lives in ISNADI_HOME or ~/.isnadi. The server reads T3CODE_HOME, so it is derived here
 # and never inherited from an ambient T3 Code environment.
-AKERU_HOME="\${AKERU_HOME:-$HOME/.akeru}"
-T3CODE_HOME="$AKERU_HOME"
-export AKERU_HOME T3CODE_HOME
+ISNADI_HOME="\${ISNADI_HOME:-$HOME/.isnadi}"
+T3CODE_HOME="$ISNADI_HOME"
+export ISNADI_HOME T3CODE_HOME
 if [ "$#" -gt 0 ] && [ "$1" = remote ]; then
   shift
   exec "$root/remote-admin" "$@"
 fi
-exec "$root/node/bin/node" "$root/node_modules/akeru-bot/dist/bin.mjs" "$@"
+exec "$root/node/bin/node" "$root/node_modules/isnadibot/dist/bin.mjs" "$@"
 `;
 
 const WINDOWS_LAUNCHER = [
   "@echo off",
   "setlocal",
-  'if not defined AKERU_HOME set "AKERU_HOME=%USERPROFILE%\\.akeru"',
-  'set "T3CODE_HOME=%AKERU_HOME%"',
+  'if not defined ISNADI_HOME set "ISNADI_HOME=%USERPROFILE%\\.isnadi"',
+  'set "T3CODE_HOME=%ISNADI_HOME%"',
   'if /I "%~1"=="remote" goto remote',
-  '"%~dp0node\\node.exe" "%~dp0node_modules\\akeru-bot\\dist\\bin.mjs" %*',
+  '"%~dp0node\\node.exe" "%~dp0node_modules\\isnadibot\\dist\\bin.mjs" %*',
   "exit /b %ERRORLEVEL%",
   ":remote",
   // `shift` does not change %*, and rebuilding the list with %1 loses quoting, so the helper
@@ -97,10 +97,10 @@ const run = (command: string, args: readonly string[]) => {
 };
 
 /**
- * Assembles one Akeru Remote archive from a production runtime tree (the output of
- * `pnpm deploy --prod` for akeru-bot, with dist moved to node_modules/akeru-bot/dist) and the
+ * Assembles one Isnadi Remote archive from a production runtime tree (the output of
+ * `pnpm deploy --prod` for isnadibot, with dist moved to node_modules/isnadibot/dist) and the
  * Node binary that runs it. Unix archives hold one top-level directory the installer strips;
- * Windows archives hold `akeru\\`.
+ * Windows archives hold `isnadi\\`.
  */
 export function packageRemoteArchive(input: {
   readonly runtimeDirectory: string;
@@ -113,18 +113,18 @@ export function packageRemoteArchive(input: {
 }): string {
   const { target, version } = input;
   const windows = target.platform === "win32";
-  const staging = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-remote-package-"));
+  const staging = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-remote-package-"));
 
   try {
     const rootName = windows
       ? "akeru"
-      : `Akeru-Remote-${version}-${target.platform}-${target.arch}`;
+      : `Isnadi-Remote-${version}-${target.platform}-${target.arch}`;
 
     const root = NodePath.join(staging, rootName);
     NodeFS.cpSync(input.runtimeDirectory, root, { recursive: true, verbatimSymlinks: true });
 
-    if (!NodeFS.existsSync(NodePath.join(root, "node_modules", "akeru-bot", "dist", "bin.mjs"))) {
-      throw new Error("The runtime tree is missing node_modules/akeru-bot/dist/bin.mjs.");
+    if (!NodeFS.existsSync(NodePath.join(root, "node_modules", "isnadibot", "dist", "bin.mjs"))) {
+      throw new Error("The runtime tree is missing node_modules/isnadibot/dist/bin.mjs.");
     }
 
     const copy = (source: string, destination: string, mode = 0o644) => {
@@ -139,7 +139,7 @@ export function packageRemoteArchive(input: {
     if (windows) {
       copy(input.nodeBinary, NodePath.join("node", "node.exe"), 0o755);
       NodeFS.writeFileSync(NodePath.join(root, "akeru.cmd"), WINDOWS_LAUNCHER);
-      copy(NodePath.join(scriptsDirectory, "akeru-remote-admin.mjs"), "remote-admin.mjs");
+      copy(NodePath.join(scriptsDirectory, "isnadi-remote-admin.mjs"), "remote-admin.mjs");
       copy(NodePath.join(scriptsDirectory, "install-remote.ps1"), "install-remote.ps1");
       copy(
         NodePath.join(scriptsDirectory, "initialize-remote-identity.cjs"),
@@ -148,7 +148,7 @@ export function packageRemoteArchive(input: {
     } else {
       copy(input.nodeBinary, NodePath.join("node", "bin", "node"), 0o755);
       NodeFS.writeFileSync(NodePath.join(root, "akeru"), UNIX_LAUNCHER, { mode: 0o755 });
-      copy(NodePath.join(scriptsDirectory, "akeru-remote-admin.sh"), "remote-admin", 0o755);
+      copy(NodePath.join(scriptsDirectory, "isnadi-remote-admin.sh"), "remote-admin", 0o755);
       copy(
         NodePath.join(scriptsDirectory, "initialize-remote-identity.sh"),
         "initialize-remote-identity.sh",
@@ -179,7 +179,7 @@ const sha256 = (path: string) =>
 
 /**
  * Writes and signs the manifest the Unix installer verifies with the pinned Ed25519 key in
- * scripts/akeru-release-manifest.pub. `directory` must already hold every remote archive and the
+ * scripts/isnadi-release-manifest.pub. `directory` must already hold every remote archive and the
  * two installers; `externalChecksums` maps pinned third-party packages to their SHA-256.
  */
 export function writeRemoteManifest(input: {
@@ -209,10 +209,10 @@ export function writeRemoteManifest(input: {
 
   const publicKey =
     input.publicKeyPem ??
-    NodeFS.readFileSync(NodePath.join(scriptsDirectory, "akeru-release-manifest.pub"), "utf8");
+    NodeFS.readFileSync(NodePath.join(scriptsDirectory, "isnadi-release-manifest.pub"), "utf8");
 
   if (!NodeCrypto.verify(null, manifest, publicKey, signature)) {
-    throw new Error("The manifest signing key does not match scripts/akeru-release-manifest.pub.");
+    throw new Error("The manifest signing key does not match scripts/isnadi-release-manifest.pub.");
   }
 
   NodeFS.writeFileSync(NodePath.join(input.directory, REMOTE_MANIFEST), manifest);
@@ -258,11 +258,11 @@ if (import.meta.main) {
     console.log(`Packaged ${NodePath.basename(archive)}.`);
   } else if (command === "manifest") {
     const [directory, version] = args;
-    const privateKeyPem = process.env.AKERU_REMOTE_MANIFEST_SIGNING_KEY?.trim();
+    const privateKeyPem = process.env.ISNADI_REMOTE_MANIFEST_SIGNING_KEY?.trim();
 
     if (!directory || !version) throw new Error("Usage: package-remote manifest <dir> <version>");
 
-    if (!privateKeyPem) throw new Error("AKERU_REMOTE_MANIFEST_SIGNING_KEY is required.");
+    if (!privateKeyPem) throw new Error("ISNADI_REMOTE_MANIFEST_SIGNING_KEY is required.");
 
     for (const installer of REMOTE_INSTALLERS) {
       NodeFS.copyFileSync(

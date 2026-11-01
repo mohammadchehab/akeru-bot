@@ -1,6 +1,9 @@
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
 import { LegendList } from "@legendapp/list/react-native";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useCallback, useMemo, useRef } from "react";
 import { ActivityIndicator, RefreshControl, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";

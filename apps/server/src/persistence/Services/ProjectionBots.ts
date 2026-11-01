@@ -10,7 +10,7 @@ import {
   IsoDateTime,
   McpServerId,
   RuntimeMode,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -61,4 +61,4 @@ export interface ProjectionBotRepositoryShape {
 export class ProjectionBotRepository extends Context.Service<
   ProjectionBotRepository,
   ProjectionBotRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionBots/ProjectionBotRepository") {}
+>()("isnadibot/persistence/Services/ProjectionBots/ProjectionBotRepository") {}

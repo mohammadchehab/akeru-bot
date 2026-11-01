@@ -5,8 +5,8 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
-import type { OrchestrationThread } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import type { OrchestrationThread } from "@isnadi/contracts";
 import { applyThreadDetailEvent } from "./threadReducer.ts";
 import { baseEventFields, baseThread } from "./threadReducer.test-support.ts";
 

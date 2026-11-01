@@ -1,4 +1,4 @@
-import { DEFAULT_CLIENT_SETTINGS } from "@akeru/contracts";
+import { DEFAULT_CLIENT_SETTINGS } from "@isnadi/contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 function createLocalStorageStub(): Storage {

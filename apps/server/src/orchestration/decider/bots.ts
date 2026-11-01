@@ -1,4 +1,4 @@
-import { AkeruDelegationPhase } from "@akeru/contracts";
+import { IsnadiDelegationPhase } from "@isnadi/contracts";
 
 import {
   BALANCED_BOT_PERSONALITY_TONE,
@@ -8,7 +8,7 @@ import {
   type OrchestrationCommand,
   type OrchestrationEvent,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";
@@ -404,7 +404,7 @@ export const decideBots = Effect.fn("decideBots")(function* ({
           payload: {
             delegation: {
               ...delegation,
-              phase: AkeruDelegationPhase.cases.Canceled.make({
+              phase: IsnadiDelegationPhase.cases.Canceled.make({
                 childThreadId: delegationChildThreadId(delegation.phase),
                 childTurnId: delegationChildTurnId(delegation.phase),
                 startedAt: "startedAt" in delegation.phase ? delegation.phase.startedAt : null,

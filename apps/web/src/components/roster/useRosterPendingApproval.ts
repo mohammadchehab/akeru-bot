@@ -1,10 +1,10 @@
 import { Predicate } from "effect";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import type {
   ApprovalRequestId,
   ProviderApprovalDecision,
   ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { derivePendingApprovals } from "../../session-logic";

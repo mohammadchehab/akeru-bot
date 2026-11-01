@@ -1,7 +1,7 @@
 import { Data } from "effect";
-import { AssetResource } from "@akeru/contracts";
+import { AssetResource } from "@isnadi/contracts";
 import { Predicate } from "effect";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { TriangleAlertIcon } from "lucide-react";
 import { memo, useState } from "react";
 import { useAssetUrlState } from "../../assets/assetUrls";

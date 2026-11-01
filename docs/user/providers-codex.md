@@ -1,7 +1,7 @@
 # Codex
 
-Akeru runs Codex models through its built-in Mastra-based runtime. Connect a ChatGPT subscription in
-Akeru. You do not need the Codex CLI for Akeru bot turns.
+Isnadi runs Codex models through its built-in Mastra-based runtime. Connect a ChatGPT subscription in
+Isnadi. You do not need the Codex CLI for Isnadi bot turns.
 
 ## Connect ChatGPT
 
@@ -9,10 +9,10 @@ Akeru. You do not need the Codex CLI for Akeru bot turns.
 2. Find **ChatGPT** and select **Connect**.
 3. Copy the displayed device code, then open the sign-in page and enter it.
 4. Approve access with the ChatGPT account that this environment should use.
-5. Return to Akeru and wait for the account status to update.
+5. Return to Isnadi and wait for the account status to update.
 
-Akeru supports ChatGPT Plus, Pro, Business, Enterprise, and Edu. Select **Check OAuth** to test the
-stored login. Akeru refreshes an elapsed access token when it next needs one. Use **Reconnect** if
+Isnadi supports ChatGPT Plus, Pro, Business, Enterprise, and Edu. Select **Check OAuth** to test the
+stored login. Isnadi refreshes an elapsed access token when it next needs one. Use **Reconnect** if
 the refresh grant is rejected or **Check OAuth** reports a revoked login.
 
 ChatGPT image generation needs this account sign-in. An OpenAI API key for Codex chat does not
@@ -28,15 +28,15 @@ credential; deleting the instance removes its credential too.
 
 ## How Codex runs
 
-Akeru creates and controls the Codex session. The runtime supplies:
+Isnadi creates and controls the Codex session. The runtime supplies:
 
 - the bot's local or remote workspace
 - installed plugins and MCP tools
-- Akeru memory and bot tools
+- Isnadi memory and bot tools
 - the selected permission mode
 - the selected ChatGPT subscription model
 
-Akeru normalizes tool calls, approvals, usage, messages, and errors before it sends them to the
+Isnadi normalizes tool calls, approvals, usage, messages, and errors before it sends them to the
 client. This keeps the same chat controls available on web, desktop, and mobile.
 
 The environment server stores the subscription credential under its private secrets directory. It
@@ -61,5 +61,5 @@ If Codex cannot start:
 4. Select **Reconnect** if the check fails.
 5. Confirm that the account has a supported ChatGPT plan.
 
-Repeat these steps on the environment that owns the project. Signing in on another Akeru server does
+Repeat these steps on the environment that owns the project. Signing in on another Isnadi server does
 not connect this one.

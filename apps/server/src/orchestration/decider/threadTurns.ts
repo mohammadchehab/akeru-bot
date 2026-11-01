@@ -1,12 +1,12 @@
 import {
-  acknowledgeAkeruDelegation,
-  isAkeruDelegationResultPending,
+  acknowledgeIsnadiDelegation,
+  isIsnadiDelegationResultPending,
   MessageId,
   ProviderInstanceId,
   type OrchestrationCommand,
   type OrchestrationEvent,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";
@@ -199,9 +199,9 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           (delegation) =>
             delegation.parentThreadId === command.threadId &&
             (respondingBotId === null || delegation.parentBotId === respondingBotId) &&
-            isAkeruDelegationResultPending(delegation),
+            isIsnadiDelegationResultPending(delegation),
         )
-        .map((delegation) => acknowledgeAkeruDelegation(delegation, command.createdAt));
+        .map((delegation) => acknowledgeIsnadiDelegation(delegation, command.createdAt));
 
       const acknowledgementEvents: Array<Omit<OrchestrationEvent, "sequence">> = [];
 

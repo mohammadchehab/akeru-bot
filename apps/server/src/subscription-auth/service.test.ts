@@ -1,7 +1,7 @@
 import { fixture, requestSignal } from "./testUtils/subscriptionAuthStorage.ts";
 import * as NodeFS from "node:fs";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import { makeTestSubscriptionAuthService } from "./testUtils/subscriptionAuthService.ts";
 
 describe("subscription auth storage", () => {

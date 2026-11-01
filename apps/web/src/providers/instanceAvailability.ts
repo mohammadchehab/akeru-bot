@@ -5,7 +5,7 @@ import {
   type ProviderAvailabilityPresentation,
   type ProviderAvailabilityReason,
   type ProviderAvailabilityTranslate,
-} from "@akeru/client-runtime/provider-availability";
+} from "@isnadi/client-runtime/provider-availability";
 import { type ProviderInstanceEntry } from "./instanceTypes";
 
 /**

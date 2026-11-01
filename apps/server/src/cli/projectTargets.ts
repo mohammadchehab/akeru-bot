@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { type OrchestrationReadModel } from "@akeru/contracts";
+import { type OrchestrationReadModel } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as Path from "effect/Path";

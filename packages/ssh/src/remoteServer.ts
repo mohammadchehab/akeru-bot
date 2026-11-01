@@ -1,5 +1,5 @@
-import type { DesktopSshEnvironmentTarget } from "@akeru/contracts";
-import { extractJsonObject, fromLenientJson } from "@akeru/shared/schemaJson";
+import type { DesktopSshEnvironmentTarget } from "@isnadi/contracts";
+import { extractJsonObject, fromLenientJson } from "@isnadi/shared/schemaJson";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as FileSystem from "effect/FileSystem";

@@ -1,4 +1,4 @@
-import { type GrokSettings, ProviderDriverKind } from "@akeru/contracts";
+import { type GrokSettings, ProviderDriverKind } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -6,7 +6,7 @@ import * as Scope from "effect/Scope";
 import * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawner";
 import * as EffectAcpErrors from "effect-acp/errors";
 import type * as EffectAcpSchema from "effect-acp/schema";
-import { normalizeModelSlug } from "@akeru/shared/model";
+import { normalizeModelSlug } from "@isnadi/shared/model";
 
 import * as AcpSessionRuntime from "./AcpSessionRuntime.ts";
 import { makeXAiPromptCompletionRuntime } from "./XAiAcpExtension.ts";
@@ -15,7 +15,7 @@ const GROK_API_KEY_ENV = "XAI_API_KEY";
 
 const GROK_OAUTH2_REFERRER_ENV = "GROK_OAUTH2_REFERRER";
 
-const AKERU_OAUTH_REFERRER = "akeru-bot";
+const ISNADI_OAUTH_REFERRER = "isnadibot";
 
 const GROK_AUTH_METHOD_API_KEY = "xai.api_key";
 
@@ -45,7 +45,7 @@ export function buildGrokAcpSpawnInput(
     cwd,
     env: {
       ...environment,
-      [GROK_OAUTH2_REFERRER_ENV]: AKERU_OAUTH_REFERRER,
+      [GROK_OAUTH2_REFERRER_ENV]: ISNADI_OAUTH_REFERRER,
     },
   };
 }
@@ -84,7 +84,7 @@ export const makeGrokAcpRuntime = (
   });
 
 /**
- * Akeru's built-in Grok slug. It is the CLI's product name, not a model id the ACP accepts,
+ * Isnadi's built-in Grok slug. It is the CLI's product name, not a model id the ACP accepts,
  * so selecting it means "use whatever model the Grok session currently runs on".
  */
 export const GROK_DEFAULT_MODEL_SLUG = "grok-build";

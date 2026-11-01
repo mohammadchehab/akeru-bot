@@ -3,7 +3,7 @@ import {
   type AuthEnvironmentScope,
   type AuthSessionId,
   type ServerAuthSessionMethod,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 
 export const DEFAULT_SESSION_SUBJECT = "cli-issued-session";

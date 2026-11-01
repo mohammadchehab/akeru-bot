@@ -17,7 +17,7 @@ import {
   type OrchestrationCommand,
   ProjectId,
   type ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ChannelDeliveryStoreLive } from "../../../channels/ChannelDeliveryStore.ts";
 import * as ServerSecretStore from "../../../auth/ServerSecretStore.ts";
 import * as Effect from "effect/Effect";
@@ -205,7 +205,7 @@ export function makeSilenceWatchdogHarness() {
         type: "bot.create",
         commandId: CommandId.make("cmd-watchdog-bot-create"),
         botId: BotId.make("bot-akeru"),
-        name: "Akeru",
+        name: "Isnadi",
         title: "Research bot",
         avatar: { kind: "dither", seed: "akeru" },
         engine: {

@@ -1,6 +1,6 @@
 import { Option, Schema } from "effect";
 
-// Bots emit these as JSON inside fenced blocks such as ```akeru-chart. The
+// Bots emit these as JSON inside fenced blocks such as ```isnadi-chart. The
 // model only fills data slots; every color, size, and font comes from the theme.
 // Each spec only accepts what its renderer can draw faithfully and cheaply; anything
 // else fails to decode and the reply shows the block as plain code instead.

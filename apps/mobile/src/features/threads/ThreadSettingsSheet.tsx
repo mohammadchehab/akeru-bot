@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useMemo } from "react";
 import { View } from "react-native";
-import { botEngineModelSelection } from "@akeru/shared/model";
+import { botEngineModelSelection } from "@isnadi/shared/model";
 import { useMobileI18n } from "../../lib/i18n";
 import { buildModelOptions } from "../../lib/modelOptions";
 import { useThreadEngineBot } from "../../state/use-thread-engine-bot";

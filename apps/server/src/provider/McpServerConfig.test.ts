@@ -1,4 +1,4 @@
-import { McpServerId, type McpServer } from "@akeru/contracts";
+import { McpServerId, type McpServer } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

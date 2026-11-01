@@ -11,7 +11,7 @@ const key = keys.publicKey.export({ type: "spki", format: "pem" }).toString();
 const checksum = "B".repeat(64);
 
 const manifest = new TextEncoder().encode(
-  `${"c".repeat(64)}  Akeru-Remote-1.1.0-linux-x64.tar.gz\n${checksum} *Akeru-Remote-1.1.0-win32-x64.zip\n`,
+  `${"c".repeat(64)}  Isnadi-Remote-1.1.0-linux-x64.tar.gz\n${checksum} *Isnadi-Remote-1.1.0-win32-x64.zip\n`,
 );
 
 const signature = NodeCrypto.sign(null, manifest, keys.privateKey);
@@ -22,7 +22,7 @@ describe("signedArchiveChecksum", () => {
       signedArchiveChecksum({
         manifest,
         signature,
-        archiveName: "Akeru-Remote-1.1.0-win32-x64.zip",
+        archiveName: "Isnadi-Remote-1.1.0-win32-x64.zip",
         key,
       }),
     ).toBe(checksum.toLowerCase());
@@ -37,7 +37,7 @@ describe("signedArchiveChecksum", () => {
       signedArchiveChecksum({
         manifest: tampered,
         signature,
-        archiveName: "Akeru-Remote-1.1.0-win32-x64.zip",
+        archiveName: "Isnadi-Remote-1.1.0-win32-x64.zip",
         key,
       }),
     ).toThrow("signature does not match");
@@ -48,7 +48,7 @@ describe("signedArchiveChecksum", () => {
       signedArchiveChecksum({
         manifest,
         signature,
-        archiveName: "Akeru-Remote-1.1.0-win32-x64.zip",
+        archiveName: "Isnadi-Remote-1.1.0-win32-x64.zip",
       }),
     ).toThrow("signature does not match");
   });
@@ -58,7 +58,7 @@ describe("signedArchiveChecksum", () => {
       signedArchiveChecksum({
         manifest,
         signature,
-        archiveName: "Akeru-Remote-1.1.0-win32-arm64.zip",
+        archiveName: "Isnadi-Remote-1.1.0-win32-arm64.zip",
         key,
       }),
     ).toThrow("Release checksum is missing");

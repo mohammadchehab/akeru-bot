@@ -17,7 +17,7 @@ import {
   type ImageGenerationRequest,
   type ImageGenerationSettings,
   type ImageProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

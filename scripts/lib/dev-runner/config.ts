@@ -1,6 +1,6 @@
 import * as NodeOS from "node:os";
 
-import { PRODUCT_HOME_DIRNAME } from "@akeru/shared/devHome";
+import { resolveProductHomeDir } from "@isnadi/shared/productHome";
 
 import * as Config from "effect/Config";
 
@@ -10,6 +10,7 @@ import * as Hash from "effect/Hash";
 
 import * as Option from "effect/Option";
 
+import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 
 import * as Schema from "effect/Schema";
@@ -24,22 +25,20 @@ export const MAX_PORT = 65535;
 
 const DESKTOP_DEV_LOOPBACK_HOST = "127.0.0.1";
 
-export const DEFAULT_T3_HOME = Effect.map(Effect.service(Path.Path), (path) =>
-  path.join(NodeOS.homedir(), PRODUCT_HOME_DIRNAME),
-);
+export const DEFAULT_T3_HOME = Effect.suspend(() => resolveProductHomeDir(NodeOS.homedir()));
 
 export const MODE_ARGS = {
   dev: [
     "run",
-    "--filter=@akeru/contracts",
-    "--filter=@akeru/web",
-    "--filter=akeru-bot",
+    "--filter=@isnadi/contracts",
+    "--filter=@isnadi/web",
+    "--filter=isnadibot",
     "--parallel",
     "dev",
   ],
-  "dev:server": ["run", "--filter=akeru-bot", "dev"],
-  "dev:web": ["run", "--filter=@akeru/web", "dev"],
-  "dev:desktop": ["run", "--filter=@akeru/desktop", "--filter=@akeru/web", "dev"],
+  "dev:server": ["run", "--filter=isnadibot", "dev"],
+  "dev:web": ["run", "--filter=@isnadi/web", "dev"],
+  "dev:desktop": ["run", "--filter=@isnadi/desktop", "--filter=@isnadi/web", "dev"],
 } as const satisfies Record<string, ReadonlyArray<string>>;
 
 export type DevMode = keyof typeof MODE_ARGS;
@@ -162,7 +161,9 @@ export function resolveOffset(config: {
   return Effect.succeed({ offset: 0, source: "default ports" });
 }
 
-function resolveBaseDir(baseDir: string | undefined): Effect.Effect<string, never, Path.Path> {
+function resolveBaseDir(
+  baseDir: string | undefined,
+): Effect.Effect<string, never, Path.Path | FileSystem.FileSystem> {
   return Effect.gen(function* () {
     const path = yield* Path.Path;
     const configured = baseDir?.trim();
@@ -201,11 +202,15 @@ export function createDevRunnerEnv({
   host,
   port,
   devUrl,
-}: CreateDevRunnerEnvInput): Effect.Effect<NodeJS.ProcessEnv, never, Path.Path> {
+}: CreateDevRunnerEnvInput): Effect.Effect<
+  NodeJS.ProcessEnv,
+  never,
+  Path.Path | FileSystem.FileSystem
+> {
   return Effect.gen(function* () {
     const serverPort = port ?? BASE_SERVER_PORT + serverOffset;
     const webPort = BASE_WEB_PORT + webOffset;
-    // Precedence (--home-dir > worktree .akeru > ambient T3CODE_HOME) is resolved
+    // Precedence (--home-dir > worktree .isnadi > ambient T3CODE_HOME) is resolved
     // by the caller; an unset t3Home here genuinely means "use the default".
     const configuredBaseDir = t3Home?.trim() || undefined;
     const resolvedBaseDir = yield* resolveBaseDir(configuredBaseDir);

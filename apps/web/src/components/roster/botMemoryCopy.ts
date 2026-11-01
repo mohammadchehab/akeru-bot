@@ -1,9 +1,9 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { AkeruMemoryDocumentTarget } from "@akeru/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { IsnadiMemoryDocumentTarget } from "@isnadi/contracts";
 
 /** User-facing names for the bot memory documents, shared by the editor and backup preview. */
 export const memoryDocumentCopy: Record<
-  AkeruMemoryDocumentTarget,
+  IsnadiMemoryDocumentTarget,
   { readonly title: MessageKey; readonly fileName: string; readonly description: MessageKey }
 > = {
   user: {

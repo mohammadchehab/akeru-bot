@@ -1,4 +1,4 @@
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import type { createDependencies } from "./Dependencies.ts";

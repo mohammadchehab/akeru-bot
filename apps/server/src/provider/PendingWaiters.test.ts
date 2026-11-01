@@ -7,8 +7,8 @@ import * as Scope from "effect/Scope";
 import * as TestClock from "effect/testing/TestClock";
 
 import {
-  AKERU_CHILD_WAIT_DEFAULT_TIMEOUT,
-  AKERU_ROUTINE_REVIEW_TIMEOUT,
+  ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT,
+  ISNADI_ROUTINE_REVIEW_TIMEOUT,
   makePendingWaiters,
   PendingWaiterClosedError,
   PendingWaiterExistsError,
@@ -37,7 +37,7 @@ describe("PendingWaiters", () => {
         const waiters = yield* makePendingWaiters<null, string>("stopped");
 
         const fiber = yield* waiters
-          .wait("child", null, childOptions(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT))
+          .wait("child", null, childOptions(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT))
           .pipe(Effect.forkChild);
 
         yield* waitForOpen(waiters, "child");
@@ -53,7 +53,7 @@ describe("PendingWaiters", () => {
         const waiters = yield* makePendingWaiters<null, string, Error>("stopped");
 
         const fiber = yield* waiters
-          .wait("child", null, childOptions(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT))
+          .wait("child", null, childOptions(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT))
           .pipe(Effect.flip, Effect.forkChild);
 
         yield* waitForOpen(waiters, "child");
@@ -102,7 +102,7 @@ describe("PendingWaiters", () => {
 
         const fiber = yield* waiters
           .wait("child", null, {
-            timeout: AKERU_CHILD_WAIT_DEFAULT_TIMEOUT,
+            timeout: ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT,
             timeoutMessage: "The bot did not report back within 4 hours.",
           })
           .pipe(Effect.flip, Effect.forkChild);
@@ -122,14 +122,14 @@ describe("PendingWaiters", () => {
         const waiters = yield* makePendingWaiters<null, string>("stopped");
 
         const first = yield* waiters
-          .wait("child", null, childOptions(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT))
+          .wait("child", null, childOptions(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT))
           .pipe(Effect.forkChild);
 
         yield* waitForOpen(waiters, "child");
 
         const error = yield* waiters
           .wait("child", null, {
-            ...childOptions(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT),
+            ...childOptions(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT),
             existsMessage: "Delegation waiter already exists for 'child'.",
           })
           .pipe(Effect.flip);
@@ -150,7 +150,7 @@ describe("PendingWaiters", () => {
         ).pipe(Scope.provide(scope));
 
         const fiber = yield* waiters
-          .wait("child", null, childOptions(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT))
+          .wait("child", null, childOptions(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT))
           .pipe(Effect.flip, Effect.forkChild);
 
         yield* waitForOpen(waiters, "child");
@@ -167,7 +167,7 @@ describe("PendingWaiters", () => {
     const meta = { threadId: "thread-1", timezone: "UTC" };
 
     const reviewOptions = {
-      timeout: AKERU_ROUTINE_REVIEW_TIMEOUT,
+      timeout: ISNADI_ROUTINE_REVIEW_TIMEOUT,
       timeoutMessage: "The routine review expired without a response.",
     };
 
@@ -281,7 +281,7 @@ describe("PendingWaiters", () => {
           .pipe(Effect.flip, Effect.forkChild);
 
         yield* waitForOpen(waiters, "routine-1");
-        yield* TestClock.adjust(AKERU_ROUTINE_REVIEW_TIMEOUT);
+        yield* TestClock.adjust(ISNADI_ROUTINE_REVIEW_TIMEOUT);
         assert.isUndefined(waiters.claim("routine-1"));
         assert.instanceOf(yield* Fiber.join(fiber), PendingWaiterTimeoutError);
       }).pipe(Effect.scoped),

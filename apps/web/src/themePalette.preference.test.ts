@@ -56,7 +56,7 @@ describe("stored theme preferences", () => {
     }
   });
 
-  it("migrates a stored t3-chat preference to Akeru Chat", () => {
+  it("migrates a stored t3-chat preference to Isnadi Chat", () => {
     expect(getThemeDefinition("t3-chat")).toBe(T3_CHAT_THEME);
     expect(T3_CHAT_THEME.id).toBe("akeru-chat");
     expect(isKnownThemePreference("t3-chat")).toBe(true);

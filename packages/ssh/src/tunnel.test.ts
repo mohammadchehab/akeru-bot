@@ -9,11 +9,11 @@ describe("ssh tunnel scripts", () => {
     assert.include(script, "T3_NODE_SCRIPT_PATH=''");
     assert.include(script, 'exec akeru "$@"');
     assert.include(script, 'exec "$T3_CLI_PATH" "$@"');
-    assert.include(script, "could not install 'akeru-bot@latest'");
-    assert.include(script, "require_installed_akeru_cli npx --yes --package 'akeru-bot@latest'");
+    assert.include(script, "could not install 'isnadibot@latest'");
+    assert.include(script, "require_installed_akeru_cli npx --yes --package 'isnadibot@latest'");
     assert.include(
       script,
-      "require_installed_akeru_cli npm exec --yes --package 'akeru-bot@latest'",
+      "require_installed_akeru_cli npm exec --yes --package 'isnadibot@latest'",
     );
     assert.include(script, "npm produced no akeru executable");
     assert.include(script, 'prepend_path_if_dir "$HOME/.local/bin"');

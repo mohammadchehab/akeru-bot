@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { assert, describe, it } from "vite-plus/test";
 import {
   buildVisibleToastLayout,

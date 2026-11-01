@@ -8,9 +8,9 @@ import {
   DelegationId,
   ProviderDriverKind,
   ThreadId,
-  type AkeruDelegationAccessGrant,
+  type IsnadiDelegationAccessGrant,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -470,7 +470,7 @@ describe("AgentControllerLive", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
 
-    const access: AkeruDelegationAccessGrant = {
+    const access: IsnadiDelegationAccessGrant = {
       allowedToolIds: ["Shell", "Read"],
       memoryScopes: [],
       sandbox: null,
@@ -530,7 +530,7 @@ describe("AgentControllerLive", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
 
-    const access: AkeruDelegationAccessGrant = {
+    const access: IsnadiDelegationAccessGrant = {
       allowedToolIds: ["Shell", "Read"],
       memoryScopes: [],
       sandbox: "upstash",

@@ -1,4 +1,4 @@
-import type { DesktopPreviewAnnotationTheme } from "@akeru/contracts";
+import type { DesktopPreviewAnnotationTheme } from "@isnadi/contracts";
 
 const readVariable = (styles: CSSStyleDeclaration, name: string, fallback: string): string =>
   styles.getPropertyValue(name).trim() || fallback;

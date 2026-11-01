@@ -1,4 +1,4 @@
-import { McpServerId, type McpServer } from "@akeru/contracts";
+import { McpServerId, type McpServer } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 import {
@@ -54,7 +54,7 @@ const pendingPlugin = {
   transport: { type: "unavailable" },
   connection: {
     type: "approval-pending",
-    blocker: "The vendor must approve Akeru as an OAuth client.",
+    blocker: "The vendor must approve Isnadi as an OAuth client.",
   },
   catalogStatus: "approval-pending",
 } satisfies PluginDirectoryDefinition;
@@ -166,8 +166,8 @@ describe("Plugins dialog content", () => {
     expect(markup).toContain(pendingPlugin.description.replaceAll("'", "&#x27;"));
     expect(markup).toContain("Approval pending");
     expect(markup).toContain("Verification pending");
-    expect(markup).toContain('title="The vendor must approve Akeru as an OAuth client."');
-    expect(markup).not.toContain(">The vendor must approve Akeru as an OAuth client.<");
+    expect(markup).toContain('title="The vendor must approve Isnadi as an OAuth client."');
+    expect(markup).not.toContain(">The vendor must approve Isnadi as an OAuth client.<");
     expect(markup).not.toContain(">Added<");
 
     for (const plugin of catalog) {
@@ -320,7 +320,7 @@ describe("Plugins dialog content", () => {
     expect(markup).toContain('aria-label="Connect Pending Vendor"');
     expect(markup).toContain("disabled");
     expect(markup).toContain("Approval pending");
-    expect(markup).toContain("The vendor must approve Akeru as an OAuth client.");
+    expect(markup).toContain("The vendor must approve Isnadi as an OAuth client.");
   });
 
   it("keeps disable available after an installed plugin becomes pending", () => {

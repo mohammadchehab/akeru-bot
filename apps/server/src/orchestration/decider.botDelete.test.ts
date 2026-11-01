@@ -6,7 +6,7 @@ import {
   ThreadId,
   TurnId,
   isGroupBotMember,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";

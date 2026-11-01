@@ -1,4 +1,4 @@
-import { EventId, ProviderDriverKind } from "@akeru/contracts";
+import { EventId, ProviderDriverKind } from "@isnadi/contracts";
 
 import type {
   FixtureProviderRuntimeEvent,

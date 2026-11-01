@@ -1,6 +1,6 @@
-import { ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asMessageId,

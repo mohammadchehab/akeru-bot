@@ -11,7 +11,7 @@ import {
   OrchestrationDispatchCommandError,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   createAttachmentId,

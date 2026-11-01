@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ApprovalRequestId, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ApprovalRequestId, ThreadId } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asEventId,

@@ -10,7 +10,7 @@ import * as Predicate from "effect/Predicate";
  */
 import { type SDKMessage } from "@anthropic-ai/claude-agent-sdk";
 
-import { EventId, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { EventId, type ProviderRuntimeEvent } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

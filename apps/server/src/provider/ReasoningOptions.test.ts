@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { ProviderDriverKind, ProviderInstanceId, type ModelSelection } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ModelSelection } from "@isnadi/contracts";
 import { AuthStorage } from "@mastra/code-sdk/auth/storage";
 import { RequestContext } from "@mastra/core/request-context";
 import {
@@ -11,10 +11,10 @@ import {
 import { claudeHarnessCapabilities } from "./ClaudeReasoningCapabilities.ts";
 import {
   mastraModelId,
-  resolveAkeruMastraModel,
-  withAkeruModelRunOptions,
-} from "./mastra/AkeruModels.ts";
-import { controllerModelOptions } from "./mastra/AkeruMemory.ts";
+  resolveIsnadiMastraModel,
+  withIsnadiModelRunOptions,
+} from "./mastra/IsnadiModels.ts";
+import { controllerModelOptions } from "./mastra/IsnadiMemory.ts";
 
 const selection = (model: string, options?: ModelSelection["options"]): ModelSelection => ({
   instanceId: ProviderInstanceId.make("test"),
@@ -53,7 +53,7 @@ async function capturedRequest(
   try {
     const modelOptions = nativeModelOptions(provider, selection(modelId, options));
 
-    const model = resolveAkeruMastraModel(
+    const model = resolveIsnadiMastraModel(
       mastraModelId(provider, modelId),
       auth,
       async () => ({ accessToken: "kimi-token" }),
@@ -69,7 +69,7 @@ async function capturedRequest(
     )
       throw new Error("Expected a native language model");
 
-    const run = withAkeruModelRunOptions({}, modelOptions ? { modelOptions } : {});
+    const run = withIsnadiModelRunOptions({}, modelOptions ? { modelOptions } : {});
 
     await expect(
       model.doGenerate({
@@ -202,7 +202,7 @@ describe("native reasoning requests", () => {
 
       expect(modelOptions?.namespace).toBe("custom-openai");
 
-      const model = resolveAkeruMastraModel(
+      const model = resolveIsnadiMastraModel(
         "custom-openai/local-model",
         auth,
         undefined,
@@ -226,7 +226,7 @@ describe("native reasoning requests", () => {
       await expect(
         model.doGenerate({
           prompt: [{ role: "user", content: [{ type: "text", text: "hello" }] }],
-          ...withAkeruModelRunOptions({}, modelOptions ? { modelOptions } : {}),
+          ...withIsnadiModelRunOptions({}, modelOptions ? { modelOptions } : {}),
         }),
       ).rejects.toThrow(stopped);
       expect(fetch).toHaveBeenCalledOnce();
@@ -414,12 +414,14 @@ describe("reasoning capability and state boundaries", () => {
     ).toBeUndefined();
     expect(nativeModelOptions(driver("kimi"), selection("kimi-for-coding"))).toBeUndefined();
     expect(
-      withAkeruModelRunOptions({}, { modelOptions: { effort: "high", thinking: false } }),
+      withIsnadiModelRunOptions({}, { modelOptions: { effort: "high", thinking: false } }),
     ).toEqual({
       providerOptions: { anthropic: { effort: "high", thinking: { type: "disabled" } } },
     });
-    expect(withAkeruModelRunOptions({}, { modelOptions: { reasoningEffort: "default" } })).toEqual({
-      providerOptions: { openai: {} },
-    });
+    expect(withIsnadiModelRunOptions({}, { modelOptions: { reasoningEffort: "default" } })).toEqual(
+      {
+        providerOptions: { openai: {} },
+      },
+    );
   });
 });

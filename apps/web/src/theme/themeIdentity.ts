@@ -1,4 +1,4 @@
-import { type ThemeAppearance } from "@akeru/shared/themePalettes";
+import { type ThemeAppearance } from "@isnadi/shared/themePalettes";
 import {
   LEGACY_T3_CHAT_DARK_THEME_ID,
   T3_CHAT_THEME_ID,

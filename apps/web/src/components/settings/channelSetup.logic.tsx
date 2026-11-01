@@ -1,4 +1,9 @@
-import { BotId, ChannelConnectionId, type ChannelProvider, type ProjectId } from "@akeru/contracts";
+import {
+  BotId,
+  ChannelConnectionId,
+  type ChannelProvider,
+  type ProjectId,
+} from "@isnadi/contracts";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 
 export const CONNECT_LATER = "connect-later";

@@ -27,7 +27,7 @@ import {
   type ServerSettings,
   type ServerSettingsPatch,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import {
@@ -317,7 +317,7 @@ export async function runImageProviderHealthTest(input: {
 
   const headers: ImageProbeHeaders = {
     Authorization: `Bearer ${token}`,
-    "User-Agent": "akeru-bot/0.0.37",
+    "User-Agent": "isnadibot/0.0.37",
   };
 
   if (provider === "chatgpt") {

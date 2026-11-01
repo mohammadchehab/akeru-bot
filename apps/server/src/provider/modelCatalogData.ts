@@ -1,11 +1,11 @@
 /**
  * Pure half of the model catalog: turns the models.dev API payload into the
- * small per-driver catalog Akeru keeps, and decides which models are current.
+ * small per-driver catalog Isnadi keeps, and decides which models are current.
  *
  * `ModelCatalog.ts` fetches and caches; `scripts/sync-model-catalog.ts`
  * regenerates the bundled `model-catalog.json` with the same conversion.
  */
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 

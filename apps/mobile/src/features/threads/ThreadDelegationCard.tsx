@@ -5,13 +5,13 @@ import { Match, Predicate } from "effect";
  *
  * @module features/threads/ThreadDelegationCard
  */
-import type { AkeruDelegationRecord, OrchestrationBot } from "@akeru/contracts";
-import { akeruDelegationStateOf, type AkeruDelegationState } from "@akeru/contracts";
+import type { IsnadiDelegationRecord, OrchestrationBot } from "@isnadi/contracts";
+import { isnadiDelegationStateOf, type IsnadiDelegationState } from "@isnadi/contracts";
 import {
   presentDelegation,
   type DelegationAction,
-} from "@akeru/client-runtime/delegation-presentation";
-import { formatDuration } from "@akeru/shared/orchestrationTiming";
+} from "@isnadi/client-runtime/delegation-presentation";
+import { formatDuration } from "@isnadi/shared/orchestrationTiming";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 
@@ -19,7 +19,10 @@ import { AppText as Text } from "../../components/AppText";
 import { BotAvatarView, seededBlobAvatar } from "../../components/BotAvatarView";
 import { useMobileI18n } from "../../lib/i18n";
 
-function stateLabel(state: AkeruDelegationState, t: ReturnType<typeof useMobileI18n>["t"]): string {
+function stateLabel(
+  state: IsnadiDelegationState,
+  t: ReturnType<typeof useMobileI18n>["t"],
+): string {
   switch (state) {
     case "queued":
       return t("queued");
@@ -38,7 +41,7 @@ function stateLabel(state: AkeruDelegationState, t: ReturnType<typeof useMobileI
 
 // Mobile has no web status tokens (info, success, warning, destructive), so
 // the dots use palette colors that read in both themes.
-const STATE_DOT_CLASS: Record<AkeruDelegationState, string> = {
+const STATE_DOT_CLASS: Record<IsnadiDelegationState, string> = {
   queued: "bg-icon-subtle",
   running: "bg-sky-500",
   blocked: "bg-amber-500",
@@ -48,7 +51,7 @@ const STATE_DOT_CLASS: Record<AkeruDelegationState, string> = {
 };
 
 /** Elapsed time stamps once the card mounts; live cards do not repaint per second. */
-function delegationElapsed(delegation: AkeruDelegationRecord): string | null {
+function delegationElapsed(delegation: IsnadiDelegationRecord): string | null {
   const phase = delegation.phase;
 
   const startedAt = Date.parse(
@@ -91,7 +94,7 @@ function actionCopy(action: DelegationAction, t: Translate, name: string) {
  * chat. `onAction` runs one; every button stays disabled until it settles.
  */
 export function ThreadDelegationCard(props: {
-  readonly delegation: AkeruDelegationRecord;
+  readonly delegation: IsnadiDelegationRecord;
   readonly childBot: OrchestrationBot | null;
   readonly parentBot: OrchestrationBot | null;
   readonly actions?: ReadonlyArray<DelegationAction>;
@@ -103,7 +106,7 @@ export function ThreadDelegationCard(props: {
   const actions = onAction ? (props.actions ?? []) : [];
   const { delegation } = props;
   const presentation = presentDelegation(delegation);
-  const state = akeruDelegationStateOf(delegation.phase);
+  const state = isnadiDelegationStateOf(delegation.phase);
   const childName = props.childBot?.name ?? t("Unknown bot");
   const parentName = props.parentBot?.name ?? t("Unknown bot");
   const elapsed = delegationElapsed(delegation);

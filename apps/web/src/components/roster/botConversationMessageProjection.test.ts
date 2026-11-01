@@ -1,4 +1,4 @@
-import { MessageId, TurnId, type OrchestrationMessage } from "@akeru/contracts";
+import { MessageId, TurnId, type OrchestrationMessage } from "@isnadi/contracts";
 import { Atom, AtomRegistry } from "effect/unstable/reactivity";
 import { describe, expect, it } from "vite-plus/test";
 

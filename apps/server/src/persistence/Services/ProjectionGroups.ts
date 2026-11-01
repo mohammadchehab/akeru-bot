@@ -1,4 +1,4 @@
-import { BotId, GroupId, GroupMembership, IsoDateTime } from "@akeru/contracts";
+import { BotId, GroupId, GroupMembership, IsoDateTime } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -35,4 +35,4 @@ export interface ProjectionGroupRepositoryShape {
 export class ProjectionGroupRepository extends Context.Service<
   ProjectionGroupRepository,
   ProjectionGroupRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionGroups/ProjectionGroupRepository") {}
+>()("isnadibot/persistence/Services/ProjectionGroups/ProjectionGroupRepository") {}

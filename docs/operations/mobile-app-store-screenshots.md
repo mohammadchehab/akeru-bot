@@ -1,6 +1,6 @@
 # Mobile app-store screenshot harness
 
-> For maintainers. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers. Using IsnadiBot? See [docs/user](../user/).
 
 The screenshot harness runs the real mobile application against three disposable local T3
 environments. It creates an isolated base directory and server for each environment, real Git
@@ -21,8 +21,8 @@ The command:
 
 1. Creates three temporary T3 base directories and starts a local server for each on an available
    port.
-2. Creates Akeru Bot, React, and Linux Git repositories with feature branches and deterministic
-   Akeru Bot changes.
+2. Creates IsnadiBot, React, and Linux Git repositories with feature branches and deterministic
+   IsnadiBot changes.
 3. Seeds each server's migrated SQLite database with playful threads, messages, and activities,
    then adds two persisted mobile-outbox tasks waiting to send.
 4. Starts an isolated Metro server, builds the selected native apps, and boots each device.
@@ -54,7 +54,7 @@ Every configured device defaults to dark appearance and the `t3-code` palette, s
 `--appearance both` to override the configured appearance; `both` produces 60 PNGs.
 
 Pass `--theme <id>` (repeatable) or `--theme all` to capture the app's other palettes: `t3-code`,
-`akeru-paper`, `t3-chat`, `grove`, `ocean`, `ember`, and `iris`. The runner hands the palette to the
+`isnadi-paper`, `t3-chat`, `grove`, `ocean`, `ember`, and `iris`. The runner hands the palette to the
 app as a launch argument, the app applies it to both color schemes, and a scene only reports itself
 ready once the requested palette is active, so a capture can never show the previous theme.
 `--theme all` multiplies the run by seven; only the native build is shared.
@@ -150,7 +150,7 @@ Then run the capture from the repository root:
 
     pnpm screenshots:mobile --skip-build --skip-metro --device iphone-6.9
 
-`pnpm --filter @akeru/mobile showcase` starts Expo on its normal port, so it is not compatible with
+`pnpm --filter @isnadi/mobile showcase` starts Expo on its normal port, so it is not compatible with
 the harness's `--skip-metro` mode.
 
 List the matrix and flags:
@@ -176,7 +176,7 @@ labels while the server still receives valid current data. The same deterministi
 ensemble serves iPhone, iPad, Android phone, and Android tablet captures; responsive differences
 come entirely from the production app layout.
 
-The Pending rows use the production offline outbox and point at the real Akeru Bot and React fixture
+The Pending rows use the production offline outbox and point at the real IsnadiBot and React fixture
 projects. Showcase coordination holds those two entries in the outbox for capture, just like a task
 currently open for editing, so reconnecting the seeded environments cannot deliver and remove them
 before the screenshot is taken.

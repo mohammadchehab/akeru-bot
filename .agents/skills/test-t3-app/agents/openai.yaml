@@ -1,4 +1,4 @@
 interface:
-  display_name: "Akeru Bot App Testing"
+  display_name: "IsnadiBot App Testing"
   short_description: "Verify isolated web and desktop environments"
-  default_prompt: "Use $test-t3-app to verify Akeru Bot in an isolated web or desktop client and retain evidence of the affected behavior."
+  default_prompt: "Use $test-t3-app to verify IsnadiBot in an isolated web or desktop client and retain evidence of the affected behavior."

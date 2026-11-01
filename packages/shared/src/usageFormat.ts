@@ -11,7 +11,7 @@ import {
   type UsageResolution,
   type UsageSummaryInput,
   type UsageTokenTotals,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const CURRENCY = new Intl.NumberFormat("en-US", {
   style: "currency",

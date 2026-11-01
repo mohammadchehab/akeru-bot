@@ -7,7 +7,7 @@ import {
   type AuthEnvironmentScope,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 
 type WsRpcMethod = RpcGroup.Rpcs<typeof WsRpcGroup>["_tag"];

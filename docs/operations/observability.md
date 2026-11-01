@@ -1,8 +1,8 @@
 # Observability
 
-> For maintainers. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers. Using IsnadiBot? See [docs/user](../user/).
 
-Akeru Bot has one server-side observability model:
+IsnadiBot has one server-side observability model:
 
 - pretty logs go to stdout for humans
 - completed spans go to a local NDJSON trace file
@@ -29,10 +29,10 @@ If you want a log message to show up in the trace file, emit it inside an active
 
 Completed spans are written as NDJSON records to `serverTracePath`. The default depends on how the
 server starts: production and explicitly configured homes use
-`<home>/userdata/logs/server.trace.ndjson` (so `~/.akeru/userdata/...` by default, or
+`<home>/userdata/logs/server.trace.ndjson` (so `~/.isnadi/userdata/...` by default, or
 `/custom/path/userdata/...` with `--home-dir /custom/path`), a linked worktree dev run uses
-`<worktree>/.akeru/userdata/logs/server.trace.ndjson`, and an implicit dev run outside a linked
-worktree uses `~/.akeru/dev/logs/server.trace.ndjson`.
+`<worktree>/.isnadi/userdata/logs/server.trace.ndjson`, and an implicit dev run outside a linked
+worktree uses `~/.isnadi/dev/logs/server.trace.ndjson`.
 
 Important fields common to both record types:
 
@@ -79,7 +79,7 @@ You do not need any extra env vars. Just run the app normally and inspect `serve
 Examples:
 
 ```bash
-npx akeru-bot
+npx isnadibot
 ```
 
 ```bash
@@ -113,16 +113,16 @@ Default Grafana login:
 #### 2. Export OTLP env vars
 
 ```bash
-export AKERU_OTLP_TRACES_URL=http://localhost:4318/v1/traces
-export AKERU_OTLP_METRICS_URL=http://localhost:4318/v1/metrics
-export AKERU_OTLP_SERVICE_NAME=akeru-local
+export ISNADI_OTLP_TRACES_URL=http://localhost:4318/v1/traces
+export ISNADI_OTLP_METRICS_URL=http://localhost:4318/v1/metrics
+export ISNADI_OTLP_SERVICE_NAME=isnadi-local
 ```
 
 Optional:
 
 ```bash
-export AKERU_TRACE_MIN_LEVEL=Info
-export AKERU_TRACE_TIMING_ENABLED=true
+export ISNADI_TRACE_MIN_LEVEL=Info
+export ISNADI_TRACE_TIMING_ENABLED=true
 ```
 
 #### 3. Launch the app from that same shell
@@ -130,7 +130,7 @@ export AKERU_TRACE_TIMING_ENABLED=true
 CLI:
 
 ```bash
-npx akeru-bot
+npx isnadibot
 ```
 
 Monorepo web/server dev:
@@ -147,23 +147,23 @@ node --run dev:desktop
 
 Packaged desktop app:
 
-Launch the actual app executable from the same shell so the desktop app and embedded backend inherit `AKERU_OTLP_*`.
+Launch the actual app executable from the same shell so the desktop app and embedded backend inherit `ISNADI_OTLP_*`.
 
 macOS app bundle example:
 
 ```bash
-AKERU_OTLP_TRACES_URL=http://localhost:4318/v1/traces \
-AKERU_OTLP_METRICS_URL=http://localhost:4318/v1/metrics \
-AKERU_OTLP_SERVICE_NAME=akeru-desktop \
-"/Applications/Akeru Bot (Alpha).app/Contents/MacOS/Akeru Bot (Alpha)"
+ISNADI_OTLP_TRACES_URL=http://localhost:4318/v1/traces \
+ISNADI_OTLP_METRICS_URL=http://localhost:4318/v1/metrics \
+ISNADI_OTLP_SERVICE_NAME=isnadi-desktop \
+"/Applications/IsnadiBot (Alpha).app/Contents/MacOS/IsnadiBot (Alpha)"
 ```
 
 Direct binary example:
 
 ```bash
-AKERU_OTLP_TRACES_URL=http://localhost:4318/v1/traces \
-AKERU_OTLP_METRICS_URL=http://localhost:4318/v1/metrics \
-AKERU_OTLP_SERVICE_NAME=akeru-desktop \
+ISNADI_OTLP_TRACES_URL=http://localhost:4318/v1/traces \
+ISNADI_OTLP_METRICS_URL=http://localhost:4318/v1/metrics \
+ISNADI_OTLP_SERVICE_NAME=isnadi-desktop \
 ./path/to/your/desktop-app-binary
 ```
 
@@ -183,19 +183,19 @@ Resolve the path for the launch mode once. Production and explicitly configured 
 state under the base directory's `userdata` folder:
 
 ```bash
-TRACE_FILE="${AKERU_HOME:-$HOME/.akeru}/userdata/logs/server.trace.ndjson"
+TRACE_FILE="${ISNADI_HOME:-$HOME/.isnadi}/userdata/logs/server.trace.ndjson"
 ```
 
 A dev server started from a linked worktree defaults to that worktree's local home:
 
 ```bash
-TRACE_FILE="$WORKTREE/.akeru/userdata/logs/server.trace.ndjson"
+TRACE_FILE="$WORKTREE/.isnadi/userdata/logs/server.trace.ndjson"
 ```
 
 Only an implicit dev run outside a linked worktree uses the shared dev directory:
 
 ```bash
-TRACE_FILE="$HOME/.akeru/dev/logs/server.trace.ndjson"
+TRACE_FILE="$HOME/.isnadi/dev/logs/server.trace.ndjson"
 ```
 
 Tail the selected file:
@@ -299,7 +299,7 @@ Recommended flow in Grafana:
 
 Good first searches:
 
-- service name such as `akeru-local`, `akeru-dev`, or `akeru-desktop`
+- service name such as `isnadi-local`, `isnadi-dev`, or `isnadi-desktop`
 - span names like `sendTurn` or a Git operation such as `GitVcsDriver.statusDetails.status`
 - Git spans whose `git.operation` attribute identifies the operation
 - orchestration spans with attributes like `orchestration.command_type`
@@ -385,7 +385,7 @@ If you need those later, add client-side instrumentation or a dedicated server f
 
 Usually one of these is true:
 
-- `AKERU_OTLP_TRACES_URL` was not set
+- `ISNADI_OTLP_TRACES_URL` was not set
 - the app was launched from a different environment than the one where you exported the vars
 - the app was not fully restarted after changing env
 - Grafana is looking at the wrong time range or service name

@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";

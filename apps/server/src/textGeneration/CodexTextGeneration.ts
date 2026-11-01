@@ -13,9 +13,9 @@ import {
   DEFAULT_TEXT_GENERATION_REASONING_EFFORT,
   type ModelSelection,
   TextGenerationError,
-} from "@akeru/contracts";
-import { sanitizeBranchFragment } from "@akeru/shared/git";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+} from "@isnadi/contracts";
+import { sanitizeBranchFragment } from "@isnadi/shared/git";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 import * as ServerConfig from "../config.ts";
@@ -28,7 +28,7 @@ import {
   sanitizeThreadTitle,
   toJsonSchemaObject,
 } from "./TextGenerationUtils.ts";
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
 import { getCodexServiceTierOptionValue } from "../codexModelOptions.ts";
 
 const CODEX_TIMEOUT_MS = 180_000;

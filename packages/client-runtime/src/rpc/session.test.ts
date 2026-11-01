@@ -5,7 +5,7 @@ import {
   ServerConfig,
   type ServerConfig as ServerConfigType,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

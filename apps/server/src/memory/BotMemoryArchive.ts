@@ -2,14 +2,14 @@ import * as Match from "effect/Match";
 import * as NodeCrypto from "node:crypto";
 
 import {
-  AkeruMarkdownMemoryArchiveV3,
-  type AkeruConversationMemorySnapshot,
-  type AkeruMarkdownMemoryArchiveV3 as AkeruMarkdownMemoryArchiveV3Value,
-  type AkeruMarkdownMemoryImportApplyResult,
-  type AkeruMarkdownMemoryImportPreview,
-  type AkeruMemoryDocumentTarget,
+  IsnadiMarkdownMemoryArchiveV3,
+  type IsnadiConversationMemorySnapshot,
+  type IsnadiMarkdownMemoryArchiveV3 as IsnadiMarkdownMemoryArchiveV3Value,
+  type IsnadiMarkdownMemoryImportApplyResult,
+  type IsnadiMarkdownMemoryImportPreview,
+  type IsnadiMemoryDocumentTarget,
   type ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import { BotMemoryError, type BotMemoryAccess, type BotMemoryStore } from "./BotMemory.ts";
@@ -17,16 +17,16 @@ import { encodeMemoryArchiveJson } from "./MemoryArchiveJson.ts";
 
 const checksum = (value: string) => NodeCrypto.createHash("sha256").update(value).digest("hex");
 
-const decodeArchive = Schema.decodeUnknownSync(AkeruMarkdownMemoryArchiveV3);
+const decodeArchive = Schema.decodeUnknownSync(IsnadiMarkdownMemoryArchiveV3);
 
-const documentPath = (access: BotMemoryAccess, target: AkeruMemoryDocumentTarget): string =>
+const documentPath = (access: BotMemoryAccess, target: IsnadiMemoryDocumentTarget): string =>
   Match.value(target).pipe(
     Match.when("user", () => `bots/${access.botId}/USER.md`),
     Match.when("memory", () => `bots/${access.botId}/MEMORY.md`),
     Match.orElse(() => `bots/${access.botId}/groups/${access.groupId}/GROUP.md`),
   );
 
-const manifestValue = (archive: Omit<AkeruMarkdownMemoryArchiveV3Value, "manifestSha256">) =>
+const manifestValue = (archive: Omit<IsnadiMarkdownMemoryArchiveV3Value, "manifestSha256">) =>
   encodeMemoryArchiveJson({
     schemaVersion: archive.schemaVersion,
     anchorThreadId: archive.anchorThreadId,
@@ -47,9 +47,9 @@ export async function exportBotMemoryArchive(input: {
   readonly store: BotMemoryStore;
   readonly access: BotMemoryAccess;
   readonly threadId: ThreadId;
-  readonly conversation: AkeruConversationMemorySnapshot;
+  readonly conversation: IsnadiConversationMemorySnapshot;
   readonly createdAt: string;
-}): Promise<AkeruMarkdownMemoryArchiveV3Value> {
+}): Promise<IsnadiMarkdownMemoryArchiveV3Value> {
   const snapshot = await input.store.readSnapshot(input.access);
 
   const documents = [
@@ -90,8 +90,8 @@ async function prepareImport(input: {
   readonly store: BotMemoryStore;
   readonly access: BotMemoryAccess;
   readonly threadId: ThreadId;
-  readonly archive: AkeruMarkdownMemoryArchiveV3Value;
-  readonly currentConversation: AkeruConversationMemorySnapshot;
+  readonly archive: IsnadiMarkdownMemoryArchiveV3Value;
+  readonly currentConversation: IsnadiConversationMemorySnapshot;
   /** When false, the archive may restore every file except a changed MEMORY.md. */
   readonly privateBotMemory?: boolean;
 }) {
@@ -125,7 +125,7 @@ async function prepareImport(input: {
     throw BotMemoryError.fromCode("io-error", "The memory archive manifest checksum is invalid.");
   }
 
-  const expectedTargets = new Set<AkeruMemoryDocumentTarget>([
+  const expectedTargets = new Set<IsnadiMemoryDocumentTarget>([
     "user",
     "memory",
     ...(access.groupId === null ? [] : (["group"] as const)),
@@ -138,7 +138,7 @@ async function prepareImport(input: {
     );
   }
 
-  const seen = new Set<AkeruMemoryDocumentTarget>();
+  const seen = new Set<IsnadiMemoryDocumentTarget>();
   const current = await input.store.readSnapshot(access);
 
   const currentByTarget = new Map(
@@ -227,10 +227,10 @@ export async function previewBotMemoryImport(input: {
   readonly store: BotMemoryStore;
   readonly access: BotMemoryAccess;
   readonly threadId: ThreadId;
-  readonly archive: AkeruMarkdownMemoryArchiveV3Value;
-  readonly currentConversation: AkeruConversationMemorySnapshot;
+  readonly archive: IsnadiMarkdownMemoryArchiveV3Value;
+  readonly currentConversation: IsnadiConversationMemorySnapshot;
   readonly privateBotMemory?: boolean;
-}): Promise<AkeruMarkdownMemoryImportPreview> {
+}): Promise<IsnadiMarkdownMemoryImportPreview> {
   const prepared = await prepareImport(input);
 
   return {
@@ -244,16 +244,16 @@ export async function applyBotMemoryImport(input: {
   readonly store: BotMemoryStore;
   readonly access: BotMemoryAccess;
   readonly threadId: ThreadId;
-  readonly archive: AkeruMarkdownMemoryArchiveV3Value;
-  readonly currentConversation: AkeruConversationMemorySnapshot;
+  readonly archive: IsnadiMarkdownMemoryArchiveV3Value;
+  readonly currentConversation: IsnadiConversationMemorySnapshot;
   readonly previewHash: string;
   readonly privateBotMemory?: boolean;
   /** Restores or rolls back atomically, rejecting a stale expected snapshot before mutation. */
   readonly restoreConversation: (
-    snapshot: AkeruConversationMemorySnapshot,
-    expectedSnapshot: AkeruConversationMemorySnapshot,
+    snapshot: IsnadiConversationMemorySnapshot,
+    expectedSnapshot: IsnadiConversationMemorySnapshot,
   ) => Promise<void>;
-}): Promise<AkeruMarkdownMemoryImportApplyResult> {
+}): Promise<IsnadiMarkdownMemoryImportApplyResult> {
   return input.store.withDocumentTransaction(input.access, async (replace) => {
     const prepared = await prepareImport(input);
 

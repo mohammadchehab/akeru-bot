@@ -1,4 +1,4 @@
-import { ProviderDriverKind, type ProviderSession, ThreadId, TurnId } from "@akeru/contracts";
+import { ProviderDriverKind, type ProviderSession, ThreadId, TurnId } from "@isnadi/contracts";
 import * as Fiber from "effect/Fiber";
 import * as Ref from "effect/Ref";
 import * as Scope from "effect/Scope";

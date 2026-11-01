@@ -69,7 +69,7 @@ export function createSmokeEnvironment(root, inherited = process.env) {
     XDG_CACHE_HOME: NodePath.join(home, ".cache"),
     XDG_STATE_HOME: NodePath.join(home, ".local", "state"),
     T3CODE_HOME: NodePath.join(root, "akeru"),
-    AKERU_HOME: NodePath.join(root, "akeru"),
+    ISNADI_HOME: NodePath.join(root, "akeru"),
     T3CODE_DISABLE_AUTO_UPDATE: "true",
     ELECTRON_ENABLE_LOGGING: "1",
   };

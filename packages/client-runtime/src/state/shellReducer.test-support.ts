@@ -1,6 +1,6 @@
 import {
-  AkeruDelegationRecord,
-  AkeruDelegationPhase,
+  IsnadiDelegationRecord,
+  IsnadiDelegationPhase,
   BotId,
   GroupId,
   McpServerId,
@@ -11,9 +11,9 @@ import {
   SkillAssignmentId,
   SkillId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
-import type { OrchestrationShellSnapshot } from "@akeru/contracts";
+import type { OrchestrationShellSnapshot } from "@isnadi/contracts";
 
 export const baseSnapshot: OrchestrationShellSnapshot = {
   snapshotSequence: 0,
@@ -25,7 +25,7 @@ export const baseSnapshot: OrchestrationShellSnapshot = {
   updatedAt: "2026-04-01T00:00:00.000Z",
 };
 
-const decodeDelegationRecord = Schema.decodeUnknownSync(AkeruDelegationRecord);
+const decodeDelegationRecord = Schema.decodeUnknownSync(IsnadiDelegationRecord);
 
 export const stubDelegation = decodeDelegationRecord({
   delegationId: "delegation-1",
@@ -49,7 +49,7 @@ export const stubDelegation = decodeDelegationRecord({
     disabledMcpServerIds: [],
     approvalCeiling: "none",
   },
-  phase: AkeruDelegationPhase.cases.Queued.make({}),
+  phase: IsnadiDelegationPhase.cases.Queued.make({}),
   billedBotId: "bot-child",
   keep: false,
   createdAt: "2026-04-01T00:00:00.000Z",
@@ -62,7 +62,7 @@ export const completedDelegation = (delegationId: string, createdAt: string, upd
     delegationId,
     createdAt,
     updatedAt,
-    phase: AkeruDelegationPhase.cases.Completed.make({
+    phase: IsnadiDelegationPhase.cases.Completed.make({
       childThreadId: ThreadId.make("thread-child"),
       childTurnId: null,
       startedAt: createdAt,

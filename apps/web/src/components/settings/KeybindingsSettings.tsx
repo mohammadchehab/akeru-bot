@@ -1,10 +1,10 @@
 import { Match, Predicate } from "effect";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
-import { type KeybindingCommand, type ServerUpsertKeybindingInput } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/runtime";
+import { type KeybindingCommand, type ServerUpsertKeybindingInput } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { FileJsonIcon, InfoIcon, PlusIcon, SearchIcon, TriangleAlertIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";

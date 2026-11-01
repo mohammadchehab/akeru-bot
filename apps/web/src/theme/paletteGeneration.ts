@@ -3,7 +3,7 @@ import {
   type ThemeAppearance,
   type ThemeColorRole,
   type ThemeColors,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 import {
   type ThemeRgbColor,
   themeRelativeLuminance,

@@ -1,5 +1,5 @@
-import { makeLocalFileTracer, traceSink } from "@akeru/shared/observability";
-import { parsePersistedServerObservabilitySettings } from "@akeru/shared/serverSettings";
+import { makeLocalFileTracer, traceSink } from "@isnadi/shared/observability";
+import { parsePersistedServerObservabilitySettings } from "@isnadi/shared/serverSettings";
 import * as Context from "effect/Context";
 
 import * as Effect from "effect/Effect";
@@ -18,7 +18,7 @@ export const DESKTOP_TRACE_BATCH_WINDOW_MS = 1_000;
 export class DesktopTraceShutdown extends Context.Service<
   DesktopTraceShutdown,
   { readonly close: Effect.Effect<void> }
->()("@akeru/desktop/app/DesktopOtlp/DesktopTraceShutdown") {}
+>()("@isnadi/desktop/app/DesktopOtlp/DesktopTraceShutdown") {}
 
 export const readPersistedOtlpTracesUrl: Effect.Effect<
   Option.Option<string>,

@@ -6,7 +6,7 @@ import {
   ServerProvider,
   type ModelCapabilities,
   type OrchestrationBot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { makeMobileBot, makeMobileServerConfig } from "../lib/mobile-fixtures.test-support";

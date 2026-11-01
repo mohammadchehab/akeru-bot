@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { type ProviderSession, TurnId } from "@akeru/contracts";
+import { type ProviderSession, TurnId } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Ref from "effect/Ref";

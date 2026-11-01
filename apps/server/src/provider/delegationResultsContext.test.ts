@@ -3,8 +3,8 @@ import {
   DelegationId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+} from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 
 import { delegationResultsContext } from "./delegationResultsContext.ts";
@@ -17,7 +17,10 @@ const CHILD_THREAD_ID = ThreadId.make("thread-child");
 
 const CHILD_TURN_ID = TurnId.make("turn-child");
 
-function makeDelegation(id: string, phase: AkeruDelegationRecord["phase"]): AkeruDelegationRecord {
+function makeDelegation(
+  id: string,
+  phase: IsnadiDelegationRecord["phase"],
+): IsnadiDelegationRecord {
   return {
     delegationId: DelegationId.make(id),
     parentDelegationId: null,

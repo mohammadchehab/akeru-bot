@@ -1,4 +1,10 @@
-import { CommandId, EventId, ProjectId, ThreadId, type OrchestrationEvent } from "@akeru/contracts";
+import {
+  CommandId,
+  EventId,
+  ProjectId,
+  ThreadId,
+  type OrchestrationEvent,
+} from "@isnadi/contracts";
 
 export function makeEvent(input: {
   sequence: number;

@@ -1,6 +1,6 @@
 import * as NodeFS from "node:fs";
 
-import { AVAILABLE_CONNECTION_STATE } from "@akeru/client-runtime/connection";
+import { AVAILABLE_CONNECTION_STATE } from "@isnadi/client-runtime/connection";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

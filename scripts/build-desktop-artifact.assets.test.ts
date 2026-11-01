@@ -164,7 +164,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
         iconTextSize: 12,
       });
       // Linux must register the renderer schemes so the generated .desktop
-      // entry advertises MimeType=x-scheme-handler/akeru; for OAuth deep links.
+      // entry advertises MimeType=x-scheme-handler/isnadi; for OAuth deep links.
       assert.deepStrictEqual(linux.linux?.protocols, [
         {
           name: "IsnadiBot",
@@ -298,7 +298,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       const mac = config.mac;
 
       if (mac === undefined) assert.fail("Expected macOS build configuration");
-      assert.equal(config.appId, "dev.leodoes.akeru");
+      assert.equal(config.appId, "dev.leodoes.isnadi");
       assert.equal(mac.entitlements, "/tmp/entitlements.mac.plist");
       assert.equal(mac.notarize, true);
       assert.notProperty(mac, "identity");
@@ -321,7 +321,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       const mac = config.mac;
 
       if (mac === undefined) assert.fail("Expected macOS build configuration");
-      assert.equal(config.appId, "dev.leodoes.akeru");
+      assert.equal(config.appId, "dev.leodoes.isnadi");
       assert.equal(mac.entitlements, "/tmp/entitlements.mac.plist");
       assert.notProperty(mac, "provisioningProfile");
       assert.notProperty(mac, "identity");

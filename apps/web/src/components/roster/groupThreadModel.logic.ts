@@ -1,4 +1,4 @@
-import type { BotEngine, ModelSelection } from "@akeru/contracts";
+import type { BotEngine, ModelSelection } from "@isnadi/contracts";
 
 import {
   isProviderInstancePickerSelectable,

@@ -1,4 +1,4 @@
-import { CheckpointRef, MessageId, ProjectId, TurnId } from "@akeru/contracts";
+import { CheckpointRef, MessageId, ProjectId, TurnId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import type { SubscriptionProviderStatus } from "@akeru/contracts";
+import type { SubscriptionProviderStatus } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { ProviderAccountRows, ProviderApiKeyForm, SUBSCRIPTION_PROVIDERS } from "./ProvidersPanel";

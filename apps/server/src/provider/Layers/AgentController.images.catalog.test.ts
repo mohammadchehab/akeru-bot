@@ -14,7 +14,7 @@ import {
   type McpServer,
   type OrchestrationCommand,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as TestClock from "effect/testing/TestClock";
@@ -25,7 +25,7 @@ import * as Schema from "effect/Schema";
 import { assert, describe, expect, vi } from "vite-plus/test";
 import { ServerSettingsService } from "../../serverSettings.ts";
 import { AgentController } from "../Services/AgentController.ts";
-import type { AkeruRuntimeToolId } from "../AkeruToolRuntime.ts";
+import type { IsnadiRuntimeToolId } from "../IsnadiToolRuntime.ts";
 import { ImageGenerationRuntime } from "../../image-generation/ImageGenerationRuntime.ts";
 import {
   GROK_IMAGE_CAPABILITIES,
@@ -162,7 +162,7 @@ describe("AgentControllerLive", () => {
           ]),
         );
 
-        const run = (toolId: AkeruRuntimeToolId, toolCallId: string, input: Schema.Json) =>
+        const run = (toolId: IsnadiRuntimeToolId, toolCallId: string, input: Schema.Json) =>
           Effect.promise(() => {
             const execution = { threadId: String(codexThreadId), toolId, toolCallId, input };
             runtime.grantApproval(execution);

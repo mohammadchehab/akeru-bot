@@ -1,5 +1,8 @@
-import type { DesktopSshEnvironmentBootstrap, DesktopSshEnvironmentTarget } from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
+import type {
+  DesktopSshEnvironmentBootstrap,
+  DesktopSshEnvironmentTarget,
+} from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";

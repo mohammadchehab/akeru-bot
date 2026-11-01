@@ -3,9 +3,9 @@ import { it as effectIt } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { readAppStyles } from "./styles.test-support";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { BUILT_IN_THEME_IDS, BUILT_IN_THEMES } from "@akeru/shared/themePalettes";
+import { BUILT_IN_THEME_IDS, BUILT_IN_THEMES } from "@isnadi/shared/themePalettes";
 import {
-  AKERU_PAPER_THEME,
+  ISNADI_PAPER_THEME,
   getThemeColorsForMode,
   getThemeDefinition,
   getThemeModes,
@@ -77,14 +77,14 @@ describe("built-in palettes", () => {
     }
   });
 
-  it("keeps the Akeru Paper palette neutral and tied to the landing design", () => {
-    expect(BUILT_IN_THEME_IDS).toContain(AKERU_PAPER_THEME.id);
+  it("keeps the Isnadi Paper palette neutral and tied to the landing design", () => {
+    expect(BUILT_IN_THEME_IDS).toContain(ISNADI_PAPER_THEME.id);
     expect(BUILT_IN_THEMES.map((theme) => theme.id)).toEqual(BUILT_IN_THEME_IDS);
-    expect(Object.keys(AKERU_PAPER_THEME.colors).sort()).toEqual([...THEME_COLOR_ROLES].sort());
-    expect(Object.keys(AKERU_PAPER_THEME.variants!.dark!).sort()).toEqual(
+    expect(Object.keys(ISNADI_PAPER_THEME.colors).sort()).toEqual([...THEME_COLOR_ROLES].sort());
+    expect(Object.keys(ISNADI_PAPER_THEME.variants!.dark!).sort()).toEqual(
       [...THEME_COLOR_ROLES].sort(),
     );
-    expectThemeColors(AKERU_PAPER_THEME.colors, {
+    expectThemeColors(ISNADI_PAPER_THEME.colors, {
       canvas: "#fafaf9",
       text: "#1f1e1d",
       accent: "#1f1e1d",
@@ -95,7 +95,7 @@ describe("built-in palettes", () => {
       codeBackground: "#f4f4f3",
       sidebar: "#f3f2f1",
     });
-    expectThemeColors(AKERU_PAPER_THEME.variants!.dark!, {
+    expectThemeColors(ISNADI_PAPER_THEME.variants!.dark!, {
       canvas: "#050505",
       text: "#f4f4f4",
       accent: "#f4f4f4",
@@ -108,14 +108,14 @@ describe("built-in palettes", () => {
     });
 
     // The terminal stays dark in both appearances, so its cursor must stand out from it.
-    for (const colors of [AKERU_PAPER_THEME.colors, AKERU_PAPER_THEME.variants!.dark!]) {
+    for (const colors of [ISNADI_PAPER_THEME.colors, ISNADI_PAPER_THEME.variants!.dark!]) {
       expect(
         contrastRatio(colors.terminalCursor, colors.terminalBackground),
       ).toBeGreaterThanOrEqual(4.5);
     }
   });
 
-  effectIt.effect("keeps Akeru Paper dark surfaces flat and opaque", () =>
+  effectIt.effect("keeps Isnadi Paper dark surfaces flat and opaque", () =>
     Effect.gen(function* () {
       const css = yield* readAppStyles;
       const scopedOverride = css.match(/html\[data-theme-id="akeru-paper"\] \{[\s\S]*?\n\}/)?.[0];
@@ -140,7 +140,7 @@ describe("built-in palettes", () => {
         expect(contrastRatio(colors!.text, colors!.canvas)).toBeGreaterThanOrEqual(4.5);
         expect(contrastRatio(colors!.textMuted, colors!.canvas)).toBeGreaterThanOrEqual(4.5);
 
-        if (theme !== T3_CHAT_THEME && theme !== AKERU_PAPER_THEME) {
+        if (theme !== T3_CHAT_THEME && theme !== ISNADI_PAPER_THEME) {
           expect(contrastRatio(colors!.textMuted, colors!.canvas)).toBeLessThan(5.5);
           expect(contrastRatio(colors!.textMuted, colors!.canvas)).toBeCloseTo(
             mode === "dark" ? 5.082 : 4.705,

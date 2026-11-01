@@ -1,5 +1,5 @@
-import type { OrchestrationEvent } from "@akeru/contracts";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
+import type { OrchestrationEvent } from "@isnadi/contracts";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

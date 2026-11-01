@@ -4,18 +4,18 @@ import {
   MastraSandbox,
   type ProviderStatus,
 } from "@mastra/core/workspace";
-import { type AkeruRemoteSession, type RemoteBotSandbox } from "./BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type RemoteBotSandbox } from "./BotWorkspaceTypes.ts";
 
 export class RemoteSandbox extends MastraSandbox {
   readonly name: string;
   readonly provider: string;
   readonly id: string;
-  private readonly session: AkeruRemoteSession;
+  private readonly session: IsnadiRemoteSession;
   status: ProviderStatus = "pending";
-  constructor(id: string, provider: RemoteBotSandbox, session: AkeruRemoteSession) {
-    super({ name: `Akeru ${provider}` });
+  constructor(id: string, provider: RemoteBotSandbox, session: IsnadiRemoteSession) {
+    super({ name: `Isnadi ${provider}` });
     this.id = id;
-    this.name = `Akeru ${provider}`;
+    this.name = `Isnadi ${provider}`;
     this.provider = provider;
     this.session = session;
   }

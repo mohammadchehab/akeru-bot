@@ -1,6 +1,6 @@
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
-import type { ServerConfig } from "@akeru/contracts";
+import type { ServerConfig } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 
 import type { ConnectionCatalogEntry } from "./catalog.ts";

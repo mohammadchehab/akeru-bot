@@ -8,7 +8,7 @@ import {
   ORCHESTRATION_WS_METHODS,
   ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertTrue } from "@effect/vitest/utils";
 import * as Effect from "effect/Effect";

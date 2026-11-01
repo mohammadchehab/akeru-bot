@@ -7,7 +7,7 @@ import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
-import { ProviderDriverKind, ThreadId, TurnId, type ProviderRuntimeEvent } from "@akeru/contracts";
+import { ProviderDriverKind, ThreadId, TurnId, type ProviderRuntimeEvent } from "@isnadi/contracts";
 import {
   makeMockGrokWrapper,
   waitForFileContent,

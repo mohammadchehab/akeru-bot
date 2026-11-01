@@ -1,23 +1,23 @@
 import { harnessCredentialIssue } from "../../HarnessProviderStatus.ts";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
-import { PROVIDER_ACCOUNT_NAMES } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { PROVIDER_ACCOUNT_NAMES } from "@isnadi/contracts";
 import * as NodeCrypto from "node:crypto";
 import * as Path from "effect/Path";
 import * as Effect from "effect/Effect";
 import { AuthStorage } from "@mastra/code-sdk/auth/storage";
-import { type ProviderRuntimeEvent } from "@akeru/contracts";
+import { type ProviderRuntimeEvent } from "@isnadi/contracts";
 import {
   SubscriptionAuthService,
   type SubscriptionProviderId,
 } from "../../../subscription-auth/service.ts";
-import { openCodeGoInlineConnection } from "../../AkeruMastraHarness.ts";
+import { openCodeGoInlineConnection } from "../../IsnadiMastraHarness.ts";
 import type { ProviderInstanceRoutingInfo } from "../../Services/ProviderAdapterRegistry.ts";
-import { type AkeruDelegationRuntimeOptions } from "../../AkeruDelegationRuntime.ts";
+import { type IsnadiDelegationRuntimeOptions } from "../../IsnadiDelegationRuntime.ts";
 
 import { nowIso, eventId } from "./EventIdentity.ts";
 
-export const createAkeruMastraAuthStorage = Effect.fn("createAkeruMastraAuthStorage")(function* (
+export const createIsnadiMastraAuthStorage = Effect.fn("createIsnadiMastraAuthStorage")(function* (
   secretsDir: string,
 ) {
   const path = yield* Path.Path;
@@ -26,7 +26,7 @@ export const createAkeruMastraAuthStorage = Effect.fn("createAkeruMastraAuthStor
 });
 
 export type DelegatedUsage = Parameters<
-  NonNullable<AkeruDelegationRuntimeOptions["recordUsage"]>
+  NonNullable<IsnadiDelegationRuntimeOptions["recordUsage"]>
 >[0];
 
 export function delegatedUsageReceipt(
@@ -120,13 +120,13 @@ export function mastraConnectionIssue(
 
   switch (String(provider)) {
     case "kimi":
-      return "Custom Kimi credentials are not supported by the Akeru harness.";
+      return "Custom Kimi credentials are not supported by the Isnadi harness.";
     case "opencodeGo":
       return env.OPENCODE_API_KEY?.trim() || openCodeGoInlineConnection(env).apiKey
         ? undefined
-        : "This OpenCode Go instance needs OPENCODE_API_KEY for the Akeru harness.";
+        : "This OpenCode Go instance needs OPENCODE_API_KEY for the Isnadi harness.";
     default:
-      return `Provider '${provider}' has no Akeru Mastra transport.`;
+      return `Provider '${provider}' has no Isnadi Mastra transport.`;
   }
 }
 

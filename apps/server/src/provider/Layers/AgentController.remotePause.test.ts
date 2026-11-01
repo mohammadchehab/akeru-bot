@@ -5,8 +5,8 @@ import * as NodePath from "node:path";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { LocalFilesystem, LocalSandbox, Workspace } from "@mastra/core/workspace";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EventId,
   ProviderDriverKind,
@@ -15,7 +15,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as TestClock from "effect/testing/TestClock";
 import * as Effect from "effect/Effect";
@@ -352,8 +352,8 @@ describe("AgentControllerLive", () => {
       const botId = BotId.make(`bot-legacy-${terminalState}`);
 
       const memoryAccess = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId: ProjectId.make("project-legacy-failure"),
         workspaceRoot: "/workspace/legacy-failure",

@@ -1,7 +1,7 @@
-import type { ThreadSilentRun } from "@akeru/client-runtime/silent-run";
+import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentConnectionPhase } from "@akeru/client-runtime/connection";
-import type { EnvironmentThreadStatus } from "@akeru/client-runtime/state/threads";
+import type { EnvironmentConnectionPhase } from "@isnadi/client-runtime/connection";
+import type { EnvironmentThreadStatus } from "@isnadi/client-runtime/state/threads";
 import { useKeyboardChatComposerInset, useKeyboardScrollToEnd } from "@legendapp/list/keyboard";
 import type { LegendListRef } from "@legendapp/list/react-native";
 import { HeaderHeightContext } from "@react-navigation/elements";
@@ -17,13 +17,13 @@ import type {
   ThreadId,
   ServerProviderUnavailability,
   UserInputQuestion,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   defaultInstanceIdForDriver,
   PROVIDER_DISPLAY_NAMES,
   stockProviderAccountName,
   ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Haptics from "expo-haptics";
 import {
   memo,

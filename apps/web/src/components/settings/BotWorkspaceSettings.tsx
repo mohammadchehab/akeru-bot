@@ -1,9 +1,9 @@
 import { Match } from "effect";
 import { useState } from "react";
 import { useAtomValue } from "@effect/atom-react";
-import { type BotSandboxBrowserSharing, ProviderDriverKind } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
-import { createModelSelection } from "@akeru/shared/model";
+import { type BotSandboxBrowserSharing, ProviderDriverKind } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
+import { createModelSelection } from "@isnadi/shared/model";
 import * as Equal from "effect/Equal";
 import { ProviderModelPicker } from "../chat/ProviderModelPicker";
 import { TraitsPicker } from "../chat/TraitsPicker";
@@ -31,7 +31,7 @@ import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../
 import { SettingResetButton, SettingsRow, SettingsSection } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { useI18n } from "../../i18n";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import { DEFAULT_DRIVER_KIND } from "./useSettingsRestore";
 
 const BOT_SANDBOX_BROWSER_SHARING_LABELS: Record<BotSandboxBrowserSharing, MessageKey> = {

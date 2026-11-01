@@ -1,9 +1,9 @@
 # Kimi For Coding on the Mastra harness — live verification
 
-> For maintainers and operators. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers and operators. Using IsnadiBot? See [docs/user](../user/).
 
-Kimi For Coding runs entirely on Akeru's in-process Mastra harness (`AkeruMastraHarness` +
-`AkeruKimiProvider`). It never spawns a provider CLI and never touches the legacy adapter bridge.
+Kimi For Coding runs entirely on Isnadi's in-process Mastra harness (`IsnadiMastraHarness` +
+`IsnadiKimiProvider`). It never spawns a provider CLI and never touches the legacy adapter bridge.
 The automated suite covers this with mocked transports in
 `apps/server/src/provider/Layers/AgentController.test.ts` ("Kimi Mastra normalization" and the
 fake-transport end-to-end case) and
@@ -13,11 +13,11 @@ subscription. Each step lists the observable signal that proves the Mastra path 
 
 ## Before you start
 
-- A running Akeru environment with a Kimi For Coding subscription connected in
+- A running Isnadi environment with a Kimi For Coding subscription connected in
   Settings → Providers (OAuth device login, `kimi-for-coding`).
 - The provider event log for the thread under test:
-  `~/.akeru/userdata/logs/provider/events.<threadSegment>.log` (or
-  `<worktree>/.akeru/userdata/logs/...` in a dev worktree). See
+  `~/.isnadi/userdata/logs/provider/events.<threadSegment>.log` (or
+  `<worktree>/.isnadi/userdata/logs/...` in a dev worktree). See
   [provider-model-routing.md](provider-model-routing.md) and
   [observability.md](observability.md) for the layout.
 - One chat thread bound to a bot whose provider is Kimi For Coding.
@@ -75,7 +75,7 @@ Expected:
 This is the riskiest leg for Mastra drivers because the session lives in process memory.
 
 1. Send a turn, let it complete.
-2. Restart the Akeru server (`vp run dev` again, or restart the desktop app).
+2. Restart the Isnadi server (`vp run dev` again, or restart the desktop app).
 3. Open the same chat thread and send another turn.
 
 Expected:

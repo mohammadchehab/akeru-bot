@@ -2,7 +2,7 @@ import {
   PROVIDER_ACCOUNT_NAMES,
   isProviderDriverKind,
   type ServerProviderUnavailability,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   presentProviderUnavailability,

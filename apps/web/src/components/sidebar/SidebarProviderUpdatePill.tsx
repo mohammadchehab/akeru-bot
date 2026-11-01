@@ -1,6 +1,6 @@
 import { Match } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import type { ServerProvider } from "@akeru/contracts";
+import type { ServerProvider } from "@isnadi/contracts";
 import { CircleCheckIcon, DownloadIcon, LoaderIcon, TriangleAlertIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 

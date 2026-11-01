@@ -1,5 +1,5 @@
 import * as Match from "effect/Match";
-import type { AuthClientPresentationMetadata } from "@akeru/contracts";
+import type { AuthClientPresentationMetadata } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -34,7 +34,7 @@ export class ConnectionResolver extends Context.Service<
       entry: ConnectionCatalogEntry,
     ) => Effect.Effect<PreparedConnection, ConnectionAttemptError>;
   }
->()("@akeru/client-runtime/connection/resolver/ConnectionResolver") {}
+>()("@isnadi/client-runtime/connection/resolver/ConnectionResolver") {}
 
 const isBearerProfile = Schema.is(BearerConnectionProfile);
 

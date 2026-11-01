@@ -5,8 +5,8 @@ import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Layer from "effect/Layer";
 
-import type { VcsDriverKind, VcsError, VcsRepositoryIdentity } from "@akeru/contracts";
-import { VcsUnsupportedOperationError } from "@akeru/contracts";
+import type { VcsDriverKind, VcsError, VcsRepositoryIdentity } from "@isnadi/contracts";
+import { VcsUnsupportedOperationError } from "@isnadi/contracts";
 import * as GitVcsDriver from "./GitVcsDriver.ts";
 import * as VcsProjectConfig from "./VcsProjectConfig.ts";
 import * as VcsDriver from "./VcsDriver.ts";
@@ -35,7 +35,7 @@ export class VcsDriverRegistry extends Context.Service<
     ) => Effect.Effect<VcsDriverHandle | null, VcsError>;
     readonly resolve: (input: VcsDriverResolveInput) => Effect.Effect<VcsDriverHandle, VcsError>;
   }
->()("akeru-bot/vcs/VcsDriverRegistry") {}
+>()("isnadibot/vcs/VcsDriverRegistry") {}
 
 function detectionCacheKey(input: {
   readonly cwd: string;

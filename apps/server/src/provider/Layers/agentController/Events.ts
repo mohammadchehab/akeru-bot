@@ -3,10 +3,10 @@ import * as Match from "effect/Match";
 import { omitNullToolFields } from "./Policy.ts";
 import * as Predicate from "effect/Predicate";
 import type { McpManager } from "@mastra/code-sdk/mcp/index";
-import { akeruToolCategory } from "../../AkeruMastraHarness.ts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
-import type { RuntimeMode } from "@akeru/contracts";
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import { isnadiToolCategory } from "../../IsnadiMastraHarness.ts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
+import type { RuntimeMode } from "@isnadi/contracts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
 import type { AgentControllerEvent, MastraDBMessage } from "@mastra/core/agent-controller";
@@ -15,32 +15,32 @@ import {
   RuntimeItemId,
   RuntimeRequestId,
   TurnId,
-  AKERU_TOOL_CATALOG,
+  ISNADI_TOOL_CATALOG,
   type ProviderRuntimeEvent,
   ThreadId,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-} from "@akeru/contracts";
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+} from "@isnadi/contracts";
 
 import { ServerConfig } from "../../../config.ts";
 
-import { persistAkeruPreviewSnapshot } from "../../AkeruPreviewSnapshotAttachment.ts";
+import { persistIsnadiPreviewSnapshot } from "../../IsnadiPreviewSnapshotAttachment.ts";
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
-import { akeruActionNeedsApproval, criticalAkeruAction } from "../../AkeruMastraHarness.ts";
+import { isnadiActionNeedsApproval, criticalIsnadiAction } from "../../IsnadiMastraHarness.ts";
 
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
 
-import type { AkeruWorkerRuntime } from "../../AkeruWorkerRuntime.ts";
+import type { IsnadiWorkerRuntime } from "../../IsnadiWorkerRuntime.ts";
 
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
 
-import { isMemoryToolId } from "../../AkeruToolRuntime.ts";
+import { isMemoryToolId } from "../../IsnadiToolRuntime.ts";
 
-import { AkeruSessionResources } from "../../AkeruSessionResources.ts";
+import { IsnadiSessionResources } from "../../IsnadiSessionResources.ts";
 
 import { isCodexComputerUseTool } from "../../CodexComputerUse.ts";
 
@@ -58,8 +58,8 @@ import { nowIso, eventId } from "./EventIdentity.ts";
 import { mcpServerIdForToolName } from "./McpConfiguration.ts";
 
 export function createEvents(deps: {
-  readonly forkPromise: AkeruRuntimeSeam["forkPromise"];
-  readonly runPromise: AkeruRuntimeSeam["runPromise"];
+  readonly forkPromise: IsnadiRuntimeSeam["forkPromise"];
+  readonly runPromise: IsnadiRuntimeSeam["runPromise"];
   readonly publish: (event: ProviderRuntimeEvent) => void;
   readonly messageText: (message: MastraDBMessage) => string;
   readonly itemType: (
@@ -73,16 +73,16 @@ export function createEvents(deps: {
     requestId: string,
     pending: PendingApproval,
   ) => void;
-  readonly sessionResources: AkeruSessionResources;
+  readonly sessionResources: IsnadiSessionResources;
   readonly APPROVAL_FREE_MASTRA_TOOL_NAMES: ReadonlySet<string>;
   readonly omitNullToolFields: typeof omitNullToolFields;
   readonly mcpToolNeedsApproval: (manager: McpManager | undefined, toolName: string) => boolean;
   readonly permissionPolicy: (
     runtimeMode: RuntimeMode,
-    category: ReturnType<typeof akeruToolCategory>,
+    category: ReturnType<typeof isnadiToolCategory>,
   ) => "allow" | "ask";
   readonly legacyProviderBridge: LegacyProviderBridge["Service"];
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly failActiveTurn: (
     active: ActiveSession,
     threadId: ThreadId,
@@ -90,14 +90,14 @@ export function createEvents(deps: {
     cause: unknown,
   ) => Promise<void>;
   readonly wired: () => {
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   };
-  readonly workerRuntime: AkeruWorkerRuntime;
+  readonly workerRuntime: IsnadiWorkerRuntime;
   readonly approvalDetail: (toolName: string, action: string | null, oneUse: boolean) => string;
   readonly sessionFailureDetail: (
     active: Pick<ActiveSession, "mcpServerIds">,
@@ -311,7 +311,7 @@ export function createEvents(deps: {
 
         const previewSnapshot =
           toolName === "preview_snapshot" && !event.isError && !event.denied
-            ? persistAkeruPreviewSnapshot({
+            ? persistIsnadiPreviewSnapshot({
                 attachmentsDir: deps.config.attachmentsDir,
                 threadId: String(threadId),
                 result: event.result,
@@ -387,19 +387,19 @@ export function createEvents(deps: {
         }
 
         const toolInput = deps.omitNullToolFields(event.args);
-        const action = criticalAkeruAction(event.toolName, toolInput);
+        const action = criticalIsnadiAction(event.toolName, toolInput);
 
         const oneUseApproval =
-          akeruActionNeedsApproval(event.toolName, toolInput) ||
+          isnadiActionNeedsApproval(event.toolName, toolInput) ||
           deps.mcpToolNeedsApproval(mcpManager, event.toolName);
 
         if (
-          event.toolName !== AKERU_PRODUCT_FEEDBACK_TOOL_NAME &&
+          event.toolName !== ISNADI_PRODUCT_FEEDBACK_TOOL_NAME &&
           !oneUseApproval &&
-          deps.permissionPolicy(active.runtimeMode, akeruToolCategory(event.toolName)) === "allow"
+          deps.permissionPolicy(active.runtimeMode, isnadiToolCategory(event.toolName)) === "allow"
         ) {
           deps.forkPromise(
-            "Akeru could not approve an allowed tool call.",
+            "Isnadi could not approve an allowed tool call.",
             () =>
               deps.runPromise(
                 deps.legacyProviderBridge.dispatchIfEnabled(
@@ -408,9 +408,9 @@ export function createEvents(deps: {
                   () => {
                     if (active.activeTurn !== turn || turn.finished) return;
 
-                    // Akeru runtime tools check their own grant before running.
+                    // Isnadi runtime tools check their own grant before running.
                     const runtimeToolId =
-                      AKERU_TOOL_CATALOG.find((tool) => tool.id === event.toolName)?.id ??
+                      ISNADI_TOOL_CATALOG.find((tool) => tool.id === event.toolName)?.id ??
                       (isMemoryToolId(event.toolName) ? event.toolName : undefined);
 
                     if (runtimeToolId) {
@@ -483,9 +483,9 @@ export function createEvents(deps: {
             target: event.toolName,
             detail: isCodexComputerUseTool(event.toolName)
               ? "Allow Computer Use?"
-              : event.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME
+              : event.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME
                 ? "Review product feedback"
-                : event.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME
+                : event.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME
                   ? "Review routine"
                   : deps.approvalDetail(event.toolName, action, oneUseApproval),
             toolName: isCodexComputerUseTool(event.toolName) ? "Computer Use" : event.toolName,
@@ -496,12 +496,12 @@ export function createEvents(deps: {
                   { decision: "accept", label: "Allow" },
                   { decision: "decline", label: "Decline" },
                 ]
-              : event.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME
+              : event.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME
                 ? [
                     { decision: "accept", label: "Add to feedback draft" },
                     { decision: "decline", label: "Cancel" },
                   ]
-                : event.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME
+                : event.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME
                   ? [
                       { decision: "accept", label: "Create routine" },
                       { decision: "decline", label: "Cancel" },

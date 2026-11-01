@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
 import { readProtocolJson } from "../ProtocolJson.ts";
 import * as Predicate from "effect/Predicate";
-import { type ProviderApprovalDecision, type ProviderApprovalOption } from "@akeru/contracts";
+import { type ProviderApprovalDecision, type ProviderApprovalOption } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";
 

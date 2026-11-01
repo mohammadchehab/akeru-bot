@@ -1,6 +1,6 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { type OrchestrationClientOrigin, WsRpcGroup } from "@akeru/contracts";
+import { type OrchestrationClientOrigin, WsRpcGroup } from "@isnadi/contracts";
 import { HttpRouter, HttpServerRequest, HttpServerRespondable } from "effect/unstable/http";
 import { RpcSerialization, RpcServer } from "effect/unstable/rpc";
 import * as OrchestrationEngine from "./orchestration/Services/OrchestrationEngine.ts";

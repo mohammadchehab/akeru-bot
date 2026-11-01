@@ -6,7 +6,7 @@ import { fixture } from "./testUtils/subscriptionAuthStorage.ts";
 import * as NodeFS from "node:fs";
 import { expect, it } from "@effect/vitest";
 import { describe, vi } from "vite-plus/test";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import { HEALTH_CHECK_TIMEOUT_MS } from "./serviceTypes.ts";
 import {
   makeTestSubscriptionAuthService,

@@ -3,8 +3,8 @@ import {
   createVoiceDictationTranscriber,
   dictationTranscriptionCapability,
   type DictationDraft,
-} from "@akeru/client-runtime/dictation";
-import { DEFAULT_SERVER_SETTINGS, EnvironmentId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/dictation";
+import { DEFAULT_SERVER_SETTINGS, EnvironmentId } from "@isnadi/contracts";
 import { useEffect, useMemo } from "react";
 import { Alert } from "react-native";
 

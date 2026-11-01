@@ -132,8 +132,8 @@
             // snapshot dispatch ordering.
             // Promise signatures alone do not justify avoiding Effect services.
             "include": [
-              "**/apps/server/src/provider/AkeruPreviewSnapshotAttachment.ts",
-              "**/apps/server/src/provider/AkeruWebFetch.ts",
+              "**/apps/server/src/provider/IsnadiPreviewSnapshotAttachment.ts",
+              "**/apps/server/src/provider/IsnadiWebFetch.ts",
               "**/apps/server/src/provider/CodexComputerUse.ts",
               "**/apps/server/src/provider/browser/LightpandaProcess.ts",
               "**/apps/server/src/voiceCall/ChatGptRealtime.ts"
@@ -165,7 +165,7 @@
               "**/apps/server/src/bot-inbox/service.ts",
               "**/apps/server/src/cli/triage.ts",
               "**/apps/server/src/usage/usageTranscriptReader.ts",
-              "**/apps/server/src/provider/tools/AkeruPluginCatalog.ts",
+              "**/apps/server/src/provider/tools/IsnadiPluginCatalog.ts",
               "**/apps/server/src/provider/Layers/agentController/EventIdentity.ts"
             ],
             "options": {

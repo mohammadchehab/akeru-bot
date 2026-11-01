@@ -8,9 +8,9 @@ import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import * as Result from "effect/Result";
-import { createModelSelection } from "@akeru/shared/model";
+import { createModelSelection } from "@isnadi/shared/model";
 import { expect } from "vite-plus/test";
-import { ProviderInstanceId, TextGenerationError } from "@akeru/contracts";
+import { ProviderInstanceId, TextGenerationError } from "@isnadi/contracts";
 import * as ServerConfig from "../config.ts";
 
 it.layer(CodexTextGenerationTestLayer)("CodexTextGeneration", (it) => {

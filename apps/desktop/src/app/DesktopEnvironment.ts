@@ -5,7 +5,7 @@ import type {
   DesktopAppStageLabel,
   DesktopRuntimeArch,
   DesktopRuntimeInfo,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -16,6 +16,8 @@ import * as Path from "effect/Path";
 import * as DesktopAppSettings from "../settings/DesktopAppSettings.ts";
 import * as DesktopConfig from "./DesktopConfig.ts";
 import { resolveDesktopBaseDir, resolveDesktopStateDir } from "./DesktopStatePaths.ts";
+import { resolveProductHomeDir } from "@isnadi/shared/productHome";
+import * as FileSystem from "effect/FileSystem";
 
 export interface MakeDesktopEnvironmentInput {
   readonly dirname: string;
@@ -82,13 +84,13 @@ export class DesktopEnvironment extends Context.Service<
     readonly linuxApplicationsDir: string;
     readonly appImagePath: Option.Option<string>;
     readonly userDataDirName: string;
-    readonly legacyUserDataDirName: string;
+    readonly legacyUserDataDirNames: ReadonlyArray<string>;
     readonly defaultDesktopSettings: DesktopAppSettings.DesktopSettings;
     readonly runtimeInfo: DesktopRuntimeInfo;
     readonly resolvePickFolderDefaultPath: <Input>(rawOptions: Input) => Option.Option<string>;
     readonly resolveResourcePathCandidates: (fileName: string) => readonly string[];
   }
->()("@akeru/desktop/app/DesktopEnvironment") {}
+>()("@isnadi/desktop/app/DesktopEnvironment") {}
 
 const APP_BASE_NAME = "IsnadiBot";
 
@@ -153,7 +155,11 @@ function resolveDesktopRuntimeInfo(input: {
 
 const make = Effect.fn("desktop.environment.make")(function* (
   input: MakeDesktopEnvironmentInput,
-): Effect.fn.Return<DesktopEnvironment["Service"], Config.ConfigError, Path.Path> {
+): Effect.fn.Return<
+  DesktopEnvironment["Service"],
+  Config.ConfigError,
+  Path.Path | FileSystem.FileSystem
+> {
   const path = yield* Path.Path;
   const config = yield* DesktopConfig.DesktopConfig;
   const homeDirectory = input.homeDirectory;
@@ -173,8 +179,7 @@ const make = Effect.fn("desktop.environment.make")(function* (
   );
 
   const baseDir = resolveDesktopBaseDir({
-    homeDirectory,
-    joinPath: path.join,
+    defaultBaseDir: yield* resolveProductHomeDir(homeDirectory),
     t3Home: config.t3Home,
   });
 
@@ -201,8 +206,13 @@ const make = Effect.fn("desktop.environment.make")(function* (
     t3Home: config.t3Home,
   });
 
-  const userDataDirName = isDevelopment ? "akeru-bot-dev" : "akeru-bot";
-  const legacyUserDataDirName = isDevelopment ? "Akeru Bot (Dev)" : "Akeru Bot (Alpha)";
+  const userDataDirName = isDevelopment ? "isnadibot-dev" : "isnadibot";
+
+  // Directories earlier releases used, in the order they took precedence. An existing one
+  // keeps being used in place so a renamed app still opens its data.
+  const legacyUserDataDirNames = isDevelopment
+    ? ["Akeru Bot (Dev)", "akeru-bot-dev"]
+    : ["Akeru Bot (Alpha)", "akeru-bot"];
 
   const linuxApplicationsDir = path.join(
     Option.getOrElse(config.xdgDataHome, () => path.join(homeDirectory, ".local", "share")),
@@ -249,14 +259,14 @@ const make = Effect.fn("desktop.environment.make")(function* (
     branding,
     displayName,
     appUserModelId: Option.getOrElse(config.appUserModelIdOverride, () =>
-      isDevelopment ? "dev.leodoes.akeru.dev" : "dev.leodoes.akeru",
+      isDevelopment ? "dev.leodoes.isnadi.dev" : "dev.leodoes.isnadi",
     ),
-    linuxDesktopEntryName: isDevelopment ? "akeru-bot-dev.desktop" : "akeru-bot.desktop",
-    linuxWmClass: isDevelopment ? "akeru-bot-dev" : "akeru-bot",
+    linuxDesktopEntryName: isDevelopment ? "isnadibot-dev.desktop" : "isnadibot.desktop",
+    linuxWmClass: isDevelopment ? "isnadibot-dev" : "isnadibot",
     linuxApplicationsDir,
     appImagePath: config.appImagePath,
     userDataDirName,
-    legacyUserDataDirName,
+    legacyUserDataDirNames,
     defaultDesktopSettings: DesktopAppSettings.resolveDefaultDesktopSettings(input.appVersion),
     runtimeInfo: resolveDesktopRuntimeInfo({
       platform: input.platform,

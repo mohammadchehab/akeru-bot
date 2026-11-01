@@ -1,4 +1,4 @@
-import { archivedBotDeletesAtMs, CommandId } from "@akeru/contracts";
+import { archivedBotDeletesAtMs, CommandId } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Crypto from "effect/Crypto";
 import * as Duration from "effect/Duration";

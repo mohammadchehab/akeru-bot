@@ -1,5 +1,5 @@
 name: Provider proposal
-description: Propose an agent provider for Akeru Bot.
+description: Propose an agent provider for IsnadiBot.
 title: "[Provider]: "
 labels:
   - "type:provider"
@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        A provider needs a maintained runtime, a specific Akeru Bot job, and a testable connection lifecycle.
+        A provider needs a maintained runtime, a specific IsnadiBot job, and a testable connection lifecycle.
         Describe what works today. Do not include tokens or secrets.
 
   - type: input
@@ -28,10 +28,10 @@ body:
       required: true
 
   - type: textarea
-    id: akeru_job
+    id: isnadi_job
     attributes:
-      label: Akeru Bot job
-      description: Describe one specific job this provider completes in Akeru Bot.
+      label: IsnadiBot job
+      description: Describe one specific job this provider completes in IsnadiBot.
     validations:
       required: true
 
@@ -100,5 +100,5 @@ body:
     attributes:
       label: Credential safety
       options:
-        - label: This proposal contains no token or secret and does not require Akeru Bot to export a provider token or secret.
+        - label: This proposal contains no token or secret and does not require IsnadiBot to export a provider token or secret.
           required: true

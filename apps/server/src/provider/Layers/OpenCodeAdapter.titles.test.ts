@@ -9,7 +9,7 @@ import * as Option from "effect/Option";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 import { beforeEach } from "vite-plus/test";
-import { ApprovalRequestId, ProviderDriverKind, ThreadId } from "@akeru/contracts";
+import { ApprovalRequestId, ProviderDriverKind, ThreadId } from "@isnadi/contracts";
 import { ServerConfig } from "../../config.ts";
 import { ServerSettingsService } from "../../serverSettings.ts";
 import { OpenCodeRuntime } from "../opencodeRuntime.ts";

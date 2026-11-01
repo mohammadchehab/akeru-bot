@@ -3,7 +3,7 @@ import {
   DelegationId,
   SHELL_RECENT_TERMINAL_DELEGATIONS_PER_THREAD,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { applyShellStreamEvent } from "./shellReducer.ts";
 import {
   baseSnapshot,

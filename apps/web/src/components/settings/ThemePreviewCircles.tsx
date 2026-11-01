@@ -2,7 +2,7 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import {
   STANDARD_THEME_PREVIEW_COLORS as SHARED_STANDARD_THEME_PREVIEW_COLORS,
   THEME_PREVIEW_RENDER_SPECS,
-} from "@akeru/shared/themePreview";
+} from "@isnadi/shared/themePreview";
 import { cn } from "../../lib/utils";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import {

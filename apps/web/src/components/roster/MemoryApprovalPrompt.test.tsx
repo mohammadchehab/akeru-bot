@@ -1,10 +1,10 @@
 import {
-  AkeruMemoryCandidateId,
+  IsnadiMemoryCandidateId,
   BotId,
   EnvironmentId,
   ThreadId,
-  type AkeruMemoryApprovalRequest,
-} from "@akeru/contracts";
+  type IsnadiMemoryApprovalRequest,
+} from "@isnadi/contracts";
 import { isValidElement, type ReactElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
@@ -35,7 +35,7 @@ vi.mock("@effect/atom-react", () => ({
 }));
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -91,8 +91,8 @@ const approval = (
   candidateId: string,
   sensitive = false,
   authorBotId: string | null = "bot-ada",
-): AkeruMemoryApprovalRequest => ({
-  candidateId: AkeruMemoryCandidateId.make(candidateId),
+): IsnadiMemoryApprovalRequest => ({
+  candidateId: IsnadiMemoryCandidateId.make(candidateId),
   fact: "Deploys happen on Fridays.",
   scope: "project",
   sensitive,

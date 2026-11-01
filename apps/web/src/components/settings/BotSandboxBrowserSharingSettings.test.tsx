@@ -28,7 +28,7 @@ vi.mock("react/compiler-runtime", async () => {
 const i18nLocale = vi.hoisted(() => ({ current: "en" as "en" | "zh-CN" }));
 
 vi.mock("../../i18n", async () => {
-  const { catalogRegistry, createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { catalogRegistry, createTranslator } = await import("@isnadi/client-runtime/i18n");
 
   const translators = {
     en: createTranslator("en"),

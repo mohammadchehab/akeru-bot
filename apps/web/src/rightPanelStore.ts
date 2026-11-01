@@ -9,8 +9,8 @@ import { storedField } from "./lib/persistedSchema";
  * own its durable resource state. Browser surfaces point at preview tab ids;
  * the agents list is a singleton surface.
  */
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 

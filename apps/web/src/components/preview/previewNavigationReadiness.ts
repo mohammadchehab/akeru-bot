@@ -2,7 +2,7 @@ import {
   type PreviewAutomationNavigateInput,
   type PreviewAutomationRequest,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { isCurrentPreviewRuntimeTab } from "~/browser/previewRuntimeTabId";
 import { readThreadPreviewState } from "~/previewStateStore";

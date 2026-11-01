@@ -1,6 +1,6 @@
 # CI quality gates
 
-> For Akeru Bot maintainers.
+> For IsnadiBot maintainers.
 
 [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs on each ready pull request revision.
 Draft pull requests do not use a runner. A new revision cancels the older run for that pull request.
@@ -31,7 +31,7 @@ CI against the exact pull request head SHA; empty-only changesets do not dispatc
 [`.github/workflows/installer-tests.yml`](../../.github/workflows/installer-tests.yml) runs focused
 Windows PowerShell 5.1 tests when the Windows installer changes. It checks checksum rejection,
 per-invocation temporary files, failure cleanup, and the bootstrap under Restricted execution policy.
-Downloads and installer launches use fixtures; this job does not install Akeru Bot.
+Downloads and installer launches use fixtures; this job does not install IsnadiBot.
 
 [`.github/workflows/release-smoke.yml`](../../.github/workflows/release-smoke.yml) is a manual,
 non-publishing artifact smoke workflow. It uses a 4-vCPU Tenki runner for Linux and GitHub-hosted
@@ -55,7 +55,7 @@ A stable release fails before building when the macOS signing credentials are ab
 unsigned DMG can never publish as the latest stable release. Scheduled nightlies and Windows
 builds without credentials still produce unsigned artifacts.
 Unsigned macOS builds still replace Electron's linker-signed stub with a sealed ad-hoc signature
-and fail the release if `codesign --verify` fails or the identifier is not `dev.leodoes.akeru`.
+and fail the release if `codesign --verify` fails or the identifier is not `dev.leodoes.isnadi`.
 Complete credentials use the existing Developer ID, notarization, and Azure Trusted Signing paths.
 
 The same workflow runs at minute 17 every three hours for nightly releases. It skips the build when

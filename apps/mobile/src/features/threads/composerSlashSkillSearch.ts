@@ -1,4 +1,4 @@
-import type { ServerProviderSkill } from "@akeru/contracts";
+import type { ServerProviderSkill } from "@isnadi/contracts";
 
 export function matchesSlashSkillQuery(skill: ServerProviderSkill, query: string): boolean {
   if (!skill.enabled) return false;

@@ -2,9 +2,9 @@ import * as BotWorkspaceIO from "../../workspace/BotWorkspaceIO.ts";
 import { createSessionResources } from "./SessionResources.ts";
 import { BotInboxService } from "../../../bot-inbox/service.ts";
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
-import { createAkeruMastraAuthStorage } from "./ProviderAccess.ts";
+import { createIsnadiMastraAuthStorage } from "./ProviderAccess.ts";
 import { BotMemoryStore } from "../../../memory/BotMemory.ts";
-import { AkeruMemoryTurnHarness } from "../../AkeruMemoryTurnHarness.ts";
+import { IsnadiMemoryTurnHarness } from "../../IsnadiMemoryTurnHarness.ts";
 import { createPreviewMcpSessions } from "./PreviewMcpSessions.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 import * as FileSystem from "effect/FileSystem";
@@ -13,11 +13,11 @@ import {
   ProviderDriverKind,
   TurnId,
   type BotId,
-  type AkeruCreateRoutineInput,
+  type IsnadiCreateRoutineInput,
   type ProviderRuntimeEvent,
   ThreadId,
-} from "@akeru/contracts";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+} from "@isnadi/contracts";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as PubSub from "effect/PubSub";
@@ -32,16 +32,16 @@ import * as McpSessionRegistry from "../../../mcp/McpSessionRegistry.ts";
 import * as ServerSettings from "../../../serverSettings.ts";
 import { BotUsageLedger } from "../../../usage/BotUsageLedger.ts";
 import type { ProviderInstanceRoutingInfo } from "../../Services/ProviderAdapterRegistry.ts";
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
-import { type AkeruDelegationChildOutcome } from "../../AkeruDelegationRuntime.ts";
-import * as AkeruRuntimeSeam from "../../AkeruRuntimeSeam.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
+import { type IsnadiDelegationChildOutcome } from "../../IsnadiDelegationRuntime.ts";
+import * as IsnadiRuntimeSeam from "../../IsnadiRuntimeSeam.ts";
 import * as PendingWaiters from "../../PendingWaiters.ts";
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
-import { createAkeruWebFetch } from "../../AkeruWebFetch.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
+import { createIsnadiWebFetch } from "../../IsnadiWebFetch.ts";
 import { LegacyProviderBridge } from "../../Services/LegacyProviderBridge.ts";
 import { RoutineDraftDispatcher } from "../../../routines/RoutineDraftDispatcher.ts";
 import { MemoryApprovals } from "../../../memory/MemoryApprovals.ts";
@@ -60,7 +60,7 @@ export const createControllerState = Effect.fn("createControllerState")(function
   const mcpSessionRegistry = yield* Effect.serviceOption(McpSessionRegistry.McpSessionRegistry);
   // Promise-based callers re-enter Effect only through this seam; its fibers
   // are interrupted when the layer scope closes.
-  const { runPromise, fork, forkPromise } = yield* AkeruRuntimeSeam.makeAkeruRuntimeSeam;
+  const { runPromise, fork, forkPromise } = yield* IsnadiRuntimeSeam.makeIsnadiRuntimeSeam;
   const routineDraftDispatcher = yield* Effect.serviceOption(RoutineDraftDispatcher);
   const memoryApprovals = yield* Effect.serviceOption(MemoryApprovals);
   const routineDispatcher = Option.getOrUndefined(routineDraftDispatcher);
@@ -71,7 +71,7 @@ export const createControllerState = Effect.fn("createControllerState")(function
   const projectionMessages = yield* Effect.serviceOption(ProjectionThreadMessageRepository);
   const projectionTurns = yield* Effect.serviceOption(ProjectionTurnRepository);
   const resolvedByThread = new Map<string, ResolvedEngine>();
-  const webFetch = createAkeruWebFetch(options?.webFetch);
+  const webFetch = createIsnadiWebFetch(options?.webFetch);
 
   const modelConnections = new Map<
     string,
@@ -124,28 +124,28 @@ export const createControllerState = Effect.fn("createControllerState")(function
    * configureDelegation.
    */
   const lateWiring = yield* Ref.make<{
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   }>({ delegationRuntime: options?.delegationRuntime });
 
   const wired = () => Ref.getUnsafe(lateWiring);
 
-  const childWaiters = yield* PendingWaiters.makePendingWaiters<null, AkeruDelegationChildOutcome>(
+  const childWaiters = yield* PendingWaiters.makePendingWaiters<null, IsnadiDelegationChildOutcome>(
     "The agent controller stopped.",
   );
 
-  const resolveChildWaiter = (threadId: ThreadId, outcome: AkeruDelegationChildOutcome) => {
+  const resolveChildWaiter = (threadId: ThreadId, outcome: IsnadiDelegationChildOutcome) => {
     childWaiters.resolve(String(threadId), outcome);
   };
 
   const pendingRoutineRequests = yield* PendingWaiters.makePendingWaiters<
     {
       readonly threadId: string;
-      readonly input: AkeruCreateRoutineInput;
+      readonly input: IsnadiCreateRoutineInput;
       readonly timezone: string;
     },
     unknown,
@@ -159,7 +159,7 @@ export const createControllerState = Effect.fn("createControllerState")(function
     .makeDirectory(config.stateDir, { recursive: true, mode: 0o700 })
     .pipe(Effect.orDie);
 
-  const authStorage = yield* createAkeruMastraAuthStorage(config.secretsDir);
+  const authStorage = yield* createIsnadiMastraAuthStorage(config.secretsDir);
   const subscriptionAuth = yield* SubscriptionAuthService.forSecretsDir(config.secretsDir);
   const botInbox = BotInboxService.forSecretsDir(config.secretsDir);
 
@@ -183,7 +183,7 @@ export const createControllerState = Effect.fn("createControllerState")(function
   });
 
   const botMemoryStore = options?.botMemoryStore ?? new BotMemoryStore(config.stateDir);
-  const memoryTurnHarness = new AkeruMemoryTurnHarness(botMemoryStore);
+  const memoryTurnHarness = new IsnadiMemoryTurnHarness(botMemoryStore);
 
   return {
     sessionResources,

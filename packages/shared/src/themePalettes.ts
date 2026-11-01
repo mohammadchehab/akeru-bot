@@ -4,12 +4,12 @@ import { GROVE_THEME } from "./themes/grove.ts";
 import { OCEAN_THEME } from "./themes/ocean.ts";
 import { EMBER_THEME } from "./themes/ember.ts";
 import { IRIS_THEME } from "./themes/iris.ts";
-import { AKERU_PAPER_THEME } from "./themes/akeru-paper.ts";
-import { AKERU_NOIR_THEME } from "./themes/akeru-noir.ts";
+import { ISNADI_PAPER_THEME } from "./themes/isnadi-paper.ts";
+import { ISNADI_NOIR_THEME } from "./themes/isnadi-noir.ts";
 
 export const BUILT_IN_THEMES: ReadonlyArray<ThemeDefinition> = [
-  AKERU_NOIR_THEME,
-  AKERU_PAPER_THEME,
+  ISNADI_NOIR_THEME,
+  ISNADI_PAPER_THEME,
   T3_CHAT_THEME,
   GROVE_THEME,
   OCEAN_THEME,
@@ -54,6 +54,6 @@ export { EMBER_THEME } from "./themes/ember.ts";
 
 export { IRIS_THEME } from "./themes/iris.ts";
 
-export { AKERU_PAPER_THEME } from "./themes/akeru-paper.ts";
+export { ISNADI_PAPER_THEME } from "./themes/isnadi-paper.ts";
 
-export { AKERU_NOIR_THEME } from "./themes/akeru-noir.ts";
+export { ISNADI_NOIR_THEME } from "./themes/isnadi-noir.ts";

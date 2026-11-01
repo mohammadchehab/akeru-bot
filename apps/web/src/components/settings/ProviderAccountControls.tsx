@@ -1,7 +1,7 @@
 import { ExternalLinkIcon, LoaderIcon, LogOutIcon, RefreshCwIcon } from "lucide-react";
 import { type ReactNode } from "react";
-import type { SubscriptionProviderStatus } from "@akeru/contracts";
-import { providerUsesApiKey } from "@akeru/client-runtime/provider-auth";
+import type { SubscriptionProviderStatus } from "@isnadi/contracts";
+import { providerUsesApiKey } from "@isnadi/client-runtime/provider-auth";
 import { useI18n } from "../../i18n";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";

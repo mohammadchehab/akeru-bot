@@ -9,7 +9,7 @@ import type { Bot } from "./types";
 
 const bot: Bot = {
   id: "bot-akeru",
-  name: "Akeru",
+  name: "Isnadi",
   title: "Generalist",
   label: "Research",
   description: "Finds evidence and explains what matters.",
@@ -32,7 +32,7 @@ describe("BotDetailsPanel", () => {
     // No bot thread yet, so the empty browser preview stays hidden.
     expect(markup).not.toContain('data-testid="bot-browser-preview"');
     expect(markup).toContain(">Bot</h2>");
-    expect(markup).toContain("Akeru");
+    expect(markup).toContain("Isnadi");
     expect(markup).toContain("Research");
     expect(markup).toContain("Finds evidence and explains what matters.");
     expect(markup).toContain("Open bot settings");
@@ -46,7 +46,7 @@ describe("BotDetailsPanel", () => {
     expect(markup).not.toContain('aria-label="Bot description"');
     expect(markup).toContain('aria-hidden="true"');
     expect(markup).toContain('data-state="closed"');
-    expect(markup).toContain('aria-label="Open Akeru bot sidebar"');
+    expect(markup).toContain('aria-label="Open Isnadi bot sidebar"');
     expect(markup).not.toContain("Routines");
     expect(markup).not.toContain("mock data");
     expect(markup).not.toContain("border-b border-border");

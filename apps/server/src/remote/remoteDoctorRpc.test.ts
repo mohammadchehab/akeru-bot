@@ -3,7 +3,7 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-import { RemoteDoctorStatus } from "@akeru/contracts";
+import { RemoteDoctorStatus } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
@@ -17,8 +17,8 @@ const decodeDoctorStatus = Schema.decodeEffect(Schema.fromJsonString(RemoteDocto
 const withContainerHome = <A, E>(use: (baseDir: string) => Effect.Effect<A, E>) =>
   Effect.acquireUseRelease(
     Effect.sync(() => {
-      const prior = process.env.AKERU_REMOTE_CONTAINER;
-      process.env.AKERU_REMOTE_CONTAINER = "1";
+      const prior = process.env.ISNADI_REMOTE_CONTAINER;
+      process.env.ISNADI_REMOTE_CONTAINER = "1";
       const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-doctor-rpc-"));
       NodeFS.mkdirSync(NodePath.join(baseDir, "userdata"), { recursive: true });
 
@@ -27,8 +27,8 @@ const withContainerHome = <A, E>(use: (baseDir: string) => Effect.Effect<A, E>) 
     ({ baseDir }) => use(baseDir),
     ({ baseDir, prior }) =>
       Effect.sync(() => {
-        if (prior === undefined) delete process.env.AKERU_REMOTE_CONTAINER;
-        else process.env.AKERU_REMOTE_CONTAINER = prior;
+        if (prior === undefined) delete process.env.ISNADI_REMOTE_CONTAINER;
+        else process.env.ISNADI_REMOTE_CONTAINER = prior;
         NodeFS.rmSync(baseDir, { recursive: true, force: true });
       }),
   );

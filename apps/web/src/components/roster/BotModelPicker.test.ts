@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveProviderInstanceEntries } from "../../providerInstances";

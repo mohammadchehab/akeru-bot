@@ -1,5 +1,5 @@
 import { createOpencodeClient } from "@opencode-ai/sdk/v2";
-import { OpenCodeSettings, ProviderInstanceId, TextGenerationError } from "@akeru/contracts";
+import { OpenCodeSettings, ProviderInstanceId, TextGenerationError } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it } from "@effect/vitest";
 import * as Duration from "effect/Duration";
@@ -7,7 +7,7 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 import * as TestClock from "effect/testing/TestClock";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import { beforeEach, expect } from "vite-plus/test";
 import * as ServerConfig from "../config.ts";
 import * as OpenCodeRuntime from "../provider/opencodeRuntime.ts";

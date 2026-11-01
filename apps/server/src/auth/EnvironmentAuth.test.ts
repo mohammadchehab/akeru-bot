@@ -1,7 +1,7 @@
 import * as Headers from "effect/unstable/http/Headers";
 import * as Predicate from "effect/Predicate";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { AuthAdministrativeScopes } from "@akeru/contracts";
+import { AuthAdministrativeScopes } from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -1,4 +1,4 @@
-import { EventId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { EventId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { answeredUserInputForMessage, deriveAskedUserInputs } from "./userInputAnswers.ts";

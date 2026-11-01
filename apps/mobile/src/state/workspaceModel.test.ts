@@ -1,6 +1,6 @@
-import type { EnvironmentShellSummary } from "@akeru/client-runtime/state/shell";
-import { BearerConnectionProfile, BearerConnectionTarget } from "@akeru/client-runtime/connection";
-import { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentShellSummary } from "@isnadi/client-runtime/state/shell";
+import { BearerConnectionProfile, BearerConnectionTarget } from "@isnadi/client-runtime/connection";
+import { EnvironmentId } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Option from "effect/Option";
 

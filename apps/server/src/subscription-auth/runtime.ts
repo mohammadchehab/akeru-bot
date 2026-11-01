@@ -6,7 +6,7 @@ import {
   type ServerSettings,
   type ServerSettingsPatch,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
@@ -18,7 +18,7 @@ import {
 } from "./service.ts";
 import type { ApiKeyCredential } from "./types.ts";
 
-export { instanceUsesSavedCredential } from "@akeru/contracts";
+export { instanceUsesSavedCredential } from "@isnadi/contracts";
 
 const explicitEnvironmentKeys = Symbol("subscriptionInstanceEnvironmentKeys");
 
@@ -35,7 +35,7 @@ const subscriptionProviderDrivers = [
 ] as const;
 
 /**
- * Subscription connections own the enabled state of Akeru's default provider
+ * Subscription connections own the enabled state of Isnadi's default provider
  * instances. Explicit instances keep their own switch because they may carry
  * separate credentials or isolation settings.
  */

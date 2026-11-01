@@ -1,4 +1,4 @@
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 
 import type {
   HttpTransferMeasurement,

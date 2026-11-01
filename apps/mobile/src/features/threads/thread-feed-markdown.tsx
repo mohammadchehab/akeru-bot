@@ -23,16 +23,16 @@ import type {
 } from "../../native/SelectableMarkdownText";
 import { CopyTextButton } from "../../components/CopyTextButton";
 import type { CodeHighlightTheme } from "./codeHighlighter";
-import { faviconUrlForOrigin } from "@akeru/shared/favicon";
+import { faviconUrlForOrigin } from "@isnadi/shared/favicon";
 import {
   resolveMarkdownFontSizes,
   resolveNativeMarkdownTypography,
 } from "../../lib/appearancePreferences";
 import { useAppearancePreferences } from "../settings/appearance/AppearancePreferencesProvider";
-import { markdownFileIconSource } from "@akeru/mobile-markdown-text/file-icons";
-import { resolveMarkdownLinkPresentation } from "@akeru/mobile-markdown-text/links";
+import { markdownFileIconSource } from "@isnadi/mobile-markdown-text/file-icons";
+import { resolveMarkdownLinkPresentation } from "@isnadi/mobile-markdown-text/links";
 import { useMarkdownCodeHighlight } from "./markdownCodeHighlightState";
-import { isAppDeepLink } from "@akeru/client-runtime/settings-deep-link";
+import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
 
 const MARKDOWN_MONO_FONT = Platform.select({
   ios: "ui-monospace",

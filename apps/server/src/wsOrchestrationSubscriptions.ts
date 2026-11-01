@@ -8,7 +8,7 @@ import {
   OrchestrationGetSnapshotError,
   ORCHESTRATION_WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   projectActivityEvent,
   projectThreadDetailSnapshot,

@@ -82,7 +82,7 @@ export class ElectronUpdater extends Context.Service<
       listener: (...args: Args) => void,
     ) => Effect.Effect<void, never, Scope.Scope>;
   }
->()("@akeru/desktop/electron/ElectronUpdater") {}
+>()("@isnadi/desktop/electron/ElectronUpdater") {}
 
 export const make = ElectronUpdater.of({
   setFeedURL: (options) =>

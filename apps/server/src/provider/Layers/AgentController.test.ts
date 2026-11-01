@@ -3,8 +3,8 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EventId,
   McpServerId,
@@ -14,7 +14,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -306,8 +306,8 @@ describe("AgentControllerLive", () => {
           runtimeMode: "full-access",
           botId,
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-tool-usage"),
             workspaceRoot: "/workspace/tool-usage",
@@ -374,8 +374,8 @@ describe("AgentControllerLive", () => {
           runtimeMode: "full-access",
           botId,
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-tool-usage"),
             workspaceRoot: "/workspace/tool-usage",

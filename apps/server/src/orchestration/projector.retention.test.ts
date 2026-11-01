@@ -1,5 +1,5 @@
 import type { ActivityRecord } from "./ActivityPayloadBounds.ts";
-import { ProviderDriverKind, type OrchestrationEvent } from "@akeru/contracts";
+import { ProviderDriverKind, type OrchestrationEvent } from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { describe, expect } from "vite-plus/test";

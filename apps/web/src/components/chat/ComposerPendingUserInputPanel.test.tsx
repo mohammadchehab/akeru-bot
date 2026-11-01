@@ -1,4 +1,4 @@
-import { ApprovalRequestId } from "@akeru/contracts";
+import { ApprovalRequestId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 

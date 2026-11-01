@@ -524,7 +524,7 @@ describe("createBotWorkspace", () => {
   it("keeps durable local bot files outside the user project", async () => {
     const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-workspace-"));
     const projectDir = NodePath.join(baseDir, "project");
-    const botRoot = NodePath.join(baseDir, "state", "akeru-bot-one");
+    const botRoot = NodePath.join(baseDir, "state", "isnadibot-one");
     NodeFS.mkdirSync(projectDir, { recursive: true });
 
     const workspace = await createBotWorkspace({
@@ -532,7 +532,7 @@ describe("createBotWorkspace", () => {
       threadId: "bot-one",
       cwd: projectDir,
       localRoot: botRoot,
-      workspaceId: "akeru-bot-one",
+      workspaceId: "isnadibot-one",
       sandbox: "local",
     });
 

@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 
 const { readPreparedConnection } = vi.hoisted(() => ({
   readPreparedConnection: vi.fn<() => { httpBaseUrl: string } | null>(() => null),

@@ -3,8 +3,8 @@ import {
   type DesktopHostTelemetryMessage as DesktopHostTelemetryMessageValue,
   type DesktopHostTelemetrySnapshot,
   DesktopTelemetryControlMessage,
-} from "@akeru/contracts";
-import { resolveServerBackgroundActivitySettings } from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/contracts";
+import { resolveServerBackgroundActivitySettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
@@ -78,7 +78,7 @@ export class DesktopTelemetryReceiver extends Context.Service<
       enabled: boolean,
     ) => Effect.Effect<void, DesktopTelemetryControlError>;
   }
->()("akeru-bot/resourceTelemetry/DesktopTelemetryReceiver") {}
+>()("isnadibot/resourceTelemetry/DesktopTelemetryReceiver") {}
 
 export const make = Effect.fn("resourceTelemetry.desktopTelemetryReceiver.make")(function* () {
   const config = yield* ServerConfig;

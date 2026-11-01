@@ -1,4 +1,4 @@
-import type { ComposioConnection, ComposioToolkit } from "@akeru/contracts";
+import type { ComposioConnection, ComposioToolkit } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 import { loadDirectoryCatalog } from "../../../../../plugins";

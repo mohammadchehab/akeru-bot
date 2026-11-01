@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { type EnvironmentId } from "@akeru/contracts";
+import { type EnvironmentId } from "@isnadi/contracts";
 import { Cancel01Icon, PanelRightCloseIcon, PanelRightIcon } from "@hugeicons/core-free-icons";
 import { useEffect, useState, type ReactNode } from "react";
 

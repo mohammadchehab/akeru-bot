@@ -1,4 +1,4 @@
-import { AkeruUsageEntry } from "@akeru/contracts";
+import { IsnadiUsageEntry } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -71,7 +71,7 @@ export const selectEntryForTurn = (
     LIMIT 1
   `;
 
-const decodeUsageEntry = Schema.decodeUnknownEffect(AkeruUsageEntry);
+const decodeUsageEntry = Schema.decodeUnknownEffect(IsnadiUsageEntry);
 
 export const decodeEntry = (row: UsageRow) =>
   decodeUsageEntry(row).pipe(

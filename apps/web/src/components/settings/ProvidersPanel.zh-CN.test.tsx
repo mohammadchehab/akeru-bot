@@ -1,5 +1,5 @@
-import { catalogRegistry } from "@akeru/client-runtime/i18n";
-import type { SubscriptionProviderStatus } from "@akeru/contracts";
+import { catalogRegistry } from "@isnadi/client-runtime/i18n";
+import type { SubscriptionProviderStatus } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 

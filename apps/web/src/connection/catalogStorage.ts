@@ -3,8 +3,8 @@ import {
   ConnectionCatalogDocument,
   type ConnectionCatalogDocument as ConnectionCatalogDocumentType,
   EMPTY_CONNECTION_CATALOG_DOCUMENT,
-} from "@akeru/client-runtime/platform";
-import { ConnectionTransientError } from "@akeru/client-runtime/connection";
+} from "@isnadi/client-runtime/platform";
+import { ConnectionTransientError } from "@isnadi/client-runtime/connection";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";

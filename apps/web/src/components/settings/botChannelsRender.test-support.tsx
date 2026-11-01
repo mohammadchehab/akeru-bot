@@ -1,4 +1,4 @@
-import { type ChannelBinding } from "@akeru/contracts";
+import { type ChannelBinding } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ChannelDetailPage } from "./ChannelDetailPage";
 
@@ -17,7 +17,7 @@ export function boundBot(
 ) {
   return {
     id: "bot-uuid",
-    name: "Akeru",
+    name: "Isnadi",
     archivedAt: null,
     channelBindings: [
       {

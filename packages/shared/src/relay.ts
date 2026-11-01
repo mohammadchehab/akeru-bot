@@ -1,4 +1,4 @@
-import type { RelayRouteBinding } from "@akeru/contracts";
+import type { RelayRouteBinding } from "@isnadi/contracts";
 
 export type RelayBindingRejectionReason =
   | "unsupported-protocol"

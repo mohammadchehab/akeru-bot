@@ -12,7 +12,7 @@ import {
   type ProviderUserInputAnswers,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it, vi } from "@effect/vitest";
 import * as Context from "effect/Context";
@@ -39,7 +39,7 @@ import { makeCodexAdapter } from "../CodexAdapter.ts";
 export const decodeCodexSettings = Schema.decodeSync(CodexSettings);
 
 export class CodexAdapter extends Context.Service<CodexAdapter, CodexAdapterShape>()(
-  "akeru-bot/provider/Layers/test-support/codexAdapterHarness/CodexAdapter",
+  "isnadibot/provider/Layers/test-support/codexAdapterHarness/CodexAdapter",
 ) {}
 
 export const asThreadId = (value: string): ThreadId => ThreadId.make(value);

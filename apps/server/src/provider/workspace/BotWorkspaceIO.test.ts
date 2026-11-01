@@ -5,7 +5,7 @@ import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as PlatformError from "effect/PlatformError";
 import { describe, expect, it } from "@effect/vitest";
-import { makeAkeruRuntimeSeam } from "../AkeruRuntimeSeam.ts";
+import { makeIsnadiRuntimeSeam } from "../IsnadiRuntimeSeam.ts";
 import { workspaceIO } from "../test-support/workspaceIO.ts";
 import { makeBotWorkspaceIO } from "./BotWorkspaceIO.ts";
 import { readIdentity, writeIdentity } from "./BotWorkspaceLifecycle.ts";
@@ -13,7 +13,7 @@ import { readIdentity, writeIdentity } from "./BotWorkspaceLifecycle.ts";
 describe("BotWorkspaceIO", () => {
   it.effect("translates only FileSystem NotFound into an absent identity", () =>
     Effect.gen(function* () {
-      const { runPromise } = yield* makeAkeruRuntimeSeam;
+      const { runPromise } = yield* makeIsnadiRuntimeSeam;
       const path = workspaceIO.path;
 
       for (const reason of ["NotFound", "PermissionDenied"] as const) {

@@ -20,10 +20,10 @@ import {
   EnvironmentScopeRequiredError,
   EnvironmentAuthenticatedAuth,
   EnvironmentAuthenticatedPrincipal,
-} from "@akeru/contracts";
-import { parseAllowedOAuthScope } from "@akeru/shared/oauthScope";
+} from "@isnadi/contracts";
+import { parseAllowedOAuthScope } from "@isnadi/shared/oauthScope";
 import * as Schema from "effect/Schema";
-import { causeErrorTag } from "@akeru/shared/observability";
+import { causeErrorTag } from "@isnadi/shared/observability";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

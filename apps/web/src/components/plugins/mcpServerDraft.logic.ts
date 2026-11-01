@@ -1,5 +1,5 @@
-import type { McpServer } from "@akeru/contracts";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import type { McpServer } from "@isnadi/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 
 const englishTranslator = createTranslator("en");
 

@@ -14,6 +14,7 @@ describe("DesktopEarlyElectronStartup", () => {
       env: { T3CODE_HOME: "/home/user/.t3-test" },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: (path) => {
         assert.equal(path, "/home/user/.t3-test/userdata/desktop-settings.json");
 
@@ -29,6 +30,7 @@ describe("DesktopEarlyElectronStartup", () => {
       env: { T3CODE_HOME: "/home/user/.t3-test" },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: () => `{
         // manually edited setting
         "linuxPasswordStore": "gnome-libsecret",
@@ -43,6 +45,7 @@ describe("DesktopEarlyElectronStartup", () => {
       env: {},
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: () => {
         throw new Error("missing");
       },
@@ -56,6 +59,7 @@ describe("DesktopEarlyElectronStartup", () => {
       env: { T3CODE_HOME: "/" },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: (path) => {
         assert.equal(path, "/userdata/desktop-settings.json");
 
@@ -75,6 +79,7 @@ describe("DesktopEarlyElectronStartup", () => {
       },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: (path) => {
         assert.equal(path, "/home/user/.t3-test/userdata/desktop-settings.json");
 
@@ -83,20 +88,21 @@ describe("DesktopEarlyElectronStartup", () => {
     });
 
     assert.deepEqual(options, {
-      linuxWmClass: "akeru-bot-dev",
+      linuxWmClass: "isnadibot-dev",
       passwordStore: "gnome-libsecret",
     });
   });
 
-  it("keeps implicit development state under ~/.akeru/dev when T3CODE_HOME is unset", () => {
+  it("keeps implicit development state under ~/.isnadi/dev when T3CODE_HOME is unset", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
       env: {
         VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
       },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: (path) => {
-        assert.equal(path, "/home/user/.akeru/dev/desktop-settings.json");
+        assert.equal(path, "/home/user/.isnadi/dev/desktop-settings.json");
 
         return JSON.stringify({ linuxPasswordStore: "kwallet" });
       },
@@ -113,8 +119,9 @@ describe("DesktopEarlyElectronStartup", () => {
       },
       homeDirectory: "/home/user",
       joinPath,
+      exists: () => false,
       readFileString: (path) => {
-        assert.equal(path, "/home/user/.akeru/dev/desktop-settings.json");
+        assert.equal(path, "/home/user/.isnadi/dev/desktop-settings.json");
 
         return JSON.stringify({ linuxPasswordStore: "gnome-libsecret" });
       },

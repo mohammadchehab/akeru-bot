@@ -11,8 +11,8 @@ import {
   type ComputerCapabilityExplanation,
   type ComputerViewerNotice,
   type ComputerViewerView,
-} from "@akeru/client-runtime/state/computer-viewer";
-import { ComputerAction, type ComputerFrame } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/computer-viewer";
+import { ComputerAction, type ComputerFrame } from "@isnadi/contracts";
 import { useRef, type KeyboardEvent, type PointerEvent, type WheelEvent } from "react";
 
 import { useI18n } from "../../i18n";

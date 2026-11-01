@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { PreviewSessionSnapshot, ProjectScript } from "@akeru/contracts";
+import type { PreviewSessionSnapshot, ProjectScript } from "@isnadi/contracts";
 
 export function shouldShowPreviewEmptyState(snapshot: PreviewSessionSnapshot | null): boolean {
   return snapshot === null || Predicate.isTagged(snapshot.navStatus, "Idle");

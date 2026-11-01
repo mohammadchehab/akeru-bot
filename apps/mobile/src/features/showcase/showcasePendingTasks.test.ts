@@ -1,5 +1,5 @@
-import type { EnvironmentProject } from "@akeru/client-runtime/state/shell";
-import { EnvironmentId, ProjectId, ProviderInstanceId } from "@akeru/contracts";
+import type { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
+import { EnvironmentId, ProjectId, ProviderInstanceId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 
 import {

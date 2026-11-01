@@ -1,4 +1,4 @@
-import { CommandId, ThreadId } from "@akeru/contracts";
+import { CommandId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it as effectIt } from "@effect/vitest";
 import { afterEach, describe, expect, it } from "vite-plus/test";

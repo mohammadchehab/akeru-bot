@@ -9,7 +9,7 @@ type FeedbackElement = Pick<Element, "tagName" | "getAttribute" | "hasAttribute"
 import {
   PRODUCT_FEEDBACK_ELEMENT_LABEL_MAX_CHARS,
   type ProductFeedbackElement,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const EXCLUDED_SELECTOR = [
   "input",

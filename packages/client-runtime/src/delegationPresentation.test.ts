@@ -3,8 +3,8 @@ import {
   DelegationId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -24,9 +24,9 @@ const CHILD_THREAD_ID = ThreadId.make("thread-child");
 const CHILD_TURN_ID = TurnId.make("turn-child");
 
 function makeDelegation(
-  phase: AkeruDelegationRecord["phase"],
+  phase: IsnadiDelegationRecord["phase"],
   parentThreadId = PARENT_THREAD_ID,
-): AkeruDelegationRecord {
+): IsnadiDelegationRecord {
   return {
     delegationId: DelegationId.make(`delegation-${phase._tag}-${parentThreadId}`),
     parentDelegationId: null,
@@ -68,7 +68,7 @@ const running = {
   progress: null,
 } as const;
 
-function completed(acknowledgedAt: string | null): AkeruDelegationRecord["phase"] {
+function completed(acknowledgedAt: string | null): IsnadiDelegationRecord["phase"] {
   return {
     _tag: "Completed",
     childThreadId: CHILD_THREAD_ID,

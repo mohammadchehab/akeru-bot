@@ -8,7 +8,7 @@ import {
   RuntimeTaskId,
   type RuntimeTaskUsage,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { toCanonicalItemType } from "./CodexCanonicalMapping.ts";
 import { runtimeEventBase } from "./CodexEventIdentity.ts";

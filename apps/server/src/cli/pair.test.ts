@@ -5,7 +5,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import { assert, describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -456,7 +456,7 @@ describe("akeru pair", () => {
       assert.isFalse(Runtime.getErrorReported(Cause.squash(exit.cause)));
       const rendered = errorLines.at(-1) ?? "";
       assert.include(rendered, "No running IsnadiBot server found.");
-      assert.include(rendered, "npx akeru-bot serve");
+      assert.include(rendered, "npx isnadibot serve");
     }).pipe(Effect.provide(NodeServices.layer)),
   );
 

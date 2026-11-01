@@ -1,16 +1,16 @@
 import { useAtomValue } from "@effect/atom-react";
-import { type ComposerPathSearchTarget } from "@akeru/client-runtime/state/threads";
+import { type ComposerPathSearchTarget } from "@isnadi/client-runtime/state/threads";
 import {
   createThreadSearchResultsAtomFamily,
   makeThreadSearchKey,
   type EnvironmentThreadSearchMatch,
-} from "@akeru/client-runtime/state/thread-search";
+} from "@isnadi/client-runtime/state/thread-search";
 import type {
   EnvironmentId,
   OrchestrationThread,
   ProjectEntryKind,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { Atom } from "effect/unstable/reactivity";
 import { useEffect, useMemo, useState } from "react";

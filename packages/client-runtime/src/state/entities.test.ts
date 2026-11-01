@@ -6,7 +6,7 @@ import {
   ThreadId,
   type OrchestrationShellSnapshot,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom, AtomRegistry } from "effect/unstable/reactivity";

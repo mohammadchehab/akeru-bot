@@ -2,7 +2,7 @@ import {
   isGroupBotMember,
   type OrchestrationCommand,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";

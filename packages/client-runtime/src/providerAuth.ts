@@ -7,7 +7,7 @@ import {
   type SubscriptionAuthStartInput,
   type SubscriptionProviderId,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import type { MessageKey } from "./i18n/index.ts";
 
@@ -80,7 +80,7 @@ export const SUBSCRIPTION_PROVIDER_BY_DRIVER = new Map<string, SubscriptionProvi
 
 /**
  * Keep default built-in provider instances aligned with the connections the
- * user made inside Akeru. Host CLI credentials are intentionally not enough
+ * user made inside Isnadi. Host CLI credentials are intentionally not enough
  * to make an unconnected account appear in model pickers. Custom instances
  * remain governed by their own configured environment and provider probe.
  */

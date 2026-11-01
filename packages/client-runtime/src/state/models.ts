@@ -6,7 +6,7 @@ import type {
   OrchestrationThread,
   OrchestrationThreadShell,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface EnvironmentProject extends OrchestrationProjectShell {
   readonly environmentId: EnvironmentId;

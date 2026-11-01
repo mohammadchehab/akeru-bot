@@ -6,7 +6,7 @@ import {
   type SandboxProviderConnection,
   ServerSettings,
   ServerSettingsError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as ServerSecretStore from "./auth/ServerSecretStore.ts";
 

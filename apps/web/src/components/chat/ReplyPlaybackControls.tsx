@@ -5,7 +5,7 @@ import {
   sameReplyPlaybackIdentity,
   type ReplyPlaybackController,
   type ReplyPlaybackRequest,
-} from "@akeru/client-runtime/reply-playback";
+} from "@isnadi/client-runtime/reply-playback";
 
 import { useI18n } from "../../i18n";
 import { Button } from "../ui/button";

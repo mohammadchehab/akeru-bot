@@ -89,7 +89,7 @@ async function seedCompanionWorkspace(input: {
   await NodeFSP.mkdir(input.workspaceRoot, { recursive: true });
   await NodeFSP.writeFile(
     NodePath.join(input.workspaceRoot, "README.md"),
-    `# ${input.title}\n\nSeeded by the Akeru Bot mobile screenshot harness.\n`,
+    `# ${input.title}\n\nSeeded by the IsnadiBot mobile screenshot harness.\n`,
   );
   await initializeRepository({
     workspaceRoot: input.workspaceRoot,

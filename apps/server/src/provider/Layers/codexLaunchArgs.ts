@@ -1,4 +1,4 @@
-import { tokenizeCliArgs } from "@akeru/shared/cliArgs";
+import { tokenizeCliArgs } from "@isnadi/shared/cliArgs";
 
 export const T3CODE_CODEX_LAUNCH_ARGS_ENV = "T3CODE_CODEX_LAUNCH_ARGS";
 

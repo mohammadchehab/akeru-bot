@@ -1,4 +1,4 @@
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

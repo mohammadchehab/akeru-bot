@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { AuthAdministrativeScopes, EnvironmentHttpApi } from "@akeru/contracts";
+import { AuthAdministrativeScopes, EnvironmentHttpApi } from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

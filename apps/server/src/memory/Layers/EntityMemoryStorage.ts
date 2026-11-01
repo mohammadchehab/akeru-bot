@@ -1,12 +1,12 @@
 import * as Predicate from "effect/Predicate";
-import { AkeruMemoryEntityId, AkeruMemoryRevision, AkeruMemoryRootId } from "@akeru/contracts";
+import { IsnadiMemoryEntityId, IsnadiMemoryRevision, IsnadiMemoryRootId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import * as SqlSchema from "effect/unstable/sql/SqlSchema";
 import { toPersistenceSqlError } from "../../persistence/Errors.ts";
 import {
-  AkeruMemoryAccessDenied,
+  IsnadiMemoryAccessDenied,
   resolveAuthorizedMemoryPartitions,
   type AuthorizedMemoryPartition,
 } from "../EntityMemoryAccess.ts";
@@ -25,7 +25,7 @@ export const entityMemoryStorage = () =>
     const writeLock = yield* MemoryRevisionWriteLock;
 
     const insertRow = SqlSchema.void({
-      Request: AkeruMemoryRevision,
+      Request: IsnadiMemoryRevision,
       execute: (row) => sql`
       INSERT INTO akeru_memory_revisions (
         memory_id, root_id, revision, tenant_id, scope, partition_id,
@@ -50,7 +50,7 @@ export const entityMemoryStorage = () =>
 
     const getCurrentRow = SqlSchema.findOneOption({
       Request: Schema.Struct({
-        rootId: AkeruMemoryRootId,
+        rootId: IsnadiMemoryRootId,
         tenantId: Schema.String,
         scope: Schema.String,
         partitionId: Schema.String,
@@ -72,7 +72,7 @@ export const entityMemoryStorage = () =>
         ),
     });
 
-    const samePartition = (revision: AkeruMemoryRevision, partition: AuthorizedMemoryPartition) =>
+    const samePartition = (revision: IsnadiMemoryRevision, partition: AuthorizedMemoryPartition) =>
       revision.partition.tenantId === partition.tenantId &&
       revision.partition.scope === partition.scope &&
       revision.partition.partitionId === partition.partitionId &&
@@ -83,44 +83,44 @@ export const entityMemoryStorage = () =>
 
     const expectedEntity = (
       access: Parameters<typeof resolveAuthorizedMemoryPartitions>[0],
-      revision: AkeruMemoryRevision,
+      revision: IsnadiMemoryRevision,
     ) => {
       switch (revision.partition.scope) {
         case "user":
         case "bot-user":
-          return { kind: "user", id: AkeruMemoryEntityId.make(access.userId) } as const;
+          return { kind: "user", id: IsnadiMemoryEntityId.make(access.userId) } as const;
         case "bot":
           return access.botId === null
             ? null
-            : ({ kind: "bot", id: AkeruMemoryEntityId.make(access.botId) } as const);
+            : ({ kind: "bot", id: IsnadiMemoryEntityId.make(access.botId) } as const);
         case "project":
-          return { kind: "project", id: AkeruMemoryEntityId.make(access.projectId) } as const;
+          return { kind: "project", id: IsnadiMemoryEntityId.make(access.projectId) } as const;
         case "group":
           return access.groupId === null
             ? null
-            : ({ kind: "group", id: AkeruMemoryEntityId.make(access.groupId) } as const);
+            : ({ kind: "group", id: IsnadiMemoryEntityId.make(access.groupId) } as const);
         case "workspace":
           return {
             kind: "workspace",
-            id: AkeruMemoryEntityId.make(revision.partition.partitionId),
+            id: IsnadiMemoryEntityId.make(revision.partition.partitionId),
           } as const;
         case "thread":
           return access.groupId !== null
-            ? ({ kind: "group", id: AkeruMemoryEntityId.make(access.groupId) } as const)
+            ? ({ kind: "group", id: IsnadiMemoryEntityId.make(access.groupId) } as const)
             : access.botId !== null
-              ? ({ kind: "bot", id: AkeruMemoryEntityId.make(access.botId) } as const)
-              : ({ kind: "project", id: AkeruMemoryEntityId.make(access.projectId) } as const);
+              ? ({ kind: "bot", id: IsnadiMemoryEntityId.make(access.botId) } as const)
+              : ({ kind: "project", id: IsnadiMemoryEntityId.make(access.projectId) } as const);
       }
     };
 
     const authorizeRevision = Effect.fn("EntityMemoryRepository.authorizeRevision")(function* (
       access: Parameters<typeof resolveAuthorizedMemoryPartitions>[0],
-      revision: AkeruMemoryRevision,
+      revision: IsnadiMemoryRevision,
     ) {
       const partitions = yield* resolveAuthorizedMemoryPartitions(access);
 
       if (!partitions.some((partition) => samePartition(revision, partition))) {
-        return yield* new AkeruMemoryAccessDenied({
+        return yield* new IsnadiMemoryAccessDenied({
           reason: "The memory partition is not available to this thread.",
         });
       }
@@ -145,7 +145,7 @@ export const entityMemoryStorage = () =>
         revision.entityId !== entity.id ||
         !sameIds(revision.affectedBotIds, affectedBotIds)
       ) {
-        return yield* new AkeruMemoryAccessDenied({
+        return yield* new IsnadiMemoryAccessDenied({
           reason: "The memory revision is not valid for this authenticated turn.",
         });
       }

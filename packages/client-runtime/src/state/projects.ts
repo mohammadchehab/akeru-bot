@@ -5,7 +5,7 @@ import {
   isWindowsDrivePath,
   normalizeProjectPathForComparison,
   normalizeProjectPathForDispatch,
-} from "@akeru/shared/path";
+} from "@isnadi/shared/path";
 
 export { normalizeProjectPathForComparison, normalizeProjectPathForDispatch };
 

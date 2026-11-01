@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind, ThreadId } from "@isnadi/contracts";
 import * as Fiber from "effect/Fiber";
 import * as Scope from "effect/Scope";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";

@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { UserInputQuestion } from "@akeru/contracts";
+import type { UserInputQuestion } from "@isnadi/contracts";
 
 export interface PendingUserInputDraftAnswer {
   selectedOptionLabels?: string[];

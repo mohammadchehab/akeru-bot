@@ -18,7 +18,7 @@ import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import { vi } from "vite-plus/test";
-import { BotId, type AkeruMemoryDocument } from "@akeru/contracts";
+import { BotId, type IsnadiMemoryDocument } from "@isnadi/contracts";
 import {
   BOT_MEMORY_ENTRY_DELIMITER,
   BotMemoryStore,
@@ -296,7 +296,7 @@ describe("BotMemoryStore", () => {
     const store = await fixture();
     const access = privateAccess();
     await store.replaceDocument(access, "memory", "Original notes.");
-    let competing: Promise<AkeruMemoryDocument> | undefined;
+    let competing: Promise<IsnadiMemoryDocument> | undefined;
     await expect(
       store.withDocumentTransaction(access, async (replace) => {
         await replace("user", "New file from import.");

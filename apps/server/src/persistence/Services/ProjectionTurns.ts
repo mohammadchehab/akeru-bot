@@ -17,7 +17,7 @@ import {
   OrchestrationCheckpointStatus,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -180,4 +180,4 @@ export interface ProjectionTurnRepositoryShape {
 export class ProjectionTurnRepository extends Context.Service<
   ProjectionTurnRepository,
   ProjectionTurnRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionTurns/ProjectionTurnRepository") {}
+>()("isnadibot/persistence/Services/ProjectionTurns/ProjectionTurnRepository") {}

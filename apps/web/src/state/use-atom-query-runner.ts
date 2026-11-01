@@ -4,7 +4,7 @@ import {
   executeAtomQuery,
   type AtomCommandOptions,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { AsyncResult, type Atom } from "effect/unstable/reactivity";
 import { useCallback, useContext } from "react";
 

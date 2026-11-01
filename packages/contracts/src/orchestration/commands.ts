@@ -10,7 +10,7 @@ import {
   TrimmedNonEmptyString,
   TurnId,
 } from "../baseSchemas.ts";
-import { AkeruDelegationRecord } from "../akeruDelegation.ts";
+import { IsnadiDelegationRecord } from "../isnadiDelegation.ts";
 import { ClientRoutineCommand, InternalRoutineCommand } from "../routines.ts";
 import { ChatAttachment } from "./attachments.ts";
 import {
@@ -310,13 +310,13 @@ const ThreadTitleRegenerationCompleteCommand = Schema.Struct({
 export const DelegationCreateCommand = Schema.Struct({
   type: Schema.Literal("delegation.create"),
   commandId: CommandId,
-  delegation: Schema.suspend(() => AkeruDelegationRecord),
+  delegation: Schema.suspend(() => IsnadiDelegationRecord),
 });
 
 export const DelegationStateSetCommand = Schema.Struct({
   type: Schema.Literal("delegation.state.set"),
   commandId: CommandId,
-  delegation: Schema.suspend(() => AkeruDelegationRecord),
+  delegation: Schema.suspend(() => IsnadiDelegationRecord),
 });
 
 const InternalOrchestrationCommand = Schema.Union([

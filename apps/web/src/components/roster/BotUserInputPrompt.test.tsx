@@ -1,4 +1,4 @@
-import { ApprovalRequestId } from "@akeru/contracts";
+import { ApprovalRequestId } from "@isnadi/contracts";
 import type { ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -7,7 +7,7 @@ import type { PendingUserInput } from "../../session-logic";
 import { BotUserInputPrompt } from "./BotUserInputPrompt";
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };

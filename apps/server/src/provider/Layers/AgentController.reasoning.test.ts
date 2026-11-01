@@ -1,8 +1,8 @@
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { describe, expect, vi } from "vite-plus/test";
-import { ProviderDriverKind, type ModelSelection } from "@akeru/contracts";
-import type { AkeruMastraState } from "../mastra/AkeruHarnessTypes.ts";
+import { ProviderDriverKind, type ModelSelection } from "@isnadi/contracts";
+import type { IsnadiMastraState } from "../mastra/IsnadiHarnessTypes.ts";
 import { reasoningCapabilities } from "../ReasoningOptions.ts";
 import { claudeHarnessCapabilities } from "../ClaudeReasoningCapabilities.ts";
 import { AgentController } from "../Services/AgentController.ts";
@@ -161,7 +161,7 @@ describe("effective bot reasoning at the controller boundary", () => {
     () => {
       const mastra = mastraHarnessFixture();
       const bridge = makeBridge();
-      let state: AkeruMastraState = {};
+      let state: IsnadiMastraState = {};
       mastra.session.state.get = () => state;
       vi.spyOn(mastra.session.state, "set").mockImplementation(async (updates) => {
         state = { ...state, ...updates };

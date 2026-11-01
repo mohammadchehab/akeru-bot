@@ -1,10 +1,10 @@
 import { Predicate } from "effect";
 import { Children, cloneElement, isValidElement, type ReactNode } from "react";
-import type { ServerProviderSkill } from "@akeru/contracts";
+import type { ServerProviderSkill } from "@isnadi/contracts";
 import {
   formatProviderSkillDisplayName,
   resolveProviderSkillTextIcon,
-} from "@akeru/client-runtime/providerSkills";
+} from "@isnadi/client-runtime/providerSkills";
 
 import {
   CHAT_INLINE_CHIP_LABEL_CLASS_NAME,

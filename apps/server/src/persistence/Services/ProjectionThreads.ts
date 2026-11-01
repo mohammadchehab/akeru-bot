@@ -20,7 +20,7 @@ import {
   ThreadLinkedPullRequest,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -124,4 +124,4 @@ export interface ProjectionThreadRepositoryShape {
 export class ProjectionThreadRepository extends Context.Service<
   ProjectionThreadRepository,
   ProjectionThreadRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionThreads/ProjectionThreadRepository") {}
+>()("isnadibot/persistence/Services/ProjectionThreads/ProjectionThreadRepository") {}

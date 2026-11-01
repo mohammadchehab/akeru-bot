@@ -2,7 +2,11 @@ import { Predicate } from "effect";
 import { createElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { ProviderDriverKind, ProviderInstanceId, type ServerProviderModel } from "@akeru/contracts";
+import {
+  ProviderDriverKind,
+  ProviderInstanceId,
+  type ServerProviderModel,
+} from "@isnadi/contracts";
 
 /** Base UI trigger wrappers read `nativeEvent` before calling the handler. */
 type TriggerClick = { readonly nativeEvent: object };

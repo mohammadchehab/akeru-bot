@@ -5,11 +5,11 @@ import {
   THEME_COLOR_ROLES,
   type ThemeAppearance,
   type ThemeColorRole,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 
-export const AKERU_PAPER_THEME_ID = "akeru-paper" as const;
+export const ISNADI_PAPER_THEME_ID = "akeru-paper" as const;
 
-export const AKERU_PAPER_THEME_LABEL = "Isnadi Paper";
+export const ISNADI_PAPER_THEME_LABEL = "Isnadi Paper";
 
 export const T3_CHAT_THEME_ID = "akeru-chat" as const;
 

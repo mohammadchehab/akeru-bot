@@ -7,7 +7,7 @@ import {
   Routine,
   RoutineRun,
   SkillId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -181,7 +181,7 @@ describe("routineStateNote", () => {
     expect(routineStateNote(item)).toBe(null);
   });
 
-  it("tells a user-paused routine apart from one Akeru stopped", () => {
+  it("tells a user-paused routine apart from one Isnadi stopped", () => {
     expect(routineStateNote({ ...item, paused: true })).toBe("Paused until you resume it.");
 
     const blocked = toRoutinePanelItem({ ...routine, lifecycle: "blocked" }, [], [], []);

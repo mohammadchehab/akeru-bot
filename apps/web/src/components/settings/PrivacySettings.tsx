@@ -3,10 +3,10 @@ import {
   SHARED_PROJECT_MEMORY_SETTING,
   sharedProjectMemoryAutoSaves,
   sharedProjectMemoryMode,
-} from "@akeru/client-runtime/durable-memory";
-import { AKERU_MARKETING_SITE_URL, DEFAULT_SERVER_SETTINGS } from "@akeru/contracts/settings";
+} from "@isnadi/client-runtime/durable-memory";
+import { ISNADI_MARKETING_SITE_URL, DEFAULT_SERVER_SETTINGS } from "@isnadi/contracts/settings";
 
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 
 import { usePrimarySettings, useUpdatePrimarySettings } from "~/hooks/useSettings";
 import { useI18n } from "../../i18n";
@@ -20,9 +20,9 @@ import {
 import { PortabilitySettings } from "./PortabilitySettings";
 import { searchableSetting, type SettingsSearchItemId } from "./settingsSearch";
 
-const privacyPolicyUrl = `${AKERU_MARKETING_SITE_URL}/privacy-policy`;
+const privacyPolicyUrl = `${ISNADI_MARKETING_SITE_URL}/privacy-policy`;
 
-const termsUrl = `${AKERU_MARKETING_SITE_URL}/terms-of-service`;
+const termsUrl = `${ISNADI_MARKETING_SITE_URL}/terms-of-service`;
 
 export function PrivacySettingsPanel() {
   const settings = usePrimarySettings();

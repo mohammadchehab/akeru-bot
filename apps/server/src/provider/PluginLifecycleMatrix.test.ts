@@ -4,7 +4,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
 import { createMcpManager, type McpServerConfig } from "@mastra/code-sdk/mcp/index";
-import { McpServerId, type McpServer } from "@akeru/contracts";
+import { McpServerId, type McpServer } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { isInstallableManifest, loadManifestCatalog } from "../../../../plugins/manifestCatalog.ts";
@@ -70,7 +70,7 @@ async function runLifecycle(config: McpServerConfig) {
   if (!registeredConfig) throw new Error("MCP fixture registration was not projected.");
   const managers: ReturnType<typeof createMcpManager>[] = [];
 
-  const manager = createMcpManager(temporaryRuntimeDir(), ".akeru-matrix-test", {
+  const manager = createMcpManager(temporaryRuntimeDir(), ".isnadi-matrix-test", {
     "matrix-target": registeredConfig,
   });
 
@@ -92,7 +92,7 @@ async function runLifecycle(config: McpServerConfig) {
     // fresh manager models the per-server reconnect the bot tools expose.
     await manager.disconnect();
 
-    const restarted = createMcpManager(temporaryRuntimeDir(), ".akeru-matrix-test", {
+    const restarted = createMcpManager(temporaryRuntimeDir(), ".isnadi-matrix-test", {
       "matrix-target": registeredConfig,
     });
 
@@ -105,7 +105,7 @@ async function runLifecycle(config: McpServerConfig) {
 
     // Removal is represented by rebuilding the manager without the registration.
     await restarted.disconnect();
-    const removed = createMcpManager(temporaryRuntimeDir(), ".akeru-matrix-test");
+    const removed = createMcpManager(temporaryRuntimeDir(), ".isnadi-matrix-test");
     managers.push(removed);
     await removed.init();
     expect(removed.getServerStatuses()).toEqual([]);
@@ -133,7 +133,7 @@ describe("plugin lifecycle matrix execution", () => {
         throw new TypeError(`Plugin '${pluginId}' is missing its stdio recipe.`);
       }
 
-      // `akeru-codex-computer-use` is not on PATH in CI; the fixture substitutes
+      // `isnadi-codex-computer-use` is not on PATH in CI; the fixture substitutes
       // the command while keeping the manifest's `<command> mcp` recipe shape.
       await runLifecycle({
         command: process.execPath,

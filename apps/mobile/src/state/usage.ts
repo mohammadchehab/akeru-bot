@@ -3,7 +3,7 @@ import {
   aggregateUsage,
   usageWindowKey,
   type EnvironmentUsageStatus,
-} from "@akeru/client-runtime/usage";
+} from "@isnadi/client-runtime/usage";
 /**
  * Multi-environment usage state.
  *
@@ -11,13 +11,13 @@ import {
  * the results. Raw transcripts never leave the machine that produced them.
  *
  * Mirror of `apps/web/src/state/usage.ts` over mobile's atom wiring; the merge
- * rules themselves live in `@akeru/shared/usageMerge`.
+ * rules themselves live in `@isnadi/shared/usageMerge`.
  *
  * @module state/usage
  */
 import { useAtomValue } from "@effect/atom-react";
-import { UsageSummaryInput } from "@akeru/contracts";
-import type { MergedUsage } from "@akeru/shared/usageMerge";
+import { UsageSummaryInput } from "@isnadi/contracts";
+import type { MergedUsage } from "@isnadi/shared/usageMerge";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 import { useCallback, useMemo } from "react";

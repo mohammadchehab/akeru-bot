@@ -1,4 +1,4 @@
-import type { ReplyAudioEvents, ReplyAudioHandle } from "@akeru/client-runtime/reply-playback";
+import type { ReplyAudioEvents, ReplyAudioHandle } from "@isnadi/client-runtime/reply-playback";
 
 export type NativeReplyAudioEvent = "ended" | "error" | "interrupted";
 

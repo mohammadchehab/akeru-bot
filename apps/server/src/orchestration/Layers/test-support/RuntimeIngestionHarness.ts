@@ -21,9 +21,9 @@ import {
   ProviderRuntimeEvent,
   ProviderSession,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   CommandId,
   DEFAULT_PROVIDER_INTERACTION_MODE,
@@ -36,7 +36,7 @@ import {
   type ServerSettings,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ChannelRuntime from "../../../channels/ChannelRuntime.ts";
 import {
   ChannelDeliveryStore,
@@ -315,7 +315,7 @@ export function createRuntimeIngestionHarness() {
         type: "bot.create",
         commandId: CommandId.make("cmd-bot-create"),
         botId: BotId.make("bot-akeru"),
-        name: "Akeru",
+        name: "Isnadi",
         title: "Research bot",
         avatar: { kind: "dither", seed: "akeru" },
         engine: {
@@ -480,7 +480,7 @@ export function createRuntimeIngestionHarness() {
           BotUsageLedger.pipe(
             Effect.flatMap((ledger) =>
               ledger.reserve({
-                reservationId: AkeruUsageReservationId.make(`test:${turnId}`),
+                reservationId: IsnadiUsageReservationId.make(`test:${turnId}`),
                 sourceKey: `test:${turnId}`,
                 botId: BotId.make("bot-akeru"),
                 threadId: ThreadId.make("thread-1"),

@@ -1,4 +1,4 @@
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
 import { beforeEach, describe, expect, it } from "vite-plus/test";
 import {
   __testing,

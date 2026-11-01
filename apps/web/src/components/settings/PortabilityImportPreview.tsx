@@ -4,7 +4,7 @@ import type {
   PortabilityImportPreview,
   PortabilityProjectFolderMap,
   ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useI18n } from "../../i18n";
 import { Button } from "../ui/button";
 import { DraftInput } from "../ui/draft-input";

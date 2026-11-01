@@ -1,5 +1,5 @@
-import type { OrchestrationBot } from "@akeru/contracts";
-import { botEngineModelSelection } from "@akeru/shared/model";
+import type { OrchestrationBot } from "@isnadi/contracts";
+import { botEngineModelSelection } from "@isnadi/shared/model";
 import { groupByProvider, type ModelOption } from "../../lib/modelOptions";
 import { resolveProviderOptionDescriptors } from "../../lib/providerOptions";
 import type { ExistingThreadSettingsRouteSession } from "./thread-settings-session";

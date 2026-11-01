@@ -1,7 +1,7 @@
 import { fixture, requestSignal } from "./testUtils/subscriptionAuthStorage.ts";
 import * as NodeFS from "node:fs";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import type { SubscriptionCredentialStore } from "./credentialStore.ts";
 import {
@@ -655,7 +655,7 @@ describe("subscription auth storage", () => {
     const request = vi.fn(async (_input: string | URL | Request, init?: RequestInit) => {
       const headers = new Headers(init?.headers);
       expect(headers.get("authorization")).toBe("Bearer go-secret-key");
-      expect(headers.get("user-agent")).toBe("akeru-bot/0.0.37");
+      expect(headers.get("user-agent")).toBe("isnadibot/0.0.37");
 
       return new Response("{}", { status: 200 });
     });

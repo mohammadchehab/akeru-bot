@@ -1,10 +1,10 @@
-import { fromJsonStringPretty } from "@akeru/shared/schemaJson";
+import { fromJsonStringPretty } from "@isnadi/shared/schemaJson";
 import * as Predicate from "effect/Predicate";
 import {
   HostProcessExecutablePath,
   HostProcessPlatform,
   HostProcessUserId,
-} from "@akeru/shared/hostProcess";
+} from "@isnadi/shared/hostProcess";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -141,7 +141,7 @@ export class BootService extends Context.Service<
     readonly uninstall: Effect.Effect<boolean, BootServiceError>;
     readonly status: Effect.Effect<BootServiceStatus, BootServiceError>;
   }
->()("akeru-bot/cloud/bootService") {}
+>()("isnadibot/cloud/bootService") {}
 
 export interface BootServiceHost {
   readonly execPath: string;

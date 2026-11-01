@@ -1,19 +1,19 @@
 import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 import * as Effect from "effect/Effect";
 import {
-  AkeruMemoryId,
-  AkeruMemoryOperationError,
-  type AkeruMemoryMutationResult,
+  IsnadiMemoryId,
+  IsnadiMemoryOperationError,
+  type IsnadiMemoryMutationResult,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   applyBotMemoryImport,
   exportBotMemoryArchive,
   previewBotMemoryImport,
 } from "./memory/BotMemoryArchive.ts";
-import { exportAkeruMemory } from "./memory/MemoryExport.ts";
-import { applyAkeruMemoryImport, previewAkeruMemoryImport } from "./memory/MemoryImport.ts";
+import { exportIsnadiMemory } from "./memory/MemoryExport.ts";
+import { applyIsnadiMemoryImport, previewIsnadiMemoryImport } from "./memory/MemoryImport.ts";
 
 import { isOrchestrationDispatchCommandError, nowIso, memoryOperationError } from "./wsSupport.ts";
 import type { WsConnection } from "./wsConnection.ts";
@@ -187,7 +187,7 @@ export const createWsMemoryHandlers = ({
               createdAt: nowIso,
             }).pipe(
               Effect.flatMap(({ access, conversations, createdAt }) =>
-                exportAkeruMemory({
+                exportIsnadiMemory({
                   repository: entityMemoryRepository,
                   access,
                   target: input.target,
@@ -209,7 +209,7 @@ export const createWsMemoryHandlers = ({
             )
           : resolveMemoryAccess("archive.previewImport", input.threadId).pipe(
               Effect.flatMap((access) =>
-                previewAkeruMemoryImport({
+                previewIsnadiMemoryImport({
                   repository: entityMemoryRepository,
                   access,
                   target: input.target,
@@ -239,7 +239,7 @@ export const createWsMemoryHandlers = ({
                   : resolveMemoryAccess("archive.applyImport", input.threadId),
               ),
               Effect.flatMap((access) =>
-                applyAkeruMemoryImport({
+                applyIsnadiMemoryImport({
                   repository: entityMemoryRepository,
                   access,
                   target: input.target,
@@ -261,7 +261,7 @@ export const createWsMemoryHandlers = ({
           ? Effect.fail(memoryOperationError("facts.list", "Durable memory is unavailable."))
           : resolveMemoryAccess("facts.list", input.threadId).pipe(
               Effect.flatMap((access) =>
-                exportAkeruMemory({
+                exportIsnadiMemory({
                   repository: entityMemoryRepository,
                   access,
                   target: input.target,
@@ -326,7 +326,7 @@ export const createWsMemoryHandlers = ({
           ? Effect.fail(memoryOperationError("facts.mutate", "Durable memory is unavailable."))
           : Effect.all({
               access: resolveMemoryAccess("facts.mutate", input.threadId),
-              memoryId: randomUUID.pipe(Effect.map((uuid) => AkeruMemoryId.make(`rpc:${uuid}`))),
+              memoryId: randomUUID.pipe(Effect.map((uuid) => IsnadiMemoryId.make(`rpc:${uuid}`))),
               updatedAt: nowIso,
               settings: serverSettings.getSettings.pipe(
                 Effect.mapError((cause) => memoryOperationError("facts.mutate", cause)),
@@ -338,7 +338,7 @@ export const createWsMemoryHandlers = ({
                   memoryId,
                   updatedAt,
                   settings,
-                }): Effect.Effect<AkeruMemoryMutationResult, AkeruMemoryOperationError> => {
+                }): Effect.Effect<IsnadiMemoryMutationResult, IsnadiMemoryOperationError> => {
                   const mutation = input.mutation;
 
                   if (mutation.operation === "candidate.decide") {

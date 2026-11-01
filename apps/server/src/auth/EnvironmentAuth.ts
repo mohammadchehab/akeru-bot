@@ -16,8 +16,8 @@ import {
   type AuthSessionState,
   type ServerAuthDescriptor,
   type AuthWebSocketTicketResult,
-} from "@akeru/contracts";
-import { encodeOAuthScope } from "@akeru/shared/oauthScope";
+} from "@isnadi/contracts";
+import { encodeOAuthScope } from "@isnadi/shared/oauthScope";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
@@ -145,7 +145,7 @@ export class EnvironmentAuth extends Context.Service<
       baseUrl: string,
     ) => Effect.Effect<string, ServerAuthInternalError>;
   }
->()("akeru-bot/auth/EnvironmentAuth") {}
+>()("isnadibot/auth/EnvironmentAuth") {}
 
 type BootstrapExchangeResult = {
   readonly response: AuthBrowserSessionResult;

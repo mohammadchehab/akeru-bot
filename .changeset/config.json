@@ -5,11 +5,11 @@
     { "repo": "opencoredev/akeru-bot", "disableThanks": true }
   ],
   "commit": false,
-  "fixed": [["akeru-bot", "@akeru/contracts", "@akeru/desktop", "@akeru/web"]],
+  "fixed": [["isnadibot", "@isnadi/contracts", "@isnadi/desktop", "@isnadi/web"]],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
-  "ignore": ["@akeru/mobile"],
+  "ignore": ["@isnadi/mobile"],
   "updateInternalDependencies": "patch",
   "bumpVersionsWithWorkspaceProtocolOnly": true,
   "privatePackages": { "version": true, "tag": false }

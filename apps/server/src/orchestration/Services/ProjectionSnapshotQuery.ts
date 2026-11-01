@@ -7,7 +7,7 @@
  * @module ProjectionSnapshotQuery
  */
 import type {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   BotId,
   CheckpointRef,
   GroupId,
@@ -31,7 +31,7 @@ import type {
   RuntimeMode,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Option from "effect/Option";
 import type * as Effect from "effect/Effect";
@@ -259,7 +259,7 @@ export interface ProjectionSnapshotQueryShape {
    */
   readonly listThreadDelegations?: (
     threadId: ThreadId,
-  ) => Effect.Effect<ReadonlyArray<AkeruDelegationRecord>, ProjectionRepositoryError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiDelegationRecord>, ProjectionRepositoryError>;
 
   /**
    * Read the id of the newest assistant message for a turn. Optional for the
@@ -331,4 +331,4 @@ export interface ProjectionSnapshotQueryShape {
 export class ProjectionSnapshotQuery extends Context.Service<
   ProjectionSnapshotQuery,
   ProjectionSnapshotQueryShape
->()("akeru-bot/orchestration/Services/ProjectionSnapshotQuery") {}
+>()("isnadibot/orchestration/Services/ProjectionSnapshotQuery") {}

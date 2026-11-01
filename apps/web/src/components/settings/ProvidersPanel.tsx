@@ -1,9 +1,9 @@
 import { LoaderIcon } from "lucide-react";
 import { type ReactNode } from "react";
-import type { EnvironmentId, ProviderInstanceId } from "@akeru/contracts";
-import { providerUsesApiKey, providerSupportsBaseUrl } from "@akeru/client-runtime/provider-auth";
+import type { EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
+import { providerUsesApiKey, providerSupportsBaseUrl } from "@isnadi/client-runtime/provider-auth";
 import { useAtomValue } from "@effect/atom-react";
-import { providerAccessModelNames } from "@akeru/client-runtime/provider-access";
+import { providerAccessModelNames } from "@isnadi/client-runtime/provider-access";
 import { useI18n } from "../../i18n";
 import { serverEnvironment } from "../../state/server";
 import { Button } from "../ui/button";

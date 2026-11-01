@@ -4,7 +4,7 @@ import {
   type OrchestrationProject,
   type OrchestrationThreadShell,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import {

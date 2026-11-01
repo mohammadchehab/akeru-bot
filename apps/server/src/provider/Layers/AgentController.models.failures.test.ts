@@ -12,7 +12,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -201,7 +201,7 @@ describe("AgentControllerLive", () => {
 });
 
 describe("AgentControllerLive", () => {
-  it.effect("runs Grok through the Akeru Mastra harness", () => {
+  it.effect("runs Grok through the Isnadi Mastra harness", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
 

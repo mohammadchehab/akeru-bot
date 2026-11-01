@@ -9,7 +9,7 @@ import {
   AuthTokenExchangeGrantType,
   OrchestrationThreadDetailSnapshot,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { assert } from "@effect/vitest";
 

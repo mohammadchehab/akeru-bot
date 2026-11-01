@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 
 /**
  * Opaque, exclusive cursor for windowed thread detail reads. Encodes the thread

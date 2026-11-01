@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { resolveSelectedThemeCardId, standardThemePreference } from "./ThemeSettings";
 
 describe("resolveSelectedThemeCardId", () => {
-  it("marks Akeru Classic only when it owns the visible appearance", () => {
+  it("marks Isnadi Classic only when it owns the visible appearance", () => {
     expect(
       resolveSelectedThemeCardId({
         appearanceMode: "light",
@@ -14,7 +14,7 @@ describe("resolveSelectedThemeCardId", () => {
     ).toBeNull();
   });
 
-  it("marks Akeru Paper for dark mode and the active system appearance", () => {
+  it("marks Isnadi Paper for dark mode and the active system appearance", () => {
     const input = {
       initialAppearance: "dark" as const,
       lightOwner: null,

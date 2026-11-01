@@ -1,5 +1,5 @@
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentProject } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
 import type { MenuAction } from "@react-native-menu/menu";
 import { memo, useCallback } from "react";
 import { Pressable, View } from "react-native";

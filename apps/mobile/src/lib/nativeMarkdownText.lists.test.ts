@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import type { MarkdownNode } from "react-native-nitro-markdown/headless";
-import { nativeMarkdownListItemBlocks } from "@akeru/mobile-markdown-text/markdown";
+import { nativeMarkdownListItemBlocks } from "@isnadi/mobile-markdown-text/markdown";
 
 describe("nativeMarkdownListItemBlocks", () => {
   it("groups consecutive inline nodes into one paragraph block", () => {

@@ -4,7 +4,7 @@ import * as NodePath from "node:path";
 import { afterEach, assert } from "@effect/vitest";
 import * as DateTime from "effect/DateTime";
 import { vi } from "vite-plus/test";
-import { BotId, GroupId } from "@akeru/contracts";
+import { BotId, GroupId } from "@isnadi/contracts";
 import { BotMemoryStore } from "../BotMemory.ts";
 
 vi.mock("node:fs/promises", async (importOriginal) => {
@@ -44,7 +44,7 @@ async function loseNextLock() {
 }
 
 async function fixture() {
-  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-bot-memory-"));
+  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadibot-memory-"));
   directories.push(directory);
 
   return new BotMemoryStore(NodePath.join(directory, "userdata"));

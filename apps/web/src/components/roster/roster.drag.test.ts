@@ -217,8 +217,8 @@ describe("roster drag projection", () => {
     const args = layout(items, rosterEntryId(akeru), rosterMarkerId("pinned-header"));
     const header = strategy({ ...args, index: 0 });
     expect(header).toEqual(stationary);
-    const akeruIndex = items.findIndex((item) => rosterListItemId(item) === rosterEntryId(akeru));
-    expect(strategy({ ...args, index: akeruIndex })).toEqual(stationary);
+    const isnadiIndex = items.findIndex((item) => rosterListItemId(item) === rosterEntryId(akeru));
+    expect(strategy({ ...args, index: isnadiIndex })).toEqual(stationary);
   });
 
   it("keeps same-section reorder on the default vertical strategy", () => {

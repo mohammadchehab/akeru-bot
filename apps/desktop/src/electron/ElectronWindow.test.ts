@@ -1,7 +1,7 @@
 import { testWindow } from "./testWindow.ts";
 import * as Predicate from "effect/Predicate";
 import { assert, describe, it } from "@effect/vitest";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

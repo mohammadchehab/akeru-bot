@@ -4,8 +4,8 @@ vi.mock("./botConversationMessageProjection", () => ({
   useBotConversationMessageProjection: () => mocks.messageProjection,
 }));
 
-import { BotId, EnvironmentId, ThreadId } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
+import { BotId, EnvironmentId, ThreadId } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { makeComposerTestProvider } from "../../test/composerTestProvider";

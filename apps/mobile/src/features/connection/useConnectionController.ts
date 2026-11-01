@@ -1,4 +1,4 @@
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useCallback, useMemo } from "react";
 
 import { environmentCatalog } from "../../connection/catalog";

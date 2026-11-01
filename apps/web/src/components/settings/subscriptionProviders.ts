@@ -1,6 +1,6 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import { providerUsesApiKey } from "@akeru/client-runtime/provider-auth";
-import type { SubscriptionProviderId, SubscriptionProviderStatus } from "@akeru/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import { providerUsesApiKey } from "@isnadi/client-runtime/provider-auth";
+import type { SubscriptionProviderId, SubscriptionProviderStatus } from "@isnadi/contracts";
 
 import type { useI18n } from "../../i18n";
 import { ClaudeAI, GrokIcon, KimiIcon, OpenAI, OpenCodeIcon, type Icon } from "../Icons";

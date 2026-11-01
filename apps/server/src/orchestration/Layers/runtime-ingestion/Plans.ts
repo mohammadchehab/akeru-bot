@@ -4,7 +4,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

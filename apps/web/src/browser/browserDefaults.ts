@@ -19,7 +19,7 @@ import type {
   DesktopPreviewTabDefaults,
   PreviewAppearancePreference,
   PreviewViewportSetting,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   ensureClientSettingsHydrated,

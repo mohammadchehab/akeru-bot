@@ -13,7 +13,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   grokPromptSettlementBelongsToContext,
   makeGrokAdapter,

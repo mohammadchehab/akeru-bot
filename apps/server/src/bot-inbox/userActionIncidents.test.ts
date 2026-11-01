@@ -3,7 +3,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 
 import { BotInboxService } from "./service.ts";
 import { recordUserActionIncident, userActionIncidentKey } from "./userActionIncidents.ts";
@@ -26,7 +26,7 @@ function makeService() {
 
 const input = {
   botId: BotId.make("bot-akeru"),
-  botName: "Akeru",
+  botName: "Isnadi",
   toolId: "request_box_help",
   summary: "Sign in to the bank site.",
   nextAction: "Open the bot workspace and complete the requested step.",

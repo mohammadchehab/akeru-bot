@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

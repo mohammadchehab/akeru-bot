@@ -1,4 +1,4 @@
-import { makeLocalFileTracer, traceSink } from "@akeru/shared/observability";
+import { makeLocalFileTracer, traceSink } from "@isnadi/shared/observability";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as References from "effect/References";

@@ -5,7 +5,7 @@ import {
   type ImageProviderHealth,
   type ImageProviderId,
   type ImageProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { createTranslator, type MessageKey, type TranslationParams } from "./i18n/index.ts";
 

@@ -7,8 +7,11 @@ import {
   type MobileThemeId as SharedMobileThemeId,
   type ThemeAppearance,
   type ThemeColors,
-} from "@akeru/shared/themePalettes";
-import { STANDARD_THEME_PREVIEW_COLORS, type ThemePreviewColors } from "@akeru/shared/themePreview";
+} from "@isnadi/shared/themePalettes";
+import {
+  STANDARD_THEME_PREVIEW_COLORS,
+  type ThemePreviewColors,
+} from "@isnadi/shared/themePreview";
 import { DEFAULT_MOBILE_THEME_VARIABLES } from "./mobileDefaultTheme";
 
 export const DEFAULT_MOBILE_THEME_ID = MOBILE_DEFAULT_THEME_ID;

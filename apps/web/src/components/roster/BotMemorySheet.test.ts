@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";

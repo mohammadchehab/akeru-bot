@@ -5,7 +5,7 @@ import {
   ThreadId,
   TurnId,
   type OrchestrationEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";

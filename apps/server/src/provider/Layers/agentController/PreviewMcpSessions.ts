@@ -1,12 +1,12 @@
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
-import { ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
 import * as Option from "effect/Option";
 
-import { type AkeruMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
+import { type IsnadiMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
 
 import * as McpProviderSession from "../../../mcp/McpProviderSession.ts";
 import * as McpMemoryToolSession from "../../../mcp/McpMemoryToolSession.ts";
@@ -50,7 +50,7 @@ export function createPreviewMcpSessions(deps: {
   const preparePreviewMcpSession = (
     threadId: ThreadId,
     providerInstanceId: ProviderInstanceId,
-    memoryHandler?: AkeruMemoryToolHandler,
+    memoryHandler?: IsnadiMemoryToolHandler,
   ) =>
     Effect.gen(function* () {
       // Matches ProviderService's capabilities: an unreadable settings file withholds both.

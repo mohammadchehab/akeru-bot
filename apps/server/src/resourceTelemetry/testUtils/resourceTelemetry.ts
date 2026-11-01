@@ -2,7 +2,7 @@ import type {
   DesktopHostTelemetrySnapshot,
   ResourceMonitorProcessSample,
   ResourceMonitorSnapshotEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 import * as NativeTelemetryClient from "../NativeTelemetryClient.ts";

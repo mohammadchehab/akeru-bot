@@ -10,7 +10,7 @@ import {
   type RoutineAdapterItem,
   type RoutineAdapterRun,
   type RoutineAdapterRunStatus,
-} from "@akeru/client-runtime/routines";
+} from "@isnadi/client-runtime/routines";
 
 import { useI18n } from "../../i18n";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";

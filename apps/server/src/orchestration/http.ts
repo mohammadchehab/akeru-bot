@@ -4,7 +4,7 @@ import {
   AuthOrchestrationReadScope,
   EnvironmentHttpApi,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

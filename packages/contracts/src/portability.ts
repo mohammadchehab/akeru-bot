@@ -35,9 +35,9 @@ import {
   ServerSettings,
 } from "./settings/server.ts";
 
-export const AKERU_ARCHIVE_FORMAT = "akeru.archive" as const;
+export const ISNADI_ARCHIVE_FORMAT = "akeru.archive" as const;
 
-export const AKERU_ARCHIVE_VERSION = 1 as const;
+export const ISNADI_ARCHIVE_VERSION = 1 as const;
 
 export const PORTABILITY_ARCHIVE_MAX_CHARS = 20 * 1024 * 1024;
 
@@ -248,8 +248,8 @@ export type PortabilityArchiveRecord = typeof PortabilityArchiveRecord.Type;
 export type PortabilityArchiveRecordType = PortabilityArchiveRecord["type"];
 
 export const PortabilityArchive = Schema.Struct({
-  format: Schema.Literal(AKERU_ARCHIVE_FORMAT),
-  version: Schema.Literal(AKERU_ARCHIVE_VERSION),
+  format: Schema.Literal(ISNADI_ARCHIVE_FORMAT),
+  version: Schema.Literal(ISNADI_ARCHIVE_VERSION),
   exportedAt: IsoDateTime,
   manifest: Schema.Struct({
     recordCounts: Schema.Record(TrimmedNonEmptyString, NonNegativeInt),

@@ -1,4 +1,4 @@
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import { getDefaultBuildArch } from "../build-target-arch.ts";
 

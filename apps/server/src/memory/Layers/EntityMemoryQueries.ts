@@ -1,9 +1,9 @@
 import { toFtsQuery } from "./EntityMemoryRows.ts";
-import { AkeruMemoryRevision } from "@akeru/contracts";
+import { IsnadiMemoryRevision } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { toPersistenceSqlError } from "../../persistence/Errors.ts";
 import {
-  AkeruMemoryAccessDenied,
+  IsnadiMemoryAccessDenied,
   resolveAuthorizedMemoryPartitions,
   type AuthorizedMemoryPartition,
 } from "../EntityMemoryAccess.ts";
@@ -135,7 +135,7 @@ export const entityMemoryQueries = (dependencies: {
     // Keeps only revisions stored in a partition the caller can read, so a fact moved out of
     // a private scope does not reveal its earlier private text.
     const isRevisionAuthorized =
-      (partitions: ReadonlyArray<AuthorizedMemoryPartition>) => (revision: AkeruMemoryRevision) =>
+      (partitions: ReadonlyArray<AuthorizedMemoryPartition>) => (revision: IsnadiMemoryRevision) =>
         partitions.some(
           (partition) =>
             partition.tenantId === revision.partition.tenantId &&
@@ -165,7 +165,7 @@ export const entityMemoryQueries = (dependencies: {
     const listByPartitions: EntityMemoryRepositoryShape["listByPartitions"] = (input) =>
       Effect.gen(function* () {
         if (input.partitions.some((candidate) => candidate.tenantId !== input.access.tenantId)) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: "Every export partition must belong to the requested tenant.",
           });
         }

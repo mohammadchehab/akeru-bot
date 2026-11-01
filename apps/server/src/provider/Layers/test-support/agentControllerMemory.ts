@@ -1,18 +1,18 @@
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EnvironmentId,
   ProviderInstanceId,
   ProjectId,
   ThreadId,
   TurnId,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { vi } from "vite-plus/test";
@@ -54,26 +54,26 @@ export function completeLegacyTurnWithMemoryReview(
 export function privatePolicyRevisions(
   botId: BotId,
   projectId: ProjectId,
-): Array<AkeruMemoryRevision> {
-  const revision = (scope: AkeruMemoryRevision["partition"]["scope"], fact: string) =>
+): Array<IsnadiMemoryRevision> {
+  const revision = (scope: IsnadiMemoryRevision["partition"]["scope"], fact: string) =>
     ({
-      id: AkeruMemoryId.make(`memory-${scope}`),
-      rootId: AkeruMemoryRootId.make(`memory-${scope}`),
+      id: IsnadiMemoryId.make(`memory-${scope}`),
+      rootId: IsnadiMemoryRootId.make(`memory-${scope}`),
       revision: 1,
       partition: {
-        tenantId: AkeruMemoryTenantId.make("local"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
         scope,
-        partitionId: AkeruMemoryPartitionId.make(`${scope}-partition`),
+        partitionId: IsnadiMemoryPartitionId.make(`${scope}-partition`),
       },
       entityKind: scope === "project" ? "project" : "bot",
-      entityId: AkeruMemoryEntityId.make(scope === "project" ? String(projectId) : String(botId)),
+      entityId: IsnadiMemoryEntityId.make(scope === "project" ? String(projectId) : String(botId)),
       kind: "fact",
       value: {},
       fact,
       sourceThreadId: null,
       sourceMessageId: null,
       authorBotId: botId,
-      initiatingUserId: AkeruMemoryUserId.make("owner"),
+      initiatingUserId: IsnadiMemoryUserId.make("owner"),
       createdAt: "2026-09-01T00:00:00.000Z",
       confirmedAt: "2026-09-01T00:00:00.000Z",
       updatedAt: "2026-09-01T00:00:00.000Z",
@@ -86,7 +86,7 @@ export function privatePolicyRevisions(
       pinned: false,
       sensitive: false,
       affectedBotIds: [botId],
-    }) as AkeruMemoryRevision;
+    }) as IsnadiMemoryRevision;
 
   return [
     revision("bot", "Bot-private entity fact."),

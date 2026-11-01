@@ -1,4 +1,4 @@
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 
 import type { ConnectedEnvironmentSummary } from "../../state/remote-runtime-types";

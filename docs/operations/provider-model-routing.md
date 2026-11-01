@@ -1,8 +1,8 @@
 # Provider model routing verification
 
-> For maintainers and operators. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers and operators. Using IsnadiBot? See [docs/user](../user/).
 
-Akeru Bot routes each bot's saved model to its provider at turn time. This runbook explains
+IsnadiBot routes each bot's saved model to its provider at turn time. This runbook explains
 the evidence available for a live turn and its limits. Trace attributes expose the selection
 on standard OpenCode's legacy bridge, but do not prove the effective wire model for Mastra drivers.
 Mocked transport regressions verify wire-format routing in
@@ -32,13 +32,13 @@ reactor test "routes two bots on the same provider instance to their own saved m
 
 ## Before you start
 
-You need a running Akeru environment with your own subscriptions or API keys connected in
+You need a running Isnadi environment with your own subscriptions or API keys connected in
 Settings, and the local trace file. See [observability.md](observability.md) for the trace path;
-for a normal launch it is `~/.akeru/userdata/logs/server.trace.ndjson` (or
-`<worktree>/.akeru/userdata/logs/...` for a dev worktree).
+for a normal launch it is `~/.isnadi/userdata/logs/server.trace.ndjson` (or
+`<worktree>/.isnadi/userdata/logs/...` for a dev worktree).
 
 ```bash
-TRACE_FILE=~/.akeru/userdata/logs/server.trace.ndjson
+TRACE_FILE=~/.isnadi/userdata/logs/server.trace.ndjson
 ```
 
 Each check below sends one ordinary chat turn and then inspects the spans for that thread.
@@ -71,17 +71,17 @@ using) and Codex's `model.rerouted` (`fromModel`/`toModel`) do not land in
 `server.trace.ndjson` — they are canonical `ProviderRuntimeEvent`s written to the provider event
 stream instead. Inspect them in the chat's activity feed or in the per-thread provider event
 NDJSON: the logger writes one file per thread as
-`~/.akeru/userdata/logs/provider/events.<threadSegment>.log` (plus `events._global.log` for
+`~/.isnadi/userdata/logs/provider/events.<threadSegment>.log` (plus `events._global.log` for
 thread-free events).
 
 ```bash
 # models the runtime actually reported for turns on this machine
 jq -c 'select(.type == "turn.started" or .type == "model.rerouted") |
   { type, model: .payload.model, from: .payload.fromModel, to: .payload.toModel }' \
-  ~/.akeru/userdata/logs/provider/events.*.log | tail -10
+  ~/.isnadi/userdata/logs/provider/events.*.log | tail -10
 ```
 
-If the wire model differs from the saved selection, that is a routing bug. Akeru never silently
+If the wire model differs from the saved selection, that is a routing bug. Isnadi never silently
 substitutes a model. A Codex-side reroute emits a `model.rerouted` runtime event instead of hiding
 the change; check `fromModel`/`toModel` in the provider `events.*.log` files.
 

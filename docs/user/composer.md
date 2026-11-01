@@ -1,9 +1,9 @@
 # Message composer
 
-Messages can contain up to 120,000 characters. Akeru keeps an oversized draft in the composer and
+Messages can contain up to 120,000 characters. Isnadi keeps an oversized draft in the composer and
 shows how many characters you must remove. Shorten the draft or send it as several messages.
 
-On mobile, unsent drafts and queued messages stay on the device. If Akeru cannot read a draft store,
+On mobile, unsent drafts and queued messages stay on the device. If Isnadi cannot read a draft store,
 it leaves the saved work in place instead of treating it as empty. Readable queued messages still
 send after reconnect. An unreadable queued-message file stays on the device until it can be read. A
 send that fails because the connection dropped stays queued and retries when the environment is
@@ -11,7 +11,7 @@ reachable again.
 
 ## Attach images
 
-On servers with direct uploads, an image starts uploading when you add it. Akeru enables **Send**
+On servers with direct uploads, an image starts uploading when you add it. Isnadi enables **Send**
 after every upload finishes. Retry or remove a failed upload.
 
 Web and desktop convert HEIC and HEIF photos to JPEG when you drag or paste them into the composer.
@@ -30,7 +30,7 @@ commands of the bot's provider. A group chat lists those of the group's boss, wh
 
 The slash menu includes skills by default. Turn off **Show skills in slash menu** under
 **Settings > General** to keep it command-only. Slash-menu skill results use the
-`/skill:Skill Name` label and insert the same `$name` token. Akeru hides duplicate native provider
+`/skill:Skill Name` label and insert the same `$name` token. Isnadi hides duplicate native provider
 commands when the same skill is already available.
 
 On Claude, picking a skill from the `$` menu is sent as a trailing `/name` command so Claude Code
@@ -48,21 +48,21 @@ If a transcription fails, the control stays in place as a retry button, even wit
 Retry records again. Dismiss the error to get the send arrow back. Your draft is never changed by a
 failed attempt.
 
-Akeru keeps the text and cursor already in the draft and inserts the transcript at the cursor. If
+Isnadi keeps the text and cursor already in the draft and inserts the transcript at the cursor. If
 you switch chats or environments while a transcription is still running, that late result is
 discarded.
 
 Dictation needs a transcription provider for the connected environment. Turn on voice and connect
 a provider in **Settings > Providers > Voice**. Dictation is unavailable during an active voice call, while
 disconnected, or if the browser or device cannot use a microphone. On mobile, recording stops when
-Akeru leaves the foreground.
+Isnadi leaves the foreground.
 
 ## Mention the browser or another chat
 
 Type `@` to open the mention menu. Use the arrow keys to move through it, `Enter` or `Tab` to pick,
 and `Escape` to close it. On mobile, tap a row.
 
-Pick **Browser** to ask the bot to use the preview browser for this message. Akeru tells the bot to
+Pick **Browser** to ask the bot to use the preview browser for this message. Isnadi tells the bot to
 work in the same preview browser you see instead of starting its own. **Browser** only appears when
 **Bot browser access** is on under **Settings > Browser**.
 
@@ -92,7 +92,7 @@ The excerpt is read when the bot starts the turn, so it reflects the chat at tha
 
 ## Start bot work in the background
 
-From a new chat on desktop, press `Cmd+Enter` on macOS or `Ctrl+Enter` on Windows and Linux. Akeru
+From a new chat on desktop, press `Cmd+Enter` on macOS or `Ctrl+Enter` on Windows and Linux. Isnadi
 starts the chat, opens another new chat, and shows an **Open** action for the bot work in progress.
 
 Like any new chat, the background chat works in the bot's project checkout.

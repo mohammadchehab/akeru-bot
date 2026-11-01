@@ -7,13 +7,13 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-  type AkeruDelegationAccessGrant,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationAccessGrant,
+  type IsnadiDelegationRecord,
   type OrchestrationBot,
   type OrchestrationCommand,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import { vi } from "vite-plus/test";
@@ -21,11 +21,11 @@ import { vi } from "vite-plus/test";
 import { decideOrchestrationCommand } from "../../orchestration/decider.ts";
 import { projectEvent } from "../../orchestration/projector.ts";
 import {
-  createAkeruDelegationRuntime,
-  type AkeruDelegationChildOutcome,
-  type AkeruDelegationParent,
-  type AkeruDelegationRuntimeOptions,
-} from "../AkeruDelegationRuntime.ts";
+  createIsnadiDelegationRuntime,
+  type IsnadiDelegationChildOutcome,
+  type IsnadiDelegationParent,
+  type IsnadiDelegationRuntimeOptions,
+} from "../IsnadiDelegationRuntime.ts";
 
 export const NOW = "2026-08-31T12:00:00.000Z";
 
@@ -43,7 +43,7 @@ export const PARENT_TURN_ID = TurnId.make("turn-parent");
 
 export const CHILD_TURN_ID = TurnId.make("turn-child");
 
-export const access = (overrides: Partial<AkeruDelegationAccessGrant> = {}) => ({
+export const access = (overrides: Partial<IsnadiDelegationAccessGrant> = {}) => ({
   allowedToolIds: ["Read", "Shell", "SendToAgent"] as const,
   memoryScopes: ["private", "bot", "project"] as const,
   sandbox: "local" as const,
@@ -113,8 +113,8 @@ export function thread(
 
 export function delegation(
   delegationId: DelegationId,
-  overrides: Partial<AkeruDelegationRecord> = {},
-): AkeruDelegationRecord {
+  overrides: Partial<IsnadiDelegationRecord> = {},
+): IsnadiDelegationRecord {
   return {
     delegationId,
     parentDelegationId: null,
@@ -168,7 +168,9 @@ export function snapshot(overrides: Partial<OrchestrationReadModel> = {}): Orche
   };
 }
 
-export const parent = (overrides: Partial<AkeruDelegationParent> = {}): AkeruDelegationParent => ({
+export const parent = (
+  overrides: Partial<IsnadiDelegationParent> = {},
+): IsnadiDelegationParent => ({
   threadId: PARENT_THREAD_ID,
   turnId: PARENT_TURN_ID,
   botId: PARENT_BOT_ID,
@@ -188,12 +190,12 @@ export const request = <Overrides extends object>(overrides?: Overrides) => ({
 
 export function harness(
   initial = snapshot(),
-  outcome: AkeruDelegationChildOutcome = {
+  outcome: IsnadiDelegationChildOutcome = {
     state: "completed",
     turnId: CHILD_TURN_ID,
     summary: "The delegated answer.",
   },
-  options: Partial<AkeruDelegationRuntimeOptions> = {},
+  options: Partial<IsnadiDelegationRuntimeOptions> = {},
 ) {
   const state = {
     ...initial,
@@ -203,7 +205,10 @@ export function harness(
 
   const commands: OrchestrationCommand[] = [];
   const interrupts: Array<{ threadId: ThreadId; turnId: TurnId | null }> = [];
-  const usage: Array<Parameters<NonNullable<AkeruDelegationRuntimeOptions["recordUsage"]>>[0]> = [];
+
+  const usage: Array<Parameters<NonNullable<IsnadiDelegationRuntimeOptions["recordUsage"]>>[0]> =
+    [];
+
   let nextId = 0;
 
   // Runs every command through the real decider and projects its events back
@@ -241,12 +246,12 @@ export function harness(
   });
 
   const recordUsage = vi.fn(
-    async (entry: Parameters<NonNullable<AkeruDelegationRuntimeOptions["recordUsage"]>>[0]) => {
+    async (entry: Parameters<NonNullable<IsnadiDelegationRuntimeOptions["recordUsage"]>>[0]) => {
       usage.push(entry);
     },
   );
 
-  const runtime = createAkeruDelegationRuntime({
+  const runtime = createIsnadiDelegationRuntime({
     readSnapshot: async () => state as OrchestrationReadModel,
     dispatch,
     awaitChild: async () => outcome,

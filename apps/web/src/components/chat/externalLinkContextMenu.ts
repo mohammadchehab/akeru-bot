@@ -1,4 +1,4 @@
-import type { ContextMenuItem } from "@akeru/contracts";
+import type { ContextMenuItem } from "@isnadi/contracts";
 
 export type ExternalLinkContextMenuAction = "open-in-preview" | "open-external" | "copy-link";
 

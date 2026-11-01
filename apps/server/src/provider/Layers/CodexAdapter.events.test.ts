@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeAssert from "node:assert/strict";
-import { ProviderDriverKind, type ProviderEvent } from "@akeru/contracts";
+import { ProviderDriverKind, type ProviderEvent } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

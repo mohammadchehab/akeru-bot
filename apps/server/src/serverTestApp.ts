@@ -1,7 +1,7 @@
 import { ProviderInstanceRegistryMutator } from "./provider/Services/ProviderInstanceRegistryMutator.ts";
-import { HostProcessEnvironment } from "@akeru/shared/hostProcess";
+import { HostProcessEnvironment } from "@isnadi/shared/hostProcess";
 
-import { DEFAULT_SERVER_SETTINGS, type PreviewEvent } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, type PreviewEvent } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 

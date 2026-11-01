@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import {
   ApprovalRequestId,
   BotId,
@@ -7,7 +7,7 @@ import {
   DEFAULT_PROVIDER_INTERACTION_MODE,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ChannelRuntime from "../../channels/ChannelRuntime.ts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import {

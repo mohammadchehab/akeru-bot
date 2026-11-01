@@ -7,7 +7,7 @@ import {
   type OrchestrationEvent,
   type OrchestrationThread,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ThreadDetailReducerResult } from "./types.ts";
 
 import * as O from "effect/Order";

@@ -5,7 +5,7 @@ import {
   sameReplyPlaybackIdentity,
   type ReplyPlaybackController,
   type ReplyPlaybackRequest,
-} from "@akeru/client-runtime/reply-playback";
+} from "@isnadi/client-runtime/reply-playback";
 
 import { AppText } from "../../components/AppText";
 

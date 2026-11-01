@@ -4,8 +4,8 @@ import {
   issueRemoteWebSocketTicket,
   RemoteEnvironmentAuthUndeclaredStatusError,
   type RemoteEnvironmentAuthError,
-} from "@akeru/client-runtime/authorization";
-import { fetchRemoteEnvironmentDescriptor } from "@akeru/client-runtime/environment";
+} from "@isnadi/client-runtime/authorization";
+import { fetchRemoteEnvironmentDescriptor } from "@isnadi/client-runtime/environment";
 import {
   EnvironmentAuthInvalidError,
   DesktopDiscoveredSshHostSchema,
@@ -25,9 +25,9 @@ import {
   AuthAccessTokenResult,
   AuthSessionState,
   AuthWebSocketTicketResult,
-} from "@akeru/contracts";
-import { SshHttpBridgeError } from "@akeru/ssh/errors";
-import { resolveLoopbackSshHttpBaseUrl } from "@akeru/ssh/tunnel";
+} from "@isnadi/contracts";
+import { SshHttpBridgeError } from "@isnadi/ssh/errors";
+import { resolveLoopbackSshHttpBaseUrl } from "@isnadi/ssh/tunnel";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";

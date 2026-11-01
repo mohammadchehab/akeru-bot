@@ -38,4 +38,4 @@ export interface ProviderCommandReactorShape {
 export class ProviderCommandReactor extends Context.Service<
   ProviderCommandReactor,
   ProviderCommandReactorShape
->()("akeru-bot/orchestration/Services/ProviderCommandReactor") {}
+>()("isnadibot/orchestration/Services/ProviderCommandReactor") {}

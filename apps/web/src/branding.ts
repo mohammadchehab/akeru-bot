@@ -1,4 +1,4 @@
-import type { DesktopAppBranding } from "@akeru/contracts";
+import type { DesktopAppBranding } from "@isnadi/contracts";
 import { formatAppDisplayName } from "./branding.logic";
 
 function readInjectedDesktopAppBranding(): DesktopAppBranding | null {

@@ -1,4 +1,4 @@
-import { detectComposerTrigger } from "@akeru/shared/composerTrigger";
+import { detectComposerTrigger } from "@isnadi/shared/composerTrigger";
 
 export interface BotPromptCommandTrigger {
   /** `skill` for a `$` token anywhere, `slash-command` for a `/` that starts a line. */

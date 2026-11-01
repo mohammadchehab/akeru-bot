@@ -1,4 +1,4 @@
-import type { OrchestrationSessionStatus } from "@akeru/contracts";
+import type { OrchestrationSessionStatus } from "@isnadi/contracts";
 
 export function settledTurnStateForSessionStatus(
   status: OrchestrationSessionStatus,

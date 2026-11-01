@@ -6,14 +6,14 @@ import type {
   OrchestrationThreadShell,
   RuntimeMode,
   ServerConfig as T3ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import {
   detectComposerTrigger,
   replaceTextRange,
   serializeComposerFileLink,
   type ComposerTrigger,
-} from "@akeru/shared/composerTrigger";
+} from "@isnadi/shared/composerTrigger";
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import ImageViewing from "react-native-image-viewing";
@@ -24,7 +24,7 @@ import { themeColorWithAlpha } from "../../lib/mobileTheme";
 import { scopedThreadKey } from "../../lib/scopedEntities";
 import { AppText as Text } from "../../components/AppText";
 import { ComposerAttachmentStrip } from "../../components/ComposerAttachmentStrip";
-import { composerActionIsDictation } from "@akeru/client-runtime/dictation";
+import { composerActionIsDictation } from "@isnadi/client-runtime/dictation";
 import { DictationControls } from "../../components/DictationControls";
 import { useEnvironmentComposerDictation } from "../../lib/useEnvironmentComposerDictation";
 import {

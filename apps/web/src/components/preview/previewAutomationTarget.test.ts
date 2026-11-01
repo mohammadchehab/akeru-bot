@@ -1,4 +1,4 @@
-import type { PreviewSessionSnapshot } from "@akeru/contracts";
+import type { PreviewSessionSnapshot } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

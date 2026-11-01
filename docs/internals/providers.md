@@ -1,8 +1,8 @@
 # Provider architecture
 
-> For maintainers. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers. Using IsnadiBot? See [docs/user](../user/).
 
-A provider is the agent runtime that does the actual work. Akeru Bot supports several, and the
+A provider is the agent runtime that does the actual work. IsnadiBot supports several, and the
 orchestration layer does not know which one is behind a thread.
 
 ## Built-in drivers
@@ -46,9 +46,9 @@ Two registries separate configuration from live processes:
 directory to route session and turn operations for a thread, so callers name a thread, not an agent.
 
 Desktop chat does not call `ProviderService` directly from orchestration. The command reactor calls
-Akeru's [`AgentController`][controller]. Codex, Claude, Grok, Kimi, OpenCode Go, and Custom API threads run
-through Akeru's custom Mastra Core controller and call `Session.sendMessage()`. The backing agent is a general-purpose Akeru assistant
-with Akeru-owned observational memory, workspace, tools, approval policy, and lifecycle. Akeru builds
+Isnadi's [`AgentController`][controller]. Codex, Claude, Grok, Kimi, OpenCode Go, and Custom API threads run
+through Isnadi's custom Mastra Core controller and call `Session.sendMessage()`. The backing agent is a general-purpose Isnadi assistant
+with Isnadi-owned observational memory, workspace, tools, approval policy, and lifecycle. Isnadi builds
 workspace and enabled plugin tools per thread, and resolves the selected subscription model through
 the exact provider instance's private transport descriptor. Explicit instance credentials and base
 URLs take precedence and never fall back to provider-wide credentials. AgentController
@@ -62,7 +62,7 @@ them in its per-prompt system context. See [Memory architecture](memory.md).
 ### Runtime seam
 
 AgentController is an Effect layer, but Mastra, the tool runtime, delegation, and memory work are
-Promise-based. [`AkeruRuntimeSeam`][seam] is the only place where those callers re-enter the
+Promise-based. [`IsnadiRuntimeSeam`][seam] is the only place where those callers re-enter the
 controller's Effect runtime. The layer builds it once, and every fiber it starts joins a `FiberSet`
 owned by the layer scope, so stopping the layer interrupts in-flight work.
 
@@ -84,13 +84,13 @@ mutable `let` bindings.
 
 ## Catalog tool parity
 
-The typed Akeru catalog is advertised only by the Mastra controller. Codex, Claude, Grok, Kimi
+The typed Isnadi catalog is advertised only by the Mastra controller. Codex, Claude, Grok, Kimi
 For Coding, and OpenCode Go receive the same catalog and approval semantics through that controller,
 while standard OpenCode remains on the legacy bridge and does not advertise catalog-only tools. A
 legacy-path provider must not claim WebSearch, WebFetch, image generation, or MCP account mutations
 unless it is routed through the shared Mastra runtime.
 
-Mastra sessions wire four network and media catalog backends. `AkeruWebFetch.ts` owns WebFetch.
+Mastra sessions wire four network and media catalog backends. `IsnadiWebFetch.ts` owns WebFetch.
 Each hop is resolved once and rejected if any address is loopback, private, link-local, CGNAT,
 multicast, or IPv4-mapped. The socket is then pinned to the validated address through a custom
 `lookup`, so the connection never asks DNS again and a rebinding resolver cannot swap the target.
@@ -99,7 +99,7 @@ with a 2 MB cap and end with a truncation marker when cut. Each request has an i
 overall deadline.
 
 WebSearch is advertised but reports `status: "unavailable"` with no results. The Mastra providers
-expose no native search call that Akeru can invoke, and Akeru has no search index of its own, so the
+expose no native search call that Isnadi can invoke, and Isnadi has no search index of its own, so the
 tool says so and suggests WebFetch instead of inventing results.
 
 GenerateImage calls `runImageGenerationTool` in the image generation runtime, the same entry the
@@ -120,7 +120,7 @@ receive the guidance. Environment exports carry it on each MCP server record.
 
 `CloudAgent` was dropped from the catalog specification after Cursor was removed as a supported
 provider. A Cursor account would have introduced a separate credential boundary and no longer fits
-Akeru's provider-neutral catalog.
+Isnadi's provider-neutral catalog.
 
 Mastra keeps approval callbacks enabled in every runtime mode. `AgentController` auto-approves
 `ask_user`, then converts its suspension into a user-input request. In automatic mode, it approves
@@ -132,7 +132,7 @@ as one-use approval.
 
 Standard OpenCode is the sole compatibility runtime behind [`LegacyProviderBridge`][bridge]. Its
 server API exposes an OpenCode-owned agent session, not a raw model transport, so wrapping it would
-still leave two agent loops. OpenCode Go is the direct model transport for the unified Akeru harness.
+still leave two agent loops. OpenCode Go is the direct model transport for the unified Isnadi harness.
 A provider change stops the active runtime and starts the selected provider without reusing an
 incompatible resume cursor. AgentController never falls back to a provider-owned loop when a Mastra
 session is absent.
@@ -231,7 +231,7 @@ Group chats retain their thread selection and do not edit a responder's engine.
 
 `AgentController.inspectEngine` validates reasoning against a settled snapshot after resolving the
 bot override. `ReasoningOptions.nativeModelOptions` maps selections to the Mastra state, and
-`withAkeruModelRunOptions` supplies native options on each run: OpenAI Responses effort, Anthropic
+`withIsnadiModelRunOptions` supplies native options on each run: OpenAI Responses effort, Anthropic
 effort/thinking, xAI reasoning effort, OpenCode Go's protocol-specific fields, or a Custom API
 `reasoning_effort` under the `custom-openai` provider options. Kimi uses adaptive
 thinking; older Claude models keep manual thinking where supported. Reset and session reuse replace
@@ -253,7 +253,7 @@ A CLI login or custom CLI home alone cannot make that instance ready. Ambient cr
 available to saved-credential instances, matching the harness's transport precedence.
 
 `HarnessTextGeneration.ts` generates chat titles and branch names through
-`resolveAkeruMastraModel`, the same transport resolver as turns. It reloads saved credentials for
+`resolveIsnadiMastraModel`, the same transport resolver as turns. It reloads saved credentials for
 each operation and preserves instance scoping, Codex reasoning effort and service tier, and Claude
 effort and context-window selections. Claude's 1M context selection uses the same `[1m]` model
 suffix in turns and writing requests. The transport strips this CLI-style suffix from the API
@@ -339,8 +339,8 @@ serializes to `$name`.
 Task, CheckSubagent, MessageSubagent, and StopSubagent let a bot hand a bounded subtask to a
 short-lived worker during its own turn. They are separate from bot-to-bot delegation through
 SendToAgent: a worker has no bot identity of its own and belongs to the parent turn that started it.
-The contracts live in [`akeruWorkers.ts`][workers-contract] and the runtime in
-[`AkeruWorkerRuntime.ts`][workers-runtime].
+The contracts live in [`isnadiWorkers.ts`][workers-contract] and the runtime in
+[`IsnadiWorkerRuntime.ts`][workers-runtime].
 
 Task creates a child thread for the calling bot, with the parent's project, model, runtime mode, and
 workspace, and starts a turn with the task text. The child is always a direct thread with the
@@ -366,9 +366,9 @@ When the parent turn finishes, fails, or is interrupted, every worker it still o
 `Canceled` with `parent-turn-ended` and its child turn is interrupted. Background workers do not
 outlive the turn. A worker id only resolves from the chat that started it.
 
-`workerAccess` in [`AkeruWorkerRuntime.ts`][workers-runtime] narrows the parent's delegation
+`workerAccess` in [`IsnadiWorkerRuntime.ts`][workers-runtime] narrows the parent's delegation
 grant. Workers get no memory scopes, an approval ceiling of `none`, no access to the user's
-computer, and the parent's sandbox or the local workspace. `AKERU_WORKER_EXCLUDED_TOOL_IDS` removes
+computer, and the parent's sandbox or the local workspace. `ISNADI_WORKER_EXCLUDED_TOOL_IDS` removes
 the worker tools, the agent tools (CreateAgent, CheckAgent, MessageAgent, StopAgent, SendToAgent),
 channel creation and updates, SendToUser, request_box_help, ReactToMessage, and UpdateBotProfile.
 The `none` ceiling covers MCP and built-in tools: a call that would open an approval request is
@@ -381,7 +381,7 @@ hide delegated work.
 
 The tools exist only in Mastra tool sessions with worker orchestration configured, which covers
 Codex, Claude, Grok, Kimi For Coding, and OpenCode Go. Standard OpenCode stays on the legacy bridge
-(`usesMastraCode` in [`AgentController.ts`][controller]) and does not advertise them. This is deliberate: the legacy bridge has no Akeru tool session to route
+(`usesMastraCode` in [`AgentController.ts`][controller]) and does not advertise them. This is deliberate: the legacy bridge has no Isnadi tool session to route
 worker calls through, so advertising the tools there would promise behavior the provider cannot run.
 
 ## Raw protocol observation
@@ -410,9 +410,9 @@ path described above.
 
 ## Composio runtime
 
-Composio is an integration provider. Its toolkits appear as named plugins such as Gmail, but Akeru
+Composio is an integration provider. Its toolkits appear as named plugins such as Gmail, but Isnadi
 does not create one durable MCP server for every toolkit. `ComposioService` stores the user-provided
-API key in `ServerSecretStore` and creates one transient Composio MCP session for each Akeru thread.
+API key in `ServerSecretStore` and creates one transient Composio MCP session for each Isnadi thread.
 
 The session includes only toolkits with active connected accounts. It enables Composio's search and
 connection tools, so providers discover tool schemas when they need them. Multi-account mode requires
@@ -423,8 +423,8 @@ The MCP session URL and `x-api-key` header never enter orchestration events or M
 boundary. A change to the connected-account set invalidates the thread cache. The next turn gets a new
 session URL and restarts the provider session through the existing MCP configuration check.
 
-Akeru's approval middleware still controls tool execution. Composio handles hosted account sign-in,
-but it does not replace Akeru's approval rules for send, delete, account-wide, or unknown mutating
+Isnadi's approval middleware still controls tool execution. Composio handles hosted account sign-in,
+but it does not replace Isnadi's approval rules for send, delete, account-wide, or unknown mutating
 actions.
 
 `BotEngine.provider` stores the selected provider instance ID. AgentController keeps that instance
@@ -546,11 +546,11 @@ when a request opens (approval) or user input is requested, via
 [registry]: ../../apps/server/src/provider/Services/ProviderAdapterRegistry.ts
 [service]: ../../apps/server/src/provider/Layers/ProviderService.ts
 [controller]: ../../apps/server/src/provider/Layers/AgentController.ts
-[seam]: ../../apps/server/src/provider/AkeruRuntimeSeam.ts
+[seam]: ../../apps/server/src/provider/IsnadiRuntimeSeam.ts
 [bridge]: ../../apps/server/src/provider/Layers/LegacyProviderBridge.ts
 [contracts]: ../../packages/contracts/src/orchestration.ts
-[workers-contract]: ../../packages/contracts/src/akeruWorkers.ts
-[workers-runtime]: ../../apps/server/src/provider/AkeruWorkerRuntime.ts
+[workers-contract]: ../../packages/contracts/src/isnadiWorkers.ts
+[workers-runtime]: ../../apps/server/src/provider/IsnadiWorkerRuntime.ts
 [worker]: ../../packages/shared/src/DrainableWorker.ts
 [ingest]: ../../apps/server/src/orchestration/Layers/ProviderRuntimeIngestion.ts
 [cmd]: ../../apps/server/src/orchestration/Layers/ProviderCommandReactor.ts

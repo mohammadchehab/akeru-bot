@@ -5,8 +5,8 @@ import {
   MessageId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { botChatTimeline, type BotChatTimelineMessage } from "./botChatTimeline.ts";
@@ -24,7 +24,7 @@ const delegation = (
   second: number,
   parentTurnId: string,
   anchorMessageId: string | null,
-): AkeruDelegationRecord => ({
+): IsnadiDelegationRecord => ({
   delegationId: DelegationId.make(id),
   parentDelegationId: null,
   parentBotId: BotId.make("bot-parent"),

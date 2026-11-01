@@ -1,15 +1,15 @@
-import { EnvironmentRegistry } from "@akeru/client-runtime/connection";
+import { EnvironmentRegistry } from "@isnadi/client-runtime/connection";
 import {
   EnvironmentRpcSubscriptionObserver,
   request,
   type EnvironmentRpcSubscriptionObservation,
-} from "@akeru/client-runtime/rpc";
+} from "@isnadi/client-runtime/rpc";
 import {
   type BackgroundScope,
   type ClientActivityReportInput,
   EnvironmentId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";

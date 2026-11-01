@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
 import { describe, expect, it } from "vite-plus/test";
 
-import type { RelayRouteBinding } from "@akeru/contracts";
+import type { RelayRouteBinding } from "@isnadi/contracts";
 
 import {
   validateRelayAttachment,

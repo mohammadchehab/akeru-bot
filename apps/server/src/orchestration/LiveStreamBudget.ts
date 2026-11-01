@@ -1,4 +1,4 @@
-import { OrchestrationGetSnapshotError } from "@akeru/contracts";
+import { OrchestrationGetSnapshotError } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";

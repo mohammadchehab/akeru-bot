@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { AssetResource } from "@akeru/contracts";
+import type { AssetResource } from "@isnadi/contracts";
 import {
   AssetAttachmentNotFoundError,
   AssetPreviewTypeValidationError,
@@ -10,18 +10,18 @@ import {
   AssetWorkspacePathValidationError,
   AssetWorkspaceResolutionError,
   AssetWorkspaceRootNormalizationError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   isWorkspaceImagePreviewPath,
   isWorkspacePreviewEntryPath,
   WORKSPACE_BROWSER_PREVIEW_EXTENSIONS,
   WORKSPACE_IMAGE_PREVIEW_EXTENSIONS,
-} from "@akeru/shared/filePreview";
+} from "@isnadi/shared/filePreview";
 import {
   IMAGE_DIMENSIONS_HEADER_BYTES,
   readImageDimensions,
   type ImageDimensions,
-} from "@akeru/shared/imageDimensions";
+} from "@isnadi/shared/imageDimensions";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

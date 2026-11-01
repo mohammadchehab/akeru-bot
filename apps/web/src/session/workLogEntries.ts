@@ -7,10 +7,10 @@ import {
   extractWorkLogItemType,
   extractWorkLogRequestKind,
   extractChangedFiles,
-} from "@akeru/client-runtime/work-log-command";
-import { isSilentRunActivity } from "@akeru/client-runtime/silent-run";
-import { isBackgroundTaskActivity } from "@akeru/client-runtime/state/subagentRuntime";
-import { type OrchestrationThreadActivity } from "@akeru/contracts";
+} from "@isnadi/client-runtime/work-log-command";
+import { isSilentRunActivity } from "@isnadi/client-runtime/silent-run";
+import { isBackgroundTaskActivity } from "@isnadi/client-runtime/state/subagentRuntime";
+import { type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { type WorkLogEntry, type WorkLogToolLifecycleStatus } from "./workLogTypes";
 import {
   extractToolTitle,

@@ -1,4 +1,4 @@
-import { EnvironmentId, ThreadId, type AssetResource } from "@akeru/contracts";
+import { EnvironmentId, ThreadId, type AssetResource } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 

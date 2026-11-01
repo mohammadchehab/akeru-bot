@@ -6,13 +6,13 @@ import {
   ProviderSession,
   ProviderDriverKind,
   ProviderInstanceId,
-} from "@akeru/contracts";
-import { ThreadId, TurnId } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { ThreadId, TurnId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as PubSub from "effect/PubSub";
 import * as Stream from "effect/Stream";
 import { vi } from "vite-plus/test";
-import { TextGenerationError } from "@akeru/contracts";
+import { TextGenerationError } from "@isnadi/contracts";
 import {
   AgentControllerUnsupportedEngineError,
   ProviderAdapterRequestError,

@@ -1,5 +1,5 @@
 import { it } from "@effect/vitest";
-import { ThreadId, type PreviewAutomationRequest } from "@akeru/contracts";
+import { ThreadId, type PreviewAutomationRequest } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { HttpClient, HttpClientResponse } from "effect/unstable/http";

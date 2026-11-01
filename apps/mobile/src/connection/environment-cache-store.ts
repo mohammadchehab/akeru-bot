@@ -1,10 +1,10 @@
-import { ConnectionPersistenceError, EnvironmentCacheStore } from "@akeru/client-runtime/platform";
+import { ConnectionPersistenceError, EnvironmentCacheStore } from "@isnadi/client-runtime/platform";
 import {
   type EnvironmentId,
   OrchestrationShellSnapshot,
   OrchestrationThreadDetailSnapshot,
   ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";

@@ -1,5 +1,5 @@
 import { Option, Predicate } from "effect";
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -19,7 +19,7 @@ const AGENT_AWARENESS_REGISTRATION_KEY = "akeru.agent-awareness.registration";
 const RECENT_THREAD_SHORTCUTS_KEY = "akeru.recent-thread-shortcuts";
 
 // Keys written before the rebrand; each read falls back to the legacy key
-// once and the next write lands on the Akeru key, draining the old entry.
+// once and the next write lands on the Isnadi key, draining the old entry.
 const LEGACY_KEYS: ReadonlyArray<readonly [string, string]> = [
   [CONNECTIONS_KEY, "t3code.connections"],
   [AGENT_AWARENESS_DEVICE_ID_KEY, "t3code.agent-awareness.device-id"],
@@ -124,7 +124,7 @@ export class MobileStorage extends Context.Service<
       MobileSecureStorage.MobileSecureStorageError | MobileStorageEncodeError
     >;
   }
->()("@akeru/mobile/persistence/MobileStorage") {}
+>()("@isnadi/mobile/persistence/MobileStorage") {}
 
 export const make = Effect.fn("MobileStorage.make")(function* () {
   const secureStorage = yield* MobileSecureStorage.MobileSecureStorage;

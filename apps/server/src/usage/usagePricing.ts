@@ -10,7 +10,7 @@ import * as Schema from "effect/Schema";
  *
  * @module usagePricing
  */
-import type { UsageCostSource, UsageTokenTotals } from "@akeru/contracts";
+import type { UsageCostSource, UsageTokenTotals } from "@isnadi/contracts";
 
 /**
  * The subset of a LiteLLM entry we price against. All values are USD per token.

@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 export function resolveThreadSelectionDetailRef(
   selectedThreadRef: ScopedThreadRef | null,

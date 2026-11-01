@@ -2,7 +2,7 @@ import {
   type ProviderApprovalDecision,
   type ProviderDriverKind,
   type ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as EffectAcpErrors from "effect-acp/errors";
 

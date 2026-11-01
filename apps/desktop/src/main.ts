@@ -1,3 +1,6 @@
+// Must stay first: maps legacy AKERU_* variables before anything reads the environment.
+import "@isnadi/shared/legacyEnv";
+
 for (const stream of [process.stdout, process.stderr]) {
   stream.on("error", (err: NodeJS.ErrnoException) => {
     if (err.code !== "EPIPE") throw err;
@@ -14,10 +17,10 @@ import * as Option from "effect/Option";
 
 import * as Electron from "electron";
 
-import * as NetService from "@akeru/shared/Net";
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { resolveRemoteT3CliPackageSpec } from "@akeru/ssh/command";
-import type { RemoteT3RunnerOptions } from "@akeru/ssh/tunnel";
+import * as NetService from "@isnadi/shared/Net";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { resolveRemoteT3CliPackageSpec } from "@isnadi/ssh/command";
+import type { RemoteT3RunnerOptions } from "@isnadi/ssh/tunnel";
 import serverPackageJson from "../../server/package.json" with { type: "json" };
 
 import * as DesktopIpc from "./ipc/DesktopIpc.ts";

@@ -2,9 +2,9 @@ import type {
   DesktopPreviewAnnotationTheme,
   DesktopPreviewColorScheme,
   DesktopPreviewTabDefaults,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
-import { normalizePreviewUrl } from "@akeru/shared/preview";
+import { normalizePreviewUrl } from "@isnadi/shared/preview";
 import { type BrowserWindow, webContents } from "electron";
 
 import * as Effect from "effect/Effect";

@@ -1,4 +1,4 @@
-import { TurnId } from "@akeru/contracts";
+import { TurnId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ThreadTurnFoldRow } from "./thread-turn-fold-row";
@@ -12,7 +12,7 @@ vi.mock("../../components/AppText", () => ({ AppText: "span" }));
 vi.mock("../../components/AppSymbol", () => ({ SymbolView: "i" }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { catalogRegistry, createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { catalogRegistry, createTranslator } = await import("@isnadi/client-runtime/i18n");
   const zh = await catalogRegistry["zh-CN"]!();
   const translators = { en: createTranslator("en"), "zh-CN": createTranslator("zh-CN", zh) };
 

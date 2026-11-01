@@ -6,7 +6,7 @@ import {
   ProjectId,
   RoutineId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -282,8 +282,8 @@ it.layer(TestLayer)("bot persistence", (it) => {
           type: "bot.create",
           commandId: CommandId.make(`cmd-bot-default-${sandbox ?? "null"}`),
           botId: BotId.make(`bot-default-${sandbox ?? "null"}`),
-          name: "Akeru",
-          title: "Akeru",
+          name: "Isnadi",
+          title: "Isnadi",
           avatar: { kind: "dither", seed: "akeru" },
           engine: null,
           sandbox,
@@ -308,7 +308,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
     }),
   );
 
-  it.effect("maps historical Akeru Cloud bots to local during projection rebuilds", () =>
+  it.effect("maps historical Isnadi Cloud bots to local during projection rebuilds", () =>
     Effect.gen(function* () {
       const engine = yield* OrchestrationEngineService;
       const projectionPipeline = yield* OrchestrationProjectionPipeline;

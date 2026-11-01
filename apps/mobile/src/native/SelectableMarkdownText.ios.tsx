@@ -1,7 +1,7 @@
 import {
   SelectableMarkdownText as T3SelectableMarkdownText,
   type SelectableMarkdownTextProps,
-} from "@akeru/mobile-markdown-text/renderer";
+} from "@isnadi/mobile-markdown-text/renderer";
 
 import { highlightCodeSnippet } from "../features/threads/codeHighlighter";
 
@@ -12,7 +12,7 @@ export type {
   MarkdownImageRequest,
   NativeMarkdownTextStyle,
   SelectableMarkdownSkill,
-} from "@akeru/mobile-markdown-text/types";
+} from "@isnadi/mobile-markdown-text/types";
 
 export function hasNativeSelectableMarkdownText(): boolean {
   return true;

@@ -1,6 +1,6 @@
 import { Clock, Duration, Effect, Fiber } from "effect";
 import * as NodeCrypto from "node:crypto";
-import { ComputerError, COMPUTER_SESSION_TTL_MS } from "@akeru/contracts";
+import { ComputerError, COMPUTER_SESSION_TTL_MS } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 const isComputerError = Schema.is(ComputerError);

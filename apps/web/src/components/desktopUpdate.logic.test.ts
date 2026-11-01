@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import type { DesktopUpdateActionResult, DesktopUpdateState } from "@akeru/contracts";
+import type { DesktopUpdateActionResult, DesktopUpdateState } from "@isnadi/contracts";
 
 import {
   canCheckForUpdate,

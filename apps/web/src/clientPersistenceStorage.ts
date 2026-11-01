@@ -1,4 +1,4 @@
-import { ClientSettingsSchema, type ClientSettings } from "@akeru/contracts";
+import { ClientSettingsSchema, type ClientSettings } from "@isnadi/contracts";
 
 import { getFirstLocalStorageItem, setLocalStorageItem } from "./hooks/useLocalStorage";
 

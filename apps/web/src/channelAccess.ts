@@ -8,7 +8,7 @@ import {
   type ChannelBinding,
   ChannelFailureCategory,
   type ChannelProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export function canManageChannels(
   session: Pick<AuthSessionState, "authenticated" | "scopes"> | null,

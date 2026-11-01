@@ -1,6 +1,6 @@
 import { useMobileI18n } from "../../lib/i18n";
 import { useAtomSet, useAtomValue } from "@effect/atom-react";
-import { AKERU_PRIVACY_POLICY_VERSION, AKERU_TERMS_VERSION } from "@akeru/contracts/settings";
+import { ISNADI_PRIVACY_POLICY_VERSION, ISNADI_TERMS_VERSION } from "@isnadi/contracts/settings";
 import Constants from "expo-constants";
 import * as Linking from "expo-linking";
 import { AsyncResult } from "effect/unstable/reactivity";
@@ -55,8 +55,8 @@ export function MobilePolicyNotice() {
               label={t("I reviewed these drafts")}
               onPress={() =>
                 updatePreferences({
-                  reviewedPrivacyPolicyVersion: AKERU_PRIVACY_POLICY_VERSION,
-                  reviewedTermsVersion: AKERU_TERMS_VERSION,
+                  reviewedPrivacyPolicyVersion: ISNADI_PRIVACY_POLICY_VERSION,
+                  reviewedTermsVersion: ISNADI_TERMS_VERSION,
                 })
               }
               pressedOverlay={pressedOverlay}

@@ -1,6 +1,6 @@
 import { reserveInput } from "./testUtils/botUsageLedger.ts";
 import { assert, it } from "@effect/vitest";
-import { BotId, ThreadId, TurnId } from "@akeru/contracts";
+import { BotId, ThreadId, TurnId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { sqlitePersistenceLayer } from "../persistence/Layers/Sqlite.ts";

@@ -6,7 +6,7 @@ import {
   type ThemeColors,
   type ThemeDefinition,
   type ThemeVariants,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 import {
   isRecord,
   decodeThemeJson,

@@ -1,10 +1,10 @@
-import type { ServerProviderSkill } from "@akeru/contracts";
-import { formatProviderSkillDisplayName } from "@akeru/client-runtime/providerSkills";
+import type { ServerProviderSkill } from "@isnadi/contracts";
+import { formatProviderSkillDisplayName } from "@isnadi/client-runtime/providerSkills";
 import {
   insertRankedSearchResult,
   normalizeSearchQuery,
   scoreQueryMatch,
-} from "@akeru/shared/searchRanking";
+} from "@isnadi/shared/searchRanking";
 
 export function scoreProviderSkill(skill: ServerProviderSkill, query: string): number | null {
   const normalizedName = skill.name.toLowerCase();

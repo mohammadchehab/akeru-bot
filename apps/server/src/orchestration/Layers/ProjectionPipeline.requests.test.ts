@@ -6,7 +6,7 @@ import {
   ThreadId,
   TurnId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";

@@ -1,11 +1,11 @@
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   type ApprovalRequestId,
   type ProviderApprovalDecision,
   type ProviderApprovalOption,
   type ProviderRequestKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ShieldCheckIcon } from "lucide-react";
 import { memo } from "react";
 import { useI18n } from "~/i18n";
@@ -78,11 +78,11 @@ export const ComposerPendingApprovalActions = memo(function ComposerPendingAppro
 }: ComposerPendingApprovalActionsProps) {
   const { t } = useI18n();
   const options = providedOptions ?? defaultApprovalOptions(t);
-  const isRoutine = toolName === AKERU_CREATE_ROUTINE_TOOL_NAME;
+  const isRoutine = toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME;
 
   const visibleOptions = isRoutine
     ? routineApprovalOptions(t)
-    : toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME
+    : toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME
       ? options
       : requestKind === "command"
         ? commandApprovalOptions(options, t)

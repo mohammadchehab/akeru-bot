@@ -18,7 +18,7 @@ import {
   ThreadId,
   TurnId,
   IsoDateTime,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
 import * as Struct from "effect/Struct";
@@ -141,4 +141,4 @@ export interface ProjectionThreadMessageRepositoryShape {
 export class ProjectionThreadMessageRepository extends Context.Service<
   ProjectionThreadMessageRepository,
   ProjectionThreadMessageRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionThreadMessages/ProjectionThreadMessageRepository") {}
+>()("isnadibot/persistence/Services/ProjectionThreadMessages/ProjectionThreadMessageRepository") {}

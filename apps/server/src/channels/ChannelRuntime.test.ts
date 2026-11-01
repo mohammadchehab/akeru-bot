@@ -1,5 +1,5 @@
 import { BOT_ID, PROJECT_ID, makeHarness, telegramConnect } from "./testUtils/channelRuntime.ts";
-import { type ChannelBinding } from "@akeru/contracts";
+import { type ChannelBinding } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

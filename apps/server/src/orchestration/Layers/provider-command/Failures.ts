@@ -5,7 +5,7 @@ import {
   type OrchestrationThreadShell,
   ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

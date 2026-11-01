@@ -9,7 +9,7 @@ import {
   type ChannelBinding,
   type ChannelProvider,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { type Message, type Thread } from "chat";
 import * as Effect from "effect/Effect";
 import { failWith } from "./ChannelErrors.ts";

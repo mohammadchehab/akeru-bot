@@ -1,15 +1,15 @@
 import { Predicate } from "effect";
 import { describe, expect, it } from "@effect/vitest";
-import { EnvironmentNotRegisteredError } from "@akeru/client-runtime/connection";
-import { isTransportConnectionErrorMessage } from "@akeru/client-runtime/errors";
-import { EnvironmentRpcUnavailableError } from "@akeru/client-runtime/rpc";
+import { EnvironmentNotRegisteredError } from "@isnadi/client-runtime/connection";
+import { isTransportConnectionErrorMessage } from "@isnadi/client-runtime/errors";
+import { EnvironmentRpcUnavailableError } from "@isnadi/client-runtime/rpc";
 import {
   EnvironmentAuthorizationError,
   EnvironmentId,
   OrchestrationDispatchCommandError,
   ProjectId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as RpcClientError from "effect/unstable/rpc/RpcClientError";
 import * as Socket from "effect/unstable/socket/Socket";
 import {

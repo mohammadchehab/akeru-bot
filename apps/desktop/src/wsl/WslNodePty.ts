@@ -6,7 +6,7 @@ import * as Option from "effect/Option";
 
 import { ChildProcessSpawner } from "effect/unstable/process";
 
-import { satisfiesSemverRange } from "@akeru/shared/semver";
+import { satisfiesSemverRange } from "@isnadi/shared/semver";
 
 import {
   type EnsureWslNodePtyOptions,

@@ -8,15 +8,15 @@ import {
   type ChatAttachment,
   type ProviderDriverKind,
   type ProviderInstanceId,
-} from "@akeru/contracts";
-import { sanitizeBranchFragment } from "@akeru/shared/git";
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { sanitizeBranchFragment } from "@isnadi/shared/git";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 
-import { mastraModelId, resolveAkeruMastraModel } from "../provider/AkeruMastraHarness.ts";
+import { mastraModelId, resolveIsnadiMastraModel } from "../provider/IsnadiMastraHarness.ts";
 import { ServerConfig } from "../config.ts";
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 import { getCodexServiceTierOptionValue } from "../codexModelOptions.ts";
@@ -101,7 +101,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
                 (cause) =>
                   new TextGenerationError({
                     operation,
-                    detail: "The selected service tier is not supported by the Akeru harness.",
+                    detail: "The selected service tier is not supported by the Isnadi harness.",
                     cause,
                   }),
               ),
@@ -121,7 +121,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
                 (cause) =>
                   new TextGenerationError({
                     operation,
-                    detail: "The selected reasoning effort is not supported by the Akeru harness.",
+                    detail: "The selected reasoning effort is not supported by the Isnadi harness.",
                     cause,
                   }),
               ),
@@ -153,7 +153,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
                 (cause) =>
                   new TextGenerationError({
                     operation,
-                    detail: "The selected Claude effort is not supported by the Akeru harness.",
+                    detail: "The selected Claude effort is not supported by the Isnadi harness.",
                     cause,
                   }),
               ),
@@ -161,7 +161,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
 
       const text = yield* Effect.tryPromise({
         try: async (abortSignal) => {
-          const resolved = resolveAkeruMastraModel(
+          const resolved = resolveIsnadiMastraModel(
             mastraModelId(
               input.driver,
               input.driver === "claudeAgent"
@@ -180,7 +180,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
 
           const agent = new Agent({
             id: `akeru-${operation}-${input.instanceId}`,
-            name: "Akeru writing",
+            name: "Isnadi writing",
             instructions: "Return only the requested JSON object.",
             model: resolved,
           });
@@ -215,7 +215,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
         catch: (cause) =>
           new TextGenerationError({
             operation,
-            detail: "Akeru harness text generation failed.",
+            detail: "Isnadi harness text generation failed.",
             cause,
           }),
       });
@@ -227,7 +227,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
           (cause) =>
             new TextGenerationError({
               operation,
-              detail: "Akeru harness returned invalid writing output.",
+              detail: "Isnadi harness returned invalid writing output.",
               cause,
             }),
         ),
@@ -237,7 +237,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
         duration: "180 seconds",
         orElse: () =>
           Effect.fail(
-            new TextGenerationError({ operation, detail: "Akeru writing request timed out." }),
+            new TextGenerationError({ operation, detail: "Isnadi writing request timed out." }),
           ),
       }),
     );

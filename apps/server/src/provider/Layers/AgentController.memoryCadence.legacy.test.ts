@@ -2,15 +2,15 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EventId,
   ProviderDriverKind,
   ProjectId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -87,8 +87,8 @@ describe("AgentControllerLive", () => {
             providerInstanceId: openCodeInstanceId,
             runtimeMode: "approval-required",
             memoryAccess: {
-              tenantId: AkeruMemoryTenantId.make("local"),
-              userId: AkeruMemoryUserId.make("owner"),
+              tenantId: IsnadiMemoryTenantId.make("local"),
+              userId: IsnadiMemoryUserId.make("owner"),
               threadId: claudeThreadId,
               projectId: ProjectId.make("project-late-terminal"),
               workspaceRoot: "/workspace/late-terminal",
@@ -222,8 +222,8 @@ describe("AgentControllerLive", () => {
             providerInstanceId: openCodeInstanceId,
             runtimeMode: "approval-required",
             memoryAccess: {
-              tenantId: AkeruMemoryTenantId.make("local"),
-              userId: AkeruMemoryUserId.make("owner"),
+              tenantId: IsnadiMemoryTenantId.make("local"),
+              userId: IsnadiMemoryUserId.make("owner"),
               threadId: claudeThreadId,
               projectId: ProjectId.make("project-racing-terminal"),
               workspaceRoot: "/workspace/racing-terminal",

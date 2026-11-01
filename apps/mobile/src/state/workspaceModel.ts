@@ -1,10 +1,10 @@
-import { type EnvironmentShellSummary } from "@akeru/client-runtime/state/shell";
-import { type NetworkStatus } from "@akeru/client-runtime/connection";
+import { type EnvironmentShellSummary } from "@isnadi/client-runtime/state/shell";
+import { type NetworkStatus } from "@isnadi/client-runtime/connection";
 import {
   type ConnectionFailureCode,
   type EnvironmentConnectionPhase,
-} from "@akeru/client-runtime/connection";
-import type { EnvironmentId, ServerConfig } from "@akeru/contracts";
+} from "@isnadi/client-runtime/connection";
+import type { EnvironmentId, ServerConfig } from "@isnadi/contracts";
 
 import type { EnvironmentPresentation } from "./environments";
 

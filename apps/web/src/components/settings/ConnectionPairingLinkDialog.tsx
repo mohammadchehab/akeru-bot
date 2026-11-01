@@ -7,7 +7,7 @@ import {
   AuthOrchestrationReadScope,
   AuthStandardClientScopes,
   type AuthEnvironmentScope,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import {

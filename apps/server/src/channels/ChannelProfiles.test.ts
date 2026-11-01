@@ -18,7 +18,7 @@ import {
   telegramConnect,
   whatsappConnect,
 } from "./testUtils/channelRuntime.ts";
-import { BotId, ChannelConnectionId, CommandId, DEFAULT_SERVER_SETTINGS } from "@akeru/contracts";
+import { BotId, ChannelConnectionId, CommandId, DEFAULT_SERVER_SETTINGS } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import { it } from "@effect/vitest";

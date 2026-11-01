@@ -3,7 +3,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { BotInboxService } from "./service.ts";
 import {
   browserIncidentKey,
@@ -26,7 +26,7 @@ describe("browser inbox producer", () => {
 
     const input = {
       botId: BotId.make("bot-one"),
-      botName: "Akeru",
+      botName: "Isnadi",
       taskOrRoutine: "Research task",
       detail: "The managed browser endpoint refused the MCP session.",
       resourceKey: "workspace-one",
@@ -56,7 +56,7 @@ describe("browser inbox producer", () => {
 
     const input = {
       botId,
-      botName: "Akeru",
+      botName: "Isnadi",
       taskOrRoutine: "Research task",
       detail: "Browser unavailable.",
     };

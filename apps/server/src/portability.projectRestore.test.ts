@@ -1,4 +1,4 @@
-import { ProjectId, ProviderInstanceId } from "@akeru/contracts";
+import { ProjectId, ProviderInstanceId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it as effectIt } from "@effect/vitest";
 import * as Effect from "effect/Effect";

@@ -1,8 +1,8 @@
-import { BearerConnectionTarget, PrimaryConnectionTarget } from "@akeru/client-runtime/connection";
-import { EnvironmentId, ProjectId, type PortabilityImportPreview } from "@akeru/contracts";
+import { BearerConnectionTarget, PrimaryConnectionTarget } from "@isnadi/client-runtime/connection";
+import { EnvironmentId, ProjectId, type PortabilityImportPreview } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
-import { PORTABILITY_ARCHIVE_MAX_CHARS } from "@akeru/contracts";
+import { PORTABILITY_ARCHIVE_MAX_CHARS } from "@isnadi/contracts";
 
 import {
   canApplyPortabilityPreview,

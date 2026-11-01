@@ -1,4 +1,4 @@
-import type { DictationCapture, DictationDependencies } from "@akeru/client-runtime/dictation";
+import type { DictationCapture, DictationDependencies } from "@isnadi/client-runtime/dictation";
 import {
   AudioModule,
   AudioQuality,

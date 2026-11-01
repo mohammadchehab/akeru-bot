@@ -1,13 +1,13 @@
 import {
   deriveComputerViewer,
   type ComputerCapabilityExplanation,
-} from "@akeru/client-runtime/state/computer-viewer";
+} from "@isnadi/client-runtime/state/computer-viewer";
 import {
   createComputerViewerController,
   type ComputerViewerController,
   type ComputerViewerPort,
-} from "@akeru/client-runtime/state/computer-viewer-controller";
-import { ThreadId, type ComputerFrame, type ComputerState } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/computer-viewer-controller";
+import { ThreadId, type ComputerFrame, type ComputerState } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
 
@@ -53,7 +53,7 @@ function render(
 
   return renderToStaticMarkup(
     <ComputerViewerPanel
-      botName="Akeru"
+      botName="Isnadi"
       view={deriveComputerViewer(state)}
       frame={state.frame}
       notice={state.notice}
@@ -96,7 +96,7 @@ describe("ComputerViewerPanel", () => {
   it("offers take control and stop while the bot drives", async () => {
     const html = render(await shownController());
     expect(owners(html)).toEqual(["bot"]);
-    expect(html).toContain("Akeru is in control");
+    expect(html).toContain("Isnadi is in control");
     expect(actions(html)).toEqual(["take", "stop"]);
     expect(html).toContain('role="application"');
     expect(html).toContain('tabindex="-1"');
@@ -109,7 +109,7 @@ describe("ComputerViewerPanel", () => {
     let html = render(controller);
     expect(owners(html)).toEqual(["you"]);
     expect(actions(html)).toEqual(["return", "stop"]);
-    expect(html).toContain("Return to Akeru");
+    expect(html).toContain("Return to Isnadi");
     expect(html).toContain('tabindex="0"');
 
     await controller.returnControl();

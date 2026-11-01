@@ -8,7 +8,7 @@
  */
 import { type SDKMessage, type SDKResultMessage } from "@anthropic-ai/claude-agent-sdk";
 
-import { EventId, type ProviderRuntimeEvent, RuntimeTaskId, ThreadId } from "@akeru/contracts";
+import { EventId, type ProviderRuntimeEvent, RuntimeTaskId, ThreadId } from "@isnadi/contracts";
 
 import * as Cause from "effect/Cause";
 

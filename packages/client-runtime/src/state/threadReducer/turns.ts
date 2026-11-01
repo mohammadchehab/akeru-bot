@@ -10,7 +10,7 @@ import {
   type OrchestrationLatestTurn,
   type OrchestrationSession,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ThreadDetailReducerResult } from "./types.ts";
 
 import * as O from "effect/Order";

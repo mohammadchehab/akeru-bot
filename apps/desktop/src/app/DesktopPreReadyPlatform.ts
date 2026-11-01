@@ -6,7 +6,7 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 
 import * as Electron from "electron";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import * as DesktopEarlyElectronStartup from "./DesktopEarlyElectronStartup.ts";
 import * as ElectronProtocol from "../electron/ElectronProtocol.ts";
@@ -36,6 +36,7 @@ export const resolveEarlyLinuxElectronOptionsFromProcess =
       homeDirectory: NodeOS.homedir(),
       joinPath: NodePath.posix.join,
       readFileString: (path) => NodeFS.readFileSync(path, "utf8"),
+      exists: (path) => NodeFS.existsSync(path),
     });
 
 export class DesktopPreReadyElectronOptions extends Context.Service<
@@ -44,7 +45,7 @@ export class DesktopPreReadyElectronOptions extends Context.Service<
     readonly linux: DesktopEarlyElectronStartup.EarlyLinuxElectronOptions | null;
     readonly linuxPasswordStoreCommandLine: string | null;
   }
->()("@akeru/desktop/app/DesktopPreReadyPlatform/DesktopPreReadyElectronOptions") {}
+>()("@isnadi/desktop/app/DesktopPreReadyPlatform/DesktopPreReadyElectronOptions") {}
 
 export const make = Effect.gen(function* () {
   const platform = yield* HostProcessPlatform;

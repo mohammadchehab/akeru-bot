@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { MemoryApprovalError } from "./MemoryShareProposal.ts";
 

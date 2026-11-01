@@ -3,7 +3,7 @@ import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { describe } from "vite-plus/test";
-import { DEFAULT_MODEL } from "@akeru/contracts";
+import { DEFAULT_MODEL } from "@isnadi/contracts";
 import * as CodexErrors from "effect-codex-app-server/errors";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";
 import {
@@ -438,7 +438,7 @@ describe("buildCodexDeveloperInstructions", () => {
   });
 });
 
-describe("Akeru browser developer instructions", () => {
+describe("Isnadi browser developer instructions", () => {
   it("prefers the product-native preview tools", () => {
     for (const instructions of [codexDefaultModeDeveloperInstructions(true)]) {
       NodeAssert.match(instructions, /akeru/);
@@ -449,7 +449,7 @@ describe("Akeru browser developer instructions", () => {
   });
 });
 
-describe("Akeru browser developer instructions", () => {
+describe("Isnadi browser developer instructions", () => {
   it("omits the browser block entirely when the preview tools are not attached", () => {
     for (const instructions of [codexDefaultModeDeveloperInstructions(false)]) {
       NodeAssert.doesNotMatch(instructions, /preview_status/);
@@ -465,7 +465,7 @@ describe("Akeru browser developer instructions", () => {
   });
 });
 
-describe("Akeru browser developer instructions", () => {
+describe("Isnadi browser developer instructions", () => {
   it("tracks the turn's MCP configuration rather than defaulting to on", () => {
     const runtime = { model: "gpt-5.3-codex", reasoningEffort: "high" };
     NodeAssert.match(buildCodexDeveloperInstructions(runtime, true), /preview_open/);

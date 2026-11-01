@@ -1,4 +1,4 @@
-import { BotId, McpServerId, ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { BotId, McpServerId, ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildProviderAccessCapabilities, subscriptionDependentBots } from "./snapshot.ts";
@@ -127,7 +127,7 @@ describe("provider access capabilities", () => {
         {
           ...baseSubscription,
           health: "recovered",
-          dependentBots: [{ id: BotId.make("bot-1"), name: "Akeru" }],
+          dependentBots: [{ id: BotId.make("bot-1"), name: "Isnadi" }],
         },
       ],
       [grokProvider("ready", true)],

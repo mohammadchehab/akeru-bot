@@ -1,4 +1,4 @@
-import { type OrchestrationCommand, type OrchestrationReadModel } from "@akeru/contracts";
+import { type OrchestrationCommand, type OrchestrationReadModel } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";

@@ -1,8 +1,8 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 import type { ProviderServiceError } from "../../Errors.ts";
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
 import {
@@ -10,29 +10,29 @@ import {
   RuntimeRequestId,
   TurnId,
   type BotId,
-  type AkeruCreateRoutineInput,
+  type IsnadiCreateRoutineInput,
   type ProviderRuntimeEvent,
   ThreadId,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import * as Deferred from "effect/Deferred";
 
 import * as Effect from "effect/Effect";
 
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
-import { AkeruMemoryTurnHarness, type AkeruMemoryTurn } from "../../AkeruMemoryTurnHarness.ts";
-import { type AkeruDelegationChildOutcome } from "../../AkeruDelegationRuntime.ts";
-import type { AkeruWorkerRuntime } from "../../AkeruWorkerRuntime.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
+import { IsnadiMemoryTurnHarness, type IsnadiMemoryTurn } from "../../IsnadiMemoryTurnHarness.ts";
+import { type IsnadiDelegationChildOutcome } from "../../IsnadiDelegationRuntime.ts";
+import type { IsnadiWorkerRuntime } from "../../IsnadiWorkerRuntime.ts";
 
 import type { PendingWaiters } from "../../PendingWaiters.ts";
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
 
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
 
 import { AgentControllerRuntimeError } from "../../Errors.ts";
 
@@ -47,13 +47,13 @@ import {
 } from "./State.ts";
 
 export function createTurnLifecycle(deps: {
-  readonly runPromise: AkeruRuntimeSeam["runPromise"];
-  readonly forkPromise: AkeruRuntimeSeam["forkPromise"];
-  readonly fork: AkeruRuntimeSeam["fork"];
+  readonly runPromise: IsnadiRuntimeSeam["runPromise"];
+  readonly forkPromise: IsnadiRuntimeSeam["forkPromise"];
+  readonly fork: IsnadiRuntimeSeam["fork"];
   readonly pendingRoutineRequests: PendingWaiters<
     {
       readonly threadId: string;
-      readonly input: AkeruCreateRoutineInput;
+      readonly input: IsnadiCreateRoutineInput;
       readonly timezone: string;
     },
     unknown,
@@ -73,7 +73,7 @@ export function createTurnLifecycle(deps: {
     threadId: ThreadId;
     createdAt: string;
   };
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly memoryUsageByThread: Map<string, { readonly botId: BotId; turnId: TurnId }>;
   readonly publishSessionState: (
     threadId: ThreadId,
@@ -106,12 +106,12 @@ export function createTurnLifecycle(deps: {
         never
       >;
   readonly refreshEntityMemoryAccess: (
-    access: AkeruMemoryThreadAccess | undefined,
-  ) => Promise<AkeruMemoryThreadAccess | undefined>;
-  readonly memoryTurnHarness: AkeruMemoryTurnHarness;
+    access: IsnadiMemoryThreadAccess | undefined,
+  ) => Promise<IsnadiMemoryThreadAccess | undefined>;
+  readonly memoryTurnHarness: IsnadiMemoryTurnHarness;
   readonly mastraReservationKey: (threadId: ThreadId, turnId: TurnId) => string;
-  readonly mastraMemoryTurns: Map<string, AkeruMemoryTurn>;
-  readonly entityMemoryContext: (access: AkeruMemoryThreadAccess | undefined) => Promise<string>;
+  readonly mastraMemoryTurns: Map<string, IsnadiMemoryTurn>;
+  readonly entityMemoryContext: (access: IsnadiMemoryThreadAccess | undefined) => Promise<string>;
   readonly legacyProviderBridge: LegacyProviderBridge["Service"];
   readonly startPendingTurn: (active: ActiveSession, pending: PendingTurn) => void;
   readonly queueTurnMemory: (threadId: ThreadId, active: ActiveSession, turn: ActiveTurn) => void;
@@ -120,13 +120,13 @@ export function createTurnLifecycle(deps: {
     active: ActiveSession,
     turn: ActiveTurn,
   ) => void;
-  readonly resolveChildWaiter: (threadId: ThreadId, outcome: AkeruDelegationChildOutcome) => void;
-  readonly workerRuntime: AkeruWorkerRuntime;
+  readonly resolveChildWaiter: (threadId: ThreadId, outcome: IsnadiDelegationChildOutcome) => void;
+  readonly workerRuntime: IsnadiWorkerRuntime;
   readonly wired: () => {
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   };
@@ -333,7 +333,7 @@ export function createTurnLifecycle(deps: {
         const reservationKey = deps.mastraReservationKey(threadId, turnId);
         deps.mastraMemoryTurns.set(reservationKey, memoryTurn);
         let accepted = false;
-        let reviewToolSession: AkeruToolSession | undefined;
+        let reviewToolSession: IsnadiToolSession | undefined;
 
         try {
           const memoryHandler = pending.toolSession.memoryHandlers?.memory;
@@ -395,7 +395,7 @@ export function createTurnLifecycle(deps: {
       () => active.pendingDispatches.delete(dispatch),
     );
     deps.forkPromise(
-      "Akeru turn dispatch failed.",
+      "Isnadi turn dispatch failed.",
       () =>
         dispatch.then(() => {
           const turn = active.activeTurn;
@@ -468,7 +468,7 @@ export function createTurnLifecycle(deps: {
       usage: { inputTokens: turn.inputTokens, outputTokens: turn.outputTokens },
     });
     deps.fork(
-      "Akeru worker could not record its turn outcome.",
+      "Isnadi worker could not record its turn outcome.",
       deps.workerRuntime.childTurnFinished(threadId, {
         state: state === "completed" ? "completed" : "failed",
         ...(state === "completed" && turn.assistantText.trim()
@@ -478,7 +478,7 @@ export function createTurnLifecycle(deps: {
       { threadId, turnId: turn.turnId },
     );
     deps.fork(
-      "Akeru workers could not settle after the parent turn.",
+      "Isnadi workers could not settle after the parent turn.",
       deps.workerRuntime.parentTurnEnded(threadId, turn.turnId),
       {
         threadId,
@@ -489,7 +489,7 @@ export function createTurnLifecycle(deps: {
 
     if (state !== "completed" && delegationRuntime) {
       deps.forkPromise(
-        "Akeru delegated work could not settle after the parent turn.",
+        "Isnadi delegated work could not settle after the parent turn.",
         () =>
           delegationRuntime.parentFinished({
             threadId,

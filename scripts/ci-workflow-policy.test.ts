@@ -111,7 +111,7 @@ describe("CI workflow budget", () => {
       "node scripts/check-public-dependencies.ts",
       "vp install --frozen-lockfile",
       "vp exec changeset status --since=origin/main",
-      "vp run --filter @akeru/desktop ensure:electron",
+      "vp run --filter @isnadi/desktop ensure:electron",
       "node scripts/validate-plugin-catalog.ts",
       "scripts/validate-plugin-catalog.test.ts",
       "scripts/plugin-contribution-policy.test.ts",
@@ -134,9 +134,9 @@ describe("CI workflow budget", () => {
     expect(ci.jobs.check).not.toHaveProperty("strategy");
 
     const serverCommand =
-      commands.find((command) => command.includes("vp run --filter akeru-bot test")) ?? "";
+      commands.find((command) => command.includes("vp run --filter isnadibot test")) ?? "";
 
-    expect(serverCommand).toContain("vp run --filter akeru-bot test");
+    expect(serverCommand).toContain("vp run --filter isnadibot test");
     expect(serverCommand).toContain(
       "--exclude integration/orchestrationEngine.integration.test.ts",
     );
@@ -245,10 +245,10 @@ describe("CI workflow budget", () => {
     ).toContain("^Signature=adhoc$");
     expect(
       steps.find((step) => step.name === "Verify unsigned macOS app signature")?.run,
-    ).toContain("grep -Fqx 'Identifier=dev.leodoes.akeru'");
+    ).toContain("grep -Fqx 'Identifier=dev.leodoes.isnadi'");
   });
 
-  it("publishes the Akeru Remote archives and signed manifest the installers download", () => {
+  it("publishes the Isnadi Remote archives and signed manifest the installers download", () => {
     const release = workflow(".github/workflows/release.yml");
 
     const remote = release.jobs.remote as Job & {
@@ -267,21 +267,21 @@ describe("CI workflow budget", () => {
     const commands = remote.steps.flatMap((step) => (step.run ? [step.run] : []));
     expect(commands.join("\n")).not.toMatch(/docker/i);
     expect(commands).toContain(
-      'node scripts/package-remote.ts archive "$RUNNER_TEMP/akeru-runtime" release "$RELEASE_VERSION" ${{ matrix.platform }} ${{ matrix.arch }}',
+      'node scripts/package-remote.ts archive "$RUNNER_TEMP/isnadi-runtime" release "$RELEASE_VERSION" ${{ matrix.platform }} ${{ matrix.arch }}',
     );
     const upload = remote.steps.find((step) => step.uses === "actions/upload-artifact@v7");
     expect(upload?.with?.name).toBe(
       "${{ needs.preflight.outputs.channel }}-remote-${{ matrix.platform }}-${{ matrix.arch }}",
     );
-    expect(upload?.with?.path).toBe("release/Akeru-Remote-*");
+    expect(upload?.with?.path).toBe("release/Isnadi-Remote-*");
 
     const publish = release.jobs.release?.steps ?? [];
     const names = publish.map((step) => step.name);
-    expect(names.indexOf("Sign the Akeru Remote manifest")).toBeGreaterThan(-1);
-    expect(names.indexOf("Sign the Akeru Remote manifest")).toBeLessThan(
+    expect(names.indexOf("Sign the Isnadi Remote manifest")).toBeGreaterThan(-1);
+    expect(names.indexOf("Sign the Isnadi Remote manifest")).toBeLessThan(
       names.indexOf("Verify names and hashes"),
     );
-    expect(publish.find((step) => step.name === "Sign the Akeru Remote manifest")?.run).toBe(
+    expect(publish.find((step) => step.name === "Sign the Isnadi Remote manifest")?.run).toBe(
       'node scripts/package-remote.ts manifest release "$RELEASE_VERSION"',
     );
   });

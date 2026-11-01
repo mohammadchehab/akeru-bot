@@ -1,4 +1,4 @@
-import { type OrchestrationThread } from "@akeru/contracts";
+import { type OrchestrationThread } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

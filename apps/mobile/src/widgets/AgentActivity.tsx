@@ -236,11 +236,11 @@ export function AgentActivity(
     </HStack>
   );
 
-  // The asset catalog contains the same square Akeru artwork used for the app
+  // The asset catalog contains the same square Isnadi artwork used for the app
   // icon and favicon.
   const renderLogo = (size: number) => (
     <HStack modifiers={[frame({ width: size, height: size })]}>
-      <Image assetName="AkeruIcon" modifiers={[resizable()]} />
+      <Image assetName="IsnadiIcon" modifiers={[resizable()]} />
     </HStack>
   );
 

@@ -1,4 +1,4 @@
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { it, assert, describe } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as ProviderService from "../Services/ProviderService.ts";

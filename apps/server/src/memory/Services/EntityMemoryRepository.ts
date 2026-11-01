@@ -1,20 +1,20 @@
 import type {
-  AkeruMemoryId,
-  AkeruMemoryMutation,
-  AkeruMemoryRevision,
-  AkeruMemoryRootId,
-  AkeruMemoryTargetScope,
-  AkeruMemoryThreadAccess,
-  AkeruMemoryImportPreview,
-  AkeruMemoryImportApplyResult,
+  IsnadiMemoryId,
+  IsnadiMemoryMutation,
+  IsnadiMemoryRevision,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTargetScope,
+  IsnadiMemoryThreadAccess,
+  IsnadiMemoryImportPreview,
+  IsnadiMemoryImportApplyResult,
   MessageId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
 import type { ProjectionRepositoryError } from "../../persistence/Errors.ts";
-import type { AkeruMemoryAccessDenied } from "../EntityMemoryAccess.ts";
+import type { IsnadiMemoryAccessDenied } from "../EntityMemoryAccess.ts";
 import type { AuthorizedMemoryPartition } from "../EntityMemoryAccess.ts";
 
 export class EntityMemoryConflictError extends Schema.TaggedErrorClass<EntityMemoryConflictError>()(
@@ -40,22 +40,22 @@ export class EntityMemoryNotFoundError extends Schema.TaggedErrorClass<EntityMem
 }
 
 export interface SearchEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
+  readonly access: IsnadiMemoryThreadAccess;
   readonly query: string;
   readonly limit: number;
 }
 
 export interface GetEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly rootId: AkeruMemoryRootId;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly rootId: IsnadiMemoryRootId;
 }
 
 export interface ListEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
+  readonly access: IsnadiMemoryThreadAccess;
 }
 
 export interface ListEntityMemoryPartitionsInput {
-  readonly access: AkeruMemoryThreadAccess;
+  readonly access: IsnadiMemoryThreadAccess;
   readonly partitions: ReadonlyArray<AuthorizedMemoryPartition>;
   readonly complete: boolean;
 }
@@ -63,8 +63,8 @@ export interface ListEntityMemoryPartitionsInput {
 export interface DeleteEntityMemoryInput extends GetEntityMemoryInput {}
 
 export interface InsertEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly revision: AkeruMemoryRevision;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly revision: IsnadiMemoryRevision;
 }
 
 export interface ReviseEntityMemoryInput extends InsertEntityMemoryInput {
@@ -72,9 +72,9 @@ export interface ReviseEntityMemoryInput extends InsertEntityMemoryInput {
 }
 
 export interface ApplyEntityMemoryMutationInput {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly mutation: Extract<AkeruMemoryMutation, { readonly operation: `fact.${string}` }>;
-  readonly memoryId: AkeruMemoryId;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly mutation: Extract<IsnadiMemoryMutation, { readonly operation: `fact.${string}` }>;
+  readonly memoryId: IsnadiMemoryId;
   readonly updatedAt: string;
   /** Shared-scope policy for a mutation that lands a fact on a shared scope. */
   readonly sharedProjectApproval: "approved" | "pending";
@@ -83,34 +83,34 @@ export interface ApplyEntityMemoryMutationInput {
 // Writes a new approved fact to the partition that backs a target scope for
 // the given thread access. Used when a person approves a memory candidate.
 export interface InsertScopedEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly scope: AkeruMemoryTargetScope;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly scope: IsnadiMemoryTargetScope;
   readonly fact: string;
   readonly sensitive: boolean;
   readonly confidence: number;
   readonly sourceMessageId: MessageId | null;
-  readonly memoryId: AkeruMemoryId;
+  readonly memoryId: IsnadiMemoryId;
   readonly createdAt: string;
 }
 
 export interface TombstoneEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly rootId: AkeruMemoryRootId;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly rootId: IsnadiMemoryRootId;
   readonly expectedRevision: number;
-  readonly memoryId: AkeruMemoryId;
+  readonly memoryId: IsnadiMemoryId;
   readonly updatedAt: string;
 }
 
 export interface ImportEntityMemoryInput {
-  readonly access: AkeruMemoryThreadAccess;
+  readonly access: IsnadiMemoryThreadAccess;
   readonly partitions: ReadonlyArray<AuthorizedMemoryPartition>;
-  readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+  readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
 }
 
 export interface ApplyEntityMemoryImportInput extends ImportEntityMemoryInput {
   readonly previewHash: string;
   readonly resolutions?: ReadonlyArray<{
-    readonly rootId: AkeruMemoryRootId;
+    readonly rootId: IsnadiMemoryRootId;
     readonly decision: "keep-local" | "use-archive";
   }>;
 }
@@ -126,7 +126,7 @@ export class EntityMemoryImportError extends Schema.TaggedErrorClass<EntityMemor
 
 export type EntityMemoryRepositoryError =
   | ProjectionRepositoryError
-  | AkeruMemoryAccessDenied
+  | IsnadiMemoryAccessDenied
   | EntityMemoryConflictError
   | EntityMemoryNotFoundError
   | EntityMemoryImportError;
@@ -135,50 +135,50 @@ export interface EntityMemoryRepositoryShape {
   readonly recordDerivedCopies?: (input: {
     readonly tenantId: string;
     readonly threadId: string;
-    readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+    readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
   }) => Effect.Effect<void, EntityMemoryRepositoryError>;
   readonly insert: (
     input: InsertEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryRevision, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision, EntityMemoryRepositoryError>;
   readonly revise: (
     input: ReviseEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryRevision, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision, EntityMemoryRepositoryError>;
   readonly tombstone: (
     input: TombstoneEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryRevision, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision, EntityMemoryRepositoryError>;
   readonly getCurrent: (
     input: GetEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryRevision, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision, EntityMemoryRepositoryError>;
   readonly search: (
     input: SearchEntityMemoryInput,
-  ) => Effect.Effect<ReadonlyArray<AkeruMemoryRevision>, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiMemoryRevision>, EntityMemoryRepositoryError>;
   readonly listCurrent: (
     input: ListEntityMemoryInput,
-  ) => Effect.Effect<ReadonlyArray<AkeruMemoryRevision>, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiMemoryRevision>, EntityMemoryRepositoryError>;
   readonly listHistory: (
     input: GetEntityMemoryInput,
-  ) => Effect.Effect<ReadonlyArray<AkeruMemoryRevision>, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiMemoryRevision>, EntityMemoryRepositoryError>;
   readonly listByPartitions: (
     input: ListEntityMemoryPartitionsInput,
-  ) => Effect.Effect<ReadonlyArray<AkeruMemoryRevision>, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiMemoryRevision>, EntityMemoryRepositoryError>;
   readonly previewImport: (
     input: ImportEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryImportPreview, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryImportPreview, EntityMemoryRepositoryError>;
   readonly applyImport: (
     input: ApplyEntityMemoryImportInput,
-  ) => Effect.Effect<AkeruMemoryImportApplyResult, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryImportApplyResult, EntityMemoryRepositoryError>;
   readonly deleteRoot: (
     input: DeleteEntityMemoryInput,
   ) => Effect.Effect<void, EntityMemoryRepositoryError>;
   readonly insertScopedFact: (
     input: InsertScopedEntityMemoryInput,
-  ) => Effect.Effect<AkeruMemoryRevision, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision, EntityMemoryRepositoryError>;
   readonly applyMutation: (
     input: ApplyEntityMemoryMutationInput,
-  ) => Effect.Effect<AkeruMemoryRevision | null, EntityMemoryRepositoryError>;
+  ) => Effect.Effect<IsnadiMemoryRevision | null, EntityMemoryRepositoryError>;
 }
 
 export class EntityMemoryRepository extends Context.Service<
   EntityMemoryRepository,
   EntityMemoryRepositoryShape
->()("akeru-bot/memory/Services/EntityMemoryRepository") {}
+>()("isnadibot/memory/Services/EntityMemoryRepository") {}

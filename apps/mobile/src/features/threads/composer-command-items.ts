@@ -1,10 +1,10 @@
-import type { ProjectEntry, ServerProvider } from "@akeru/contracts";
-import type { ComposerTrigger } from "@akeru/shared/composerTrigger";
+import type { ProjectEntry, ServerProvider } from "@isnadi/contracts";
+import type { ComposerTrigger } from "@isnadi/shared/composerTrigger";
 import {
   insertRankedSearchResult,
   normalizeSearchQuery,
   scoreQueryMatch,
-} from "@akeru/shared/searchRanking";
+} from "@isnadi/shared/searchRanking";
 
 import type { ComposerCommandItem } from "./ComposerCommandPopover";
 import { matchesSlashSkillQuery } from "./composerSlashSkillSearch";

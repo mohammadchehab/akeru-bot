@@ -6,8 +6,8 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EventId,
   GroupId,
@@ -16,7 +16,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -84,8 +84,8 @@ describe("AgentControllerLive", () => {
           modelSelection: codexSelection,
           runtimeMode: "full-access",
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-review-interrupt"),
             workspaceRoot: "/workspace/review-interrupt",
@@ -133,8 +133,8 @@ describe("AgentControllerLive", () => {
       const botId = BotId.make("bot-mastra-review");
 
       const access = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: codexThreadId,
         projectId: ProjectId.make("project-mastra-review"),
         workspaceRoot: "/workspace/mastra-review",
@@ -263,8 +263,8 @@ describe("AgentControllerLive", () => {
           modelSelection: codexSelection,
           runtimeMode: "full-access",
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-review-renewal"),
             workspaceRoot: "/workspace/review-renewal",
@@ -479,8 +479,8 @@ describe("AgentControllerLive", () => {
       const groupId = GroupId.make("group-legacy-review");
 
       const memoryAccess = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId: ProjectId.make("project-legacy-review"),
         workspaceRoot: "/workspace/legacy-review",

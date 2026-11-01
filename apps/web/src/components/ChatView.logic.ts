@@ -11,7 +11,7 @@ import {
   type ServerProvider,
   type ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ComposerSubmissionIntent } from "../composer-logic";
 import type { DraftThreadEnvMode } from "../composerDraftStore";
 import { type ComposerImageAttachment, type DraftThreadState } from "../composerDraftStore";

@@ -1,6 +1,6 @@
 import * as NodeFS from "node:fs";
 
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { memoryDocumentCopy } from "./botMemoryCopy";

@@ -4,7 +4,7 @@ import type {
   ChannelFailureCategory,
   ChannelProvider,
   ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { createTranslator, type MessageKey, type TranslationParams } from "./i18n/index.ts";
 

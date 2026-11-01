@@ -1,9 +1,9 @@
 import * as Predicate from "effect/Predicate";
-import type { RepositoryIdentity } from "@akeru/contracts";
+import type { RepositoryIdentity } from "@isnadi/contracts";
 import {
   detectSourceControlProviderFromGitRemoteUrl,
   normalizeGitRemoteUrl,
-} from "@akeru/shared/git";
+} from "@isnadi/shared/git";
 import * as Cache from "effect/Cache";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -30,7 +30,7 @@ export class RepositoryIdentityResolver extends Context.Service<
   {
     readonly resolve: (cwd: string) => Effect.Effect<RepositoryIdentity | null>;
   }
->()("akeru-bot/project/RepositoryIdentityResolver") {}
+>()("isnadibot/project/RepositoryIdentityResolver") {}
 
 function parseRemoteFetchUrls(stdout: string): Map<string, string> {
   const remotes = new Map<string, string>();

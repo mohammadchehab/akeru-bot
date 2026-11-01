@@ -9,7 +9,7 @@ import {
   startDelegatedRoutine,
   takeUntil,
 } from "./testUtils/runtimeLive.ts";
-import { BotId, type OrchestrationEvent, RoutineRunId, TurnId } from "@akeru/contracts";
+import { BotId, type OrchestrationEvent, RoutineRunId, TurnId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Queue from "effect/Queue";

@@ -1,4 +1,4 @@
-import { WS_METHODS } from "@akeru/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import {

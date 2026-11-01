@@ -1,7 +1,7 @@
 import type * as Schema from "effect/Schema";
 import { it as effectIt } from "@effect/vitest";
 
-import type { DesktopPreviewRecordingFrame } from "@akeru/contracts";
+import type { DesktopPreviewRecordingFrame } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

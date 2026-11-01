@@ -1,8 +1,8 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeOS from "node:os";
 
-import type { AuthClientSession } from "@akeru/contracts";
-import { QrCode } from "@akeru/shared/qrCode";
+import type { AuthClientSession } from "@isnadi/contracts";
+import { QrCode } from "@isnadi/shared/qrCode";
 import * as Effect from "effect/Effect";
 import { HttpServer } from "effect/unstable/http";
 

@@ -4,7 +4,7 @@ import type {
   ResourceMonitorExternalProcess,
   ResourceMonitorProcessTableEntry,
   ResourceMonitorSnapshotEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Scope from "effect/Scope";
@@ -45,4 +45,4 @@ export class NativeTelemetryClient extends Context.Service<
       Scope.Scope
     >;
   }
->()("akeru-bot/resourceTelemetry/NativeTelemetryTypes/NativeTelemetryClient") {}
+>()("isnadibot/resourceTelemetry/NativeTelemetryTypes/NativeTelemetryClient") {}

@@ -1,10 +1,10 @@
 # Provider connections
 
-Akeru Bot connects to provider subscriptions and API keys from **Settings → Providers**. Credentials stay in the environment that owns the connection.
+IsnadiBot connects to provider subscriptions and API keys from **Settings → Providers**. Credentials stay in the environment that owns the connection.
 
-ChatGPT, Claude, Grok, Kimi For Coding, and OpenCode Go run through Akeru's built-in runtime.
+ChatGPT, Claude, Grok, Kimi For Coding, and OpenCode Go run through Isnadi's built-in runtime.
 You do not need their command-line tools installed or signed in to create a bot, chat, or generate
-chat titles and branch names with ChatGPT, Claude, or Grok. After connecting an account in Akeru,
+chat titles and branch names with ChatGPT, Claude, or Grok. After connecting an account in Isnadi,
 choose its models in onboarding or the bot's settings. If the account is disconnected, reconnect
 it in **Settings → Providers**.
 
@@ -17,11 +17,11 @@ see [Backup accounts](#backup-accounts). To keep a second subscription apart ins
 and a personal one that different bots use, choose **Add separate account** on the provider's page.
 Give it a name, then sign in from its card. A separate account configured with its own credentials
 uses those credentials rather than the shared connection. A custom configuration directory alone
-does not connect an account to Akeru's runtime.
+does not connect an account to Isnadi's runtime.
 
 ## Custom API endpoints
 
-**Settings > Providers > Custom API** connects Akeru Bot to any OpenAI-compatible HTTP endpoint: a
+**Settings > Providers > Custom API** connects IsnadiBot to any OpenAI-compatible HTTP endpoint: a
 hosted service, a gateway, or a server you run yourself. There is no account to connect and no
 sign-in flow.
 
@@ -40,7 +40,7 @@ instance shows **Needs attention** with the reason until a later check succeeds.
 with it, since some keys may use models without listing them.
 
 The model list comes from the endpoint's `/models` response. Models you add by hand are kept alongside
-it, and a model disappears from the picker once the endpoint stops listing it. If Akeru cannot read the
+it, and a model disappears from the picker once the endpoint stops listing it. If Isnadi cannot read the
 endpoint, the last successful list stays and the provider row explains what went wrong.
 
 Add one account per endpoint to keep several side by side, such as a local server and a hosted
@@ -83,4 +83,4 @@ The check covers ChatGPT/Codex, Claude, Grok, and Kimi For Coding logins, and Op
 
 ## Device codes
 
-For providers that use a device code, Akeru Bot shows the code beside the sign-in link, in Settings, in desktop onboarding, and on mobile. Choose **Copy sign-in code** (or **Copy code** on mobile) to copy it. **Code copied** confirms a successful copy. If the browser, desktop shell, or phone denies clipboard access, Akeru Bot says so. Select the code, copy it manually, and continue on the provider's sign-in page.
+For providers that use a device code, IsnadiBot shows the code beside the sign-in link, in Settings, in desktop onboarding, and on mobile. Choose **Copy sign-in code** (or **Copy code** on mobile) to copy it. **Code copied** confirms a successful copy. If the browser, desktop shell, or phone denies clipboard access, IsnadiBot says so. Select the code, copy it manually, and continue on the provider's sign-in page.

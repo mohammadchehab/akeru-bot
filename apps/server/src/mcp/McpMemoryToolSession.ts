@@ -1,14 +1,17 @@
-import type { ThreadId } from "@akeru/contracts";
+import type { ThreadId } from "@isnadi/contracts";
 
-import type { AkeruMemoryToolHandler } from "../memory/BotMemoryToolHandlers.ts";
+import type { IsnadiMemoryToolHandler } from "../memory/BotMemoryToolHandlers.ts";
 
-const handlersByThread = new Map<string, AkeruMemoryToolHandler>();
+const handlersByThread = new Map<string, IsnadiMemoryToolHandler>();
 
-export function setMcpMemoryToolSession(threadId: ThreadId, handler: AkeruMemoryToolHandler): void {
+export function setMcpMemoryToolSession(
+  threadId: ThreadId,
+  handler: IsnadiMemoryToolHandler,
+): void {
   handlersByThread.set(String(threadId), handler);
 }
 
-export function readMcpMemoryToolSession(threadId: ThreadId): AkeruMemoryToolHandler | undefined {
+export function readMcpMemoryToolSession(threadId: ThreadId): IsnadiMemoryToolHandler | undefined {
   return handlersByThread.get(String(threadId));
 }
 

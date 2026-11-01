@@ -1,13 +1,13 @@
 import * as Data from "effect/Data";
 
 import * as Predicate from "effect/Predicate";
-import { ExecutionEnvironmentDescriptor } from "@akeru/contracts";
-import { resolveWorktreeT3Home } from "@akeru/shared/devHome";
+import { ExecutionEnvironmentDescriptor } from "@isnadi/contracts";
+import { resolveWorktreeT3Home } from "@isnadi/shared/devHome";
 import {
   buildTailscaleHttpsBaseUrl,
   ensureTailscaleServe,
   readTailscaleStatus,
-} from "@akeru/tailscale";
+} from "@isnadi/tailscale";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -154,7 +154,7 @@ export const probeEnvironmentDescriptor = (
 
     // Bad-gateway family means a proxy (Tailscale Serve) answered for a
     // backend that is gone — a stale mapping, not a live occupant. Treating
-    // it as unreachable lets `akeru pair --tailscale` repair its own mapping
+    // it as unreachable lets `isnadi pair --tailscale` repair its own mapping
     // after the server's port changed.
     if (response.status === 502 || response.status === 503 || response.status === 504) {
       return EnvironmentProbe["unreachable"]();
@@ -197,8 +197,8 @@ export const discoverPairTarget = Effect.fn("pair.discoverPairTarget")(function*
   if (explicitBaseDir !== undefined && explicitBaseDir.trim().length > 0) {
     bases.push(yield* resolveBaseDir(explicitBaseDir));
   } else {
-    // Same precedence as dev-runner: inside a linked worktree its own `.akeru`
-    // outranks the shared home, so `akeru pair` in a worktree pairs with the dev
+    // Same precedence as dev-runner: inside a linked worktree its own `.isnadi`
+    // outranks the shared home, so `isnadi pair` in a worktree pairs with the dev
     // server under test rather than the daily-driver install.
     const worktreeHome = yield* resolveWorktreeT3Home(process.cwd());
 

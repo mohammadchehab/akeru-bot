@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { BotId, CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { BotId, CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as ChannelRuntime from "../../channels/ChannelRuntime.ts";
 import * as Effect from "effect/Effect";
 import * as Scope from "effect/Scope";

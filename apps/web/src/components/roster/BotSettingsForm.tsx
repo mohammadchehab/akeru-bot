@@ -5,13 +5,13 @@ import {
   IMAGE_PROVIDER_IDS,
   type EnvironmentId,
   type ImageProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   botImageProviderOptionLabel,
   globalDefaultOptionLabel,
-} from "@akeru/client-runtime/image-generation";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
-import { driverSupportsDelegation } from "@akeru/shared/delegationProviders";
+} from "@isnadi/client-runtime/image-generation";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import { Brain02Icon, Link02Icon } from "@hugeicons/core-free-icons";
 import { useBlocker } from "@tanstack/react-router";
 import { useCallback, useRef, useState } from "react";

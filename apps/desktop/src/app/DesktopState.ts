@@ -9,7 +9,7 @@ export class DesktopState extends Context.Service<
     readonly backendReady: Ref.Ref<boolean>;
     readonly quitting: Ref.Ref<boolean>;
   }
->()("@akeru/desktop/app/DesktopState") {}
+>()("@isnadi/desktop/app/DesktopState") {}
 
 const make = Effect.all({
   backendReady: Ref.make(false),

@@ -1,5 +1,5 @@
 import { assert, it } from "@effect/vitest";
-import { BotId, CommandId, MessageId, ThreadId } from "@akeru/contracts";
+import { BotId, CommandId, MessageId, ThreadId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 

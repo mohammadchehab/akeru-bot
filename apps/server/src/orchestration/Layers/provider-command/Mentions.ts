@@ -1,5 +1,5 @@
-import { ThreadId } from "@akeru/contracts";
-import { collectComposerMentionReferences } from "@akeru/shared/composerInlineTokens";
+import { ThreadId } from "@isnadi/contracts";
+import { collectComposerMentionReferences } from "@isnadi/shared/composerInlineTokens";
 import {
   appendComposerMentionContext,
   isHiddenComposerThread,
@@ -7,7 +7,7 @@ import {
   THREAD_MENTION_MAX_THREADS,
   THREAD_MENTION_TURN_LIMIT,
   type ThreadMentionSource,
-} from "@akeru/shared/composerThreadMentions";
+} from "@isnadi/shared/composerThreadMentions";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import type { createDependencies } from "./Dependencies.ts";

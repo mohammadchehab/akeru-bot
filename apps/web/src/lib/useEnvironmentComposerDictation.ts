@@ -2,7 +2,7 @@ import {
   createVoiceDictationTranscriber,
   dictationTranscriptionCapability,
   type DictationDraft,
-} from "@akeru/client-runtime/dictation";
+} from "@isnadi/client-runtime/dictation";
 import { useAtomValue } from "@effect/atom-react";
 import { useMemo } from "react";
 

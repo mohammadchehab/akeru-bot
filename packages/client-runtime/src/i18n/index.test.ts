@@ -98,8 +98,8 @@ describe("translation", () => {
   });
   it("translates the new chat project and environment controls with placeholders", () => {
     const zh = createTranslator("zh-CN", zhCNCatalog);
-    expect(zh.t("Change project from {project}", { project: "Akeru" })).toBe(
-      "更改项目（当前：Akeru）",
+    expect(zh.t("Change project from {project}", { project: "Isnadi" })).toBe(
+      "更改项目（当前：Isnadi）",
     );
     expect(zh.t("Environment: {environment}", { environment: "ms-a2" })).toBe("环境：ms-a2");
     expect(zh.t("on {environment}", { environment: "ms-a2" })).toBe("在 ms-a2 上");

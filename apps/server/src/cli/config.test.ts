@@ -7,7 +7,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { resolveServerConfig } from "./config.ts";
 
@@ -101,7 +101,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
     }),
   );
 
-  it.effect("reads AKERU_ variables ahead of their legacy T3CODE_ aliases", () =>
+  it.effect("reads ISNADI_ variables ahead of their legacy T3CODE_ aliases", () =>
     Effect.gen(function* () {
       const { join } = yield* Path.Path;
       const baseDir = join(NodeOS.tmpdir(), "akeru-cli-config-env-base");
@@ -128,12 +128,12 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
             ConfigProvider.layer(
               ConfigProvider.fromEnv({
                 env: {
-                  AKERU_PORT: "4002",
+                  ISNADI_PORT: "4002",
                   T3CODE_PORT: "4001",
-                  AKERU_HOME: baseDir,
+                  ISNADI_HOME: baseDir,
                   T3CODE_HOME: join(NodeOS.tmpdir(), "ignored-legacy-base"),
                   T3CODE_HOST: "0.0.0.0",
-                  AKERU_OTLP_SERVICE_NAME: "akeru-test",
+                  ISNADI_OTLP_SERVICE_NAME: "akeru-test",
                 },
               }),
             ),

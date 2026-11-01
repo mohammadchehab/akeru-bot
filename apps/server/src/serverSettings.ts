@@ -19,7 +19,7 @@ import {
   ServerSettings,
   ServerSettingsError,
   type ServerSettingsPatch,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
@@ -39,9 +39,9 @@ import * as Stream from "effect/Stream";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { writeFileStringAtomically } from "./atomicWrite.ts";
 import * as ServerConfig from "./config.ts";
-import { type DeepPartial, deepMerge } from "@akeru/shared/Struct";
-import { fromJsonStringPretty } from "@akeru/shared/schemaJson";
-import { applyServerSettingsPatch } from "@akeru/shared/serverSettings";
+import { type DeepPartial, deepMerge } from "@isnadi/shared/Struct";
+import { fromJsonStringPretty } from "@isnadi/shared/schemaJson";
+import { applyServerSettingsPatch } from "@isnadi/shared/serverSettings";
 import * as ServerSecretStore from "./auth/ServerSecretStore.ts";
 import { normalizeImageGenerationPatch } from "./image-generation/service.ts";
 
@@ -88,7 +88,7 @@ export class ServerSettingsService extends Context.Service<
      */
     readonly subscribeChanges: Effect.Effect<Stream.Stream<ServerSettings>, never, Scope.Scope>;
   }
->()("akeru-bot/serverSettings/ServerSettingsService") {
+>()("isnadibot/serverSettings/ServerSettingsService") {
   /** @deprecated Import and use `layerTest` from this module. */
   static readonly layerTest = (overrides: TestSettingsOverrides = {}) => layerTest(overrides);
 }

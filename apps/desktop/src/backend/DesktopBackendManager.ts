@@ -30,7 +30,7 @@ import { HttpClient } from "effect/unstable/http";
 
 import { ChildProcessSpawner } from "effect/unstable/process";
 
-import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@akeru/contracts";
+import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@isnadi/contracts";
 
 import * as DesktopObservability from "../app/DesktopObservability.ts";
 

@@ -1,11 +1,11 @@
 # Usage analytics
 
-> For maintainers. Using Akeru Bot? See [Anonymous usage analytics](../user/analytics.md).
+> For maintainers. Using IsnadiBot? See [Anonymous usage analytics](../user/analytics.md).
 
-Akeru Bot sends one PostHog event named `usage_3h` for each non-empty, closed
+IsnadiBot sends one PostHog event named `usage_3h` for each non-empty, closed
 three-hour UTC bucket. The default destination is
 `https://us.i.posthog.com/batch/`. `T3CODE_POSTHOG_HOST` changes the host and keeps
-the `/batch/` path. Packaged builds use the Akeru production project by default.
+the `/batch/` path. Packaged builds use the Isnadi production project by default.
 `T3CODE_POSTHOG_KEY` changes the public project key for distributor builds.
 
 Packaged production builds enable analytics by default. Development and CI disable
@@ -64,13 +64,13 @@ The only allowed dimensions are:
 - `bucket_start`
 
 `bucket_start` is the UTC start time of the three-hour bucket. Empty buckets advance
-the local cursor. Akeru Bot does not queue or send them.
+the local cursor. IsnadiBot does not queue or send them.
 
 ## Identity and privacy boundary
 
 The server creates a random analytics-only UUID. It does not read Codex, Claude, or
 other provider authentication files. It does not derive the UUID from an account or
-another Akeru Bot record.
+another IsnadiBot record.
 
 The payload must never contain prompts, replies, model output, names, bot IDs,
 thread IDs, workspace IDs, group IDs, account IDs, URLs, paths, recipients, memory,

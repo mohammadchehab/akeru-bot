@@ -4,9 +4,9 @@ import {
   BearerConnectionTarget,
   SshConnectionProfile,
   SshConnectionTarget,
-} from "@akeru/client-runtime/connection";
-import { type ConnectionCatalogDocument as RuntimeConnectionCatalogDocumentType } from "@akeru/client-runtime/platform";
-import type { PersistedSavedEnvironmentRecord } from "@akeru/contracts";
+} from "@isnadi/client-runtime/connection";
+import { type ConnectionCatalogDocument as RuntimeConnectionCatalogDocumentType } from "@isnadi/client-runtime/platform";
+import type { PersistedSavedEnvironmentRecord } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

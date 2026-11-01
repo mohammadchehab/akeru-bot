@@ -8,7 +8,7 @@
  *
  * @module state/botUsage
  */
-import { createBotUsageEnvironmentAtoms } from "@akeru/client-runtime/state/bot-usage";
+import { createBotUsageEnvironmentAtoms } from "@isnadi/client-runtime/state/bot-usage";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 import { appFocusSignalAtom } from "./appFocusSignal";

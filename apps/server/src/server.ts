@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { EnvironmentHttpApi } from "@akeru/contracts";
+import { EnvironmentHttpApi } from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -34,7 +34,7 @@ import {
   persistServerRuntimeState,
 } from "./serverRuntimeState.ts";
 import { orchestrationHttpApiLayer } from "./orchestration/http.ts";
-import { disableTailscaleServe, ensureTailscaleServe } from "@akeru/tailscale";
+import { disableTailscaleServe, ensureTailscaleServe } from "@isnadi/tailscale";
 import { ServerActivation } from "./serverActivation.ts";
 
 import {

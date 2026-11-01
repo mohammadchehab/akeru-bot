@@ -4,8 +4,8 @@ import type {
   PreviewAutomationResizeInput,
   PreviewViewportPresetId,
   PreviewViewportSetting,
-} from "@akeru/contracts";
-import { PREVIEW_VIEWPORT_PRESET_IDS } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { PREVIEW_VIEWPORT_PRESET_IDS } from "@isnadi/contracts";
 
 const Viewport = Data.taggedEnum<PreviewViewportSetting>();
 

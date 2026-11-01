@@ -1,4 +1,4 @@
-import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@akeru/contracts";
+import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@isnadi/contracts";
 
 import { asRuntimeItemId, asRuntimeRequestId } from "./CodexCanonicalMapping.ts";
 

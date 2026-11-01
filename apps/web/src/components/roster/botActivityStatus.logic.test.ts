@@ -4,7 +4,7 @@ import {
   TurnId,
   type OrchestrationLatestTurn,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveBotActivity } from "./botActivityStatus.logic";

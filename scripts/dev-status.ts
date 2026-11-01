@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
+import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import {
-  PRODUCT_HOME_DIRNAME,
-  resolveGitWorktreePath,
-  resolveWorktreeT3Home,
-} from "@akeru/shared/devHome";
+import { resolveGitWorktreePath, resolveWorktreeT3Home } from "@isnadi/shared/devHome";
+import { findProductHomeDir } from "@isnadi/shared/productHome";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -52,7 +50,11 @@ export const resolveDevStatusHome = Effect.fn("resolveDevStatusHome")(function* 
 
   const home = expanded
     ? path.resolve(input.cwd, expanded)
-    : path.join(input.userHome, PRODUCT_HOME_DIRNAME);
+    : findProductHomeDir({
+        homeDirectory: input.userHome,
+        joinPath: path.join,
+        exists: NodeFS.existsSync,
+      });
 
   return { worktree, home, dataDir: path.join(home, selected ? "userdata" : "dev") };
 });
@@ -243,7 +245,7 @@ export function formatDevStatus(
   return [
     `Root: ${status.root}`,
     `Worktree: ${status.worktree ?? "main checkout or not a linked worktree"}`,
-    `Akeru home: ${status.home}`,
+    `Isnadi home: ${status.home}`,
     `Data directory: ${status.dataDir}`,
     `Runtime: ${status.runtimePath} — ${status.descriptor}`,
     `Server: ${status.server.origin ?? "unknown"} — ${status.server.readiness}`,

@@ -5,7 +5,7 @@ import {
   DEFAULT_SERVER_SETTINGS,
   type ServerConfig,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as EnvironmentRegistry from "../connection/registry.ts";
 import type { RpcSession } from "../rpc/session.ts";
 import type { WsRpcProtocolClient } from "../rpc/protocol.ts";

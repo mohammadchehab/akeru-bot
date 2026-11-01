@@ -7,7 +7,7 @@ vi.mock("@electron/osx-sign", () => ({ sign: vi.fn() }));
 
 it("batches codesign calls without changing existing signing options", async () => {
   const options = {
-    app: "/tmp/Akeru Bot.app",
+    app: "/tmp/IsnadiBot.app",
     identity: "Developer ID Application: Example Corp (ABCDE12345)",
     keychain: "/tmp/akeru.keychain",
     provisioningProfile: "/tmp/akeru.provisionprofile",

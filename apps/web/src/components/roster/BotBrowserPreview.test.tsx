@@ -1,4 +1,4 @@
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
@@ -59,7 +59,7 @@ describe("BotBrowserPreview", () => {
   it("stays hidden until the bot has a thread to show", () => {
     const markup = renderToStaticMarkup(
       <BotBrowserPreview
-        botName="Akeru"
+        botName="Isnadi"
         threadRef={null}
         expanded={false}
         visible
@@ -74,7 +74,7 @@ describe("BotBrowserPreview", () => {
   it("goes dark and offers Open once a page is live", () => {
     const markup = renderToStaticMarkup(
       <BotBrowserPreview
-        botName="Akeru"
+        botName="Isnadi"
         threadRef={threadRef}
         expanded={false}
         visible
@@ -84,14 +84,14 @@ describe("BotBrowserPreview", () => {
 
     expect(markup).toContain("bg-media-mat");
     expect(markup).toContain('data-testid="bot-browser-preview"');
-    expect(markup).toContain('aria-label="Expand Akeru browser"');
-    expect(markup).toContain('aria-label="Open Akeru browser"');
+    expect(markup).toContain('aria-label="Expand Isnadi browser"');
+    expect(markup).toContain('aria-label="Open Isnadi browser"');
   });
 
   it("renders the remote frame when expanded on the web", () => {
     const markup = renderToStaticMarkup(
       <BotBrowserPreview
-        botName="Akeru"
+        botName="Isnadi"
         threadRef={threadRef}
         expanded
         visible
@@ -101,7 +101,7 @@ describe("BotBrowserPreview", () => {
 
     expect(markup).toContain('data-testid="bot-browser-remote-frame"');
     expect(markup).toContain("data:image/png;base64,remote-frame");
-    expect(markup).toContain('aria-label="Collapse Akeru browser"');
+    expect(markup).toContain('aria-label="Collapse Isnadi browser"');
     expect(markup).not.toContain("native-preview-panel");
     expect(markup).not.toContain("Preview is only available");
   });
@@ -111,7 +111,7 @@ describe("BotBrowserPreview", () => {
 
     const markup = renderToStaticMarkup(
       <BotBrowserPreview
-        botName="Akeru"
+        botName="Isnadi"
         threadRef={threadRef}
         expanded
         visible

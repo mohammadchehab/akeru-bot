@@ -10,7 +10,7 @@ import {
   type OrchestrationBot,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
@@ -29,7 +29,7 @@ const GROUP_ID = GroupId.make("group-product");
 function makeBot(archivedAt: string | null = null): OrchestrationBot {
   return {
     id: BOT_ID,
-    name: "Akeru",
+    name: "Isnadi",
     title: "Agent",
     label: null,
     description: null,

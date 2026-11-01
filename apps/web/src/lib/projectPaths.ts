@@ -14,4 +14,4 @@ export {
   normalizeProjectPathForComparison,
   normalizeProjectPathForDispatch,
   resolveProjectPathForDispatch,
-} from "@akeru/client-runtime/state/projects";
+} from "@isnadi/client-runtime/state/projects";

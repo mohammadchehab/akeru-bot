@@ -3,7 +3,7 @@ import {
   type ComputerAction,
   type ComputerSession,
   type ComputerState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveComputerViewer } from "./computerViewer.ts";

@@ -55,7 +55,7 @@ const seedProjections = Effect.fn("seedUiProjections")(function* (
     VALUES ('ui-scout', 'Scout', 'Code review', '{"kind":"dither","seed":"scout"}', ${TIMESTAMP}, ${TIMESTAMP})`;
   yield* sql`INSERT INTO projection_projects
     (project_id, title, workspace_root, default_model_selection_json, scripts_json, created_at, updated_at)
-    VALUES ('ui-project', 'Akeru Bot', ${workspaceRoot}, ${model}, '[]', ${TIMESTAMP}, ${TIMESTAMP})`;
+    VALUES ('ui-project', 'IsnadiBot', ${workspaceRoot}, ${model}, '[]', ${TIMESTAMP}, ${TIMESTAMP})`;
 
   for (const [index, thread] of SHOWCASE_THREADS.slice(0, 2).entries()) {
     const id = `ui-thread-${index}`;

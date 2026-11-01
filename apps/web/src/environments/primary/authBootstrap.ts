@@ -1,5 +1,5 @@
 import { hasTag } from "~/lib/taggedUnion";
-import type { AuthBrowserSessionResult, AuthSessionState } from "@akeru/contracts";
+import type { AuthBrowserSessionResult, AuthSessionState } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { PrimaryEnvironmentHttpClient } from "./httpClient";
 import { runPrimaryHttp } from "../../lib/runtime";

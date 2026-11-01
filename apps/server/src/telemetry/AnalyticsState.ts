@@ -1,6 +1,6 @@
 import { decodeJsonString, jsonObject } from "../json.ts";
 import * as Predicate from "effect/Predicate";
-import { USAGE_3H_COUNTER_MAX, Usage3hEvent } from "@akeru/contracts";
+import { USAGE_3H_COUNTER_MAX, Usage3hEvent } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 

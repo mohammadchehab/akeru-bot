@@ -1,15 +1,15 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  acknowledgeAkeruDelegation,
-  releaseAkeruDelegationAcknowledgement,
+  acknowledgeIsnadiDelegation,
+  releaseIsnadiDelegationAcknowledgement,
   CommandId,
   DelegationId,
   MessageId,
   ThreadId,
   type OrchestrationEvent,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { decideOrchestrationCommand } from "./decider.ts";
@@ -43,7 +43,7 @@ it.layer(NodeServices.layer)("delegation decider", (it) => {
       });
 
       const ACK = "2026-08-31T12:05:00.000Z";
-      const acknowledged = acknowledgeAkeruDelegation(completed, ACK);
+      const acknowledged = acknowledgeIsnadiDelegation(completed, ACK);
 
       const event = yield* decideOne(makeReadModel([completed]), {
         type: "delegation.state.set",
@@ -77,7 +77,7 @@ it.layer(NodeServices.layer)("delegation decider", (it) => {
         command: {
           type: "delegation.state.set",
           commandId: CommandId.make("command-ack-again"),
-          delegation: acknowledgeAkeruDelegation(completed, "2026-08-31T12:06:00.000Z"),
+          delegation: acknowledgeIsnadiDelegation(completed, "2026-08-31T12:06:00.000Z"),
         },
       }).pipe(Effect.flip);
 
@@ -100,8 +100,8 @@ it.layer(NodeServices.layer)("delegation decider", (it) => {
         updatedAt: LATER,
       });
 
-      const acknowledged = acknowledgeAkeruDelegation(completed, "2026-08-31T12:05:00.000Z");
-      const released = releaseAkeruDelegationAcknowledgement(acknowledged);
+      const acknowledged = acknowledgeIsnadiDelegation(completed, "2026-08-31T12:05:00.000Z");
+      const released = releaseIsnadiDelegationAcknowledgement(acknowledged);
 
       const event = yield* decideOne(makeReadModel([acknowledged]), {
         type: "delegation.state.set",

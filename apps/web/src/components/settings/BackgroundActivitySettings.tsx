@@ -1,5 +1,5 @@
-import { type BackgroundActivityProfile } from "@akeru/contracts";
-import { resolveServerBackgroundActivitySettings } from "@akeru/shared/backgroundActivitySettings";
+import { type BackgroundActivityProfile } from "@isnadi/contracts";
+import { resolveServerBackgroundActivitySettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Duration from "effect/Duration";
 import { usePrimarySettings, useUpdatePrimarySettings } from "../../hooks/useSettings";
 import { Button } from "../ui/button";
@@ -29,7 +29,7 @@ import {
   PROVIDER_HEALTH_INTERVAL_STEP_SECONDS,
 } from "./SettingsPanels.logic";
 import { useI18n } from "../../i18n";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import { resetBackgroundActivitySettings } from "./useSettingsRestore";
 
 export const BACKGROUND_ACTIVITY_PROFILE_LABELS: Record<BackgroundActivityProfile, MessageKey> = {

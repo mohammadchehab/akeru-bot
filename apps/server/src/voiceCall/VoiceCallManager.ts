@@ -16,7 +16,7 @@ import {
   VoiceTranscribeInput as TranscribeSchema,
   VoiceSynthesizeInput as SynthesizeSchema,
   type OrchestrationEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -113,7 +113,7 @@ export class VoiceCallManager extends Context.Service<
     /** Ends the active call when it belongs to `botId`, freeing the single call slot. */
     readonly hangupBot: (botId: BotId) => Effect.Effect<void>;
   }
->()("akeru-bot/voiceCall/VoiceCallManager") {}
+>()("isnadibot/voiceCall/VoiceCallManager") {}
 
 const make = (options?: VoiceCallManagerOptions) =>
   Effect.gen(function* () {

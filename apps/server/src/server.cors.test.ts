@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { WS_METHODS } from "@akeru/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { HttpBody, HttpClient } from "effect/unstable/http";

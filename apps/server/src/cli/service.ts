@@ -1,4 +1,4 @@
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -61,10 +61,10 @@ export function formatServiceStatus(
 
   return [
     "IsnadiBot service",
-    `  Status: ${status.current ? `installed · akeru-bot@${cliVersion}` : "needs an update or repair"}`,
+    `  Status: ${status.current ? `installed · isnadibot@${cliVersion}` : "needs an update or repair"}`,
     `  Unit: ${status.unitPath}`,
     `  Logs: ${status.logPath}`,
-    ...(status.current ? [] : ["  Next: Run `npx akeru-bot@latest service update`."]),
+    ...(status.current ? [] : ["  Next: Run `npx isnadibot@latest service update`."]),
   ].join("\n");
 }
 
@@ -88,14 +88,14 @@ const serviceInstallCommand = Command.make("install", projectLocationFlags).pipe
 
         if (!result.changed) {
           yield* Console.log(
-            `IsnadiBot service is already installed with akeru-bot@${packageJson.version}.`,
+            `IsnadiBot service is already installed with isnadibot@${packageJson.version}.`,
           );
 
           return;
         }
 
         yield* Console.log(
-          `${result.previouslyInstalled ? "Updated" : "Installed"} IsnadiBot service with akeru-bot@${packageJson.version}.\nLogs: ${result.plan.logPath}`,
+          `${result.previouslyInstalled ? "Updated" : "Installed"} IsnadiBot service with isnadibot@${packageJson.version}.\nLogs: ${result.plan.logPath}`,
         );
       }),
     ),
@@ -104,7 +104,7 @@ const serviceInstallCommand = Command.make("install", projectLocationFlags).pipe
 
 const serviceUpdateCommand = Command.make("update", projectLocationFlags).pipe(
   Command.withDescription(
-    "Update or repair the background service using this CLI version. Use `npx akeru-bot@latest service update` for the latest release.",
+    "Update or repair the background service using this CLI version. Use `npx isnadibot@latest service update` for the latest release.",
   ),
   Command.withHandler((flags) =>
     runServiceCommand(
@@ -114,14 +114,14 @@ const serviceUpdateCommand = Command.make("update", projectLocationFlags).pipe(
 
         if (!result.changed) {
           yield* Console.log(
-            `IsnadiBot service is already using akeru-bot@${packageJson.version}.`,
+            `IsnadiBot service is already using isnadibot@${packageJson.version}.`,
           );
 
           return;
         }
 
         yield* Console.log(
-          `${result.previouslyInstalled ? "Updated" : "Installed"} IsnadiBot service with akeru-bot@${packageJson.version}.\nLogs: ${result.plan.logPath}`,
+          `${result.previouslyInstalled ? "Updated" : "Installed"} IsnadiBot service with isnadibot@${packageJson.version}.\nLogs: ${result.plan.logPath}`,
         );
       }),
     ),

@@ -21,9 +21,9 @@ import type {
   PreviewAutomationStatus,
   PreviewAutomationTypeInput,
   PreviewAutomationWaitForInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import { type BrowserWindow, type Session } from "electron";
 
@@ -628,7 +628,7 @@ export class PreviewManager extends Context.Service<
       listener: RecordingFrameListener,
     ) => Effect.Effect<void, never, Scope.Scope>;
   }
->()("@akeru/desktop/preview/Manager/PreviewManager") {}
+>()("@isnadi/desktop/preview/Manager/PreviewManager") {}
 
 export const make = Effect.gen(function* PreviewManagerMake() {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;

@@ -1,6 +1,6 @@
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import {

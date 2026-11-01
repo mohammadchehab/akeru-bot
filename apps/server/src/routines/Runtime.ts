@@ -18,5 +18,5 @@ export interface RoutineRuntimeShape {
 }
 
 export class RoutineRuntime extends Context.Service<RoutineRuntime, RoutineRuntimeShape>()(
-  "akeru-bot/routines/Runtime/RoutineRuntime",
+  "isnadibot/routines/Runtime/RoutineRuntime",
 ) {}

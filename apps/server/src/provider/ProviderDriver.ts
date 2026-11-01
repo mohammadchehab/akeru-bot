@@ -27,7 +27,7 @@ import type {
   ProviderInstanceEnvironment,
   ProviderInstanceId,
   ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type * as Effect from "effect/Effect";
 import type * as Schema from "effect/Schema";
 import type * as Scope from "effect/Scope";
@@ -72,7 +72,7 @@ export interface ProviderInstance {
   readonly accentColor?: string | undefined;
   readonly enabled: boolean;
   /**
-   * Server-only connection inputs for Akeru's Mastra model transport.
+   * Server-only connection inputs for Isnadi's Mastra model transport.
    * This value must never be projected into provider snapshots or wire contracts.
    */
   readonly mastraConnection?: {

@@ -1,8 +1,8 @@
 import {
   formatProviderSkillDisplayName,
   resolveProviderSkillTextIcon,
-} from "@akeru/client-runtime/providerSkills";
-import { type ServerProviderSkill } from "@akeru/contracts";
+} from "@isnadi/client-runtime/providerSkills";
+import { type ServerProviderSkill } from "@isnadi/contracts";
 import {
   $applyNodeReplacement,
   DecoratorNode,

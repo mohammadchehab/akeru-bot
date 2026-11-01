@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { useCallback, useEffect, useMemo } from "react";
 

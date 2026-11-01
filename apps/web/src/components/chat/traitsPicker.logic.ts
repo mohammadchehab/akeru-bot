@@ -1,18 +1,18 @@
 import { Predicate } from "effect";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 import {
   type ProviderDriverKind,
   type ProviderOptionDescriptor,
   type ProviderOptionSelection,
   type ScopedThreadRef,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   getProviderOptionCurrentLabel,
   getProviderOptionCurrentValue,
   getProviderOptionDescriptors,
   isClaudeUltrathinkPrompt,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import { useI18n } from "~/i18n";
 import { DraftId } from "../../composerDraftStore";
 import { getProviderModelCapabilities } from "../../providerModels";

@@ -1,4 +1,4 @@
-import type { EnvironmentProject } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";

@@ -2,10 +2,10 @@ import { NodeFS, directories, fixture, acceptPrompt } from "./testUtils/botMemor
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { assert, describe, it } from "@effect/vitest";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import {
-  AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS,
-  AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS,
   BotMemoryStore,
 } from "./BotMemory.ts";
 
@@ -238,7 +238,7 @@ describe("BotMemoryStore", () => {
       const reservation = await store.reserveReviewCadence(botId, {
         threadId: `thread-${prompt}`,
         groupId: null,
-        text: `${prompt}:${"x".repeat(AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS * 2)}`,
+        text: `${prompt}:${"x".repeat(ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS * 2)}`,
       });
 
       await store.recordSuccessfulPrompt(reservation);
@@ -256,12 +256,12 @@ describe("BotMemoryStore", () => {
     assert.isAtMost(persisted.reviewInputs.length, 10);
     assert.isTrue(
       persisted.reviewInputs.every(
-        (input) => input.text.length <= AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS,
+        (input) => input.text.length <= ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS,
       ),
     );
     assert.isAtMost(
       JSON.stringify(persisted.reviewInputs).length,
-      AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS,
+      ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS,
     );
   });
 

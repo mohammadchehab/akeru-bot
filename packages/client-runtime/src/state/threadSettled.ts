@@ -1,5 +1,5 @@
 import * as DateTime from "effect/DateTime";
-import type { OrchestrationThreadShell } from "@akeru/contracts";
+import type { OrchestrationThreadShell } from "@isnadi/contracts";
 
 export function threadLastActivityAt(
   shell: Pick<OrchestrationThreadShell, "latestUserMessageAt" | "latestTurn">,

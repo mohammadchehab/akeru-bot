@@ -9,8 +9,8 @@ import * as Ref from "effect/Ref";
 import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
-import { createModelCapabilities } from "@akeru/shared/model";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
+import { createModelCapabilities } from "@isnadi/shared/model";
 import {
   haveProvidersChanged,
   mergeProviderSnapshot,

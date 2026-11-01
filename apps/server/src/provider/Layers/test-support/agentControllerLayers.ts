@@ -1,6 +1,6 @@
 import { emptyProviderSnapshot, providerThreadFixture } from "./projectionFixtures.ts";
 import { sessionFixture } from "./partialFixtures.ts";
-import type { AkeruMastraState } from "../../AkeruMastraHarness.ts";
+import type { IsnadiMastraState } from "../../IsnadiMastraHarness.ts";
 
 import * as Match from "effect/Match";
 import * as NodeServices from "@effect/platform-node/NodeServices";
@@ -18,7 +18,7 @@ import {
   type OrchestrationReadModel,
   type ProviderRuntimeEvent,
   type ProviderSession,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -454,7 +454,7 @@ export const groupParentSnapshot = {
   delegations: [],
 } satisfies OrchestrationReadModel;
 
-export const makeWorkerSession = (base: Session<AkeruMastraState>) => {
+export const makeWorkerSession = (base: Session<IsnadiMastraState>) => {
   const listeners = new Set<(event: AgentControllerEvent) => void>();
 
   const session = sessionFixture({

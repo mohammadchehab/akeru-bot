@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { normalizeSearchQuery, scoreQueryMatch } from "@akeru/shared/searchRanking";
+import { normalizeSearchQuery, scoreQueryMatch } from "@isnadi/shared/searchRanking";
 
 type ModelPickerSearchableModel = {
   /** Driver kind — indexed so "codex" still matches a Codex Personal instance. */

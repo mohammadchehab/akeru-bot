@@ -16,11 +16,11 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
 
-import { type ClaudeSettings, type ModelSelection } from "@akeru/contracts";
-import { sanitizeBranchFragment } from "@akeru/shared/git";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { type ClaudeSettings, type ModelSelection } from "@isnadi/contracts";
+import { sanitizeBranchFragment } from "@isnadi/shared/git";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
-import { TextGenerationError } from "@akeru/contracts";
+import { TextGenerationError } from "@isnadi/contracts";
 import * as TextGeneration from "./TextGeneration.ts";
 import { buildBranchNamePrompt, buildThreadTitlePrompt } from "./TextGenerationPrompts.ts";
 import {
@@ -31,7 +31,7 @@ import {
 import {
   getModelSelectionStringOptionValue,
   getProviderOptionDescriptors,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import {
   getClaudeModelCapabilities,
   isClaudeUltracodeEffort,

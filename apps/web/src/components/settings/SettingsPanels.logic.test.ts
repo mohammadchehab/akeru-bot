@@ -1,12 +1,12 @@
-import { catalogRegistry, createTranslator } from "@akeru/client-runtime/i18n";
+import { catalogRegistry, createTranslator } from "@isnadi/client-runtime/i18n";
 import {
   DEFAULT_SERVER_SETTINGS,
   DEFAULT_UNIFIED_SETTINGS,
   ProviderDriverKind,
   ProviderInstanceId,
   type ProviderInstanceConfig,
-} from "@akeru/contracts";
-import { getBackgroundActivityPresetSettings } from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/contracts";
+import { getBackgroundActivityPresetSettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Duration from "effect/Duration";
 import { describe, expect, it } from "vite-plus/test";
 import {

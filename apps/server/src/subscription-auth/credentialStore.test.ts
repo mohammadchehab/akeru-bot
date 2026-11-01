@@ -18,7 +18,7 @@ const encodeJson = Schema.encodeSync(
   Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown)),
 );
 
-/** A credential file as Akeru and Mastra's AuthStorage write it today. */
+/** A credential file as Isnadi and Mastra's AuthStorage write it today. */
 const currentFormat = {
   anthropic: {
     type: "oauth",

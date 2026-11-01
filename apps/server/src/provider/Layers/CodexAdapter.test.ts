@@ -9,8 +9,8 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   type ProviderEvent,
-} from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";

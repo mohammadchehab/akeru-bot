@@ -8,13 +8,13 @@ import {
   type ScopedProjectRef,
   type ScopedThreadRef,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   parseScopedThreadKey,
   scopedProjectKey,
   scopedThreadKey,
   scopeThreadRef,
-} from "@akeru/client-runtime/environment";
+} from "@isnadi/client-runtime/environment";
 import { DEFAULT_INTERACTION_MODE } from "../types";
 import {
   type DraftThreadEnvMode,

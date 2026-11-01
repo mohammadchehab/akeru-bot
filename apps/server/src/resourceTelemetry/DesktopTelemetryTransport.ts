@@ -3,7 +3,7 @@ import { flow } from "effect/Function";
 
 import * as NodeFS from "node:fs";
 import * as NodeNet from "node:net";
-import { DesktopHostTelemetryMessage, DesktopTelemetryControlMessage } from "@akeru/contracts";
+import { DesktopHostTelemetryMessage, DesktopTelemetryControlMessage } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import {

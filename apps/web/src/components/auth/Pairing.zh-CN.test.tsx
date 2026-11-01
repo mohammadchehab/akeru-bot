@@ -1,4 +1,4 @@
-import { catalogRegistry } from "@akeru/client-runtime/i18n";
+import { catalogRegistry } from "@isnadi/client-runtime/i18n";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
@@ -47,7 +47,7 @@ describe("pairing in Simplified Chinese", () => {
     expect(html).toContain("此链接已失效");
     expect(html).toContain("获取新链接");
     expect(html).toContain("在服务器上运行 <code");
-    expect(html).toContain("npx akeru-bot pair");
+    expect(html).toContain("npx isnadibot pair");
     expect(html).not.toContain("Get a new link");
   });
 

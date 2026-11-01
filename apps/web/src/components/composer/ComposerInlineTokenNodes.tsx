@@ -1,4 +1,4 @@
-import { serializeComposerFileLink } from "@akeru/shared/composerTrigger";
+import { serializeComposerFileLink } from "@isnadi/shared/composerTrigger";
 import {
   $applyNodeReplacement,
   DecoratorNode,

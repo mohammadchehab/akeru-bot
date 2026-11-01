@@ -1,17 +1,17 @@
 import {
-  AKERU_MEMORY_PACKET_MAX_CHARS,
-  AKERU_MEMORY_PACKET_MAX_ESTIMATED_TOKENS,
-  AKERU_MEMORY_PACKET_MAX_FACTS,
-  AkeruMemoryPacket,
-  type AkeruMemoryPacket as MemoryPacket,
-  type AkeruMemoryRevision,
+  ISNADI_MEMORY_PACKET_MAX_CHARS,
+  ISNADI_MEMORY_PACKET_MAX_ESTIMATED_TOKENS,
+  ISNADI_MEMORY_PACKET_MAX_FACTS,
+  IsnadiMemoryPacket,
+  type IsnadiMemoryPacket as MemoryPacket,
+  type IsnadiMemoryRevision,
   type ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import { scanMemoryContent } from "./memoryContentSafety.ts";
 
-const decodeMemoryPacket = Schema.decodeUnknownSync(AkeruMemoryPacket);
+const decodeMemoryPacket = Schema.decodeUnknownSync(IsnadiMemoryPacket);
 
 /**
  * Build the provider input from the durable current revisions.
@@ -23,7 +23,7 @@ const decodeMemoryPacket = Schema.decodeUnknownSync(AkeruMemoryPacket);
  */
 export function buildProviderMemoryPacket(
   threadId: ThreadId,
-  revisions: ReadonlyArray<AkeruMemoryRevision>,
+  revisions: ReadonlyArray<IsnadiMemoryRevision>,
 ): MemoryPacket {
   const candidates = revisions
     .filter(
@@ -44,7 +44,7 @@ export function buildProviderMemoryPacket(
   let estimatedTokens = 0;
 
   for (const revision of candidates) {
-    if (facts.length >= AKERU_MEMORY_PACKET_MAX_FACTS) break;
+    if (facts.length >= ISNADI_MEMORY_PACKET_MAX_FACTS) break;
 
     if (scanMemoryContent(revision.fact).length > 0) continue;
 
@@ -64,8 +64,8 @@ export function buildProviderMemoryPacket(
     const nextTokens = Math.ceil(nextRendered.length / 4);
 
     if (
-      nextRendered.length > AKERU_MEMORY_PACKET_MAX_CHARS ||
-      nextTokens > AKERU_MEMORY_PACKET_MAX_ESTIMATED_TOKENS
+      nextRendered.length > ISNADI_MEMORY_PACKET_MAX_CHARS ||
+      nextTokens > ISNADI_MEMORY_PACKET_MAX_ESTIMATED_TOKENS
     ) {
       // A long fact must not hide smaller lower-ranked facts that still fit.
       continue;

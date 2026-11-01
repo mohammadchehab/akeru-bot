@@ -7,7 +7,7 @@ import {
   type PreviewAutomationHost,
   type PreviewAutomationRequest,
   type PreviewAutomationStreamEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Result from "effect/Result";
 import * as Stream from "effect/Stream";
@@ -57,7 +57,7 @@ const snapshotResult = (() => {
 const recordingResult = (tabId: PreviewTabId) => ({
   id: "recording-1",
   tabId,
-  path: "/Users/leo/.akeru/browser-artifacts/recording.webm",
+  path: "/Users/leo/.isnadi/browser-artifacts/recording.webm",
   mimeType: "video/webm",
   sizeBytes: 123,
   createdAt: "2026-01-01T00:00:00Z",

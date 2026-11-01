@@ -1,7 +1,7 @@
-import { EnvironmentId, ProjectId } from "@akeru/contracts";
+import { EnvironmentId, ProjectId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
-import type { EnvironmentProject } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
 import type { HomeProjectScope } from "../home/homeThreadList";
 import {
   getOnlySelectableProject,

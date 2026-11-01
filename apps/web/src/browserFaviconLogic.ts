@@ -3,7 +3,7 @@ import * as Option from "effect/Option";
 import type { PersistOptions } from "zustand/middleware";
 import { storedField } from "./lib/persistedSchema";
 import * as Predicate from "effect/Predicate";
-import { FAVICON_CAPTURED_AT_MAX, FAVICON_DATA_URL_MAX_LENGTH } from "@akeru/contracts";
+import { FAVICON_CAPTURED_AT_MAX, FAVICON_DATA_URL_MAX_LENGTH } from "@isnadi/contracts";
 
 import { isLocalLoopbackHost, normalizeHostname } from "./browser/browserTargetResolver";
 

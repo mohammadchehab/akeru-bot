@@ -26,8 +26,8 @@
   "authentication": "oauth",
   "requiredCredentials": [],
   "setup": [
-    "Use an existing Executor 2 account and complete its OAuth sign-in when Akeru asks to connect.",
-    "Akeru connects to Executor 2's authenticated HTTP MCP server at `https://executor.sh/mcp`.",
+    "Use an existing Executor 2 account and complete its OAuth sign-in when Isnadi asks to connect.",
+    "Isnadi connects to Executor 2's authenticated HTTP MCP server at `https://executor.sh/mcp`.",
     "Executor remains verification-pending until its live add, safe read, disable, reconnect, and removal lifecycle is verified."
   ],
   "permissions": [

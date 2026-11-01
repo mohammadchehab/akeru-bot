@@ -1,4 +1,4 @@
-import type { PreviewAnnotationSubmission } from "@akeru/contracts";
+import type { PreviewAnnotationSubmission } from "@isnadi/contracts";
 
 interface AnnotationKeyboardEvent {
   readonly key: string;

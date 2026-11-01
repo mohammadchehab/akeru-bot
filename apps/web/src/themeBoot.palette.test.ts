@@ -1,4 +1,4 @@
-import { BUILT_IN_THEMES } from "@akeru/shared/themePalettes";
+import { BUILT_IN_THEMES } from "@isnadi/shared/themePalettes";
 
 import { describe, expect, it } from "vite-plus/test";
 

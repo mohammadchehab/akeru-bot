@@ -2,9 +2,9 @@ import {
   resolveProviderSkillSourceKind,
   resolveProviderSkillTextIcon,
   type ProviderSkillSourceKind,
-} from "@akeru/client-runtime/providerSkills";
-import type { ServerProviderSkill, ServerProviderSlashCommand } from "@akeru/contracts";
-import type { ComposerTriggerKind } from "@akeru/shared/composerTrigger";
+} from "@isnadi/client-runtime/providerSkills";
+import type { ServerProviderSkill, ServerProviderSlashCommand } from "@isnadi/contracts";
+import type { ComposerTriggerKind } from "@isnadi/shared/composerTrigger";
 import { memo } from "react";
 import { Pressable, ScrollView, View, type ViewStyle } from "react-native";
 

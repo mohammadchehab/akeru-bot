@@ -3,7 +3,7 @@ import {
   UsageDay,
   USAGE_CONTRACT_VERSION,
   type UsageSummary,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { aggregateUsage, usageWindowKey, type EnvironmentUsageStatus } from "./usage.ts";
 

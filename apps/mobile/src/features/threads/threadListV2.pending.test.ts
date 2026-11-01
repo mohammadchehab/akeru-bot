@@ -1,5 +1,5 @@
 import { Match } from "effect";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { buildThreadListV2Items, buildThreadListV2ListItems } from "./threadListV2";
 import { NOW, environmentId, makePendingTask, makeThread } from "./threadListV2.test-support";

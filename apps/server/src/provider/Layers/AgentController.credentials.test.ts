@@ -10,7 +10,7 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -19,7 +19,7 @@ import { ServerConfig } from "../../config.ts";
 import { AgentController } from "../Services/AgentController.ts";
 import { LegacyProviderBridge } from "../Services/LegacyProviderBridge.ts";
 import {
-  createAkeruMastraAuthStorage,
+  createIsnadiMastraAuthStorage,
   agentControllerLayerWith,
   recordProviderAccessHealth,
   toMcpServerConfigs,
@@ -74,7 +74,7 @@ describe("toMcpServerConfigs", () => {
       },
     });
     expect(toMcpServerConfigs([local], browser)[server.id]).toMatchObject({
-      env: { AKERU_BROWSER_MCP_HEADERS: JSON.stringify(browser.localRequestHeaders) },
+      env: { ISNADI_BROWSER_MCP_HEADERS: JSON.stringify(browser.localRequestHeaders) },
     });
     expect(
       toMcpServerConfigs([server], { ...browser, availableToHostedPlugins: false })[server.id],
@@ -148,7 +148,7 @@ describe("provider access health", () => {
 });
 
 describe("AgentControllerLive", () => {
-  it.effect("reads Akeru subscription credentials through Mastra AuthStorage", () =>
+  it.effect("reads Isnadi subscription credentials through Mastra AuthStorage", () =>
     Effect.gen(function* () {
       const config = yield* ServerConfig;
       const authPath = NodePath.join(config.secretsDir, "subscription-auth.json");
@@ -168,7 +168,7 @@ describe("AgentControllerLive", () => {
         );
       });
 
-      const auth = yield* createAkeruMastraAuthStorage(config.secretsDir);
+      const auth = yield* createIsnadiMastraAuthStorage(config.secretsDir);
       assert.deepEqual(auth.get("openai-codex"), {
         type: "oauth",
         access: "subscription-access",
@@ -187,7 +187,7 @@ describe("AgentControllerLive", () => {
 });
 
 describe("AgentControllerLive", () => {
-  it.effect("passes Akeru subscription auth and memory storage to the custom harness", () => {
+  it.effect("passes Isnadi subscription auth and memory storage to the custom harness", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
 

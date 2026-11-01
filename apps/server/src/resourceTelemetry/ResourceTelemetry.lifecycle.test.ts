@@ -3,7 +3,7 @@ import {
   nativeGeneration,
   desktopSnapshot,
 } from "./testUtils/resourceTelemetry.ts";
-import type { DesktopHostTelemetrySnapshot } from "@akeru/contracts";
+import type { DesktopHostTelemetrySnapshot } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";

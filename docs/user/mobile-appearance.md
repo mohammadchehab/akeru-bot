@@ -1,10 +1,10 @@
 # Mobile appearance
 
-Akeru Mobile includes these themes:
+Isnadi Mobile includes these themes:
 
-- Akeru Classic
-- Akeru Paper
-- Akeru Chat
+- Isnadi Classic
+- Isnadi Paper
+- Isnadi Chat
 - Grove
 - Ocean
 - Ember

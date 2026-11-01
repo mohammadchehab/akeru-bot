@@ -6,9 +6,9 @@
  */
 import type * as NodeFS from "node:fs";
 import * as NodeFSP from "node:fs/promises";
-import type { ThreadId } from "@akeru/contracts";
-import { RotatingFileSink } from "@akeru/shared/logging";
-import { errorTag } from "@akeru/shared/observability";
+import type { ThreadId } from "@isnadi/contracts";
+import { RotatingFileSink } from "@isnadi/shared/logging";
+import { errorTag } from "@isnadi/shared/observability";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";

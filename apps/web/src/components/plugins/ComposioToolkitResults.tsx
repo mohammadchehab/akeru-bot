@@ -1,4 +1,4 @@
-import type { ComposioToolkit } from "@akeru/contracts";
+import type { ComposioToolkit } from "@isnadi/contracts";
 import { useI18n } from "../../i18n";
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";

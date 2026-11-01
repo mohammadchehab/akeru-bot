@@ -1,6 +1,6 @@
 import { PlusIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import { type ProviderInstanceEnvironmentVariable } from "@akeru/contracts";
+import { type ProviderInstanceEnvironmentVariable } from "@isnadi/contracts";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { DraftInput } from "../ui/draft-input";

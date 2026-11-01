@@ -3,7 +3,7 @@ import type { MarkdownNode } from "react-native-nitro-markdown/headless";
 import {
   nativeMarkdownTextRuns,
   nativeMarkdownWithPreservedSoftBreaks,
-} from "@akeru/mobile-markdown-text/markdown";
+} from "@isnadi/mobile-markdown-text/markdown";
 
 describe("nativeMarkdownTextRuns", () => {
   it("preserves inline emphasis and code styles", () => {

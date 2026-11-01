@@ -9,16 +9,16 @@ Use Custom MCP for experimental apps, wrappers, duplicates, and narrow utilities
 A proposal must provide evidence for every item:
 
 - People actively use the product, and a user or maintainer requested the integration.
-- The plugin completes a real Akeru Bot job. A list of generic MCP tools is not enough.
+- The plugin completes a real IsnadiBot job. A list of generic MCP tools is not enough.
 - The plugin uses an official or trusted MCP server with a maintained source and accountable publisher.
 - A maintainer can test add, connect, use, disable, re-enable, and remove behavior.
 - `logo.svg` and `logo-dark.svg` come from an official source. Record the source URL and license.
 - Setup and reference documentation is current.
 - The publisher and maintainer have public names and URLs.
 
-Describe health honestly. Use `available` only after the real connection lifecycle passes. Use `verification-pending` when a connection recipe exists but the real lifecycle has not passed. Use `approval-pending` with a concrete blocker when a vendor must approve Akeru Bot. Keep a verified official URL or local loopback recipe visible when one exists. Use an `unavailable` transport only when no trusted recipe exists. Use `deprecated` when an existing entry should remain visible but should not receive new installs.
+Describe health honestly. Use `available` only after the real connection lifecycle passes. Use `verification-pending` when a connection recipe exists but the real lifecycle has not passed. Use `approval-pending` with a concrete blocker when a vendor must approve IsnadiBot. Keep a verified official URL or local loopback recipe visible when one exists. Use an `unavailable` transport only when no trusted recipe exists. Use `deprecated` when an existing entry should remain visible but should not receive new installs.
 
-The catalog stores no token or secret. Credentials stay in the host environment or the service sign-in flow. An MCP server must not require Akeru Bot to export a provider token or secret.
+The catalog stores no token or secret. Credentials stay in the host environment or the service sign-in flow. An MCP server must not require IsnadiBot to export a provider token or secret.
 
 Declare an approval for each permission that can send, pay, delete, change production, access secrets, publish, create a signature, issue a refund, or change account-wide settings. Read-only actions use `read`.
 

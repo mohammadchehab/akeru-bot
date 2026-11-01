@@ -6,7 +6,7 @@ import {
   type ProviderInstanceConfig,
   type ProviderInstanceId,
   type ProviderSession,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import type { AgentControllerShape } from "../provider/Services/AgentController.ts";
 import { instanceUsesSavedCredential } from "./runtime.ts";

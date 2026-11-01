@@ -16,7 +16,7 @@ import {
   makeHarness,
 } from "./testUtils/channelRuntime.ts";
 import * as NodeCrypto from "node:crypto";
-import { ChannelConnectionId, CommandId, ProjectId, type ChannelBinding } from "@akeru/contracts";
+import { ChannelConnectionId, CommandId, ProjectId, type ChannelBinding } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it } from "@effect/vitest";
 import { describe, expect } from "vite-plus/test";

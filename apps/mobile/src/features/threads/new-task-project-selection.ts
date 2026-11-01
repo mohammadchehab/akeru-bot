@@ -1,5 +1,5 @@
-import type { EnvironmentProject } from "@akeru/client-runtime/state/shell";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
+import type { EnvironmentId } from "@isnadi/contracts";
 
 import { scopedProjectKey } from "../../lib/scopedEntities";
 import type { HomeProjectScope } from "../home/homeThreadList";

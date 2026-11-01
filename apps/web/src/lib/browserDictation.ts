@@ -3,7 +3,7 @@ import {
   createDictationSession,
   type DictationDependencies,
   type DictationLimits,
-} from "@akeru/client-runtime/dictation";
+} from "@isnadi/client-runtime/dictation";
 import { startDictationCapture, type DictationCaptureDependencies } from "./dictationCapture";
 
 /** Connect local browser capture to an environment-owned transcription operation. */

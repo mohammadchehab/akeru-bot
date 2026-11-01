@@ -1,4 +1,4 @@
-import { TurnId } from "@akeru/contracts";
+import { TurnId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   deriveActiveWorkStartedAt,

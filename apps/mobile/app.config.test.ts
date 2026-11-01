@@ -4,11 +4,11 @@ import { expect, it } from "vite-plus/test";
 const configUrl = new URL("./app.config.ts", import.meta.url).href;
 
 it.each([
-  ["development", "IsnadiBot Dev", ["akeru-dev", "akeru"], "dev.leodoes.akeru.dev"],
-  ["production", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
-  ["", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
-  ["preview", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
-  [" development ", "IsnadiBot", ["akeru"], "dev.leodoes.akeru"],
+  ["development", "IsnadiBot Dev", ["akeru-dev", "akeru"], "dev.leodoes.isnadi.dev"],
+  ["production", "IsnadiBot", ["akeru"], "dev.leodoes.isnadi"],
+  ["", "IsnadiBot", ["akeru"], "dev.leodoes.isnadi"],
+  ["preview", "IsnadiBot", ["akeru"], "dev.leodoes.isnadi"],
+  [" development ", "IsnadiBot", ["akeru"], "dev.leodoes.isnadi"],
 ])(
   "resolves APP_VARIANT=%j without changing app identity",
   (appVariant, name, scheme, identifier) => {
@@ -33,9 +33,9 @@ process.stdout.write(JSON.stringify({
           APP_VARIANT: appVariant,
           T3CODE_IOS_PERSONAL_TEAM: "",
           T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID: "",
-          AKERU_APPLE_TEAM_ID: "",
-          AKERU_EXPO_PROJECT_ID: "",
-          AKERU_EXPO_OWNER: "",
+          ISNADI_APPLE_TEAM_ID: "",
+          ISNADI_EXPO_PROJECT_ID: "",
+          ISNADI_EXPO_OWNER: "",
         },
       },
     );

@@ -1,4 +1,4 @@
-import type { ServerConfigStreamEvent } from "@akeru/contracts";
+import type { ServerConfigStreamEvent } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

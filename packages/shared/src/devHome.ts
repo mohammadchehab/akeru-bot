@@ -1,16 +1,16 @@
 /**
  * Where development state lives, and how to keep it away from T3 Code's
- * `~/.t3` and from this product's live `~/.akeru`.
+ * `~/.t3` and from this product's live `~/.isnadi`.
  *
- * A linked git worktree gets its own (gitignored) `.akeru`: feature work in a
+ * A linked git worktree gets its own (gitignored) `.isnadi`: feature work in a
  * throwaway branch must not share a database with the real app, and an ambient
- * `T3CODE_HOME` or `AKERU_HOME` counts as an explicit base dir — flipping the
+ * `T3CODE_HOME` or `ISNADI_HOME` counts as an explicit base dir — flipping the
  * state directory from `<base>/dev` to `<base>/userdata`, the live production
  * database.
  */
 
 /** Product data directory name. Separate from T3 Code's `.t3`. */
-export const PRODUCT_HOME_DIRNAME = ".akeru";
+export const PRODUCT_HOME_DIRNAME = ".isnadi";
 
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

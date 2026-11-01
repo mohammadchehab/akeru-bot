@@ -5,7 +5,7 @@ import {
   type OrchestrationReadModel,
   type ServerSettings,
   type ServerSettingsPatch,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 
 const SECRET_ARGUMENT =

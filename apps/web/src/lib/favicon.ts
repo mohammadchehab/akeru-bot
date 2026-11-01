@@ -1,1 +1,1 @@
-export { faviconUrlForOrigin } from "@akeru/shared/favicon";
+export { faviconUrlForOrigin } from "@isnadi/shared/favicon";

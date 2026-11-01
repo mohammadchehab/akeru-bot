@@ -5,7 +5,7 @@ import * as Effect from "effect/Effect";
 import * as NodeFSP from "node:fs/promises";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import { PROVIDER_SEND_TURN_MAX_IMAGE_BYTES } from "@akeru/contracts";
+import { PROVIDER_SEND_TURN_MAX_IMAGE_BYTES } from "@isnadi/contracts";
 import { it, expect } from "@effect/vitest";
 import { readImageFile } from "./ImageFile.ts";
 

@@ -1,11 +1,11 @@
-import { AkeruMemoryCandidateId, BotId, EnvironmentId, ThreadId } from "@akeru/contracts";
-import type { BotInboxItem } from "@akeru/client-runtime/bot-inbox";
+import { IsnadiMemoryCandidateId, BotId, EnvironmentId, ThreadId } from "@isnadi/contracts";
+import type { BotInboxItem } from "@isnadi/client-runtime/bot-inbox";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -49,7 +49,7 @@ vi.mock("../../state/use-atom-command", () => ({ useAtomCommand: () => async () 
 import { InboxIncidentRow } from "./InboxPanel";
 
 const approvalRequest = {
-  candidateId: AkeruMemoryCandidateId.make("candidate-1"),
+  candidateId: IsnadiMemoryCandidateId.make("candidate-1"),
   fact: "Deploys happen on Fridays.",
   scope: "project",
   sensitive: false,

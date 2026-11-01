@@ -1,5 +1,5 @@
 import * as Match from "effect/Match";
-import type { PreviewAutomationRequest } from "@akeru/contracts";
+import type { PreviewAutomationRequest } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
 import {
   PreviewAutomationControlInterruptedError,
@@ -15,7 +15,7 @@ import {
   PreviewTabId,
   type PreviewAutomationError,
   type PreviewAutomationResponse,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { type PreviewAutomationRequestErrorContext } from "./PreviewAutomationState.ts";
 

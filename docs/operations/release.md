@@ -1,16 +1,16 @@
 # Release runbook
 
-> Do not publish a signed Akeru Bot build until qualified legal counsel approves the current Terms
+> Do not publish a signed IsnadiBot build until qualified legal counsel approves the current Terms
 > of Use and Privacy Policy versions in `packages/contracts/src/settings.ts`.
 
-> For Akeru Bot maintainers.
+> For IsnadiBot maintainers.
 
 ## Pull requests and stable releases
 
 Every ordinary pull request commits a release decision. Run `pnpm changeset` for a shipped change,
 select one product package, choose `patch`, `minor`, or `major`, and write a concise user-facing
 summary. Use `pnpm changeset --empty` for documentation, tests, refactors, and internal tooling.
-The four product packages (`akeru-bot`, desktop, web, and contracts) are a fixed group and always
+The four product packages (`isnadibot`, desktop, web, and contracts) are a fixed group and always
 receive the same version. Packages without versions remain outside the release train.
 
 After changes reach `main`, the Version packages workflow runs `pnpm release:version`, force-pushes
@@ -20,7 +20,7 @@ changelogs, and consumes the changeset files. The pull request body lists the ne
 of every package that changed. Merging this pull request is the deliberate stable release button. That merge
 starts the native builds, verifies every artifact, creates the `vX.Y.Z` tag, and creates the stable
 GitHub Release. Ordinary feature merges do not release immediately, and this flow does not publish
-the `akeru-bot` npm package. CI rejects stable-version edits from every PR except the authenticated,
+the `isnadibot` npm package. CI rejects stable-version edits from every PR except the authenticated,
 repository-owned Changesets PR.
 
 Before merging the Version Packages pull request, refresh the bundled model catalog with
@@ -51,9 +51,9 @@ anything. Dispatch it from GitHub Actions with a version such as `0.0.0-smoke.0`
 - Public dependencies install from the committed lockfile. No dependency may resolve through a
   local path outside the repository.
 - The release configuration passes `scripts/release-smoke.ts`.
-- macOS builds one arm64 DMG with the `dev.leodoes.akeru` bundle identifier.
+- macOS builds one arm64 DMG with the `dev.leodoes.isnadi` bundle identifier.
 - Unsigned macOS builds use a sealed ad-hoc signature. The workflow verifies the signature and the
-  `dev.leodoes.akeru` identifier.
+  `dev.leodoes.isnadi` identifier.
 - Signed macOS builds use a Developer ID Application certificate. Electron-builder submits and
   staples the app before it packages the DMG. The workflow submits and staples the DMG separately.
 - Signed apps include the Electron hardened-runtime and microphone entitlements. The workflow
@@ -111,7 +111,7 @@ vp run build:desktop
 Run the CLI package dry-run after the server build has produced `apps/server/dist/client`:
 
 ```sh
-vp run --filter akeru-bot build
+vp run --filter isnadibot build
 node apps/server/scripts/cli.ts publish --dry-run --app-version 0.0.0-smoke.0 --verbose
 ```
 

@@ -1,4 +1,4 @@
-import { ThreadId, TurnId } from "@akeru/contracts";
+import { ThreadId, TurnId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { buildThreadListV2Items } from "./threadListV2";
 import { NOW, makeThread } from "./threadListV2.test-support";

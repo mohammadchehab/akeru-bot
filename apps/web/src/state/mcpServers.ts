@@ -1,5 +1,5 @@
-import { createMcpServerEnvironmentAtoms } from "@akeru/client-runtime/state/mcp-servers";
-import type { EnvironmentId, McpServer } from "@akeru/contracts";
+import { createMcpServerEnvironmentAtoms } from "@isnadi/client-runtime/state/mcp-servers";
+import type { EnvironmentId, McpServer } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 
 import { connectionAtomRuntime } from "../connection/runtime";

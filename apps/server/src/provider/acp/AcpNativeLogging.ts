@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import type { ProviderDriverKind, ThreadId } from "@akeru/contracts";
-import { causeErrorTag, errorTag } from "@akeru/shared/observability";
+import type { ProviderDriverKind, ThreadId } from "@isnadi/contracts";
+import { causeErrorTag, errorTag } from "@isnadi/shared/observability";
 import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";

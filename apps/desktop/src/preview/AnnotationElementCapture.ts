@@ -1,6 +1,6 @@
 import { getElementContext } from "react-grab/primitives";
 
-import type { PickedElementPayload, PickedElementStackFrame } from "@akeru/contracts";
+import type { PickedElementPayload, PickedElementStackFrame } from "@isnadi/contracts";
 
 function toStackFrame(frame: {
   functionName?: string;

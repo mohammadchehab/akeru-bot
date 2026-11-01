@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import type { DesktopSshEnvironmentTarget, EnvironmentId } from "@akeru/contracts";
-import { resolveRemotePairingTarget } from "@akeru/shared/remote";
+import type { DesktopSshEnvironmentTarget, EnvironmentId } from "@isnadi/contracts";
+import { resolveRemotePairingTarget } from "@isnadi/shared/remote";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -69,7 +69,7 @@ export class ConnectionOnboarding extends Context.Service<
       input: BearerConnectionUpdateInput,
     ) => Effect.Effect<void, ConnectionAttemptError | Persistence.ConnectionPersistenceError>;
   }
->()("@akeru/client-runtime/connection/onboarding/ConnectionOnboarding") {}
+>()("@isnadi/client-runtime/connection/onboarding/ConnectionOnboarding") {}
 
 const resolvePairingTarget = Effect.fn("clientRuntime.connection.onboarding.resolvePairingTarget")(
   function* (input: PairingConnectionInput) {

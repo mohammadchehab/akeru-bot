@@ -1,6 +1,6 @@
-import { AkeruMemoryRootId, BotId, ThreadId } from "@akeru/contracts";
+import { IsnadiMemoryRootId, BotId, ThreadId } from "@isnadi/contracts";
 import { Predicate } from "effect";
-import type { DurableMemoryFact } from "@akeru/client-runtime/durable-memory";
+import type { DurableMemoryFact } from "@isnadi/client-runtime/durable-memory";
 import { createElement, isValidElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -14,14 +14,14 @@ vi.mock("react-native", () => ({
 }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useMobileI18n: () => ({ ...translator, t: translator.translate }) };
 });
 
 const fact = {
-  rootId: AkeruMemoryRootId.make("m1"),
+  rootId: IsnadiMemoryRootId.make("m1"),
   fact: "Prefers detailed replies.",
   scope: "bot-user",
   sourceThreadId: ThreadId.make("thread-1"),
@@ -102,17 +102,22 @@ describe("mobile durable facts", () => {
       facts: [
         {
           ...fact,
-          rootId: AkeruMemoryRootId.make("m1"),
+          rootId: IsnadiMemoryRootId.make("m1"),
           sourceThreadId: ThreadId.make("thread-2"),
           affectedBotIds: [BotId.make("bot-9")],
         },
         {
           ...fact,
-          rootId: AkeruMemoryRootId.make("m2"),
+          rootId: IsnadiMemoryRootId.make("m2"),
           sourceThreadId: ThreadId.make("thread-9"),
           affectedBotIds: [],
         },
-        { ...fact, rootId: AkeruMemoryRootId.make("m3"), sourceThreadId: null, affectedBotIds: [] },
+        {
+          ...fact,
+          rootId: IsnadiMemoryRootId.make("m3"),
+          sourceThreadId: null,
+          affectedBotIds: [],
+        },
       ] satisfies DurableMemoryFact[],
     });
 
@@ -212,7 +217,7 @@ describe("mobile durable fact actions", () => {
 
   it("shows the edit draft and the last failure", () => {
     const tree = render({
-      editing: { rootId: AkeruMemoryRootId.make("m1"), draft: "Prefers bullet points." },
+      editing: { rootId: IsnadiMemoryRootId.make("m1"), draft: "Prefers bullet points." },
       failure: "This fact changed somewhere else. The latest version is shown now.",
     });
 
@@ -274,7 +279,7 @@ describe("mobile durable fact actions", () => {
   it("marks only the fact that is saving", () => {
     const other = {
       ...fact,
-      rootId: AkeruMemoryRootId.make("m2"),
+      rootId: IsnadiMemoryRootId.make("m2"),
       fact: "Uses metric units.",
     } satisfies DurableMemoryFact;
 

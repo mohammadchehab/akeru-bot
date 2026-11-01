@@ -12,10 +12,10 @@ import {
   MAX_KEYBINDINGS_COUNT,
   ResolvedKeybindingsConfig,
   type ServerConfigIssue,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
-import { fromJsonStringPretty, fromLenientJson } from "@akeru/shared/schemaJson";
-import { DEFAULT_RESOLVED_KEYBINDINGS } from "@akeru/shared/keybindings";
+import { fromJsonStringPretty, fromLenientJson } from "@isnadi/shared/schemaJson";
+import { DEFAULT_RESOLVED_KEYBINDINGS } from "@isnadi/shared/keybindings";
 
 import { ResolvedKeybindingFromConfig } from "./keybindingRules.ts";
 

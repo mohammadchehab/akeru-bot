@@ -1,11 +1,11 @@
 import * as Schema from "effect/Schema";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import {
-  AKERU_MEMORY_TOOL_DESCRIPTION,
+  ISNADI_MEMORY_TOOL_DESCRIPTION,
   createBotMemoryToolHandler,
-  type AkeruMemoryShareFact,
+  type IsnadiMemoryShareFact,
 } from "./BotMemoryToolHandlers.ts";
 
 const access = { botId: BotId.make("bot-ada"), groupId: null, groupMemberBotIds: [] };
@@ -17,7 +17,7 @@ const untouchedStore = {
 };
 
 const call = (
-  shareFact: AkeruMemoryShareFact | undefined,
+  shareFact: IsnadiMemoryShareFact | undefined,
   input: Schema.JsonObject,
   store: Parameters<typeof createBotMemoryToolHandler>[0] = untouchedStore,
 ) =>
@@ -29,13 +29,13 @@ const call = (
 
 describe("memory tool shared facts", () => {
   it("describes when to share and how to treat a pending approval", () => {
-    expect(AKERU_MEMORY_TOOL_DESCRIPTION).toContain("pass share with the exact fact text");
-    expect(AKERU_MEMORY_TOOL_DESCRIPTION).toContain("Set sensitive to true");
-    expect(AKERU_MEMORY_TOOL_DESCRIPTION).toContain("do not call share again for the same fact");
+    expect(ISNADI_MEMORY_TOOL_DESCRIPTION).toContain("pass share with the exact fact text");
+    expect(ISNADI_MEMORY_TOOL_DESCRIPTION).toContain("Set sensitive to true");
+    expect(ISNADI_MEMORY_TOOL_DESCRIPTION).toContain("do not call share again for the same fact");
   });
 
   it("reports a pending share without reading or writing documents", async () => {
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => ({ status: "pending" }));
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => ({ status: "pending" }));
 
     const result = await call(shareFact, {
       target: "user",
@@ -56,7 +56,7 @@ describe("memory tool shared facts", () => {
   });
 
   it("shares for an agent granted only shared scopes, but keeps its documents closed", async () => {
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => ({ status: "pending" }));
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => ({ status: "pending" }));
     const sharedOnly = createBotMemoryToolHandler(untouchedStore, access, new Set(), shareFact);
 
     const invoke = (input: Schema.JsonObject) =>
@@ -77,7 +77,7 @@ describe("memory tool shared facts", () => {
   });
 
   it("passes sensitivity through and reports a saved share", async () => {
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => ({ status: "saved" }));
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => ({ status: "saved" }));
 
     const result = await call(shareFact, {
       target: "user",
@@ -102,7 +102,7 @@ describe("memory tool shared facts", () => {
       }),
     ).rejects.toThrow("Shared memory is not available in this chat.");
 
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => ({ status: "pending" }));
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => ({ status: "pending" }));
     await expect(
       call(shareFact, {
         target: "user",
@@ -114,7 +114,7 @@ describe("memory tool shared facts", () => {
   });
 
   it("does not share when the document write fails", async () => {
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => ({ status: "pending" }));
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => ({ status: "pending" }));
 
     const failingStore = {
       readDocument: vi.fn(() => Promise.reject(new Error("unexpected read"))),
@@ -136,7 +136,7 @@ describe("memory tool shared facts", () => {
   });
 
   it("reports a failed share beside a document write that already committed", async () => {
-    const shareFact = vi.fn<AkeruMemoryShareFact>(async () => {
+    const shareFact = vi.fn<IsnadiMemoryShareFact>(async () => {
       throw new Error("This bot cannot share to the project.");
     });
 

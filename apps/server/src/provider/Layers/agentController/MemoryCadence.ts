@@ -1,13 +1,13 @@
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 
-import { type ProviderRuntimeEvent, ThreadId } from "@akeru/contracts";
+import { type ProviderRuntimeEvent, ThreadId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
-import type { AkeruControllerHarness } from "../../mastra/AkeruHarnessTypes.ts";
+import type { IsnadiControllerHarness } from "../../mastra/IsnadiHarnessTypes.ts";
 
-import { type AkeruMemoryTurn } from "../../AkeruMemoryTurnHarness.ts";
-import { type AkeruDelegationChildOutcome } from "../../AkeruDelegationRuntime.ts";
+import { type IsnadiMemoryTurn } from "../../IsnadiMemoryTurnHarness.ts";
+import { type IsnadiDelegationChildOutcome } from "../../IsnadiDelegationRuntime.ts";
 
 import { AgentControllerRuntimeError } from "../../Errors.ts";
 
@@ -19,18 +19,18 @@ import {
 } from "./State.ts";
 
 export function createMemoryCadence(deps: {
-  readonly forkPromise: AkeruRuntimeSeam["forkPromise"];
-  readonly mastraMemoryTurns: Map<string, AkeruMemoryTurn>;
+  readonly forkPromise: IsnadiRuntimeSeam["forkPromise"];
+  readonly mastraMemoryTurns: Map<string, IsnadiMemoryTurn>;
   readonly runMastra: <A>(
     operation: string,
     run: (signal: AbortSignal) => Promise<A>,
   ) => Effect.Effect<A, AgentControllerRuntimeError, never>;
   readonly hasLegacyPending: (key: string, pending: LegacyTurnMemoryState) => boolean;
-  readonly resolveChildWaiter: (threadId: ThreadId, outcome: AkeruDelegationChildOutcome) => void;
+  readonly resolveChildWaiter: (threadId: ThreadId, outcome: IsnadiDelegationChildOutcome) => void;
   readonly restoreLegacyMemoryHandler: (key: string, pending: LegacyTurnMemoryState) => void;
   readonly removeLegacyPending: (key: string, pending: LegacyTurnMemoryState) => void;
   readonly legacyPending: (key: string) => LegacyTurnMemoryState[];
-  readonly bundle: AkeruControllerHarness;
+  readonly bundle: IsnadiControllerHarness;
   readonly legacyBufferedTerminals: Map<string, Map<string, ProviderRuntimeEvent>>;
   readonly resolvedByThread: Map<string, ResolvedEngine>;
 }) {
@@ -122,7 +122,7 @@ export function createMemoryCadence(deps: {
         const observeExternalTurn = deps.bundle.observeExternalTurn;
         const turnId = pending.turnId ?? `legacy-${event.eventId}`;
         deps.forkPromise(
-          "Akeru background observational memory failed.",
+          "Isnadi background observational memory failed.",
           () =>
             observeExternalTurn({
               threadId: key,
@@ -175,7 +175,7 @@ export function createMemoryCadence(deps: {
     turn.memoryQueued = true;
     const observeAfterTurn = deps.bundle.observeAfterTurn;
     deps.forkPromise(
-      "Akeru background observational memory failed.",
+      "Isnadi background observational memory failed.",
       () =>
         observeAfterTurn({
           threadId: String(threadId),

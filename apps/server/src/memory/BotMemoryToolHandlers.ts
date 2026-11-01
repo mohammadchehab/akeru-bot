@@ -1,50 +1,52 @@
 import {
-  AkeruMemoryDocumentTarget,
-  AkeruMemoryFileOperation,
-  AkeruMemoryShareScope,
+  IsnadiMemoryDocumentTarget,
+  IsnadiMemoryFileOperation,
+  IsnadiMemoryShareScope,
   TrimmedNonEmptyString,
-  type AkeruMemoryShareScope as AkeruMemoryShareScopeValue,
-  type AkeruMemoryDocumentTarget as AkeruMemoryDocumentTargetValue,
-} from "@akeru/contracts";
+  type IsnadiMemoryShareScope as IsnadiMemoryShareScopeValue,
+  type IsnadiMemoryDocumentTarget as IsnadiMemoryDocumentTargetValue,
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
-import type { AkeruToolExecution } from "../provider/AkeruToolRuntime.ts";
+import type { IsnadiToolExecution } from "../provider/IsnadiToolRuntime.ts";
 import { assertSafeContent, type BotMemoryAccess, type BotMemoryStore } from "./BotMemory.ts";
 
-export type AkeruMemoryToolId = "memory";
+export type IsnadiMemoryToolId = "memory";
 
-export const AkeruMemoryToolInputSchema = Schema.Struct({
-  target: AkeruMemoryDocumentTarget,
-  operations: Schema.Array(AkeruMemoryFileOperation),
+export const IsnadiMemoryToolInputSchema = Schema.Struct({
+  target: IsnadiMemoryDocumentTarget,
+  operations: Schema.Array(IsnadiMemoryFileOperation),
   share: Schema.optional(
     Schema.Struct({
       fact: TrimmedNonEmptyString,
-      scope: AkeruMemoryShareScope,
+      scope: IsnadiMemoryShareScope,
       sensitive: Schema.optional(Schema.Boolean),
     }),
   ),
 });
 
-export type AkeruMemoryToolInput = typeof AkeruMemoryToolInputSchema.Type;
+export type IsnadiMemoryToolInput = typeof IsnadiMemoryToolInputSchema.Type;
 
-export interface AkeruMemoryShareRequest {
+export interface IsnadiMemoryShareRequest {
   readonly fact: string;
-  readonly scope: AkeruMemoryShareScopeValue;
+  readonly scope: IsnadiMemoryShareScopeValue;
   readonly sensitive: boolean;
 }
 
-export type AkeruMemoryShareOutcome = { readonly status: "saved" } | { readonly status: "pending" };
+export type IsnadiMemoryShareOutcome =
+  | { readonly status: "saved" }
+  | { readonly status: "pending" };
 
 // Saves or proposes a shared fact. Undefined when shared memory is unavailable.
-export type AkeruMemoryShareFact = (
-  request: AkeruMemoryShareRequest,
-) => Promise<AkeruMemoryShareOutcome>;
+export type IsnadiMemoryShareFact = (
+  request: IsnadiMemoryShareRequest,
+) => Promise<IsnadiMemoryShareOutcome>;
 
-export type AkeruMemoryToolHandler = (
-  input: Omit<AkeruToolExecution, "toolId"> & { readonly toolId: AkeruMemoryToolId },
+export type IsnadiMemoryToolHandler = (
+  input: Omit<IsnadiToolExecution, "toolId"> & { readonly toolId: IsnadiMemoryToolId },
 ) => Promise<Schema.JsonObject>;
 
-export const AKERU_MEMORY_TOOL_DESCRIPTION = `Read or save durable context in this bot's Markdown memory. Call with an empty operations array to read a target when its contents were not supplied in your session context.
+export const ISNADI_MEMORY_TOOL_DESCRIPTION = `Read or save durable context in this bot's Markdown memory. Call with an empty operations array to read a target when its contents were not supplied in your session context.
 
 Proactively use this tool during ordinary conversation when the user reveals a stable preference, personal fact, desire, identity detail, or lasting expectation for how you should work. Call it in the same turn as the disclosure. The user does not need to say "remember" or explicitly ask you to save it. For example, "I really like cats" belongs in the user target as a compact entry such as "User likes cats." Make incidental memory updates silently without announcing them or turning them into a separate response.
 
@@ -59,9 +61,9 @@ Shared memory: to save a fact that other bots or future chats in this project, g
 export function createBotMemoryToolHandler(
   store: Pick<BotMemoryStore, "mutate" | "readDocument">,
   access: BotMemoryAccess,
-  allowedTargets: ReadonlySet<AkeruMemoryDocumentTargetValue>,
-  shareFact?: AkeruMemoryShareFact,
-): Record<AkeruMemoryToolId, AkeruMemoryToolHandler> {
+  allowedTargets: ReadonlySet<IsnadiMemoryDocumentTargetValue>,
+  shareFact?: IsnadiMemoryShareFact,
+): Record<IsnadiMemoryToolId, IsnadiMemoryToolHandler> {
   return {
     memory: async ({ input }) => {
       const decoded = decodeMemoryToolInput(input);
@@ -89,7 +91,7 @@ export function createBotMemoryToolHandler(
               operations: decoded.operations,
             });
 
-      let shared: AkeruMemoryShareOutcome | undefined;
+      let shared: IsnadiMemoryShareOutcome | undefined;
       let shareError: string | undefined;
 
       if (decoded.share && shareFact) {
@@ -164,4 +166,4 @@ export function createBotMemoryToolHandler(
   };
 }
 
-const decodeMemoryToolInput = Schema.decodeUnknownSync(AkeruMemoryToolInputSchema);
+const decodeMemoryToolInput = Schema.decodeUnknownSync(IsnadiMemoryToolInputSchema);

@@ -20,7 +20,7 @@ import {
   discordConnect,
   externalAdapters,
 } from "./testUtils/channelRuntime.ts";
-import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@akeru/contracts";
+import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it } from "@effect/vitest";
 import { describe, expect } from "vite-plus/test";

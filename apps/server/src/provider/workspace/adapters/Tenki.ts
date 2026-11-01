@@ -1,6 +1,6 @@
-import { type AkeruRemoteSession, type AkeruWorkspaceState } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type IsnadiWorkspaceState } from "../BotWorkspaceTypes.ts";
 
-export function tenki(session: import("@tenkicloud/sandbox").Session): AkeruRemoteSession {
+export function tenki(session: import("@tenkicloud/sandbox").Session): IsnadiRemoteSession {
   return {
     providerId: session.id,
     inspect: async () => {
@@ -51,7 +51,7 @@ export function tenki(session: import("@tenkicloud/sandbox").Session): AkeruRemo
 
 export function tenkiWorkspaceState(
   state: import("@tenkicloud/sandbox").SessionState,
-): AkeruWorkspaceState {
+): IsnadiWorkspaceState {
   switch (state) {
     case "RUNNING":
       return "running";

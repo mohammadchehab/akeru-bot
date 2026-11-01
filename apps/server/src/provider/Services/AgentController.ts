@@ -1,6 +1,6 @@
 import type {
-  AkeruConversationMemorySnapshot,
-  AkeruMemoryThreadAccess,
+  IsnadiConversationMemorySnapshot,
+  IsnadiMemoryThreadAccess,
   ComposioToolkit,
   BotEngine,
   BotId,
@@ -22,12 +22,15 @@ import type {
   OrchestrationReadModel,
   OrchestrationThread,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as Stream from "effect/Stream";
 
-import type { AkeruDelegationDispatch, AkeruDelegationHandle } from "../AkeruDelegationRuntime.ts";
+import type {
+  IsnadiDelegationDispatch,
+  IsnadiDelegationHandle,
+} from "../IsnadiDelegationRuntime.ts";
 import type { AgentControllerError, AgentControllerRuntimeError } from "../Errors.ts";
 import type { ProviderAdapterCapabilities } from "./ProviderAdapter.ts";
 import type { ProviderInstanceRoutingInfo } from "./ProviderAdapterRegistry.ts";
@@ -78,8 +81,8 @@ export interface AgentControllerShape {
   }) => Effect.Effect<void>;
   /** Starts a delegation retry or a scheduled delegation; no live turn owns it. */
   readonly dispatchDelegation?: (
-    input: AkeruDelegationDispatch,
-  ) => Effect.Effect<AkeruDelegationHandle, AgentControllerRuntimeError>;
+    input: IsnadiDelegationDispatch,
+  ) => Effect.Effect<IsnadiDelegationHandle, AgentControllerRuntimeError>;
 
   readonly authenticateMcpServer: (input: {
     readonly server: McpServer;
@@ -91,7 +94,7 @@ export interface AgentControllerShape {
 
   readonly readConversationMemory?: (
     threadId: ThreadId,
-  ) => Effect.Effect<AkeruConversationMemorySnapshot, AgentControllerError>;
+  ) => Effect.Effect<IsnadiConversationMemorySnapshot, AgentControllerError>;
 
   readonly clearConversationMemory?: (
     threadId: ThreadId,
@@ -99,11 +102,11 @@ export interface AgentControllerShape {
 
   readonly restoreConversationMemory?: (
     threadId: ThreadId,
-    snapshot: AkeruConversationMemorySnapshot,
-    expectedSnapshot?: AkeruConversationMemorySnapshot,
+    snapshot: IsnadiConversationMemorySnapshot,
+    expectedSnapshot?: IsnadiConversationMemorySnapshot,
   ) => Effect.Effect<void, AgentControllerError>;
 
-  /** Resolve a thread's selected mode and model to an available Akeru provider instance. */
+  /** Resolve a thread's selected mode and model to an available Isnadi provider instance. */
   readonly resolveEngine: (input: {
     readonly threadId: ThreadId;
     readonly engine: BotEngine | null;
@@ -119,7 +122,7 @@ export interface AgentControllerShape {
 
   readonly startSession: (
     threadId: ThreadId,
-    input: ProviderSessionStartInput & { readonly memoryAccess?: AkeruMemoryThreadAccess },
+    input: ProviderSessionStartInput & { readonly memoryAccess?: IsnadiMemoryThreadAccess },
   ) => Effect.Effect<ProviderSession, AgentControllerError>;
 
   readonly sendTurn: (
@@ -162,5 +165,5 @@ export interface AgentControllerShape {
 }
 
 export class AgentController extends Context.Service<AgentController, AgentControllerShape>()(
-  "akeru-bot/provider/Services/AgentController",
+  "isnadibot/provider/Services/AgentController",
 ) {}

@@ -3,7 +3,7 @@ import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { memo, useCallback, type MouseEvent as ReactMouseEvent } from "react";
 import { useI18n } from "../../i18n";
 import { cn } from "../../lib/utils";

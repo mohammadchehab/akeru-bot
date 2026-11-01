@@ -1,15 +1,17 @@
 #!/usr/bin/env node
+// Must stay first: maps legacy AKERU_* variables before anything reads the environment.
+import "@isnadi/shared/legacyEnv";
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 
-import { resolveGitWorktreePath, resolveWorktreeT3Home } from "@akeru/shared/devHome";
+import { resolveGitWorktreePath, resolveWorktreeT3Home } from "@isnadi/shared/devHome";
 
-import { HostProcessEnvironment, HostProcessWorkingDirectory } from "@akeru/shared/hostProcess";
+import { HostProcessEnvironment, HostProcessWorkingDirectory } from "@isnadi/shared/hostProcess";
 
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import * as Effect from "effect/Effect";
 
@@ -457,7 +459,7 @@ export function runDevRunnerWithInput(input: DevRunnerCliInput) {
 
     const hostEnvironment = yield* HostProcessEnvironment;
     // A dev server started inside a worktree defaults to that worktree's own
-    // (gitignored) `.akeru` — see @akeru/shared/devHome for why this must
+    // (gitignored) `.isnadi` — see @isnadi/shared/devHome for why this must
     // outrank an ambient T3CODE_HOME. `--home-dir` still wins.
     const worktreeHome = yield* resolveWorktreeT3Home(yield* HostProcessWorkingDirectory);
 
@@ -652,7 +654,7 @@ const devRunnerCli = Command.make("dev-runner", {
   ),
   t3Home: Flag.string("home-dir").pipe(
     Flag.withDescription(
-      "Explicit Akeru Bot data directory; runtime state is stored under userdata (equivalent to T3CODE_HOME). Inside a git worktree this defaults to that worktree's own .akeru so dev state stays off the shared home.",
+      "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to T3CODE_HOME). Inside a git worktree this defaults to that worktree's own .isnadi so dev state stays off the shared home.",
     ),
     Flag.optional,
     Flag.map(Option.getOrUndefined),

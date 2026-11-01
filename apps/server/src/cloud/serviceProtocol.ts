@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import { flow } from "effect/Function";
-import type { ServerSelfUpdateOutcome } from "@akeru/contracts";
+import type { ServerSelfUpdateOutcome } from "@isnadi/contracts";
 
 /** Protocol 2 snapshots SQLite before trials so migrations can be rolled back safely. */
 export const SERVICE_LAUNCHER_PROTOCOL = 2;

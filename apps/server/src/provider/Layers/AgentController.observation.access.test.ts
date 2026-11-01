@@ -2,13 +2,13 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProviderDriverKind,
   ProjectId,
-  type AkeruDelegationAccessGrant,
-} from "@akeru/contracts";
+  type IsnadiDelegationAccessGrant,
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -34,7 +34,7 @@ describe("AgentControllerLive", () => {
     const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-delegated-grant-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
 
-    const access: AkeruDelegationAccessGrant = {
+    const access: IsnadiDelegationAccessGrant = {
       allowedToolIds: ["Read"],
       memoryScopes: ["bot"],
       sandbox: "local",
@@ -83,8 +83,8 @@ describe("AgentControllerLive", () => {
         modelSelection: codexSelection,
         runtimeMode: "approval-required",
         memoryAccess: {
-          tenantId: AkeruMemoryTenantId.make("local"),
-          userId: AkeruMemoryUserId.make("owner"),
+          tenantId: IsnadiMemoryTenantId.make("local"),
+          userId: IsnadiMemoryUserId.make("owner"),
           threadId: codexThreadId,
           projectId: ProjectId.make("delegation-memory-grant"),
           workspaceRoot: process.cwd(),

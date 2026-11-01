@@ -1,5 +1,5 @@
-import type { EnvironmentShellState } from "@akeru/client-runtime/state/shell";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentShellState } from "@isnadi/client-runtime/state/shell";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 
 import type { WorkspaceEnvironment, WorkspaceState } from "../../state/workspaceModel";

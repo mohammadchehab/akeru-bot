@@ -1,4 +1,4 @@
-import { ApprovalRequestId, EnvironmentId, ProjectId, ThreadId } from "@akeru/contracts";
+import { ApprovalRequestId, EnvironmentId, ProjectId, ThreadId } from "@isnadi/contracts";
 
 export function scopedProjectKey(environmentId: EnvironmentId, projectId: ProjectId): string {
   return `${environmentId}:${projectId}`;

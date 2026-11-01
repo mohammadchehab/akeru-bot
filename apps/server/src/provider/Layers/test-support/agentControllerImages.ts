@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { BotId, TurnId, type OrchestrationCommand } from "@akeru/contracts";
-import type { AkeruUsageEntry } from "@akeru/contracts";
+import { BotId, TurnId, type OrchestrationCommand } from "@isnadi/contracts";
+import type { IsnadiUsageEntry } from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -120,7 +120,7 @@ export function makeImageRuntimeTestLayer(input: {
                 reservedTokens: 0,
                 unavailableReason: null,
                 settledAt: measurement.createdAt,
-              } as AkeruUsageEntry;
+              } as IsnadiUsageEntry;
             }),
         }),
       ),

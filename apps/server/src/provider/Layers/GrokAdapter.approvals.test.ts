@@ -12,7 +12,7 @@ import {
   ProviderDriverKind,
   ThreadId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   makeMockGrokWrapper,
   readJsonLines,

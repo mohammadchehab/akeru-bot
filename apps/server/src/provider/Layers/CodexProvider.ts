@@ -8,8 +8,8 @@ import * as Result from "effect/Result";
 import * as Scope from "effect/Scope";
 import * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawner";
 import * as CodexErrors from "effect-codex-app-server/errors";
-import type { CodexSettings, ServerProvider } from "@akeru/contracts";
-import { ServerSettingsError } from "@akeru/contracts";
+import type { CodexSettings, ServerProvider } from "@isnadi/contracts";
+import { ServerSettingsError } from "@isnadi/contracts";
 import { resolveCodexLaunchArgs } from "./codexLaunchArgs.ts";
 import {
   AUTH_PROBE_TIMEOUT_MS,

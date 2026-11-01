@@ -2,7 +2,7 @@ import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   CommandId,
   IsoDateTime,
@@ -173,9 +173,9 @@ export const RoutineDefinition = Schema.Struct({
 
 export type RoutineDefinition = typeof RoutineDefinition.Type;
 
-export const AKERU_CREATE_ROUTINE_TOOL_NAME = "akeru_create_routine";
+export const ISNADI_CREATE_ROUTINE_TOOL_NAME = "akeru_create_routine";
 
-export const AkeruCreateRoutineInput = Schema.Struct({
+export const IsnadiCreateRoutineInput = Schema.Struct({
   name: TrimmedNonEmptyString,
   instructions: TrimmedNonEmptyString,
   schedule: RoutineSchedule,
@@ -183,7 +183,7 @@ export const AkeruCreateRoutineInput = Schema.Struct({
   connectorNames: Schema.optional(Schema.Array(TrimmedNonEmptyString)),
 });
 
-export type AkeruCreateRoutineInput = typeof AkeruCreateRoutineInput.Type;
+export type IsnadiCreateRoutineInput = typeof IsnadiCreateRoutineInput.Type;
 
 export const Routine = Schema.Struct({
   id: RoutineId,
@@ -220,7 +220,7 @@ const RoutineRunFields = {
   status: RoutineRunStatus,
   result: Schema.NullOr(RoutineRunResult),
   failure: Schema.NullOr(RoutineRunFailure),
-  usageRef: Schema.NullOr(AkeruUsageReservationId),
+  usageRef: Schema.NullOr(IsnadiUsageReservationId),
   threadRef: Schema.NullOr(ThreadId),
   startedAt: Schema.NullOr(IsoDateTime),
   completedAt: Schema.NullOr(IsoDateTime),
@@ -389,7 +389,7 @@ export const RoutineRunFailCommand = Schema.Struct({
   ...RoutineCommandFields,
   runId: RoutineRunId,
   failure: RoutineRunFailure,
-  usageRef: Schema.NullOr(AkeruUsageReservationId),
+  usageRef: Schema.NullOr(IsnadiUsageReservationId),
   createdAt: IsoDateTime,
 });
 
@@ -398,7 +398,7 @@ export const RoutineRunCompleteCommand = Schema.Struct({
   ...RoutineCommandFields,
   runId: RoutineRunId,
   result: RoutineRunResult,
-  usageRef: Schema.NullOr(AkeruUsageReservationId),
+  usageRef: Schema.NullOr(IsnadiUsageReservationId),
   nextRunAt: Schema.NullOr(IsoDateTime),
   createdAt: IsoDateTime,
 });

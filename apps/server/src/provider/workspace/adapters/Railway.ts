@@ -1,5 +1,5 @@
 import { credential, commandLine } from "../BotWorkspaceLifecycle.ts";
-import { type AkeruRemoteSession, type AkeruWorkspaceState } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type IsnadiWorkspaceState } from "../BotWorkspaceTypes.ts";
 
 export function railwayCredentials(environment: Readonly<Record<string, string>>) {
   return {
@@ -8,8 +8,8 @@ export function railwayCredentials(environment: Readonly<Record<string, string>>
   };
 }
 
-export function railway(sandbox: import("railway").Sandbox): AkeruRemoteSession {
-  const inspect = async (): Promise<AkeruWorkspaceState> => {
+export function railway(sandbox: import("railway").Sandbox): IsnadiRemoteSession {
+  const inspect = async (): Promise<IsnadiWorkspaceState> => {
     const { SandboxNotFoundError } = await import("railway");
 
     try {
@@ -51,7 +51,7 @@ export function railway(sandbox: import("railway").Sandbox): AkeruRemoteSession 
 
 export function railwayWorkspaceState(
   status: import("railway").SandboxStatus,
-): AkeruWorkspaceState {
+): IsnadiWorkspaceState {
   if (status === "RUNNING") return "running";
 
   if (status === "CREATING") return "sleeping";

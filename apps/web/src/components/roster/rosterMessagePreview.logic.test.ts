@@ -122,8 +122,8 @@ describe("resolveLatestRosterMessage", () => {
 describe("flattenMarkdownPreview", () => {
   it("strips emphasis, code, and strikethrough but keeps the words", () => {
     expect(
-      flattenMarkdownPreview("**September at Akeru** was _busy_, *very* ~~slow~~ `fast`"),
-    ).toBe("September at Akeru was busy, very slow fast");
+      flattenMarkdownPreview("**September at Isnadi** was _busy_, *very* ~~slow~~ `fast`"),
+    ).toBe("September at Isnadi was busy, very slow fast");
   });
 
   it("keeps link labels and drops images", () => {

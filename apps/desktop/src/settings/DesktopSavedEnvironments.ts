@@ -1,4 +1,4 @@
-import { type PersistedSavedEnvironmentRecord } from "@akeru/contracts";
+import { type PersistedSavedEnvironmentRecord } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
@@ -74,7 +74,7 @@ export class DesktopSavedEnvironments extends Context.Service<
       environmentId: string,
     ) => Effect.Effect<void, DesktopSavedEnvironmentsMutationError>;
   }
->()("@akeru/desktop/settings/DesktopSavedEnvironments") {}
+>()("@isnadi/desktop/settings/DesktopSavedEnvironments") {}
 
 export const make = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;

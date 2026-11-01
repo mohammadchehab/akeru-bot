@@ -15,14 +15,14 @@ import { type CommandAvailabilityChecker, isCommandAvailable } from "./shell/com
 import { resolveKnownWindowsCliDirs } from "./shell/windows.ts";
 
 export const WindowsShellEnvironment = Context.Reference<WindowsShellEnvironmentReader>(
-  "@akeru/shared/shell/WindowsShellEnvironment",
+  "@isnadi/shared/shell/WindowsShellEnvironment",
   {
     defaultValue: () => readEnvironmentFromWindowsShell,
   },
 );
 
 export const CommandAvailability = Context.Reference<CommandAvailabilityChecker>(
-  "@akeru/shared/shell/CommandAvailability",
+  "@isnadi/shared/shell/CommandAvailability",
   {
     defaultValue: () => isCommandAvailable,
   },

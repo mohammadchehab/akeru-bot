@@ -4,7 +4,7 @@ import {
   ProductFeedbackReceipt,
   ProductFeedbackRejection,
   type ProductFeedbackSubmission,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Exit from "effect/Exit";
 import * as Schema from "effect/Schema";
 

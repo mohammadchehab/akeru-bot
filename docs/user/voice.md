@@ -24,7 +24,7 @@ In **Settings > Providers > Voice > API connections**:
 2. Select **Test**. This checks API access, not whether every paid audio capability works for your account. If the service rejects the key, its status changes from **Key saved** to **Key rejected** until you save a replacement key. Every device connected to the environment shows the same status.
 3. For **Transcribe, reply, speak**, choose a **Transcription provider** and a **Speech provider**, then choose a **Speech voice** from that service's list. Select **More voices** to load the next page.
 
-| Service    | Supported by Akeru                                                               |
+| Service    | Supported by Isnadi                                                              |
 | ---------- | -------------------------------------------------------------------------------- |
 | OpenAI API | Realtime conversation, file transcription, speech synthesis.                     |
 | ElevenLabs | File transcription and speech synthesis.                                         |
@@ -51,12 +51,12 @@ Provider errors name the problem without switching services:
 - "The voice provider reported a quota, billing, or rate limit" means the service refused the request for quota, billing, or rate limits. Check that service's account.
 - "Could not reach the voice provider" means a network failure. Restore the connection and start a new call.
 
-If the environment disconnects, reconnect and start a new call. Akeru does not resume a disconnected call by billing a different provider.
+If the environment disconnects, reconnect and start a new call. Isnadi does not resume a disconnected call by billing a different provider.
 
 ## Audio and transcript privacy
 
 Direct realtime calls send microphone audio to ChatGPT or OpenAI's Realtime service. Composed calls send recorded audio through the environment server to the selected transcription service. The bot's existing agent receives the resulting chat turn, and the synthesis service receives the completed reply text.
 
-Akeru does not persist raw call recordings or generated audio. Call transcripts and normal bot messages remain in chat history. Audio is processed in bounded temporary buffers. Credentials, raw audio, and private transcript text must not appear in diagnostics or telemetry.
+Isnadi does not persist raw call recordings or generated audio. Call transcripts and normal bot messages remain in chat history. Audio is processed in bounded temporary buffers. Credentials, raw audio, and private transcript text must not appear in diagnostics or telemetry.
 
 Each service controls its own processing and retention. API access does not imply zero retention. See [Privacy and outbound data](privacy.md) and your provider's current terms. Calls do not enable composer dictation or automatic playback of other chat replies.

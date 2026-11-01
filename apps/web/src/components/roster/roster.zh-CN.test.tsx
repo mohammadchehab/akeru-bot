@@ -1,5 +1,5 @@
-import { catalogRegistry } from "@akeru/client-runtime/i18n";
-import { BotId, EnvironmentId, ProviderInstanceId } from "@akeru/contracts";
+import { catalogRegistry } from "@isnadi/client-runtime/i18n";
+import { BotId, EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -92,15 +92,15 @@ function makeBot(id: string, name: string): Bot {
   };
 }
 
-const akeru = makeBot("bot-akeru", "Akeru");
+const akeru = makeBot("bot-akeru", "Isnadi");
 
 const mori = makeBot("bot-mori", "Mori");
 
 describe("roster in Simplified Chinese", () => {
   it("translates the bot details panel", () => {
     const markup = renderInChinese(<BotDetailsPanel bot={akeru} />);
-    expect(markup).toContain("打开 Akeru 机器人侧边栏");
-    expect(markup).toContain("收起 Akeru 机器人侧边栏");
+    expect(markup).toContain("打开 Isnadi 机器人侧边栏");
+    expect(markup).toContain("收起 Isnadi 机器人侧边栏");
     expect(markup).toContain("没有可用的提供商");
     expect(markup).not.toContain("No provider ready");
     expect(markup).not.toContain("Open bot settings");

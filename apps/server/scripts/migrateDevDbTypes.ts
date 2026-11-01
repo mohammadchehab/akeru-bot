@@ -5,7 +5,7 @@ export class MigrateDevDbNotInWorktreeError extends Schema.TaggedErrorClass<Migr
   {},
 ) {
   override get message(): string {
-    return "Not inside a linked git worktree. Pass --base-dir to target an isolated .akeru directory.";
+    return "Not inside a linked git worktree. Pass --base-dir to target an isolated .isnadi directory.";
   }
 }
 
@@ -14,7 +14,7 @@ export class MigrateDevDbSharedHomeError extends Schema.TaggedErrorClass<Migrate
   {},
 ) {
   override get message(): string {
-    return "Refusing to rebuild the shared ~/.akeru database. Use an isolated --base-dir.";
+    return "Refusing to rebuild the shared ~/.isnadi database. Use an isolated --base-dir.";
   }
 }
 
@@ -54,9 +54,9 @@ export class MigrateDevDbPhaseError extends Schema.TaggedErrorClass<MigrateDevDb
 }
 
 export interface RunMigrateDevDbInput {
-  /** Isolated .akeru directory. Defaults to `<worktree>/.akeru` of the cwd. */
+  /** Isolated .isnadi directory. Defaults to `<worktree>/.isnadi` of the cwd. */
   readonly baseDir?: string | undefined;
-  /** Source database. Defaults to `~/.akeru/userdata/state.sqlite`. */
+  /** Source database. Defaults to `~/.isnadi/userdata/state.sqlite`. */
   readonly source?: string | undefined;
   readonly projects: number;
   readonly threadsPerProject: number;

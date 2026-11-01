@@ -134,7 +134,7 @@ export default defineConfig({
     ],
     plugins: ["eslint", "oxc", "react", "unicorn", "typescript"],
     jsPlugins: [
-      "./oxlint-plugin-akeru/index.ts",
+      "./oxlint-plugin-isnadi/index.ts",
       { name: "anti-slop", specifier: "./oxlint-plugin-anti-slop/index.ts" },
       { name: "anti-slop-effect", specifier: "./oxlint-plugin-anti-slop/effect/index.ts" },
       "@shadcn/lint",
@@ -175,9 +175,9 @@ export default defineConfig({
         {
           paths: [
             {
-              name: "@akeru/client-runtime",
+              name: "@isnadi/client-runtime",
               message:
-                "Import from an explicit @akeru/client-runtime/* subpath. The package has no root export.",
+                "Import from an explicit @isnadi/client-runtime/* subpath. The package has no root export.",
             },
             {
               name: "@pierre/diffs/react",
@@ -188,12 +188,12 @@ export default defineConfig({
           ],
         },
       ],
-      "akeru/no-global-process-runtime": "error",
-      "akeru/no-inline-schema-compile": "error",
-      "akeru/no-lint-suppressions": "error",
-      "akeru/no-manual-effect-runtime-in-tests": "error",
-      "akeru/no-native-title-tooltip": "error",
-      "akeru/namespace-node-imports": "error",
+      "isnadi/no-global-process-runtime": "error",
+      "isnadi/no-inline-schema-compile": "error",
+      "isnadi/no-lint-suppressions": "error",
+      "isnadi/no-manual-effect-runtime-in-tests": "error",
+      "isnadi/no-native-title-tooltip": "error",
+      "isnadi/namespace-node-imports": "error",
       "typescript/no-explicit-any": "error",
       "eslint/max-lines": ["error", { max: 800, skipBlankLines: true, skipComments: true }],
       ...ANTI_SLOP_RULES,
@@ -267,7 +267,7 @@ export default defineConfig({
           "scripts/**/*.{mjs,cjs}",
         ],
         rules: {
-          "akeru/no-global-process-runtime": "off",
+          "isnadi/no-global-process-runtime": "off",
           "anti-slop/no-runtime-typeof": "off",
         },
       },
@@ -280,7 +280,7 @@ export default defineConfig({
           "shadcn/no-inline-styles": "error",
           "shadcn/no-unknown-classes": "error",
           "shadcn/require-static-classes": "error",
-          "akeru/no-raw-palette-strings": "error",
+          "isnadi/no-raw-palette-strings": "error",
         },
       },
       {
@@ -288,7 +288,7 @@ export default defineConfig({
         // to prove those helpers handle them. The strings are inputs, never rendered UI.
         files: ["apps/web/src/**/*.test.{ts,tsx}"],
         rules: {
-          "akeru/no-raw-palette-strings": "off",
+          "isnadi/no-raw-palette-strings": "off",
         },
       },
       {

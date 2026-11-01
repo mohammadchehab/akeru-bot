@@ -12,7 +12,7 @@ import {
   AttachmentNotFoundError,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { issueAssetUrl } from "./assets/AssetAccess.ts";
 import { deletePendingAttachment, issueAttachmentUploadUrl } from "./assets/AttachmentUpload.ts";
 import { resolveAttachmentPathById } from "./attachmentStore.ts";

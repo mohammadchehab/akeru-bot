@@ -3,7 +3,7 @@ import { Predicate } from "effect";
 import type { ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   BotId,
   EnvironmentId,
   EventId,
@@ -11,10 +11,10 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-  type AkeruDelegationState,
+  type IsnadiDelegationState,
   type OrchestrationThreadActivity,
   type OrchestrationThreadShell,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Schema from "effect/Schema";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
@@ -58,7 +58,7 @@ vi.mock("react", async (importOriginal) => {
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => mocks.navigate }));
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -99,7 +99,7 @@ import { delegationClockState } from "./delegationClock";
 import { visitElements } from "../test-support/reactTree";
 import type { Bot } from "./types";
 
-const decodeDelegationRecord = Schema.decodeUnknownSync(AkeruDelegationRecord);
+const decodeDelegationRecord = Schema.decodeUnknownSync(IsnadiDelegationRecord);
 
 const parentBot: Bot = {
   id: "bot-parent",
@@ -172,7 +172,7 @@ const CHILD_RUN = {
 
 const FINISHED_AT = "2026-08-31T00:01:00.000Z";
 
-function phaseFor(state: AkeruDelegationState) {
+function phaseFor(state: IsnadiDelegationState) {
   switch (state) {
     case "queued":
       return { _tag: "Queued" };
@@ -205,7 +205,7 @@ function phaseFor(state: AkeruDelegationState) {
   }
 }
 
-function delegation(state: AkeruDelegationState, overrides: TestProps = {}) {
+function delegation(state: IsnadiDelegationState, overrides: TestProps = {}) {
   return decodeDelegationRecord({
     delegationId: `delegation-${state}`,
     parentDelegationId: null,
@@ -250,7 +250,7 @@ function usage(turnId: string, totalProcessedTokens: number): OrchestrationThrea
 }
 
 function renderCard(
-  state: AkeruDelegationState,
+  state: IsnadiDelegationState,
   bot: Bot | null = childBot,
   parent: Bot | null = parentBot,
 ) {
@@ -264,7 +264,7 @@ function renderCard(
   );
 }
 
-function cardElement(state: AkeruDelegationState, bot: Bot | null = childBot) {
+function cardElement(state: IsnadiDelegationState, bot: Bot | null = childBot) {
   return DelegationCard({
     delegation: delegation(state),
     delegations: [],

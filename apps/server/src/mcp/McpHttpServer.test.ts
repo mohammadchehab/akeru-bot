@@ -200,13 +200,13 @@ it.effect("registers annotated tools and preserves authenticated request context
             })),
             Match.when("evaluate", () => ({
               arbitrary: "unrecognizable-secret",
-              chatPath: "/Users/leo/.akeru/chat.json",
+              chatPath: "/Users/leo/.isnadi/chat.json",
               screenshot,
             })),
             Match.when("recordingStop", () => ({
               id: "recording-1",
               tabId,
-              path: "/Users/leo/.akeru/browser-artifacts/recording.webm",
+              path: "/Users/leo/.isnadi/browser-artifacts/recording.webm",
               mimeType: "video/webm",
               sizeBytes: 123,
               createdAt: "2026-01-01T00:00:00Z",

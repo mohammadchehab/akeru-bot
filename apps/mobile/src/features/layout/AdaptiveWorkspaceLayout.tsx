@@ -1,5 +1,5 @@
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import { EnvironmentId, ThreadId, type SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
+import { EnvironmentId, ThreadId, type SidebarProjectGroupingMode } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";

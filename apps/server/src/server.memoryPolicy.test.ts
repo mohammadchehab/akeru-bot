@@ -2,20 +2,20 @@ import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
-  type AkeruMemoryRevision,
-  type AkeruMemoryThreadAccess,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryThreadAccess,
   BotId,
   DEFAULT_SERVER_SETTINGS,
   ProjectId,
   ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -31,8 +31,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const threadId = ThreadId.make("thread-facts-gated");
       const botId = BotId.make("bot-facts-gated");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/facts-gated";
 
       const project = {
@@ -55,7 +55,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         respondingBotId: null,
       });
 
-      const access: AkeruMemoryThreadAccess = {
+      const access: IsnadiMemoryThreadAccess = {
         tenantId,
         userId,
         threadId,
@@ -68,17 +68,17 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         groupMemberBotIds: [],
       };
 
-      const revision = (id: string, scope: "thread" | "bot"): AkeruMemoryRevision => ({
-        id: AkeruMemoryId.make(id),
-        rootId: AkeruMemoryRootId.make(id),
+      const revision = (id: string, scope: "thread" | "bot"): IsnadiMemoryRevision => ({
+        id: IsnadiMemoryId.make(id),
+        rootId: IsnadiMemoryRootId.make(id),
         revision: 1,
         partition: {
           tenantId,
           scope,
-          partitionId: AkeruMemoryPartitionId.make(scope === "thread" ? threadId : botId),
+          partitionId: IsnadiMemoryPartitionId.make(scope === "thread" ? threadId : botId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: {},
         fact: `Gated durable fact ${id}`,
@@ -159,7 +159,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
                 threadId,
                 mutation: {
                   operation: "fact.scope",
-                  memoryId: AkeruMemoryRootId.make(memoryId),
+                  memoryId: IsnadiMemoryRootId.make(memoryId),
                   expectedRevision,
                   scope: "bot",
                 },
@@ -181,7 +181,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       assert.deepEqual(yield* listFacts("bot"), [botFact.rootId]);
       assert.deepEqual(yield* listFacts("thread"), [threadFact.rootId]);
       const deniedPrivate = yield* moveToBot(threadFact.rootId, 1);
-      assert.equal(deniedPrivate._tag, "AkeruMemoryOperationError");
+      assert.equal(deniedPrivate._tag, "IsnadiMemoryOperationError");
 
       // Cleanup actions on existing bot-private facts still work.
       const forgotten = yield* Effect.scoped(
@@ -232,7 +232,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(privateDocError._tag, "AkeruMemoryOperationError");
+      assert.equal(privateDocError._tag, "IsnadiMemoryOperationError");
       yield* Effect.scoped(
         withWsRpcClient(wsUrl, (client) =>
           client[WS_METHODS.memoryDocumentReplace]({
@@ -266,7 +266,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(deniedEdit._tag, "AkeruMemoryOperationError");
+      assert.equal(deniedEdit._tag, "IsnadiMemoryOperationError");
 
       const deniedUserDoc = yield* Effect.flip(
         Effect.scoped(
@@ -282,7 +282,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(deniedUserDoc._tag, "AkeruMemoryOperationError");
+      assert.equal(deniedUserDoc._tag, "IsnadiMemoryOperationError");
 
       // Archive imports can still be previewed, but applying one is rejected
       // and leaves the facts untouched.
@@ -310,7 +310,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      if (!Predicate.isTagged(deniedImport, "AkeruMemoryOperationError")) {
+      if (!Predicate.isTagged(deniedImport, "IsnadiMemoryOperationError")) {
         return assert.fail("expected a memory operation error");
       }
 
@@ -342,7 +342,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      if (!Predicate.isTagged(deniedDurableImport, "AkeruMemoryOperationError"))
+      if (!Predicate.isTagged(deniedDurableImport, "IsnadiMemoryOperationError"))
         return assert.fail("expected a memory error");
       assert.equal(deniedDurableImport.detail, "Memory is turned off.");
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),

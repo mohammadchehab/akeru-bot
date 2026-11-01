@@ -9,7 +9,7 @@ interface ThreadTitleContext {
   readonly attachments: ReadonlyArray<ChatAttachment>;
 }
 
-import { type ChatAttachment } from "@akeru/contracts";
+import { type ChatAttachment } from "@isnadi/contracts";
 import {
   MAX_FIRST_USER_TITLE_CONTEXT_CHARS,
   FIRST_USER_CONTEXT_TRUNCATION_MARKER,

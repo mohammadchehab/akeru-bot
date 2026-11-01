@@ -1,8 +1,8 @@
 import type {
-  AkeruMemoryDocumentTarget,
-  AkeruMemoryRevision,
-  AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  IsnadiMemoryDocumentTarget,
+  IsnadiMemoryRevision,
+  IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import { toBotMemoryError, type BotMemoryAccess, type BotMemoryStore } from "./BotMemory.ts";
@@ -14,8 +14,8 @@ export interface LegacyMemoryMigrationReport {
 }
 
 export function legacyMemoryMigrationAccesses(
-  access: AkeruMemoryThreadAccess,
-): ReadonlyArray<AkeruMemoryThreadAccess> {
+  access: IsnadiMemoryThreadAccess,
+): ReadonlyArray<IsnadiMemoryThreadAccess> {
   const botId = access.respondingBotId ?? access.botId;
 
   if (!botId || access.groupId === null) return [access];
@@ -26,7 +26,7 @@ export function legacyMemoryMigrationAccesses(
   ];
 }
 
-export function legacyMemoryMigrationKeys(access: AkeruMemoryThreadAccess): ReadonlyArray<string> {
+export function legacyMemoryMigrationKeys(access: IsnadiMemoryThreadAccess): ReadonlyArray<string> {
   const botId = access.respondingBotId ?? access.botId;
 
   if (!botId) return [];
@@ -39,7 +39,7 @@ export function legacyMemoryMigrationKeys(access: AkeruMemoryThreadAccess): Read
   ];
 }
 
-const archiveEntry = (revision: AkeruMemoryRevision, reason: string) =>
+const archiveEntry = (revision: IsnadiMemoryRevision, reason: string) =>
   [
     `## ${revision.rootId}`,
     "",
@@ -54,10 +54,10 @@ async function migrateSet(input: {
   readonly store: BotMemoryStore;
   readonly access: BotMemoryAccess;
   readonly migrationKey: string;
-  readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+  readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
   readonly classify: (
-    revision: AkeruMemoryRevision,
-  ) => AkeruMemoryDocumentTarget | "archive" | "skip";
+    revision: IsnadiMemoryRevision,
+  ) => IsnadiMemoryDocumentTarget | "archive" | "skip";
 }): Promise<LegacyMemoryMigrationReport> {
   let migrated = 0;
   const archived: string[] = [];
@@ -133,8 +133,8 @@ async function migrateSet(input: {
 
 export async function migrateLegacyBotMemory(input: {
   readonly store: BotMemoryStore;
-  readonly access: AkeruMemoryThreadAccess;
-  readonly revisions: ReadonlyArray<AkeruMemoryRevision>;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly revisions: ReadonlyArray<IsnadiMemoryRevision>;
 }): Promise<ReadonlyArray<LegacyMemoryMigrationReport>> {
   const botId = input.access.respondingBotId ?? input.access.botId;
 

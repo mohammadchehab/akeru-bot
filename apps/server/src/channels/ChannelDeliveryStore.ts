@@ -1,4 +1,4 @@
-import { BotId, ChannelProvider, IsoDateTime, MessageId, ThreadId } from "@akeru/contracts";
+import { BotId, ChannelProvider, IsoDateTime, MessageId, ThreadId } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -42,7 +42,7 @@ export interface ChannelDeliveryStoreShape {
 export class ChannelDeliveryStore extends Context.Service<
   ChannelDeliveryStore,
   ChannelDeliveryStoreShape
->()("akeru-bot/channels/ChannelDeliveryStore") {}
+>()("isnadibot/channels/ChannelDeliveryStore") {}
 
 export const makeChannelDeliveryStore = Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;

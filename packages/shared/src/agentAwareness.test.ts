@@ -6,8 +6,8 @@ import type {
   OrchestrationThreadShell,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 
 import { projectThreadAwareness } from "./agentAwareness.ts";
 

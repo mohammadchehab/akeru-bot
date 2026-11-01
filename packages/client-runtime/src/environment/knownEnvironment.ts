@@ -1,4 +1,4 @@
-import type { EnvironmentId, ExecutionEnvironmentDescriptor } from "@akeru/contracts";
+import type { EnvironmentId, ExecutionEnvironmentDescriptor } from "@isnadi/contracts";
 
 export interface KnownEnvironmentConnectionTarget {
   readonly httpBaseUrl: string;

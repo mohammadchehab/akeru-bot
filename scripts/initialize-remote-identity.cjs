@@ -4,7 +4,7 @@ const crypto = require("node:crypto");
 
 const path = require("node:path");
 
-const baseDir = process.env.AKERU_HOME || path.join(require("node:os").homedir(), ".akeru");
+const baseDir = process.env.ISNADI_HOME || path.join(require("node:os").homedir(), ".isnadi");
 
 const directory = path.join(baseDir, "userdata");
 
@@ -58,10 +58,10 @@ if (
   !fs.existsSync(journalPath) &&
   (!fs.existsSync(identityPath) || fs.statSync(identityPath).size === 0) &&
   readId() &&
-  process.env.AKERU_REMOTE_ALLOW_IDENTITY_MIGRATION !== "1"
+  process.env.ISNADI_REMOTE_ALLOW_IDENTITY_MIGRATION !== "1"
 ) {
   throw new Error(
-    "This Akeru home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.",
+    "This Isnadi home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.",
   );
 }
 
@@ -105,7 +105,7 @@ if (fs.existsSync(identityPath) && fs.statSync(identityPath).size > 0) {
 
 const oldEnvironmentId = readId();
 
-if (oldEnvironmentId && process.env.AKERU_REMOTE_ALLOW_IDENTITY_MIGRATION !== "1")
+if (oldEnvironmentId && process.env.ISNADI_REMOTE_ALLOW_IDENTITY_MIGRATION !== "1")
   throw new Error("Existing environment identity requires --migrate-environment-id.");
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");

@@ -1,4 +1,4 @@
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -162,7 +162,7 @@ describe("buildGroupedRosterSections", () => {
   it("keeps only matching unassigned bots", () => {
     const sections = buildGroupedRosterSections(
       [
-        bot({ id: "1", name: "Akeru", label: "Research" }),
+        bot({ id: "1", name: "Isnadi", label: "Research" }),
         bot({ id: "2", name: "Mori", label: "Design" }),
       ],
       [],
@@ -216,7 +216,7 @@ describe("buildRosterTiles", () => {
 
 describe("filterRosterBots", () => {
   const bots = [
-    bot({ id: "1", name: "Akeru", label: "Research", description: "Finds evidence" }),
+    bot({ id: "1", name: "Isnadi", label: "Research", description: "Finds evidence" }),
     bot({ id: "2", name: "Mori", label: "Design", description: "Reviews interfaces" }),
   ];
 
@@ -278,7 +278,7 @@ describe("roster bot shortcuts", () => {
 });
 
 describe("filterRosterGroups", () => {
-  const bots = [bot({ id: "boss", name: "Akeru" }), bot({ id: "specialist", name: "Mori" })];
+  const bots = [bot({ id: "boss", name: "Isnadi" }), bot({ id: "specialist", name: "Mori" })];
 
   const groups: Group[] = [
     {

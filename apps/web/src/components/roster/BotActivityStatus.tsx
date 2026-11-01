@@ -1,6 +1,6 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { ThreadSilentRun } from "@akeru/client-runtime/silent-run";
-import type { OrchestrationThreadActivity, TurnId } from "@akeru/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
+import type { OrchestrationThreadActivity, TurnId } from "@isnadi/contracts";
 import type { CSSProperties } from "react";
 
 import { useI18n } from "../../i18n";

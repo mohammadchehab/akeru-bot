@@ -1,8 +1,8 @@
-import type { AkeruPluginRuntimeOptions } from "../../AkeruCatalogToolHandlers.ts";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
+import type { IsnadiPluginRuntimeOptions } from "../../IsnadiCatalogToolHandlers.ts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 
-import type { RuntimeMode } from "@akeru/contracts";
+import type { RuntimeMode } from "@isnadi/contracts";
 
 import {
   TurnId,
@@ -12,22 +12,22 @@ import {
   type ProviderRuntimeEvent,
   type ProviderSession,
   ThreadId,
-  type AkeruMemoryThreadAccess,
+  type IsnadiMemoryThreadAccess,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Semaphore from "effect/Semaphore";
 import { type BotMemoryAccess } from "../../../memory/BotMemory.ts";
-import { type AkeruMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
-import { type AkeruControllerSession } from "../../mastra/AkeruHarnessTypes.ts";
-import { type AkeruMemoryTurn } from "../../AkeruMemoryTurnHarness.ts";
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
+import { type IsnadiMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
+import { type IsnadiControllerSession } from "../../mastra/IsnadiHarnessTypes.ts";
+import { type IsnadiMemoryTurn } from "../../IsnadiMemoryTurnHarness.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
 import {
   type AgentControllerSendTurnInput,
   type AgentControllerShape,
 } from "../../Services/AgentController.ts";
 
-export type MastraSession = AkeruControllerSession;
+export type MastraSession = IsnadiControllerSession;
 
 export interface ResolvedEngine {
   readonly modelSelection: ModelSelection;
@@ -65,9 +65,9 @@ export interface PendingTurn {
   readonly turnId: TurnId;
   readonly message: Parameters<MastraSession["sendMessage"]>[0];
   readonly botUsage: AgentControllerSendTurnInput["botUsage"];
-  readonly toolSession: AkeruToolSession;
+  readonly toolSession: IsnadiToolSession;
   readonly memoryAccess: BotMemoryAccess | undefined;
-  readonly entityMemoryAccess: AkeruMemoryThreadAccess | undefined;
+  readonly entityMemoryAccess: IsnadiMemoryThreadAccess | undefined;
   readonly reviewInput: string;
   readonly hiddenWake: boolean;
   readonly delegationResults: string | undefined;
@@ -96,12 +96,12 @@ export interface ActiveSession {
   readonly toolNames: Map<string, string>;
   readonly approvalRequests: Map<string, { readonly name: string; readonly input: unknown }>;
   readonly connectorSessionApprovals: Set<string>;
-  toolSession: AkeruToolSession;
+  toolSession: IsnadiToolSession;
   memoryAccess: BotMemoryAccess | undefined;
-  entityMemoryAccess: AkeruMemoryThreadAccess | undefined;
-  configuredToolSession: AkeruToolSession;
+  entityMemoryAccess: IsnadiMemoryThreadAccess | undefined;
+  configuredToolSession: IsnadiToolSession;
   configuredMemoryAccess: BotMemoryAccess | undefined;
-  configuredEntityMemoryAccess: AkeruMemoryThreadAccess | undefined;
+  configuredEntityMemoryAccess: IsnadiMemoryThreadAccess | undefined;
   privateBotMemory: boolean;
   readonly workspaceResourceKey: string;
   readonly pendingApprovals: Map<string, PendingApproval>;
@@ -123,10 +123,10 @@ export interface LegacyTurnMemoryState {
   dispatchReturned: boolean;
   readonly earlyEvents: Array<ProviderRuntimeEvent>;
   assistant: string;
-  readonly memoryTurn: AkeruMemoryTurn | undefined;
+  readonly memoryTurn: IsnadiMemoryTurn | undefined;
   readonly hiddenWake: boolean;
-  priorMemoryHandler?: AkeruMemoryToolHandler;
-  reviewMemoryHandler?: AkeruMemoryToolHandler;
+  priorMemoryHandler?: IsnadiMemoryToolHandler;
+  reviewMemoryHandler?: IsnadiMemoryToolHandler;
 }
 
 export interface LegacyResourceIdentity {
@@ -135,7 +135,7 @@ export interface LegacyResourceIdentity {
   readonly provider: ProviderDriverKind;
   readonly providerInstanceId: ProviderInstanceId;
   memoryAccess: BotMemoryAccess | undefined;
-  entityMemoryAccess: AkeruMemoryThreadAccess | undefined;
+  entityMemoryAccess: IsnadiMemoryThreadAccess | undefined;
   readonly botName: string | undefined;
   readonly personalityTone: BotPersonalityTone;
   readonly memoryAccessKey: string | undefined;
@@ -145,5 +145,5 @@ export interface LegacyResourceIdentity {
 /** Orchestration access for temporary workers and delegation. */
 export interface WorkerOrchestration {
   readonly readSnapshot: () => Promise<OrchestrationReadModel>;
-  readonly dispatch: AkeruPluginRuntimeOptions["dispatch"];
+  readonly dispatch: IsnadiPluginRuntimeOptions["dispatch"];
 }

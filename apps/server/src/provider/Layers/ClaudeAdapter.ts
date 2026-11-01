@@ -29,8 +29,8 @@ import {
   type ProviderRuntimeEvent,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
 
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";

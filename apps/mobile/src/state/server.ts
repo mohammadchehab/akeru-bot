@@ -1,5 +1,5 @@
-import { createServerEnvironmentAtoms } from "@akeru/client-runtime/state/server";
-import { createEnvironmentServerConfigsAtom } from "@akeru/client-runtime/state/shell";
+import { createServerEnvironmentAtoms } from "@isnadi/client-runtime/state/server";
+import { createEnvironmentServerConfigsAtom } from "@isnadi/client-runtime/state/shell";
 
 import { environmentCatalog } from "../connection/catalog";
 import { connectionAtomRuntime } from "../connection/runtime";

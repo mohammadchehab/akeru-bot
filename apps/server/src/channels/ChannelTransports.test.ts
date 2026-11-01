@@ -20,7 +20,7 @@ import {
   CommandId,
   DEFAULT_SERVER_SETTINGS,
   MessageId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Queue from "effect/Queue";
 import { it } from "@effect/vitest";
@@ -93,7 +93,7 @@ describe("channel transports", () => {
           slack.chat.processMessage(
             slack.adapter,
             externalThreadId,
-            chatMessage(externalThreadId, "1710000000.000001", "<@U-AKERU> look", true),
+            chatMessage(externalThreadId, "1710000000.000001", "<@U-ISNADI> look", true),
           ),
         );
         const turn = yield* Queue.take(harness.turns);
@@ -201,7 +201,7 @@ describe("channel transports", () => {
               if (method === "getMe")
                 return Response.json({
                   ok: true,
-                  result: { id: 1, is_bot: true, first_name: "Akeru", username: "akeru" },
+                  result: { id: 1, is_bot: true, first_name: "Isnadi", username: "akeru" },
                 });
 
               if (method === "deleteWebhook" || method === "deleteMyCommands")
@@ -270,7 +270,7 @@ describe("channel transports", () => {
             imessage.chat.processMessage(
               imessage.adapter,
               group,
-              chatMessage(group, id, "Akeru, help", isMention),
+              chatMessage(group, id, "Isnadi, help", isMention),
             ),
           );
         }

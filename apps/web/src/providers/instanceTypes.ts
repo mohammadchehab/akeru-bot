@@ -4,7 +4,7 @@ import {
   type ServerProvider,
   type ServerProviderModel,
   type ServerProviderState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 /**
  * UI-facing projection of one configured provider instance. Carries the

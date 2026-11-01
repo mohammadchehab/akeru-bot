@@ -1,7 +1,7 @@
 import { Data, Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { createAssetEnvironmentAtoms, resolveAssetUrl } from "@akeru/client-runtime/state/assets";
-import type { AssetResource, EnvironmentId } from "@akeru/contracts";
+import { createAssetEnvironmentAtoms, resolveAssetUrl } from "@isnadi/client-runtime/state/assets";
+import type { AssetResource, EnvironmentId } from "@isnadi/contracts";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 
 import { connectionAtomRuntime } from "../connection/runtime";

@@ -5,7 +5,7 @@ import * as NodeOS from "node:os";
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
 import * as Context from "effect/Context";
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import { describe, it } from "vite-plus/test";
 
 const scriptPath = NodePath.resolve(import.meta.dirname, "./install-linux.sh");
@@ -51,20 +51,20 @@ describe.runIf(
     "directory",
   ]) {
     it(`handles ${scenario} without leaving staging files`, () => {
-      const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-install-test-"));
+      const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-install-test-"));
 
       try {
         const bin = NodePath.join(root, "bin");
         const home = NodePath.join(root, "home");
         const temp = NodePath.join(root, "tmp");
-        const destination = NodePath.join(home, ".local/bin/akeru-bot");
+        const destination = NodePath.join(home, ".local/bin/isnadibot");
 
         for (const directory of [bin, temp, NodePath.dirname(destination)]) {
           NodeFS.mkdirSync(directory, { recursive: true });
         }
 
         const payload = "fixture AppImage bytes\n";
-        const asset = "Akeru-Bot-1.2.3-x64.AppImage";
+        const asset = "IsnadiBot-1.2.3-x64.AppImage";
         const digest = NodeCrypto.createHash("sha256").update(payload).digest("hex");
         NodeFS.writeFileSync(NodePath.join(root, "payload"), payload);
         NodeFS.writeFileSync(
@@ -119,10 +119,10 @@ esac
           NodeAssert.equal(result.status, 0, result.stderr);
           NodeAssert.equal(NodeFS.readFileSync(destination, "utf8"), payload);
           NodeAssert.ok(NodeFS.statSync(destination).mode & 0o111);
-          NodeAssert.match(result.stdout, /Installed Akeru Bot v1.2.3\./);
+          NodeAssert.match(result.stdout, /Installed IsnadiBot v1.2.3\./);
         } else {
           NodeAssert.notEqual(result.status, 0);
-          NodeAssert.doesNotMatch(result.stdout, /Installed Akeru Bot/);
+          NodeAssert.doesNotMatch(result.stdout, /Installed IsnadiBot/);
 
           if (scenario === "directory") {
             NodeAssert.ok(NodeFS.statSync(destination).isDirectory());
@@ -131,7 +131,7 @@ esac
           }
         }
 
-        NodeAssert.deepEqual(NodeFS.readdirSync(NodePath.dirname(destination)), ["akeru-bot"]);
+        NodeAssert.deepEqual(NodeFS.readdirSync(NodePath.dirname(destination)), ["isnadibot"]);
         NodeAssert.deepEqual(NodeFS.readdirSync(temp), []);
       } finally {
         NodeFS.rmSync(root, { recursive: true, force: true });
@@ -173,7 +173,7 @@ describe("install-linux.sh", () => {
     if (help === null) return;
     NodeAssert.equal(help.status, 0);
     NodeAssert.match(help.stdout, /usage: install-linux\.sh \[--tag vX\.Y\.Z\]/);
-    NodeAssert.match(help.stdout, /Akeru-Bot-.*-x64\.AppImage/);
+    NodeAssert.match(help.stdout, /IsnadiBot-.*-x64\.AppImage/);
 
     const unknown = tryBash(["--bogus"]);
     NodeAssert.notEqual(unknown, null);
@@ -191,7 +191,7 @@ describe("install-linux.sh", () => {
   });
 
   it("downloads the same-tag AppImage and SHA256SUMS", () => {
-    NodeAssert.match(script, /appimage="Akeru-Bot-\$\{version\}-x64\.AppImage"/);
+    NodeAssert.match(script, /appimage="IsnadiBot-\$\{version\}-x64\.AppImage"/);
     NodeAssert.match(
       script,
       /base="https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$\{tag\}"/,
@@ -211,7 +211,7 @@ describe("install-linux.sh", () => {
   });
 
   it("installs atomically to ~/.local/bin with a per-run staging path", () => {
-    NodeAssert.match(script, /dest="\$HOME\/\.local\/bin\/akeru-bot"/);
+    NodeAssert.match(script, /dest="\$HOME\/\.local\/bin\/isnadibot"/);
     NodeAssert.match(script, /mkdir -p "\$HOME\/\.local\/bin"/);
     NodeAssert.match(script, /if \[ -e "\$dest" \] && \[ ! -f "\$dest" \]; then/);
     NodeAssert.match(script, /refusing to overwrite non-regular file/);
@@ -226,11 +226,11 @@ describe("install-linux.sh", () => {
   });
 
   it("prints the exact success sentence last", () => {
-    NodeAssert.match(script, /^echo "Installed Akeru Bot \$tag\."$/m);
+    NodeAssert.match(script, /^echo "Installed IsnadiBot \$tag\."$/m);
     const lines = script.split("\n");
-    const installed = lines.filter((line) => line === 'echo "Installed Akeru Bot $tag."');
+    const installed = lines.filter((line) => line === 'echo "Installed IsnadiBot $tag."');
     NodeAssert.equal(installed.length, 1);
-    NodeAssert.ok(script.trimEnd().endsWith('echo "Installed Akeru Bot $tag."'));
+    NodeAssert.ok(script.trimEnd().endsWith('echo "Installed IsnadiBot $tag."'));
   });
 
   it("documents a private-temp-file one-liner that preserves failures", () => {
@@ -240,10 +240,10 @@ describe("install-linux.sh", () => {
       /raw\.githubusercontent\.com\/opencoredev\/akeru-bot\/\$t\/scripts\/install-linux\.sh/,
     );
     NodeAssert.match(script, /--tag "\$t"/);
-    NodeAssert.match(script, /f=\$\(mktemp \/tmp\/akeru-install\.XXXXXX\)/);
-    NodeAssert.match(script, /Could not resolve the latest Akeru Bot release/);
-    NodeAssert.match(script, /rc=\$\?; rm -f "\$\{f:-\/tmp\/akeru-install-none\}"; \(exit \$rc\)/);
-    NodeAssert.doesNotMatch(script, /curl -fsSL -o \/tmp\/akeru-install-linux\.sh/);
+    NodeAssert.match(script, /f=\$\(mktemp \/tmp\/isnadi-install\.XXXXXX\)/);
+    NodeAssert.match(script, /Could not resolve the latest IsnadiBot release/);
+    NodeAssert.match(script, /rc=\$\?; rm -f "\$\{f:-\/tmp\/isnadi-install-none\}"; \(exit \$rc\)/);
+    NodeAssert.doesNotMatch(script, /curl -fsSL -o \/tmp\/isnadi-install-linux\.sh/);
     NodeAssert.doesNotMatch(script, /\|\s*(bash|sh)([\s;]|$)/);
   });
 
@@ -254,7 +254,7 @@ describe("install-linux.sh", () => {
     for (const line of echoes) {
       NodeAssert.match(
         line,
-        /usage:|unknown argument|--tag requires a value|unsupported architecture|refusing to overwrite|Installing|Verifying checksum|Installed Akeru Bot|installs Akeru-Bot-/,
+        /usage:|unknown argument|--tag requires a value|unsupported architecture|refusing to overwrite|Installing|Verifying checksum|Installed IsnadiBot|installs IsnadiBot-/,
       );
     }
   });

@@ -1,7 +1,7 @@
 import { claudeMessage } from "./test-support/claudeMessages.ts";
 import * as Predicate from "effect/Predicate";
 
-import { ProviderDriverKind, ProviderRuntimeEvent } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderRuntimeEvent } from "@isnadi/contracts";
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

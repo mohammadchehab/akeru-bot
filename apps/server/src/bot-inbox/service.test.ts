@@ -4,7 +4,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { BOT_INBOX_KINDS, BotInboxService } from "./service.ts";
 
 const directories: string[] = [];
@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 function makeService(times: readonly string[]) {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-bot-inbox-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadibot-inbox-"));
   directories.push(directory);
   const remaining = [...times];
   const filePath = NodePath.join(directory, `${NodeCrypto.randomUUID()}.json`);
@@ -31,7 +31,7 @@ const incident = {
   incidentKey: "connector:xai:bot-akeru",
   kind: "connector-failure" as const,
   botId: BotId.make("bot-akeru"),
-  botName: "Akeru",
+  botName: "Isnadi",
   taskOrRoutine: "Morning research",
   lastFailure: "Grok rejected the first ACP request.",
   nextAction: "Reconnect Grok in Settings.",

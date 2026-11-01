@@ -1,14 +1,14 @@
 import * as Match from "effect/Match";
 import { DaytonaComputer } from "../../daytonaComputer.ts";
 import { WorkspaceComputer } from "../../workspaceComputer.ts";
-import { type AkeruRemoteSession, type AkeruWorkspaceState } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type IsnadiWorkspaceState } from "../BotWorkspaceTypes.ts";
 import { commandLine } from "../BotWorkspaceLifecycle.ts";
 
 export function daytona(
   client: import("@daytona/sdk").Daytona,
   sandbox: import("@daytona/sdk").Sandbox,
-): AkeruRemoteSession {
-  const inspect = async (): Promise<AkeruWorkspaceState> => {
+): IsnadiRemoteSession {
+  const inspect = async (): Promise<IsnadiWorkspaceState> => {
     await sandbox.refreshData();
     const current = String(sandbox.state);
 

@@ -6,7 +6,7 @@ import {
   type AuthEnvironmentScope,
   type ClientSurface,
   type ServerAuthSessionMethod,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
@@ -121,7 +121,7 @@ export class SessionStore extends Context.Service<
       },
     ) => Effect.Effect<void, never>;
   }
->()("akeru-bot/auth/SessionStore") {}
+>()("isnadibot/auth/SessionStore") {}
 
 export const make = Effect.gen(function* () {
   const crypto = yield* Crypto.Crypto;

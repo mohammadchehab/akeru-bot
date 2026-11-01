@@ -10,7 +10,7 @@ import {
   type OrchestrationGroup,
   type OrchestrationThreadShell,
   type ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const timestamp = "2026-01-01T00:00:00Z";
 

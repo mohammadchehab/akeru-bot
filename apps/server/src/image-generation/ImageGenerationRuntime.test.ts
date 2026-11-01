@@ -14,7 +14,7 @@ import {
 } from "./testUtils/imageGenerationRuntime.ts";
 import * as NodeFS from "node:fs";
 import { assert, describe, it } from "@effect/vitest";
-import { BotId, ThreadId } from "@akeru/contracts";
+import { BotId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 import { ServerConfig } from "../config.ts";

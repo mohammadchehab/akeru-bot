@@ -8,15 +8,15 @@ import {
 } from "./testUtils/entityMemoryRepository.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
   BotId,
   MessageId,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -24,10 +24,10 @@ import {
   EntityMemoryConflictError,
   EntityMemoryRepository,
 } from "../Services/EntityMemoryRepository.ts";
-import { deriveAkeruWorkspaceId } from "../EntityMemoryAccess.ts";
+import { deriveIsnadiWorkspaceId } from "../EntityMemoryAccess.ts";
 import { registerEntityMemoryResource } from "../EntityMemoryInvalidation.ts";
-import { exportAkeruMemory } from "../MemoryExport.ts";
-import { applyAkeruMemoryImport, previewAkeruMemoryImport } from "../MemoryImport.ts";
+import { exportIsnadiMemory } from "../MemoryExport.ts";
+import { applyIsnadiMemoryImport, previewIsnadiMemoryImport } from "../MemoryImport.ts";
 
 it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("recalls authorized project and workspace facts in a one-to-one thread", () =>
@@ -46,15 +46,15 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partition: {
             tenantId: recallAccess.tenantId,
             scope: "project",
-            partitionId: AkeruMemoryPartitionId.make(recallAccess.projectId),
+            partitionId: IsnadiMemoryPartitionId.make(recallAccess.projectId),
           },
           entityKind: "project",
-          entityId: AkeruMemoryEntityId.make(recallAccess.projectId),
+          entityId: IsnadiMemoryEntityId.make(recallAccess.projectId),
           fact: "shared recall marker project",
           visibility: "shared",
         }),
       });
-      const workspaceId = deriveAkeruWorkspaceId(recallAccess.projectId);
+      const workspaceId = deriveIsnadiWorkspaceId(recallAccess.projectId);
       yield* repository.insert({
         access: recallAccess,
         revision: makeRevision("shared-workspace", "workspace", {
@@ -64,7 +64,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
             partitionId: workspaceId,
           },
           entityKind: "workspace",
-          entityId: AkeruMemoryEntityId.make(workspaceId),
+          entityId: IsnadiMemoryEntityId.make(workspaceId),
           fact: "shared recall marker workspace",
           sourceThreadId: null,
           visibility: "shared",
@@ -87,7 +87,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("lists current facts and authorized revision history", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("inspect-root");
+      const rootId = IsnadiMemoryRootId.make("inspect-root");
       const initial = makeRevision("inspect-1", "bot:user", { rootId });
 
       const next = makeRevision("inspect-2", "bot:user", {
@@ -113,7 +113,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("permanently deletes an authorized root and all derived FTS rows", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("delete-root");
+      const rootId = IsnadiMemoryRootId.make("delete-root");
 
       const initial = makeRevision("delete-memory-1", "bot:user", {
         rootId,
@@ -150,9 +150,9 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const sql = yield* SqlClient.SqlClient;
-      const rootId = AkeruMemoryRootId.make("derived-write-root");
+      const rootId = IsnadiMemoryRootId.make("derived-write-root");
       yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("stale")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("stale")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("derived-write-root", "bot:user", { rootId }),
@@ -162,14 +162,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         [],
       );
       yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("stale-2")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("stale-2")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.revise({
         access: botAccess,
         expectedRevision: 1,
         revision: makeRevision("derived-write-root-2", "bot:user", {
           rootId,
           revision: 2,
-          supersedesId: AkeruMemoryId.make("derived-write-root"),
+          supersedesId: IsnadiMemoryId.make("derived-write-root"),
         }),
       });
       assert.deepEqual(
@@ -182,7 +182,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("does not commit a tombstone when observational memory cannot be cleared", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("forget-clear-fails-root");
+      const rootId = IsnadiMemoryRootId.make("forget-clear-fails-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("clear-fails-active", "bot:user", {
@@ -193,7 +193,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const sql = yield* SqlClient.SqlClient;
       const observedThreadId = "clear-fails-thread";
       yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("clear-fails-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("clear-fails-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
 
       const unregister = registerEntityMemoryResource(
         observedThreadId,
@@ -208,7 +208,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           access: botAccess,
           rootId,
           expectedRevision: 1,
-          memoryId: AkeruMemoryId.make("clear-fails-tombstone"),
+          memoryId: IsnadiMemoryId.make("clear-fails-tombstone"),
           updatedAt: "2026-08-30T22:00:00.000Z",
         })
         .pipe(Effect.ensuring(Effect.sync(unregister)), Effect.exit);
@@ -227,7 +227,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("clears observational memory when a fact is permanently deleted", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("delete-clears-observations-root");
+      const rootId = IsnadiMemoryRootId.make("delete-clears-observations-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("delete-clears-active", "bot:user", { rootId }),
@@ -235,7 +235,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const sql = yield* SqlClient.SqlClient;
       const observedThreadId = "delete-clears-thread";
       yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("delete-clears-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("delete-clears-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
       const cleared: Array<string> = [];
 
       const unregister = registerEntityMemoryResource(
@@ -264,7 +264,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         legacyWorkspaceOwnerProjectId: ProjectId.make("project-move-archive"),
       } as const;
 
-      const rootId = AkeruMemoryRootId.make("move-archive-root");
+      const rootId = IsnadiMemoryRootId.make("move-archive-root");
       yield* repository.insert({
         access: moveAccess,
         revision: makeRevision("move-archive-1", "bot", {
@@ -272,10 +272,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partition: {
             tenantId: moveAccess.tenantId,
             scope: "bot",
-            partitionId: AkeruMemoryPartitionId.make(moveAccess.botId),
+            partitionId: IsnadiMemoryPartitionId.make(moveAccess.botId),
           },
           entityKind: "bot",
-          entityId: AkeruMemoryEntityId.make(moveAccess.botId),
+          entityId: IsnadiMemoryEntityId.make(moveAccess.botId),
           sourceThreadId: moveAccess.threadId,
           authorBotId: moveAccess.botId,
           affectedBotIds: [moveAccess.botId],
@@ -290,7 +290,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           scope: "project",
         },
-        memoryId: AkeruMemoryId.make("move-archive-2"),
+        memoryId: IsnadiMemoryId.make("move-archive-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "pending",
       });
@@ -298,7 +298,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       assert.equal(moved!.approvalState, "pending");
 
       const exportTarget = (target: "bot" | "project") =>
-        exportAkeruMemory({
+        exportIsnadiMemory({
           repository,
           access: moveAccess,
           target,
@@ -319,7 +319,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         [1, 2],
       );
 
-      const unchanged = yield* previewAkeruMemoryImport({
+      const unchanged = yield* previewIsnadiMemoryImport({
         repository,
         access: moveAccess,
         target: "project",
@@ -333,7 +333,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.deleteRoot({ access: moveAccess, rootId });
 
-      const preview = yield* previewAkeruMemoryImport({
+      const preview = yield* previewIsnadiMemoryImport({
         repository,
         access: moveAccess,
         target: "project",
@@ -345,7 +345,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         ["new"],
       );
 
-      const result = yield* applyAkeruMemoryImport({
+      const result = yield* applyIsnadiMemoryImport({
         repository,
         access: moveAccess,
         target: "project",
@@ -373,8 +373,8 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const workspaceAccess = privateAccess("bot-workspace-roundtrip");
-      const workspaceId = deriveAkeruWorkspaceId(workspaceAccess.projectId);
-      const rootId = AkeruMemoryRootId.make("workspace-archive-roundtrip-root");
+      const workspaceId = deriveIsnadiWorkspaceId(workspaceAccess.projectId);
+      const rootId = IsnadiMemoryRootId.make("workspace-archive-roundtrip-root");
 
       const revision = makeRevision("workspace-archive-roundtrip-revision", workspaceId, {
         rootId,
@@ -384,7 +384,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partitionId: workspaceId,
         },
         entityKind: "workspace",
-        entityId: AkeruMemoryEntityId.make(workspaceId),
+        entityId: IsnadiMemoryEntityId.make(workspaceId),
         visibility: "shared",
         sourceThreadId: null,
         authorBotId: workspaceAccess.botId,
@@ -394,7 +394,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.insert({ access: workspaceAccess, revision });
 
-      const archive = yield* exportAkeruMemory({
+      const archive = yield* exportIsnadiMemory({
         repository,
         access: workspaceAccess,
         target: "workspace",
@@ -405,14 +405,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       yield* repository.deleteRoot({ access: workspaceAccess, rootId });
 
-      const preview = yield* previewAkeruMemoryImport({
+      const preview = yield* previewIsnadiMemoryImport({
         repository,
         access: workspaceAccess,
         target: "workspace",
         archive,
       });
 
-      yield* applyAkeruMemoryImport({
+      yield* applyIsnadiMemoryImport({
         repository,
         access: workspaceAccess,
         target: "workspace",
@@ -422,7 +422,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const restored = yield* repository.getCurrent({ access: workspaceAccess, rootId });
       assert.equal(restored.entityKind, "workspace");
-      assert.equal(restored.entityId, AkeruMemoryEntityId.make(workspaceId));
+      assert.equal(restored.entityId, IsnadiMemoryEntityId.make(workspaceId));
       assert.equal(restored.partition.partitionId, workspaceId);
     }),
   );
@@ -430,7 +430,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("edits a durable fact through applyMutation", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-edit-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-edit-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-edit-1", "bot:user", { rootId }),
@@ -444,7 +444,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           fact: "The user prefers helix.",
         },
-        memoryId: AkeruMemoryId.make("mutate-edit-2"),
+        memoryId: IsnadiMemoryId.make("mutate-edit-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -468,7 +468,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
             expectedRevision: 1,
             fact: "stale",
           },
-          memoryId: AkeruMemoryId.make("mutate-edit-3"),
+          memoryId: IsnadiMemoryId.make("mutate-edit-3"),
           updatedAt: "2026-08-30T22:31:00.000Z",
           sharedProjectApproval: "approved",
         })
@@ -485,7 +485,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("pins and unpins a durable fact", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-pin-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-pin-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-pin-1", "bot:user", { rootId }),
@@ -499,7 +499,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           pinned: true,
         },
-        memoryId: AkeruMemoryId.make("mutate-pin-2"),
+        memoryId: IsnadiMemoryId.make("mutate-pin-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -514,7 +514,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           pinned: false,
         },
-        memoryId: AkeruMemoryId.make("mutate-pin-3"),
+        memoryId: IsnadiMemoryId.make("mutate-pin-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -527,7 +527,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("keeps a fact's source chat when it moves between scopes", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-source-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-source-root");
       const sourceThreadId = ThreadId.make("ui-thread-1");
       const sourceMessageId = MessageId.make("ui-message-1");
       yield* repository.insert({
@@ -547,7 +547,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           scope: "project",
         },
-        memoryId: AkeruMemoryId.make("mutate-source-2"),
+        memoryId: IsnadiMemoryId.make("mutate-source-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -564,7 +564,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           scope: "bot",
         },
-        memoryId: AkeruMemoryId.make("mutate-source-3"),
+        memoryId: IsnadiMemoryId.make("mutate-source-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -581,7 +581,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("rejects then approves a pending durable fact", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-decide-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-decide-root");
 
       const foreignAccess = {
         ...botAccess,
@@ -598,10 +598,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         partition: {
           tenantId: botAccess.tenantId,
           scope: "project",
-          partitionId: AkeruMemoryPartitionId.make(botAccess.projectId),
+          partitionId: IsnadiMemoryPartitionId.make(botAccess.projectId),
         },
         entityKind: "project",
-        entityId: AkeruMemoryEntityId.make(botAccess.projectId),
+        entityId: IsnadiMemoryEntityId.make(botAccess.projectId),
         visibility: "shared",
         approvalState: "pending",
       });
@@ -635,7 +635,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           decision: "reject",
         },
-        memoryId: AkeruMemoryId.make("mutate-decide-2"),
+        memoryId: IsnadiMemoryId.make("mutate-decide-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -650,7 +650,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           decision: "approve",
         },
-        memoryId: AkeruMemoryId.make("mutate-decide-3"),
+        memoryId: IsnadiMemoryId.make("mutate-decide-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -667,7 +667,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("approves a pending project fact when it moves back to private memory", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-pending-private-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-pending-private-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-pending-private-1", "bot:user", { rootId }),
@@ -681,7 +681,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           scope: "project",
         },
-        memoryId: AkeruMemoryId.make("mutate-pending-private-2"),
+        memoryId: IsnadiMemoryId.make("mutate-pending-private-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "pending",
       });
@@ -691,7 +691,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const back = yield* repository.applyMutation({
         access: botAccess,
         mutation: { operation: "fact.scope", memoryId: rootId, expectedRevision: 2, scope: "bot" },
-        memoryId: AkeruMemoryId.make("mutate-pending-private-3"),
+        memoryId: IsnadiMemoryId.make("mutate-pending-private-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "pending",
       });
@@ -704,7 +704,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("accepts only permanent deletion after a fact is forgotten", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-forgotten-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-forgotten-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-forgotten-1", "bot:user", { rootId }),
@@ -712,7 +712,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       yield* repository.applyMutation({
         access: botAccess,
         mutation: { operation: "fact.forget", memoryId: rootId, expectedRevision: 1 },
-        memoryId: AkeruMemoryId.make("mutate-forgotten-2"),
+        memoryId: IsnadiMemoryId.make("mutate-forgotten-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -726,7 +726,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
             expectedRevision: 2,
             fact: "revived",
           },
-          memoryId: AkeruMemoryId.make("mutate-forgotten-3"),
+          memoryId: IsnadiMemoryId.make("mutate-forgotten-3"),
           updatedAt: "2026-08-30T22:31:00.000Z",
           sharedProjectApproval: "approved",
         })
@@ -740,7 +740,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const sql = yield* SqlClient.SqlClient;
-      const rootId = AkeruMemoryRootId.make("mutate-delete-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-delete-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-delete-1", "bot:user", {
@@ -749,7 +749,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         }),
       });
       yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("mutate-delete-1")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("mutate-delete-1")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
 
       const forgotten = yield* repository.applyMutation({
         access: botAccess,
@@ -758,7 +758,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           memoryId: rootId,
           expectedRevision: 1,
         },
-        memoryId: AkeruMemoryId.make("mutate-delete-2"),
+        memoryId: IsnadiMemoryId.make("mutate-delete-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -780,7 +780,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           memoryId: rootId,
           expectedRevision: 2,
         },
-        memoryId: AkeruMemoryId.make("mutate-delete-3"),
+        memoryId: IsnadiMemoryId.make("mutate-delete-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -794,7 +794,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("does not let another thread's owner mutate a fact", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-owner-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-owner-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-owner-1", "bot:user", { rootId }),
@@ -809,7 +809,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
             expectedRevision: 1,
             pinned: true,
           },
-          memoryId: AkeruMemoryId.make("mutate-owner-2"),
+          memoryId: IsnadiMemoryId.make("mutate-owner-2"),
           updatedAt: "2026-08-30T22:30:00.000Z",
           sharedProjectApproval: "approved",
         })
@@ -831,7 +831,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make("scoped-group-fact"),
+        memoryId: IsnadiMemoryId.make("scoped-group-fact"),
         createdAt: "2026-09-23T08:00:00.000Z",
       });
 
@@ -849,7 +849,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           sensitive: false,
           confidence: 1,
           sourceMessageId: null,
-          memoryId: AkeruMemoryId.make("scoped-no-group"),
+          memoryId: IsnadiMemoryId.make("scoped-no-group"),
           createdAt: "2026-09-23T08:00:00.000Z",
         })
         .pipe(Effect.exit);

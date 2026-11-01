@@ -60,7 +60,7 @@ import * as UsageService from "./usage/UsageService.ts";
 import { EntityMemoryRepositoryLive } from "./memory/Layers/EntityMemoryRepository.ts";
 import { MemoryRevisionWriteLockLive } from "./memory/Services/MemoryRevisionWriteLock.ts";
 import { OrchestrationLayerLive } from "./orchestration/runtimeLayer.ts";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import { RoutineLayerLive } from "./routines/layer.ts";
 import * as ImageGenerationRuntime from "./image-generation/ImageGenerationRuntime.ts";
 import { RoutineDraftDispatcherLive } from "./routines/RoutineDraftDispatcher.ts";

@@ -1,9 +1,9 @@
 import { Predicate } from "effect";
-import type { ChannelBinding, ChannelConnectionProfile } from "@akeru/contracts";
+import type { ChannelBinding, ChannelConnectionProfile } from "@isnadi/contracts";
 import {
   type ChannelRepairAction,
   channelFailureReason,
-} from "@akeru/client-runtime/channel-presentation";
+} from "@isnadi/client-runtime/channel-presentation";
 
 import type { ReactNode } from "react";
 

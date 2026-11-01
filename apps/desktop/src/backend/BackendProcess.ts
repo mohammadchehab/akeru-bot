@@ -27,9 +27,9 @@ import {
   type DesktopBackendBootstrap as DesktopBackendBootstrapValue,
   DesktopTelemetryControlMessage,
   type DesktopTelemetryControlMessage as DesktopTelemetryControlMessageValue,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
-import { waitForHttpReady as waitForHttpReadyShared } from "@akeru/shared/httpReadiness";
+import { waitForHttpReady as waitForHttpReadyShared } from "@isnadi/shared/httpReadiness";
 
 import * as DesktopObservability from "../app/DesktopObservability.ts";
 

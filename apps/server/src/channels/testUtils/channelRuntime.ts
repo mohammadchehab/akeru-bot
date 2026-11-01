@@ -20,7 +20,7 @@ import {
   type OrchestrationMessage,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Message as ChatMessage, parseMarkdown } from "chat";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -630,7 +630,7 @@ function mockTelegramDelivery(responses: Array<Response | Error>) {
         if (method === "getMe")
           return Response.json({
             ok: true,
-            result: { id: 1, is_bot: true, first_name: "Akeru", username: "akeru" },
+            result: { id: 1, is_bot: true, first_name: "Isnadi", username: "akeru" },
           });
 
         if (method === "deleteWebhook" || method === "deleteMyCommands") {

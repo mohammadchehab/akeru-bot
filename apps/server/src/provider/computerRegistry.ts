@@ -10,7 +10,7 @@ import {
   type ComputerSessionInput,
   type ComputerState,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { WorkspaceComputer } from "./workspaceComputer.ts";
 import { Effect, Queue, Schedule, Schema, Stream } from "effect";
 

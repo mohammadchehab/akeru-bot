@@ -19,7 +19,7 @@ export const REPO_ROOT = NodePath.resolve(
 
 export const MOBILE_ROOT = NodePath.join(REPO_ROOT, "apps/mobile");
 
-export const ANDROID_PACKAGE = "dev.leodoes.akeru";
+export const ANDROID_PACKAGE = "dev.leodoes.isnadi";
 
 export const APP_SCHEME = "akeru";
 

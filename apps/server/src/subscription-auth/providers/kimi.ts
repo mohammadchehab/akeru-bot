@@ -61,7 +61,7 @@ export function getKimiCodingDeviceHeaders(deviceId: string) {
     "X-Msh-Platform": "akeru",
     "X-Msh-Version": "0.0.34",
     "X-Msh-Device-Name": asciiHeaderValue(NodeOS.hostname()),
-    "X-Msh-Device-Model": "Akeru server",
+    "X-Msh-Device-Model": "Isnadi server",
     "X-Msh-Os-Version": asciiHeaderValue(NodeOS.release()),
     "X-Msh-Device-Id": deviceId,
   };

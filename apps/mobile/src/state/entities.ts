@@ -1,13 +1,16 @@
 import { Schema } from "effect";
 import { useAtomValue } from "@effect/atom-react";
 import { useMemo } from "react";
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
 import type {
   EnvironmentId,
   ScopedProjectRef,
   ScopedThreadRef,
   ServerConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 import { environmentProjects } from "./projects";
 import { environmentServerConfigsAtom, serverEnvironment } from "./server";

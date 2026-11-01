@@ -6,8 +6,8 @@ import {
   runComposedVoiceCall,
   type VoiceCallChatHandlers,
   type VoiceCallScope,
-} from "@akeru/client-runtime/voice";
-import { BotId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/voice";
+import { BotId } from "@isnadi/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import * as Cause from "effect/Cause";
 import {
@@ -56,7 +56,10 @@ import {
   type VoiceCallContextValue,
 } from "./voiceCallContext";
 
-export { handleVoiceChannelMessage, type VoiceCallChatHandlers } from "@akeru/client-runtime/voice";
+export {
+  handleVoiceChannelMessage,
+  type VoiceCallChatHandlers,
+} from "@isnadi/client-runtime/voice";
 
 export {
   listenForMicrophoneLoss,

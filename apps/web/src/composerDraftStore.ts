@@ -7,18 +7,18 @@ import {
   type ServerProvider,
   type ScopedThreadRef,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   parseScopedProjectKey,
   parseScopedThreadKey,
   scopedThreadKey,
-} from "@akeru/client-runtime/environment";
+} from "@isnadi/client-runtime/environment";
 import { useMemo } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
 import { migrateLocalStorageKey } from "./lib/storageKeyMigration";
-import { UnifiedSettings } from "@akeru/contracts/settings";
+import { UnifiedSettings } from "@isnadi/contracts/settings";
 import {
   COMPOSER_DRAFT_STORAGE_KEY,
   LEGACY_COMPOSER_DRAFT_STORAGE_KEY,

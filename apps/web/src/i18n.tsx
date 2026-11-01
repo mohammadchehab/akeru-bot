@@ -16,7 +16,7 @@ import {
   createTranslator,
   resolveLocale,
   type TranslationCatalog,
-} from "@akeru/client-runtime/i18n";
+} from "@isnadi/client-runtime/i18n";
 import {
   ensureClientSettingsHydrated,
   useClientSettings,

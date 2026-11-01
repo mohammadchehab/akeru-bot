@@ -6,15 +6,15 @@ import {
   QUEUED_TURN_START_GRACE_MS,
   resolveSnoozePresets,
   snoozeWakeLabel,
-} from "@akeru/client-runtime/state/thread-settled";
-import type { SnoozePreset } from "@akeru/client-runtime/state/thread-settled";
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import { threadSearchMatchKey } from "@akeru/client-runtime/state/thread-search";
+} from "@isnadi/client-runtime/state/thread-settled";
+import type { SnoozePreset } from "@isnadi/client-runtime/state/thread-settled";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
+import { threadSearchMatchKey } from "@isnadi/client-runtime/state/thread-search";
 import {
   activeThreadAnchorTimestampMs,
   sortPinnedThreadsByOrderKey,
-} from "@akeru/client-runtime/state/thread-sort";
-import type { EnvironmentId, ProjectId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/thread-sort";
+import type { EnvironmentId, ProjectId } from "@isnadi/contracts";
 import type { PendingNewTask } from "../../state/use-pending-new-tasks";
 
 type ThreadListV2SwipeActions = {

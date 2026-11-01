@@ -1,6 +1,6 @@
 import {
-  AkeruMemoryImportPreview,
-  AkeruMemoryRootId,
+  IsnadiMemoryImportPreview,
+  IsnadiMemoryRootId,
   ThreadId,
   BotId,
   OrchestrationThreadShell,
@@ -9,12 +9,12 @@ import {
   Routine,
   RoutineRun,
   ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Schema } from "effect";
 import type {
   DurableImportReviewItem,
   DurableMemoryFact,
-} from "@akeru/client-runtime/durable-memory";
+} from "@isnadi/client-runtime/durable-memory";
 
 export const decodeRoutine = Schema.decodeUnknownSync(Routine);
 
@@ -22,7 +22,7 @@ export const decodeRoutineRun = Schema.decodeUnknownSync(RoutineRun);
 
 export const decodeServerProvider = Schema.decodeUnknownSync(ServerProvider);
 
-export const decodeMemoryPreview = Schema.decodeUnknownSync(AkeruMemoryImportPreview);
+export const decodeMemoryPreview = Schema.decodeUnknownSync(IsnadiMemoryImportPreview);
 
 const decodeSnapshot = Schema.decodeUnknownSync(OrchestrationShellSnapshot);
 
@@ -100,7 +100,7 @@ export function makeShellSnapshot(overrides: ShellFixture) {
 export function makeReviewItem(
   item: Omit<DurableImportReviewItem, "rootId"> & { rootId: string },
 ): DurableImportReviewItem {
-  return { ...item, rootId: AkeruMemoryRootId.make(item.rootId) };
+  return { ...item, rootId: IsnadiMemoryRootId.make(item.rootId) };
 }
 
 export type DurableFactFixture = Omit<
@@ -111,7 +111,7 @@ export type DurableFactFixture = Omit<
 export function makeDurableFact(fact: DurableFactFixture): DurableMemoryFact {
   return {
     ...fact,
-    rootId: AkeruMemoryRootId.make(fact.rootId),
+    rootId: IsnadiMemoryRootId.make(fact.rootId),
     sourceThreadId: fact.sourceThreadId === null ? null : ThreadId.make(fact.sourceThreadId),
     affectedBotIds: fact.affectedBotIds.map((id) => BotId.make(id)),
   };
@@ -127,5 +127,5 @@ export type RuntimeThreadFixture = Omit<
 };
 
 export type RuntimeProjectFixture = Partial<
-  typeof import("@akeru/contracts").OrchestrationProject.Encoded
+  typeof import("@isnadi/contracts").OrchestrationProject.Encoded
 > & { environmentId?: string };

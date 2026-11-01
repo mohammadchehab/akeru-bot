@@ -7,11 +7,11 @@ import * as Schema from "effect/Schema";
 import { ChildProcessSpawner } from "effect/unstable/process";
 import type * as EffectAcpErrors from "effect-acp/errors";
 
-import { type GrokSettings, type ModelSelection } from "@akeru/contracts";
-import { sanitizeBranchFragment } from "@akeru/shared/git";
-import { extractJsonObject } from "@akeru/shared/schemaJson";
+import { type GrokSettings, type ModelSelection } from "@isnadi/contracts";
+import { sanitizeBranchFragment } from "@isnadi/shared/git";
+import { extractJsonObject } from "@isnadi/shared/schemaJson";
 
-import { TextGenerationError } from "@akeru/contracts";
+import { TextGenerationError } from "@isnadi/contracts";
 import * as TextGeneration from "./TextGeneration.ts";
 import { buildBranchNamePrompt, buildThreadTitlePrompt } from "./TextGenerationPrompts.ts";
 import { sanitizeThreadTitle } from "./TextGenerationUtils.ts";
@@ -59,7 +59,7 @@ export const makeGrokTextGeneration = Effect.fn("makeGrokTextGeneration")(functi
           : environment,
         childProcessSpawner: commandSpawner,
         cwd,
-        clientInfo: { name: "akeru-bot-text", version: "0.0.0" },
+        clientInfo: { name: "isnadibot-text", version: "0.0.0" },
       }).pipe(Effect.provideService(Crypto.Crypto, crypto));
 
       yield* runtime.handleSessionUpdate((notification) => {

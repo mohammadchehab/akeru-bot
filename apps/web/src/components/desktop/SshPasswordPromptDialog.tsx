@@ -1,4 +1,4 @@
-import type { DesktopSshPasswordPromptRequest } from "@akeru/contracts";
+import type { DesktopSshPasswordPromptRequest } from "@isnadi/contracts";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { Button } from "../ui/button";

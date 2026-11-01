@@ -1,4 +1,4 @@
-import { CommandId, EnvironmentId, MessageId, ThreadId } from "@akeru/contracts";
+import { CommandId, EnvironmentId, MessageId, ThreadId } from "@isnadi/contracts";
 import type { QueuedThreadMessage } from "./thread-outbox-model";
 
 /** A minimal queued message; ids default to one environment and thread. */

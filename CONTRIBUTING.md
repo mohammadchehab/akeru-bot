@@ -49,5 +49,5 @@ for the result. Review the diff, run it, and make sure the tests prove what the 
 
 ## Credit
 
-IsnadiBot builds on [Akeru Bot](https://github.com/opencoredev/akeru-bot) and
+IsnadiBot builds on [IsnadiBot](https://github.com/opencoredev/akeru-bot) and
 [T3 Code](https://t3.codes). Fixes that would help those projects too are worth sending upstream.

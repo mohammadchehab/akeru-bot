@@ -1,6 +1,6 @@
 import type { AuthStorage } from "@mastra/code-sdk/auth/storage";
 import type { createSessionContext } from "./SessionContext.ts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 import { failureDetail, ThreadIdBrand } from "./Policy.ts";
 
@@ -9,7 +9,7 @@ import * as NodeCrypto from "node:crypto";
 import * as Path from "effect/Path";
 
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   CommandId,
   EventId,
   ProviderDriverKind,
@@ -18,11 +18,11 @@ import {
   RoutineId,
   TurnId,
   type BotId,
-  type AkeruCreateRoutineInput,
+  type IsnadiCreateRoutineInput,
   type ProviderRuntimeEvent,
   ThreadId,
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-} from "@akeru/contracts";
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
@@ -33,15 +33,15 @@ import { ServerConfig } from "../../../config.ts";
 import { OrchestrationEngineService } from "../../../orchestration/Services/OrchestrationEngine.ts";
 
 import {
-  AKERU_TURN_USAGE_RESERVATION_TOKENS,
+  ISNADI_TURN_USAGE_RESERVATION_TOKENS,
   BotUsageLedger,
 } from "../../../usage/BotUsageLedger.ts";
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
-import { makeAkeruMastraHarness } from "../../AkeruMastraHarness.ts";
+import { makeIsnadiMastraHarness } from "../../IsnadiMastraHarness.ts";
 
-import { AKERU_ROUTINE_REVIEW_TIMEOUT, type PendingWaiters } from "../../PendingWaiters.ts";
+import { ISNADI_ROUTINE_REVIEW_TIMEOUT, type PendingWaiters } from "../../PendingWaiters.ts";
 
-import { AkeruSessionResources } from "../../AkeruSessionResources.ts";
+import { IsnadiSessionResources } from "../../IsnadiSessionResources.ts";
 
 import { AgentControllerRuntimeError } from "../../Errors.ts";
 
@@ -68,13 +68,13 @@ export function createHarness(deps: {
   readonly sessions: Map<string, ActiveSession>;
   readonly runPromise: <A, E>(effect: Effect.Effect<A, E>) => Promise<A>;
   readonly legacyProviderBridge: LegacyProviderBridge["Service"];
-  readonly sessionResources: AkeruSessionResources;
+  readonly sessionResources: IsnadiSessionResources;
   readonly orchestrationEngine: Option.Option<OrchestrationEngineService["Service"]>;
   readonly routineDispatcher: RoutineDraftDispatcher["Service"] | undefined;
   readonly pendingRoutineRequests: PendingWaiters<
     {
       readonly threadId: string;
-      readonly input: AkeruCreateRoutineInput;
+      readonly input: IsnadiCreateRoutineInput;
       readonly timezone: string;
     },
     unknown,
@@ -100,7 +100,7 @@ export function createHarness(deps: {
     createdAt: string;
   };
   readonly turnStillWaiting: (threadId: string, active: ActiveSession) => boolean;
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly memoryUsageByThread: Map<string, { readonly botId: BotId; turnId: TurnId }>;
   readonly readSessionStartContext: ReturnType<
     typeof createSessionContext
@@ -121,7 +121,7 @@ export function createHarness(deps: {
 
   return Effect.gen(function* () {
     const path = yield* Path.Path;
-    const makeMastraHarness = deps.options?.makeMastraHarness ?? makeAkeruMastraHarness;
+    const makeMastraHarness = deps.options?.makeMastraHarness ?? makeIsnadiMastraHarness;
 
     const bundle = yield* makeMastraHarness({
       authStorage: deps.authStorage,
@@ -234,7 +234,7 @@ export function createHarness(deps: {
                     })),
                   ),
               ),
-            createRoutine: (threadId: string, input: AkeruCreateRoutineInput) => {
+            createRoutine: (threadId: string, input: IsnadiCreateRoutineInput) => {
               const active = deps.sessions.get(threadId);
               const timezone = active?.toolSession.timezone;
 
@@ -250,7 +250,7 @@ export function createHarness(deps: {
                     requestId,
                     { threadId, input, timezone },
                     {
-                      timeout: AKERU_ROUTINE_REVIEW_TIMEOUT,
+                      timeout: ISNADI_ROUTINE_REVIEW_TIMEOUT,
                       timeoutMessage:
                         "The routine review expired without a response. Ask again to create the routine.",
                       onOpen: () => {
@@ -267,7 +267,7 @@ export function createHarness(deps: {
                           payload: {
                             requestType: "dynamic_tool_call",
                             detail: "Review routine",
-                            toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+                            toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
                             args: { ...input, timezone },
                             options: [
                               { decision: "accept", label: "Create routine" },
@@ -298,7 +298,7 @@ export function createHarness(deps: {
                             requestType: "dynamic_tool_call" as const,
                             decision: "cancel",
                             actor: "system",
-                            target: AKERU_CREATE_ROUTINE_TOOL_NAME,
+                            target: ISNADI_CREATE_ROUTINE_TOOL_NAME,
                             outcome: "cancelled",
                           },
                         });
@@ -344,13 +344,13 @@ export function createHarness(deps: {
 
         await deps.runPromise(
           deps.botUsageLedger.reserve({
-            reservationId: AkeruUsageReservationId.make(callId),
+            reservationId: IsnadiUsageReservationId.make(callId),
             sourceKey: callId,
             botId: context.botId,
             threadId: ThreadIdBrand(threadId),
             turnId: context.turnId,
             category,
-            maximumTokens: AKERU_TURN_USAGE_RESERVATION_TOKENS,
+            maximumTokens: ISNADI_TURN_USAGE_RESERVATION_TOKENS,
             provider: active.provider,
             model: active.model,
             createdAt: nowIso(),
@@ -373,7 +373,7 @@ export function createHarness(deps: {
           if (!usage) return;
           await deps.runPromise(
             deps.botUsageLedger.recordMeasurement({
-              reservationId: AkeruUsageReservationId.make(callId),
+              reservationId: IsnadiUsageReservationId.make(callId),
               sourceKey: callId,
               botId: unreserved.botId,
               threadId: unreserved.threadId,
@@ -395,7 +395,7 @@ export function createHarness(deps: {
           deps.botUsageLedger.settle(
             usage
               ? {
-                  reservationId: AkeruUsageReservationId.make(callId),
+                  reservationId: IsnadiUsageReservationId.make(callId),
                   state: "reported",
                   inputTokens,
                   outputTokens,
@@ -404,13 +404,13 @@ export function createHarness(deps: {
                 }
               : error
                 ? {
-                    reservationId: AkeruUsageReservationId.make(callId),
+                    reservationId: IsnadiUsageReservationId.make(callId),
                     state: "unavailable",
                     reason: error.message || "Observational Memory usage was unavailable.",
                     settledAt: nowIso(),
                   }
                 : {
-                    reservationId: AkeruUsageReservationId.make(callId),
+                    reservationId: IsnadiUsageReservationId.make(callId),
                     state: "released",
                     settledAt: nowIso(),
                   },

@@ -1,4 +1,4 @@
-import { type ClaudeSettings } from "@akeru/contracts";
+import { type ClaudeSettings } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -6,7 +6,7 @@ import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import * as Result from "effect/Result";
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import {
   buildServerProvider,
   DEFAULT_TIMEOUT_MS,

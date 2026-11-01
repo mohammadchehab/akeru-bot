@@ -1,11 +1,11 @@
 import { useAtomValue } from "@effect/atom-react";
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
 import {
   type PreviewEvent,
   type PreviewListResult,
   type PreviewSessionSnapshot,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 import { PREVIEW_RECENT_URL_LIMIT } from "./components/preview/previewConstants";
 import { appAtomRegistry } from "./rpc/atomRegistry";

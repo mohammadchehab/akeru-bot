@@ -8,7 +8,7 @@ import {
   ProviderInstanceId,
   ResolvedKeybindingRule,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertTrue } from "@effect/vitest/utils";
 import * as Deferred from "effect/Deferred";

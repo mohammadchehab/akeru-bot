@@ -49,7 +49,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
           return {
             stdout: input.args.includes("rev-parse")
               ? "/repo\n"
-              : "origin\tgit@github.com:OpenCoreDev/akeru-bot.git (fetch)\n",
+              : "origin\tgit@github.com:OpenCoreDev/isnadibot.git (fetch)\n",
             stderr: "",
             code: ChildProcessSpawner.ExitCode(0),
             timedOut: false,
@@ -96,7 +96,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
               ? failed
                 ? ""
                 : "/repo\n"
-              : "origin\tgit@github.com:OpenCoreDev/akeru-bot.git (fetch)\n",
+              : "origin\tgit@github.com:OpenCoreDev/isnadibot.git (fetch)\n",
             stderr: failed ? "temporary Git failure" : "",
             code: ChildProcessSpawner.ExitCode(failed ? 1 : 0),
             timedOut: false,
@@ -219,7 +219,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
       });
 
       yield* git(cwd, ["init"]);
-      yield* git(cwd, ["remote", "add", "origin", "git@github.com:OpenCoreDev/akeru-bot.git"]);
+      yield* git(cwd, ["remote", "add", "origin", "git@github.com:OpenCoreDev/isnadibot.git"]);
       yield* git(cwd, ["remote", "add", "upstream", "git@github.com:pingdotgg/t3code.git"]);
 
       const resolver = yield* RepositoryIdentityResolver.RepositoryIdentityResolver;

@@ -16,13 +16,13 @@ The lifecycle matrix does not copy runtime tests. These focused tests own the ru
 
 Bot-facing MCP controls use the same session-scoped Mastra `McpManager`. `GetMcpServerStatus` returns the manager connection plus persisted request evidence. `TestMcpServer` and `ReconnectMcpServer` use the manager's real per-server reconnect result, then update the same health and inbox records. A connected manager without a completed request or connection test reports `not-run`, not healthy.
 
-Routine pausing remains an explicit dependency on the routine runtime in `t3code/routines-and-skills` commit `e77798657`. That branch owns durable connector dependencies and pause commands. Until it lands, MCP tool results return an empty `dependentRoutines` list and do not claim that a routine paused. Bind its repository and pause command at `AkeruMcpHealthHandlerOptions.getDependencies` and `onFailure`. Do not add a second routine store here.
+Routine pausing remains an explicit dependency on the routine runtime in `t3code/routines-and-skills` commit `e77798657`. That branch owns durable connector dependencies and pause commands. Until it lands, MCP tool results return an empty `dependentRoutines` list and do not claim that a routine paused. Bind its repository and pause command at `IsnadiMcpHealthHandlerOptions.getDependencies` and `onFailure`. Do not add a second routine store here.
 
 Run the matrix with the catalog, schema, runtime, and validator checks. Do not call a vendor endpoint from automated tests.
 
 ## Lifecycle matrix execution
 
-`apps/server/src/provider/PluginLifecycleMatrix.test.ts` runs the install → connect → health → disconnect → reconnect → remove sequence through the same Mastra `McpManager` used by bot sessions. The Codex Computer Use stdio recipe (`akeru-codex-computer-use mcp`) runs against a newline-delimited JSON-RPC fixture because the CLI is not on PATH in CI. URL recipes (including Executor 2's authenticated `https://executor.sh/mcp` recipe) run against a loopback Streamable HTTP fake that stands in for the vendor endpoint. The Executor fixture requires a bearer header, so discovery is not treated as an unauthenticated socket probe.
+`apps/server/src/provider/PluginLifecycleMatrix.test.ts` runs the install → connect → health → disconnect → reconnect → remove sequence through the same Mastra `McpManager` used by bot sessions. The Codex Computer Use stdio recipe (`isnadi-codex-computer-use mcp`) runs against a newline-delimited JSON-RPC fixture because the CLI is not on PATH in CI. URL recipes (including Executor 2's authenticated `https://executor.sh/mcp` recipe) run against a loopback Streamable HTTP fake that stands in for the vendor endpoint. The Executor fixture requires a bearer header, so discovery is not treated as an unauthenticated socket probe.
 
 Fixtures prove the lifecycle wiring, not vendor behavior. A fixture pass never moves an entry out of `verification-pending`; only a run against the real CLI or endpoint does.
 

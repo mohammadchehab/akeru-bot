@@ -2,8 +2,8 @@ import type {
   AuthAccessSnapshot,
   AuthAccessStreamEvent,
   AuthAccessStreamSnapshotEvent,
-} from "@akeru/contracts";
-import { WS_METHODS } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 import * as Stream from "effect/Stream";
 import { Atom } from "effect/unstable/reactivity";
 

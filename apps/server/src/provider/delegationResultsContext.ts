@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import type { AkeruDelegationRecord, OrchestrationBot } from "@akeru/contracts";
-import { delegationSummaryText } from "@akeru/shared/delegationSummaryText";
+import type { IsnadiDelegationRecord, OrchestrationBot } from "@isnadi/contracts";
+import { delegationSummaryText } from "@isnadi/shared/delegationSummaryText";
 
 const DELEGATION_RESULT_MAX_CHARS = 4_000;
 
@@ -18,7 +18,7 @@ export interface DelegationResultsContextOptions {
  * the parent bot once.
  */
 export function delegationResultsContext(
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
   bots: ReadonlyArray<Pick<OrchestrationBot, "id" | "name">>,
   options: DelegationResultsContextOptions = {},
 ): string {

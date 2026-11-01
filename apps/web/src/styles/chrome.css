@@ -46,7 +46,7 @@ body {
   --surface-grain-size: 256px 256px;
 }
 
-/* Akeru Paper is the default theme. Its light mode is a neutral gray window
+/* Isnadi Paper is the default theme. Its light mode is a neutral gray window
    with white cards, so grain would only read as dirt on the rail. */
 
 html[data-theme-id="akeru-paper"] {

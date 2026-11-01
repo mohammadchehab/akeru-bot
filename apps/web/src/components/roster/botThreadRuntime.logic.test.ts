@@ -1,4 +1,4 @@
-import { BotId, GroupId, ProjectId, ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { BotId, GroupId, ProjectId, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import {

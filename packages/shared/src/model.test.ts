@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { ProviderDriverKind, ProviderInstanceId, type ModelCapabilities } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ModelCapabilities } from "@isnadi/contracts";
 
 import {
   applyClaudePromptEffortPrefix,

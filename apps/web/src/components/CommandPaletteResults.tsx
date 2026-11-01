@@ -1,4 +1,4 @@
-import { type ResolvedKeybindingsConfig } from "@akeru/contracts";
+import { type ResolvedKeybindingsConfig } from "@isnadi/contracts";
 import { shortcutLabelForCommand } from "../keybindings";
 import { type CommandPaletteActionItem, type CommandPaletteGroup } from "./CommandPalette.logic";
 import {

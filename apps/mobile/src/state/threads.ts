@@ -6,8 +6,8 @@ import {
   EMPTY_ENVIRONMENT_THREAD_STATE,
   type EnvironmentThreadState,
   createThreadEnvironmentAtoms,
-} from "@akeru/client-runtime/state/threads";
-import type { EnvironmentId, ThreadId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/threads";
+import type { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 

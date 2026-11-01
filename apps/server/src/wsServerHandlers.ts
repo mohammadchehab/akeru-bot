@@ -15,7 +15,7 @@ import {
   RpcClientId,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ServerSettings from "./serverSettings.ts";
 
 import { PROVIDER_STATUS_DEBOUNCE_MS, PROVIDER_SUBSCRIBE_REFRESH_TTL_MS } from "./wsSupport.ts";

@@ -1,8 +1,8 @@
 import * as Predicate from "effect/Predicate";
-import { DEFAULT_SERVER_SETTINGS, ServerSettings } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, ServerSettings } from "@isnadi/contracts";
 import * as Equal from "effect/Equal";
 import * as Schema from "effect/Schema";
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 
 export const ServerSettingsJson = fromLenientJson(ServerSettings);
 

@@ -12,17 +12,17 @@ Each provider in **Settings > Providers** says what unlocks it, what the current
 | Kimi For Coding | Kimi For Coding membership                      | Kimi For Coding API key from the Kimi Code console         | No. The membership works only in coding tools and does not include Moonshot Open Platform API credit. |
 | OpenCode Go     | OpenCode Go subscription API key                | None                                                       | The key is API access, but only to OpenCode Go models through OpenCode.                               |
 
-Akeru cannot see which xAI plan an account has. Sign in with the account that has SuperGrok or X Premium+.
+Isnadi cannot see which xAI plan an account has. Sign in with the account that has SuperGrok or X Premium+.
 
-Cursor is not a provider in Akeru.
+Cursor is not a provider in Isnadi.
 
 ## Usage limits
 
-Providers set their own limits. Akeru shows what each provider publishes and does not show numbers that change without notice.
+Providers set their own limits. Isnadi shows what each provider publishes and does not show numbers that change without notice.
 
 - **ChatGPT (Codex):** limits per 5-hour window and per week. The allowance depends on the plan.
 - **Claude:** limits per 5-hour session and per week. Max allows more use than Pro.
-- **Grok:** xAI does not publish Grok limits that Akeru can show.
+- **Grok:** xAI does not publish Grok limits that Isnadi can show.
 - **Kimi For Coding:** limits depend on the membership tier. The Kimi Code console shows them.
 - **OpenCode Go:** limits per 5-hour window, per week, and per month.
 
@@ -48,6 +48,6 @@ On desktop and web, each provider row shows its state and next step. Choose **Ac
 
 On mobile, open **Settings > Provider connections**. Each provider shows the same state and next step, and **Access details** shows the rest.
 
-Connections belong to one environment. A provider that is ready on one Akeru server can still be missing on another.
+Connections belong to one environment. A provider that is ready on one Isnadi server can still be missing on another.
 
 If you message a bot whose provider isn't connected, the chat says so and links to the provider settings. Connect the provider there, then send the message again.

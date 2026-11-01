@@ -1,5 +1,5 @@
 // This file is intentionally excluded from the Effect migration. It is shipped as a
-// standalone bundle and copied to a stable path by `akeru service update`;
+// standalone bundle and copied to a stable path by `isnadi service update`;
 // `apps/server/package.json` packs it separately with `build:bundle`. Keep runtime
 // imports limited to Node built-ins so the standalone updater remains self-contained.
 import * as NodeChildProcess from "node:child_process";
@@ -254,7 +254,7 @@ export class Launcher {
     if (this.#stopping) return;
 
     if (!(await runtimeExists(this.#baseDir, version))) {
-      throw new Error(`Selected akeru-bot@${version} runtime is missing or incomplete.`);
+      throw new Error(`Selected isnadibot@${version} runtime is missing or incomplete.`);
     }
 
     if (this.#stopping) return;
@@ -514,11 +514,11 @@ export class Launcher {
 }
 
 async function main(): Promise<void> {
-  // Units written by older installs set T3CODE_HOME; newer ones set AKERU_HOME.
+  // Units written by older installs set T3CODE_HOME; newer ones set ISNADI_HOME.
   const baseDir = readAliasedEnv(process.env, "HOME");
 
   if (baseDir === undefined) {
-    throw new Error("AKERU_HOME is required by the IsnadiBot service launcher.");
+    throw new Error("ISNADI_HOME is required by the IsnadiBot service launcher.");
   }
 
   const statePath = NodePath.join(baseDir, "runtime", SERVICE_STATE_FILE);

@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { EnvironmentId, type SubscriptionProviderId } from "@akeru/contracts";
+import { EnvironmentId, type SubscriptionProviderId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { act, type ComponentProps } from "react";

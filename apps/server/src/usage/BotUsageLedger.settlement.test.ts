@@ -1,12 +1,12 @@
 import { layer, reserveInput } from "./testUtils/botUsageLedger.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   ProviderDriverKind,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { BotUsageLedger } from "./BotUsageLedger.ts";
 import { parseRateTable, priceUsage } from "./usagePricing.ts";
@@ -88,7 +88,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
         settledAt: "2026-08-30T20:01:00.000Z",
       });
       yield* ledger.recordMeasurement({
-        reservationId: AkeruUsageReservationId.make("routine-entry"),
+        reservationId: IsnadiUsageReservationId.make("routine-entry"),
         sourceKey: "routine:run-1",
         botId,
         threadId: ThreadId.make("thread-1"),
@@ -149,7 +149,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
         settledAt: "2026-08-30T20:01:00.000Z",
       });
       yield* ledger.recordMeasurement({
-        reservationId: AkeruUsageReservationId.make("reflector-composite"),
+        reservationId: IsnadiUsageReservationId.make("reflector-composite"),
         sourceKey: "reflector:turn-composite-om",
         botId,
         threadId,
@@ -207,7 +207,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
           settledAt: "2026-08-30T20:01:00.000Z",
         });
         yield* ledger.recordMeasurement({
-          reservationId: AkeruUsageReservationId.make(`reflector-${provider}`),
+          reservationId: IsnadiUsageReservationId.make(`reflector-${provider}`),
           sourceKey: `reflector:${turnId}`,
           botId,
           threadId,
@@ -246,7 +246,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
 
       for (let index = 0; index < 201; index++) {
         yield* ledger.recordMeasurement({
-          reservationId: AkeruUsageReservationId.make(`measurement-${index}`),
+          reservationId: IsnadiUsageReservationId.make(`measurement-${index}`),
           sourceKey: `measurement-${index}`,
           botId,
           threadId: null,
@@ -262,7 +262,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
       }
 
       yield* ledger.recordMeasurement({
-        reservationId: AkeruUsageReservationId.make("zero-unpriced"),
+        reservationId: IsnadiUsageReservationId.make("zero-unpriced"),
         sourceKey: "zero-unpriced",
         botId,
         threadId: null,
@@ -290,7 +290,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
         },
       ]);
       yield* ledger.recordMeasurement({
-        reservationId: AkeruUsageReservationId.make("unknown-priced"),
+        reservationId: IsnadiUsageReservationId.make("unknown-priced"),
         sourceKey: "unknown-priced",
         botId,
         threadId: null,

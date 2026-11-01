@@ -1,4 +1,4 @@
-import { AkeruUsageEntry } from "@akeru/contracts";
+import { IsnadiUsageEntry } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -23,11 +23,11 @@ export class ProviderUsageHistory extends Context.Service<
     readonly readReported: (
       window: ProviderUsageWindow,
     ) => Effect.Effect<
-      ReadonlyArray<AkeruUsageEntry>,
+      ReadonlyArray<IsnadiUsageEntry>,
       PersistenceSqlError | PersistenceDecodeError
     >;
   }
->()("akeru-bot/usage/ProviderUsageHistory") {}
+>()("isnadibot/usage/ProviderUsageHistory") {}
 
 const UsageRow = Schema.Struct({
   reservationId: Schema.String,
@@ -50,7 +50,7 @@ const UsageRow = Schema.Struct({
 
 type UsageRow = typeof UsageRow.Type;
 
-const decodeUsageEntry = Schema.decodeUnknownEffect(AkeruUsageEntry);
+const decodeUsageEntry = Schema.decodeUnknownEffect(IsnadiUsageEntry);
 
 const make = Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;

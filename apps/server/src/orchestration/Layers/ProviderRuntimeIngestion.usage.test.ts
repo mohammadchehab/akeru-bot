@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asTurnId,

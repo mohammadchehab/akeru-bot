@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { ClaudeSettings } from "@akeru/contracts";
-import { isHostWindows } from "@akeru/shared/hostProcess";
+import { ClaudeSettings } from "@isnadi/contracts";
+import { isHostWindows } from "@isnadi/shared/hostProcess";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";

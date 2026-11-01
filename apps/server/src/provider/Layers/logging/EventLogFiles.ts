@@ -1,4 +1,4 @@
-import { RotatingFileSink } from "@akeru/shared/logging";
+import { RotatingFileSink } from "@isnadi/shared/logging";
 
 import { type PendingRecord } from "./EventLogTypes.ts";
 

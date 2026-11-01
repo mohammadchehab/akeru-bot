@@ -4,9 +4,9 @@ import type {
   UsagePlanWindow,
   UsageProviderKind,
   UsageProviderPlanLimits,
-} from "@akeru/contracts";
-import { enumerateDays, formatDayShort, formatTokens } from "@akeru/shared/usageFormat";
-import type { DailyTotals } from "@akeru/shared/usageMerge";
+} from "@isnadi/contracts";
+import { enumerateDays, formatDayShort, formatTokens } from "@isnadi/shared/usageFormat";
+import type { DailyTotals } from "@isnadi/shared/usageMerge";
 
 import { Line } from "../dither-kit/area";
 import { LineChart } from "../dither-kit/area-chart";

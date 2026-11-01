@@ -1,8 +1,8 @@
 import {
   type ConnectionFailureCode,
   type EnvironmentConnectionPhase,
-} from "@akeru/client-runtime/connection";
-import { EnvironmentId, ThreadId, type ServerConfig } from "@akeru/contracts";
+} from "@isnadi/client-runtime/connection";
+import { EnvironmentId, ThreadId, type ServerConfig } from "@isnadi/contracts";
 
 export interface EnvironmentRuntimeState {
   readonly connectionState: EnvironmentConnectionPhase;

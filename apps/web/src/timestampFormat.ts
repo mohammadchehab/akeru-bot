@@ -1,4 +1,4 @@
-import { type TimestampFormat } from "@akeru/contracts/settings";
+import { type TimestampFormat } from "@isnadi/contracts/settings";
 
 export function getTimestampFormatOptions(
   timestampFormat: TimestampFormat,

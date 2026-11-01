@@ -1,5 +1,5 @@
 import type {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   Routine,
   RoutineId,
   RoutineFailureKind,
@@ -9,7 +9,7 @@ import type {
   RoutineSchedule,
   RoutineWeekday,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 
@@ -65,7 +65,7 @@ export interface RoutineRuntimeAdapterShape {
   /** The persisted scheduled bot work whose child chat is `threadRef`, if any. */
   readonly findDelegatedRunDelegation: (
     threadRef: string,
-  ) => Effect.Effect<AkeruDelegationRecord | null>;
+  ) => Effect.Effect<IsnadiDelegationRecord | null>;
   readonly openFailureIncident: (
     routine: Routine,
     failure: RoutineDependencyFailure,
@@ -80,4 +80,4 @@ export interface RoutineRuntimeAdapterShape {
 export class RoutineRuntimeAdapter extends Context.Service<
   RoutineRuntimeAdapter,
   RoutineRuntimeAdapterShape
->()("akeru-bot/routines/types/RoutineRuntimeAdapter") {}
+>()("isnadibot/routines/types/RoutineRuntimeAdapter") {}

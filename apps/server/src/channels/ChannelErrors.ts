@@ -4,7 +4,7 @@ import {
   ChannelFailureCategory as ChannelFailureCategorySchema,
   type ChannelFailureCategory,
   type ChannelProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Chat } from "chat";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";

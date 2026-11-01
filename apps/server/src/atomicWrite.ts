@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 export const writeFileStringAtomically = <E = never>(input: {
   readonly filePath: string;

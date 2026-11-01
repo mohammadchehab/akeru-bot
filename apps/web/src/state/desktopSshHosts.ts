@@ -1,4 +1,4 @@
-import type { DesktopBridge, DesktopDiscoveredSshHost } from "@akeru/contracts";
+import type { DesktopBridge, DesktopDiscoveredSshHost } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { Atom } from "effect/unstable/reactivity";

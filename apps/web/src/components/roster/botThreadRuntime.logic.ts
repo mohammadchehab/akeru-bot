@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
-import type { StartThreadTurnInput } from "@akeru/client-runtime/state/threads";
-import { PLACEHOLDER_THREAD_TITLE } from "@akeru/contracts";
+import type { StartThreadTurnInput } from "@isnadi/client-runtime/state/threads";
+import { PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
 import type {
   BotId,
   GroupId,
@@ -10,7 +10,7 @@ import type {
   RuntimeMode,
   ScopedThreadRef,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { parseChatPath } from "./roster.logic";
 

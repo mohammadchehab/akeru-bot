@@ -1,4 +1,4 @@
-import { PreviewAutomationElement } from "@akeru/contracts";
+import { PreviewAutomationElement } from "@isnadi/contracts";
 import { decodeEvaluationValue } from "./PreviewEvaluation.ts";
 import * as Schema from "effect/Schema";
 

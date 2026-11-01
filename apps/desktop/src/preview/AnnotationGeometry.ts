@@ -1,4 +1,4 @@
-import type { PreviewAnnotationPoint, PreviewAnnotationRect } from "@akeru/contracts";
+import type { PreviewAnnotationPoint, PreviewAnnotationRect } from "@isnadi/contracts";
 
 export const OVERLAY_ATTRIBUTE = "data-t3code-annotation-ui";
 

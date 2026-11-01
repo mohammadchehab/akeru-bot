@@ -2,7 +2,7 @@ import {
   OrchestrationCheckpointSummary,
   OrchestrationSession,
   ThreadTurnResumeRequestedPayload,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   ThreadActivityAppendedPayload,
@@ -12,7 +12,7 @@ import {
   ThreadTurnStartRequestedPayload,
 } from "../Schemas.ts";
 import { settledTurnStateForSessionStatus } from "../TurnSessionState.ts";
-import type { OrchestrationReadModel, OrchestrationEvent } from "@akeru/contracts";
+import type { OrchestrationReadModel, OrchestrationEvent } from "@isnadi/contracts";
 import type { OrchestrationProjectorDecodeError } from "../Errors.ts";
 import {
   decodeForEvent,

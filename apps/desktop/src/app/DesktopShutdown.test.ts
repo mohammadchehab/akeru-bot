@@ -7,7 +7,7 @@ import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Tracer from "effect/Tracer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { makeLocalFileTracer, traceSink } from "@akeru/shared/observability";
+import { makeLocalFileTracer, traceSink } from "@isnadi/shared/observability";
 import { DesktopTraceShutdown } from "./DesktopObservability.ts";
 import * as DesktopShutdown from "./DesktopShutdown.ts";
 

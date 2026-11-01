@@ -12,10 +12,10 @@ import {
   type ChatAttachment,
   type ModelSelection,
   type OpenCodeSettings,
-} from "@akeru/contracts";
-import { sanitizeBranchFragment } from "@akeru/shared/git";
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
-import { extractJsonObject } from "@akeru/shared/schemaJson";
+} from "@isnadi/contracts";
+import { sanitizeBranchFragment } from "@isnadi/shared/git";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
+import { extractJsonObject } from "@isnadi/shared/schemaJson";
 import * as ServerConfig from "../config.ts";
 import { subscriptionRuntimeEnvironment } from "../subscription-auth/runtime.ts";
 import { resolveAttachmentPath } from "../attachmentStore.ts";

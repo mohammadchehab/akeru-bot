@@ -1,5 +1,5 @@
-import type { DesktopSshEnvironmentTarget } from "@akeru/contracts";
-import { satisfiesSemverRange } from "@akeru/shared/semver";
+import type { DesktopSshEnvironmentTarget } from "@isnadi/contracts";
+import { satisfiesSemverRange } from "@isnadi/shared/semver";
 import { remoteStateKey } from "./command.ts";
 import {
   DEFAULT_REMOTE_PORT,
@@ -240,7 +240,7 @@ if command -v akeru >/dev/null 2>&1; then
   exec akeru "$@"
 fi
 # npm extracts a package before it runs the native builds of its dependencies,
-# so a failed build (akeru-bot depends on node-pty, which needs a C toolchain) leaves
+# so a failed build (isnadibot depends on node-pty, which needs a C toolchain) leaves
 # the npx cache without an akeru executable. \`npx --yes\` then exits 0 without
 # running anything at all, which the caller only ever sees as a server that
 # never becomes ready. Resolve the CLI once up front so that install failure is
@@ -413,7 +413,7 @@ if [ -z "$REMOTE_PORT" ]; then
   printf '%s\\n' "$REMOTE_PORT" >"$PORT_FILE"
   printf 'managed\\n' >"$MANAGED_FILE"
   if ! wait_ready "@@T3_READY_TIMEOUT_MS@@"; then
-    printf 'Remote Akeru Bot server did not become ready on 127.0.0.1:%s.\\n' "$REMOTE_PORT" >&2
+    printf 'Remote IsnadiBot server did not become ready on 127.0.0.1:%s.\\n' "$REMOTE_PORT" >&2
     if [ -s "$LOG_FILE" ]; then
       tail -n 80 "$LOG_FILE" >&2 2>/dev/null || true
     else
@@ -456,7 +456,7 @@ if [ "$REMOTE_MANAGED" != "external" ] && [ -n "$REMOTE_PID" ] && kill -0 "$REMO
     sleep 0.1
   done
   if kill -0 "$REMOTE_PID" 2>/dev/null; then
-    printf 'Remote Akeru server with PID %s did not stop within 2 seconds. Its ownership files were kept.\\n' "$REMOTE_PID" >&2
+    printf 'Remote Isnadi server with PID %s did not stop within 2 seconds. Its ownership files were kept.\\n' "$REMOTE_PID" >&2
     exit 1
   fi
 fi
@@ -473,7 +473,7 @@ fi
 `;
 
 export function buildRemoteT3RunnerScript(input?: RemoteT3RunnerOptions): string {
-  const packageSpec = shellSingleQuote(input?.packageSpec?.trim() || "akeru-bot@latest");
+  const packageSpec = shellSingleQuote(input?.packageSpec?.trim() || "isnadibot@latest");
   const nodeScriptPath = input?.nodeScriptPath?.trim() || "";
 
   return stripTrailingNewlines(

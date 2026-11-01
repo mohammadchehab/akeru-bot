@@ -4,12 +4,12 @@ import type {
   GroupMembership,
   ImageProviderId,
   McpServerId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 /**
  * Local mirror of the bot roster wire shape the server-side persistence work
  * is building in parallel. Field-for-field identical so integration becomes a
- * type-import swap to `@akeru/contracts`; do not diverge from that shape
+ * type-import swap to `@isnadi/contracts`; do not diverge from that shape
  * here.
  */
 

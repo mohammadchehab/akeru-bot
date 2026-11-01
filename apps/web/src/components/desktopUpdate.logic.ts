@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { DesktopUpdateActionResult, DesktopUpdateState } from "@akeru/contracts";
+import type { DesktopUpdateActionResult, DesktopUpdateState } from "@isnadi/contracts";
 
 export type DesktopUpdateButtonAction = "download" | "install" | "none";
 

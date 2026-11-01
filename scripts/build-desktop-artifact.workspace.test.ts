@@ -19,10 +19,10 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       resolveDesktopRuntimeDependencies(
         {
           "@effect/platform-node": "catalog:",
-          "@akeru/contracts": "workspace:*",
-          "@akeru/shared": "workspace:*",
-          "@akeru/ssh": "workspace:*",
-          "@akeru/tailscale": "workspace:*",
+          "@isnadi/contracts": "workspace:*",
+          "@isnadi/shared": "workspace:*",
+          "@isnadi/ssh": "workspace:*",
+          "@isnadi/tailscale": "workspace:*",
           effect: "catalog:",
           electron: "41.5.0",
         },

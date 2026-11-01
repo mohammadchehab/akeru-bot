@@ -1,4 +1,4 @@
-import { BotId, DEFAULT_PROVIDER_INTERACTION_MODE, GroupId, ThreadId } from "@akeru/contracts";
+import { BotId, DEFAULT_PROVIDER_INTERACTION_MODE, GroupId, ThreadId } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   providerErrorLabel,

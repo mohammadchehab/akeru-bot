@@ -1,5 +1,5 @@
 {
-  "name": "@akeru/shared",
+  "name": "@isnadi/shared",
   "version": "0.0.4",
   "private": true,
   "type": "module",
@@ -196,6 +196,14 @@
       "types": "./src/devHome.ts",
       "import": "./src/devHome.ts"
     },
+    "./legacyEnv": {
+      "types": "./src/legacyEnv.ts",
+      "import": "./src/legacyEnv.ts"
+    },
+    "./productHome": {
+      "types": "./src/productHome.ts",
+      "import": "./src/productHome.ts"
+    },
     "./devProxy": {
       "types": "./src/devProxy.ts",
       "import": "./src/devProxy.ts"
@@ -226,7 +234,7 @@
     "test": "vp test run"
   },
   "dependencies": {
-    "@akeru/contracts": "workspace:*",
+    "@isnadi/contracts": "workspace:*",
     "effect": "catalog:",
     "yaml": "catalog:"
   },

@@ -12,7 +12,7 @@ import {
   type OrchestrationReadModel,
   type PortabilityArchiveRecord,
   type ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { createEmptyReadModel } from "./orchestration/projector.ts";
 
@@ -133,7 +133,7 @@ export function makeSnapshot(
         disabledMcpServerIds: [STDIO_MCP_ID, McpServerId.make("deleted-server")],
         avatar: {
           kind: "image",
-          assetPath: "/Users/leo/.akeru/avatars/private.png",
+          assetPath: "/Users/leo/.isnadi/avatars/private.png",
           dithered: true,
         },
         engine: { provider: "codex", model: "gpt-5.6-sol" },

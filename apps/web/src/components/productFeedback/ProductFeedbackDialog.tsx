@@ -1,4 +1,4 @@
-import { PRODUCT_FEEDBACK_TEXT_MAX_CHARS } from "@akeru/contracts";
+import { PRODUCT_FEEDBACK_TEXT_MAX_CHARS } from "@isnadi/contracts";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -171,7 +171,7 @@ export function ProductFeedbackDialog() {
     <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && handleClose()}>
       <DialogPopup
         className="flex max-h-(--spacing-min-32rem-90dvh) max-w-lg flex-col overflow-hidden"
-        data-akeru-feedback-ui="composer"
+        data-isnadi-feedback-ui="composer"
       >
         <form className="flex min-h-0 flex-1 flex-col" onSubmit={handleSubmit}>
           <DialogHeader className="shrink-0">

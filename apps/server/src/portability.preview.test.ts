@@ -1,4 +1,4 @@
-import { DEFAULT_SERVER_SETTINGS, ProjectId } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, ProjectId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   commandsForPortabilityImport,

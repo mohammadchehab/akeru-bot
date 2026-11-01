@@ -13,7 +13,7 @@ import {
   ORCHESTRATION_WS_METHODS,
   ProviderInstanceId,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { deriveProviderInstanceConfigMap } from "./provider/Layers/ProviderInstanceRegistryHydration.ts";
 import * as ChannelCommand from "./channels/ChannelCommand.ts";
 import {

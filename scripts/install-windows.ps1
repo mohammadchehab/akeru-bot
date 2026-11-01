@@ -1,6 +1,6 @@
-# One-line Windows installer for Akeru Bot (x64).
+# One-line Windows installer for IsnadiBot (x64).
 #
-#   $t = (Invoke-RestMethod https://api.github.com/repos/opencoredev/akeru-bot/releases/latest -ErrorAction Stop).tag_name; if ($t -match '^v\d+\.\d+\.\d+$') { $f = Join-Path $env:TEMP $("akeru-install-$([Guid]::NewGuid()).ps1"); try { Invoke-WebRequest "https://raw.githubusercontent.com/opencoredev/akeru-bot/$t/scripts/install-windows.ps1" -OutFile $f -UseBasicParsing -ErrorAction Stop; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f -Tag $t; if ($LASTEXITCODE -ne 0) { throw "Akeru Bot installer failed with exit code $LASTEXITCODE." } } finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue } } else { throw "Could not resolve the latest Akeru Bot release." }
+#   $t = (Invoke-RestMethod https://api.github.com/repos/opencoredev/akeru-bot/releases/latest -ErrorAction Stop).tag_name; if ($t -match '^v\d+\.\d+\.\d+$') { $f = Join-Path $env:TEMP $("isnadi-install-$([Guid]::NewGuid()).ps1"); try { Invoke-WebRequest "https://raw.githubusercontent.com/opencoredev/akeru-bot/$t/scripts/install-windows.ps1" -OutFile $f -UseBasicParsing -ErrorAction Stop; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f -Tag $t; if ($LASTEXITCODE -ne 0) { throw "IsnadiBot installer failed with exit code $LASTEXITCODE." } } finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue } } else { throw "Could not resolve the latest IsnadiBot release." }
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-windows.ps1 -Tag v1.2.3
 #
 # Downloads the GitHub exe for the latest stable tag (or -Tag), checks
@@ -34,11 +34,11 @@ if ($Tag -notmatch '^v\d+\.\d+\.\d+$') {
 }
 
 $version = $Tag.Substring(1)
-Write-Output "Installing Akeru Bot $Tag for Windows (x64)..."
+Write-Output "Installing IsnadiBot $Tag for Windows (x64)..."
 
-$asset = "Akeru-Bot-$version-x64.exe"
+$asset = "IsnadiBot-$version-x64.exe"
 $base = "https://github.com/opencoredev/akeru-bot/releases/download/$Tag"
-$tempDirectory = Join-Path $env:TEMP "akeru-install-$([Guid]::NewGuid())"
+$tempDirectory = Join-Path $env:TEMP "isnadi-install-$([Guid]::NewGuid())"
 $null = New-Item -ItemType Directory -Path $tempDirectory
 try {
   $installerPath = Join-Path $tempDirectory $asset
@@ -64,7 +64,7 @@ try {
   if ($proc.ExitCode -ne 0) {
     throw "install-windows.ps1: installer exited with code $($proc.ExitCode)."
   }
-  Write-Output "Installed Akeru Bot $Tag."
+  Write-Output "Installed IsnadiBot $Tag."
 } finally {
   Remove-Item -LiteralPath $tempDirectory -Recurse -Force -ErrorAction SilentlyContinue
 }

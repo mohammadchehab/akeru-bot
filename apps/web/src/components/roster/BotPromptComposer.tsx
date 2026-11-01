@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { composerActionIsDictation } from "@akeru/client-runtime/dictation";
+import { composerActionIsDictation } from "@isnadi/client-runtime/dictation";
 import {
   ArrowUpIcon,
   AtSignIcon,

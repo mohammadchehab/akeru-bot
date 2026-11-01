@@ -1,4 +1,4 @@
-import type { QuitConfirmationMode, QuitShortcutHintEvent } from "@akeru/contracts";
+import type { QuitConfirmationMode, QuitShortcutHintEvent } from "@isnadi/contracts";
 
 // The quit accelerator is intercepted in before-input-event, which runs
 // before the native menu accelerator. Quitting from the application menu is

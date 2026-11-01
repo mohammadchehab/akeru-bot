@@ -9,7 +9,7 @@ import {
   type BotId,
   type ProviderInstanceId,
   type SubscriptionAuthStartInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Clock from "effect/Clock";
 import type * as FileSystem from "effect/FileSystem";

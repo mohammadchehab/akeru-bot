@@ -1,4 +1,4 @@
-import { BotId, type AkeruBotUsageSnapshot } from "@akeru/contracts";
+import { BotId, type IsnadiBotUsageSnapshot } from "@isnadi/contracts";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -8,7 +8,7 @@ vi.mock("react-native", () => ({ Text: "span", View: "div" }));
 import { BotUsageDetails } from "./BotUsageDetails";
 import { botUsageView } from "./botUsagePresentation";
 
-const snapshot: AkeruBotUsageSnapshot = {
+const snapshot: IsnadiBotUsageSnapshot = {
   botId: BotId.make("bot-1"),
   consumedTokens: 12_345,
   reservedTokens: 750,
@@ -24,7 +24,7 @@ const snapshot: AkeruBotUsageSnapshot = {
 };
 
 function render(query: {
-  readonly data: AkeruBotUsageSnapshot | null;
+  readonly data: IsnadiBotUsageSnapshot | null;
   readonly error: string | null;
   readonly isPending: boolean;
 }) {

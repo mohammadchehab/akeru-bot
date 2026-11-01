@@ -1,4 +1,4 @@
-import { ProviderInstanceId, SubscriptionAuthError } from "@akeru/contracts";
+import { ProviderInstanceId, SubscriptionAuthError } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import { deriveProviderInstanceConfigMap } from "../provider/Layers/ProviderInstanceRegistryHydration.ts";

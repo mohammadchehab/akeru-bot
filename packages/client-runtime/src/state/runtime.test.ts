@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import { describe, expect, it } from "@effect/vitest";
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

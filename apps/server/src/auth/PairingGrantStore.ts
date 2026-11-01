@@ -6,7 +6,7 @@ import {
   AuthStandardClientScopes,
   type AuthEnvironmentScope,
   type AuthPairingLink,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
@@ -70,7 +70,7 @@ export class PairingGrantStore extends Context.Service<
       credential: string,
     ) => Effect.Effect<BootstrapGrant, BootstrapCredentialError>;
   }
->()("akeru-bot/auth/PairingGrantStore") {}
+>()("isnadibot/auth/PairingGrantStore") {}
 
 export const make = Effect.gen(function* () {
   const crypto = yield* Crypto.Crypto;

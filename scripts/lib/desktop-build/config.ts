@@ -18,7 +18,7 @@ import {
   stageWindowsIcons,
 } from "./assets.ts";
 
-const DESKTOP_APP_ID = "dev.leodoes.akeru";
+const DESKTOP_APP_ID = "dev.leodoes.isnadi";
 
 export interface DesktopBuildConfiguration {
   appId: string;
@@ -276,7 +276,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       // The .icon bundle is preferred by electron-builder: it compiles an
       // asset catalog for macOS 26 theming and derives the legacy icns from
       // the same source for older systems.
-      icon: "akeru.icon",
+      icon: "isnadi.icon",
       category: "public.app-category.developer-tools",
       extendInfo: {
         NSMicrophoneUsageDescription:
@@ -334,7 +334,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
   if (platform === "linux") {
     buildConfig.linux = {
       target: [target],
-      executableName: "akeru-bot",
+      executableName: "isnadibot",
       icon: "icons",
       category: "Development",
       // electron-builder turns these into MimeType=x-scheme-handler/<scheme>;
@@ -348,7 +348,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       ],
       desktop: {
         entry: {
-          StartupWMClass: "akeru-bot",
+          StartupWMClass: "isnadibot",
         },
       },
     };
@@ -364,7 +364,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     // list, so the OS hands akeru:// activations to this install instead of
     // whatever app (for example an old T3 build) registered a scheme earlier.
     // Only the production scheme: packaged builds never run as development,
-    // and claiming akeru-dev would steal it from a developer's local build.
+    // and claiming isnadi-dev would steal it from a developer's local build.
     buildConfig.protocols = [
       {
         name: "IsnadiBot",

@@ -109,7 +109,7 @@ export class BrowserSession extends Context.Service<
     readonly clearCookies: () => Effect.Effect<void, BrowserSessionStorageClearError>;
     readonly clearCache: () => Effect.Effect<void, BrowserSessionCacheClearError>;
   }
->()("@akeru/desktop/preview/BrowserSession") {}
+>()("@isnadi/desktop/preview/BrowserSession") {}
 
 export const make = Effect.gen(function* BrowserSessionMake() {
   const crypto = yield* Crypto.Crypto;

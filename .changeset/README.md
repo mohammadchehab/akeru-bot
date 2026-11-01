@@ -1,7 +1,7 @@
 # Changesets
 
 Every pull request must commit a changeset. Run `pnpm changeset` for a user-visible change, choose
-one package in the Akeru fixed release group, and describe the result in user-facing language. Run
+one package in the Isnadi fixed release group, and describe the result in user-facing language. Run
 `pnpm changeset --empty` for documentation, tests, refactors, or internal tooling that should not
 ship a new product version.
 

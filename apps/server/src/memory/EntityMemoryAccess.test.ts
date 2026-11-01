@@ -2,25 +2,25 @@ import * as NodeCrypto from "node:crypto";
 
 import { assert, describe, it } from "@effect/vitest";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryUserId,
   BotId,
   GroupId,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import {
-  deriveAkeruWorkspaceId,
+  deriveIsnadiWorkspaceId,
   resolveAuthorizedMemoryPartitions,
   resolveMemoryArchivePartitions,
 } from "./EntityMemoryAccess.ts";
 
 const base = {
-  tenantId: AkeruMemoryTenantId.make("local"),
-  userId: AkeruMemoryUserId.make("owner"),
+  tenantId: IsnadiMemoryTenantId.make("local"),
+  userId: IsnadiMemoryUserId.make("owner"),
   threadId: ThreadId.make("thread-1"),
   projectId: ProjectId.make("project-1"),
   workspaceRoot: "/workspace/one",
@@ -119,19 +119,19 @@ describe("entity memory access", () => {
   );
 
   it("keeps the workspace partition stable when the project root moves", () => {
-    const beforeMove = deriveAkeruWorkspaceId(base.projectId);
+    const beforeMove = deriveIsnadiWorkspaceId(base.projectId);
 
-    const afterMove = deriveAkeruWorkspaceId(
+    const afterMove = deriveIsnadiWorkspaceId(
       { ...base, workspaceRoot: "/workspace/two" }.projectId,
     );
 
     assert.equal(beforeMove, afterMove);
-    assert.notEqual(beforeMove, deriveAkeruWorkspaceId(ProjectId.make("project-2")));
+    assert.notEqual(beforeMove, deriveIsnadiWorkspaceId(ProjectId.make("project-2")));
   });
 
   it.effect("keeps legacy workspace memory reachable in reads and archives", () =>
     Effect.gen(function* () {
-      const legacyWorkspaceId = AkeruMemoryPartitionId.make(
+      const legacyWorkspaceId = IsnadiMemoryPartitionId.make(
         `workspace:${NodeCrypto.createHash("sha256").update(base.workspaceRoot).digest("hex")}`,
       );
 
@@ -144,7 +144,7 @@ describe("entity memory access", () => {
         {
           tenantId: base.tenantId,
           scope: "workspace",
-          partitionId: deriveAkeruWorkspaceId(base.projectId),
+          partitionId: deriveIsnadiWorkspaceId(base.projectId),
           visibility: "shared",
         },
         {
@@ -175,7 +175,7 @@ describe("entity memory access", () => {
         {
           tenantId: base.tenantId,
           scope: "workspace",
-          partitionId: deriveAkeruWorkspaceId(replacementProjectId),
+          partitionId: deriveIsnadiWorkspaceId(replacementProjectId),
           visibility: "shared",
         },
       ]);

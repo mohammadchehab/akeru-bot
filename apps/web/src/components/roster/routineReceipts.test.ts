@@ -1,6 +1,6 @@
 import { decodeRoutine, decodeRoutineRun } from "../test-support/fixtures";
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import { RoutineId, ThreadId, type OrchestrationMessage, type RoutineRun } from "@akeru/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import { RoutineId, ThreadId, type OrchestrationMessage, type RoutineRun } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildBotConversationEntries } from "./botConversationPresentation";

@@ -1,4 +1,4 @@
-import { type ModelSelection, ThreadId, resolveBotMcpServers } from "@akeru/contracts";
+import { type ModelSelection, ThreadId, resolveBotMcpServers } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import { ProviderAdapterRequestError } from "../../../provider/Errors.ts";

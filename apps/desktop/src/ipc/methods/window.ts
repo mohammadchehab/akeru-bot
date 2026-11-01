@@ -8,7 +8,7 @@ import {
   PRIMARY_LOCAL_ENVIRONMENT_ID,
   type DesktopEnvironmentBootstrap,
   type PickedThemeFile,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeOS from "node:os";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";

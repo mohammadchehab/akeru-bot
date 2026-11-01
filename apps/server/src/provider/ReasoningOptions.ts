@@ -3,19 +3,19 @@ import {
   type ModelCapabilities,
   type ModelSelection,
   type ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   createModelCapabilities,
   getModelSelectionStringOptionValue,
   getModelSelectionBooleanOptionValue,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import * as Schema from "effect/Schema";
 import { getCodexServiceTierOptionValue } from "../codexModelOptions.ts";
-import { openCodeGoProtocol } from "./AkeruOpenCodeGoProvider.ts";
+import { openCodeGoProtocol } from "./IsnadiOpenCodeGoProvider.ts";
 import { getClaudeModelCapabilities } from "./Layers/claude/ClaudeModels.ts";
 import { type CatalogModel } from "./modelCatalogData.ts";
 
-export const AkeruModelOptions = Schema.Struct({
+export const IsnadiModelOptions = Schema.Struct({
   namespace: Schema.optionalKey(
     Schema.Literals(["openai", "anthropic", "xai", "opencode-go", "custom-openai"]),
   ),
@@ -26,7 +26,7 @@ export const AkeruModelOptions = Schema.Struct({
   thinkingMode: Schema.optionalKey(Schema.Literals(["adaptive", "enabled"])),
 });
 
-export type AkeruModelOptions = typeof AkeruModelOptions.Type;
+export type IsnadiModelOptions = typeof IsnadiModelOptions.Type;
 
 const NATIVE_EFFORTS = new Set(["none", "minimal", "low", "medium", "high", "xhigh", "max"]);
 
@@ -70,7 +70,7 @@ export function reasoningCapabilities(
 export function nativeModelOptions(
   driver: ProviderDriverKind,
   selection: ModelSelection,
-): AkeruModelOptions | undefined {
+): IsnadiModelOptions | undefined {
   const reasoningEffort = getModelSelectionStringOptionValue(selection, "reasoningEffort");
   const effort = getModelSelectionStringOptionValue(selection, "effort");
 

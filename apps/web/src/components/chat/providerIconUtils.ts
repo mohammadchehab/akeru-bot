@@ -1,4 +1,4 @@
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { ClaudeAI, CustomApiIcon, GrokIcon, Icon, KimiIcon, OpenAI, OpenCodeIcon } from "../Icons";
 import { PROVIDER_OPTIONS } from "../../session-logic";
 

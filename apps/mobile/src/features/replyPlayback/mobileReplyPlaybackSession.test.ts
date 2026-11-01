@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vite-plus/test";
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import { createMobileReplyPlaybackSession } from "./mobileReplyPlaybackSession";
 
 vi.mock("expo-secure-store", () => ({

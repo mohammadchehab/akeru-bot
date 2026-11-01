@@ -7,10 +7,10 @@ import {
   describeDurableFactFailure,
   durableFactMutation,
   durableFactReadOnlyReason,
-} from "@akeru/client-runtime/durable-memory";
-import { type OperateAccess } from "@akeru/client-runtime/authorization";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
-import type { ScopedThreadRef } from "@akeru/contracts";
+} from "@isnadi/client-runtime/durable-memory";
+import { type OperateAccess } from "@isnadi/client-runtime/authorization";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { useMemo, useState } from "react";
 
@@ -34,7 +34,7 @@ import { useAtomCommand } from "../../state/use-atom-command";
 import {
   resolvePrimaryOperateAccess,
   resolveRemoteOperateAccess,
-} from "@akeru/client-runtime/authorization";
+} from "@isnadi/client-runtime/authorization";
 
 interface BotDurableMemoryProps {
   readonly threadRef: ScopedThreadRef;

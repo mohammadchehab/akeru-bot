@@ -7,7 +7,7 @@ import {
   QUIT_HOLD_RELEASE_GRACE_MS,
 } from "./QuitHold.ts";
 import type { QuitHoldKeyInput } from "./QuitHold.ts";
-import type { QuitConfirmationMode, QuitShortcutHintEvent } from "@akeru/contracts";
+import type { QuitConfirmationMode, QuitShortcutHintEvent } from "@isnadi/contracts";
 
 const HOLD_DOWN = { state: "down", mode: "hold" } as const;
 

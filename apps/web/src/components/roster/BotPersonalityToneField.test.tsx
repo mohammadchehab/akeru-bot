@@ -10,7 +10,7 @@ function asRendered(text: string) {
 }
 
 const bot = {
-  name: "Akeru",
+  name: "Isnadi",
   avatar: { kind: "blob", shape: "circle", color: "#5B7FD4" },
 } as const;
 
@@ -27,7 +27,7 @@ describe("BotPersonalityToneField", () => {
     expect(markup).toContain("Chill");
     expect(markup).toContain("Professional");
     expect(markup).toContain('role="radiogroup"');
-    expect(markup).toContain('aria-label="Personality for Akeru"');
+    expect(markup).toContain('aria-label="Personality for Isnadi"');
     expect(markup.match(/role="radio"/gu)).toHaveLength(3);
     expect(markup.match(/aria-checked="true"/gu)).toHaveLength(1);
     expect(markup).not.toContain('type="range"');
@@ -47,7 +47,7 @@ describe("BotPersonalityToneField", () => {
     const markup = render(50);
     expect(markup).toContain('data-testid="bot-personality-tone-preview"');
     expect(markup).toContain("An illustration of the band, not a live reply.");
-    expect(markup).toContain("How Akeru might sound");
+    expect(markup).toContain("How Isnadi might sound");
   });
 
   it("treats a bot saved before the field existed as balanced", () => {

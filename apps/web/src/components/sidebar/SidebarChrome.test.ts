@@ -1,5 +1,5 @@
 import * as NodeFS from "node:fs";
-import { BotId, McpServerId, ThreadId, type McpServer } from "@akeru/contracts";
+import { BotId, McpServerId, ThreadId, type McpServer } from "@isnadi/contracts";
 
 import { describe, expect, it } from "vite-plus/test";
 

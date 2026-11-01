@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 [CmdletBinding()]
 param(
-  [string]$Tag = $env:AKERU_VERSION,
+  [string]$Tag = $env:ISNADI_VERSION,
   [switch]$NoTailscale,
   [switch]$NoAutoUpdate,
   [switch]$PrepareOnly,
@@ -11,15 +11,15 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
-$Repository = if ($env:AKERU_REMOTE_REPOSITORY) { $env:AKERU_REMOTE_REPOSITORY } else { "opencoredev/akeru-bot" }
-if ($Repository -ne "opencoredev/akeru-bot" -and $env:AKERU_REMOTE_ALLOW_CUSTOM_REPOSITORY -ne "1") { throw "Custom release repositories require AKERU_REMOTE_ALLOW_CUSTOM_REPOSITORY=1." }
+$Repository = if ($env:ISNADI_REMOTE_REPOSITORY) { $env:ISNADI_REMOTE_REPOSITORY } else { "opencoredev/akeru-bot" }
+if ($Repository -ne "opencoredev/akeru-bot" -and $env:ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY -ne "1") { throw "Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1." }
 
-$InstallRoot = if ($env:AKERU_INSTALL_ROOT) { $env:AKERU_INSTALL_ROOT } else { Join-Path $env:LOCALAPPDATA "Akeru\Remote" }
-$BinDir = if ($env:AKERU_BIN_DIR) { $env:AKERU_BIN_DIR } else { Join-Path $env:LOCALAPPDATA "Akeru\bin" }
-# Akeru state always lives in AKERU_HOME or ~/.akeru. The bundled server reads T3CODE_HOME, so it is
+$InstallRoot = if ($env:ISNADI_INSTALL_ROOT) { $env:ISNADI_INSTALL_ROOT } else { Join-Path $env:LOCALAPPDATA "Isnadi\Remote" }
+$BinDir = if ($env:ISNADI_BIN_DIR) { $env:ISNADI_BIN_DIR } else { Join-Path $env:LOCALAPPDATA "Isnadi\bin" }
+# Isnadi state always lives in ISNADI_HOME or ~/.isnadi. The bundled server reads T3CODE_HOME, so it is
 # derived here and never taken from an ambient T3 Code environment.
-$RuntimeHome = if ($env:AKERU_HOME) { $env:AKERU_HOME } else { Join-Path $HOME ".akeru" }
-$env:AKERU_HOME = $RuntimeHome
+$RuntimeHome = if ($env:ISNADI_HOME) { $env:ISNADI_HOME } else { Join-Path $HOME ".isnadi" }
+$env:ISNADI_HOME = $RuntimeHome
 $env:T3CODE_HOME = $RuntimeHome
 $IsAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $PrepareOnly -and -not $IsAdministrator) {
@@ -35,21 +35,21 @@ if (-not $PrepareOnly -and -not $IsAdministrator) {
 }
 
 $Release = if ($Tag) {
-  Invoke-RestMethod -Headers @{ "User-Agent" = "Akeru-Remote-Installer" } "https://api.github.com/repos/$Repository/releases/tags/$Tag"
+  Invoke-RestMethod -Headers @{ "User-Agent" = "Isnadi-Remote-Installer" } "https://api.github.com/repos/$Repository/releases/tags/$Tag"
 } else {
-  Invoke-RestMethod -Headers @{ "User-Agent" = "Akeru-Remote-Installer" } "https://api.github.com/repos/$Repository/releases/latest"
+  Invoke-RestMethod -Headers @{ "User-Agent" = "Isnadi-Remote-Installer" } "https://api.github.com/repos/$Repository/releases/latest"
 }
 $Tag = [string]$Release.tag_name
-if ($Tag -notmatch '^v[0-9]') { throw "Could not resolve the latest Akeru release." }
+if ($Tag -notmatch '^v[0-9]') { throw "Could not resolve the latest Isnadi release." }
 $Version = $Tag.Substring(1)
-# Releases publish Akeru Remote for Windows x64 only.
-$Architecture = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { throw "Akeru Remote releases are not published for Windows arm64 yet. Use Docker or build from source." } elseif ([Environment]::Is64BitOperatingSystem) { "x64" } else { throw "Akeru Remote requires 64-bit Windows." }
-$ArchiveName = "Akeru-Remote-$Version-win32-$Architecture.zip"
+# Releases publish Isnadi Remote for Windows x64 only.
+$Architecture = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { throw "Isnadi Remote releases are not published for Windows arm64 yet. Use Docker or build from source." } elseif ([Environment]::Is64BitOperatingSystem) { "x64" } else { throw "Isnadi Remote requires 64-bit Windows." }
+$ArchiveName = "Isnadi-Remote-$Version-win32-$Architecture.zip"
 $Asset = $Release.assets | Where-Object name -eq $ArchiveName | Select-Object -First 1
 if (-not $Asset) { throw "Release $Tag does not include $ArchiveName." }
 if (([string]$Asset.digest) -notmatch '^sha256:([a-fA-F0-9]{64})$') { throw "GitHub did not provide a SHA-256 digest for $ArchiveName." }
 $ExpectedHash = $Matches[1].ToLowerInvariant()
-$Temporary = Join-Path ([IO.Path]::GetTempPath()) ("akeru-install-" + [Guid]::NewGuid())
+$Temporary = Join-Path ([IO.Path]::GetTempPath()) ("isnadi-install-" + [Guid]::NewGuid())
 New-Item -ItemType Directory -Path $Temporary | Out-Null
 try {
   $Archive = Join-Path $Temporary $ArchiveName
@@ -59,16 +59,16 @@ try {
   if ($ExpectedSha256 -and $ActualHash -ne $ExpectedSha256.ToLowerInvariant()) { throw "The archive does not match the signed release manifest for $ArchiveName." }
   $Expanded = Join-Path $Temporary "expanded"
   Expand-Archive -LiteralPath $Archive -DestinationPath $Expanded
-  $Source = Join-Path $Expanded "akeru"
-  if (-not (Test-Path (Join-Path $Source "akeru.cmd"))) { throw "The Akeru Remote archive is incomplete." }
+  $Source = Join-Path $Expanded "isnadi"
+  if (-not (Test-Path (Join-Path $Source "isnadi.cmd"))) { throw "The Isnadi Remote archive is incomplete." }
   $Versions = Join-Path $InstallRoot "versions"
   $Target = Join-Path $Versions $Version
   New-Item -ItemType Directory -Force -Path $Versions, $BinDir | Out-Null
   if (-not (Test-Path $Target)) { Move-Item -LiteralPath $Source -Destination $Target }
-  if ($PrepareOnly) { Write-Host "Prepared Akeru Remote $Version for a transactional service update."; exit 0 }
+  if ($PrepareOnly) { Write-Host "Prepared Isnadi Remote $Version for a transactional service update."; exit 0 }
 
   New-Item -ItemType Directory -Force -Path (Join-Path $RuntimeHome "userdata") | Out-Null
-  if ($MigrateEnvironmentId) { $env:AKERU_REMOTE_ALLOW_IDENTITY_MIGRATION = "1" }
+  if ($MigrateEnvironmentId) { $env:ISNADI_REMOTE_ALLOW_IDENTITY_MIGRATION = "1" }
   & (Join-Path $Target "node\node.exe") (Join-Path $Target "initialize-remote-identity.cjs")
   if ($LASTEXITCODE -ne 0) { throw "Could not initialize the remote environment identity." }
 
@@ -81,8 +81,8 @@ try {
     Remove-Item $Current -Force
   }
   New-Item -ItemType Junction -Path $Current -Target $Target | Out-Null
-  $StableLauncher = "@echo off`r`ncall `"$Current\akeru.cmd`" %*`r`n"
-  Set-Content -LiteralPath (Join-Path $BinDir "akeru.cmd") -Value $StableLauncher -Encoding Ascii
+  $StableLauncher = "@echo off`r`ncall `"$Current\isnadi.cmd`" %*`r`n"
+  Set-Content -LiteralPath (Join-Path $BinDir "isnadi.cmd") -Value $StableLauncher -Encoding Ascii
   if (($env:PATH -split ';') -notcontains $BinDir) { $env:PATH = "$BinDir;$env:PATH" }
   $UserPath = [Environment]::GetEnvironmentVariable("Path", "User")
   if (($UserPath -split ';') -notcontains $BinDir) { [Environment]::SetEnvironmentVariable("Path", (($UserPath.TrimEnd(';') + ";" + $BinDir).TrimStart(';')), "User") }
@@ -105,7 +105,7 @@ try {
     }
     & $Tailscale up --unattended=true
     if ($LASTEXITCODE -ne 0) { throw "Tailscale sign-in did not finish." }
-    $env:AKERU_TAILSCALE_PATH = $Tailscale
+    $env:ISNADI_TAILSCALE_PATH = $Tailscale
     $env:T3CODE_TAILSCALE_SERVE = "true"
   }
   $Runtime = Join-Path $RuntimeHome "runtime"
@@ -115,7 +115,7 @@ try {
     $State = Get-Content -LiteralPath $StatePath -Raw | ConvertFrom-Json
     if ($State.update.status -eq "pending") { throw "A service update is pending. Finish it before reinstalling." }
   }
-  $TaskName = "Akeru Remote"
+  $TaskName = "Isnadi Remote"
   if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
     Stop-ScheduledTask -TaskName $TaskName
   }
@@ -139,17 +139,17 @@ try {
     try { Remove-Item -LiteralPath $Previous -Recurse -Force -ErrorAction Stop }
     catch { Write-Warning "Could not remove the previous runtime at ${Previous}: $($_.Exception.Message)" }
   }
-  Copy-Item -LiteralPath (Join-Path $Verified "node_modules\akeru-bot\dist\service-launcher.mjs") -Destination $Runtime -Force
+  Copy-Item -LiteralPath (Join-Path $Verified "node_modules\isnadibot\dist\service-launcher.mjs") -Destination $Runtime -Force
   $ServiceState = @{ protocol = 2; activeVersion = $Version } | ConvertTo-Json -Compress
   [IO.File]::WriteAllText($StatePath, "$ServiceState`n", [Text.UTF8Encoding]::new($false))
   function Quote-PowerShellLiteral([string]$Value) { return "'" + $Value.Replace("'", "''") + "'" }
   $TaskEnvironment = @(
-    "`$env:AKERU_HOME = $(Quote-PowerShellLiteral $RuntimeHome)",
+    "`$env:ISNADI_HOME = $(Quote-PowerShellLiteral $RuntimeHome)",
     "`$env:T3CODE_HOME = $(Quote-PowerShellLiteral $RuntimeHome)",
-    "`$env:AKERU_SERVICE_RUNTIME_ROOT = $(Quote-PowerShellLiteral $Target)",
-    "`$env:AKERU_INSTALL_ROOT = $(Quote-PowerShellLiteral $InstallRoot)",
+    "`$env:ISNADI_SERVICE_RUNTIME_ROOT = $(Quote-PowerShellLiteral $Target)",
+    "`$env:ISNADI_INSTALL_ROOT = $(Quote-PowerShellLiteral $InstallRoot)",
     "`$env:PATH = $(Quote-PowerShellLiteral $env:PATH)",
-    "`$env:AKERU_TAILSCALE_PATH = $(Quote-PowerShellLiteral $Tailscale)",
+    "`$env:ISNADI_TAILSCALE_PATH = $(Quote-PowerShellLiteral $Tailscale)",
     "`$env:T3CODE_TAILSCALE_SERVE = $(Quote-PowerShellLiteral $(if ($NoTailscale) { 'false' } else { 'true' }))"
   )
   $ServiceScript = Join-Path $Runtime "start-remote.ps1"
@@ -177,7 +177,7 @@ try {
       Invoke-WebRequest -UseBasicParsing -TimeoutSec 3 "http://127.0.0.1:$($state.port)/" | Out-Null; $Healthy = $true; break
     } catch { Start-Sleep -Seconds 2 }
   }
-  if (-not $Healthy) { throw "The Akeru service did not become healthy. Run `akeru remote doctor` for details." }
+  if (-not $Healthy) { throw "The Isnadi service did not become healthy. Run `isnadi remote doctor` for details." }
   if ($RemoteEndpoint) {
     $RuntimePort = (Get-Content (Join-Path $RuntimeHome "userdata\server-runtime.json") -Raw | ConvertFrom-Json).port
     $EnvironmentId = (Get-Content (Join-Path $RuntimeHome "userdata\environment-id") -Raw).Trim()
@@ -185,17 +185,17 @@ try {
     [IO.File]::WriteAllText((Join-Path $RuntimeHome "userdata\remote-serve.json"), "$ServeRecord`n", [Text.UTF8Encoding]::new($false))
   }
   if (-not $NoAutoUpdate) {
-    $Launcher = Join-Path $BinDir "akeru.cmd"
+    $Launcher = Join-Path $BinDir "isnadi.cmd"
     $UpdateScript = Join-Path $Runtime "update-remote.ps1"
     Set-Content -LiteralPath $UpdateScript -Value ($TaskEnvironment + "& $(Quote-PowerShellLiteral $Launcher) remote update" + 'exit $LASTEXITCODE') -Encoding UTF8
     $UpdateAction = New-ScheduledTaskAction -Execute $PowerShell -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$UpdateScript`""
     $UpdateTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(15) -RepetitionInterval (New-TimeSpan -Hours 1)
-    Register-ScheduledTask -TaskName "Akeru Remote Update" -Action $UpdateAction -Trigger $UpdateTrigger -Principal $Principal -Force | Out-Null
+    Register-ScheduledTask -TaskName "Isnadi Remote Update" -Action $UpdateAction -Trigger $UpdateTrigger -Principal $Principal -Force | Out-Null
   }
-  Write-Host "`nAkeru Remote $Version is installed."
+  Write-Host "`nIsnadi Remote $Version is installed."
   if ($RemoteEndpoint) { Write-Host "Direct URL: $RemoteEndpoint" }
-  Write-Host "Pair your first admin device: akeru pair --admin"
-  Write-Host "Diagnostics: akeru remote doctor"
+  Write-Host "Pair your first admin device: isnadi pair --admin"
+  Write-Host "Diagnostics: isnadi remote doctor"
 } finally {
   Remove-Item -LiteralPath $Temporary -Recurse -Force -ErrorAction SilentlyContinue
 }

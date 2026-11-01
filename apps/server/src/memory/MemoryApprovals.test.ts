@@ -9,13 +9,13 @@ import {
 } from "./testUtils/memoryApprovals.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
-  AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
-  AkeruMemoryCandidateId,
+  ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
+  ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+  IsnadiMemoryCandidateId,
   BotId,
   GroupId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { MemoryApprovals, memoryApprovalIncidentKey } from "./MemoryApprovals.ts";
@@ -45,7 +45,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
 
       if (requested?.type !== "thread.activity.append") return;
       assert.equal(requested.threadId, threadId);
-      assert.equal(requested.activity.kind, AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY);
+      assert.equal(requested.activity.kind, ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY);
       assert.equal(requested.activity.tone, "approval");
       assert.equal(requested.activity.summary, "Save to project memory?");
       assert.deepEqual(requested.activity.payload, {
@@ -94,8 +94,8 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         [["The release branch is cut on Thursday mornings.", "project", "approved"]],
       );
       assert.deepEqual(activityKinds(), [
-        AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
-        AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+        ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
+        ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
       ]);
       botInbox.reload();
       assert.equal(
@@ -157,7 +157,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
       const unknown = yield* approvals
         .decide({
           access,
-          decision: { candidateId: AkeruMemoryCandidateId.make("missing"), decision: "approve" },
+          decision: { candidateId: IsnadiMemoryCandidateId.make("missing"), decision: "approve" },
         })
         .pipe(Effect.flip);
 

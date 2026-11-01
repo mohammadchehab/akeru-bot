@@ -3,10 +3,10 @@ import type {
   DesktopDiscoveredSshHost,
   DesktopSshEnvironmentBootstrap,
   DesktopSshEnvironmentTarget,
-} from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
-import * as SshAuth from "@akeru/ssh/auth";
-import { discoverSshHosts } from "@akeru/ssh/config";
+} from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
+import * as SshAuth from "@isnadi/ssh/auth";
+import { discoverSshHosts } from "@isnadi/ssh/config";
 import {
   SshCommandError,
   SshHostDiscoveryError,
@@ -15,8 +15,8 @@ import {
   SshPairingError,
   SshPasswordPromptError,
   SshReadinessError,
-} from "@akeru/ssh/errors";
-import * as SshTunnel from "@akeru/ssh/tunnel";
+} from "@isnadi/ssh/errors";
+import * as SshTunnel from "@isnadi/ssh/tunnel";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -63,7 +63,7 @@ export class DesktopSshEnvironment extends Context.Service<
       target: DesktopSshEnvironmentTarget,
     ) => Effect.Effect<void, DesktopSshEnvironmentOperationError>;
   }
->()("@akeru/desktop/ssh/DesktopSshEnvironment") {}
+>()("@isnadi/desktop/ssh/DesktopSshEnvironment") {}
 
 export interface DesktopSshEnvironmentLayerOptions {
   readonly resolveCliPackageSpec?: () => string;

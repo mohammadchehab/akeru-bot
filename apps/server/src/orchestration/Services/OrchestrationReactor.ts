@@ -29,4 +29,4 @@ export interface OrchestrationReactorShape {
 export class OrchestrationReactor extends Context.Service<
   OrchestrationReactor,
   OrchestrationReactorShape
->()("akeru-bot/orchestration/Services/OrchestrationReactor") {}
+>()("isnadibot/orchestration/Services/OrchestrationReactor") {}

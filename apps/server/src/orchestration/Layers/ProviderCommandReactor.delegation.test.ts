@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import {
   BotId,
   CommandId,
@@ -6,7 +6,7 @@ import {
   DelegationId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it as effectIt } from "@effect/vitest";
 import { afterEach, describe, expect, vi } from "vite-plus/test";

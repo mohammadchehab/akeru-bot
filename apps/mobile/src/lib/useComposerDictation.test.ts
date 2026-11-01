@@ -3,7 +3,7 @@ import {
   type DictationDependencies,
   type DictationDraft,
   type DictationIdentity,
-} from "@akeru/client-runtime/dictation";
+} from "@isnadi/client-runtime/dictation";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 const hooks = vi.hoisted(() => ({ slots: [] as unknown[], cursor: 0 }));

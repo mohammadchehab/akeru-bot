@@ -14,13 +14,13 @@ import {
   ResolvedKeybindingRule,
   type ServerRemoveKeybindingInput,
   type ServerUpsertKeybindingInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";
 import * as SchemaIssue from "effect/SchemaIssue";
 import * as SchemaTransformation from "effect/SchemaTransformation";
-import { compileResolvedKeybindingRule, parseKeybindingShortcut } from "@akeru/shared/keybindings";
+import { compileResolvedKeybindingRule, parseKeybindingShortcut } from "@isnadi/shared/keybindings";
 
 export const ResolvedKeybindingFromConfig = KeybindingRule.pipe(
   Schema.decodeTo(

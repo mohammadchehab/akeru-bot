@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { useEffect, useRef, useState, type ComponentType } from "react";

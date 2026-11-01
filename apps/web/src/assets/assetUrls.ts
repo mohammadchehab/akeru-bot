@@ -1,15 +1,15 @@
 import * as Data from "effect/Data";
 import { hasTag } from "~/lib/taggedUnion";
 import { useAtomValue } from "@effect/atom-react";
-import { resolveAssetUrl } from "@akeru/client-runtime/state/assets";
-import type { AssetImageDimensions, AssetResource, EnvironmentId } from "@akeru/contracts";
+import { resolveAssetUrl } from "@isnadi/client-runtime/state/assets";
+import type { AssetImageDimensions, AssetResource, EnvironmentId } from "@isnadi/contracts";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { useMemo } from "react";
 
 import { assetEnvironment } from "~/state/assets";
 import { usePreparedConnection } from "~/state/session";
 
-export { resolveAssetUrl } from "@akeru/client-runtime/state/assets";
+export { resolveAssetUrl } from "@isnadi/client-runtime/state/assets";
 
 export type AssetUrlState =
   | { readonly _tag: "Loading" }

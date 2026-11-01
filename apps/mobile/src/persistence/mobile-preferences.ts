@@ -6,7 +6,7 @@ import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
 import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
-import type { SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { SidebarProjectGroupingMode } from "@isnadi/contracts";
 import {
   normalizeMobileThemeId,
   type MobileThemeId,
@@ -23,7 +23,7 @@ const PREFERENCES_KEY = "akeru.preferences";
 const PREFERENCES_FALLBACK_KEY = "akeru.preferences.fallback";
 
 // Keys written before the rebrand; reads fall back once and the next write
-// lands on the Akeru keys, draining the old entries.
+// lands on the Isnadi keys, draining the old entries.
 const LEGACY_PREFERENCES_KEY = "t3code.preferences";
 
 const LEGACY_PREFERENCES_FALLBACK_KEY = "t3code.preferences.fallback";
@@ -86,7 +86,7 @@ export class MobilePreferencesStore extends Context.Service<
       transform: (current: Preferences) => Partial<Preferences>,
     ) => Effect.Effect<Preferences, MobilePreferencesSaveError>;
   }
->()("@akeru/mobile/persistence/MobilePreferencesStore") {}
+>()("@isnadi/mobile/persistence/MobilePreferencesStore") {}
 
 const StoredPreferences = Schema.Struct({
   language: Schema.optional(Schema.Unknown),

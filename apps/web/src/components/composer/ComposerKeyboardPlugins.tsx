@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { type ServerProviderSkill } from "@akeru/contracts";
+import { type ServerProviderSkill } from "@isnadi/contracts";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $createRangeSelectionFromDom,

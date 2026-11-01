@@ -91,7 +91,7 @@ export function stageMacIcons(
     // Stage the Icon Composer bundle so electron-builder compiles an asset
     // catalog with light, dark, and tinted variants. macOS 26 themes legacy
     // .icns icons itself, which turned the cream tile black in dark mode.
-    yield* fs.copy(composerSource, path.join(stageResourcesDir, "akeru.icon"));
+    yield* fs.copy(composerSource, path.join(stageResourcesDir, "isnadi.icon"));
 
     yield* runCommand(ChildProcess.make({})`sips -z 512 512 ${sourcePng} --out ${iconPngPath}`, {
       label: "sips mac icon",

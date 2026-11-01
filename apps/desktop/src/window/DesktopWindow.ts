@@ -16,7 +16,7 @@ import * as Ref from "effect/Ref";
 
 import * as Electron from "electron";
 
-import { DEFAULT_CLIENT_SETTINGS } from "@akeru/contracts";
+import { DEFAULT_CLIENT_SETTINGS } from "@isnadi/contracts";
 
 import * as DesktopAssets from "../app/DesktopAssets.ts";
 
@@ -137,7 +137,7 @@ export class DesktopWindow extends Context.Service<
     readonly zoomMain: (direction: MainWindowZoomDirection) => Effect.Effect<void>;
     readonly syncAppearance: Effect.Effect<void>;
   }
->()("@akeru/desktop/window/DesktopWindow") {}
+>()("@isnadi/desktop/window/DesktopWindow") {}
 
 const { logInfo: logWindowInfo, logWarning: logWindowWarning } = componentLogger("desktop-window");
 

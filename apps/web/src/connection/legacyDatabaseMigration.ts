@@ -1,5 +1,5 @@
 import { hasTag } from "~/lib/taggedUnion";
-import { ConnectionTransientError } from "@akeru/client-runtime/connection";
+import { ConnectionTransientError } from "@isnadi/client-runtime/connection";
 import * as Effect from "effect/Effect";
 import {
   CATALOG_STORE_NAME,
@@ -98,7 +98,7 @@ const deleteLegacyDatabase = Effect.fn("web.connectionStorage.deleteLegacyDataba
   });
 });
 
-/** Fill missing Akeru records from the old database, then retire it only
+/** Fill missing Isnadi records from the old database, then retire it only
  * after the copy commits. A failed migration leaves the source for retry. */
 export const migrateLegacyConnectionDatabase = Effect.fn(
   "web.connectionStorage.migrateLegacyConnectionDatabase",

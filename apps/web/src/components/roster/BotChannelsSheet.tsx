@@ -8,15 +8,15 @@ import {
   type EnvironmentId,
   type OrchestrationBot,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   canChangeChannelProject,
   channelReconnectProject,
   channelBindingNeedsProject,
   channelPickerProjectId,
   channelRepairAction,
-} from "@akeru/client-runtime/channel-presentation";
-import { defaultProjectIdForBot } from "@akeru/shared/channelProject";
+} from "@isnadi/client-runtime/channel-presentation";
+import { defaultProjectIdForBot } from "@isnadi/shared/channelProject";
 import type * as Cause from "effect/Cause";
 import { LockIcon, MessagesSquareIcon, UnplugIcon } from "lucide-react";
 import { useState } from "react";

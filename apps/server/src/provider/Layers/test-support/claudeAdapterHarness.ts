@@ -12,7 +12,7 @@ import {
   ProviderRuntimeEvent,
   ThreadId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -26,7 +26,7 @@ import { makeClaudeAdapter, type ClaudeAdapterLiveOptions } from "../ClaudeAdapt
 export const decodeClaudeSettings = Schema.decodeSync(ClaudeSettings);
 
 export class ClaudeAdapter extends Context.Service<ClaudeAdapter, ClaudeAdapterShape>()(
-  "akeru-bot/provider/Layers/test-support/claudeAdapterHarness/ClaudeAdapter",
+  "isnadibot/provider/Layers/test-support/claudeAdapterHarness/ClaudeAdapter",
 ) {}
 
 export class FakeClaudeQuery implements AsyncIterable<SDKMessage> {

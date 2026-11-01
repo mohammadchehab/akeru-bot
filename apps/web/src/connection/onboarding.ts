@@ -1,9 +1,9 @@
-import { ConnectionOnboarding } from "@akeru/client-runtime/connection";
+import { ConnectionOnboarding } from "@isnadi/client-runtime/connection";
 import {
   createAtomCommandScheduler,
   createRuntimeCommand,
-} from "@akeru/client-runtime/state/runtime";
-import type { DesktopSshEnvironmentTarget } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/runtime";
+import type { DesktopSshEnvironmentTarget } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import { connectionAtomRuntime } from "./runtime";

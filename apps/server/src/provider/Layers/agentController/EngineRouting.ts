@@ -1,14 +1,14 @@
-import { invalidReasoningSelection, type AkeruModelOptions } from "../../ReasoningOptions.ts";
+import { invalidReasoningSelection, type IsnadiModelOptions } from "../../ReasoningOptions.ts";
 import { resolveClaudeApiModelId } from "../ClaudeProvider.ts";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
 import * as Semaphore from "effect/Semaphore";
 
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
-import { mastraModelId } from "../../AkeruMastraHarness.ts";
+import { mastraModelId } from "../../IsnadiMastraHarness.ts";
 
 import {
   AgentControllerRuntimeError,
@@ -40,7 +40,7 @@ export function createEngineRouting(deps: {
   readonly mutationLock: Semaphore.Semaphore;
   readonly resolvedByThread: Map<string, ResolvedEngine>;
   readonly sessions: Map<string, ActiveSession>;
-  readonly mastraModelOptions: (resolved: ResolvedEngine) => AkeruModelOptions | undefined;
+  readonly mastraModelOptions: (resolved: ResolvedEngine) => IsnadiModelOptions | undefined;
   readonly runMastra: <A>(
     operation: string,
     run: (signal: AbortSignal) => Promise<A>,

@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import type { DesktopBridge } from "@akeru/contracts";
-import { safeErrorLogAttributes } from "@akeru/client-runtime/errors";
+import type { DesktopBridge } from "@isnadi/contracts";
+import { safeErrorLogAttributes } from "@isnadi/client-runtime/errors";
 import * as Schema from "effect/Schema";
 import { resolveDesktopTheme, type ThemeHalves } from "./themePreference";
 import { ThemePreference, type ThemePreferenceMode } from "./themeTypes";

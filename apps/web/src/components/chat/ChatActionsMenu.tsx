@@ -1,9 +1,9 @@
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
 import {
   resolveSnoozePresets,
   type SnoozePresetId,
-} from "@akeru/client-runtime/state/thread-settled";
-import type { ScopedThreadRef } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/thread-settled";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { MoreHorizontalIcon } from "@hugeicons/core-free-icons";
 import {

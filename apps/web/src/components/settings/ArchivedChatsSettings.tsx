@@ -1,7 +1,7 @@
 import { Match } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import type { EnvironmentId } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { ArchiveRestoreIcon, Trash2Icon } from "lucide-react";
 import { useMemo, useState } from "react";
 

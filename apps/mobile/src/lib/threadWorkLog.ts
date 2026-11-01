@@ -7,10 +7,10 @@ import {
   extractWorkLogItemType,
   extractWorkLogRequestKind,
   extractChangedFiles,
-} from "@akeru/client-runtime/work-log-command";
-import { isSilentRunActivity } from "@akeru/client-runtime/silent-run";
-import { isToolLifecycleItemType } from "@akeru/contracts";
-import type { OrchestrationThreadActivity } from "@akeru/contracts";
+} from "@isnadi/client-runtime/work-log-command";
+import { isSilentRunActivity } from "@isnadi/client-runtime/silent-run";
+import { isToolLifecycleItemType } from "@isnadi/contracts";
+import type { OrchestrationThreadActivity } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Order from "effect/Order";
 import type {

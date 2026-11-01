@@ -1,7 +1,7 @@
 import { pipe } from "effect/Function";
 import * as Arr from "effect/Array";
 
-import { type OrchestrationEvent, type OrchestrationThread } from "@akeru/contracts";
+import { type OrchestrationEvent, type OrchestrationThread } from "@isnadi/contracts";
 import type { ThreadDetailReducerResult } from "./types.ts";
 
 import * as O from "effect/Order";

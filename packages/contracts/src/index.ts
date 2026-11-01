@@ -2,17 +2,17 @@ export * from "./baseSchemas.ts";
 
 export * from "./background.ts";
 
-export * from "./akeruTools.ts";
+export * from "./isnadiTools.ts";
 
-export * from "./akeruDelegation.ts";
+export * from "./isnadiDelegation.ts";
 
-export * from "./akeruWorkers.ts";
+export * from "./isnadiWorkers.ts";
 
 export * from "./productFeedback.ts";
 
-export * from "./akeruMemory.ts";
+export * from "./isnadiMemory.ts";
 
-export * from "./akeruUsage.ts";
+export * from "./isnadiUsage.ts";
 
 export * from "./analytics.ts";
 

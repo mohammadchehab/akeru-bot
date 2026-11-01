@@ -9,8 +9,8 @@ import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 import * as ChildProcess from "effect/unstable/process/ChildProcess";
 import * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawner";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import {
   collectUint8StreamText,
   decodeUtf8,
@@ -147,7 +147,7 @@ export class ProcessRunner extends Context.Service<
   {
     readonly run: (input: ProcessRunInput) => Effect.Effect<ProcessRunOutput, ProcessRunError>;
   }
->()("akeru-bot/processRunner") {}
+>()("isnadibot/processRunner") {}
 
 const DEFAULT_TIMEOUT = "60 seconds";
 

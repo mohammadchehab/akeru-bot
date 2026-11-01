@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import { storedField } from "./persistedSchema";
-import type { OrchestrationThreadActivity, ThreadTokenUsageSnapshot } from "@akeru/contracts";
+import type { OrchestrationThreadActivity, ThreadTokenUsageSnapshot } from "@isnadi/contracts";
 
 const StoredContextWindow = Schema.Struct({
   usedTokens: storedField(Schema.NullOr(Schema.Number.check(Schema.isFinite())), null),

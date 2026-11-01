@@ -87,7 +87,7 @@ describe("plugin catalog loader", () => {
       transport: { type: "unavailable" },
       connection: {
         type: "approval-pending",
-        blocker: "The vendor must approve Akeru as an OAuth client.",
+        blocker: "The vendor must approve Isnadi as an OAuth client.",
       },
       catalogStatus: "approval-pending",
     };
@@ -113,7 +113,7 @@ describe("plugin catalog loader", () => {
       transport: { type: "url", url: "https://mcp.pending.example/mcp" },
       connection: {
         type: "approval-pending",
-        blocker: "The vendor must approve Akeru as an OAuth client.",
+        blocker: "The vendor must approve Isnadi as an OAuth client.",
       },
       catalogStatus: "approval-pending",
     };
@@ -164,7 +164,7 @@ describe("plugin catalog loader", () => {
           catalogStatus: "approval-pending",
           connection: {
             type: "approval-pending",
-            blocker: "The vendor must approve Akeru as an OAuth client.",
+            blocker: "The vendor must approve Isnadi as an OAuth client.",
           },
         }),
       },

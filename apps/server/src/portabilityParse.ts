@@ -1,4 +1,4 @@
-import { PortabilityArchive, type PortabilityArchiveRecord } from "@akeru/contracts";
+import { PortabilityArchive, type PortabilityArchiveRecord } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import { BUILTIN_MCP_PREFIX, ARCHIVE_RECORD_TYPES } from "./portabilityArchive.ts";

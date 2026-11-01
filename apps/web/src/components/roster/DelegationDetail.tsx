@@ -1,11 +1,11 @@
 import type {
-  AkeruDelegationAccessGrant,
-  AkeruDelegationRecord,
-  AkeruDelegationState,
-} from "@akeru/contracts";
-import { presentDelegation } from "@akeru/client-runtime/delegation-presentation";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import type { MessageKey, TranslationParams } from "@akeru/client-runtime/i18n";
+  IsnadiDelegationAccessGrant,
+  IsnadiDelegationRecord,
+  IsnadiDelegationState,
+} from "@isnadi/contracts";
+import { presentDelegation } from "@isnadi/client-runtime/delegation-presentation";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import type { MessageKey, TranslationParams } from "@isnadi/client-runtime/i18n";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 
@@ -28,7 +28,7 @@ import type { Bot } from "./types";
 
 type Translate = (key: MessageKey, params?: TranslationParams) => string;
 
-function runtimeModeLabel(mode: AkeruDelegationAccessGrant["runtimeMode"], t: Translate): string {
+function runtimeModeLabel(mode: IsnadiDelegationAccessGrant["runtimeMode"], t: Translate): string {
   switch (mode) {
     case "approval-required":
       return t("approval required");
@@ -41,7 +41,7 @@ function runtimeModeLabel(mode: AkeruDelegationAccessGrant["runtimeMode"], t: Tr
   }
 }
 
-export function delegationStateLabel(state: AkeruDelegationState, t: Translate): string {
+export function delegationStateLabel(state: IsnadiDelegationState, t: Translate): string {
   switch (state) {
     case "queued":
       return t("queued");
@@ -59,7 +59,7 @@ export function delegationStateLabel(state: AkeruDelegationState, t: Translate):
 }
 
 // Sandbox, tool, memory scope, and approval ceiling values are identifiers and stay raw.
-export function formatDelegationAccess(access: AkeruDelegationAccessGrant, t: Translate): string {
+export function formatDelegationAccess(access: IsnadiDelegationAccessGrant, t: Translate): string {
   return [
     runtimeModeLabel(access.runtimeMode, t),
     access.sandbox === null ? t("no sandbox") : t("{sandbox} sandbox", { sandbox: access.sandbox }),
@@ -84,7 +84,7 @@ export function DelegationDetail({
   parentBot,
   onOpenChange,
 }: {
-  readonly delegation: AkeruDelegationRecord;
+  readonly delegation: IsnadiDelegationRecord;
   readonly childBot: Bot | null;
   readonly parentBot: Bot | null;
   readonly onOpenChange: (open: boolean) => void;

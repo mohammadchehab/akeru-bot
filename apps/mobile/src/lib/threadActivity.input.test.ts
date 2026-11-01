@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
-import { codexFeedbackMessage } from "@akeru/client-runtime/state/threads";
-import { EventId, MessageId } from "@akeru/contracts";
+import { codexFeedbackMessage } from "@isnadi/client-runtime/state/threads";
+import { EventId, MessageId } from "@isnadi/contracts";
 import {
   buildPendingUserInputAnswers,
   derivePendingApprovals,

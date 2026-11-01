@@ -1,6 +1,6 @@
 # Lint rules
 
-> For Akeru Bot maintainers and the agents that work on the repo.
+> For IsnadiBot maintainers and the agents that work on the repo.
 
 Oxlint runs through Vite+. The whole configuration lives in the `lint` block of the root
 [`vite.config.ts`](../../vite.config.ts). CI runs `vp run lint`, which fails on any finding.
@@ -19,7 +19,7 @@ vp lint apps/web/src/components/chat/ChatView.tsx packages/shared/src
 | Group                | Source                                                                                     | Scope          |
 | -------------------- | ------------------------------------------------------------------------------------------ | -------------- |
 | Oxlint built-ins     | `plugins` and `categories` in the config                                                   | Whole repo     |
-| `akeru/*`            | [`oxlint-plugin-akeru/`](../../oxlint-plugin-akeru)                                        | Whole repo     |
+| `isnadi/*`           | [`oxlint-plugin-isnadi/`](../../oxlint-plugin-isnadi)                                      | Whole repo     |
 | `anti-slop/*`        | [`oxlint-plugin-anti-slop/index.ts`](../../oxlint-plugin-anti-slop/index.ts)               | Whole repo     |
 | `anti-slop-effect/*` | [`oxlint-plugin-anti-slop/effect/index.ts`](../../oxlint-plugin-anti-slop/effect/index.ts) | Whole repo     |
 | `shadcn/*`           | [`@shadcn/lint`](https://github.com/shadcn-ui/lint) from npm                               | `apps/web/src` |
@@ -93,7 +93,7 @@ Native also styles through `style` objects, which `no-inline-styles` would rejec
 
 `shadcn/no-raw-colors` only reads `className` attributes and `cn()` calls, so palette colors in
 string constants, status maps, variant tables, and template literals got past it. It also accepts
-`black`, `white`, and custom palette steps. `akeru/no-raw-palette-strings` closes that gap in
+`black`, `white`, and custom palette steps. `isnadi/no-raw-palette-strings` closes that gap in
 `apps/web/src`. It splits every string and template chunk into classes, removes variants
 (`dark:`, `hover:`, `[&_svg]:`) and important markers, and reports any color utility (`bg`,
 `text`, `border`, `ring`, `inset-ring`, `fill`, `stroke`, `shadow`, gradient stops, and the rest)
@@ -179,7 +179,7 @@ Codex mock peer fixture) and the plugin catalog in `plugins/` turn off `no-globa
 and `no-runtime-typeof`. They run without the Effect runtime or any application dependency, so
 there is no `HostProcessPlatform` to inject and no `Predicate` to import.
 
-There are no inline exceptions. `akeru/no-lint-suppressions` reports every `oxlint-disable`,
+There are no inline exceptions. `isnadi/no-lint-suppressions` reports every `oxlint-disable`,
 `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `@ts-nocheck`, and `@effect-diagnostics`
 comment, and
 `typescript/no-explicit-any` reports `any`. A file-wide `oxlint-disable` would also silence that
@@ -244,8 +244,8 @@ changes. After an update:
 1. Run the plugin tests and typecheck:
 
    ```bash
-   vp run --filter @akeru/oxlint-plugin-anti-slop test
-   vp run --filter @akeru/oxlint-plugin-anti-slop typecheck
+   vp run --filter @isnadi/oxlint-plugin-anti-slop test
+   vp run --filter @isnadi/oxlint-plugin-anti-slop typecheck
    ```
 
 2. Add any new rule to `ANTI_SLOP_RULES` in `vite.config.ts`, counted and ratcheted as above.

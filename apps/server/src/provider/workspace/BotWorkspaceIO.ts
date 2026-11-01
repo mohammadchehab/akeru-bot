@@ -2,12 +2,12 @@ import * as Effect from "effect/Effect";
 import type * as FileSystem from "effect/FileSystem";
 import type * as Path from "effect/Path";
 import * as Predicate from "effect/Predicate";
-import type { AkeruRuntimeSeam } from "../AkeruRuntimeSeam.ts";
+import type { IsnadiRuntimeSeam } from "../IsnadiRuntimeSeam.ts";
 
 export function makeBotWorkspaceIO(
   fileSystem: FileSystem.FileSystem,
   path: Path.Path,
-  runPromise: AkeruRuntimeSeam["runPromise"],
+  runPromise: IsnadiRuntimeSeam["runPromise"],
 ) {
   return {
     path,

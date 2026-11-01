@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
-  AKERU_PAPER_THEME,
+  ISNADI_PAPER_THEME,
   CUSTOM_THEMES_STORAGE_KEY,
   THEME_APPEARANCE_MODE_STORAGE_KEY,
   THEME_FOLLOW_SYSTEM_STORAGE_KEY,
@@ -21,7 +21,7 @@ describe("index.html boot script", () => {
   }> = [
     { name: "no stored preference on a dark OS", storage: {}, prefersDark: true },
     {
-      name: "Akeru Paper follows a dark OS",
+      name: "Isnadi Paper follows a dark OS",
       storage: {
         [THEME_STORAGE_KEY]: "akeru-paper",
         [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true",
@@ -68,7 +68,7 @@ describe("index.html boot script", () => {
       prefersDark: true,
     },
     {
-      name: "a legacy t3-chat preference follows the OS as Akeru Chat",
+      name: "a legacy t3-chat preference follows the OS as Isnadi Chat",
       storage: { [THEME_STORAGE_KEY]: "t3-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
       prefersDark: true,
     },
@@ -135,16 +135,16 @@ describe("index.html boot script", () => {
     expect(boot.isDark).toBe(runtimeResolvedAppearance(storage, prefersDark) === "dark");
   });
 
-  it("boots a fresh profile into Akeru Paper", () => {
+  it("boots a fresh profile into Isnadi Paper", () => {
     const boot = runBootScript({ storage: {}, prefersDark: true });
 
     expect(boot.themeId).toBe("akeru-paper");
     expect(boot.themeSelected).toBe("true");
     expect(boot.isDark).toBe(true);
-    expect(boot.backgroundColor).toBe(AKERU_PAPER_THEME.variants!.dark!.chrome);
+    expect(boot.backgroundColor).toBe(ISNADI_PAPER_THEME.variants!.dark!.chrome);
   });
 
-  it("migrates the old system default to Akeru Paper", () => {
+  it("migrates the old system default to Isnadi Paper", () => {
     const boot = runBootScript({
       storage: { [THEME_STORAGE_KEY]: "system" },
       prefersDark: true,
@@ -152,7 +152,7 @@ describe("index.html boot script", () => {
 
     expect(boot.themeId).toBe("akeru-paper");
     expect(boot.isDark).toBe(true);
-    expect(boot.backgroundColor).toBe(AKERU_PAPER_THEME.variants!.dark!.chrome);
+    expect(boot.backgroundColor).toBe(ISNADI_PAPER_THEME.variants!.dark!.chrome);
   });
 
   it("leaves unknown preferences unthemed so the runtime default applies", () => {

@@ -1,7 +1,7 @@
 import { hasTag } from "~/lib/taggedUnion";
 import { useAtomValue } from "@effect/atom-react";
-import { createEnvironmentSessionAtoms } from "@akeru/client-runtime/state/session";
-import type { EnvironmentId } from "@akeru/contracts";
+import { createEnvironmentSessionAtoms } from "@isnadi/client-runtime/state/session";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 

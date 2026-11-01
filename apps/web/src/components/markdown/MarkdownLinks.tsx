@@ -1,6 +1,6 @@
 import type { MarkdownHtmlAstNode } from "./markdownPlugins";
 import { Predicate } from "effect";
-import { faviconUrlForOrigin } from "@akeru/shared/favicon";
+import { faviconUrlForOrigin } from "@isnadi/shared/favicon";
 import { GlobeIcon } from "lucide-react";
 import React, {
   Children,

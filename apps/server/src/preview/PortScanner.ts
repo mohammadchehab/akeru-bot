@@ -21,10 +21,10 @@ import {
   PREVIEW_URL_MAX_LENGTH,
   ThreadId,
   type DiscoveredLocalServer,
-} from "@akeru/contracts";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import * as Net from "@akeru/shared/Net";
-import { isLoopbackHost, LSOF_LOCAL_HOST_TOKENS } from "@akeru/shared/preview";
+} from "@isnadi/contracts";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import * as Net from "@isnadi/shared/Net";
+import { isLoopbackHost, LSOF_LOCAL_HOST_TOKENS } from "@isnadi/shared/preview";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -64,7 +64,7 @@ export class PortDiscovery extends Context.Service<
       readonly terminalId: string;
     }) => Effect.Effect<void>;
   }
->()("akeru-bot/preview/PortScanner/PortDiscovery") {}
+>()("isnadibot/preview/PortScanner/PortDiscovery") {}
 
 export const COMMON_DEV_PORTS: ReadonlyArray<number> = Object.freeze([
   3000, 3001, 3333, 4173, 4200, 4321, 5000, 5173, 5174, 5175, 5500, 8000, 8080, 8081, 8888, 9000,

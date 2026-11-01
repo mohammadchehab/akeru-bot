@@ -1,19 +1,19 @@
 ---
 name: test-t3-app
-description: Launch and verify Akeru Bot web and desktop in isolated development environments. Use for browser testing, Electron-specific checks, pairing recovery, debug access, and fixture setup.
+description: Launch and verify IsnadiBot web and desktop in isolated development environments. Use for browser testing, Electron-specific checks, pairing recovery, debug access, and fixture setup.
 ---
 
-# Test Akeru Bot web and desktop
+# Test IsnadiBot web and desktop
 
 Read [the verification policy](../../../docs/internals/verification.md) before launching a client. It defines authorization, coverage, evidence, and environment lifetime. For native mobile testing, use [`test-t3-mobile`](../test-t3-mobile/SKILL.md).
 
 ## Find or start the environment
 
 1. Run commands from the repository root. Run `vp run dev:status` to inspect the current environment without starting it. Reuse an owned healthy environment and its authenticated browser context.
-2. Use the worktree-local `.akeru` home. For a separate test, create a temporary directory and retain its absolute path. An explicit home stores runtime state in `<home>/userdata`.
+2. Use the worktree-local `.isnadi` home. For a separate test, create a temporary directory and retain its absolute path. An explicit home stores runtime state in `<home>/userdata`.
 3. Run `vp run dev` in the background. Use `--home-dir <path>` only for a deliberately selected isolated home. Add `--share` only when the user requests access from another tailnet device.
 4. Retain the task handle, selected ports, home, and startup output. Read actual ports from `[dev-runner]`; occupied ports can shift them.
-5. Confirm the selected home before loading fixtures or pairing. Worktree defaults outrank ambient home settings. Never start a test server against the live `~/.akeru/userdata` database.
+5. Confirm the selected home before loading fixtures or pairing. Worktree defaults outrank ambient home settings. Never start a test server against the live `~/.isnadi/userdata` database.
 
 The setup script copies optional project `.env` configuration into each new worktree. Existing `.env` files are preserved. If setup reports a legacy symlink, replace it with a private copy before editing configuration. Keep secrets out of test evidence.
 
@@ -44,7 +44,7 @@ Use a web pass for shared renderer-only changes. Run Electron when a change touc
 
 1. Build with `vp run build:desktop`. For an automated startup check, run `vp run test:desktop-smoke`. The smoke script creates private application and OS home directories and stops its captured Electron process group.
 2. For interactive inspection, use the installed raw Electron executable with `apps/desktop/dist-electron/main.cjs`. Resolve the executable and create its private environment with `resolveSmokeElectronPath` and `createSmokeEnvironment` from `apps/desktop/scripts/smoke-test.mjs`. Create the returned home, temporary, and config directories before spawning. Retain the temporary root and captured process group.
-3. Set `T3CODE_HOME` and `AKERU_HOME` to the same isolated fixture home. Use a different home from any running backend. Pass `--remote-debugging-address=127.0.0.1 --remote-debugging-port=<free-port>` to that Electron process.
+3. Set `T3CODE_HOME` and `ISNADI_HOME` to the same isolated fixture home. Use a different home from any running backend. Pass `--remote-debugging-address=127.0.0.1 --remote-debugging-port=<free-port>` to that Electron process.
 4. Attach the supported browser tool to that exact Electron instance. With `agent-browser`, use a named session and `connect <port>` after loading its version-matched guidance. Confirm the app and environment before acting.
 5. Exercise the Electron behavior itself, then recheck after the relevant reload or restart. A successful external web tab does not prove shell behavior. Use native automation only when browser tools cannot reach the control, within the verification policy's authorization boundary.
 

@@ -1,4 +1,4 @@
-import { explainComputerCapability } from "@akeru/client-runtime/state/computer-viewer";
+import { explainComputerCapability } from "@isnadi/client-runtime/state/computer-viewer";
 import { useLocation } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 

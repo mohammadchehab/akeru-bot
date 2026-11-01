@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
 
 export function provider(input: {
   provider: ProviderDriverKind;

@@ -1,14 +1,14 @@
 import { assert, describe, expect, it } from "vite-plus/test";
 import {
-  AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
-  AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
-  AkeruMemoryCandidateId,
+  ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
+  ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+  IsnadiMemoryCandidateId,
   BotId,
   EventId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
-import type { OrchestrationThread } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import type { OrchestrationThread } from "@isnadi/contracts";
 import { pendingMemoryApprovals } from "../durableMemory.ts";
 import { applyThreadDetailEvent } from "./threadReducer.ts";
 import { baseEventFields, baseThread } from "./threadReducer.test-support.ts";
@@ -47,7 +47,7 @@ describe("applyThreadDetailEvent", () => {
 
     it("opens a memory approval card on request and clears it on decision", () => {
       const request = {
-        candidateId: AkeruMemoryCandidateId.make("candidate-1"),
+        candidateId: IsnadiMemoryCandidateId.make("candidate-1"),
         fact: "Deploys happen on Fridays.",
         scope: "project" as const,
         sensitive: false,
@@ -88,10 +88,10 @@ describe("applyThreadDetailEvent", () => {
         return result.thread;
       };
 
-      const requested = append(baseThread, 20, AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY, request);
+      const requested = append(baseThread, 20, ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY, request);
       expect(pendingMemoryApprovals(requested.activities)).toEqual([request]);
 
-      const resolved = append(requested, 21, AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY, {
+      const resolved = append(requested, 21, ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY, {
         candidateId: request.candidateId,
         status: "approved",
         fact: request.fact,

@@ -5,7 +5,7 @@ import {
   isToolLifecycleItemType,
   type OrchestrationThreadActivity,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { projectActivityPayload } from "../../ActivityPayloadProjection.ts";
 import {
   requestKindFromCanonicalRequestType,

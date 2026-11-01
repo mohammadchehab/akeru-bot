@@ -1,4 +1,4 @@
-import { McpServerId, type McpServer, type McpServerConfiguration } from "@akeru/contracts";
+import { McpServerId, type McpServer, type McpServerConfiguration } from "@isnadi/contracts";
 import type { PluginDefinition, PluginDirectoryDefinition } from "../../../../../plugins";
 
 const BUILTIN_PREFIX = "builtin-";

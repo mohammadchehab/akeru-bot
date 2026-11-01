@@ -54,7 +54,7 @@ describe("GitHub feedback delivery", () => {
   it("formats a bounded maintainer-readable issue", () => {
     const issue = formatGitHubIssue(record);
 
-    expect(issue.title).toBe("[Akeru feedback] The send button stays disabled. Please fix it.");
+    expect(issue.title).toBe("[Isnadi feedback] The send button stays disabled. Please fix it.");
     expect(issue.body).toContain("    The send button stays disabled.");
     expect(issue.body).toContain("    Selector: button[data-feedback-target='send']");
     expect(issue.body).toContain("- Feedback ID: `fb_example`");

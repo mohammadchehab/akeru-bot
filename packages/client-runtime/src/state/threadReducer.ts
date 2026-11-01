@@ -14,7 +14,7 @@ import {
   applyMessageReactionSetEvent,
 } from "./threadReducer/messages.ts";
 
-import type { OrchestrationEvent, OrchestrationThread } from "@akeru/contracts";
+import type { OrchestrationEvent, OrchestrationThread } from "@isnadi/contracts";
 import { type ThreadDetailReducerResult } from "./threadReducer/types.ts";
 
 /**

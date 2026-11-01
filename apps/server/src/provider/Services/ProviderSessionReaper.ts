@@ -12,4 +12,4 @@ export interface ProviderSessionReaperShape {
 export class ProviderSessionReaper extends Context.Service<
   ProviderSessionReaper,
   ProviderSessionReaperShape
->()("akeru-bot/provider/Services/ProviderSessionReaper") {}
+>()("isnadibot/provider/Services/ProviderSessionReaper") {}

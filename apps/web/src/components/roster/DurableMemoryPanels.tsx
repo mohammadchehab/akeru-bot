@@ -15,9 +15,9 @@ import {
   durableFactMoveScopes,
   durableFactSourceLabel,
   type ImportConflictDecision,
-} from "@akeru/client-runtime/durable-memory";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { AkeruMemoryImportClassification } from "@akeru/contracts";
+} from "@isnadi/client-runtime/durable-memory";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { IsnadiMemoryImportClassification } from "@isnadi/contracts";
 
 import { useI18n } from "../../i18n";
 
@@ -345,7 +345,7 @@ export function DurableImportReview({
   onCancel,
 }: {
   readonly groups: ReadonlyArray<{
-    readonly classification: AkeruMemoryImportClassification;
+    readonly classification: IsnadiMemoryImportClassification;
     readonly items: ReadonlyArray<DurableImportReviewItem>;
   }>;
   readonly choices: Readonly<Record<string, ImportConflictDecision | undefined>>;

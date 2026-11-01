@@ -1,15 +1,15 @@
 "use client";
 
 import { Data } from "effect";
-import { PreviewNavStatus } from "@akeru/contracts";
+import { PreviewNavStatus } from "@isnadi/contracts";
 
 import type {
   DesktopPreviewTabState,
   PreviewReportStatusInput,
   ScopedThreadRef,
   ThreadId,
-} from "@akeru/contracts";
-import { parseScopedThreadKey, scopedThreadKey } from "@akeru/client-runtime/environment";
+} from "@isnadi/contracts";
+import { parseScopedThreadKey, scopedThreadKey } from "@isnadi/client-runtime/environment";
 import * as Option from "effect/Option";
 import { useEffect, useEffectEvent, useMemo, useRef } from "react";
 

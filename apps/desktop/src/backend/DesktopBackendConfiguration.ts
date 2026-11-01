@@ -55,7 +55,7 @@ export class DesktopBackendConfiguration extends Context.Service<
     // backend that actually resolved to Windows.
     readonly resolvePrimaryLabel: Effect.Effect<string>;
   }
->()("@akeru/desktop/backend/DesktopBackendConfiguration") {}
+>()("@isnadi/desktop/backend/DesktopBackendConfiguration") {}
 
 const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolvePrimary")(
   function* (

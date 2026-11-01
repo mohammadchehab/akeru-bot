@@ -1,4 +1,4 @@
-import type { McpServer, OrchestrationBot, ProviderAccessStatus } from "@akeru/contracts";
+import type { McpServer, OrchestrationBot, ProviderAccessStatus } from "@isnadi/contracts";
 import {
   PLUGIN_CATEGORIES,
   type PluginCategory,

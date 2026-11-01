@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import type { StoreApi } from "zustand";
-import { ThreadId } from "@akeru/contracts";
-import { scopedThreadKey, scopeThreadRef } from "@akeru/client-runtime/environment";
+import { ThreadId } from "@isnadi/contracts";
+import { scopedThreadKey, scopeThreadRef } from "@isnadi/client-runtime/environment";
 import {
   type ComposerDraftStoreState,
   DraftId,

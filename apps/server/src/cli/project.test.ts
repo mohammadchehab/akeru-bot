@@ -1,6 +1,6 @@
 import { assert, it } from "@effect/vitest";
 
-import { EnvironmentInternalError } from "@akeru/contracts";
+import { EnvironmentInternalError } from "@isnadi/contracts";
 
 import {
   ProjectLiveServerDeclaredResponseError,

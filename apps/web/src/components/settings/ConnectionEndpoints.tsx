@@ -1,5 +1,5 @@
 import { type ReactNode, memo } from "react";
-import { type AdvertisedEndpoint } from "@akeru/contracts";
+import { type AdvertisedEndpoint } from "@isnadi/contracts";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import {

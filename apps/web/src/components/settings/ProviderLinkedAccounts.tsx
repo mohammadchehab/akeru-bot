@@ -10,9 +10,9 @@ import {
   RefreshCwIcon,
 } from "lucide-react";
 import { type ReactNode } from "react";
-import type { EnvironmentId, SubscriptionProviderStatus } from "@akeru/contracts";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import { providerSupportsBaseUrl, providerUsesApiKey } from "@akeru/client-runtime/provider-auth";
+import type { EnvironmentId, SubscriptionProviderStatus } from "@isnadi/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import { providerSupportsBaseUrl, providerUsesApiKey } from "@isnadi/client-runtime/provider-auth";
 
 import { useI18n } from "../../i18n";
 import { cn } from "../../lib/utils";

@@ -1,9 +1,9 @@
-import type { OrchestrationMessage, OrchestrationThreadActivity } from "@akeru/contracts";
+import type { OrchestrationMessage, OrchestrationThreadActivity } from "@isnadi/contracts";
 import {
   type AnsweredUserInputQuestion,
   answeredUserInputForMessage,
   deriveAskedUserInputs,
-} from "@akeru/client-runtime/user-input-answers";
+} from "@isnadi/client-runtime/user-input-answers";
 import { useMemo } from "react";
 
 /** Messages that answer a bot's questions, keyed by message id, so rows can show answer cards. */

@@ -1,7 +1,7 @@
-import { MessageId, ThreadId, TurnId } from "@akeru/contracts";
+import { MessageId, ThreadId, TurnId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import * as ChannelRuntime from "../../../channels/ChannelRuntime.ts";
 import type { createDependencies } from "./Dependencies.ts";
 

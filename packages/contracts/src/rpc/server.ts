@@ -2,38 +2,38 @@ import * as Schema from "effect/Schema";
 import * as Rpc from "effect/unstable/rpc/Rpc";
 import { ComputerError } from "../computer.ts";
 import {
-  AkeruBotUsageInput,
-  AkeruBotUsageReadError,
-  AkeruBotUsageSnapshot,
-} from "../akeruUsage.ts";
+  IsnadiBotUsageInput,
+  IsnadiBotUsageReadError,
+  IsnadiBotUsageSnapshot,
+} from "../isnadiUsage.ts";
 import {
-  AkeruMemoryOperationError,
-  AkeruMemoryFactsListInput,
-  AkeruMemoryFactsListResult,
-  AkeruMemoryMutateInput,
-  AkeruMemoryMutationResult,
-} from "../akeruMemory/facts.ts";
+  IsnadiMemoryOperationError,
+  IsnadiMemoryFactsListInput,
+  IsnadiMemoryFactsListResult,
+  IsnadiMemoryMutateInput,
+  IsnadiMemoryMutationResult,
+} from "../isnadiMemory/facts.ts";
 import {
-  AkeruMemoryArchiveV2,
-  AkeruMemoryExportInput,
-  AkeruMemoryImportPreviewInput,
-  AkeruMemoryImportPreview,
-  AkeruMemoryImportApplyInput,
-  AkeruMemoryImportApplyResult,
-  AkeruMarkdownMemoryArchiveV3,
-  AkeruMarkdownMemoryExportInput,
-  AkeruMarkdownMemoryImportApplyInput,
-  AkeruMarkdownMemoryImportApplyResult,
-  AkeruMarkdownMemoryImportPreview,
-  AkeruMarkdownMemoryImportPreviewInput,
-} from "../akeruMemory/transfer.ts";
+  IsnadiMemoryArchiveV2,
+  IsnadiMemoryExportInput,
+  IsnadiMemoryImportPreviewInput,
+  IsnadiMemoryImportPreview,
+  IsnadiMemoryImportApplyInput,
+  IsnadiMemoryImportApplyResult,
+  IsnadiMarkdownMemoryArchiveV3,
+  IsnadiMarkdownMemoryExportInput,
+  IsnadiMarkdownMemoryImportApplyInput,
+  IsnadiMarkdownMemoryImportApplyResult,
+  IsnadiMarkdownMemoryImportPreview,
+  IsnadiMarkdownMemoryImportPreviewInput,
+} from "../isnadiMemory/transfer.ts";
 import {
-  AkeruMemoryDocumentsInspectInput,
-  AkeruMemoryDocumentsSnapshot,
-  AkeruMemoryDocumentReplaceInput,
-  AkeruMemoryDocument,
-  AkeruMemoryObservationsClearInput,
-} from "../akeruMemory/documents.ts";
+  IsnadiMemoryDocumentsInspectInput,
+  IsnadiMemoryDocumentsSnapshot,
+  IsnadiMemoryDocumentReplaceInput,
+  IsnadiMemoryDocument,
+  IsnadiMemoryObservationsClearInput,
+} from "../isnadiMemory/documents.ts";
 import { ExternalLauncherError, LaunchEditorInput } from "../editor.ts";
 import {
   AuthAccessStreamError,
@@ -507,74 +507,74 @@ export const WsServerGetBackgroundPolicyRpc = Rpc.make(WS_METHODS.serverGetBackg
 });
 
 export const WsMemoryExportRpc = Rpc.make(WS_METHODS.memoryExport, {
-  payload: AkeruMarkdownMemoryExportInput,
-  success: AkeruMarkdownMemoryArchiveV3,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMarkdownMemoryExportInput,
+  success: IsnadiMarkdownMemoryArchiveV3,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryImportPreviewRpc = Rpc.make(WS_METHODS.memoryImportPreview, {
-  payload: AkeruMarkdownMemoryImportPreviewInput,
-  success: AkeruMarkdownMemoryImportPreview,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMarkdownMemoryImportPreviewInput,
+  success: IsnadiMarkdownMemoryImportPreview,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryImportApplyRpc = Rpc.make(WS_METHODS.memoryImportApply, {
-  payload: AkeruMarkdownMemoryImportApplyInput,
-  success: AkeruMarkdownMemoryImportApplyResult,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMarkdownMemoryImportApplyInput,
+  success: IsnadiMarkdownMemoryImportApplyResult,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryArchiveExportRpc = Rpc.make(WS_METHODS.memoryArchiveExport, {
-  payload: AkeruMemoryExportInput,
-  success: AkeruMemoryArchiveV2,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryExportInput,
+  success: IsnadiMemoryArchiveV2,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryArchivePreviewImportRpc = Rpc.make(WS_METHODS.memoryArchivePreviewImport, {
-  payload: AkeruMemoryImportPreviewInput,
-  success: AkeruMemoryImportPreview,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryImportPreviewInput,
+  success: IsnadiMemoryImportPreview,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryArchiveApplyImportRpc = Rpc.make(WS_METHODS.memoryArchiveApplyImport, {
-  payload: AkeruMemoryImportApplyInput,
-  success: AkeruMemoryImportApplyResult,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryImportApplyInput,
+  success: IsnadiMemoryImportApplyResult,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryFactsListRpc = Rpc.make(WS_METHODS.memoryFactsList, {
-  payload: AkeruMemoryFactsListInput,
-  success: AkeruMemoryFactsListResult,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryFactsListInput,
+  success: IsnadiMemoryFactsListResult,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryFactMutateRpc = Rpc.make(WS_METHODS.memoryFactMutate, {
-  payload: AkeruMemoryMutateInput,
-  success: AkeruMemoryMutationResult,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryMutateInput,
+  success: IsnadiMemoryMutationResult,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryDocumentsInspectRpc = Rpc.make(WS_METHODS.memoryDocumentsInspect, {
-  payload: AkeruMemoryDocumentsInspectInput,
-  success: AkeruMemoryDocumentsSnapshot,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryDocumentsInspectInput,
+  success: IsnadiMemoryDocumentsSnapshot,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryDocumentReplaceRpc = Rpc.make(WS_METHODS.memoryDocumentReplace, {
-  payload: AkeruMemoryDocumentReplaceInput,
-  success: AkeruMemoryDocument,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryDocumentReplaceInput,
+  success: IsnadiMemoryDocument,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsMemoryObservationsClearRpc = Rpc.make(WS_METHODS.memoryObservationsClear, {
-  payload: AkeruMemoryObservationsClearInput,
-  error: Schema.Union([AkeruMemoryOperationError, EnvironmentAuthorizationError]),
+  payload: IsnadiMemoryObservationsClearInput,
+  error: Schema.Union([IsnadiMemoryOperationError, EnvironmentAuthorizationError]),
 });
 
 export const WsBotUsageRpc = Rpc.make(WS_METHODS.botUsage, {
-  payload: AkeruBotUsageInput,
-  success: AkeruBotUsageSnapshot,
-  error: Schema.Union([AkeruBotUsageReadError, EnvironmentAuthorizationError]),
+  payload: IsnadiBotUsageInput,
+  success: IsnadiBotUsageSnapshot,
+  error: Schema.Union([IsnadiBotUsageReadError, EnvironmentAuthorizationError]),
 });
 
 export const WsPortabilityExportRpc = Rpc.make(WS_METHODS.portabilityExport, {

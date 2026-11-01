@@ -2,7 +2,7 @@ import * as Cache from "effect/Cache";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
-import { GitCommandError } from "@akeru/contracts";
+import { GitCommandError } from "@isnadi/contracts";
 import {
   REPOSITORY_PATHS_CACHE_CAPACITY,
   REPOSITORY_PATHS_CACHE_TTL,

@@ -2,7 +2,7 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-import { BotId, type ProviderAccessStatus } from "@akeru/contracts";
+import { BotId, type ProviderAccessStatus } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import type { ProviderStatus } from "../subscription-auth/service.ts";
@@ -36,7 +36,7 @@ function status(
     health,
     reconnectAction: "Reconnect account",
     healthTest: { status: "not-run" },
-    dependentBots: [{ id: BotId.make("bot-akeru"), name: "Akeru" }],
+    dependentBots: [{ id: BotId.make("bot-akeru"), name: "Isnadi" }],
     dependentRoutines: [],
     ...(message
       ? {
@@ -152,7 +152,7 @@ describe("connector inbox incidents", () => {
         at: "2026-08-30T20:00:00.000Z",
         message: "The MCP tool request failed.",
       },
-      dependentBots: [{ id: BotId.make("bot-akeru"), name: "Akeru" }],
+      dependentBots: [{ id: BotId.make("bot-akeru"), name: "Isnadi" }],
       dependentRoutines: [],
     };
 

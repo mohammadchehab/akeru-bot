@@ -11,7 +11,7 @@ import type {
   DesktopPreviewRecordingFrame,
   PreviewAutomationConsoleEntry,
   PreviewAutomationNetworkEntry,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { type BrowserWindow, type Rectangle } from "electron";
 

@@ -13,7 +13,7 @@ import {
   type ServerSettingsError,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";
 import * as Schema from "effect/Schema";

@@ -101,7 +101,7 @@ function resolveSpawnExecutableWithNode(
 }
 
 export const SpawnExecutableResolution = Context.Reference<SpawnExecutableResolver>(
-  "@akeru/shared/shell/SpawnExecutableResolution",
+  "@isnadi/shared/shell/SpawnExecutableResolution",
   {
     defaultValue: () => resolveSpawnExecutableWithNode,
   },
@@ -183,7 +183,7 @@ interface CommandResolutionCacheEntry {
 // so tests and embedders can provide an isolated instance; the default is a
 // single process-wide map shared by all consumers.
 export const CommandResolutionCache = Context.Reference<Map<string, CommandResolutionCacheEntry>>(
-  "@akeru/shared/shell/CommandResolutionCache",
+  "@isnadi/shared/shell/CommandResolutionCache",
   {
     defaultValue: () => new Map(),
   },

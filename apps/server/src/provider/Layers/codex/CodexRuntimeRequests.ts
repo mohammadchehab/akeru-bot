@@ -4,8 +4,8 @@ import {
   type ProviderInteractionMode,
   type ProviderUserInputAnswers,
   RuntimeMode,
-} from "@akeru/contracts";
-import { normalizeModelSlug } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { normalizeModelSlug } from "@isnadi/shared/model";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as CodexErrors from "effect-codex-app-server/errors";

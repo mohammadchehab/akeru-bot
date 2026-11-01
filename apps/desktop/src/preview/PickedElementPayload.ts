@@ -5,7 +5,7 @@ import {
   type PickedElementPayload,
   type PreviewAnnotationPayload,
   type PreviewAnnotationRect,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 const isPickedPayload = Schema.is(PickedElementPayloadSchema);

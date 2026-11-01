@@ -1,6 +1,6 @@
 import { flow, Match, Predicate } from "effect";
-import { isTransportConnectionErrorMessage } from "@akeru/client-runtime/errors";
-import type { EnvironmentShellStatus } from "@akeru/client-runtime/state/shell";
+import { isTransportConnectionErrorMessage } from "@isnadi/client-runtime/errors";
+import type { EnvironmentShellStatus } from "@isnadi/client-runtime/state/shell";
 import {
   CommandId,
   EnvironmentId,
@@ -15,7 +15,7 @@ import {
   type ProjectId as ProjectIdType,
   type ProviderInteractionMode as ProviderInteractionModeType,
   type RuntimeMode as RuntimeModeType,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import { DraftComposerImageAttachmentSchema } from "../lib/composer-image-schema";

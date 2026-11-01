@@ -184,16 +184,16 @@ export const FontFamilyPreference = Schema.String.check(Schema.isMaxLength(200))
 
 export type FontFamilyPreference = typeof FontFamilyPreference.Type;
 
-// The Worker in infra/feedback. akeru-bot.com is on Vercel DNS, so the Worker
+// The Worker in infra/feedback. isnadibot.com is on Vercel DNS, so the Worker
 // cannot bind a custom hostname there and clients post to workers.dev directly.
 export const DEFAULT_PRODUCT_FEEDBACK_ENDPOINT =
   "https://akeru-feedback.leoisadev.workers.dev/v1/feedback";
 
-export const AKERU_MARKETING_SITE_URL = "https://akeru.bot";
+export const ISNADI_MARKETING_SITE_URL = "https://akeru.bot";
 
-export const AKERU_PRIVACY_POLICY_VERSION = "2026-08-31";
+export const ISNADI_PRIVACY_POLICY_VERSION = "2026-08-31";
 
-export const AKERU_TERMS_VERSION = "2026-08-31";
+export const ISNADI_TERMS_VERSION = "2026-08-31";
 
 export const ProductFeedbackEndpoint = TrimmedNonEmptyString.check(
   Schema.isMaxLength(2_048),

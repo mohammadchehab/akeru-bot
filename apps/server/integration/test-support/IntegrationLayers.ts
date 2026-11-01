@@ -1,6 +1,6 @@
 import * as Schema from "effect/Schema";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { CodexSettings, ProviderDriverKind } from "@akeru/contracts";
+import { CodexSettings, ProviderDriverKind } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as CheckpointStore from "../../src/checkpointing/CheckpointStore.ts";

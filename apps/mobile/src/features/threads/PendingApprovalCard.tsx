@@ -1,11 +1,11 @@
 import { Match } from "effect";
-import { routineApprovalSummary } from "@akeru/client-runtime/routines";
+import { routineApprovalSummary } from "@isnadi/client-runtime/routines";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   type ApprovalRequestId,
   type ProviderApprovalOption,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Pressable, View } from "react-native";
 
 import { AppText as Text } from "../../components/AppText";
@@ -33,11 +33,11 @@ export function PendingApprovalCard(props: PendingApprovalCardProps) {
     { decision: "decline", label: t("Cancel") },
   ] satisfies ReadonlyArray<ProviderApprovalOption>;
 
-  const isProductFeedback = props.approval.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME;
+  const isProductFeedback = props.approval.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME;
 
   // A routine approval shows what the bot proposes, so it is never approved blind.
   const routine =
-    props.approval.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME
+    props.approval.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME
       ? routineApprovalSummary(props.approval.args, t)
       : null;
 

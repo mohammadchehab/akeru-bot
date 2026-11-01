@@ -1,5 +1,5 @@
 // Stdio MCP server fixture standing in for a local CLI such as `executor mcp`
-// or `akeru-codex-computer-use mcp`. Speaks newline-delimited JSON-RPC.
+// or `isnadi-codex-computer-use mcp`. Speaks newline-delimited JSON-RPC.
 process.stdin.resume();
 
 let buffer = "";

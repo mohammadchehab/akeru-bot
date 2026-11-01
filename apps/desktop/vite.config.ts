@@ -7,13 +7,13 @@ export default defineConfig({
     tasks: {
       build: {
         command: "node scripts/build-preview-annotation-css.mjs && vp pack",
-        dependsOn: ["akeru-bot#build"],
+        dependsOn: ["isnadibot#build"],
         cache: false,
       },
       dev: {
         command:
           "node scripts/build-preview-annotation-css.mjs && cross-env T3CODE_DESKTOP_DEV=1 vp pack --watch",
-        dependsOn: ["akeru-bot#build"],
+        dependsOn: ["isnadibot#build"],
         cache: false,
       },
       "dev:bundle": {
@@ -22,7 +22,7 @@ export default defineConfig({
       },
       "dev:electron": {
         command: "node scripts/dev-electron.mjs",
-        dependsOn: ["akeru-bot#build"],
+        dependsOn: ["isnadibot#build"],
         cache: false,
       },
     },
@@ -36,7 +36,7 @@ export default defineConfig({
       entry: ["src/main.ts"],
       clean: true,
       deps: {
-        alwaysBundle: (id) => id.startsWith("@akeru/"),
+        alwaysBundle: (id) => id.startsWith("@isnadi/"),
       },
       ...(shouldLaunchElectronAfterPack ? { onSuccess: "node scripts/dev-electron.mjs" } : {}),
     },
@@ -53,7 +53,7 @@ export default defineConfig({
       deps: {
         // Sandboxed preloads can require Electron only, so bundle the contract decoders.
         alwaysBundle: (id) =>
-          id === "effect" || id.startsWith("effect/") || id.startsWith("@akeru/"),
+          id === "effect" || id.startsWith("effect/") || id.startsWith("@isnadi/"),
       },
     },
     {
@@ -79,7 +79,7 @@ export default defineConfig({
       deps: {
         // Sandboxed preloads can require Electron only, so bundle the contract decoders.
         alwaysBundle: (id) =>
-          id === "effect" || id.startsWith("effect/") || id.startsWith("@akeru/"),
+          id === "effect" || id.startsWith("effect/") || id.startsWith("@isnadi/"),
       },
     },
   ],

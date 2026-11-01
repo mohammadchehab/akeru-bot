@@ -4,7 +4,7 @@ import { ViewportSetting } from "./browserViewportSetting";
 
 import { hasTag } from "~/lib/taggedUnion";
 
-import type { PreviewViewportSetting, PreviewViewportSize } from "@akeru/contracts";
+import type { PreviewViewportSetting, PreviewViewportSize } from "@isnadi/contracts";
 import {
   useCallback,
   useEffect,

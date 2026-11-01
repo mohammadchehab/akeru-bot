@@ -2,7 +2,7 @@ import type * as Schema from "effect/Schema";
 import { decodeJsonString, isJsonObject } from "../json.ts";
 
 import * as NodeCrypto from "node:crypto";
-import { BotId, ChannelConnectionId } from "@akeru/contracts";
+import { BotId, ChannelConnectionId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { type ChannelRuntimeContext } from "./ChannelRuntimeTypes.ts";
 import {

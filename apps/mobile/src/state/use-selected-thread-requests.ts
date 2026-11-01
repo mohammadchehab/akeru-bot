@@ -5,7 +5,7 @@ import {
   ApprovalRequestId,
   type ProviderApprovalDecision,
   type UserInputQuestion,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 
 import { threadEnvironment } from "../state/threads";

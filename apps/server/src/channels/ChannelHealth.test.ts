@@ -34,7 +34,7 @@ import {
   MessageId,
   ThreadId,
   type ChannelBinding,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Deferred from "effect/Deferred";

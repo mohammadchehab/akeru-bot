@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { AuthSessionId, CommandId, GroupId, type OrchestrationReadModel } from "@akeru/contracts";
+import { AuthSessionId, CommandId, GroupId, type OrchestrationReadModel } from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";

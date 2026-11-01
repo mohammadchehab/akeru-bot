@@ -4,7 +4,7 @@ import {
   ProviderInstanceId,
   type ModelCapabilities,
   type ProviderOptionSelection,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import type { ModelOption } from "../../lib/modelOptions";
 import {

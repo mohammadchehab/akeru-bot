@@ -1,12 +1,12 @@
 import { hasTag } from "~/lib/taggedUnion";
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
 import {
   type AtomCommandResult,
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
-import { pinOrderKeyBetween } from "@akeru/client-runtime/state/thread-sort";
-import type { ScopedThreadRef } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/runtime";
+import { pinOrderKeyBetween } from "@isnadi/client-runtime/state/thread-sort";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { useCallback, useMemo } from "react";
 
 import { shouldForgetChatPath } from "../components/chat/chatActions.logic";

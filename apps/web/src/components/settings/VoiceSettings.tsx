@@ -1,4 +1,4 @@
-import { DEFAULT_SERVER_SETTINGS } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS } from "@isnadi/contracts";
 import { useMemo, useState } from "react";
 import { usePrimarySettings, useUpdatePrimarySettings } from "~/hooks/useSettings";
 import { usePrimaryEnvironment } from "~/state/environments";

@@ -4,7 +4,7 @@ import {
   type PreviewAutomationOperation,
   type PreviewAutomationHost,
   type PreviewAutomationStreamEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Queue from "effect/Queue";
 import * as McpInvocationContext from "./McpInvocationContext.ts";

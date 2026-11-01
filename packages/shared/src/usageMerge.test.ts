@@ -5,7 +5,7 @@ import {
   type UsageDay,
   type UsageProviderKind,
   type UsageSummary,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { mergeUsage, type EnvironmentUsage } from "./usageMerge.ts";

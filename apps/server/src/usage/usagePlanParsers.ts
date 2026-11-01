@@ -1,7 +1,7 @@
 import { isJsonObject, decodeJson } from "../json.ts";
 import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";
-import type { UsagePlanWindow } from "@akeru/contracts";
+import type { UsagePlanWindow } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";

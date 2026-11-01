@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
-import { resolveSnoozePresets } from "@akeru/client-runtime/state/thread-settled";
-import { ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { resolveSnoozePresets } from "@isnadi/client-runtime/state/thread-settled";
+import { ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   resolveThreadListV2SnoozeMenuSelection,

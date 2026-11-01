@@ -2,8 +2,8 @@ import * as Match from "effect/Match";
 import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import { ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import {
   BotId,
   CommandId,
@@ -11,7 +11,7 @@ import {
   DelegationId,
   EventId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

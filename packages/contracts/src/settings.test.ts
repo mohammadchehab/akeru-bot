@@ -26,7 +26,7 @@ describe("ServerSettings voice", () => {
 });
 
 describe("ServerSettings product feedback", () => {
-  it("defaults to the Akeru endpoint and remains server patchable", () => {
+  it("defaults to the Isnadi endpoint and remains server patchable", () => {
     expect(decodeServerSettings({})).toMatchObject({
       productFeedbackEnabled: true,
       productFeedbackEndpoint: "https://akeru-feedback.leoisadev.workers.dev/v1/feedback",

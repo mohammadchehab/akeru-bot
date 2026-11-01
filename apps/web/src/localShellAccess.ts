@@ -4,8 +4,8 @@ import { hasTag } from "~/lib/taggedUnion";
  * such as "Open in editor" or "Reveal in file manager" land where the user can
  * see them. Remote clients hide those actions.
  */
-import type { ConnectionTarget } from "@akeru/client-runtime/connection";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { ConnectionTarget } from "@isnadi/client-runtime/connection";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useMemo } from "react";
 
 import { isDesktopLocalConnectionTarget } from "~/connection/desktopLocal";

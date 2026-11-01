@@ -5,7 +5,7 @@ import {
   type ServerLifecycleStreamReadyEvent,
   type ServerSelfUpdateResult,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

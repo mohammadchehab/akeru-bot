@@ -1,6 +1,6 @@
 # Claude
 
-Connect a Claude Pro or Max subscription from Akeru. Claude chats run through Akeru's built-in
+Connect a Claude Pro or Max subscription from Isnadi. Claude chats run through Isnadi's built-in
 runtime, with the same chat controls as other providers. The Claude CLI is not required.
 
 ## Connect Claude
@@ -9,10 +9,10 @@ runtime, with the same chat controls as other providers. The Claude CLI is not r
 2. Find **Claude** and select **Connect**.
 3. Finish the Anthropic sign-in flow in the browser.
 4. Copy the authorization code from Anthropic.
-5. Paste the code into Akeru and select **Connect**.
+5. Paste the code into Isnadi and select **Connect**.
 
 The environment server completes the exchange and stores the credential. No inbound callback to the
-Akeru server is required, so this flow also works from a remote browser or mobile client.
+Isnadi server is required, so this flow also works from a remote browser or mobile client.
 
 ## Check the connection
 
@@ -26,23 +26,23 @@ real provider request succeeds.
 If the login expires or is revoked, reconnect Claude in **Settings > Providers**. A usage-limit
 failure means you should send the message again after the limit resets.
 
-Sign-in state belongs to one environment. Connect Claude again on each separate Akeru server that
+Sign-in state belongs to one environment. Connect Claude again on each separate Isnadi server that
 should use the account.
 
-Chat titles and worktree branch names use the same Akeru connection as Claude chats, not a separate
+Chat titles and worktree branch names use the same Isnadi connection as Claude chats, not a separate
 Claude Code login. On a remote connection, credentials stay on the connected environment server.
 
 ## Continue a Claude chat
 
-Akeru keeps Claude's provider-specific session identity when a chat continues. Changing to an
+Isnadi keeps Claude's provider-specific session identity when a chat continues. Changing to an
 incompatible provider starts a new provider session instead of reusing Claude's resume state.
 
-Installed plugins and MCP servers stay attached to the Akeru chat. A provider change restarts the
+Installed plugins and MCP servers stay attached to the Isnadi chat. A provider change restarts the
 provider session with the same enabled plugin set.
 
 ## Permissions
 
-Claude maps Akeru's chat mode to its own permission behavior. Protected actions still ask even when
+Claude maps Isnadi's chat mode to its own permission behavior. Protected actions still ask even when
 the chat uses **Full access**.
 
 See [Permission modes](./permission-modes.md) for the four modes and the actions that always need

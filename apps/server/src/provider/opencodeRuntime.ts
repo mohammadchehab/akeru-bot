@@ -24,9 +24,9 @@ import * as Stream from "effect/Stream";
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
 import { isWindowsCommandNotFound } from "../processRunner.ts";
 import { collectStreamAsString } from "./providerSnapshot.ts";
-import * as NetService from "@akeru/shared/Net";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import * as NetService from "@isnadi/shared/Net";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import {
   type OpenCodeSkill,
   parseModelsCliOutput,
@@ -666,7 +666,7 @@ const makeOpenCodeRuntime = Effect.gen(function* () {
 });
 
 export class OpenCodeRuntime extends Context.Service<OpenCodeRuntime, OpenCodeRuntimeShape>()(
-  "akeru-bot/provider/opencodeRuntime",
+  "isnadibot/provider/opencodeRuntime",
 ) {}
 
 export const OpenCodeRuntimeLive = Layer.effect(OpenCodeRuntime, makeOpenCodeRuntime).pipe(

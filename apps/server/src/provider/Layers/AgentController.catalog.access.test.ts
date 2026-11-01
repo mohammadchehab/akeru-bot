@@ -3,16 +3,16 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   DelegationId,
   McpServerId,
   ProviderDriverKind,
   ProjectId,
   ThreadId,
-  type AkeruDelegationAccessGrant,
-} from "@akeru/contracts";
+  type IsnadiDelegationAccessGrant,
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -55,7 +55,7 @@ describe("AgentControllerLive", () => {
     const webId = McpServerId.make("web");
     const emailId = McpServerId.make("email");
 
-    const access: AkeruDelegationAccessGrant = {
+    const access: IsnadiDelegationAccessGrant = {
       allowedToolIds: ["Read", "ExternalRead", "CopyToBox", "CopyFromBox"],
       memoryScopes: [],
       sandbox: "local",
@@ -114,8 +114,8 @@ describe("AgentControllerLive", () => {
         runtimeMode: "approval-required",
         mcpServers: [server(webId, "web"), server(emailId, "email")],
         memoryAccess: {
-          tenantId: AkeruMemoryTenantId.make("local"),
-          userId: AkeruMemoryUserId.make("owner"),
+          tenantId: IsnadiMemoryTenantId.make("local"),
+          userId: IsnadiMemoryUserId.make("owner"),
           threadId: codexThreadId,
           projectId: ProjectId.make("delegation-memory"),
           workspaceRoot: process.cwd(),

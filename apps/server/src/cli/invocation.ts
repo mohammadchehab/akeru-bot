@@ -1,6 +1,6 @@
 import * as Effect from "effect/Effect";
 
-import { HostProcessArguments } from "@akeru/shared/hostProcess";
+import { HostProcessArguments } from "@isnadi/shared/hostProcess";
 
 import packageJson from "../../package.json" with { type: "json" };
 
@@ -16,7 +16,7 @@ export type CliRunner = "npx" | "pnpm dlx" | "bunx";
  *   bunx     ~/.bun/install/cache/... or $TMPDIR/bunx-<uid>-<spec>/...
  *
  * Global installs and repo checkouts match none of these and return null.
- * Detection is best-effort; callers must fail closed to a plain `akeru` command.
+ * Detection is best-effort; callers must fail closed to a plain `isnadi` command.
  */
 export function detectCliRunner(entryPath: string): CliRunner | null {
   const path = entryPath.replaceAll("\\", "/");
@@ -41,18 +41,18 @@ export function detectCliRunner(entryPath: string): CliRunner | null {
 }
 
 /**
- * The `akeru-bot` package spec to suggest. The literal spec the user typed
+ * The `isnadibot` package spec to suggest. The literal spec the user typed
  * is resolved away before our process starts, so re-derive it from the
  * running version.
  */
 export function suggestedPackageSpec(_version: string): string {
-  return "akeru-bot";
+  return "isnadibot";
 }
 
 /**
- * Render an `akeru <subcommand>` suggestion that matches how this process was
- * launched, so copy/pasting it works. An `npx akeru-bot connect` launch suggests
- * `npx akeru-bot serve`, and a global install suggests `akeru serve`.
+ * Render an `isnadi <subcommand>` suggestion that matches how this process was
+ * launched, so copy/pasting it works. An `npx isnadibot connect` launch suggests
+ * `npx isnadibot serve`, and a global install suggests `isnadi serve`.
  */
 export function formatCliCommand(input: {
   readonly subcommand: string;

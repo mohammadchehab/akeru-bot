@@ -1,4 +1,4 @@
-import type { ChatAttachment } from "@akeru/contracts";
+import type { ChatAttachment } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildBotMessageAttachmentPreview } from "./BotMessageAttachments";

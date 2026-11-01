@@ -10,7 +10,7 @@ import {
   type ComposioToolkit,
   type McpServer,
   McpServerId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -90,7 +90,7 @@ export interface ComposioServiceShape {
 }
 
 export class ComposioService extends Context.Service<ComposioService, ComposioServiceShape>()(
-  "akeru-bot/composio/ComposioService",
+  "isnadibot/composio/ComposioService",
 ) {}
 
 function operationError(operation: string, cause: unknown): ComposioOperationError {

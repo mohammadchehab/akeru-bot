@@ -11,18 +11,18 @@ import {
   type ServerProviderUnavailability,
   type SubscriptionProviderId,
   type UnifiedSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import { SUBSCRIPTION_PROVIDER_BY_DRIVER } from "@akeru/client-runtime/provider-auth";
-import { driverSupportsDelegation } from "@akeru/shared/delegationProviders";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import { SUBSCRIPTION_PROVIDER_BY_DRIVER } from "@isnadi/client-runtime/provider-auth";
+import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import {
   botEngineFromModelSelection,
   botEngineModelSelection,
   formatModelSlug,
   providerOptionsForModelChange,
-} from "@akeru/shared/model";
-import type { ProviderAvailabilityTranslate } from "@akeru/client-runtime/provider-availability";
+} from "@isnadi/shared/model";
+import type { ProviderAvailabilityTranslate } from "@isnadi/client-runtime/provider-availability";
 
 import { resolveAppModelSelectionForInstance } from "../../modelSelection";
 import type { ComposerProviderCatalog } from "../chat/composerProviderMenuItems";

@@ -1,4 +1,4 @@
-import type { OrchestrationThreadActivity, UserInputQuestion } from "@akeru/contracts";
+import type { OrchestrationThreadActivity, UserInputQuestion } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";

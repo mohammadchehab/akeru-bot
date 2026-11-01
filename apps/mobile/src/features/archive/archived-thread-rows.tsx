@@ -1,4 +1,7 @@
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
 import { SymbolView } from "../../components/AppSymbol";
 import type { ComponentProps } from "react";
 import { Pressable, useWindowDimensions, View } from "react-native";

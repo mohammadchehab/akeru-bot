@@ -17,7 +17,7 @@ import type * as Schema from "effect/Schema";
  *
  * @module usageScanCache
  */
-import type { UsageProviderKind } from "@akeru/contracts";
+import type { UsageProviderKind } from "@isnadi/contracts";
 
 import type { UsageRecord } from "./usageTranscripts.ts";
 

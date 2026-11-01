@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import {
   Cancel01Icon,
   ComputerIcon,

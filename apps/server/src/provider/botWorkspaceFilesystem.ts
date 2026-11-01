@@ -34,7 +34,7 @@ export class BotWorkspaceFilesystem implements WorkspaceFilesystem {
 
   constructor(id: string, provider: string, session: RemoteCommandSession) {
     this.id = `${id}-filesystem`;
-    this.name = `Akeru ${provider}`;
+    this.name = `Isnadi ${provider}`;
     this.provider = provider;
     this.session = session;
   }

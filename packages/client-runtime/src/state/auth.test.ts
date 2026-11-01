@@ -1,4 +1,4 @@
-import { AuthSessionId } from "@akeru/contracts";
+import { AuthSessionId } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as DateTime from "effect/DateTime";
 

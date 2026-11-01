@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { parsePersistedServerObservabilitySettings } from "@akeru/shared/serverSettings";
+import { parsePersistedServerObservabilitySettings } from "@isnadi/shared/serverSettings";
 
 import * as Effect from "effect/Effect";
 

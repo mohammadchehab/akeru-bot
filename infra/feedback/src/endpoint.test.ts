@@ -2,7 +2,7 @@ import type * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
 import { describe, expect, it } from "@effect/vitest";
 
-import { PRODUCT_FEEDBACK_BODY_MAX_BYTES, type ProductFeedbackSubmission } from "@akeru/contracts";
+import { PRODUCT_FEEDBACK_BODY_MAX_BYTES, type ProductFeedbackSubmission } from "@isnadi/contracts";
 import {
   coarseIpAddress,
   productFeedbackEndpoint,

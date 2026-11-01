@@ -3,9 +3,11 @@ import * as Predicate from "effect/Predicate";
 
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
+import * as NodeFS from "node:fs";
+import * as NodePath from "node:path";
 import * as NodeOS from "node:os";
-import { PRODUCT_HOME_DIRNAME } from "@akeru/shared/devHome";
-import { fromJsonStringPretty } from "@akeru/shared/schemaJson";
+import { findProductHomeDir } from "@isnadi/shared/productHome";
+import { fromJsonStringPretty } from "@isnadi/shared/schemaJson";
 import * as Console from "effect/Console";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -56,7 +58,7 @@ export class SqliteStateDatabaseMissingError extends Schema.TaggedErrorClass<Sql
   },
 ) {
   override get message(): string {
-    return `Database does not exist at '${this.databasePath}'. Start Akeru Bot once to run migrations.`;
+    return `Database does not exist at '${this.databasePath}'. Start IsnadiBot once to run migrations.`;
   }
 }
 
@@ -65,7 +67,7 @@ export class SqliteStateSharedHomeMutationError extends Schema.TaggedErrorClass<
   {},
 ) {
   override get message(): string {
-    return "Refusing to mutate the shared ~/.akeru database. Use an isolated --base-dir.";
+    return "Refusing to mutate the shared ~/.isnadi database. Use an isolated --base-dir.";
   }
 }
 
@@ -194,7 +196,11 @@ function normalizeSqliteRow(row: RawSqliteRow): typeof SqliteStateRow.Type {
 
 export const guardSqliteStateHome = Effect.fn("guardSqliteStateHome")(function* (
   baseDir: string,
-  sharedHome = NodeOS.homedir() + "/" + PRODUCT_HOME_DIRNAME,
+  sharedHome = findProductHomeDir({
+    homeDirectory: NodeOS.homedir(),
+    joinPath: NodePath.join,
+    exists: NodeFS.existsSync,
+  }),
 ) {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
@@ -240,7 +246,12 @@ export const runSqliteState = Effect.fn("runSqliteState")(function* (
   const baseDir = path.resolve(input.baseDir);
 
   const sharedHome = path.resolve(
-    options.sharedHome ?? path.join(NodeOS.homedir(), PRODUCT_HOME_DIRNAME),
+    options.sharedHome ??
+      findProductHomeDir({
+        homeDirectory: NodeOS.homedir(),
+        joinPath: NodePath.join,
+        exists: NodeFS.existsSync,
+      }),
   );
 
   const databasePath = path.join(baseDir, "userdata", "state.sqlite");
@@ -306,7 +317,7 @@ export const t3SqliteStateCommand = Command.make(
       Argument.withDescription("Run a read-only query or a backed-up fixture mutation."),
     ),
     baseDir: Flag.string("base-dir").pipe(
-      Flag.withDescription("Explicit Akeru Bot base directory containing userdata/state.sqlite."),
+      Flag.withDescription("Explicit IsnadiBot base directory containing userdata/state.sqlite."),
     ),
     sql: Flag.string("sql").pipe(
       Flag.optional,

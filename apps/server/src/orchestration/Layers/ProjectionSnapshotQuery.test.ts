@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { AuthSessionId, MessageId, ThreadId, ProviderInstanceId } from "@akeru/contracts";
+import { AuthSessionId, MessageId, ThreadId, ProviderInstanceId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 

@@ -1,5 +1,5 @@
-import { formatDuration } from "@akeru/shared/orchestrationTiming";
-import type { BotId, TurnId } from "@akeru/contracts";
+import { formatDuration } from "@isnadi/shared/orchestrationTiming";
+import type { BotId, TurnId } from "@isnadi/contracts";
 import type { ThreadFeedEntry, ThreadFeedLatestTurn } from "./threadActivityTypes";
 import { MAX_VISIBLE_WORK_LOG_ENTRIES } from "./threadWorkLog";
 

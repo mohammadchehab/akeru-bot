@@ -1,4 +1,4 @@
-import { BotId, ChannelConnectionId } from "@akeru/contracts";
+import { BotId, ChannelConnectionId } from "@isnadi/contracts";
 import { Context } from "effect";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
@@ -53,7 +53,7 @@ import {
   restoreConnectedChannels,
 } from "./ChannelConnections.ts";
 
-export { defaultProjectIdForBot } from "@akeru/shared/channelProject";
+export { defaultProjectIdForBot } from "@isnadi/shared/channelProject";
 
 const makeChannelRuntime = (deps: ChannelRuntimeDependencies) =>
   Effect.gen(function* () {
@@ -156,7 +156,7 @@ const makeChannelRuntime = (deps: ChannelRuntimeDependencies) =>
  * reactions live in the service; closing its scope stops them.
  */
 export class ChannelRuntime extends Context.Service<ChannelRuntime, ChannelRuntimeShape>()(
-  "akeru-bot/channels/ChannelRuntime",
+  "isnadibot/channels/ChannelRuntime",
 ) {
   /** Builds the runtime from explicit dependencies. */
   static readonly layerWith = (dependencies: ChannelRuntimeDependencies) =>

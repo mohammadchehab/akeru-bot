@@ -122,7 +122,7 @@ describe("theme failure handling", () => {
     expect(readThemeHalves()).toEqual(before);
   });
 
-  it("uses Akeru Paper for a fresh profile", async () => {
+  it("uses Isnadi Paper for a fresh profile", async () => {
     vi.stubGlobal("window", { localStorage: createStorage() });
 
     const { readThemePreference } = await import("./useTheme");
@@ -130,7 +130,7 @@ describe("theme failure handling", () => {
     expect(readThemePreference()).toBe("akeru-paper");
   });
 
-  it("migrates the old system default to Akeru Paper", async () => {
+  it("migrates the old system default to Isnadi Paper", async () => {
     vi.stubGlobal("window", {
       localStorage: createStorage({
         getItem: (key) => (key === "akeru:theme" ? "system" : null),

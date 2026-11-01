@@ -1,5 +1,5 @@
 import {
-  AKERU_PAPER_THEME,
+  ISNADI_PAPER_THEME,
   BUILT_IN_THEMES,
   EMBER_THEME,
   GROVE_THEME,
@@ -12,10 +12,10 @@ import {
   type ThemeColors,
   type ThemeDefinition,
   type ThemeVariants,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 
 export {
-  AKERU_PAPER_THEME,
+  ISNADI_PAPER_THEME,
   BUILT_IN_THEMES,
   EMBER_THEME,
   GROVE_THEME,
@@ -28,8 +28,8 @@ export {
 export type { ThemeAppearance, ThemeColorRole, ThemeColors, ThemeDefinition, ThemeVariants };
 
 export {
-  AKERU_PAPER_THEME_ID,
-  AKERU_PAPER_THEME_LABEL,
+  ISNADI_PAPER_THEME_ID,
+  ISNADI_PAPER_THEME_LABEL,
   T3_CHAT_THEME_ID,
   T3_CHAT_THEME_LABEL,
   GROVE_THEME_ID,

@@ -6,9 +6,9 @@ import {
   memoryApprovalHeading,
   memoryApprovalMutation,
   type MemoryApprovalIntent,
-} from "@akeru/client-runtime/durable-memory";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
-import type { AkeruMemoryApprovalRequest, ScopedThreadRef } from "@akeru/contracts";
+} from "@isnadi/client-runtime/durable-memory";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import type { IsnadiMemoryApprovalRequest, ScopedThreadRef } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { useMemo, useState } from "react";
 
@@ -32,7 +32,7 @@ export function MemoryApprovalPrompt({
   currentBotId,
 }: {
   readonly threadRef: ScopedThreadRef;
-  readonly approvals: ReadonlyArray<AkeruMemoryApprovalRequest>;
+  readonly approvals: ReadonlyArray<IsnadiMemoryApprovalRequest>;
   readonly currentBotId: string | null;
 }) {
   const i18n = useI18n();

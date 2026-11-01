@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { BotId, GroupId, isGroupBotMember, type EnvironmentId } from "@akeru/contracts";
+import { BotId, GroupId, isGroupBotMember, type EnvironmentId } from "@isnadi/contracts";
 import { BotIcon, LogOutIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 

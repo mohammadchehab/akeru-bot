@@ -1,7 +1,7 @@
 import {
   parseSettingsDeepLinkId,
   type SettingsDeepLinkId,
-} from "@akeru/client-runtime/settings-deep-link";
+} from "@isnadi/client-runtime/settings-deep-link";
 
 export type MobileSettingsHealthTarget =
   | "local-execution"

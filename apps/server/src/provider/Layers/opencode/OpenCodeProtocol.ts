@@ -6,7 +6,7 @@ import {
   ThreadId,
   type ToolLifecycleItemType,
   type UserInputQuestion,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

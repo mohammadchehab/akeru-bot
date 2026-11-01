@@ -1,4 +1,4 @@
-import { ProviderInstanceId, ProviderDriverKind } from "@akeru/contracts";
+import { ProviderInstanceId, ProviderDriverKind } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { createTranslator } from "./i18n/index.ts";

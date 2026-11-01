@@ -6,7 +6,7 @@ import {
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
   type UploadChatFileAttachment,
   type UploadChatImageAttachment,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const FILE_MIME_BY_EXTENSION = {
   csv: "text/csv",

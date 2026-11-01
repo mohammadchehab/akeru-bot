@@ -1,13 +1,13 @@
-import { AkeruMemoryId, AkeruMemoryRevision, AkeruMemoryRootId } from "@akeru/contracts";
+import { IsnadiMemoryId, IsnadiMemoryRevision, IsnadiMemoryRootId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { toPersistenceDecodeError } from "../../persistence/Errors.ts";
 
-const decodeMemoryRevision = Schema.decodeUnknownEffect(AkeruMemoryRevision);
+const decodeMemoryRevision = Schema.decodeUnknownEffect(IsnadiMemoryRevision);
 
 export const EntityMemoryDbRow = Schema.Struct({
-  id: AkeruMemoryId,
-  rootId: AkeruMemoryRootId,
+  id: IsnadiMemoryId,
+  rootId: IsnadiMemoryRootId,
   revision: Schema.Number,
   tenantId: Schema.String,
   scope: Schema.String,

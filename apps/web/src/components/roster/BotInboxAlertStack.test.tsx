@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
-import { BotId, type SubscriptionAuthStatuses } from "@akeru/contracts";
+import { BotId, type SubscriptionAuthStatuses } from "@isnadi/contracts";
 
 import { selectOpenBotInboxItems } from "../../botInbox";
 import { BotInboxAlertStack } from "./BotInboxAlertStack";
@@ -14,7 +14,7 @@ function incident(overrides: Partial<BotInboxItem> = {}): BotInboxItem {
     kind: "connector-failure",
     status: "open",
     botId: BotId.make("bot-1"),
-    botName: "Akeru",
+    botName: "Isnadi",
     taskOrRoutine: "Research brief",
     lastFailure: "Claude rejected the request.",
     nextAction: "Reconnect Claude in Settings.",
@@ -47,7 +47,7 @@ describe("bot inbox alerts", () => {
 
     expect(markup).toContain('role="alert"');
     expect(markup).toContain('data-variant="error"');
-    expect(markup).toContain("Akeru · Research brief");
+    expect(markup).toContain("Isnadi · Research brief");
     expect(markup).toContain("Claude rejected the request.");
     expect(markup).toContain("Next: Reconnect Claude in Settings.");
     expect(markup).toContain("View details");

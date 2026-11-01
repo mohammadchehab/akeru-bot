@@ -10,7 +10,7 @@ const cases = [
 ] as const;
 
 for (const [label, runner, file] of cases) {
-  it(`${label} ignores ambient T3CODE_HOME and writes only to Akeru home`, () => {
+  it(`${label} ignores ambient T3CODE_HOME and writes only to Isnadi home`, () => {
     const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-identity-"));
     const legacy = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-legacy-"));
 
@@ -23,14 +23,14 @@ for (const [label, runner, file] of cases) {
             PATH: process.env.PATH ?? "",
             HOME: root,
             T3CODE_HOME: legacy,
-            AKERU_IDENTITY_NODE: process.execPath,
+            ISNADI_IDENTITY_NODE: process.execPath,
           },
         },
       );
 
       expect(result.status).toBe(0);
       expect(
-        NodeFS.existsSync(NodePath.join(root, ".akeru", "userdata", "remote-link-identity.json")),
+        NodeFS.existsSync(NodePath.join(root, ".isnadi", "userdata", "remote-link-identity.json")),
       ).toBe(true);
       expect(NodeFS.readdirSync(legacy)).toEqual([]);
     } finally {

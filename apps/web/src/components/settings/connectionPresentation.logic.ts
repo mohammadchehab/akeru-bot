@@ -3,7 +3,7 @@ import {
   type AuthPairingLink,
   type AdvertisedEndpoint,
   type DesktopSshEnvironmentTarget,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import { cn } from "../../lib/utils";
 import { resolveDesktopPairingUrl } from "./pairingUrls";

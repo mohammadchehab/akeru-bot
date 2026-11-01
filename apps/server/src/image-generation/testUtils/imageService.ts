@@ -8,7 +8,7 @@ import {
   ServerSettings,
   type ImageGenerationSettings,
   type ImageProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { SubscriptionAuthService } from "../../subscription-auth/service.ts";
 import { imageProviderStatuses } from "../service.ts";

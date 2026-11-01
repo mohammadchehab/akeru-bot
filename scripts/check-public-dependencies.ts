@@ -60,7 +60,7 @@ function workspaceManifestPaths(repoRoot: string): ReadonlyArray<string> {
   }
 
   for (const relativePath of [
-    "oxlint-plugin-akeru/package.json",
+    "oxlint-plugin-isnadi/package.json",
     "oxlint-plugin-anti-slop/package.json",
     "scripts/package.json",
   ]) {

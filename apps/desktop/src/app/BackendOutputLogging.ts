@@ -1,6 +1,6 @@
 import type { DesktopLogAnnotations } from "./DesktopObservability.ts";
 import * as Predicate from "effect/Predicate";
-import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@akeru/contracts";
+import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -52,7 +52,7 @@ export class DesktopBackendOutputLogFactory extends Context.Service<
   {
     readonly forInstance: (id: string) => Effect.Effect<DesktopBackendOutputLogShape>;
   }
->()("@akeru/desktop/app/BackendOutputLogging/DesktopBackendOutputLogFactory") {}
+>()("@isnadi/desktop/app/BackendOutputLogging/DesktopBackendOutputLogFactory") {}
 
 export const textDecoder = new TextDecoder();
 

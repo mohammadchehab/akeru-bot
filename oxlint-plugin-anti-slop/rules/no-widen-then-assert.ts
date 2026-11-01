@@ -282,7 +282,7 @@ function widenedBinding(
   }
 
   const boundary = functionBoundary(declarator);
-  // AKERU: @oxlint/plugins 1.72 types an identifier's typeAnnotation as null; upstream targets 1.78.
+  // ISNADI: @oxlint/plugins 1.72 types an identifier's typeAnnotation as null; upstream targets 1.78.
   const declaredId: { readonly typeAnnotation?: ESTree.TSTypeAnnotation | null } = declarator.id;
   const declaredType = declaredId.typeAnnotation?.typeAnnotation;
   const initializerAssertion = assertionFromExpression(declarator.init);

@@ -1,11 +1,11 @@
 import * as Effect from "effect/Effect";
-import { type AkeruRemoteSession } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession } from "../BotWorkspaceTypes.ts";
 import { quote, commandLine } from "../BotWorkspaceLifecycle.ts";
 
 export function ascii(
   client: import("@asciidev/box-sdk").BoxApi,
   boxId: string,
-): AkeruRemoteSession {
+): IsnadiRemoteSession {
   const waitUntilArchived = async () => {
     const deadline = performance.now() + 300_000;
 

@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   BotId,
   CommandId,
   DelegationId,
@@ -9,7 +9,7 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -62,7 +62,10 @@ const makeLayer = (dbPath: string) =>
     Layer.provideMerge(sqlitePersistenceLayer(dbPath)),
   );
 
-const baseDelegation = (id: string, parentBotId: BotId = PARENT_BOT_ID): AkeruDelegationRecord => ({
+const baseDelegation = (
+  id: string,
+  parentBotId: BotId = PARENT_BOT_ID,
+): IsnadiDelegationRecord => ({
   delegationId: DelegationId.make(id),
   parentDelegationId: null,
   parentBotId,
@@ -95,10 +98,10 @@ const baseDelegation = (id: string, parentBotId: BotId = PARENT_BOT_ID): AkeruDe
 });
 
 const running = (
-  record: AkeruDelegationRecord,
+  record: IsnadiDelegationRecord,
   childThreadId: ThreadId,
   childTurnId: TurnId | null,
-): AkeruDelegationRecord => ({
+): IsnadiDelegationRecord => ({
   ...record,
   phase: { _tag: "Running", childThreadId, childTurnId, startedAt: STARTED_AT, progress: null },
   updatedAt: STARTED_AT,
@@ -124,7 +127,7 @@ const doneRunning = running(
   TurnId.make("turn-done"),
 );
 
-const done: AkeruDelegationRecord = {
+const done: IsnadiDelegationRecord = {
   ...doneRunning,
   phase: {
     _tag: "Completed",
@@ -142,7 +145,7 @@ const done: AkeruDelegationRecord = {
   updatedAt: FINISHED_AT,
 };
 
-const blocked: AkeruDelegationRecord = {
+const blocked: IsnadiDelegationRecord = {
   ...running(baseDelegation("delegation-blocked"), BLOCKED_CHILD, TurnId.make("turn-blocked")),
   phase: {
     _tag: "Blocked",

@@ -4,7 +4,7 @@ import {
   TurnId,
   type OrchestrationLatestTurn,
   type OrchestrationMessage,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   correlatedVoiceReply,
   createRealtimeVoiceSession,

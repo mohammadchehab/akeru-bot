@@ -1,4 +1,4 @@
-import type { AkeruToolExecution } from "../provider/AkeruToolRuntime.ts";
+import type { IsnadiToolExecution } from "../provider/IsnadiToolRuntime.ts";
 import * as Predicate from "effect/Predicate";
 
 import * as NodeCrypto from "node:crypto";
@@ -6,7 +6,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import { readImageFile } from "./ImageFile.ts";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   type BotId,
   type ChatImageAttachment,
   CommandId,
@@ -19,7 +19,7 @@ import {
   ProviderDriverKind,
   type ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import type * as Duration from "effect/Duration";
@@ -63,7 +63,7 @@ export interface ImageGenerationRuntimeShape {
    */
   readonly generate: (
     threadId: ThreadId,
-    input: AkeruToolExecution["input"],
+    input: IsnadiToolExecution["input"],
   ) => Effect.Effect<ImageGenerationResult>;
   /** Interrupts every in-flight image request for the chat. */
   readonly cancelThread: (threadId: ThreadId) => Effect.Effect<void>;
@@ -72,7 +72,7 @@ export interface ImageGenerationRuntimeShape {
 export class ImageGenerationRuntime extends Context.Service<
   ImageGenerationRuntime,
   ImageGenerationRuntimeShape
->()("akeru-bot/image-generation/ImageGenerationRuntime") {}
+>()("isnadibot/image-generation/ImageGenerationRuntime") {}
 
 /** The subscription store methods the runtime reads for availability and health. */
 export type ImageSubscriptionAuth = Pick<
@@ -326,7 +326,7 @@ export const makeImageGenerationRuntime = Effect.fn("makeImageGenerationRuntime"
     Effect.gen(function* () {
       const createdAt = DateTime.formatIso(yield* DateTime.now);
       yield* usageLedger.recordMeasurement({
-        reservationId: AkeruUsageReservationId.make(`image:${input.usageId}`),
+        reservationId: IsnadiUsageReservationId.make(`image:${input.usageId}`),
         sourceKey: `image:${input.usageId}`,
         botId: input.botId,
         threadId: input.threadId,
@@ -341,7 +341,7 @@ export const makeImageGenerationRuntime = Effect.fn("makeImageGenerationRuntime"
       });
     });
 
-  const run = (threadId: ThreadId, rawInput: AkeruToolExecution["input"]) =>
+  const run = (threadId: ThreadId, rawInput: IsnadiToolExecution["input"]) =>
     Effect.gen(function* () {
       const decoded = decodeImageGenerationRequest(rawInput);
 
@@ -548,7 +548,7 @@ export const layer = layerWith();
 /** Runs the image tool through the active runtime; the entry point for tool registrations. */
 export const runImageGenerationTool = (
   threadId: ThreadId,
-  input: AkeruToolExecution["input"],
+  input: IsnadiToolExecution["input"],
 ): Effect.Effect<ImageGenerationResult> =>
   activeImageGenerationRuntime
     ? activeImageGenerationRuntime.generate(threadId, input)

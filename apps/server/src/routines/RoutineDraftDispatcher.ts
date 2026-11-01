@@ -5,8 +5,8 @@ import {
   RoutineId,
   RoutineTimeZone,
   ThreadId,
-  type AkeruCreateRoutineInput,
-} from "@akeru/contracts";
+  type IsnadiCreateRoutineInput,
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
@@ -32,7 +32,7 @@ export interface RoutinesDeletedResult {
   readonly status: "deleted";
 }
 
-export type AkeruRoutineStatus = Pick<Routine, "id" | "enabled"> & {
+export type IsnadiRoutineStatus = Pick<Routine, "id" | "enabled"> & {
   readonly name: string;
   readonly lifecycle: Exclude<Routine["lifecycle"], "deleted">;
 };
@@ -40,7 +40,7 @@ export type AkeruRoutineStatus = Pick<Routine, "id" | "enabled"> & {
 export function routineStatusesForBot(
   routines: ReadonlyArray<Routine>,
   botId: BotId,
-): ReadonlyArray<AkeruRoutineStatus> {
+): ReadonlyArray<IsnadiRoutineStatus> {
   return routines.flatMap((routine) =>
     routine.botId === botId && routine.lifecycle !== "deleted" && routine.deletedAt === null
       ? [
@@ -64,11 +64,11 @@ export interface RoutineDraftDispatcherShape {
   readonly createApprovedForThread: (
     threadId: ThreadId,
     timezone: string,
-    input: AkeruCreateRoutineInput,
+    input: IsnadiCreateRoutineInput,
   ) => Effect.Effect<RoutineApprovedResult, RoutineDraftError>;
   readonly listForThread: (
     threadId: ThreadId,
-  ) => Effect.Effect<ReadonlyArray<AkeruRoutineStatus>, RoutineDraftError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiRoutineStatus>, RoutineDraftError>;
   readonly deleteForThread: (
     threadId: ThreadId,
     routineIds: ReadonlyArray<RoutineId>,
@@ -78,7 +78,7 @@ export interface RoutineDraftDispatcherShape {
 export class RoutineDraftDispatcher extends Context.Service<
   RoutineDraftDispatcher,
   RoutineDraftDispatcherShape
->()("akeru-bot/routines/RoutineDraftDispatcher") {}
+>()("isnadibot/routines/RoutineDraftDispatcher") {}
 
 const make = Effect.gen(function* () {
   const engine = yield* OrchestrationEngineService;

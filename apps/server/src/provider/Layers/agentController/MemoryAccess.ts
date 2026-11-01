@@ -1,12 +1,12 @@
 import { readSdkRecord } from "../ProtocolJson.ts";
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
 import {
-  type AkeruDelegationAccessGrant,
-  type AkeruMemoryDocumentTarget,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiDelegationAccessGrant,
+  type IsnadiMemoryDocumentTarget,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
@@ -15,8 +15,8 @@ import * as Option from "effect/Option";
 import { BotMemoryStore, type BotMemoryAccess } from "../../../memory/BotMemory.ts";
 import {
   createBotMemoryToolHandler,
-  type AkeruMemoryShareFact,
-  type AkeruMemoryToolHandler,
+  type IsnadiMemoryShareFact,
+  type IsnadiMemoryToolHandler,
 } from "../../../memory/BotMemoryToolHandlers.ts";
 
 import { buildProviderMemoryPacket } from "../../../memory/ProviderMemoryPacket.ts";
@@ -26,7 +26,7 @@ import { ProjectionSnapshotQuery } from "../../../orchestration/Services/Project
 import { MemoryApprovals } from "../../../memory/MemoryApprovals.ts";
 
 export function createMemoryAccess(deps: {
-  readonly runPromise: AkeruRuntimeSeam["runPromise"];
+  readonly runPromise: IsnadiRuntimeSeam["runPromise"];
   readonly projectionSnapshotQuery: Option.Option<ProjectionSnapshotQuery["Service"]>;
   readonly options: AgentControllerLiveOptions | undefined;
   readonly memorySettings: () =>
@@ -51,7 +51,7 @@ export function createMemoryAccess(deps: {
   const memoryApprovals = deps.memoryApprovals;
 
   const memoryAccessFor = (
-    access: AkeruMemoryThreadAccess | undefined,
+    access: IsnadiMemoryThreadAccess | undefined,
   ): BotMemoryAccess | undefined => {
     const botId = access?.respondingBotId ?? access?.botId;
 
@@ -65,8 +65,8 @@ export function createMemoryAccess(deps: {
   };
 
   const refreshEntityMemoryAccess = async (
-    access: AkeruMemoryThreadAccess | undefined,
-  ): Promise<AkeruMemoryThreadAccess | undefined> => {
+    access: IsnadiMemoryThreadAccess | undefined,
+  ): Promise<IsnadiMemoryThreadAccess | undefined> => {
     if (!access || access.groupId === null) return access;
 
     // Without a projection the membership cannot be rechecked. The access stays a group
@@ -92,7 +92,7 @@ export function createMemoryAccess(deps: {
   };
 
   const entityMemoryContext = async (
-    access: AkeruMemoryThreadAccess | undefined,
+    access: IsnadiMemoryThreadAccess | undefined,
   ): Promise<string> => {
     const current = await refreshEntityMemoryAccess(access);
 
@@ -128,14 +128,14 @@ export function createMemoryAccess(deps: {
   };
 
   const memoryHandlers = (
-    access: AkeruMemoryThreadAccess | undefined,
-    allowedScopes: AkeruDelegationAccessGrant["memoryScopes"],
+    access: IsnadiMemoryThreadAccess | undefined,
+    allowedScopes: IsnadiDelegationAccessGrant["memoryScopes"],
   ) => {
     const resolved = memoryAccessFor(access);
 
     if (!resolved) return undefined;
     const scopes = new Set(allowedScopes);
-    const targets = new Set<AkeruMemoryDocumentTarget>();
+    const targets = new Set<IsnadiMemoryDocumentTarget>();
 
     if (scopes.has("private")) targets.add("user");
 
@@ -152,7 +152,7 @@ export function createMemoryAccess(deps: {
 
     // Shared facts go through MemoryApprovals, which saves them directly in
     // auto mode or opens an approval card and inbox item in ask mode.
-    const shareFact: AkeruMemoryShareFact | undefined =
+    const shareFact: IsnadiMemoryShareFact | undefined =
       access && Option.isSome(memoryApprovals)
         ? async (request) => {
             if (!scopes.has(request.scope)) {
@@ -191,7 +191,7 @@ export function createMemoryAccess(deps: {
     // The memory settings gate is enforced at call time: a handler captured
     // while Memory was on must deny calls after it is turned off, and a
     // "Private bot memory" toggle applies without rebuilding the session.
-    const guarded: AkeruMemoryToolHandler = async (input) => {
+    const guarded: IsnadiMemoryToolHandler = async (input) => {
       const settings = await deps.runPromise(deps.memorySettings());
 
       if (!settings.enabled) {

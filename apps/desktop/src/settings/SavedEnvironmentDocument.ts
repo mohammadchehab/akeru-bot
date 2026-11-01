@@ -1,5 +1,5 @@
-import { EnvironmentId, type PersistedSavedEnvironmentRecord } from "@akeru/contracts";
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+import { EnvironmentId, type PersistedSavedEnvironmentRecord } from "@isnadi/contracts";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 
 import * as Option from "effect/Option";
 

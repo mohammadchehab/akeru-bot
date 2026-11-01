@@ -1,4 +1,4 @@
-import { McpServerId, type McpServer } from "@akeru/contracts";
+import { McpServerId, type McpServer } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   loadDirectoryCatalog,
@@ -37,7 +37,7 @@ const pendingPlugin = {
   transport: { type: "unavailable" },
   connection: {
     type: "approval-pending",
-    blocker: "The vendor must approve Akeru as an OAuth client.",
+    blocker: "The vendor must approve Isnadi as an OAuth client.",
   },
   catalogStatus: "approval-pending",
 } satisfies PluginDirectoryDefinition;
@@ -277,7 +277,7 @@ describe("plugin presentation", () => {
     expect(pluginPrimaryAction(pendingPlugin, undefined)).toEqual({
       label: "Connect",
       enable: null,
-      blocker: "The vendor must approve Akeru as an OAuth client.",
+      blocker: "The vendor must approve Isnadi as an OAuth client.",
     });
     expect(pluginPrimaryAction(pendingPlugin, server(true)).label).toBe("Disable");
     expect(pluginConnectionLabel(pendingPlugin)).toBe("Approval pending");

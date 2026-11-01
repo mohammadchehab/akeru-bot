@@ -9,7 +9,7 @@ import {
   ThreadId,
   type ProviderInstanceConfig,
   type ProviderSession,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import type { SubscriptionProviderId } from "./service.ts";

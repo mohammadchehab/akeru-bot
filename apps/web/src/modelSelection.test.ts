@@ -1,7 +1,7 @@
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@akeru/contracts/settings";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@isnadi/contracts/settings";
 import { describe, expect, it } from "vite-plus/test";
-import { createModelSelection } from "@akeru/shared/model";
+import { createModelSelection } from "@isnadi/shared/model";
 import { deriveProviderInstanceEntries } from "./providerInstances";
 import {
   getAppModelOptionsForInstance,

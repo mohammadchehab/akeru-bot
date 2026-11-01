@@ -10,13 +10,13 @@ import {
   ProviderDriverKind,
   ProviderOptionSelection,
   type ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { DeepMutable } from "effect/Types";
-import { createModelSelection, normalizeModelSlug } from "@akeru/shared/model";
+import { createModelSelection, normalizeModelSlug } from "@isnadi/shared/model";
 import { resolveAppModelSelection, resolveAppModelSelectionForInstance } from "../modelSelection";
 import { getDefaultServerModel } from "../providerModels";
-import { UnifiedSettings } from "@akeru/contracts/settings";
+import { UnifiedSettings } from "@isnadi/contracts/settings";
 import {
   type ProviderOptionSelectionsByProvider,
   type LegacyCodexFields,

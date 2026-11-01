@@ -1,12 +1,12 @@
 import {
-  AkeruMemoryCandidateId,
-  AkeruMemoryRootId,
-  type AkeruMemoryCandidateDecision,
-  type AkeruMemoryDecisionReceipt,
-  type AkeruMemoryShareScope,
-  type AkeruMemoryTargetScope,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  IsnadiMemoryCandidateId,
+  IsnadiMemoryRootId,
+  type IsnadiMemoryCandidateDecision,
+  type IsnadiMemoryDecisionReceipt,
+  type IsnadiMemoryShareScope,
+  type IsnadiMemoryTargetScope,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
@@ -16,17 +16,17 @@ export class MemoryApprovalError extends Schema.TaggedErrorClass<MemoryApprovalE
 ) {}
 
 export interface MemoryShareProposal {
-  readonly access: AkeruMemoryThreadAccess;
+  readonly access: IsnadiMemoryThreadAccess;
   readonly fact: string;
-  readonly scope: AkeruMemoryShareScope;
+  readonly scope: IsnadiMemoryShareScope;
   readonly sensitive: boolean;
   // "auto" saves non-sensitive shared facts without asking.
   readonly mode: "ask" | "auto";
 }
 
 export type MemoryShareResult =
-  | { readonly status: "saved"; readonly memoryId: AkeruMemoryRootId }
-  | { readonly status: "pending"; readonly candidateId: AkeruMemoryCandidateId };
+  | { readonly status: "saved"; readonly memoryId: IsnadiMemoryRootId }
+  | { readonly status: "pending"; readonly candidateId: IsnadiMemoryCandidateId };
 
 export interface MemoryApprovalsShape {
   // Called by the memory tool when a bot wants to save a shared fact.
@@ -36,14 +36,14 @@ export interface MemoryApprovalsShape {
   // Called when a person approves or rejects a pending candidate from the
   // chat card or the bot inbox. Deciding twice returns the first receipt.
   readonly decide: (input: {
-    readonly access: AkeruMemoryThreadAccess;
-    readonly decision: AkeruMemoryCandidateDecision;
-  }) => Effect.Effect<AkeruMemoryDecisionReceipt, MemoryApprovalError>;
+    readonly access: IsnadiMemoryThreadAccess;
+    readonly decision: IsnadiMemoryCandidateDecision;
+  }) => Effect.Effect<IsnadiMemoryDecisionReceipt, MemoryApprovalError>;
 }
 
 export const memoryApprovalIncidentKey = (candidateId: string) => `memory-approval:${candidateId}`;
 
-export const SCOPE_LABELS: Record<AkeruMemoryTargetScope, string> = {
+export const SCOPE_LABELS: Record<IsnadiMemoryTargetScope, string> = {
   private: "private",
   bot: "this bot's",
   project: "project",

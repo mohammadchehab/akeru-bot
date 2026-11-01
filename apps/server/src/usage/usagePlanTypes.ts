@@ -1,4 +1,4 @@
-import type { SubscriptionProviderId } from "@akeru/contracts";
+import type { SubscriptionProviderId } from "@isnadi/contracts";
 
 export const CLAUDE_USAGE_URL = "https://api.anthropic.com/api/oauth/usage";
 

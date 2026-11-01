@@ -3,7 +3,7 @@ import {
   THREAD_SILENT_RUN_ACTIVITY_KIND,
   THREAD_SILENT_RUN_CLEARED_ACTIVITY_KIND,
   ThreadSilentRunActivityPayload,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
@@ -54,7 +54,7 @@ describe("ProviderRuntimeIngestion silence watchdog", () => {
       expect(incidents[0]).toMatchObject({
         status: "open",
         incidentKey: `silence:thread-1:${turnId}`,
-        botName: "Akeru",
+        botName: "Isnadi",
         taskOrRoutine: "Watchdog thread",
       });
     },

@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { scopeProjectRef } from "@akeru/client-runtime/environment";
-import { EnvironmentId, ProjectId, ThreadId } from "@akeru/contracts";
+import { scopeProjectRef } from "@isnadi/client-runtime/environment";
+import { EnvironmentId, ProjectId, ThreadId } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 vi.mock("~/state/entities", () => ({ useThreadShell: () => null }));

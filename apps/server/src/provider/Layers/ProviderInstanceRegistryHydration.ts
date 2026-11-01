@@ -45,7 +45,7 @@ import {
   defaultInstanceIdForDriver,
   type ProviderInstanceConfigMap,
   ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";

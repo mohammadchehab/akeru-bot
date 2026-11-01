@@ -1,4 +1,4 @@
-import type { ProviderInstanceEnvironmentVariable } from "@akeru/contracts";
+import type { ProviderInstanceEnvironmentVariable } from "@isnadi/contracts";
 
 import { Button } from "../ui/button";
 import { DraftInput } from "../ui/draft-input";

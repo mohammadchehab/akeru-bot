@@ -1,4 +1,4 @@
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import * as Effect from "effect/Effect";
 

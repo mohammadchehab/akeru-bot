@@ -121,12 +121,12 @@ describe("resolveBlobRendering", () => {
 
 describe("botAvatarSeed", () => {
   it("is a stable seed between 0 and 1", () => {
-    expect(botAvatarSeed("Akeru")).toBe(botAvatarSeed("Akeru"));
-    expect(botAvatarSeed("Akeru")).toBeGreaterThanOrEqual(0);
-    expect(botAvatarSeed("Akeru")).toBeLessThan(1);
+    expect(botAvatarSeed("Isnadi")).toBe(botAvatarSeed("Isnadi"));
+    expect(botAvatarSeed("Isnadi")).toBeGreaterThanOrEqual(0);
+    expect(botAvatarSeed("Isnadi")).toBeLessThan(1);
   });
 
   it("staggers different bots", () => {
-    expect(botAvatarSeed("Akeru")).not.toBe(botAvatarSeed("Mori"));
+    expect(botAvatarSeed("Isnadi")).not.toBe(botAvatarSeed("Mori"));
   });
 });

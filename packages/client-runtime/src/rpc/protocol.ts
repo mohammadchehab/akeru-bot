@@ -1,4 +1,4 @@
-import { WsRpcGroup } from "@akeru/contracts";
+import { WsRpcGroup } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { RpcClient } from "effect/unstable/rpc";
 

@@ -3,9 +3,9 @@ import {
   type ComposerInlineToken,
   UNKNOWN_BOT_MENTION_LABEL,
   UNKNOWN_CHAT_MENTION_LABEL,
-} from "@akeru/shared/composerInlineTokens";
-import { markdownFileIconSource } from "@akeru/mobile-markdown-text/file-icons";
-import { resolveMarkdownFileIcon } from "@akeru/mobile-markdown-text/links";
+} from "@isnadi/shared/composerInlineTokens";
+import { markdownFileIconSource } from "@isnadi/mobile-markdown-text/file-icons";
+import { resolveMarkdownFileIcon } from "@isnadi/mobile-markdown-text/links";
 import { Image } from "react-native";
 
 function basename(path: string): string {

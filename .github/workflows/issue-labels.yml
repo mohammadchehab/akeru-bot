@@ -42,7 +42,7 @@ jobs:
               {
                 name: "via-triage",
                 color: "5319E7",
-                description: "Prepared through Akeru agent triage and approved by the user",
+                description: "Prepared through Isnadi agent triage and approved by the user",
               },
               {
                 name: "type:plugin",

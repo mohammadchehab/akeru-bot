@@ -1,39 +1,39 @@
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ThreadId,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 
 import { buildProviderMemoryPacket } from "./ProviderMemoryPacket.ts";
 
 const revision = (
   id: string,
-  overrides: Partial<AkeruMemoryRevision> = {},
-): AkeruMemoryRevision => ({
-  id: AkeruMemoryId.make(id),
-  rootId: AkeruMemoryRootId.make(id),
+  overrides: Partial<IsnadiMemoryRevision> = {},
+): IsnadiMemoryRevision => ({
+  id: IsnadiMemoryId.make(id),
+  rootId: IsnadiMemoryRootId.make(id),
   revision: 1,
   partition: {
-    tenantId: AkeruMemoryTenantId.make("tenant"),
+    tenantId: IsnadiMemoryTenantId.make("tenant"),
     scope: "group",
-    partitionId: AkeruMemoryPartitionId.make("group-1"),
+    partitionId: IsnadiMemoryPartitionId.make("group-1"),
   },
   entityKind: "group",
-  entityId: AkeruMemoryEntityId.make("group-1"),
+  entityId: IsnadiMemoryEntityId.make("group-1"),
   kind: "fact",
   value: {},
   fact: `fact ${id}`,
   sourceThreadId: ThreadId.make("source"),
   sourceMessageId: null,
   authorBotId: BotId.make("bot-1"),
-  initiatingUserId: AkeruMemoryUserId.make("user"),
+  initiatingUserId: IsnadiMemoryUserId.make("user"),
   createdAt: "2026-09-01T00:00:00.000Z",
   confirmedAt: "2026-09-01T00:00:00.000Z",
   updatedAt: "2026-09-01T00:00:00.000Z",

@@ -8,13 +8,13 @@ import { expectedRemoteAssetNames } from "./package-remote.ts";
 
 export function expectedReleaseAssetNames(version: string): readonly string[] {
   return [
-    `Akeru-Bot-${version}-arm64.dmg`,
-    `Akeru-Bot-${version}-arm64.dmg.blockmap`,
-    `Akeru-Bot-${version}-arm64.zip`,
-    `Akeru-Bot-${version}-arm64.zip.blockmap`,
-    `Akeru-Bot-${version}-x64.exe`,
-    `Akeru-Bot-${version}-x64.exe.blockmap`,
-    `Akeru-Bot-${version}-x64.AppImage`,
+    `IsnadiBot-${version}-arm64.dmg`,
+    `IsnadiBot-${version}-arm64.dmg.blockmap`,
+    `IsnadiBot-${version}-arm64.zip`,
+    `IsnadiBot-${version}-arm64.zip.blockmap`,
+    `IsnadiBot-${version}-x64.exe`,
+    `IsnadiBot-${version}-x64.exe.blockmap`,
+    `IsnadiBot-${version}-x64.AppImage`,
     "latest-mac.yml",
     "latest.yml",
     "latest-linux.yml",

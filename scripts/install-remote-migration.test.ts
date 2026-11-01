@@ -4,9 +4,9 @@ import * as NodePath from "node:path";
 import * as NodeChildProcess from "node:child_process";
 import { expect, it } from "vite-plus/test";
 
-it("reads AKERU_HOME over an ambient T3CODE_HOME and refuses an incompatible identity before publishing a version or switching the CLI", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-installer-refusal-"));
-  const payload = NodePath.join(root, "payload", "Akeru-Remote-1.2.3-linux-x64");
+it("reads ISNADI_HOME over an ambient T3CODE_HOME and refuses an incompatible identity before publishing a version or switching the CLI", () => {
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-installer-refusal-"));
+  const payload = NodePath.join(root, "payload", "Isnadi-Remote-1.2.3-linux-x64");
   const releases = NodePath.join(root, "release");
   const tools = NodePath.join(root, "tools");
   const installRoot = NodePath.join(root, "install");
@@ -20,14 +20,14 @@ it("reads AKERU_HOME over an ambient T3CODE_HOME and refuses an incompatible ide
   NodeFS.mkdirSync(binDir);
   NodeFS.mkdirSync(NodePath.join(home, "userdata"), { recursive: true });
   NodeFS.mkdirSync(legacy);
-  NodeFS.writeFileSync(NodePath.join(payload, "akeru"), "#!/bin/sh\n", { mode: 0o755 });
+  NodeFS.writeFileSync(NodePath.join(payload, "isnadi"), "#!/bin/sh\n", { mode: 0o755 });
   NodeFS.symlinkSync(process.execPath, NodePath.join(payload, "node", "bin", "node"));
   NodeFS.copyFileSync(
     new URL("./initialize-remote-identity.sh", import.meta.url),
     NodePath.join(payload, "initialize-remote-identity.sh"),
   );
   NodeFS.chmodSync(NodePath.join(payload, "initialize-remote-identity.sh"), 0o755);
-  const archive = NodePath.join(releases, "Akeru-Remote-1.2.3-linux-x64.tar.gz");
+  const archive = NodePath.join(releases, "Isnadi-Remote-1.2.3-linux-x64.tar.gz");
   expect(
     NodeChildProcess.spawnSync("tar", [
       "-czf",
@@ -43,10 +43,10 @@ it("reads AKERU_HOME over an ambient T3CODE_HOME and refuses an incompatible ide
   }).stdout.split(" ")[0];
 
   NodeFS.writeFileSync(
-    NodePath.join(releases, "AKERU-REMOTE-MANIFEST.txt"),
+    NodePath.join(releases, "ISNADI-REMOTE-MANIFEST.txt"),
     `${hash}  ${NodePath.basename(archive)}\n`,
   );
-  NodeFS.writeFileSync(NodePath.join(releases, "AKERU-REMOTE-MANIFEST.sig"), "test");
+  NodeFS.writeFileSync(NodePath.join(releases, "ISNADI-REMOTE-MANIFEST.sig"), "test");
   NodeFS.writeFileSync(
     NodePath.join(tools, "curl"),
     `#!/bin/sh
@@ -62,13 +62,13 @@ cp "$RELEASES/$(basename "$source")" "$destination"
     { mode: 0o755 },
   );
   NodeFS.writeFileSync(NodePath.join(tools, "openssl"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
-  NodeFS.writeFileSync(NodePath.join(installRoot, "versions", "1.0.0", "akeru"), "old\n");
+  NodeFS.writeFileSync(NodePath.join(installRoot, "versions", "1.0.0", "isnadi"), "old\n");
   NodeFS.symlinkSync(
-    NodePath.join(installRoot, "versions", "1.0.0", "akeru"),
-    NodePath.join(binDir, "akeru"),
+    NodePath.join(installRoot, "versions", "1.0.0", "isnadi"),
+    NodePath.join(binDir, "isnadi"),
   );
   NodeFS.writeFileSync(NodePath.join(home, "userdata", "environment-id"), "existing-env\n");
-  const originalTarget = NodeFS.readlinkSync(NodePath.join(binDir, "akeru"));
+  const originalTarget = NodeFS.readlinkSync(NodePath.join(binDir, "isnadi"));
 
   const result = NodeChildProcess.spawnSync(
     "sh",
@@ -78,10 +78,10 @@ cp "$RELEASES/$(basename "$source")" "$destination"
         ...process.env,
         PATH: `${tools}:${process.env.PATH ?? ""}`,
         RELEASES: releases,
-        AKERU_VERSION: "v1.2.3",
-        AKERU_INSTALL_ROOT: installRoot,
-        AKERU_BIN_DIR: binDir,
-        AKERU_HOME: home,
+        ISNADI_VERSION: "v1.2.3",
+        ISNADI_INSTALL_ROOT: installRoot,
+        ISNADI_BIN_DIR: binDir,
+        ISNADI_HOME: home,
         T3CODE_HOME: legacy,
       },
       encoding: "utf8",
@@ -90,9 +90,9 @@ cp "$RELEASES/$(basename "$source")" "$destination"
 
   expect(result.status).toBe(1);
   expect(result.stderr).toContain("--migrate-environment-id");
-  expect(NodeFS.readlinkSync(NodePath.join(binDir, "akeru"))).toBe(originalTarget);
+  expect(NodeFS.readlinkSync(NodePath.join(binDir, "isnadi"))).toBe(originalTarget);
   expect(NodeFS.readdirSync(NodePath.join(installRoot, "versions"))).toEqual(["1.0.0"]);
-  // The refusal came from AKERU_HOME; the ambient T3 Code home was never touched.
+  // The refusal came from ISNADI_HOME; the ambient T3 Code home was never touched.
   expect(NodeFS.readdirSync(legacy)).toEqual([]);
   NodeFS.rmSync(root, { recursive: true, force: true });
 });

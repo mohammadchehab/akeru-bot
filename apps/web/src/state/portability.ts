@@ -1,5 +1,5 @@
-import { createEnvironmentRpcCommand } from "@akeru/client-runtime/state/runtime";
-import { WS_METHODS } from "@akeru/contracts";
+import { createEnvironmentRpcCommand } from "@isnadi/client-runtime/state/runtime";
+import { WS_METHODS } from "@isnadi/contracts";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

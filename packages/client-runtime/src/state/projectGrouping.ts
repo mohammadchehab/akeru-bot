@@ -1,6 +1,10 @@
 import { scopedProjectKey, scopeProjectRef } from "../environment/scoped.ts";
-import type { EnvironmentId, ScopedProjectRef, SidebarProjectGroupingMode } from "@akeru/contracts";
-import type { ClientSettings } from "@akeru/contracts/settings";
+import type {
+  EnvironmentId,
+  ScopedProjectRef,
+  SidebarProjectGroupingMode,
+} from "@isnadi/contracts";
+import type { ClientSettings } from "@isnadi/contracts/settings";
 
 import type { EnvironmentProject } from "./models.ts";
 import { normalizeProjectPathForComparison } from "./projects.ts";

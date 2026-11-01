@@ -1,5 +1,5 @@
-import type { ProjectId } from "@akeru/contracts";
-import type { SidebarProjectSortOrder, SidebarThreadSortOrder } from "@akeru/contracts/settings";
+import type { ProjectId } from "@isnadi/contracts";
+import type { SidebarProjectSortOrder, SidebarThreadSortOrder } from "@isnadi/contracts/settings";
 import * as Arr from "effect/Array";
 import * as Order from "effect/Order";
 

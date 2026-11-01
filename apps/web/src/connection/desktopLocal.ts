@@ -1,11 +1,11 @@
 import * as Data from "effect/Data";
 import { hasTag } from "~/lib/taggedUnion";
-import type { ConnectionTarget } from "@akeru/client-runtime/connection";
+import type { ConnectionTarget } from "@isnadi/client-runtime/connection";
 import {
   PRIMARY_LOCAL_ENVIRONMENT_ID,
   type DesktopBridge,
   type DesktopEnvironmentBootstrap,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 /**
  * Desktop-local secondary backends (e.g. a parallel WSL backend) are registered

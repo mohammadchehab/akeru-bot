@@ -5,7 +5,7 @@ import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as TestClock from "effect/testing/TestClock";
 import { expect, it, vi } from "vite-plus/test";
-import type { AkeruBotWorkspace } from "./botWorkspace.ts";
+import type { IsnadiBotWorkspace } from "./botWorkspace.ts";
 import { BotWorkspacePool } from "./botWorkspacePool.ts";
 import { makebotWorkspacePoolTestSupport } from "./test-support/botWorkspacePool.ts";
 
@@ -256,7 +256,7 @@ describe("BotWorkspacePool", () => {
       const finishDestroy = Promise.withResolvers<void>();
       const destroyStarted = Promise.withResolvers<void>();
 
-      const remote = (id: string): AkeruBotWorkspace => ({
+      const remote = (id: string): IsnadiBotWorkspace => ({
         id,
         provider: "e2b",
         workspace: localWorkspace(),
@@ -298,7 +298,7 @@ describe("BotWorkspacePool", () => {
       const pool = new BotWorkspacePool({ clock });
       const workspace = localWorkspace();
 
-      const remote: AkeruBotWorkspace = {
+      const remote: IsnadiBotWorkspace = {
         id: "remote-1",
         provider: "e2b",
         workspace,

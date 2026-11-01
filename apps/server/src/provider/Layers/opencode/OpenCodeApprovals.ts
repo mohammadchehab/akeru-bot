@@ -1,4 +1,4 @@
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 import {
   EventId,
   type ProviderRuntimeEvent,
@@ -6,7 +6,7 @@ import {
   RuntimeRequestId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

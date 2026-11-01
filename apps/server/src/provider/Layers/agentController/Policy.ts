@@ -9,21 +9,21 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   McpServerId,
-  AKERU_TOOL_CATALOG,
+  ISNADI_TOOL_CATALOG,
   type ProviderApprovalDecision,
   type ProviderSession,
   type RuntimeMode,
   ThreadId,
-} from "@akeru/contracts";
-import { driverSupportsDelegation } from "@akeru/shared/delegationProviders";
+} from "@isnadi/contracts";
+import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 
 import { nativeModelOptions } from "../../ReasoningOptions.ts";
 
-import { akeruToolCategory } from "../../AkeruMastraHarness.ts";
+import { isnadiToolCategory } from "../../IsnadiMastraHarness.ts";
 
-import { type AkeruPluginRuntimeOptions } from "../../AkeruCatalogToolHandlers.ts";
+import { type IsnadiPluginRuntimeOptions } from "../../IsnadiCatalogToolHandlers.ts";
 
-import { isMemoryToolId } from "../../AkeruToolRuntime.ts";
+import { isMemoryToolId } from "../../IsnadiToolRuntime.ts";
 
 import { isCodexComputerUseServer } from "../../CodexComputerUse.ts";
 import { ProviderValidationError } from "../../Errors.ts";
@@ -75,7 +75,7 @@ export function sessionFailureDetail(
  * lose access, and the id is swept from every bot's disabled list so no dead id is left behind.
  */
 export async function deleteCatalogMcpServer(
-  runtime: Pick<AkeruPluginRuntimeOptions, "readSnapshot" | "dispatch">,
+  runtime: Pick<IsnadiPluginRuntimeOptions, "readSnapshot" | "dispatch">,
   serverId: string,
   commandPrefix: "mcp-delete" | "mcp-remove",
 ) {
@@ -125,7 +125,7 @@ export function messageText(message: MastraDBMessage): string {
 
 export function permissionPolicy(
   runtimeMode: RuntimeMode,
-  category: ReturnType<typeof akeruToolCategory>,
+  category: ReturnType<typeof isnadiToolCategory>,
 ): "allow" | "ask" {
   if (runtimeMode === "full-access" || runtimeMode === "auto") return "allow";
 
@@ -140,10 +140,10 @@ export function mcpToolNeedsApproval(manager: McpManager | undefined, toolName: 
   const tool = manager?.getTools()?.[toolName];
 
   if (tool) return tool.mcp?.annotations?.readOnlyHint !== true;
-  // Akeru's own tools declare their risk; plain workspace tools follow the bot's mode.
-  const akeruTool = AKERU_TOOL_CATALOG.find((entry) => entry.id === toolName);
+  // Isnadi's own tools declare their risk; plain workspace tools follow the bot's mode.
+  const isnadiTool = ISNADI_TOOL_CATALOG.find((entry) => entry.id === toolName);
 
-  if (akeruTool) return akeruTool.approval !== "none";
+  if (isnadiTool) return isnadiTool.approval !== "none";
 
   if (isMemoryToolId(toolName)) return false;
 
@@ -158,8 +158,8 @@ export function approvalDetail(toolName: string, action: string | null, oneUse: 
 }
 
 /**
- * Providers whose bots run through Akeru's Mastra controller and receive the
- * Akeru tool catalog. Standard OpenCode stays on the legacy bridge, which never
+ * Providers whose bots run through Isnadi's Mastra controller and receive the
+ * Isnadi tool catalog. Standard OpenCode stays on the legacy bridge, which never
  * registers a tool session, so it gets no catalog tools, workers included.
  * These are exactly the drivers that can delegate, so the delegation gate and
  * this routing never disagree.

@@ -1,9 +1,9 @@
 import {
-  AKERU_MARKETING_SITE_URL,
-  AKERU_PRIVACY_POLICY_VERSION,
-  AKERU_TERMS_VERSION,
+  ISNADI_MARKETING_SITE_URL,
+  ISNADI_PRIVACY_POLICY_VERSION,
+  ISNADI_TERMS_VERSION,
   type ClientSettings,
-} from "@akeru/contracts/settings";
+} from "@isnadi/contracts/settings";
 
 import { IS_PACKAGED_DESKTOP } from "~/branding";
 import { isElectron } from "~/env";
@@ -27,8 +27,8 @@ export function needsPolicyAcknowledgement(
   settings: Pick<ClientSettings, "reviewedPrivacyPolicyVersion" | "reviewedTermsVersion">,
 ): boolean {
   return (
-    settings.reviewedPrivacyPolicyVersion !== AKERU_PRIVACY_POLICY_VERSION ||
-    settings.reviewedTermsVersion !== AKERU_TERMS_VERSION
+    settings.reviewedPrivacyPolicyVersion !== ISNADI_PRIVACY_POLICY_VERSION ||
+    settings.reviewedTermsVersion !== ISNADI_TERMS_VERSION
   );
 }
 
@@ -68,7 +68,7 @@ export function PolicyNotice() {
             Read the{" "}
             <a
               className="text-foreground underline underline-offset-4"
-              href={`${AKERU_MARKETING_SITE_URL}/terms-of-service`}
+              href={`${ISNADI_MARKETING_SITE_URL}/terms-of-service`}
               target="_blank"
               rel="noreferrer"
             >
@@ -77,7 +77,7 @@ export function PolicyNotice() {
             and{" "}
             <a
               className="text-foreground underline underline-offset-4"
-              href={`${AKERU_MARKETING_SITE_URL}/privacy-policy`}
+              href={`${ISNADI_MARKETING_SITE_URL}/privacy-policy`}
               target="_blank"
               rel="noreferrer"
             >
@@ -90,8 +90,8 @@ export function PolicyNotice() {
           <Button
             onClick={() =>
               updateSettings({
-                reviewedPrivacyPolicyVersion: AKERU_PRIVACY_POLICY_VERSION,
-                reviewedTermsVersion: AKERU_TERMS_VERSION,
+                reviewedPrivacyPolicyVersion: ISNADI_PRIVACY_POLICY_VERSION,
+                reviewedTermsVersion: ISNADI_TERMS_VERSION,
               })
             }
           >

@@ -1,4 +1,4 @@
-import type { ServerProviderSkill, ServerProviderSlashCommand } from "@akeru/contracts";
+import type { ServerProviderSkill, ServerProviderSlashCommand } from "@isnadi/contracts";
 
 export type ProviderSkillSourceKind = "app" | "repo" | "project" | "personal" | "system" | "other";
 

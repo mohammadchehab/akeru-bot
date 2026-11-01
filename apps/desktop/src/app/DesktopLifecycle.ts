@@ -56,7 +56,7 @@ export class DesktopLifecycle extends Context.Service<
       Scope.Scope | DesktopLifecycleRegistrationServices
     >;
   }
->()("@akeru/desktop/app/DesktopLifecycle") {}
+>()("@isnadi/desktop/app/DesktopLifecycle") {}
 
 const { logInfo: logLifecycleInfo, logError: logLifecycleError } =
   componentLogger("desktop-lifecycle");

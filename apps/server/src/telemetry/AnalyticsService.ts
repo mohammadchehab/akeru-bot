@@ -6,8 +6,8 @@ import {
   USAGE_TOOL_IDS,
   decodeUsage3hEvent,
   type Usage3hEvent as Usage3hEventType,
-} from "@akeru/contracts";
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+} from "@isnadi/contracts";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -80,7 +80,7 @@ export class AnalyticsService extends Context.Service<
     /** Close ready buckets and attempt one bounded delivery batch. */
     readonly flush: Effect.Effect<void>;
   }
->()("akeru-bot/telemetry/AnalyticsService") {
+>()("isnadibot/telemetry/AnalyticsService") {
   static readonly layerTest = Layer.succeed(
     AnalyticsService,
     AnalyticsService.of({ flush: Effect.void }),

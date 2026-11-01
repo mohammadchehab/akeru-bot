@@ -5,7 +5,7 @@ import {
   type BotEngine,
   type ImageProviderId,
   type McpServerId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";

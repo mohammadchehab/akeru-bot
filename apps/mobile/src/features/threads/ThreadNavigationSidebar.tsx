@@ -1,6 +1,6 @@
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import { threadSearchMatchKey } from "@akeru/client-runtime/state/thread-search";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
+import { threadSearchMatchKey } from "@isnadi/client-runtime/state/thread-search";
 import { LegendList } from "@legendapp/list/react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";

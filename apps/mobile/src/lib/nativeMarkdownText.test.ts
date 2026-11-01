@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import type { MarkdownNode } from "react-native-nitro-markdown/headless";
-import { nativeMarkdownDocumentRuns } from "@akeru/mobile-markdown-text/markdown";
+import { nativeMarkdownDocumentRuns } from "@isnadi/mobile-markdown-text/markdown";
 
 describe("nativeMarkdownDocumentRuns", () => {
   it("decorates known skill references as selectable skill links", () => {

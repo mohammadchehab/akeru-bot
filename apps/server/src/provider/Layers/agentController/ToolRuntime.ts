@@ -1,12 +1,12 @@
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   EventId,
   ProviderDriverKind,
   ProviderInstanceId,
   TurnId,
   type ProviderRuntimeEvent,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
@@ -18,7 +18,7 @@ import { recordUserActionIncident } from "../../../bot-inbox/userActionIncidents
 
 import { BotUsageLedger } from "../../../usage/BotUsageLedger.ts";
 
-import { createAkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import { createIsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 
 import { type ActiveSession } from "./State.ts";
 
@@ -56,7 +56,7 @@ export function createToolRuntime(deps: {
     createdAt: string;
   };
 }) {
-  const toolRuntime = createAkeruToolRuntime({
+  const toolRuntime = createIsnadiToolRuntime({
     onUserActionRequired: (input) => {
       recordUserActionIncident(deps.botInbox, input);
     },
@@ -91,7 +91,7 @@ export function createToolRuntime(deps: {
       await deps.runPromise(
         deps.botUsageLedger
           .recordStart({
-            reservationId: AkeruUsageReservationId.make(key),
+            reservationId: IsnadiUsageReservationId.make(key),
             sourceKey: key,
             botId: session.botId,
             threadId: ThreadId.make(input.threadId),
@@ -125,7 +125,7 @@ export function createToolRuntime(deps: {
       await deps.runPromise(
         (started.persisted
           ? deps.botUsageLedger.settle({
-              reservationId: AkeruUsageReservationId.make(key),
+              reservationId: IsnadiUsageReservationId.make(key),
               state: "reported",
               inputTokens: 0,
               outputTokens: 0,
@@ -133,7 +133,7 @@ export function createToolRuntime(deps: {
               settledAt: nowIso(),
             })
           : deps.botUsageLedger.recordMeasurement({
-              reservationId: AkeruUsageReservationId.make(key),
+              reservationId: IsnadiUsageReservationId.make(key),
               sourceKey: key,
               botId: session.botId,
               threadId: ThreadId.make(input.threadId),

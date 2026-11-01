@@ -1,4 +1,4 @@
-import { type ProviderDriverKind, type ProviderInstanceId } from "@akeru/contracts";
+import { type ProviderDriverKind, type ProviderInstanceId } from "@isnadi/contracts";
 import { memo } from "react";
 import { StarIcon } from "lucide-react";
 import {

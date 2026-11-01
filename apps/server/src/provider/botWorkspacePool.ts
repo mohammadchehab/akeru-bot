@@ -2,7 +2,7 @@ import * as Match from "effect/Match";
 import * as NodeCrypto from "node:crypto";
 
 import { Workspace } from "@mastra/core/workspace";
-import type { BotId, BotSandbox, BotSandboxBrowserSharing } from "@akeru/contracts";
+import type { BotId, BotSandbox, BotSandboxBrowserSharing } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -10,7 +10,7 @@ import * as RcMap from "effect/RcMap";
 import * as Scope from "effect/Scope";
 import * as Schema from "effect/Schema";
 import { Duration } from "effect";
-import type { AkeruBotWorkspace } from "./botWorkspace.ts";
+import type { IsnadiBotWorkspace } from "./botWorkspace.ts";
 
 export function botRuntimeResourceScope(input: {
   readonly sharing: BotSandboxBrowserSharing;
@@ -55,7 +55,7 @@ export function botWorkspaceIdentity(resourceKey: string): string {
 }
 
 export interface BotWorkspaceLease {
-  readonly workspace: AkeruBotWorkspace;
+  readonly workspace: IsnadiBotWorkspace;
   readonly wokeFromSleep: boolean;
   readonly release: (options?: { readonly destroy?: boolean }) => Promise<void>;
 }
@@ -71,7 +71,7 @@ interface BotWorkspacePoolOptions {
 }
 
 interface PooledWorkspace {
-  readonly workspace: AkeruBotWorkspace;
+  readonly workspace: IsnadiBotWorkspace;
   readonly wokeFromSleep: boolean;
 }
 
@@ -100,9 +100,9 @@ export class BotWorkspacePool {
   private readonly clock: Clock.Clock | undefined;
   private readonly references = new Map<string, number>();
   private readonly acquisitions = new Map<string, number>();
-  private readonly creators = new Map<string, () => Promise<AkeruBotWorkspace | Workspace>>();
+  private readonly creators = new Map<string, () => Promise<IsnadiBotWorkspace | Workspace>>();
   private readonly destroyRequested = new Set<string>();
-  private readonly sleepers = new Map<string, AkeruBotWorkspace>();
+  private readonly sleepers = new Map<string, IsnadiBotWorkspace>();
   private readonly waking = new Set<string>();
   private readonly failed = new Set<string>();
   private readonly retrying = new Set<string>();
@@ -181,7 +181,7 @@ export class BotWorkspacePool {
     );
   }
 
-  private close(key: string, workspace: AkeruBotWorkspace): Effect.Effect<void> {
+  private close(key: string, workspace: IsnadiBotWorkspace): Effect.Effect<void> {
     return Effect.suspend(() => {
       const finish = Promise.withResolvers<void>();
       this.closing.set(key, finish.promise);
@@ -197,7 +197,7 @@ export class BotWorkspacePool {
     });
   }
 
-  private closeWorkspace(key: string, workspace: AkeruBotWorkspace): Effect.Effect<void> {
+  private closeWorkspace(key: string, workspace: IsnadiBotWorkspace): Effect.Effect<void> {
     if (
       this.destroyingAll ||
       this.destroyRequested.delete(key) ||
@@ -240,7 +240,7 @@ export class BotWorkspacePool {
 
   async acquire(
     key: string,
-    create: () => Promise<AkeruBotWorkspace | Workspace>,
+    create: () => Promise<IsnadiBotWorkspace | Workspace>,
   ): Promise<BotWorkspaceLease> {
     if (this.destroyingAll) {
       throw new BotWorkspacePoolError({ message: "Bot workspaces are shutting down." });
@@ -400,7 +400,7 @@ export class BotWorkspacePool {
     }
   }
 
-  private withIdentityDestroy(identity: string, workspace: AkeruBotWorkspace): AkeruBotWorkspace {
+  private withIdentityDestroy(identity: string, workspace: IsnadiBotWorkspace): IsnadiBotWorkspace {
     return {
       ...workspace,
       destroy: () => {
@@ -423,7 +423,7 @@ export class BotWorkspacePool {
 
   private async acquireOnce(
     key: string,
-    create: () => Promise<AkeruBotWorkspace | Workspace>,
+    create: () => Promise<IsnadiBotWorkspace | Workspace>,
   ): Promise<BotWorkspaceLease> {
     // Callers that join a wake in flight also reconnect, matching the caller that started it.
     const joinedWake = this.waking.has(key);
@@ -560,7 +560,7 @@ function toPoolError(cause: unknown): BotWorkspacePoolError {
   });
 }
 
-function wrapMastraWorkspace(workspace: Workspace): AkeruBotWorkspace {
+function wrapMastraWorkspace(workspace: Workspace): IsnadiBotWorkspace {
   return {
     id: workspace.id,
     provider: "local",

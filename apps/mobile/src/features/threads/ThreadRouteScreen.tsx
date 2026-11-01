@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { threadSilentRun } from "@akeru/client-runtime/silent-run";
+import { threadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
 import {
   NativeStackScreenOptions,
@@ -8,14 +8,14 @@ import {
 import { StackActions, useNavigation, type StaticScreenProps } from "@react-navigation/native";
 import { useCallback, useMemo, useState } from "react";
 import * as Option from "effect/Option";
-import { latestTurnFailure } from "@akeru/client-runtime/provider-availability";
+import { latestTurnFailure } from "@isnadi/client-runtime/provider-availability";
 import {
   EnvironmentId,
   PLACEHOLDER_THREAD_TITLE,
   ThreadId,
   type BotAvatar,
-} from "@akeru/contracts";
-import { requestOlderThreadTurns, threadHasOlderTurns } from "@akeru/client-runtime/state/threads";
+} from "@isnadi/contracts";
+import { requestOlderThreadTurns, threadHasOlderTurns } from "@isnadi/client-runtime/state/threads";
 import { Platform, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useWorkspaceState } from "../../state/workspace";

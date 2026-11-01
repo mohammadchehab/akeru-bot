@@ -1,14 +1,14 @@
 import { makeMobileThreadShell } from "../../lib/mobile-fixtures.test-support";
 import { Predicate } from "effect";
-import type { DictationDraft } from "@akeru/client-runtime/dictation";
-import { EnvironmentId, ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import type { DictationDraft } from "@isnadi/client-runtime/dictation";
+import { EnvironmentId, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 import { isValidElement, type ReactNode, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { DraftComposerImageAttachment } from "../../lib/composerImages";
 import { DictationControls, type DictationControlsProps } from "../../components/DictationControls";
 import { ThreadComposer, type ThreadComposerProps } from "./ThreadComposer";
 
-type Session = ReturnType<typeof import("@akeru/client-runtime/dictation").createDictationSession>;
+type Session = ReturnType<typeof import("@isnadi/client-runtime/dictation").createDictationSession>;
 
 type DictationInput = {
   readonly getDraft: () => Omit<DictationDraft, "identity">;
@@ -114,7 +114,7 @@ vi.mock("../../components/ProviderIcon", () => ({ ProviderIcon: "ProviderIcon" }
 vi.mock("../../lib/useThemeColor", () => ({ useThemeColor: () => "#000000" }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useMobileI18n: () => ({ t: translator.translate, plural: translator.plural }) };
@@ -175,7 +175,7 @@ vi.mock("./use-thread-settings-sheet-presentation", () => ({
 // The real session runs behind the environment binding: capture succeeds, transcription fails.
 vi.mock("../../lib/useEnvironmentComposerDictation", async () => {
   const { createDictationSession, dictationControlStatus } =
-    await import("@akeru/client-runtime/dictation");
+    await import("@isnadi/client-runtime/dictation");
 
   const identity = { environmentId: "environment", threadId: "thread", draftId: "thread" };
 

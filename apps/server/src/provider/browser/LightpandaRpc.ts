@@ -3,7 +3,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodeTimersPromises from "node:timers/promises";
 import type { ToolsInput } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
-import { redactSensitiveText } from "@akeru/shared/sensitiveDataRedaction";
+import { redactSensitiveText } from "@isnadi/shared/sensitiveDataRedaction";
 import { z } from "zod";
 import {
   type JsonRpcResponse,
@@ -139,7 +139,7 @@ export class LightpandaRpc implements BotBrowserRpc {
     }
 
     if (!local && !this.input.browserEndpoint) {
-      throw new Error(`Sandbox '${sandbox.provider}' has no Akeru browser adapter.`);
+      throw new Error(`Sandbox '${sandbox.provider}' has no Isnadi browser adapter.`);
     }
 
     const binaryPath = await installLightpanda(sandbox, this.input.cacheDir);

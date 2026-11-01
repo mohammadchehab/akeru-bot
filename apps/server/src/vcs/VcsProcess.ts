@@ -14,7 +14,7 @@ import {
   VcsProcessSpawnError,
   VcsProcessStdinWriteError,
   VcsProcessTimeoutError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ProcessRunner from "../processRunner.ts";
 
 export interface VcsProcessInput {
@@ -48,7 +48,7 @@ export class VcsProcess extends Context.Service<
   {
     readonly run: (input: VcsProcessInput) => Effect.Effect<VcsProcessOutput, VcsError>;
   }
->()("akeru-bot/vcs/VcsProcess") {}
+>()("isnadibot/vcs/VcsProcess") {}
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 

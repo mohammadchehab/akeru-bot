@@ -5,9 +5,9 @@ import {
   AuthOrchestrationOperateScope,
   AuthOrchestrationReadScope,
   EnvironmentHttpApi,
-} from "@akeru/contracts";
-import { isDevProxiedPath } from "@akeru/shared/devProxy";
-import { decodeOtlpTraceRecords } from "@akeru/shared/observability";
+} from "@isnadi/contracts";
+import { isDevProxiedPath } from "@isnadi/shared/devProxy";
+import { decodeOtlpTraceRecords } from "@isnadi/shared/observability";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

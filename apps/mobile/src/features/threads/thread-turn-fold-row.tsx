@@ -1,4 +1,4 @@
-import type { TurnId } from "@akeru/contracts";
+import type { TurnId } from "@isnadi/contracts";
 import { Pressable, type ColorValue } from "react-native";
 import { AppText as Text } from "../../components/AppText";
 import { SymbolView } from "../../components/AppSymbol";

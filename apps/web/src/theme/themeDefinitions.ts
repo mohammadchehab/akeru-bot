@@ -3,7 +3,7 @@ import {
   type ThemeAppearance,
   type ThemeColors,
   type ThemeDefinition,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 import { type ThemePreference } from "./themeTypes";
 import { themeIdFromPreference, legacyThemeMode } from "./themeIdentity";
 import { getCustomThemes } from "./themeLibrary";

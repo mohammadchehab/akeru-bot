@@ -1,4 +1,4 @@
-import type { VcsStatusRemoteResult, VcsStatusResult } from "@akeru/contracts";
+import type { VcsStatusRemoteResult, VcsStatusResult } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

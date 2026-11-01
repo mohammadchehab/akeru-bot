@@ -13,7 +13,7 @@ or **Looks right** to move on to naming your bot.
 
 The last step drafts your first message from that plan. Edit it if you like, then send it. Once your
 bot has started on it, the chat opens with your message already in it, and setup fades away.
-If the bot is archived before the chat opens, Akeru clears the pending opening and tells you to
+If the bot is archived before the chat opens, Isnadi clears the pending opening and tells you to
 create or select another bot.
 
 Setup does not ask where the work should go, how often it should run, or which actions it may
@@ -46,7 +46,7 @@ Select **Provider default** to clear a chosen level and use the provider runtime
 models on the same provider keeps choices the new model supports; changing provider starts with
 its defaults. Group chat controls do not change a member bot's saved reasoning.
 
-A bot keeps its model when that model stops working. Akeru never switches it for you. Instead, the
+A bot keeps its model when that model stops working. Isnadi never switches it for you. Instead, the
 chat and the bot's settings mark the model unavailable, and **Send** stays off until you fix the
 cause or pick another model. A line below the composer names the provider, says what went wrong,
 and gives one next step. **Set up a provider** opens **Settings > Providers**.
@@ -62,11 +62,11 @@ and gives one next step. **Set up a provider** opens **Settings > Providers**.
 
 When a provider reports that it rerouted a message to a different model while the chat is running,
 the work log notes it as `Model rerouted from <requested> to <effective>`. Providers that run
-through Akeru's session controller do not report the effective model yet, so a reroute that stays
+through Isnadi's session controller do not report the effective model yet, so a reroute that stays
 silent never appears.
 
 When you connect or turn on a provider, its models become available right away. You do not need to
-restart Akeru. A brief provider error does not turn **Send** off, so you can try again. The same
+restart Isnadi. A brief provider error does not turn **Send** off, so you can try again. The same
 check covers new-bot setup and the voice call button. On mobile, the composer shows the same note
 and keeps **Send** off.
 
@@ -87,7 +87,7 @@ resting bot on screen blinks or glances around. With reduced motion turned on, a
 A settled reply shows its engine, step tokens, and estimated USD cost when the provider reports
 enough usage data.
 
-Akeru stores bot profiles on the connected environment. Every client connected to that environment
+Isnadi stores bot profiles on the connected environment. Every client connected to that environment
 sees the same profile.
 
 ## Workspaces and browsers
@@ -100,7 +100,7 @@ expand it, and select the collapse button or press Esc to shrink it again.
 
 Bots can use Local, E2B, Daytona, Vercel Sandbox, or Upstash Box. Connect remote services under
 **Settings > Sandbox**. A bot-specific sandbox overrides the environment default.
-If a managed browser stops unexpectedly, Akeru records the failure in the bot inbox so you can
+If a managed browser stops unexpectedly, Isnadi records the failure in the bot inbox so you can
 retry the browser task after it is available again. Each affected workspace keeps its own notice
 until its browser works again.
 
@@ -150,7 +150,7 @@ If you ask a bot to create a routine in chat, review its proposed name, schedule
 instructions before selecting **Create routine**. If those details are missing, the review card says
 so instead of guessing a name or schedule.
 
-If a required connector, provider, bot, or workspace is unavailable, Akeru pauses the routine and
+If a required connector, provider, bot, or workspace is unavailable, Isnadi pauses the routine and
 adds one item to the bot inbox, which you can open from **Settings > Advanced > Bot inbox**. The routine card
 says it was paused and points you to the bot inbox. Fix the dependency, then resume the routine. Restoring an archived bot does not resume its routines.
 
@@ -166,7 +166,7 @@ start enabled for every bot. A workspace-disabled tool stays unavailable to ever
 
 Changing the provider starts a fresh provider session with the same enabled tool set.
 
-Bots on Akeru's runtime can read a public web page when you give them its address. They
+Bots on Isnadi's runtime can read a public web page when you give them its address. They
 refuse local and private network addresses and read at most 2 MB of a page, noting when a page was
 cut short. Web search isn't available yet, so the bot says so and asks for a link instead.
 
@@ -184,7 +184,7 @@ The sidebar shows pinned bots and groups as launcher cards at the top, followed 
 To archive a bot, open its menu and select **Archive bot**. Archived bots leave the roster and stop
 taking messages, but their chats are kept. A message sent from another device that still shows the
 bot is refused with a note that the bot is archived. Archived bots are listed in **Settings >
-Archived**, where **Restore** brings one back and the delete button removes it right away. Akeru
+Archived**, where **Restore** brings one back and the delete button removes it right away. Isnadi
 deletes an archived bot automatically 7 days after it was archived. Its chats stay in your history.
 
 Pins only change the roster layout. They do not change group membership or settle chats.
@@ -227,7 +227,7 @@ shows the same summary.
 3. Turn on **Voice calls** for the bot.
 4. Select the phone button in the bot's chat header.
 
-Akeru uses the microphone and speaker on the current computer. Only one call can run at a time. The
+Isnadi uses the microphone and speaker on the current computer. Only one call can run at a time. The
 call bar stays visible when you open another bot. Select it to return to the call, or select hang up
 to end the call.
 

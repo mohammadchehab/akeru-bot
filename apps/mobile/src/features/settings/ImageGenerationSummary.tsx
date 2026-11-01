@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { DEFAULT_SERVER_SETTINGS, type EnvironmentId } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, type EnvironmentId } from "@isnadi/contracts";
 
 import { useEnvironmentQuery } from "../../state/query";
 import { serverEnvironment } from "../../state/server";

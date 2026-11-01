@@ -1,4 +1,4 @@
-import type { DesktopPreviewRecordingFrame } from "@akeru/contracts";
+import type { DesktopPreviewRecordingFrame } from "@isnadi/contracts";
 
 import { type BrowserWindow } from "electron";
 
