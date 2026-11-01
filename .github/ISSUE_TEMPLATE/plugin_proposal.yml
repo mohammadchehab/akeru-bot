@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Read the [admission rules](https://github.com/opencoredev/akeru-bot/blob/main/plugins/README.md) first. A valid manifest does not guarantee acceptance.
+        Read the [admission rules](https://github.com/mohammadchehab/isnadibot/blob/main/plugins/README.md) first. A valid manifest does not guarantee acceptance.
         Use Custom MCP for experimental apps, wrappers, duplicates, and narrow utilities.
 
   - type: input

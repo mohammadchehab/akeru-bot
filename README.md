@@ -52,6 +52,11 @@ The disk image is written to `release/`.
 Your chats, bots, settings, secrets, and logs stay on your machine in `~/.akeru`. The folder keeps
 its upstream name so data carries over from Akeru Bot.
 
+## Collaborate
+
+IsnadiBot is looking for collaborators. The [roadmap](ROADMAP.md) lists features that are open to
+pick up, and [CONTRIBUTING.md](CONTRIBUTING.md) explains how to get started.
+
 ## Credits
 
 IsnadiBot is a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot), which is itself a fork
