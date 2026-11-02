@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
-import { availableLanguages, translate } from "@isnadi/client-runtime/i18n";
+import { translate } from "@isnadi/client-runtime/i18n";
 import {
+  mobileLanguages,
   normalizeLanguagePreference,
   readDeviceLocales,
   resolveMobileLanguage,
@@ -28,10 +29,12 @@ describe("mobile language preferences", () => {
       preference: "system",
       locale: "en-GB",
     });
-    expect(availableLanguages).toEqual([
+    expect(mobileLanguages).toEqual([
       { id: "en", label: "English" },
       { id: "zh-CN", label: "简体中文" },
     ]);
+    expect(normalizeLanguagePreference("ar")).toBe("system");
+    expect(readDeviceLocales(() => ["ar-SA", "en-GB"])).toEqual(["en-GB"]);
   });
 
   it.each([null, 42, {}, "", "fr", "invalid_locale"])(
@@ -49,9 +52,17 @@ describe("mobile language preferences", () => {
     const locales = readDeviceLocales(() => ["ja-JP", "zh-Hans-CN"]);
     expect(locales).toEqual(["ja-JP", "zh-Hans-CN"]);
     expect(resolveMobileLanguage(undefined, locales).locale).toBe("zh-Hans-CN");
-    expect(readDeviceLocales(() => undefined)).toEqual([
-      Intl.DateTimeFormat().resolvedOptions().locale,
-    ]);
+
+    const hostLocale = (locale: string) =>
+      vi
+        .spyOn(Intl, "DateTimeFormat")
+        .mockImplementation(() => ({ resolvedOptions: () => ({ locale }) }) as Intl.DateTimeFormat);
+
+    hostLocale("en-GB");
+    expect(readDeviceLocales(() => undefined)).toEqual(["en-GB"]);
+    hostLocale("ar-AE");
+    expect(readDeviceLocales(() => undefined)).toEqual([]);
+    vi.restoreAllMocks();
   });
 
   it("falls back to English if device locale is unavailable", () => {
