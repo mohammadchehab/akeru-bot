@@ -15,6 +15,7 @@ This is a living glossary for IsnadiBot. It explains what common terms mean in t
 - [Subscription provider](#subscription-provider)
 - [Image provider](#image-provider)
 - [Interface language](#interface-language)
+- [LTR island](#ltr-island)
 - [Checkpointing](#checkpointing)
 - [Dictation](#dictation)
 - [Stored-reply playback](#stored-reply-playback)
@@ -185,6 +186,10 @@ The subscription that creates images for a bot, ChatGPT or Grok, chosen per bot 
 ### Interface language
 
 A client-local preference for interface copy. Web, Electron, and native mobile each store their own selection. It never rewrites stored messages, bot names, instructions, paths, or protocol identifiers. See [interface-translations.md](./interface-translations.md) and [app language](../user/language.md).
+
+### LTR island
+
+An element pinned to left-to-right whatever the interface direction: code, diffs, the terminal, paths, URLs, model ids, and shortcut chords. In an Arabic interface the layout mirrors around them, but their content is never reordered. See [interface-translations.md](./interface-translations.md#right-to-left-languages).
 
 ## Provider runtime
 
