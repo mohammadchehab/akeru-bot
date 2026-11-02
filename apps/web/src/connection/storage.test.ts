@@ -10,6 +10,7 @@ import {
   cachedCatalogStore,
   migrateLegacyConnectionDatabase,
 } from "./storage";
+import { openDatabaseAt } from "./indexedDbStorage";
 import { LEGACY_DATABASE_NAMES } from "./legacyDatabaseMigration";
 
 const emptyCatalog = {
@@ -118,11 +119,12 @@ describe("migrateLegacyConnectionDatabase", () => {
           yield* Effect.promise(
             () =>
               new Promise<void>((resolve, reject) => {
-                const tx = legacy.transaction(["catalog", "shell"], "readwrite");
+                const tx = legacy.transaction(["catalog", "shell", "thread"], "readwrite");
                 tx.addEventListener("complete", () => resolve());
                 tx.addEventListener("error", () => reject(tx.error));
                 tx.objectStore("catalog").put("legacy-catalog-doc", "document");
                 tx.objectStore("shell").put("legacy-shell", "env-1");
+                tx.objectStore("thread").put("legacy-cached-thread", "env-1/thread-1");
                 tx.objectStore("shell").put("legacy-numeric", 1);
                 tx.objectStore("shell").put("legacy-second", 2);
               }),
@@ -173,6 +175,8 @@ describe("migrateLegacyConnectionDatabase", () => {
 
           expect(yield* read("catalog", "document")).toBe("legacy-catalog-doc");
           expect(yield* read("shell", "env-1")).toBe("legacy-shell");
+          // Cached threads are a cache and may predate the responding-bot label.
+          expect(yield* read("thread", "env-1/thread-1")).toBeUndefined();
           expect(yield* read("shell", 1)).toBe("current-numeric");
           expect(yield* read("shell", 2)).toBe("legacy-second");
           migrated.close();
@@ -378,6 +382,63 @@ describe("migrateLegacyConnectionDatabase", () => {
 
       expect(restored).toBeUndefined();
       migrated.close();
+    }),
+  );
+});
+
+describe("connection database upgrade", () => {
+  it.effect("drops cached threads but keeps everything else when upgrading from version 5", () =>
+    Effect.gen(function* () {
+      const fakeIndexedDB = yield* Effect.promise(() =>
+        import("fake-indexeddb").then((module) => new module.IDBFactory()),
+      );
+
+      vi.stubGlobal("indexedDB", fakeIndexedDB);
+      const name = "isnadi:connection-runtime";
+
+      // The database as version 5 left it, with a thread cached by the old reducer.
+      const old = yield* Effect.promise(
+        () =>
+          new Promise<IDBDatabase>((resolve, reject) => {
+            const request = indexedDB.open(name, 5);
+            request.addEventListener("upgradeneeded", () => {
+              for (const store of ["catalog", "shell", "thread", "server-config"]) {
+                request.result.createObjectStore(store);
+              }
+            });
+            request.addEventListener("success", () => resolve(request.result));
+            request.addEventListener("error", () => reject(request.error));
+          }),
+      );
+
+      yield* Effect.promise(
+        () =>
+          new Promise<void>((resolve, reject) => {
+            const tx = old.transaction(["thread", "shell"], "readwrite");
+            tx.addEventListener("complete", () => resolve());
+            tx.addEventListener("error", () => reject(tx.error));
+            tx.objectStore("thread").put("cached-group-thread", "env/thread-1");
+            tx.objectStore("shell").put("cached-shell", "env");
+          }),
+      );
+      old.close();
+
+      const upgraded = yield* openDatabaseAt(name);
+
+      const read = (store: string, key: IDBValidKey) =>
+        Effect.promise(
+          () =>
+            new Promise<unknown>((resolve, reject) => {
+              const request = upgraded.transaction(store, "readonly").objectStore(store).get(key);
+              request.addEventListener("success", () => resolve(request.result));
+              request.addEventListener("error", () => reject(request.error));
+            }),
+        );
+
+      expect(upgraded.version).toBeGreaterThan(5);
+      expect(yield* read("thread", "env/thread-1")).toBeUndefined();
+      expect(yield* read("shell", "env")).toBe("cached-shell");
+      upgraded.close();
     }),
   );
 });

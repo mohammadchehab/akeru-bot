@@ -6,6 +6,7 @@ import {
   catalogError,
   OBJECT_STORE_NAMES,
   readDatabaseValue,
+  THREAD_STORE_NAME,
   writeDatabaseValue,
 } from "./indexedDbStorage";
 
@@ -24,9 +25,12 @@ const copyDatabaseContents = Effect.fn("web.connectionStorage.copyDatabaseConten
   source: IDBDatabase,
   target: IDBDatabase,
 ) {
+  // Cached threads are a cache, not user data, and older ones lack the responding-bot label.
   const storeNames = OBJECT_STORE_NAMES.filter(
     (storeName) =>
-      source.objectStoreNames.contains(storeName) && target.objectStoreNames.contains(storeName),
+      storeName !== THREAD_STORE_NAME &&
+      source.objectStoreNames.contains(storeName) &&
+      target.objectStoreNames.contains(storeName),
   );
 
   const entries = yield* Effect.callback<

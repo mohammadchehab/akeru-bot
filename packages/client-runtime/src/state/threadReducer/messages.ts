@@ -41,6 +41,9 @@ export function applyMessageSentEvent(
     text: event.payload.text,
     ...(event.payload.attachments !== undefined ? { attachments: event.payload.attachments } : {}),
     turnId: event.payload.turnId,
+    ...(event.payload.respondingBotId !== undefined
+      ? { respondingBotId: event.payload.respondingBotId }
+      : {}),
     authorPersonId: event.payload.authorPersonId ?? null,
     authorDisplayName: event.payload.authorDisplayName ?? null,
     channelOrigin: event.payload.channelOrigin ?? null,
@@ -64,6 +67,9 @@ export function applyMessageSentEvent(
                   : entry.text,
               streaming: message.streaming,
               ...(message.turnId !== undefined ? { turnId: message.turnId } : {}),
+              ...(message.respondingBotId !== undefined
+                ? { respondingBotId: message.respondingBotId }
+                : {}),
               ...(message.streaming ? {} : { updatedAt: message.updatedAt }),
               ...(message.attachments !== undefined ? { attachments: message.attachments } : {}),
             },
