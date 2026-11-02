@@ -239,9 +239,15 @@ export function createDevRunnerEnv({
     delete output.ISNADI_HOME;
     delete output.AKERU_HOME;
     delete output.T3CODE_HOME;
+    // Never inherited: the server treats it as the runner's own statement about this run.
+    delete output.ISNADI_DEV_SHARED_HOME;
 
     if (configuredBaseDir !== undefined) {
       output.ISNADI_HOME = resolvedBaseDir;
+    } else {
+      // The main checkout with no --home-dir: the server's dev state in the shared home is
+      // intended here, and the server refuses a dev start that has not been told so.
+      output.ISNADI_DEV_SHARED_HOME = "1";
     }
 
     // A dev-runner server is never launcher-managed. When the shell that runs

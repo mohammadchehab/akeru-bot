@@ -9,7 +9,7 @@ import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import * as NetService from "@isnadi/shared/Net";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { resolveServerConfig } from "./config.ts";
+import { DevServerHomeMissingError, resolveServerConfig } from "./config.ts";
 
 it.layer(NodeServices.layer)("cli config resolution", (it) => {
   const defaultObservabilityConfig = {
@@ -183,6 +183,111 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
 
       assert.notEqual(resolved.baseDir, t3Home);
       assert.equal(resolved.baseDir, join(NodeOS.homedir(), ".isnadi"));
+    }),
+  );
+
+  const devFlags = {
+    mode: Option.none(),
+    port: Option.none(),
+    host: Option.none(),
+    baseDir: Option.none(),
+    cwd: Option.none(),
+    devUrl: Option.some(new URL("http://127.0.0.1:5173")),
+    noBrowser: Option.none(),
+    bootstrapFd: Option.none(),
+    autoBootstrapProjectFromCwd: Option.none(),
+    logWebSocketEvents: Option.none(),
+    tailscaleServeEnabled: Option.none(),
+    tailscaleServePort: Option.none(),
+    publicOrigin: Option.none(),
+  } as const;
+
+  it.effect("refuses to start a dev server that has no home and no opt-in", () =>
+    Effect.gen(function* () {
+      const { join } = yield* Path.Path;
+
+      const error = yield* resolveServerConfig(devFlags, Option.none()).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(
+              ConfigProvider.fromEnv({
+                env: { T3CODE_HOME: join(NodeOS.tmpdir(), "t3-code-home-that-must-be-ignored") },
+              }),
+            ),
+            NetService.layer,
+            NodeServices.layer,
+          ),
+        ),
+        Effect.flip,
+      );
+
+      assert.instanceOf(error, DevServerHomeMissingError);
+      assert.equal(
+        error.message,
+        "This dev server has no data directory: ISNADI_HOME, --home-dir and the dev runner's opt-in are all missing. Restart it with vp run dev.",
+      );
+    }),
+  );
+
+  it.effect("refuses to start a dev server whose only home is T3 Code's T3CODE_HOME", () =>
+    Effect.gen(function* () {
+      const { join } = yield* Path.Path;
+
+      const error = yield* resolveServerConfig(devFlags, Option.none()).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(
+              ConfigProvider.fromEnv({
+                env: { T3CODE_HOME: join(NodeOS.tmpdir(), "t3-code-home-that-must-be-ignored") },
+              }),
+            ),
+            NetService.layer,
+            NodeServices.layer,
+          ),
+        ),
+        Effect.flip,
+      );
+
+      assert.instanceOf(error, DevServerHomeMissingError);
+    }),
+  );
+
+  it.effect("starts a dev server with the runner's opt-in on the shared dev state", () =>
+    Effect.gen(function* () {
+      const { join } = yield* Path.Path;
+
+      const resolved = yield* resolveServerConfig(devFlags, Option.none()).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(ConfigProvider.fromEnv({ env: { ISNADI_DEV_SHARED_HOME: "1" } })),
+            NetService.layer,
+            NodeServices.layer,
+          ),
+        ),
+      );
+
+      assert.equal(resolved.baseDir, join(NodeOS.homedir(), ".isnadi"));
+      assert.equal(resolved.dbPath, join(NodeOS.homedir(), ".isnadi", "dev", "state.sqlite"));
+    }),
+  );
+
+  it.effect("starts a dev server that has ISNADI_HOME", () =>
+    Effect.gen(function* () {
+      const { join } = yield* Path.Path;
+      const baseDir = join(NodeOS.tmpdir(), "t3-cli-config-dev-home");
+
+      const resolved = yield* resolveServerConfig(devFlags, Option.none()).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(ConfigProvider.fromEnv({ env: { ISNADI_HOME: baseDir } })),
+            NetService.layer,
+            NodeServices.layer,
+          ),
+        ),
+      );
+
+      assert.equal(resolved.baseDir, baseDir);
+      assert.equal(resolved.dbPath, join(baseDir, "userdata", "state.sqlite"));
     }),
   );
 

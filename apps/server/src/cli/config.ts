@@ -240,6 +240,20 @@ const loadPersistedObservabilitySettings = Effect.fn(function* (settingsPath: st
   return parsePersistedServerObservabilitySettings(raw);
 });
 
+/**
+ * A dev server (one with a Vite dev URL) that has no home and no opt-in from the dev runner.
+ * Falling back to the shared home would put a stale or hand-started server on the developer's
+ * live dev data, so it refuses to start instead.
+ */
+export class DevServerHomeMissingError extends Schema.TaggedErrorClass<DevServerHomeMissingError>()(
+  "DevServerHomeMissingError",
+  {},
+) {
+  override get message(): string {
+    return "This dev server has no data directory: ISNADI_HOME, --home-dir and the dev runner's opt-in are all missing. Restart it with vp run dev.";
+  }
+}
+
 export const resolveServerConfig = (
   flags: CliServerFlags,
   cliLogLevel: Option.Option<LogLevel.LogLevel>,
@@ -323,11 +337,21 @@ export const resolveServerConfig = (
       Option.fromUndefinedOr(env.t3Home),
     ).pipe(Option.filter((value) => value.trim().length > 0));
 
-    const baseDir = yield* resolveBaseDir(
-      Option.getOrUndefined(
-        resolveOptionPrecedence(explicitBaseDir, Option.fromUndefinedOr(bootstrap?.t3Home)),
-      ),
+    const requestedBaseDir = resolveOptionPrecedence(
+      explicitBaseDir,
+      Option.fromUndefinedOr(bootstrap?.t3Home),
     );
+
+    // The dev runner sets this only when it deliberately picks the default home (the main
+    // checkout). A runner that predates it, or a hand-started server, never has it.
+    const devSharedHomeOptIn =
+      Option.getOrUndefined(yield* Config.option(Config.string("ISNADI_DEV_SHARED_HOME"))) === "1";
+
+    if (devUrl !== undefined && Option.isNone(requestedBaseDir) && !devSharedHomeOptIn) {
+      return yield* new DevServerHomeMissingError();
+    }
+
+    const baseDir = yield* resolveBaseDir(Option.getOrUndefined(requestedBaseDir));
 
     const rawCwd = Option.getOrElse(normalizedFlags.cwd, () => process.cwd());
     const cwd = path.resolve(yield* expandHomePath(rawCwd.trim()));

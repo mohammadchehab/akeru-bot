@@ -124,6 +124,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         });
 
         assert.equal(env.ISNADI_HOME, undefined);
+        assert.equal(env.ISNADI_DEV_SHARED_HOME, "1");
         assert.equal(env.T3CODE_NO_BROWSER, "1");
       }),
     );
@@ -132,7 +133,12 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       Effect.gen(function* () {
         const input = {
           mode: "dev",
-          baseEnv: { ISNADI_HOME: "/live", AKERU_HOME: "/live", T3CODE_HOME: "/live" },
+          baseEnv: {
+            ISNADI_HOME: "/live",
+            AKERU_HOME: "/live",
+            T3CODE_HOME: "/live",
+            ISNADI_DEV_SHARED_HOME: "1",
+          },
           serverOffset: 0,
           webOffset: 0,
           browser: undefined,
@@ -153,6 +159,9 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
 
         assert.equal(explicit.ISNADI_HOME, "/tmp/isnadi-explicit");
         assert.equal(implicit.ISNADI_HOME, undefined);
+        // The opt-in marks only the run that deliberately uses the shared home.
+        assert.equal(explicit.ISNADI_DEV_SHARED_HOME, undefined);
+        assert.equal(implicit.ISNADI_DEV_SHARED_HOME, "1");
       }),
     );
 

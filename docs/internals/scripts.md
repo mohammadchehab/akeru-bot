@@ -59,6 +59,7 @@ The command uses the existing `server-runtime.json`; it does not scan ports or c
 - Uses the same worktree home helper as the dev runner. An explicit `--home-dir` wins, then the
   worktree home. The implicit main-checkout fallback is `~/.isnadi/dev`.
   Explicit and worktree homes use `userdata`. Neither `ISNADI_HOME` nor `T3CODE_HOME` is a dev-runner override: the server and the dev tools never read `T3CODE_HOME`, which is T3 Code's own variable.
+  A server with a dev URL refuses to start when it has no home (flag, `ISNADI_HOME`, or desktop bootstrap) and no `ISNADI_DEV_SHARED_HOME=1`. Only the dev runner sets that opt-in, only for the main-checkout fallback, and it clears any inherited value, so a stale runner or a hand-started server cannot land on `~/.isnadi/dev`.
 - Checks the recorded PID without sending a signal. Missing or stale runtime files remain unchanged.
   Recorded origins from stale files are historical, not proof that a server is running.
 - Makes credential-free HTTP HEAD checks only on loopback. It does not follow redirects or contact
