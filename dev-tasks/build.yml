@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+  default:
+    desc: "Build every app and package"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/build.sh {{.CLI_ARGS}}"
+
+  desktop:
+    desc: "Build the desktop app and the server it bundles"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/desktop.sh {{.CLI_ARGS}}"
+
+  contracts:
+    desc: "Build the contracts package"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/contracts.sh {{.CLI_ARGS}}"
+
+  dist-desktop:
+    desc: "Package the desktop app; pass flags after --, e.g. -- --platform mac --target dmg"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/dist-desktop.sh {{.CLI_ARGS}}"
+
+  dmg:
+    desc: "Package the macOS DMG"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/dmg.sh {{.CLI_ARGS}}"
+
+  linux:
+    desc: "Package the Linux AppImage (x64)"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/linux.sh {{.CLI_ARGS}}"
+
+  win:
+    desc: "Package the Windows NSIS installer"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/build/win.sh {{.CLI_ARGS}}"

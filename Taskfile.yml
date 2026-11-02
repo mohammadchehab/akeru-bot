@@ -1,0 +1,15 @@
+# Developer task runner (https://taskfile.dev). Run `task --list` to see everything.
+# Each task only calls a script in dev-tasks/scripts/; see dev-tasks/README.md.
+version: "3"
+
+includes:
+  dev: ./dev-tasks/dev.yml
+  build: ./dev-tasks/build.yml
+  check: ./dev-tasks/check.yml
+  mobile: ./dev-tasks/mobile.yml
+
+tasks:
+  test:
+    desc: "Run tests: all packages, or one with `task test -- apps/server`"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/test.sh {{.CLI_ARGS}}"

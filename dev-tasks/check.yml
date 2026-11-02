@@ -1,0 +1,32 @@
+version: "3"
+
+tasks:
+  all:
+    desc: "Typecheck, lint, and format check"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/all.sh {{.CLI_ARGS}}"
+
+  typecheck:
+    desc: "Typecheck all packages, or one with -- apps/web"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/typecheck.sh {{.CLI_ARGS}}"
+
+  lint:
+    desc: "Lint the repo and check lint suppressions"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/lint.sh {{.CLI_ARGS}}"
+
+  fmt:
+    desc: "Format the repo in place"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/fmt.sh {{.CLI_ARGS}}"
+
+  fmt-check:
+    desc: "Check formatting without writing"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/fmt-check.sh {{.CLI_ARGS}}"
+
+  test:
+    desc: "Run tests: all packages, or one with -- apps/server"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/check/test.sh {{.CLI_ARGS}}"
