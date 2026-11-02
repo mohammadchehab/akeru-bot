@@ -253,7 +253,6 @@ export default defineConfig({
           "apps/server/src/provider/Layers/grok/GrokSessionLifecycle.ts",
           "apps/server/src/provider/acp/GrokAcpSupport.ts",
           "apps/server/src/provider/providerMaintenanceRunner.ts",
-          "apps/server/src/textGeneration/GrokTextGeneration.ts",
         ],
         rules: {
           "anti-slop-effect/no-service-constructor-imports": "off",

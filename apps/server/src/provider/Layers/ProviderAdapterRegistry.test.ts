@@ -11,7 +11,8 @@ import * as PubSub from "effect/PubSub";
 import * as Stream from "effect/Stream";
 
 import type * as ClaudeAdapter from "../Services/ClaudeAdapter.ts";
-import type * as CodexAdapter from "../Services/CodexAdapter.ts";
+import type { ProviderAdapterShape } from "../Services/ProviderAdapter.ts";
+import type { ProviderAdapterError } from "../Errors.ts";
 import type * as OpenCodeAdapter from "../Services/OpenCodeAdapter.ts";
 import * as ProviderAdapterRegistry from "../Services/ProviderAdapterRegistry.ts";
 import * as ProviderInstanceRegistry from "../Services/ProviderInstanceRegistry.ts";
@@ -27,7 +28,7 @@ const CLAUDE_AGENT_DRIVER = ProviderDriverKind.make("claudeAgent");
 
 const OPENCODE_DRIVER = ProviderDriverKind.make("opencode");
 
-const fakeCodexAdapter: CodexAdapter.CodexAdapterShape = {
+const fakeCodexAdapter: ProviderAdapterShape<ProviderAdapterError> = {
   provider: CODEX_DRIVER,
   capabilities: { sessionModelSwitch: "in-session" },
   startSession: vi.fn(),

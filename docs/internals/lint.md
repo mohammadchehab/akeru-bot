@@ -215,8 +215,7 @@ its reason beside it and only the rules that category needs:
   category disables only the Date diagnostic.
 - A migration backlog of synchronous APIs, initialization, and constructor-owned log sink
   lifecycles whose callers must move together. It also retains the interactive inherited-terminal
-  child in `cli/triage.ts` and the measured native streaming performance of
-  `usage/usageTranscriptReader.ts`. Remove a file once its constraint is addressed.
+  child in `cli/triage.ts`. Remove a file once its constraint is addressed.
 
 A new file does not join a category because it is convenient. Fix the code first, and add a
 category entry only when the file shares that category's real constraint.

@@ -166,8 +166,7 @@
           {
             // Migration backlog: synchronous APIs, initialization, and constructor-owned sink
             // lifecycles whose callers must move together. Also retained: interactive inherited-
-            // terminal child semantics (triage) and measured native streaming performance
-            // (usageTranscriptReader). Remove a file once its constraint is addressed.
+            // terminal child semantics (triage). Remove a file once its constraint is addressed.
             "include": [
               "**/apps/server/src/subscription-auth/healthService.ts",
               "**/packages/shared/src/logging.ts",
@@ -176,7 +175,6 @@
               "**/apps/server/src/attachmentStore.ts",
               "**/apps/server/src/bot-inbox/service.ts",
               "**/apps/server/src/cli/triage.ts",
-              "**/apps/server/src/usage/usageTranscriptReader.ts",
               "**/apps/server/src/provider/tools/IsnadiPluginCatalog.ts",
               "**/apps/server/src/provider/Layers/agentController/EventIdentity.ts"
             ],

@@ -148,7 +148,7 @@ export const probeCodexAppServerProvider = Effect.fn("probeCodexAppServerProvide
     // `~` is not shell-expanded when env vars are set via `child_process.spawn`,
     // so `CODEX_HOME=~/.codex_work` would reach codex verbatim and trip
     // "CODEX_HOME points to '~/.codex_work', but that path does not exist".
-    // Expand here for parity with `CodexTextGeneration`/`CodexSessionRuntime`.
+    // Expand here so a tilde path behaves the same as it does in a shell.
     const path = yield* Path.Path;
     const resolvedHomePath = input.homePath ? expandHomePath(input.homePath, path) : undefined;
     const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;

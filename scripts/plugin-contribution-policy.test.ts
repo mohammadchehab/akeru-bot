@@ -80,7 +80,7 @@ describe("plugin contribution policy", () => {
     ["apps/server/src/provider/builtInDrivers.ts", ["type:provider"]],
     ["apps/server/src/provider/builtInProviderCatalog.ts", ["type:provider"]],
     ["apps/server/src/provider/Drivers/ClaudeDriver.ts", ["type:provider"]],
-    ["apps/server/src/provider/Layers/CodexAdapter.ts", ["type:provider"]],
+    ["apps/server/src/provider/Drivers/CodexDriver.ts", ["type:provider"]],
     ["apps/server/src/provider/Services/ClaudeAdapter.ts", ["type:provider"]],
     ["apps/server/src/subscription-auth/providers/openaiCodex.ts", ["type:provider"]],
     ["apps/web/src/components/plugins/PluginsDialog.tsx", ["area:directory"]],

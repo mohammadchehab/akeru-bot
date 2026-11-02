@@ -118,7 +118,6 @@ export interface OrchestrationIntegrationHarness {
 
 interface MakeOrchestrationIntegrationHarnessOptions {
   readonly provider?: ProviderDriverKind;
-  readonly realCodex?: boolean;
 }
 
 export const orchestrationIntegrationHarness = (
@@ -129,18 +128,15 @@ export const orchestrationIntegrationHarness = (
     const fileSystem = yield* FileSystem.FileSystem;
 
     const provider = options?.provider ?? ProviderDriverKind.make("codex");
-    const useRealCodex = options?.realCodex === true;
 
-    const adapterHarness = useRealCodex
-      ? null
-      : yield* testProviderAdapterHarness({
-          provider,
-        });
+    const adapterHarness = yield* testProviderAdapterHarness({
+      provider,
+    });
 
     // Mastra-backed drivers run through AgentController's session seam rather
     // than the adapter's `sendTurn`, so fake the Mastra harness too; otherwise
     // the controller boots the real Mastra stack and makes live model calls.
-    const mastraHarness = useRealCodex || !usesMastraCode(provider) ? null : testMastraHarness();
+    const mastraHarness = !usesMastraCode(provider) ? null : testMastraHarness();
 
     const rootDir = yield* fileSystem.makeTempDirectoryScoped({
       prefix: "t3-orchestration-integration-",
@@ -159,7 +155,6 @@ export const orchestrationIntegrationHarness = (
     const layer = createIntegrationLayers({
       adapterHarness,
       mastraHarness,
-      useRealCodex,
       dbPath,
       rootDir,
       workspaceDir,

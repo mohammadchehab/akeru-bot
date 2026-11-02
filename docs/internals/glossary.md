@@ -192,7 +192,7 @@ The live backend agent implementation and its event stream. Desktop turns cross 
 
 #### Provider
 
-The backend agent runtime that actually performs work. Six drivers ship built in: Codex, Claude, Grok, Kimi For Coding, OpenCode, and OpenCode Go. See [ProviderService.ts][14], [ProviderAdapter.ts][15], and [CodexAdapter.ts][17] as a representative adapter.
+The backend agent runtime that actually performs work. Six drivers ship built in: Codex, Claude, Grok, Kimi For Coding, OpenCode, and OpenCode Go. See [ProviderService.ts][14], [ProviderAdapter.ts][15], and [OpenCodeAdapter.ts][17] as a representative adapter.
 
 #### Session
 
@@ -295,7 +295,7 @@ The file patch and changed-file summary for one turn. It is usually computed in 
 [14]: ../../apps/server/src/provider/Layers/ProviderService.ts
 [15]: ../../apps/server/src/provider/Services/ProviderAdapter.ts
 [16]: ./providers.md
-[17]: ../../apps/server/src/provider/Layers/CodexAdapter.ts
+[17]: ../../apps/server/src/provider/Layers/OpenCodeAdapter.ts
 [18]: ../user/permission-modes.md
 [19]: ../../apps/server/src/checkpointing/CheckpointStore.ts
 [20]: ../../apps/server/src/checkpointing/CheckpointDiffQuery.ts
