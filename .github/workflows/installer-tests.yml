@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "scripts/install-windows*"
+      - "scripts/install-remote*"
+      - "apps/web/public/install.ps1"
       - ".github/workflows/installer-tests.yml"
   workflow_dispatch:
 
@@ -25,3 +27,6 @@ jobs:
       - name: Verify installer and Restricted-policy bootstrap
         shell: powershell
         run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-windows.behavior.test.ps1
+      - name: Verify the remote installer manifest signature check
+        shell: powershell
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install-remote.signature.behavior.test.ps1

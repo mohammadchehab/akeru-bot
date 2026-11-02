@@ -12,6 +12,18 @@ describe("Windows remote installer", () => {
     );
   });
 
+  it("verifies the signed manifest before extraction and requires it to list the archive", () => {
+    expect(script).toContain("Test-IsnadiEd25519Signature");
+    expect(script).toContain("The release manifest signature did not verify");
+    expect(script).toContain("The signed release manifest does not list");
+    expect(script.indexOf("The release manifest signature did not verify")).toBeLessThan(
+      script.indexOf("Expand-Archive"),
+    );
+    expect(script.indexOf("$ManifestHash -ne $ActualHash")).toBeLessThan(
+      script.indexOf("Expand-Archive"),
+    );
+  });
+
   it("installs Tailscale unattended and starts Isnadi through Task Scheduler", () => {
     expect(script).toContain("TS_UNATTENDEDMODE=always");
     expect(script).toContain("up --unattended=true");
