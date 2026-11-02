@@ -167,9 +167,7 @@ export class IsnadiPassiveObservationalMemoryProcessor implements Processor<"obs
 
     const recent = selectRecentConversation(history.messages, { requiredMessageIds });
 
-    const group = groupStateOf(
-      args.requestContext ? controllerContext(args.requestContext)?.state : undefined,
-    );
+    const group = controllerGroup(args.requestContext);
 
     // A group shares one history; each responder reads the other bots' turns as quoted speech.
     for (const message of group ? recallForResponder(recent, group) : recent) {
@@ -199,9 +197,7 @@ export class IsnadiPassiveObservationalMemoryProcessor implements Processor<"obs
       ...args.messageList.get.response.db(),
     ].filter((message) => args.messageList.isNewMessage(message));
 
-    const group = groupStateOf(
-      args.requestContext ? controllerContext(args.requestContext)?.state : undefined,
-    );
+    const group = controllerGroup(args.requestContext);
 
     const saved = group
       ? messages.map((message) => tagRespondingBot(message, group.respondingBotId))
