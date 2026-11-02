@@ -437,6 +437,46 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
     }),
   );
 
+  it.effect("starts a bot-mention turn on the chain's stored user message", () =>
+    Effect.gen(function* () {
+      const base = readModel({ queue: [] });
+      const [queued] = yield* mention(base, `@${OTHER_SPECIALIST_ID} your turn`);
+
+      if (queued === undefined) throw new Error("Expected a queue event");
+
+      const model = yield* projectEvent(base, { ...queued, sequence: 1 } as OrchestrationEvent);
+      const events = yield* advance(model, "cmd-advance-chain-message");
+      const start = events.find((event) => event.type === "thread.turn-start-requested");
+
+      if (start?.type !== "thread.turn-start-requested") throw new Error("Expected a turn start");
+
+      // A message id nothing stored would make the provider reactor drop the turn.
+      expect(start.payload.messageId).toBe(USER_MESSAGE);
+      expect(start.payload.trigger).toMatchObject({ kind: "bot-mention" });
+    }),
+  );
+
+  it.effect("ends the chain when there is no stored user message to answer", () =>
+    Effect.gen(function* () {
+      const base = readModel({ queue: [] });
+      const [queued] = yield* mention(base, `@${OTHER_SPECIALIST_ID} your turn`);
+
+      if (queued === undefined) throw new Error("Expected a queue event");
+
+      const projected = yield* projectEvent(base, { ...queued, sequence: 1 } as OrchestrationEvent);
+
+      const model = {
+        ...projected,
+        threads: projected.threads.map((thread) => ({ ...thread, messages: [] })),
+      };
+
+      const events = yield* advance(model, "cmd-advance-no-message");
+
+      expect(events.map((event) => event.type)).toEqual(["thread.responder-queue.set"]);
+      expect(queueOf(events[0])).toMatchObject({ entries: [], reason: "superseded" });
+    }),
+  );
+
   it.effect("adds only as many mentioned bots as the budget has left", () =>
     Effect.gen(function* () {
       const events = yield* mention(
