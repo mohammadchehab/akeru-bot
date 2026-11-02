@@ -34,10 +34,10 @@ describe("ProviderCommandReactor group responder", () => {
   afterEach(testScope.dispose);
 
   // Boss and specialist share engine, runtime mode and MCP set, so only the responder differs.
-  async function createGroupHarness() {
+  async function createGroupHarness(specialistEngine = ENGINE) {
     const harness = await createHarness({
       botEngine: ENGINE,
-      secondBot: { engine: ENGINE },
+      secondBot: { engine: specialistEngine },
       botSandboxBrowserSharing: "shared",
     });
 
@@ -158,5 +158,24 @@ describe("ProviderCommandReactor group responder", () => {
     await sendTurn("group-3", "@Second bot again", SPECIALIST);
     await harness.waitFor(() => harness.startSession.mock.calls.length === 2);
     expect(harness.startSession.mock.calls[1]?.[1]).toMatchObject({ botId: SPECIALIST });
+  });
+  it("runs each responder on its own engine, not the boss's the client sent", async () => {
+    const specialistEngine = { provider: "codex", model: "gpt-5.4-mini" };
+    const { harness, sendTurn } = await createGroupHarness(specialistEngine);
+
+    // The client sent the boss's model; the thread carries it too.
+    await sendTurn("group-1", "hello");
+    await harness.waitFor(() => harness.sendTurn.mock.calls.length === 1);
+    await sendTurn("group-2", "@Second bot hi", SPECIALIST);
+    await harness.waitFor(() => harness.sendTurn.mock.calls.length === 2);
+
+    expect(harness.startSession.mock.calls[0]?.[1]).toMatchObject({
+      botId: BOSS,
+      modelSelection: { model: ENGINE.model },
+    });
+    expect(harness.startSession.mock.calls[1]?.[1]).toMatchObject({
+      botId: SPECIALIST,
+      modelSelection: { model: specialistEngine.model },
+    });
   });
 });

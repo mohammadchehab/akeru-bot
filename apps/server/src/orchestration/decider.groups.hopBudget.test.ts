@@ -72,6 +72,7 @@ it.layer(NodeServices.layer)("group chat hop budget decider", (it) => {
       expect(String(error)).toContain("thread-missing");
     }),
   );
+
   const startMessage = (threadOverrides: {
     readonly hopBudget?: number;
     readonly direct?: boolean;
