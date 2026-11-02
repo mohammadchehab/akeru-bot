@@ -5,10 +5,15 @@ import * as Effect from "effect/Effect";
 import { decideOrchestrationCommand } from "./decider.ts";
 import { projectEvent } from "./projector.ts";
 import {
+  BOSS_ID,
+  GROUP_ID,
   NOW,
+  SPECIALIST_ID,
+  makeBot,
   makeGroup,
   makeGroupThread,
   makeReadModel,
+  startTurnCommand,
 } from "./test-support/GroupDeciderFixtures.ts";
 
 const setHopBudget = (hopBudget: number, threadId = "thread-group") => ({
@@ -65,6 +70,51 @@ it.layer(NodeServices.layer)("group chat hop budget decider", (it) => {
       }).pipe(Effect.flip);
 
       expect(String(error)).toContain("thread-missing");
+    }),
+  );
+  const startMessage = (threadOverrides: {
+    readonly hopBudget?: number;
+    readonly direct?: boolean;
+  }) =>
+    decideOrchestrationCommand({
+      command: startTurnCommand(),
+      readModel: makeReadModel({
+        bots: [
+          makeBot({ id: BOSS_ID, groupId: GROUP_ID }),
+          makeBot({ id: SPECIALIST_ID, groupId: GROUP_ID }),
+        ],
+        groups: [makeGroup()],
+        threads: [
+          {
+            ...makeGroupThread(),
+            ...(threadOverrides.hopBudget === undefined
+              ? {}
+              : { hopBudget: threadOverrides.hopBudget }),
+            ...(threadOverrides.direct ? { groupId: null, botId: BOSS_ID } : {}),
+          },
+        ],
+      }),
+    }).pipe(
+      Effect.map((result) => (Array.isArray(result) ? result : [result])),
+      Effect.map((events) => events.find((event) => event.type === "thread.responder-queue.set")),
+    );
+
+  it.effect("snapshots the chat's budget into the queue when a user message starts a chain", () =>
+    Effect.gen(function* () {
+      const queue = yield* startMessage({ hopBudget: 3 });
+
+      if (queue?.type !== "thread.responder-queue.set") throw new Error("Expected queue event");
+      // The first bot's turn is the first hop.
+      expect(queue.payload).toMatchObject({ entries: [], hopsLeft: 2, hopsUsed: 1 });
+    }),
+  );
+
+  it.effect("uses the default budget for a chat that never set one", () =>
+    Effect.gen(function* () {
+      const queue = yield* startMessage({});
+
+      if (queue?.type !== "thread.responder-queue.set") throw new Error("Expected queue event");
+      expect(queue.payload).toMatchObject({ hopsLeft: 5, hopsUsed: 1 });
     }),
   );
 });
