@@ -76,7 +76,7 @@ function wantsStream(body: string): boolean {
   return /"stream"\s*:\s*true/.test(body);
 }
 
-/** A user message with this marker makes the stub ask for a Shell call, which waits on an approval. */
+/** A user message with this marker makes the stub call a protected delete tool, which always waits on an approval. */
 export const STUB_APPROVAL_MARKER = "[needs approval]";
 
 interface RequestMessage {
@@ -97,25 +97,23 @@ function requestMessages(body: string): ReadonlyArray<RequestMessage> {
 function textOf(message: RequestMessage | undefined): string {
   const content = message?.content;
 
-  if (typeof content === "string") return content;
-
-  return Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : "";
+  return Array.isArray(content)
+    ? content.map((part) => part.text ?? "").join("")
+    : String(content ?? "");
 }
 
 /** True while the marker message is the latest turn; the request after a tool result ends in a tool message. */
 function wantsApproval(body: string): boolean {
   const last = requestMessages(body).at(-1);
 
-  console.error(`[stub] last=${last?.role ?? "none"} text=${textOf(last).slice(0, 80)}`);
-
   return last?.role === "user" && textOf(last).includes(STUB_APPROVAL_MARKER);
 }
 
-const SHELL_TOOL_CALL = {
+const APPROVAL_TOOL_CALL = {
   index: 0,
-  id: "call_e2e_shell",
+  id: "call_e2e_approval",
   type: "function",
-  function: { name: "Shell", arguments: JSON.stringify({ command: "echo decisions" }) },
+  function: { name: "UninstallMcpServer", arguments: JSON.stringify({ serverId: "e2e-server" }) },
 };
 
 function chunk(delta: { role?: string; content?: string }, finishReason: string | null) {
@@ -168,7 +166,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
                 created: 0,
                 model: STUB_MODEL,
                 choices: [
-                  { index: 0, delta: { tool_calls: [SHELL_TOOL_CALL] }, finish_reason: null },
+                  { index: 0, delta: { tool_calls: [APPROVAL_TOOL_CALL] }, finish_reason: null },
                 ],
               })}\n\n`,
             );
@@ -188,7 +186,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
                     message: {
                       role: "assistant",
                       content: null,
-                      tool_calls: [{ ...SHELL_TOOL_CALL, index: undefined }],
+                      tool_calls: [{ ...APPROVAL_TOOL_CALL, index: undefined }],
                     },
                     finish_reason: "tool_calls",
                   },
