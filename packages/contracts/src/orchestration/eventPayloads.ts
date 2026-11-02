@@ -54,6 +54,8 @@ import {
   OrchestrationThreadActivity,
   ThreadTitleRegeneration,
   ThreadLinkedPullRequest,
+  ResponderQueueEntry,
+  ResponderQueueReason,
 } from "./thread.ts";
 
 export const OrchestrationEventType = Schema.Literals([
@@ -106,6 +108,7 @@ export const OrchestrationEventType = Schema.Literals([
   "thread.runtime-mode-set",
   "thread.interaction-mode-set",
   "thread.message-sent",
+  "thread.responder-queue.set",
   "thread.channel-delivery-set",
   "thread.message-reaction-set",
   "thread.turn-start-requested",
@@ -431,6 +434,14 @@ export const ThreadInteractionModeSetPayload = Schema.Struct({
   interactionMode: ProviderInteractionMode.pipe(
     Schema.withDecodingDefault(Effect.succeed(DEFAULT_PROVIDER_INTERACTION_MODE)),
   ),
+  updatedAt: IsoDateTime,
+});
+
+export const ThreadResponderQueueSetPayload = Schema.Struct({
+  threadId: ThreadId,
+  entries: Schema.Array(ResponderQueueEntry),
+  hopsLeft: Schema.Number,
+  reason: ResponderQueueReason,
   updatedAt: IsoDateTime,
 });
 

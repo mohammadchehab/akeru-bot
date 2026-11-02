@@ -1,4 +1,8 @@
-import { OrchestrationThread, ThreadChannelDeliverySetPayload } from "@isnadi/contracts";
+import {
+  OrchestrationThread,
+  ThreadChannelDeliverySetPayload,
+  ThreadResponderQueueSetPayload,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   ThreadArchivedPayload,
@@ -261,6 +265,25 @@ export function projectThreadLifecycle(
           threads: updateThread(nextBase.threads, payload.threadId, {
             interactionMode: payload.interactionMode,
             updatedAt: payload.updatedAt,
+          }),
+        })),
+      );
+    case "thread.responder-queue.set":
+      return decodeForEvent(
+        ThreadResponderQueueSetPayload,
+        event.payload,
+        event.type,
+        "payload",
+      ).pipe(
+        Effect.map((payload) => ({
+          ...nextBase,
+          threads: updateThread(nextBase.threads, payload.threadId, {
+            responderQueue: {
+              entries: payload.entries,
+              hopsLeft: payload.hopsLeft,
+              reason: payload.reason,
+              updatedAt: payload.updatedAt,
+            },
           }),
         })),
       );

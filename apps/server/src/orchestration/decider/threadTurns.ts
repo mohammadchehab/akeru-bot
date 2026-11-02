@@ -2,6 +2,7 @@ import {
   acknowledgeIsnadiDelegation,
   isIsnadiDelegationResultPending,
   MessageId,
+  type BotId,
   ProviderInstanceId,
   type OrchestrationCommand,
   type OrchestrationEvent,
@@ -10,7 +11,10 @@ import {
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";
-import { resolveGroupResponderBotId } from "../groupResponder.ts";
+import { resolveGroupAddressing, resolveGroupResponderBotId } from "../groupResponder.ts";
+
+// Bot turns allowed per user message once chains exist (b2); recorded on the queue from the start.
+const GROUP_HOP_BUDGET = 6;
 import { OrchestrationCommandInvariantError } from "../Errors.ts";
 import type { OrchestrationDispatchActor } from "../Services/OrchestrationEngine.ts";
 import {
@@ -98,6 +102,8 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
       }
 
       let respondingBotId = targetThread.botId ?? null;
+      let queuedResponderBotIds: ReadonlyArray<BotId> = [];
+      let addressedGroup = false;
       const isGroupThread = targetThread.groupId !== null && targetThread.groupId !== undefined;
 
       // Direct chats refuse archived bots here so a stale client or queued send cannot
@@ -120,12 +126,41 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
 
         const activeMemberIds = activeGroupBotIds(readModel, group);
 
-        const selectedBotId = yield* resolveGroupResponderBotId({
-          group,
-          respondingBotId: command.respondingBotId,
-          text: command.message.text,
-          isActive: (botId) => Effect.succeed(activeMemberIds.has(botId)),
-        });
+        let selectedBotId: BotId | null;
+
+        if (command.addressing !== undefined && command.respondingBotId !== undefined) {
+          return yield* new OrchestrationCommandInvariantError({
+            commandType: command.type,
+            detail: `Send either addressing or respondingBotId, not both.`,
+          });
+        }
+
+        if (command.addressing !== undefined) {
+          addressedGroup = true;
+          const resolution = resolveGroupAddressing({
+            group,
+            messages: targetThread.messages,
+            addressing: command.addressing,
+            isActive: (botId) => activeMemberIds.has(botId),
+          });
+
+          if (!resolution.ok) {
+            return yield* new OrchestrationCommandInvariantError({
+              commandType: command.type,
+              detail: resolution.detail,
+            });
+          }
+
+          selectedBotId = resolution.responders[0] ?? null;
+          queuedResponderBotIds = resolution.responders.slice(1);
+        } else {
+          selectedBotId = yield* resolveGroupResponderBotId({
+            group,
+            respondingBotId: command.respondingBotId,
+            text: command.message.text,
+            isActive: (botId) => Effect.succeed(activeMemberIds.has(botId)),
+          });
+        }
 
         if (selectedBotId === null) {
           return yield* new OrchestrationCommandInvariantError({
@@ -184,7 +219,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
             },
           };
         }
-      } else if (command.respondingBotId !== undefined) {
+      } else if (command.respondingBotId !== undefined || command.addressing !== undefined) {
         return yield* new OrchestrationCommandInvariantError({
           commandType: command.type,
           detail: `Bot mentions can only route turns on a group-owned thread.`,
@@ -325,11 +360,44 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
         });
       }
 
+      // A new user message replaces whatever was still waiting for the old one. The event is
+      // written only when the queue has entries or is being emptied.
+      const previousQueue = targetThread.responderQueue?.entries ?? [];
+
+      const queueEvent: Omit<OrchestrationEvent, "sequence"> | null =
+        queuedResponderBotIds.length === 0 && previousQueue.length === 0
+          ? null
+          : {
+              ...(yield* withEventBase({
+                aggregateKind: "thread",
+                aggregateId: command.threadId,
+                occurredAt: command.createdAt,
+                commandId: command.commandId,
+              })),
+              causationEventId: userMessageEvent.eventId,
+              type: "thread.responder-queue.set",
+              payload: {
+                threadId: command.threadId,
+                entries: queuedResponderBotIds.map((botId) => ({
+                  botId,
+                  trigger: { kind: "user" as const, messageId: command.message.messageId },
+                })),
+                hopsLeft: GROUP_HOP_BUDGET,
+                reason: queuedResponderBotIds.length > 0 ? "addressed" : "superseded",
+                updatedAt: command.createdAt,
+              },
+            };
+
       return [
         ...(personAssignedEvent === null ? [] : [personAssignedEvent]),
         ...lifecycleResetEvents,
         ...acknowledgementEvents,
         userMessageEvent,
+        ...(addressedGroup || previousQueue.length > 0
+          ? queueEvent === null
+            ? []
+            : [queueEvent]
+          : []),
         turnStartRequestedEvent,
       ];
     }

@@ -208,6 +208,46 @@ const OrchestrationLatestTurnState = Schema.Literals([
 
 export type OrchestrationLatestTurnState = typeof OrchestrationLatestTurnState.Type;
 
+/** Why a group turn runs: the user message that addressed it, or a bot's mention. */
+export const ResponderTrigger = Schema.Union([
+  Schema.Struct({ kind: Schema.Literal("user"), messageId: MessageId }),
+  Schema.Struct({
+    kind: Schema.Literal("bot-mention"),
+    sourceTurnId: TurnId,
+    sourceBotId: BotId,
+  }),
+]);
+
+export type ResponderTrigger = typeof ResponderTrigger.Type;
+
+export const ResponderQueueEntry = Schema.Struct({
+  botId: BotId,
+  trigger: ResponderTrigger,
+});
+
+export type ResponderQueueEntry = typeof ResponderQueueEntry.Type;
+
+export const ResponderQueueReason = Schema.Literals([
+  "addressed",
+  "mention",
+  "turn-started",
+  "stopped",
+  "superseded",
+  "budget-exhausted",
+]);
+
+export type ResponderQueueReason = typeof ResponderQueueReason.Type;
+
+/** The bots still waiting to answer in a group chat, in order. One value replaces the last. */
+export const ResponderQueue = Schema.Struct({
+  entries: Schema.Array(ResponderQueueEntry),
+  hopsLeft: Schema.Number,
+  reason: ResponderQueueReason,
+  updatedAt: IsoDateTime,
+});
+
+export type ResponderQueue = typeof ResponderQueue.Type;
+
 export const OrchestrationLatestTurn = Schema.Struct({
   turnId: TurnId,
   state: OrchestrationLatestTurnState,
@@ -266,6 +306,8 @@ export const OrchestrationThread = Schema.Struct({
   parentThreadId: Schema.optional(Schema.NullOr(ThreadId)),
   parentDelegationId: Schema.optional(Schema.NullOr(DelegationIdSchema)),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  /** Group chats only: who answers next. Absent until a group message is addressed. */
+  responderQueue: Schema.optional(ResponderQueue),
   title: TrimmedNonEmptyString,
   modelSelection: ModelSelection,
   runtimeMode: RuntimeMode,
