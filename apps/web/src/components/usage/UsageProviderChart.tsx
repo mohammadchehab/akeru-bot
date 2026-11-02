@@ -374,14 +374,14 @@ export function UsageProviderChart({
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div dir="ltr" className="flex flex-col gap-1">
       <div className="flex gap-2">
         {/* Axis labels sit outside the plot so they stay aligned to gridlines. */}
         <div className="relative h-56 w-14 shrink-0">
           {ticks.map((tick) => (
             <span
               key={tick}
-              className="absolute top-(--tick-top) right-0 -translate-y-1/2 text-10px text-muted-foreground tabular-nums"
+              className="absolute top-(--tick-top) end-0 -translate-y-1/2 text-10px text-muted-foreground tabular-nums"
               style={{ "--tick-top": `${(toY(tick) / VIEW_HEIGHT) * 100}%` }}
             >
               {tick === 0 ? "0" : format(tick)}
@@ -460,7 +460,7 @@ export function UsageProviderChart({
           {hoveredPeriod === undefined ? null : (
             <div
               ref={tooltipRef}
-              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) left-(--usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
+              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) start-(--usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
             >
               <div className="mb-1 text-muted-foreground">{formatTooltipPeriod(hoveredPeriod)}</div>
               {providers.map((provider) => {
@@ -491,7 +491,7 @@ export function UsageProviderChart({
         </div>
       </div>
 
-      <div className="flex justify-between pl-16 text-10px text-muted-foreground uppercase">
+      <div className="flex justify-between ps-16 text-10px text-muted-foreground uppercase">
         <span>{periods[0] === undefined ? "" : formatPeriod(periods[0])}</span>
         <span>
           {periods[Math.floor(periods.length / 2)] === undefined

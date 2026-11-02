@@ -94,7 +94,7 @@ export function IdentityStep({
       ) : null}
       <div className="flex gap-2">
         <Button size="icon" variant="ghost-muted" aria-label={t("Back")} onClick={onBack}>
-          <ArrowLeftIcon className="size-4" />
+          <ArrowLeftIcon className="size-4 rtl:-scale-x-100" />
         </Button>
         <Button
           size="onboarding"
@@ -106,7 +106,7 @@ export function IdentityStep({
             <LoaderIcon className="size-4 animate-spin motion-reduce:animate-none" />
           ) : null}
           {t("Continue")}
-          {!creating ? <ArrowRightIcon className="size-4" /> : null}
+          {!creating ? <ArrowRightIcon className="size-4 rtl:-scale-x-100" /> : null}
         </Button>
       </div>
     </div>

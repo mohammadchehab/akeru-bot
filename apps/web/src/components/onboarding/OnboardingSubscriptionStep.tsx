@@ -390,7 +390,7 @@ export function SubscriptionStep({
               aria-checked={active}
               disabled={busy}
               onClick={() => onChange({ ...draft, providerId: definition.id })}
-              className={`relative flex min-h-24 flex-col items-start rounded-2xl border p-3 text-left transition duration-150 motion-reduce:transition-none ${
+              className={`relative flex min-h-24 flex-col items-start rounded-2xl border p-3 text-start transition duration-150 motion-reduce:transition-none ${
                 active
                   ? "border-foreground/30 bg-foreground/[0.06] shadow-sm"
                   : "border-border/65 bg-background/35 hover:bg-foreground/[0.035]"
@@ -440,7 +440,7 @@ export function SubscriptionStep({
       >
         {busy ? <LoaderIcon className="size-4 animate-spin motion-reduce:animate-none" /> : null}
         {connected ? t("Continue") : t("Connect {provider}", { provider: selected.label })}
-        {!busy ? <ArrowRightIcon className="size-4" /> : null}
+        {!busy ? <ArrowRightIcon className="size-4 rtl:-scale-x-100" /> : null}
       </Button>
     </div>
   );

@@ -47,14 +47,17 @@ export function RoutineReceiptRow({
       onClick={opensRoutines ? onOpenRoutines : undefined}
     >
       <Icon aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
-      <span className="min-w-0 flex-1 whitespace-normal break-words text-left leading-5">
+      <span className="min-w-0 flex-1 whitespace-normal break-words text-start leading-5">
         {receipt.text}
       </span>
       <time className="shrink-0 text-11px text-muted-foreground/60" dateTime={receipt.createdAt}>
         {formatDate(new Date(receipt.createdAt), { hour: "numeric", minute: "2-digit" })}
       </time>
       {opensRoutines ? (
-        <ChevronRightIcon aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 opacity-60" />
+        <ChevronRightIcon
+          aria-hidden="true"
+          className="mt-0.5 size-3.5 shrink-0 opacity-60 rtl:-scale-x-100"
+        />
       ) : null}
     </Row>
   );

@@ -76,7 +76,7 @@ export function BotChatsSection({
               }}
             >
               <span
-                className={cn("min-w-0 flex-1 truncate text-left", row.current && "font-medium")}
+                className={cn("min-w-0 flex-1 truncate text-start", row.current && "font-medium")}
               >
                 {row.title ?? t("Untitled chat")}
               </span>

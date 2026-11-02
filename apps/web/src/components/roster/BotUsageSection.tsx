@@ -61,23 +61,23 @@ export function BotUsageSection({
         ) : (
           <div className="grid grid-cols-2 gap-x-5 gap-y-2">
             <span className="text-muted-foreground">{t("Input")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {formatUsageMeasurement(snapshot.measurements.input, t, formatNumber)}
             </span>
             <span className="text-muted-foreground">{t("Output")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {formatUsageMeasurement(snapshot.measurements.output, t, formatNumber)}
             </span>
             <span className="text-muted-foreground">{t("Observer")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {formatUsageMeasurement(snapshot.measurements.observer, t, formatNumber)}
             </span>
             <span className="text-muted-foreground">{t("Reflector")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {formatUsageMeasurement(snapshot.measurements.reflector, t, formatNumber)}
             </span>
             <span className="text-muted-foreground">{t("Estimated cost")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {snapshot.estimatedCost.status === "available"
                 ? `$${formatNumber(snapshot.estimatedCost.usd, {
                     minimumFractionDigits: 2,
@@ -89,7 +89,7 @@ export function BotUsageSection({
               {t("Estimated from reported model usage; this is not subscription spend.")}
             </span>
             <span className="text-muted-foreground">{t("Subscription pool")}</span>
-            <span className="text-right">
+            <span className="text-end">
               {snapshot.subscriptionPool.status === "available"
                 ? snapshot.subscriptionPool.unit === "percent"
                   ? t("{percent}% of pool", {
@@ -106,7 +106,7 @@ export function BotUsageSection({
             {snapshot.reservedTokens > 0 ? (
               <>
                 <span className="text-muted-foreground">{t("Reserved")}</span>
-                <span className="text-right">{formatNumber(snapshot.reservedTokens)}</span>
+                <span className="text-end">{formatNumber(snapshot.reservedTokens)}</span>
               </>
             ) : null}
             {hasUnavailable ? (
