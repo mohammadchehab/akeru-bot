@@ -65,6 +65,8 @@ const NO_RESTYLE = {
 };
 
 export default defineConfig({
+  // Lets a repo-root vitest run import vendored .wasm files (apps/web sets the same).
+  assetsInclude: ["**/*.wasm"],
   resolve: {
     alias: {
       "~": NodeURL.fileURLToPath(new URL("./apps/web/src", import.meta.url)),
@@ -74,6 +76,8 @@ export default defineConfig({
     environment: "node",
     exclude: [
       "**/.repos/**",
+      "**/.claude/**",
+      "**/worktrees/**",
       "**/node_modules/**",
       "**/dist/**",
       "**/dist-electron/**",
