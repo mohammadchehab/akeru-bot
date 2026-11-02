@@ -185,6 +185,52 @@ it.layer(NodeServices.layer)("EnvironmentAuth.layer", (it) => {
     }).pipe(Effect.provide(makeEnvironmentAuthLayer())),
   );
 
+  it.effect("cuts requested standard scopes to a read-only pairing grant", () =>
+    Effect.gen(function* () {
+      const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
+
+      const pairingCredential = yield* serverAuth.issuePairingCredential({
+        scopes: ["orchestration:read"],
+      });
+
+      // Desktop and mobile always request the standard pair.
+      const token = yield* serverAuth.exchangeBootstrapCredentialForAccessToken(
+        pairingCredential.credential,
+        ["orchestration:read", "orchestration:operate"],
+        requestMetadata,
+      );
+
+      expect(token.scope).toBe("orchestration:read");
+
+      const verified = yield* serverAuth.authenticateHttpRequest({
+        cookies: {},
+        headers: Headers.fromInput({ authorization: `Bearer ${token.access_token}` }),
+      } as never);
+
+      expect([...verified.scopes]).toEqual(["orchestration:read"]);
+    }).pipe(Effect.provide(makeEnvironmentAuthLayer())),
+  );
+
+  it.effect("rejects a request that shares no scope with the pairing grant", () =>
+    Effect.gen(function* () {
+      const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
+
+      const pairingCredential = yield* serverAuth.issuePairingCredential({
+        scopes: ["orchestration:read"],
+      });
+
+      const error = yield* serverAuth
+        .exchangeBootstrapCredentialForAccessToken(
+          pairingCredential.credential,
+          ["orchestration:operate"],
+          requestMetadata,
+        )
+        .pipe(Effect.flip);
+
+      expect(error._tag).toBe("ServerAuthScopeNotGrantedError");
+    }).pipe(Effect.provide(makeEnvironmentAuthLayer())),
+  );
+
   it.effect("lets only one of two concurrent admin link redemptions become the first admin", () =>
     Effect.gen(function* () {
       const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;

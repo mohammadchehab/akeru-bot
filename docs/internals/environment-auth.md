@@ -40,8 +40,8 @@ The server advertises two session methods:
 - `browser-session-cookie` for a browser served by that server.
 - `bearer-access-token` for saved remote, mobile, desktop, and SSH connections.
 
-`POST /oauth/token` uses the OAuth token-exchange request shape. Requested scopes must be a subset
-of the bootstrap grant. A successful response has this form:
+`POST /oauth/token` uses the OAuth token-exchange request shape. A successful response has this
+form:
 
 ```json
 {
@@ -52,6 +52,13 @@ of the bootstrap grant. A successful response has this form:
   "scope": "orchestration:read orchestration:operate"
 }
 ```
+
+The token carries the requested scopes cut down to what the bootstrap grant allows. Desktop and
+mobile always request both orchestration scopes, so a read-only link exchanged with
+`orchestration:read orchestration:operate` returns a read-only token and the link is consumed once.
+The exchange fails with a 400 (`scope_not_granted`) when the request names an access scope the link does not
+grant, or shares no scope with the link. Those failures also consume the link, because the grant is
+only known once it is consumed. A request that omits `scope` inherits the whole grant.
 
 The server stores client presentation metadata for the authorized-clients list. IP address and user
 agent come from the request. Presentation fields do not grant access.

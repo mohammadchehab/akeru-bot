@@ -234,6 +234,27 @@ export function selectRequestCredential(
   return undefined;
 }
 
+/**
+ * The scopes a token exchange hands out. Apps always ask for the standard pair, and a
+ * link cannot be checked before it is consumed, so standard scopes the link lacks are
+ * cut from the request instead of failing the exchange. Any other scope the link does
+ * not grant (the access scopes) is a privilege request and yields nothing, as does a
+ * request with no scope in common with the link.
+ */
+function resolveGrantedScopes(
+  requested: ReadonlyArray<AuthEnvironmentScope> | undefined,
+  granted: ReadonlyArray<AuthEnvironmentScope>,
+): ReadonlyArray<AuthEnvironmentScope> {
+  if (requested === undefined) return granted;
+
+  const isStandard = (scope: AuthEnvironmentScope) =>
+    AuthStandardClientScopes.some((standard) => standard === scope);
+
+  if (requested.some((scope) => !granted.includes(scope) && !isStandard(scope))) return [];
+
+  return requested.filter((scope) => granted.includes(scope));
+}
+
 export const make = Effect.gen(function* () {
   const policy = yield* EnvironmentAuthPolicy.EnvironmentAuthPolicy;
   const bootstrapCredentials = yield* PairingGrantStore.PairingGrantStore;
@@ -377,9 +398,9 @@ export const make = Effect.gen(function* () {
         Effect.mapError(toBootstrapExchangeError),
         Effect.flatMap((grant) =>
           Effect.gen(function* () {
-            const grantedScopes = requestedScopes ?? grant.scopes;
+            const grantedScopes = resolveGrantedScopes(requestedScopes, grant.scopes);
 
-            if (!grantedScopes.every((scope) => grant.scopes.includes(scope))) {
+            if (grantedScopes.length === 0) {
               return yield* new ServerAuthScopeNotGrantedError({});
             }
 
