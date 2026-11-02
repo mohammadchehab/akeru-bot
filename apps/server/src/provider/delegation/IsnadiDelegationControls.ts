@@ -18,6 +18,7 @@ import {
   phaseChildThreadId,
   isReachableFromThread,
   TERMINAL_PHASES,
+  IsnadiDelegationUnknownBotError,
 } from "./IsnadiDelegationPolicy.ts";
 
 export function createIsnadiDelegationControls(
@@ -45,6 +46,40 @@ export function createIsnadiDelegationControls(
     }
 
     return { parentThread, bot };
+  };
+
+  // Bots often pass a member's name where a bot ID is expected. A unique active
+  // member name resolves to its ID; anything else fails naming the valid members.
+  const resolveBotId = (
+    snapshot: OrchestrationReadModel,
+    parent: IsnadiDelegationParent,
+    requested: BotId,
+  ): BotId => {
+    if (snapshot.bots.some((candidate) => candidate.id === requested)) return requested;
+
+    const parentThread = snapshot.threads.find((thread) => thread.id === parent.threadId);
+
+    if (!parentThread) return requested;
+
+    const members = snapshot.bots.filter(
+      (candidate) =>
+        candidate.archivedAt === null &&
+        candidate.id !== parent.botId &&
+        isReachableFromThread(snapshot, parentThread, candidate),
+    );
+
+    const name = requested.trim().replace(/^@/, "");
+
+    const matches = members.filter(
+      (candidate) => candidate.name.localeCompare(name, undefined, { sensitivity: "accent" }) === 0,
+    );
+
+    if (matches.length === 1 && matches[0]) return matches[0].id;
+
+    throw new IsnadiDelegationUnknownBotError({
+      requested,
+      members: members.map((member) => ({ id: member.id, name: member.name })),
+    });
   };
 
   const create = async (
@@ -92,7 +127,7 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.CheckAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
-    const { bot } = availableBot(snapshot, parent, request.botId);
+    const { bot } = availableBot(snapshot, parent, resolveBotId(snapshot, parent, request.botId));
 
     // A group thread holds work from several parent bots; each bot reads and
     // acknowledges only its own results.
@@ -135,12 +170,12 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.StopAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
-    availableBot(snapshot, parent, request.botId);
+    const { bot } = availableBot(snapshot, parent, resolveBotId(snapshot, parent, request.botId));
 
     const active = snapshot.delegations.filter(
       (delegation) =>
         delegation.parentThreadId === parent.threadId &&
-        delegation.childBotId === request.botId &&
+        delegation.childBotId === bot.id &&
         !TERMINAL_PHASES.has(delegation.phase._tag),
     );
 
@@ -156,7 +191,7 @@ export function createIsnadiDelegationControls(
       });
     }
 
-    return { botId: request.botId, stopped: active.map((entry) => entry.delegationId) };
+    return { botId: bot.id, stopped: active.map((entry) => entry.delegationId) };
   };
 
   return { availableBot, create, check, stop };
