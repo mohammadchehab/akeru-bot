@@ -41,6 +41,12 @@ package versions synchronized. Only the repository-owned Changesets branch and b
 request can bypass the marker check or change those stable versions. Updates to that branch dispatch
 CI against the exact pull request head SHA; empty-only changesets do not dispatch a version branch.
 
+[`.github/workflows/mobile-bundle.yml`](../../.github/workflows/mobile-bundle.yml) runs
+`expo export --platform ios` when mobile code, shared packages, or the lockfile change, on pull requests and
+on `main`. Repository checks exclude `@isnadi/mobile`, so this is the only job that resolves the Metro
+graph; a missing import or asset fails it. It is a separate status and is not part of the required
+`Repository checks` result.
+
 [`.github/workflows/installer-tests.yml`](../../.github/workflows/installer-tests.yml) runs focused
 Windows PowerShell 5.1 tests when the Windows installer changes. It checks checksum rejection,
 per-invocation temporary files, failure cleanup, and the bootstrap under Restricted execution policy.
