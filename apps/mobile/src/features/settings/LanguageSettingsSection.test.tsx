@@ -9,6 +9,8 @@ const mocks = vi.hoisted(() => ({
   preferences: {},
   result: {},
   save: vi.fn(),
+  alert: vi.fn(),
+  nativeIsRTL: false,
   buttons: [] as Array<{ accessibilityLabel: string; disabled: boolean; onPress: () => void }>,
 }));
 
@@ -24,6 +26,12 @@ vi.mock("@effect/atom-react", () => ({
 
 vi.mock("react-native", () => ({
   AppState: { addEventListener: () => ({ remove: vi.fn() }) },
+  Alert: { alert: mocks.alert },
+  I18nManager: {
+    get isRTL() {
+      return mocks.nativeIsRTL;
+    },
+  },
   View: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   Pressable: (props: {
     children: ReactNode;
@@ -73,6 +81,8 @@ describe("mobile language selector", () => {
     mocks.preferences = AsyncResult.success({});
     mocks.result = AsyncResult.initial();
     mocks.save.mockClear();
+    mocks.alert.mockClear();
+    mocks.nativeIsRTL = false;
     mocks.buttons.length = 0;
   });
 
@@ -112,5 +122,33 @@ describe("mobile language selector", () => {
   it("shows persistence failures rather than claiming a successful save", () => {
     mocks.result = AsyncResult.fail("storage unavailable");
     expect(renderSelector()).toContain("Could not save preferences. Try again.");
+  });
+
+  it("asks before a restart when the language reads the other way round", () => {
+    mocks.nativeIsRTL = true;
+    renderSelector();
+
+    mocks.buttons[1]?.onPress();
+
+    expect(mocks.save).not.toHaveBeenCalled();
+    expect(mocks.alert).toHaveBeenCalledTimes(1);
+
+    const [title, , actions] = mocks.alert.mock.calls[0] ?? [];
+
+    expect(title).toBe("Restart to change the layout direction");
+    expect(actions.map((action: { text: string }) => action.text)).toEqual(["Cancel", "Restart"]);
+
+    actions[1].onPress();
+
+    expect(mocks.save).toHaveBeenLastCalledWith({ language: "en" });
+  });
+
+  it("does not ask when the layout already reads the right way", () => {
+    renderSelector();
+
+    mocks.buttons[1]?.onPress();
+
+    expect(mocks.alert).not.toHaveBeenCalled();
+    expect(mocks.save).toHaveBeenLastCalledWith({ language: "en" });
   });
 });

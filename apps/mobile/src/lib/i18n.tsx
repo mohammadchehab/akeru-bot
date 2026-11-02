@@ -45,7 +45,7 @@ const LanguageContext = createContext({
 });
 
 // iOS keeps the ordered language list in user defaults; Android exposes only the resolved locale.
-const readDevicePreferredLocales = () =>
+export const readDevicePreferredLocales = () =>
   readDeviceLocales(() => (Platform.OS === "ios" ? Settings.get("AppleLanguages") : undefined));
 
 export function MobileLanguageProvider({ children }: { readonly children: ReactNode }) {

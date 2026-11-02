@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { layoutDirectionAction, layoutDirectionForPreference } from "./layoutDirection";
+import {
+  languageNeedsRestart,
+  layoutDirectionAction,
+  layoutDirectionForPreference,
+} from "./layoutDirection";
 
 describe("layoutDirectionForPreference", () => {
   it("follows the chosen language, and the device for System default", () => {
@@ -35,6 +39,23 @@ describe("layoutDirectionAction", () => {
     );
     expect(layoutDirectionAction({ wanted: "ltr", nativeIsRTL: true, forced: "ltr" })).toBe(
       "refused",
+    );
+  });
+});
+
+describe("languageNeedsRestart", () => {
+  it("needs no restart between languages that read the same way", () => {
+    expect(
+      languageNeedsRestart({ preference: "zh-CN", deviceLocales: [], nativeIsRTL: false }),
+    ).toBe(false);
+    expect(
+      languageNeedsRestart({ preference: "system", deviceLocales: ["en-US"], nativeIsRTL: false }),
+    ).toBe(false);
+  });
+
+  it("needs a restart when the layout is right-to-left and the language is not", () => {
+    expect(languageNeedsRestart({ preference: "en", deviceLocales: [], nativeIsRTL: true })).toBe(
+      true,
     );
   });
 });

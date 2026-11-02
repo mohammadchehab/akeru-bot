@@ -1,9 +1,10 @@
 import { useAtomSet, useAtomValue } from "@effect/atom-react";
 import { availableLanguages } from "@isnadi/client-runtime/i18n";
 import { AsyncResult } from "effect/unstable/reactivity";
-import { Pressable, View } from "react-native";
+import { Alert, I18nManager, Pressable, View } from "react-native";
 import { AppText as Text } from "../../components/AppText";
-import { useMobileI18n } from "../../lib/i18n";
+import { readDevicePreferredLocales, useMobileI18n } from "../../lib/i18n";
+import { languageNeedsRestart } from "../../lib/layoutDirection";
 import { mobilePreferencesAtom, updateMobilePreferencesAtom } from "../../state/preferences";
 import { SettingsSection } from "./components/SettingsSection";
 
@@ -14,6 +15,30 @@ export function LanguageSettingsSection() {
   const result = useAtomValue(updateMobilePreferencesAtom);
   const ready = AsyncResult.isSuccess(preferences) && !preferences.waiting;
   const options = [{ id: "system", label: t("System default") }, ...availableLanguages];
+
+  // A language that reads the other way round restarts the app to flip the layout, so it asks first.
+  const choose = (id: string) => {
+    const needsRestart = languageNeedsRestart({
+      preference: id,
+      deviceLocales: readDevicePreferredLocales(),
+      nativeIsRTL: I18nManager.isRTL,
+    });
+
+    if (!needsRestart) {
+      save({ language: id });
+
+      return;
+    }
+
+    Alert.alert(
+      t("Restart to change the layout direction"),
+      t("The app restarts to switch the layout direction. Unsent drafts are kept."),
+      [
+        { text: t("Cancel"), style: "cancel" },
+        { text: t("Restart"), onPress: () => save({ language: id }) },
+      ],
+    );
+  };
 
   return (
     <View className="gap-3">
@@ -30,7 +55,7 @@ export function LanguageSettingsSection() {
             }
             accessibilityState={{ checked: preference === option.id, disabled: !ready }}
             disabled={!ready}
-            onPress={() => save({ language: option.id })}
+            onPress={() => choose(option.id)}
             className="flex-row items-center justify-between p-4"
           >
             <Text className="text-lg text-foreground">{option.label}</Text>

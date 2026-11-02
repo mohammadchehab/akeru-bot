@@ -27,3 +27,15 @@ export function layoutDirectionAction(input: {
 
   return input.forced === input.wanted ? "refused" : "reload";
 }
+
+/** Whether choosing a language flips the native layout direction, which takes a restart. */
+export function languageNeedsRestart(input: {
+  readonly preference: string;
+  readonly deviceLocales: readonly string[];
+  readonly nativeIsRTL: boolean;
+}): boolean {
+  return (
+    (layoutDirectionForPreference(input.preference, input.deviceLocales) === "rtl") !==
+    input.nativeIsRTL
+  );
+}

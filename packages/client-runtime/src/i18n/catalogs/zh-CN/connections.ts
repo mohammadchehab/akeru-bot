@@ -75,6 +75,10 @@ export const connectionsCatalog = {
   "Validating the pairing link and preparing your session.": "正在验证配对链接并准备会话。",
   "Verify the backend is reachable from this browser, supports CORS for hosted clients, and is served over HTTPS when opening this page from HTTPS.":
     "请确认后端可从此浏览器访问、对托管客户端支持 CORS，并且在通过 HTTPS 打开此页面时也通过 HTTPS 提供服务。",
+  "Restart to change the layout direction": "重启以切换布局方向",
+  "The app restarts to switch the layout direction. Unsent drafts are kept.":
+    "应用将重启以切换布局方向。未发送的草稿会保留。",
+  Restart: "重启",
   "Language applies only to this device.": "语言设置仅应用于此设备。",
   "In {environment}": "位于 {environment}",
   "Controls this environment's web and desktop calls. Native mobile audio calls are not supported. Configure voice services in web or desktop Settings.":

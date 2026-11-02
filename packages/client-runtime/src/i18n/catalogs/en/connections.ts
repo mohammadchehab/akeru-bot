@@ -79,6 +79,10 @@ export const connectionsCatalog = {
     "Validating the pairing link and preparing your session.",
   "Verify the backend is reachable from this browser, supports CORS for hosted clients, and is served over HTTPS when opening this page from HTTPS.":
     "Verify the backend is reachable from this browser, supports CORS for hosted clients, and is served over HTTPS when opening this page from HTTPS.",
+  "Restart to change the layout direction": "Restart to change the layout direction",
+  "The app restarts to switch the layout direction. Unsent drafts are kept.":
+    "The app restarts to switch the layout direction. Unsent drafts are kept.",
+  Restart: "Restart",
   "Language applies only to this device.": "Language applies only to this device.",
   "In {environment}": "In {environment}",
   "Controls this environment's web and desktop calls. Native mobile audio calls are not supported. Configure voice services in web or desktop Settings.":
