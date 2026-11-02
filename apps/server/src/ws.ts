@@ -1,7 +1,14 @@
 import * as Effect from "effect/Effect";
+import * as DateTime from "effect/DateTime";
 import * as Layer from "effect/Layer";
+import * as Stream from "effect/Stream";
 import { type OrchestrationClientOrigin, WsRpcGroup } from "@isnadi/contracts";
-import { HttpRouter, HttpServerRequest, HttpServerRespondable } from "effect/unstable/http";
+import {
+  HttpRouter,
+  HttpServerRequest,
+  HttpServerRespondable,
+  HttpServerResponse,
+} from "effect/unstable/http";
 import { RpcSerialization, RpcServer } from "effect/unstable/rpc";
 import * as OrchestrationEngine from "./orchestration/Services/OrchestrationEngine.ts";
 import * as ProviderMaintenanceRunner from "./provider/providerMaintenanceRunner.ts";
@@ -117,9 +124,35 @@ export const websocketRpcRouteLayer = Layer.unwrap(
           ),
         );
 
+        // Auth is checked once at upgrade, so the socket must end itself when its
+        // session is revoked or reaches its expiry; winning the race interrupts the
+        // handler, which closes the socket and its subscriptions.
+        const { expiresAt } = session;
+
+        const sessionEnded = Effect.raceFirst(
+          sessions.streamChanges.pipe(
+            Stream.filter(
+              (change) => change.type === "clientRemoved" && change.sessionId === session.sessionId,
+            ),
+            Stream.take(1),
+            Stream.runDrain,
+          ),
+          expiresAt === undefined
+            ? Effect.never
+            : DateTime.now.pipe(
+                Effect.flatMap((now) =>
+                  Effect.sleep(Math.max(0, expiresAt.epochMilliseconds - now.epochMilliseconds)),
+                ),
+              ),
+        );
+
         return yield* Effect.acquireUseRelease(
           sessions.markConnected(session.sessionId),
-          () => rpcWebSocketHttpEffect,
+          () =>
+            Effect.raceFirst(
+              rpcWebSocketHttpEffect,
+              sessionEnded.pipe(Effect.as(HttpServerResponse.empty({ status: 401 }))),
+            ),
           () => sessions.markDisconnected(session.sessionId),
         );
       }).pipe(
