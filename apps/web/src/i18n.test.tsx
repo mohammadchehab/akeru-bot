@@ -1,7 +1,13 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
-import { availableLanguages, LanguageProvider, normalizeLanguagePreference, useI18n } from "./i18n";
+import {
+  applyDocumentLanguage,
+  availableLanguages,
+  LanguageProvider,
+  normalizeLanguagePreference,
+  useI18n,
+} from "./i18n";
 
 function Probe() {
   const { t, locale } = useI18n();
@@ -35,5 +41,31 @@ describe("client-local language preference", () => {
     expect(output).toContain("Langue de test / Close");
     expect(availableLanguages).toHaveLength(2);
     expect(renderToStaticMarkup(createElement(Probe))).toContain("Language / Close");
+  });
+});
+
+describe("document direction", () => {
+  it("sets lang and dir together on the document element", () => {
+    const root = { lang: "", dir: "" };
+
+    applyDocumentLanguage(root, { locale: "ar", direction: "rtl" });
+    expect(root).toEqual({ lang: "ar", dir: "rtl" });
+
+    applyDocumentLanguage(root, { locale: "en", direction: "ltr" });
+    expect(root).toEqual({ lang: "en", dir: "ltr" });
+  });
+
+  it("exposes the direction of the injected catalog", () => {
+    function DirectionProbe() {
+      return createElement("span", { dir: useI18n().direction });
+    }
+
+    const output = renderToStaticMarkup(
+      <LanguageProvider testCatalog={{ locale: "ar", catalog: {} }}>
+        <DirectionProbe />
+      </LanguageProvider>,
+    );
+
+    expect(output).toContain('dir="rtl"');
   });
 });

@@ -1,3 +1,4 @@
+import { DirectionProvider } from "@base-ui/react/direction-provider";
 import type * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
 import {
@@ -15,6 +16,7 @@ import {
   createCatalogLoader,
   createTranslator,
   resolveLocale,
+  type TextDirection,
   type TranslationCatalog,
 } from "@isnadi/client-runtime/i18n";
 import {
@@ -39,6 +41,15 @@ function subscribeDeviceLanguage(listener: () => void) {
 
 function getDeviceLocale() {
   return resolveLocale("system", typeof navigator === "undefined" ? [] : navigator.languages);
+}
+
+/** Sets `lang` and `dir` together so the document never shows one language in the other's direction. */
+export function applyDocumentLanguage(
+  root: { lang: string; dir: string },
+  { locale, direction }: { locale: string; direction: TextDirection },
+) {
+  root.lang = locale;
+  root.dir = direction;
 }
 
 export interface TestLanguageCatalog {
@@ -138,10 +149,14 @@ export function LanguageProvider({
   );
 
   useEffect(() => {
-    document.documentElement.lang = translator.locale;
-  }, [translator.locale]);
+    applyDocumentLanguage(document.documentElement, translator);
+  }, [translator]);
 
-  return <LanguageContext value={value}>{children}</LanguageContext>;
+  return (
+    <LanguageContext value={value}>
+      <DirectionProvider direction={translator.direction}>{children}</DirectionProvider>
+    </LanguageContext>
+  );
 }
 
 export function useI18n() {
