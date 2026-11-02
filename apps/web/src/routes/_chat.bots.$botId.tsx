@@ -12,6 +12,7 @@ import {
 } from "@isnadi/contracts";
 import {
   botRoutinesView,
+  enabledSkillNames,
   toRoutineSchedule,
   type RoutineAdapterDraft,
 } from "@isnadi/client-runtime/routines";
@@ -92,16 +93,8 @@ function BotThreadRouteView() {
     [bot?.engine?.provider, providers],
   );
 
-  const skillOptions = useMemo(
-    () =>
-      [
-        ...new Set([
-          ...botAssignments.map((assignment) => assignment.name),
-          ...providerSkills.map((skill) => skill.name),
-        ]),
-      ].sort(),
-    [botAssignments, providerSkills],
-  );
+  // Only skills the engine has enabled right now; an old assignment alone no longer offers one.
+  const skillOptions = useMemo(() => enabledSkillNames(providerSkills), [providerSkills]);
 
   const routinesView = useMemo(() => botRoutinesView(snapshot, botId), [botId, snapshot]);
   const routines = routinesView.kind === "ready" ? routinesView.routines : [];

@@ -240,6 +240,13 @@ export function botRoutinesView(
   };
 }
 
+/** The skills an engine currently has enabled, each once, sorted: the only ones a routine can pick. */
+export function enabledSkillNames(
+  skills: ReadonlyArray<{ readonly name: string; readonly enabled: boolean }>,
+): string[] {
+  return [...new Set(skills.flatMap((skill) => (skill.enabled ? [skill.name] : [])))].sort();
+}
+
 /** The translator slice routine labels need. Helpers default to English outside React. */
 export type RoutineTranslator = Pick<ReturnType<typeof createTranslator>, "t" | "formatDate">;
 
