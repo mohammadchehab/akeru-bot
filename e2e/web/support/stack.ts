@@ -82,6 +82,8 @@ async function waitUntilServed(origin: string, budgetMs: number): Promise<void> 
 }
 
 export interface Stack {
+  /** The tail of what the dev runner has printed, for failure reports. */
+  readonly output: () => string;
   /** One-time URL that pairs a fresh browser with the environment. */
   readonly pairingUrl: string;
   readonly stub: StubOpenAI;
@@ -125,6 +127,8 @@ export async function startStack(): Promise<Stack> {
   delete env.ISNADI_HOME;
   delete env.AKERU_HOME;
   delete env.T3CODE_HOME;
+
+  const launchedAt = performance.now();
 
   // Detached so the whole process tree can be signalled as one group.
   const child = NodeChildProcess.spawn(
@@ -190,6 +194,8 @@ export async function startStack(): Promise<Stack> {
     NodeFS.rmSync(home, { recursive: true, force: true });
   };
 
+  console.error(`[e2e] pairing URL after ${String(Math.round(performance.now() - launchedAt))}ms`);
+
   try {
     await waitUntilServed(new URL(pairingUrl).origin, SERVED_TIMEOUT_MS);
   } catch (error) {
@@ -198,5 +204,7 @@ export async function startStack(): Promise<Stack> {
     throw error;
   }
 
-  return { pairingUrl, stub, stop };
+  console.error(`[e2e] stack served after ${String(Math.round(performance.now() - launchedAt))}ms`);
+
+  return { pairingUrl, stub, stop, output: () => output };
 }
