@@ -262,6 +262,12 @@ export const ResponderQueue = Schema.Struct({
    * The server always writes it; it is optional so a snapshot from before it existed decodes.
    */
   hopsUsed: Schema.optional(NonNegativeInt),
+  /**
+   * Set once a mention was dropped because the budget was spent, and copied by every queue event
+   * for the same user message. A new user message resets it. Clients show 'Stopped after N
+   * replies' when the queue is empty and this is true.
+   */
+  budgetExhausted: Schema.optional(Schema.Boolean),
   reason: ResponderQueueReason,
   updatedAt: IsoDateTime,
 });

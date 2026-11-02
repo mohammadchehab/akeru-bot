@@ -215,6 +215,20 @@ const ThreadResponderAdvanceCommand = Schema.Struct({
   createdAt: IsoDateTime,
 });
 
+/**
+ * A group bot's finished reply, handed to the decider so the bots it mentions can be queued. The
+ * reply text travels only on this internal command; the persisted event carries the resolved bots.
+ */
+const ThreadResponderMentionCommand = Schema.Struct({
+  type: Schema.Literal("thread.responder.mention"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  turnId: TurnId,
+  botId: BotId,
+  text: Schema.String,
+  createdAt: IsoDateTime,
+});
+
 const ThreadSessionSetCommand = Schema.Struct({
   type: Schema.Literal("thread.session.set"),
   commandId: CommandId,
@@ -333,6 +347,7 @@ export const DelegationStateSetCommand = Schema.Struct({
 const InternalOrchestrationCommand = Schema.Union([
   InternalRoutineCommand,
   ThreadResponderAdvanceCommand,
+  ThreadResponderMentionCommand,
   ThreadSessionSetCommand,
   ThreadMessageAssistantDeltaCommand,
   ThreadMessageAssistantCompleteCommand,

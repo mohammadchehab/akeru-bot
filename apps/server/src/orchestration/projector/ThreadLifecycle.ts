@@ -293,6 +293,7 @@ export function projectThreadLifecycle(
               entries: payload.entries,
               hopsLeft: payload.hopsLeft,
               hopsUsed: payload.hopsUsed,
+              ...(payload.budgetExhausted ? { budgetExhausted: true } : {}),
               reason: payload.reason,
               updatedAt: payload.updatedAt,
             },
