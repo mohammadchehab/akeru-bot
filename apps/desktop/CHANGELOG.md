@@ -1,5 +1,24 @@
 ## @isnadi/desktop@0.0.41
 
+## 0.3.0
+
+### Minor Changes
+
+- [#13](https://github.com/mohammadchehab/isnadibot/pull/13) [`daaa280`](https://github.com/mohammadchehab/isnadibot/commit/daaa2800ec88c79b659d2a78cec81dc84a3f154e) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The product is now IsnadiBot everywhere: the `isnadi` command, `ISNADI_*` environment variables, `~/.isnadi`, and the `isnadi://` desktop scheme. Existing data moves over on first launch, including the server database, the app's stored settings and themes, saved connections, in-app browser sessions, and old chat blocks and archives. The old `AKERU_*` environment variables still work. Product feedback is off until you set your own endpoint.
+
+### Patch Changes
+
+- [`66ba44d`](https://github.com/mohammadchehab/isnadibot/commit/66ba44dfcde1fbb3e63cf27f2afb73001baa26c5) Thanks [@leoisadev1](https://github.com/leoisadev1)! - Remove temporary files left behind when desktop settings or saved connections fail to save.
+
+- [`66ba44d`](https://github.com/mohammadchehab/isnadibot/commit/66ba44dfcde1fbb3e63cf27f2afb73001baa26c5) Thanks [@leoisadev1](https://github.com/leoisadev1)! - Validate browser automation results before using them so malformed debugger replies produce an operation error.
+
+- Updated dependencies []:
+  - @isnadi/contracts@0.3.0
+  - @isnadi/client-runtime@0.0.5
+  - @isnadi/shared@0.0.5
+  - @isnadi/ssh@0.0.5
+  - @isnadi/tailscale@0.0.5
+
 ## 0.2.1
 
 ### Patch Changes
