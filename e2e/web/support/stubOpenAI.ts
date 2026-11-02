@@ -2,11 +2,20 @@ import * as NodeHttp from "node:http";
 
 export const STUB_MODEL = "e2e-stub-model";
 
-export const STUB_REPLY = "Stub reply from the e2e endpoint.";
+/** The stub answers as the bot named in the system prompt ("You are <name>, ..."), so a wrong responder shows. */
+export const stubReplyFrom = (botName: string) => `Stub reply from ${botName}.`;
+
+export interface StubCompletion {
+  readonly bot: string;
+  /** The last user message of the request, which is the turn being answered. */
+  readonly user: string;
+}
 
 export interface StubOpenAI {
   readonly baseUrl: string;
   readonly requests: ReadonlyArray<string>;
+  /** Every chat completion answered, in order. */
+  readonly completions: ReadonlyArray<StubCompletion>;
   readonly close: () => Promise<void>;
 }
 
@@ -18,6 +27,16 @@ function readBody(request: NodeHttp.IncomingMessage): Promise<string> {
     request.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     request.on("error", reject);
   });
+}
+
+function botNameFrom(body: string): string {
+  return /You are ([^,"\\]+),/.exec(body)?.[1] ?? "unknown bot";
+}
+
+function lastUserTextFrom(body: string): string {
+  const users = [...body.matchAll(/"role":"user","content":"((?:[^"\\]|\\.)*)"/g)];
+
+  return users.at(-1)?.[1] ?? "";
 }
 
 function wantsStream(body: string): boolean {
@@ -41,6 +60,7 @@ function chunk(delta: { role?: string; content?: string }, finishReason: string 
  */
 export async function startStubOpenAI(): Promise<StubOpenAI> {
   const requests: Array<string> = [];
+  const completions: Array<StubCompletion> = [];
 
   const server = NodeHttp.createServer((request, response) => {
     const path = (request.url ?? "").split("?")[0] ?? "";
@@ -56,13 +76,17 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
 
     if (request.method === "POST" && path.endsWith("/chat/completions")) {
       void readBody(request).then((body) => {
+        const bot = botNameFrom(body);
+
+        completions.push({ bot, user: lastUserTextFrom(body) });
+
         if (wantsStream(body)) {
           response.writeHead(200, {
             "content-type": "text/event-stream",
             "cache-control": "no-cache",
           });
           response.write(chunk({ role: "assistant", content: "" }, null));
-          response.write(chunk({ content: STUB_REPLY }, null));
+          response.write(chunk({ content: stubReplyFrom(bot) }, null));
           response.write(chunk({}, "stop"));
           response.end("data: [DONE]\n\n");
 
@@ -79,7 +103,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
             choices: [
               {
                 index: 0,
-                message: { role: "assistant", content: STUB_REPLY },
+                message: { role: "assistant", content: stubReplyFrom(bot) },
                 finish_reason: "stop",
               },
             ],
@@ -108,6 +132,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
   return {
     baseUrl: `http://127.0.0.1:${String(port)}/v1`,
     requests,
+    completions,
     close: () =>
       new Promise<void>((resolve) => {
         server.closeAllConnections();
