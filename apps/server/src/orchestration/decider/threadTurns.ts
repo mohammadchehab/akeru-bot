@@ -42,6 +42,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
     {
       type:
         | "thread.turn.start"
+        | "thread.responder.advance"
         | "thread.turn.resume"
         | "thread.turn.interrupt"
         | "thread.approval.respond"
@@ -466,13 +467,13 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
     }
 
     case "thread.turn.interrupt": {
-      yield* requireThread({
+      const interruptedThread = yield* requireThread({
         readModel,
         command,
         threadId: command.threadId,
       });
 
-      return {
+      const interruptEvent: Omit<OrchestrationEvent, "sequence"> = {
         ...(yield* withEventBase({
           aggregateKind: "thread",
           aggregateId: command.threadId,
@@ -486,6 +487,120 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           createdAt: command.createdAt,
         },
       };
+
+      // Stop ends the whole answer, not just the current bot: nobody waiting still speaks.
+      if ((interruptedThread.responderQueue?.entries.length ?? 0) === 0) return interruptEvent;
+
+      return [
+        interruptEvent,
+        {
+          ...(yield* withEventBase({
+            aggregateKind: "thread",
+            aggregateId: command.threadId,
+            occurredAt: command.createdAt,
+            commandId: command.commandId,
+          })),
+          causationEventId: interruptEvent.eventId,
+          type: "thread.responder-queue.set",
+          payload: {
+            threadId: command.threadId,
+            entries: [],
+            hopsLeft: GROUP_HOP_BUDGET,
+            reason: "stopped",
+            updatedAt: command.createdAt,
+          },
+        },
+      ];
+    }
+
+    case "thread.responder.advance": {
+      const thread = yield* requireThread({
+        readModel,
+        command,
+        threadId: command.threadId,
+      });
+
+      const queue = thread.responderQueue;
+      const next = queue?.entries[0];
+
+      // One turn at a time: nothing starts while the last bot is still answering.
+      const answering =
+        thread.latestTurn?.state === "running" || thread.session?.status === "running";
+
+      if (queue === undefined || next === undefined || answering) return [];
+
+      const rest = queue.entries.slice(1);
+      const group = thread.groupId
+        ? readModel.groups.find((entry) => entry.id === thread.groupId)
+        : undefined;
+
+      const nextBot =
+        group === undefined
+          ? undefined
+          : readModel.bots.find(
+              (bot) =>
+                bot.id === next.botId &&
+                bot.archivedAt === null &&
+                activeGroupBotIds(readModel, group).has(bot.id),
+            );
+
+      const queueEvent = Effect.fn("queueEvent")(function* (reason: "turn-started" | "superseded") {
+        return {
+          ...(yield* withEventBase({
+            aggregateKind: "thread",
+            aggregateId: command.threadId,
+            occurredAt: command.createdAt,
+            commandId: command.commandId,
+          })),
+          type: "thread.responder-queue.set",
+          payload: {
+            threadId: command.threadId,
+            entries: rest,
+            hopsLeft: queue.hopsLeft,
+            reason,
+            updatedAt: command.createdAt,
+          },
+        } satisfies Omit<OrchestrationEvent, "sequence">;
+      });
+
+      // A bot that left the group, or was archived, while waiting is skipped, not woken.
+      if (nextBot === undefined) return [yield* queueEvent("superseded")];
+
+      const poppedEvent = yield* queueEvent("turn-started");
+
+      const turnStartEvent: Omit<OrchestrationEvent, "sequence"> = {
+        ...(yield* withEventBase({
+          aggregateKind: "thread",
+          aggregateId: command.threadId,
+          occurredAt: command.createdAt,
+          commandId: command.commandId,
+        })),
+        causationEventId: poppedEvent.eventId,
+        type: "thread.turn-start-requested",
+        payload: {
+          threadId: command.threadId,
+          // The turn answers the message that addressed it; it reads the rest through shared history.
+          messageId:
+            next.trigger.kind === "user"
+              ? next.trigger.messageId
+              : MessageId.make(`${command.commandId}:responder`),
+          ...(nextBot.engine !== null
+            ? {
+                modelSelection: {
+                  instanceId: ProviderInstanceId.make(nextBot.engine.provider),
+                  model: nextBot.engine.model,
+                  ...(nextBot.engine.options ? { options: nextBot.engine.options } : {}),
+                },
+              }
+            : {}),
+          runtimeMode: thread.runtimeMode,
+          interactionMode: thread.interactionMode,
+          respondingBotId: nextBot.id,
+          createdAt: command.createdAt,
+        },
+      };
+
+      return [poppedEvent, turnStartEvent];
     }
 
     case "thread.approval.respond": {
