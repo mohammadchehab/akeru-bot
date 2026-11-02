@@ -1,4 +1,5 @@
 # GitHub-hosted CI validates pull requests before they reach main, and main after each merge.
+# Independent jobs run in parallel; the last job, "Repository checks", is the single required status.
 
 name: CI
 
@@ -20,14 +21,45 @@ on:
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  check:
-    name: Repository checks
+  changes:
+    name: Changed files
     if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      # Docs-only pull requests skip the build and test jobs. Renames count both paths. Pushes to main and dispatches always run everything.
+      - name: Detect code changes
+        id: filter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if test "$EVENT_NAME" != pull_request; then
+            echo 'code=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files="$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --jq '.[] | .filename, (.previous_filename // empty)')"
+          test -n "$files"
+          if printf '%s\n' "$files" | grep -qvE '^(docs/|\.changeset/|\.github/assets/|[^/]+\.md$)'; then
+            echo 'code=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'code=false' >> "$GITHUB_OUTPUT"
+          fi
+
+  static:
+    name: Static checks
+    needs: changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -62,18 +94,8 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Vite+
-        uses: voidzero-dev/setup-vp@v1
-        with:
-          node-version-file: package.json
-          cache: true
-          run-install: false
-
-      - name: Reject dependencies outside the repository
-        run: node scripts/check-public-dependencies.ts
-
-      - name: Install from the committed lockfile
-        run: vp install --frozen-lockfile
+      - name: Install workspace
+        uses: ./.github/actions/install
 
       - name: Protect stable release versions
         # The owner labels a PR release-version-reset to move versions on purpose (first release).
@@ -110,6 +132,7 @@ jobs:
           vp exec changeset status --since=origin/main
 
       - name: Ensure Electron runtime is installed
+        if: ${{ needs.changes.outputs.code == 'true' }}
         run: vp run --filter @isnadi/desktop ensure:electron
 
       - name: Validate plugin catalog
@@ -125,13 +148,33 @@ jobs:
           plugins/lifecycle-matrix.test.ts
 
       - name: Lint
+        if: ${{ needs.changes.outputs.code == 'true' }}
         run: vp run lint
 
       - name: Check formatting
         run: vp run fmt:check
 
       - name: Typecheck
+        if: ${{ needs.changes.outputs.code == 'true' }}
         run: vp run typecheck
+
+  desktop:
+    name: Desktop build and package tests
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.expected_sha || github.sha }}
+
+      - name: Install workspace
+        uses: ./.github/actions/install
+
+      - name: Ensure Electron runtime is installed
+        run: vp run --filter @isnadi/desktop ensure:electron
 
       - name: Build desktop pipeline
         run: vp run build:desktop
@@ -154,10 +197,43 @@ jobs:
       - name: Test shipped desktop and shared packages
         run: vp run --parallel --concurrency-limit 4 --filter '!isnadibot' --filter '!@isnadi/monorepo' --filter '!@isnadi/mobile' test
 
+      - name: Exercise release-only configuration
+        run: vp run release:smoke
+
+  server:
+    name: Server tests
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.expected_sha || github.sha }}
+
+      - name: Install workspace
+        uses: ./.github/actions/install
+
+      - name: Ensure Electron runtime is installed
+        run: vp run --filter @isnadi/desktop ensure:electron
+
       - name: Test isolated server suite
         run: >-
           vp run --filter isnadibot test
           --exclude integration/orchestrationEngine.integration.test.ts
+
+  native:
+    name: Resource monitor
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.expected_sha || github.sha }}
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -170,5 +246,33 @@ jobs:
       - name: Test resource monitor
         run: cargo test --locked --manifest-path native/resource-monitor/Cargo.toml
 
-      - name: Exercise release-only configuration
-        run: vp run release:smoke
+  # The only job the repository ruleset requires. It stays green when docs-only pull requests skip the
+  # heavy jobs, and fails when any job fails, is cancelled, or is skipped when it should have run.
+  check:
+    name: Repository checks
+    needs: [changes, static, desktop, server, native]
+    if: ${{ always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to have run as expected
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          code="$(printf '%s' "$NEEDS" | jq -r '.changes.outputs.code')"
+          expected_heavy=skipped
+          test "$code" = true && expected_heavy=success
+          status=0
+          check() {
+            actual="$(printf '%s' "$NEEDS" | jq -r ".\"$1\".result")"
+            if test "$actual" != "$2"; then
+              printf '%s: expected %s, got %s\n' "$1" "$2" "$actual" >&2
+              status=1
+            fi
+          }
+          check changes success
+          check static success
+          check desktop "$expected_heavy"
+          check server "$expected_heavy"
+          check native "$expected_heavy"
+          exit "$status"

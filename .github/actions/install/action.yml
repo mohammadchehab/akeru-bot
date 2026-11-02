@@ -1,0 +1,22 @@
+# Shared by every CI job that needs the workspace: toolchain, dependency policy, then the lockfile install.
+
+name: Install workspace
+description: Set up Vite+, reject dependencies outside the repository, and install from the committed lockfile.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Vite+
+      uses: voidzero-dev/setup-vp@v1
+      with:
+        node-version-file: package.json
+        cache: true
+        run-install: false
+
+    - name: Reject dependencies outside the repository
+      shell: bash
+      run: node scripts/check-public-dependencies.ts
+
+    - name: Install from the committed lockfile
+      shell: bash
+      run: vp install --frozen-lockfile
