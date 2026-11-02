@@ -370,10 +370,11 @@ function ComposerPromptEditorInner({
             <ContentEditable
               className={cn(
                 // The wrapper owns the appearance preference; keep everything else here.
-                "block max-h-50 min-h-17.5 w-full overflow-y-auto whitespace-pre-wrap wrap-break-word bg-transparent leading-relaxed text-foreground focus:outline-none",
+                "block max-h-50 min-h-17.5 w-full overflow-y-auto text-start whitespace-pre-wrap wrap-break-word bg-transparent leading-relaxed text-foreground focus:outline-none",
                 className,
               )}
               data-testid="composer-editor"
+              dir="auto"
               aria-placeholder={placeholder}
               placeholder={<span />}
               onPaste={onPaste}

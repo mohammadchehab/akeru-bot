@@ -388,7 +388,9 @@ export function BotThreadLanding({
             >
               <div className="flex min-w-0 items-center gap-2">
                 <BotAvatarView avatar={bot.avatar} name={bot.name} className="size-6" />
-                <span className="truncate text-sm font-medium">{bot.name}</span>
+                <span className="truncate text-sm font-medium">
+                  <bdi>{bot.name}</bdi>
+                </span>
               </div>
               <div data-chat-header-actions className="ml-auto flex items-center">
                 <BotVoiceCallButton

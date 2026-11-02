@@ -215,12 +215,16 @@ export const BotRosterRow = memo(function BotRosterRow({
           {pinned ? (
             <span className="flex max-w-full items-center gap-1">
               {unread ? <UnreadDot /> : null}
-              <span className="truncate text-xs font-medium">{bot.name}</span>
+              <span className="truncate text-xs font-medium">
+                <bdi>{bot.name}</bdi>
+              </span>
             </span>
           ) : (
             <span className="flex min-w-0 flex-1 flex-col">
               <span className="flex min-w-0 items-center gap-2">
-                <span className="min-w-0 truncate text-sm font-semibold">{bot.name}</span>
+                <span className="min-w-0 truncate text-sm font-semibold">
+                  <bdi>{bot.name}</bdi>
+                </span>
                 <span className="min-w-2 flex-1" />
                 {unread ? <UnreadDot /> : null}
                 {latestMessage ? (

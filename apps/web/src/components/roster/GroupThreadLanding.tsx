@@ -335,7 +335,9 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
           >
             <div className="flex min-w-0 items-center gap-2">
               <GroupMemberStack group={group} bots={bots} />
-              <span className="truncate text-sm font-medium">{group.name}</span>
+              <span className="truncate text-sm font-medium">
+                <bdi>{group.name}</bdi>
+              </span>
             </div>
             <div data-chat-header-actions className="ml-auto flex items-center">
               <ChatActionsMenu threadRef={runtime.linkedThreadRef} />
