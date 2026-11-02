@@ -5,7 +5,6 @@ import { I18nManager } from "react-native";
 
 import { updateMobilePreferencesAtom } from "../state/preferences";
 import { layoutDirectionAction, type LayoutDirection } from "./layoutDirection";
-import { reloadWithLayoutDirection } from "./layoutDirectionReload";
 
 /**
  * Keeps the native layout direction in step with the interface language. When they disagree at
@@ -41,7 +40,12 @@ export function useLayoutDirectionSync(input: {
     reloading.current = true;
     void save({ forcedLayoutDirection: input.wanted }).then((saved) => {
       // Without the record a reload could repeat, so an unsaved request is dropped.
-      if (Exit.isSuccess(saved)) return reloadWithLayoutDirection(input.wanted);
+      // Loaded on demand: the reload touches expo-updates, which only a real reload needs.
+      if (Exit.isSuccess(saved)) {
+        return import("./layoutDirectionReload").then((module) =>
+          module.reloadWithLayoutDirection(input.wanted),
+        );
+      }
 
       reloading.current = false;
 
