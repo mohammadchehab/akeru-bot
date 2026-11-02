@@ -145,6 +145,25 @@ describe("CI workflow budget", () => {
 
     const changesetGuard = staticSteps.find((step) => step.name === "Require a changeset decision");
 
+    // Docs are inputs to the plugin policy and formatting checks, so those run on every pull request.
+    for (const name of [
+      "Validate plugin catalog",
+      "Test plugin catalog and contribution policy",
+      "Check formatting",
+    ]) {
+      expect(staticSteps.find((step) => step.name === name)?.if).toBeUndefined();
+    }
+
+    for (const name of ["Lint", "Typecheck"]) {
+      expect(staticSteps.find((step) => step.name === name)?.if).toBe(
+        "${{ needs.changes.outputs.code == 'true' }}",
+      );
+    }
+
+    expect(ci.jobs.changes?.steps?.find((step) => step.id === "filter")?.run).toContain(
+      "previous_filename",
+    );
+
     // The guards run on every pull request, docs-only included.
     for (const guard of [stableVersionGuard, changesetGuard]) {
       expect(guard?.if).toContain("github.head_ref == 'changeset-release/main'");

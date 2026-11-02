@@ -15,8 +15,8 @@ CI runs as parallel jobs, so a run takes as long as its slowest job instead of t
   `.github/assets/`, and root Markdown files. Pushes to `main` and dispatches always count as code.
 - **Static checks.** Runs the guards on every pull request, docs-only ones included: it rejects
   committed PR assets, external local dependencies, stable-version changes, and a missing changeset
-  decision. For code changes it also validates the plugin directory and contribution policy and runs
-  lint, formatting, and type checks. It installs the committed lockfile once for the job.
+  decision. It also validates the plugin directory and contribution policy and checks formatting, since those read
+  `docs/`. Lint and type checks run only for code changes. It installs the committed lockfile once for the job.
 - **Desktop build and package tests.** Builds the desktop pipeline, checks the preload output, tests
   shipped desktop and shared packages, and checks release-only configuration. Relay and
   mobile-production packages are excluded.
