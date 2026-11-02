@@ -49,7 +49,9 @@ import { nowIso } from "./EventIdentity.ts";
 
 export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
   const options = deps.options;
-  const { isOpenDelegation, isChildOf, readSessionStartContext } = createSessionContext(deps);
+
+  const { isOpenDelegation, isChildOf, readSessionStartContext, readGroupConversation } =
+    createSessionContext(deps);
 
   const startSession: AgentControllerShape["startSession"] = Effect.fn(
     "AgentController.startSession",
@@ -438,6 +440,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
                 provider: resolved.provider,
                 providerInstanceId: resolved.providerInstanceId,
                 botName: input.botName,
+                botId: botId ?? undefined,
                 personalityTone,
                 memoryAccess: nextMemoryAccess,
                 entityMemoryAccess: input.memoryAccess,
@@ -675,5 +678,11 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
     return deps.toProviderSession(threadId, active);
   });
 
-  return { isOpenDelegation, isChildOf, readSessionStartContext, startSession };
+  return {
+    isOpenDelegation,
+    isChildOf,
+    readSessionStartContext,
+    readGroupConversation,
+    startSession,
+  };
 }

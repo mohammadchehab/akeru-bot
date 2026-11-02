@@ -77,6 +77,7 @@ describe("AgentControllerLive", () => {
           createdAt,
           updatedAt: createdAt,
           attachments: count === 1 && role === "user" ? [attachment] : [],
+          ...(role === "assistant" ? { respondingBotId: bossBotId } : {}),
         })),
       );
 
@@ -242,6 +243,9 @@ describe("AgentControllerLive", () => {
           },
         ]);
         expect(context[1]?.content.parts).toEqual([{ type: "text", text: "assistant turn 1" }]);
+        // The rebuilt transcript keeps who spoke, so a group can still tell its bots apart.
+        expect(context[1]?.content.metadata).toEqual({ respondingBotId: String(bossBotId) });
+        expect(context[0]?.content.metadata).toBeUndefined();
         yield* controller.interruptTurn({ threadId });
         turns.splice(1);
         messages.splice(2);

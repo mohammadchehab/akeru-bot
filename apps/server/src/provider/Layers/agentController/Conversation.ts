@@ -290,6 +290,9 @@ export function createConversation(deps: {
                 },
               ],
               ...(attachments.length ? { experimental_attachments: attachments } : {}),
+              ...(message.role === "assistant" && message.respondingBotId
+                ? { metadata: { respondingBotId: String(message.respondingBotId) } }
+                : {}),
             },
             createdAt: DateTime.toDate(DateTime.makeUnsafe(message.createdAt)),
             threadId: key,

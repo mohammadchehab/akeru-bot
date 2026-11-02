@@ -44,7 +44,13 @@ export function createIsnadiConversation(
       {
         id: `${input.turnId}:assistant`,
         role: "assistant",
-        content: { format: 2, parts: [{ type: "text", text: input.assistant }] },
+        content: {
+          format: 2,
+          parts: [{ type: "text", text: input.assistant }],
+          ...(input.respondingBotId
+            ? { metadata: { respondingBotId: input.respondingBotId } }
+            : {}),
+        },
         createdAt,
         threadId: input.threadId,
         resourceId: input.threadId,

@@ -19,6 +19,7 @@ import {
 } from "./State.ts";
 
 export function createMemoryCadence(deps: {
+  readonly respondingBotIdFor: (key: string) => string | undefined;
   readonly forkPromise: IsnadiRuntimeSeam["forkPromise"];
   readonly mastraMemoryTurns: Map<string, IsnadiMemoryTurn>;
   readonly runMastra: <A>(
@@ -134,6 +135,9 @@ export function createMemoryCadence(deps: {
               })),
               assistant,
               createdAt: event.createdAt,
+              ...(deps.respondingBotIdFor(key)
+                ? { respondingBotId: deps.respondingBotIdFor(key)! }
+                : {}),
             }),
           { annotations: { threadId: key, turnId } },
         );

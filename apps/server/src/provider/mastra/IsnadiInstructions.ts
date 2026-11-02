@@ -5,7 +5,8 @@ import {
   createIsnadiAgentInstructions,
   createIsnadiBotInstructions,
 } from "../IsnadiAgentInstructions.ts";
-import { controllerContext } from "./IsnadiMemory.ts";
+import { renderGroupRoster } from "./IsnadiGroupConversation.ts";
+import { controllerContext, controllerGroup } from "./IsnadiMemory.ts";
 
 export function resolveIsnadiInstructions(
   requestContext: RequestContext,
@@ -57,5 +58,14 @@ export function resolveIsnadiInstructions(
       ? state.mcpInstructions
       : "";
 
-  return [instructions, mcpInstructions, persistentMemoryContext].filter(Boolean).join("\n\n");
+  const group = controllerGroup(requestContext);
+
+  return [
+    instructions,
+    group ? renderGroupRoster(group) : "",
+    mcpInstructions,
+    persistentMemoryContext,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
