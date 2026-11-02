@@ -47,7 +47,15 @@ function withAssetFiles(config) {
   return withDangerousMod(config, [
     "ios",
     (cfg) => {
-      const source = path.join(cfg.modRequest.projectRoot, "..", "marketing", "public", "icon.png");
+      // The same file app.config.ts uses as the app icon (BRAND_ASSET_PATHS.productionIosIconPng).
+      const source = path.join(
+        cfg.modRequest.projectRoot,
+        "..",
+        "..",
+        "assets",
+        "prod",
+        "app-icon.png",
+      );
       const catalogDir = path.join(cfg.modRequest.platformProjectRoot, TARGET_NAME, CATALOG_NAME);
       const imageSetDir = path.join(catalogDir, IMAGE_SET);
       fs.mkdirSync(imageSetDir, { recursive: true });
