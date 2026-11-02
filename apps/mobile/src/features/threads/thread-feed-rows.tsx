@@ -13,7 +13,14 @@ import { formatElapsed } from "@isnadi/shared/orchestrationTiming";
 import { formatTokens, formatUsd } from "@isnadi/shared/usageFormat";
 import { memo, useEffect, useState, type ReactNode } from "react";
 import { Markdown } from "react-native-nitro-markdown";
-import { Platform, Pressable, Text as NativeText, type ColorValue, View } from "react-native";
+import {
+  type AccessibilityActionEvent,
+  Platform,
+  Pressable,
+  Text as NativeText,
+  type ColorValue,
+  View,
+} from "react-native";
 import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 import { hasWideMarkdownBlock } from "../../lib/wideMarkdownBlocks";
 import {
@@ -64,17 +71,35 @@ function formatMessageTime(
 // old content would be its own kind of jank.
 const FRESH_ENTRY_WINDOW_MS = 3_000;
 
-/** A long-press on a bot's message in a group opens the Reply sheet; elsewhere it is inert. */
+/**
+ * A long-press on a bot's message in a group opens the Reply sheet. The Pressable stays mounted
+ * for every group message (so the body does not remount when `respondingBotId` arrives) and only
+ * reacts, and offers the Reply accessibility action, when the message can be replied to.
+ */
 function ReplyLongPress(props: {
-  readonly target: GroupReplyTarget | null;
-  readonly onReply: ((target: GroupReplyTarget) => void) | undefined;
+  readonly groupChat: boolean;
+  readonly enabled: boolean;
+  readonly label: string;
+  readonly onReply: () => void;
   readonly children: ReactNode;
 }) {
-  const { target, onReply } = props;
+  if (!props.groupChat) return <>{props.children}</>;
 
-  if (!target || !onReply) return <>{props.children}</>;
-
-  return <Pressable onLongPress={() => onReply(target)}>{props.children}</Pressable>;
+  return (
+    <Pressable
+      {...(props.enabled
+        ? {
+            onLongPress: props.onReply,
+            accessibilityActions: [{ name: "reply", label: props.label }],
+            onAccessibilityAction: (event: AccessibilityActionEvent) => {
+              if (event.nativeEvent.actionName === "reply") props.onReply();
+            },
+          }
+        : {})}
+    >
+      {props.children}
+    </Pressable>
+  );
 }
 
 function isFreshTimestamp(input: string): boolean {
@@ -271,27 +296,32 @@ export function renderFeedEntry(
       ? stabilizeStreamingMarkdown(message.text)
       : message.text;
 
-    const replyBotId = message.respondingBotId ?? null;
-
-    const replyTarget = groupReplyTarget({
-      isGroup: props.onReplyToMessage !== undefined,
-      message,
-      botName:
-        (replyBotId ? props.botsById?.get(replyBotId)?.name : undefined) ?? props.unknownBotLabel,
-    });
+    // Built at press time: a streaming row re-renders on every token.
+    const buildReplyTarget = () =>
+      groupReplyTarget({
+        isGroup: true,
+        message,
+        botName:
+          (message.respondingBotId
+            ? props.botsById?.get(message.respondingBotId)?.name
+            : undefined) ?? props.unknownBotLabel,
+      });
 
     return (
       <Animated.View
         className={cn(showAssistantMeta ? "mb-5 px-1" : "mb-2 px-1")}
         {...(enterAnimated ? { entering: FadeIn.duration(220) } : {})}
-        {...(replyTarget && props.onReplyToMessage
-          ? {
-              accessibilityActions: [{ name: "reply", label: props.replyLabel }],
-              onAccessibilityAction: () => props.onReplyToMessage?.(replyTarget),
-            }
-          : {})}
       >
-        <ReplyLongPress target={replyTarget} onReply={props.onReplyToMessage}>
+        <ReplyLongPress
+          groupChat={props.onReplyToMessage !== undefined}
+          enabled={Boolean(message.respondingBotId)}
+          label={props.replyLabel}
+          onReply={() => {
+            const target = buildReplyTarget();
+
+            if (target) props.onReplyToMessage?.(target);
+          }}
+        >
           {speakerBotId ? (
             <View className="mb-1.5 flex-row items-center gap-2">
               <BotAvatarView

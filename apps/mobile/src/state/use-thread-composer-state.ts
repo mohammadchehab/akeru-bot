@@ -421,6 +421,9 @@ export function useThreadComposerState() {
     clearComposerDraftContent(threadKey);
     setGroupReplyTarget(threadKey, null);
     enqueuePromise.catch((error) => {
+      // The reply chip goes back with the draft, so a failed send does not lose who it was for.
+      if (chipTarget && replyTo) setGroupReplyTarget(threadKey, chipTarget);
+
       // Restore text via merge (idempotent) but attachments via the uncapped
       // append: the merge path slots existing attachments first and truncates
       // at the send limit, which would silently drop this message's images if
