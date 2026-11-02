@@ -125,8 +125,24 @@
 
 ## 🚀 البدء السريع
 
-لا ينشر IsnadiBot إصدارات جاهزة بعد، لذا ابنِه من المصدر. تحتاج Node.js بالإصدار `^24.13.1` و
-[Vite+](https://vite.plus):
+### تنزيل التطبيق
+
+نزّل أحدث إصدار من
+[github.com/mohammadchehab/isnadibot/releases/latest](https://github.com/mohammadchehab/isnadibot/releases/latest):
+
+- macOS (Apple Silicon): ملف `IsnadiBot-<الإصدار>-arm64.dmg`. التطبيق غير موقَّع بعد، فاضغط عليه بزر
+  التحكم (Control) واختر **Open** في أول تشغيل.
+- Windows (x64): ملف `IsnadiBot-<الإصدار>-x64.exe`. التطبيق غير موقَّع بعد، فاختر في شاشة SmartScreen
+  **More info** ثم **Run anyway**.
+- Linux (x64): ملف `IsnadiBot-<الإصدار>-x64.AppImage`. نفّذ `chmod +x` على الملف ثم شغّله.
+
+لتشغيل IsnadiBot على خادم بدلاً من ذلك، استخدم `install-remote.sh` (macOS وLinux) أو
+`install-remote.ps1` (Windows)، وكلاهما مرفق مع الإصدار. راجع
+[الوصول عن بُعد](docs/user/remote-access.md).
+
+### البناء من المصدر
+
+تحتاج Node.js بالإصدار `^24.13.1` و [Vite+](https://vite.plus):
 
 </div>
 
