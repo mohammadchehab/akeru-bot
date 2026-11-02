@@ -21,7 +21,10 @@ describe("group chat mention chains", () => {
   });
 
   afterEach(async ({ task }) => {
-    if (task.result?.state === "fail") await screenshotFailure(crew.page, task.name);
+    if (task.result?.state !== "fail") return;
+
+    await screenshotFailure(crew.page, task.name);
+    console.error(`Dev runner output tail:\n${crew.stack.output().slice(-6_000)}`);
   });
 
   afterAll(async () => {
