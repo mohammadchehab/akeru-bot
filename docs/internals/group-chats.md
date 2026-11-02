@@ -23,6 +23,35 @@ The turn-start command carries `addressing` in place of a client-chosen `respond
 resolve to bot ids against active members on the server. A mention of a bot that is not an active
 member fails the command with a message that names it; it is not silently dropped.
 
+### Contract
+
+`ClientThreadTurnStartCommand` and `ThreadTurnStartCommand` (`packages/contracts/src/orchestration/`)
+gain an optional `addressing`:
+
+```ts
+type GroupAddressing =
+  | { kind: "auto" }
+  | { kind: "bots"; botIds: NonEmptyArray<BotId> } // in mention order, duplicates removed
+  | { kind: "everyone" }
+  | { kind: "reply"; messageId: MessageId };
+```
+
+- No `addressing` in a group means `auto`. A direct chat ignores it: its one bot answers.
+- Clients send the bot ids from the composer's mention chips. They never send display names, because
+  names can repeat or change. Channel messages arrive as text, so the server parses their `@name`
+  mentions with the same parser chains use, against active members.
+- `reply` names a message in the same thread. A user message, or one with no `respondingBotId`,
+  fails the command.
+- Compatibility: until the clients send `addressing`, a `respondingBotId` alone is read as
+  `bots: [respondingBotId]`. Sending both fails the command. The field is removed once web and
+  mobile send `addressing`.
+
+The queue is part of the thread read model, `responderQueue`, and one event replaces the whole queue
+each time it changes, `thread.responder-queue.set`:
+`{ threadId, entries: [{ botId, trigger }], hopsLeft, reason, updatedAt }`, where `reason` is
+`addressed | mention | turn-started | stopped | superseded | budget-exhausted`. A single replacing
+event keeps the projector trivial and lets a client that reconnects render the queue from one value.
+
 ### The responder queue
 
 The server keeps one responder queue per group chat. Addressing fills it, and it runs one turn at a
@@ -69,6 +98,19 @@ recorded on the turn, so the chat can show why that bot answered.
 - A new user message clears the queue too: what is still waiting was for the old message. The new
   message is then addressed as usual.
 - Queue changes are events, so every connected client sees the same queue.
+
+### Options rejected
+
+- **The client picks the responder and sends one turn per bot.** This is how the app works today. Web,
+  mobile and channels would each need the same logic, two clients could interleave turns, and a bot
+  reply could never pass the floor.
+- **Mentioned bots answer in parallel.** A group has one provider session and one ordered history, so
+  later bots could not read earlier answers. It would also multiply usage at once.
+- **The server parses `@name` from the text for every client.** Names are not unique and can change.
+  Chips carry ids, and only channels, which have nothing better, fall back to parsing.
+- **Bots reach each other only through delegation `send`.** `send` starts background work in the
+  member's own chat. It does not answer in the group, and the user cannot see a conversation between
+  the bots.
 
 ## One shared history
 
@@ -130,6 +172,19 @@ Mastra instructions resolver runs per call, `IsnadiMastraHarness.ts`):
 Build the roster per turn, not at session start, so adding or removing a member takes effect on
 the next turn without a restart. Direct chats get no group section.
 
+## Delivery slices
+
+Each slice is one PR. Explicit addressing (b1, c, d) ships in 0.0.3.
+
+- **b1.** The `addressing` contract, the decider and the queue for `bots`, `everyone` and `reply`,
+  `thread.responder-queue.set`, and `trigger` on turns. Stop and a new user message clear the queue.
+  `auto` still means the boss.
+- **b2.** Chains: mentions in bot replies, the hop budget setting, and `budget-exhausted`.
+- **b3.** The auto routing call and its fallback.
+- **c.** The web composer (mention chips, `@everyone`, the reply action), "X is next", and Stop. Then
+  mobile.
+- **d.** End-to-end journeys, one per addressing row, plus a chain and a budget stop once b2 lands.
+
 ## What must not change
 
 - One turn at a time per group chat; the queue never runs two bots at once.
@@ -189,4 +244,4 @@ legacy bridge, auto routing falls back to the boss.
 - In a group with several people, should `user` messages also carry the author's name? Today a
   group has one person in practice. Defer until channels bring several people into one group.
 - Should the hop budget default be 6? It matches a group of up to six bots each answering once.
-  Mohammad decides.
+  Mohammad decides (board card group-hop-budget). b1 does not depend on the answer.
