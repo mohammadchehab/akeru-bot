@@ -56,6 +56,7 @@ const make = Effect.gen(function* () {
     hasHandledTurnRequestRecently,
     threadModelSelections,
     threadBotWorkspaceKeys,
+    threadSessionBotIds,
     threadMcpServers,
     threadsAwaitingRestrictiveSessionCleanup,
   } = yield* createDependencies();
@@ -150,6 +151,7 @@ const make = Effect.gen(function* () {
     threadModelSelections,
     threadMcpServers,
     threadBotWorkspaceKeys,
+    threadSessionBotIds,
     providerSessionDirectory,
     expandComposerMentions,
   });
