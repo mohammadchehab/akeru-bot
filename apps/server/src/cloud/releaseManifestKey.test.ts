@@ -17,6 +17,8 @@ const keyBody = pinnedKey.split("\n")[1] ?? "";
 // its own copy of the key. They must all match the file the release workflow signs against.
 const COPIES_OF_KEY = [
   "apps/web/public/install",
+  "apps/web/public/install.ps1",
+  "scripts/install-remote.ps1",
   "scripts/install-remote.sh",
   "scripts/isnadi-remote-admin.mjs",
 ];

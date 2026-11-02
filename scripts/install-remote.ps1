@@ -14,6 +14,79 @@ $ProgressPreference = "SilentlyContinue"
 $Repository = if ($env:ISNADI_REMOTE_REPOSITORY) { $env:ISNADI_REMOTE_REPOSITORY } else { "mohammadchehab/isnadibot" }
 if ($Repository -ne "mohammadchehab/isnadibot" -and $env:ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY -ne "1") { throw "Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1." }
 
+# The pinned Isnadi release key. Keep it identical to scripts/isnadi-release-manifest.pub.
+$ManifestPublicKeyBase64 = "MCowBQYDK2VwAyEAPNo7VRdcCSxGKbI8eKLnzQ55YnTTcjLzj84AuAdjNjU="
+
+# Verifies an Ed25519 signature (RFC 8032). Windows PowerShell 5.1 has no Ed25519 and Windows ships no
+# openssl, and the archive must not be unpacked to borrow its node.exe before it is verified.
+function Test-IsnadiEd25519Signature {
+  param([byte[]]$Message, [byte[]]$Signature, [byte[]]$PublicKey)
+  Add-Type -AssemblyName System.Numerics
+  if ($Signature.Length -ne 64 -or $PublicKey.Length -ne 32) { return $false }
+  $Zero = [Numerics.BigInteger]::Zero
+  $One = [Numerics.BigInteger]::One
+  $Two = [Numerics.BigInteger]::new(2)
+  $P = [Numerics.BigInteger]::Pow($Two, 255) - [Numerics.BigInteger]::new(19)
+  $L = [Numerics.BigInteger]::Pow($Two, 252) + [Numerics.BigInteger]::Parse("27742317777372353535851937790883648493")
+  function Mod([Numerics.BigInteger]$Value, [Numerics.BigInteger]$Modulus) {
+    $r = [Numerics.BigInteger]::Remainder($Value, $Modulus)
+    if ($r.Sign -lt 0) { $r = $r + $Modulus }
+    return $r
+  }
+  function Invert([Numerics.BigInteger]$Value) { return [Numerics.BigInteger]::ModPow($Value, $P - $Two, $P) }
+  function FromLittleEndian([byte[]]$Bytes) { return [Numerics.BigInteger]::new([byte[]]($Bytes + [byte]0)) }
+  $D = Mod (([Numerics.BigInteger]::new(-121665)) * (Invert ([Numerics.BigInteger]::new(121666)))) $P
+  $SqrtMinusOne = [Numerics.BigInteger]::ModPow($Two, ($P - $One) / [Numerics.BigInteger]::new(4), $P)
+  # Returns @(x, y), or $null when the encoding is not a point on the curve.
+  function Decode-Point([byte[]]$Bytes) {
+    $copy = [byte[]]$Bytes.Clone()
+    $oddX = ($copy[31] -band 0x80) -ne 0
+    $copy[31] = $copy[31] -band 0x7f
+    $y = FromLittleEndian $copy
+    if ($y -ge $P) { return $null }
+    $y2 = Mod ($y * $y) $P
+    $x2 = Mod (($y2 - $One) * (Invert (Mod ($D * $y2 + $One) $P))) $P
+    $x = [Numerics.BigInteger]::ModPow($x2, ($P + [Numerics.BigInteger]::new(3)) / [Numerics.BigInteger]::new(8), $P)
+    if ((Mod ($x * $x) $P) -ne $x2) { $x = Mod ($x * $SqrtMinusOne) $P }
+    if ((Mod ($x * $x) $P) -ne $x2) { return $null }
+    if ($x.IsZero -and $oddX) { return $null }
+    if ($x.IsEven -eq $oddX) { $x = $P - $x }
+    return @($x, $y)
+  }
+  function Add-Points($A, $B) {
+    $t = Mod ($D * $A[0] * $B[0] * $A[1] * $B[1]) $P
+    $x = Mod (($A[0] * $B[1] + $B[0] * $A[1]) * (Invert (Mod ($One + $t) $P))) $P
+    $y = Mod (($A[1] * $B[1] + $A[0] * $B[0]) * (Invert (Mod ($One - $t) $P))) $P
+    return @($x, $y)
+  }
+  function Multiply-Point($Point, [Numerics.BigInteger]$Scalar) {
+    $result = @($Zero, $One)
+    $addend = $Point
+    while ($Scalar.Sign -gt 0) {
+      if (-not $Scalar.IsEven) { $result = Add-Points $result $addend }
+      $addend = Add-Points $addend $addend
+      $Scalar = [Numerics.BigInteger]::Divide($Scalar, $Two)
+    }
+    return $result
+  }
+  $A = Decode-Point $PublicKey
+  $R = Decode-Point ([byte[]]$Signature[0..31])
+  if (-not $A -or -not $R) { return $false }
+  $S = FromLittleEndian ([byte[]]$Signature[32..63])
+  if ($S -ge $L) { return $false }
+  $baseY = Mod ([Numerics.BigInteger]::new(4) * (Invert ([Numerics.BigInteger]::new(5)))) $P
+  $baseEncoding = [byte[]]$baseY.ToByteArray()
+  $baseBytes = New-Object byte[] 32
+  [Array]::Copy($baseEncoding, $baseBytes, [Math]::Min($baseEncoding.Length, 32))
+  $Base = Decode-Point $baseBytes
+  $sha512 = [Security.Cryptography.SHA512]::Create()
+  try { $digest = $sha512.ComputeHash([byte[]]($Signature[0..31] + $PublicKey + $Message)) } finally { $sha512.Dispose() }
+  $k = Mod (FromLittleEndian $digest) $L
+  $left = Multiply-Point $Base $S
+  $right = Add-Points $R (Multiply-Point $A $k)
+  return ($left[0] -eq $right[0]) -and ($left[1] -eq $right[1])
+}
+
 $InstallRoot = if ($env:ISNADI_INSTALL_ROOT) { $env:ISNADI_INSTALL_ROOT } else { Join-Path $env:LOCALAPPDATA "Isnadi\Remote" }
 $BinDir = if ($env:ISNADI_BIN_DIR) { $env:ISNADI_BIN_DIR } else { Join-Path $env:LOCALAPPDATA "Isnadi\bin" }
 # Isnadi state always lives in ISNADI_HOME or ~/.isnadi. The bundled server reads T3CODE_HOME, so it is
@@ -56,6 +129,23 @@ try {
   Invoke-WebRequest -UseBasicParsing -Uri $Asset.browser_download_url -OutFile $Archive
   $ActualHash = (Get-FileHash -Algorithm SHA256 $Archive).Hash.ToLowerInvariant()
   if ($ActualHash -ne $ExpectedHash) { throw "SHA-256 verification failed for $ArchiveName." }
+  $ManifestAsset = $Release.assets | Where-Object name -eq "ISNADI-REMOTE-MANIFEST.txt" | Select-Object -First 1
+  $SignatureAsset = $Release.assets | Where-Object name -eq "ISNADI-REMOTE-MANIFEST.sig" | Select-Object -First 1
+  if (-not $ManifestAsset -or -not $SignatureAsset) { throw "Release $Tag does not include a signed manifest." }
+  $ManifestFile = Join-Path $Temporary "ISNADI-REMOTE-MANIFEST.txt"
+  $SignatureFile = Join-Path $Temporary "ISNADI-REMOTE-MANIFEST.sig"
+  Invoke-WebRequest -UseBasicParsing -Uri $ManifestAsset.browser_download_url -OutFile $ManifestFile
+  Invoke-WebRequest -UseBasicParsing -Uri $SignatureAsset.browser_download_url -OutFile $SignatureFile
+  $ManifestBytes = [IO.File]::ReadAllBytes($ManifestFile)
+  $PublicKeyBytes = [Convert]::FromBase64String($ManifestPublicKeyBase64)
+  if (-not (Test-IsnadiEd25519Signature $ManifestBytes ([IO.File]::ReadAllBytes($SignatureFile)) ([byte[]]$PublicKeyBytes[($PublicKeyBytes.Length - 32)..($PublicKeyBytes.Length - 1)]))) { throw "The release manifest signature did not verify for $Tag." }
+  $ManifestHash = $null
+  foreach ($Line in ([Text.Encoding]::UTF8.GetString($ManifestBytes) -split "`r?`n")) {
+    $Entry = [regex]::Match($Line, "^([a-fA-F0-9]{64})\s+\*?$([regex]::Escape($ArchiveName))$")
+    if ($Entry.Success) { $ManifestHash = $Entry.Groups[1].Value.ToLowerInvariant(); break }
+  }
+  if (-not $ManifestHash) { throw "The signed release manifest does not list $ArchiveName." }
+  if ($ManifestHash -ne $ActualHash) { throw "The archive does not match the signed release manifest for $ArchiveName." }
   if ($ExpectedSha256 -and $ActualHash -ne $ExpectedSha256.ToLowerInvariant()) { throw "The archive does not match the signed release manifest for $ArchiveName." }
   $Expanded = Join-Path $Temporary "expanded"
   Expand-Archive -LiteralPath $Archive -DestinationPath $Expanded
