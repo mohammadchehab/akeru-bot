@@ -276,27 +276,33 @@ describe("ProviderCommandReactor", () => {
         const harness = yield* Effect.promise(() => createHarness());
         const now = "2026-01-01T00:00:00.000Z";
 
-        yield* harness.engine.dispatch({
-          type: "thread.turn.start",
-          commandId: CommandId.make("cmd-turn-start-then-stop"),
-          threadId: ThreadId.make("thread-1"),
-          message: {
-            messageId: asMessageId("user-message-start-then-stop"),
-            role: "user",
-            text: "hello",
-            attachments: [],
-          },
-          interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
-          runtimeMode: "approval-required",
-          createdAt: now,
-        });
-
-        yield* harness.engine.dispatch({
-          type: "thread.turn.interrupt",
-          commandId: CommandId.make("cmd-stop-right-after-start"),
-          threadId: ThreadId.make("thread-1"),
-          createdAt: now,
-        });
+        // Both commands go in together, so the reactor has the Stop queued before the forked
+        // sendTurn gets its first step.
+        yield* Effect.all(
+          [
+            harness.engine.dispatch({
+              type: "thread.turn.start",
+              commandId: CommandId.make("cmd-turn-start-then-stop"),
+              threadId: ThreadId.make("thread-1"),
+              message: {
+                messageId: asMessageId("user-message-start-then-stop"),
+                role: "user",
+                text: "hello",
+                attachments: [],
+              },
+              interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+              runtimeMode: "approval-required",
+              createdAt: now,
+            }),
+            harness.engine.dispatch({
+              type: "thread.turn.interrupt",
+              commandId: CommandId.make("cmd-stop-right-after-start"),
+              threadId: ThreadId.make("thread-1"),
+              createdAt: now,
+            }),
+          ],
+          { concurrency: "unbounded" },
+        );
 
         yield* Effect.promise(() => harness.drain());
 
