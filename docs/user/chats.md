@@ -107,12 +107,20 @@ Open a group and use its group sidebar to manage it:
   remove the boss until another bot is the boss. The sidebar explains which rule applies.
 - **Delete group** asks for confirmation. Its bots stay in your roster.
 
-The boss answers every message by default. Type `@` and a bot's name, such as `@Mori`, to send that
-message to that bot instead. It answers with its own provider and model. If a message mentions
-several bots, the last mention wins. If two bots in the group share a name, Isnadi cannot tell them
-apart, so it holds the message and asks you to rename one of them. Mentions of people, such as
-`@Leo`, stay plain text and the boss answers. On mobile, a reply shows the bot's avatar and name
-whenever a different bot starts speaking.
+Without a mention, the group decides who answers. Type `@` and a bot's name, such as `@Mori`, to
+send that message to that bot. It answers with its own provider and model. Mention several bots to
+have each answer in the order you wrote them, or type `@everyone` to have every bot answer. To
+answer one message, use **Reply** on a bot's message on web and desktop; the bot that wrote it
+answers. A mention in your message wins over the reply, and the reply chip then reads **Quoting**
+and keeps the quote. If two bots in the group share a name, Isnadi cannot tell them apart, so it
+holds the message and asks you to pick one from the `@` menu. Mentions of people, such as `@Leo`,
+stay plain text.
+
+While bots take turns, the chat says who is next, and **Stop** ends the current turn and clears
+the line. The reply budget in the group header (web and desktop) and in chat settings (mobile) sets
+how many bot-to-bot replies one message can start before the group stops. A change applies from
+your next message. On mobile, a reply shows the bot's avatar and name whenever a different bot
+starts speaking.
 
 Groups hold bots only. You cannot add people to a group yet.
 
