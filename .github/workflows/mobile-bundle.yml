@@ -42,15 +42,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Vite+
-        uses: voidzero-dev/setup-vp@v1
-        with:
-          node-version-file: package.json
-          cache: true
-          run-install: false
-
-      - name: Install from the committed lockfile
-        run: vp install --frozen-lockfile
+      - name: Install workspace
+        uses: ./.github/actions/install
 
       - name: Export the iOS bundle
         working-directory: apps/mobile
