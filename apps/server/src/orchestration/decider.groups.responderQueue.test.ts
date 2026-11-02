@@ -148,10 +148,18 @@ const queueOf = (event: ReturnType<typeof Array.prototype.at> & { type?: string 
   return event.payload;
 };
 
+const REPLY_MESSAGE = MessageId.make("reply-1");
+
+// The finished reply as the projector leaves it: the text joined from the deltas in the read model.
 const mention = (
   model: ReturnType<typeof readModel>,
   text: string,
-  overrides: { readonly turnId?: string } = {},
+  overrides: {
+    readonly turnId?: string;
+    readonly replyTurnId?: string;
+    readonly replyRole?: "assistant" | "user";
+    readonly omitReply?: boolean;
+  } = {},
 ) =>
   decideOrchestrationCommand({
     command: {
@@ -160,10 +168,30 @@ const mention = (
       threadId: ThreadId.make("thread-group"),
       turnId: TurnId.make(overrides.turnId ?? "turn-latest"),
       botId: SPECIALIST_ID,
-      text,
+      messageId: REPLY_MESSAGE,
       createdAt: NOW,
     },
-    readModel: model,
+    readModel:
+      overrides.omitReply === true
+        ? model
+        : {
+            ...model,
+            threads: model.threads.map((thread) => ({
+              ...thread,
+              messages: [
+                ...thread.messages,
+                {
+                  id: REPLY_MESSAGE,
+                  role: overrides.replyRole ?? ("assistant" as const),
+                  text,
+                  turnId: TurnId.make(overrides.replyTurnId ?? overrides.turnId ?? "turn-latest"),
+                  streaming: false,
+                  createdAt: NOW,
+                  updatedAt: NOW,
+                },
+              ],
+            })),
+          },
   }).pipe(Effect.map((result) => (Array.isArray(result) ? result : [result])));
 
 const startedBots = (events: Effect.Success<ReturnType<typeof advance>>) =>
@@ -532,5 +560,20 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
 
       expect(events).toEqual([]);
     }),
+  );
+  it.effect(
+    "ignores a mention whose reply is missing, is not the bot's, or is from another turn",
+    () =>
+      Effect.gen(function* () {
+        const model = readModel({ queue: [] });
+        const text = `Over to @${OTHER_SPECIALIST_ID}.`;
+
+        expect(yield* mention(model, text, { omitReply: true })).toEqual([]);
+        expect(yield* mention(model, text, { replyRole: "user" })).toEqual([]);
+        expect(yield* mention(model, text, { replyTurnId: "turn-older" })).toEqual([]);
+        expect((yield* mention(model, text)).map((event) => event.type)).toEqual([
+          "thread.responder-queue.set",
+        ]);
+      }),
   );
 });

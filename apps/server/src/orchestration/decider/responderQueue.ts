@@ -249,13 +249,21 @@ export const decideResponderMention = Effect.fn("decideResponderMention")(functi
     return [];
   }
 
+  // The finished reply is read from the thread: its text arrived as streamed deltas, so the
+  // finished event carries none.
+  const reply = thread.messages.findLast((message) => message.id === command.messageId);
+
+  if (reply === undefined || reply.role !== "assistant" || reply.turnId !== command.turnId) {
+    return [];
+  }
+
   const activeIds = activeGroupBotIds(readModel, group);
 
   const members = readModel.bots.flatMap((bot) =>
     bot.archivedAt === null && activeIds.has(bot.id) ? [{ id: bot.id, name: bot.name }] : [],
   );
 
-  const addressing = resolveComposerAddressing(botReplyMentionText(command.text), members);
+  const addressing = resolveComposerAddressing(botReplyMentionText(reply.text), members);
 
   if (addressing.kind !== "bots") return [];
 
