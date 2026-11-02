@@ -1,4 +1,4 @@
-import { useMarkdownSelectable } from "./markdownSelectable";
+import { useMarkdownLongPress, useMarkdownSelectable } from "./markdownSelectable";
 import { useContext } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import type { MarkdownNode } from "react-native-nitro-markdown/headless";
@@ -18,10 +18,12 @@ export function SelectableNode(props: {
   readonly onLinkPress?: (href: string) => void;
 }) {
   const selectable = useMarkdownSelectable();
+  const onLongPress = useMarkdownLongPress() ?? undefined;
 
   return (
     <NativeMarkdownSelectableText
       selectable={selectable}
+      onLongPress={onLongPress}
       runs={nativeMarkdownDocumentRuns(documentFor(props.node), props.skills)}
       textStyle={props.textStyle}
       onLinkPress={props.onLinkPress}
@@ -56,6 +58,7 @@ export function NativeTable(props: {
   readonly onLinkPress?: (href: string) => void;
 }) {
   const selectable = useMarkdownSelectable();
+  const onLongPress = useMarkdownLongPress() ?? undefined;
 
   const rows = collectTableRows(props.node);
 
@@ -93,6 +96,7 @@ export function NativeTable(props: {
               >
                 <NativeMarkdownSelectableText
                   selectable={selectable}
+                  onLongPress={onLongPress}
                   runs={nativeMarkdownDocumentRuns(documentFor(cell), props.skills).map((run) =>
                     rowIndex === 0 || cell.isHeader ? { ...run, bold: true } : run,
                   )}

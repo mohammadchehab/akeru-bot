@@ -312,6 +312,14 @@ export function renderFeedEntry(
 
     const group = props.groupMessageActions;
 
+    // The one sheet for this message, opened by a long-press on the row or on a link inside it.
+    const openMessageSheet = () =>
+      group?.onLongPress({
+        target: buildReplyTarget(),
+        text: message.text,
+        title: speakerBot?.name ?? props.unknownBotLabel,
+      });
+
     // Built at press time: a streaming row re-renders on every token.
     const buildReplyTarget = () =>
       groupReplyTarget({
@@ -340,13 +348,7 @@ export function renderFeedEntry(
                 })
               : []
           }
-          onLongPress={() =>
-            group?.onLongPress({
-              target: buildReplyTarget(),
-              text: message.text,
-              title: speakerBot?.name ?? props.unknownBotLabel,
-            })
-          }
+          onLongPress={openMessageSheet}
           onAction={(name) => {
             if (name === "reply") {
               const target = buildReplyTarget();
@@ -382,6 +384,7 @@ export function renderFeedEntry(
                 onLinkPress={props.onMarkdownLinkPress}
                 renderImage={props.renderMarkdownImage}
                 selectable={group === undefined}
+                {...(group ? { onLongPress: openMessageSheet } : {})}
               />
             ) : (
               <Markdown
