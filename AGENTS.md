@@ -97,7 +97,7 @@ The most common defect in this repo is a change that works on the path you teste
 
 ## Test data
 
-Choose meaningful test data. Use deterministic visual fixtures for repeatable UI checks; see [SQLite fixtures](.agents/skills/test-t3-app/references/sqlite-fixtures.md). For a data-specific defect, seed your worktree's `.isnadi` with a safe snapshot instead of pointing at live state:
+Choose meaningful test data. Use deterministic visual fixtures for repeatable UI checks; see [SQLite fixtures](.agents/skills/test-isnadi-app/references/sqlite-fixtures.md). For a data-specific defect, seed your worktree's `.isnadi` with a safe snapshot instead of pointing at live state:
 
 - Copy from `~/.isnadi/userdata` or `~/.isnadi/dev`. Worktree state lives at `<worktree>/.isnadi/userdata`.
 - Snapshot the database with `VACUUM INTO`, which is safe even while a server has the source open and yields one consistent file:
@@ -120,7 +120,7 @@ Choose meaningful test data. Use deterministic visual fixtures for repeatable UI
 - **Do not run repo-wide checks.** No `vp check`, no `vp run -r test`, no `vp run -r typecheck` unless I ask. CI owns the full suite.
 - Backend behavior changes ship with focused tests for that behavior.
 - The server is event-sourced and its async flows emit typed receipts. Wait on receipts and worker drains, never on sleeps or polling. A test that needs a timeout to pass is wrong.
-- Implementation requests include focused verification in isolated local clients. Follow [the verification policy](docs/internals/verification.md) for authorization, coverage, evidence, and environment lifetime. Use `test-t3-app` for web or desktop and `test-t3-mobile` for native mobile. The primary agent performs the integrated pass; subagents do not launch dev servers.
+- Implementation requests include focused verification in isolated local clients. Follow [the verification policy](docs/internals/verification.md) for authorization, coverage, evidence, and environment lifetime. Use `test-isnadi-app` for web or desktop and `test-isnadi-mobile` for native mobile. The primary agent performs the integrated pass; subagents do not launch dev servers.
 
 ## Lint
 

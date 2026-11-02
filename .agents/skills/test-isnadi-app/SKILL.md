@@ -1,11 +1,11 @@
 ---
-name: test-t3-app
+name: test-isnadi-app
 description: Launch and verify IsnadiBot web and desktop in isolated development environments. Use for browser testing, Electron-specific checks, pairing recovery, debug access, and fixture setup.
 ---
 
 # Test IsnadiBot web and desktop
 
-Read [the verification policy](../../../docs/internals/verification.md) before launching a client. It defines authorization, coverage, evidence, and environment lifetime. For native mobile testing, use [`test-t3-mobile`](../test-t3-mobile/SKILL.md).
+Read [the verification policy](../../../docs/internals/verification.md) before launching a client. It defines authorization, coverage, evidence, and environment lifetime. For native mobile testing, use [`test-isnadi-mobile`](../test-isnadi-mobile/SKILL.md).
 
 ## Find or start the environment
 

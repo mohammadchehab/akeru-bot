@@ -8,9 +8,9 @@ const root = NodeURL.fileURLToPath(new URL("../", import.meta.url));
 const guidance = [
   "AGENTS.md",
   "docs/internals/scripts.md",
-  ".agents/skills/test-t3-app/SKILL.md",
-  ".agents/skills/test-t3-app/references/sqlite-fixtures.md",
-  ".agents/skills/test-t3-mobile/SKILL.md",
+  ".agents/skills/test-isnadi-app/SKILL.md",
+  ".agents/skills/test-isnadi-app/references/sqlite-fixtures.md",
+  ".agents/skills/test-isnadi-mobile/SKILL.md",
   ".agents/skills/ios-debugger-agent/SKILL.md",
   ".agents/skills/ios-simulator-browser/SKILL.md",
   "docs/internals/verification.md",
