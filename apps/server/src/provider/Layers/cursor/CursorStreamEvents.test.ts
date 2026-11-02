@@ -83,4 +83,26 @@ describe("createCursorStreamReducer edge cases", () => {
       run([JSON.stringify({ type: "result", is_error: false, result: "" })]).reducer.sawResult(),
     ).toBe(true);
   });
+
+  it("emits neither started nor completed for an unknown tool_call subtype", () => {
+    const line = (subtype: string) =>
+      JSON.stringify({
+        type: "tool_call",
+        subtype,
+        call_id: "call-1",
+        tool_call: { readToolCall: { args: { path: "a" } } },
+      });
+
+    expect(run([line("failed")]).events).toEqual([]);
+    expect(run([line("started")]).events).toEqual([
+      { type: "tool.started", callId: "call-1", kind: "read", args: { path: "a" } },
+    ]);
+  });
+
+  it("known limit: a delta equal to the text streamed so far in the segment reads as the repeat", () => {
+    const delta = (text: string) =>
+      JSON.stringify({ type: "assistant", message: { content: [{ type: "text", text }] } });
+
+    expect(textOf(run([delta("\n\n"), delta("\n\n")]).events, "text.delta")).toBe("\n\n");
+  });
 });

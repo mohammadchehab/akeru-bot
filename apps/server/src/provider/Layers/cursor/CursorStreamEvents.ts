@@ -133,6 +133,9 @@ export function createCursorStreamReducer(): CursorStreamReducer {
 
         if (text.length === 0) return [];
 
+        // Cursor repeats a finished segment's full text. A real delta that equals everything
+        // streamed so far in the segment (a lone "\n\n" followed by another) reads as the
+        // repeat and is dropped; rare, and pinned by a test.
         if (segment.length > 0 && text === segment) {
           segment = "";
 
@@ -152,16 +155,21 @@ export function createCursorStreamReducer(): CursorStreamReducer {
         segment = "";
         const body = Option.getOrUndefined(tool.body);
 
-        return event.subtype === "completed"
-          ? [
-              {
-                type: "tool.completed",
-                callId: event.call_id,
-                kind: tool.kind,
-                result: body?.result,
-              },
-            ]
-          : [{ type: "tool.started", callId: event.call_id, kind: tool.kind, args: body?.args }];
+        if (event.subtype === "completed") {
+          return [
+            {
+              type: "tool.completed",
+              callId: event.call_id,
+              kind: tool.kind,
+              result: body?.result,
+            },
+          ];
+        }
+
+        // Any other subtype (failed, error, ...) is dropped rather than read as a second start.
+        return event.subtype === "started"
+          ? [{ type: "tool.started", callId: event.call_id, kind: tool.kind, args: body?.args }]
+          : [];
       }
 
       case "result": {
