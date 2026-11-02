@@ -1,4 +1,5 @@
-import type { ResolvedKeybindingsConfig } from "@isnadi/contracts";
+import { PrimaryConnectionTarget } from "@isnadi/client-runtime/connection";
+import { EnvironmentId, type ResolvedKeybindingsConfig } from "@isnadi/contracts";
 import { DEFAULT_RESOLVED_KEYBINDINGS } from "@isnadi/shared/keybindings";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -7,7 +8,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 const fixtures = vi.hoisted(() => {
   const keybindings: ResolvedKeybindingsConfig = [];
 
-  return { keybindings };
+  return { keybindings, primaryUrl: "http://127.0.0.1:8000" };
 });
 
 vi.mock("@effect/atom-react", () => ({
@@ -23,6 +24,22 @@ vi.mock("../../state/server", () => ({
 
 vi.mock("../../state/environments", () => ({
   usePrimaryEnvironment: () => ({ environmentId: "environment-1" }),
+}));
+
+// The real access hook runs; only the connection the browser reached the server on varies.
+vi.mock("../../state/presentation", () => ({
+  useEnvironmentPresentation: () => ({
+    presentation: {
+      entry: {
+        target: new PrimaryConnectionTarget({
+          environmentId: EnvironmentId.make("environment-1"),
+          label: "sol",
+          httpBaseUrl: fixtures.primaryUrl,
+          wsBaseUrl: fixtures.primaryUrl.replace("http", "ws"),
+        }),
+      },
+    },
+  }),
 }));
 
 vi.mock("../../editorPreferences", () => ({ useOpenInPreferredEditor: () => vi.fn() }));
@@ -45,7 +62,20 @@ function render(): string {
 describe("KeybindingsSettingsPanel", () => {
   beforeEach(() => {
     vi.stubGlobal("navigator", { platform: "MacIntel" });
+    // A plain browser: no desktop bridge.
+    vi.stubGlobal("window", {});
     fixtures.keybindings = DEFAULT_RESOLVED_KEYBINDINGS;
+    fixtures.primaryUrl = "http://127.0.0.1:8000";
+  });
+
+  it("offers Open keybindings.json when the browser is on the server machine", () => {
+    expect(render()).toContain('aria-label="Open keybindings.json"');
+  });
+
+  it("hides Open keybindings.json for a tailnet primary", () => {
+    fixtures.primaryUrl = "https://sol.tail1234.ts.net";
+
+    expect(render()).not.toContain("Open keybindings.json");
   });
 
   it("renders purpose groups with collapsed numbered series", () => {

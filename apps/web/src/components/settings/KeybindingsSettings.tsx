@@ -12,6 +12,7 @@ import { useOpenInPreferredEditor } from "../../editorPreferences";
 import { isElectron } from "../../env";
 import { useI18n } from "../../i18n";
 import { cn } from "../../lib/utils";
+import { useLocalShellAccess } from "../../localShellAccess";
 import { usePrimaryEnvironment } from "../../state/environments";
 import {
   primaryServerAvailableEditorsAtom,
@@ -66,6 +67,8 @@ export function KeybindingsSettingsPanel() {
   const keybindingsConfigPath = useAtomValue(primaryServerKeybindingsConfigPathAtom);
   const availableEditors = useAtomValue(primaryServerAvailableEditorsAtom);
   const primaryEnvironment = usePrimaryEnvironment();
+  // The editor opens on the server machine, so remote clients must not offer it.
+  const canOpenInEditor = useLocalShellAccess(primaryEnvironment?.environmentId ?? null).isLocal;
 
   const upsertKeybinding = useAtomCommand(serverEnvironment.upsertKeybinding, {
     reportFailure: false,
@@ -248,23 +251,25 @@ export function KeybindingsSettingsPanel() {
         {...searchableSetting("keybindings", t)}
         headerAction={
           <div className="flex items-center gap-1.5">
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    type="button"
-                    size="icon-micro"
-                    variant="ghost-muted"
-                    disabled={!keybindingsConfigPath}
-                    onClick={openKeybindingsFile}
-                    aria-label={t("Open keybindings.json")}
-                  >
-                    <FileJsonIcon className="size-3" />
-                  </Button>
-                }
-              />
-              <TooltipPopup side="top">{t("Open keybindings.json")}</TooltipPopup>
-            </Tooltip>
+            {canOpenInEditor ? (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      type="button"
+                      size="icon-micro"
+                      variant="ghost-muted"
+                      disabled={!keybindingsConfigPath}
+                      onClick={openKeybindingsFile}
+                      aria-label={t("Open keybindings.json")}
+                    >
+                      <FileJsonIcon className="size-3" />
+                    </Button>
+                  }
+                />
+                <TooltipPopup side="top">{t("Open keybindings.json")}</TooltipPopup>
+              </Tooltip>
+            ) : null}
             <Button
               type="button"
               size="compact"

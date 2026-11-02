@@ -38,6 +38,7 @@ import { isHostedPairingLink } from "../hostedPairing";
 import { shellEnvironment } from "../state/shell";
 import { useAtomValue } from "@effect/atom-react";
 import { useAtomCommand } from "../state/use-atom-command";
+import { useLocalShellAccess } from "../localShellAccess";
 import { usePrimaryEnvironment } from "../state/environments";
 import {
   primaryServerConfigAtom,
@@ -220,6 +221,8 @@ function AuthenticatedTracingBootstrap() {
 function EventRouter() {
   const { t } = useI18n();
   const primaryEnvironment = usePrimaryEnvironment();
+  // The editor opens on the server machine, so remote clients get the warning without the action.
+  const canOpenInEditor = useLocalShellAccess(primaryEnvironment?.environmentId ?? null).isLocal;
 
   const openInEditor = useAtomCommand(shellEnvironment.openInEditor, {
     reportFailure: false,
@@ -262,45 +265,49 @@ function EventRouter() {
         type: "warning",
         title: t("Invalid keybindings configuration"),
         description: decision.message,
-        actionVariant: "outline",
-        actionProps: {
-          children: t("Open keybindings.json"),
-          onClick: () => {
-            if (!serverConfig || !primaryEnvironment) {
-              return;
-            }
+        ...(canOpenInEditor
+          ? {
+              actionVariant: "outline" as const,
+              actionProps: {
+                children: t("Open keybindings.json"),
+                onClick: () => {
+                  if (!serverConfig || !primaryEnvironment) {
+                    return;
+                  }
 
-            const editor = resolveAndPersistPreferredEditor(serverConfig.availableEditors);
+                  const editor = resolveAndPersistPreferredEditor(serverConfig.availableEditors);
 
-            if (!editor) {
-              return;
-            }
+                  if (!editor) {
+                    return;
+                  }
 
-            void (async () => {
-              const result = await openInEditor({
-                environmentId: primaryEnvironment.environmentId,
-                input: {
-                  cwd: serverConfig.keybindingsConfigPath,
-                  editor,
+                  void (async () => {
+                    const result = await openInEditor({
+                      environmentId: primaryEnvironment.environmentId,
+                      input: {
+                        cwd: serverConfig.keybindingsConfigPath,
+                        editor,
+                      },
+                    });
+
+                    if (hasTag(result, "Success")) {
+                      return;
+                    }
+
+                    const error = squashAtomCommandFailure(result);
+                    toastManager.add(
+                      stackedThreadToast({
+                        type: "error",
+                        title: t("Unable to open keybindings file"),
+                        description:
+                          error instanceof Error ? error.message : t("Unknown error opening file."),
+                      }),
+                    );
+                  })();
                 },
-              });
-
-              if (hasTag(result, "Success")) {
-                return;
-              }
-
-              const error = squashAtomCommandFailure(result);
-              toastManager.add(
-                stackedThreadToast({
-                  type: "error",
-                  title: t("Unable to open keybindings file"),
-                  description:
-                    error instanceof Error ? error.message : t("Unknown error opening file."),
-                }),
-              );
-            })();
-          },
-        },
+              },
+            }
+          : {}),
       }),
     );
   });
