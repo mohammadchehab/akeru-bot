@@ -154,6 +154,8 @@ const OPENCODE_DRIVER_KIND = ProviderDriverKind.make("opencode");
 
 const OPENCODE_GO_DRIVER_KIND = ProviderDriverKind.make("opencodeGo");
 
+const CURSOR_DRIVER_KIND = ProviderDriverKind.make("cursor");
+
 const CUSTOM_OPENAI_DRIVER_KIND = ProviderDriverKind.make("customOpenai");
 
 export const DEFAULT_MODEL = "gpt-6.1-sol";
@@ -182,6 +184,8 @@ export const DEFAULT_MODEL_BY_PROVIDER: Partial<Record<ProviderDriverKind, strin
   [KIMI_DRIVER_KIND]: "k3",
   [OPENCODE_DRIVER_KIND]: "openai/gpt-6.1-sol",
   [OPENCODE_GO_DRIVER_KIND]: "gpt-6-luna",
+  // The real model list is per Cursor account (`agent --list-models`); `auto` always exists.
+  [CURSOR_DRIVER_KIND]: "auto",
 };
 
 /** Per-provider text generation model defaults. */
@@ -237,6 +241,7 @@ export const MODEL_SLUG_ALIASES_BY_PROVIDER: Partial<
   },
   [OPENCODE_DRIVER_KIND]: {},
   [OPENCODE_GO_DRIVER_KIND]: {},
+  [CURSOR_DRIVER_KIND]: {},
 };
 
 // ── Provider display names ────────────────────────────────────────────
@@ -248,6 +253,7 @@ export const PROVIDER_DISPLAY_NAMES: Partial<Record<ProviderDriverKind, string>>
   [KIMI_DRIVER_KIND]: "Kimi For Coding",
   [OPENCODE_DRIVER_KIND]: "OpenCode",
   [OPENCODE_GO_DRIVER_KIND]: "OpenCode Go",
+  [CURSOR_DRIVER_KIND]: "Cursor",
   [CUSTOM_OPENAI_DRIVER_KIND]: "Custom API",
 };
 
@@ -262,6 +268,7 @@ export const PROVIDER_ACCOUNT_NAMES: Partial<Record<ProviderDriverKind, string>>
   [KIMI_DRIVER_KIND]: "Kimi For Coding",
   [OPENCODE_DRIVER_KIND]: "OpenCode",
   [OPENCODE_GO_DRIVER_KIND]: "OpenCode Go",
+  [CURSOR_DRIVER_KIND]: "Cursor",
 };
 
 /**

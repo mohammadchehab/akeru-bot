@@ -272,6 +272,33 @@ export const OpenCodeSettings = providerSettingsSchema(
 
 export type OpenCodeSettings = typeof OpenCodeSettings.Type;
 
+export const CursorSettings = providerSettingsSchema(
+  {
+    // Off by default; it is hidden from the picker until the Settings card ships.
+    enabled: Schema.Boolean.pipe(
+      Schema.withDecodingDefault(Effect.succeed(false)),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
+    binaryPath: binaryPathSetting("agent").pipe(
+      Schema.annotateKey({
+        title: "Binary path",
+        description: "Path to the Cursor CLI (`agent`).",
+        providerSettingsForm: {
+          placeholder: "agent",
+          clearWhenEmpty: "omit",
+        },
+      }),
+    ),
+    customModels: Schema.Array(Schema.String).pipe(
+      Schema.withDecodingDefault(Effect.succeed([])),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
+  },
+  { order: ["binaryPath"] },
+);
+
+export type CursorSettings = typeof CursorSettings.Type;
+
 /**
  * Read the legacy `enabled` flag embedded in a provider instance config
  * blob. The envelope-level `ProviderInstanceConfig.enabled` is the single
@@ -336,6 +363,12 @@ export const OpenCodeGoSettingsPatch = Schema.Struct({
 export const CustomOpenaiSettingsPatch = Schema.Struct({
   enabled: Schema.optionalKey(Schema.Boolean),
   baseUrl: Schema.optionalKey(TrimmedString),
+  customModels: Schema.optionalKey(Schema.Array(Schema.String)),
+});
+
+export const CursorSettingsPatch = Schema.Struct({
+  enabled: Schema.optionalKey(Schema.Boolean),
+  binaryPath: Schema.optionalKey(TrimmedString),
   customModels: Schema.optionalKey(Schema.Array(Schema.String)),
 });
 

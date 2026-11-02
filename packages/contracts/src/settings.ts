@@ -91,6 +91,7 @@ export {
   KimiSettings,
   OpenCodeGoSettings,
   CustomOpenaiSettings,
+  CursorSettings,
   OpenCodeSettings,
   providerInstanceConfigEnabledFlag,
 } from "./settings/providers.ts";
