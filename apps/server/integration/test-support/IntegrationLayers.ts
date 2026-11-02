@@ -37,6 +37,7 @@ import { OrchestrationProjectionSnapshotQueryLive } from "../../src/orchestratio
 import * as ThreadBackgroundLiveness from "../../src/orchestration/ThreadBackgroundLiveness.ts";
 import * as ThreadPlanProgress from "../../src/orchestration/ThreadPlanProgress.ts";
 import { RuntimeReceiptBusTest } from "../../src/orchestration/Layers/RuntimeReceiptBus.ts";
+import { GroupResponderQueueReactor } from "../../src/orchestration/Services/GroupResponderQueueReactor.ts";
 import { OrchestrationReactorLive } from "../../src/orchestration/Layers/OrchestrationReactor.ts";
 import { ProviderCommandReactorLive } from "../../src/orchestration/Layers/ProviderCommandReactor.ts";
 import { ProviderRuntimeIngestionLive } from "../../src/orchestration/Layers/ProviderRuntimeIngestion.ts";
@@ -195,6 +196,13 @@ export function createIntegrationLayers({
     Layer.provideMerge(runtimeIngestionLayer),
     Layer.provideMerge(providerCommandReactorLayer),
     Layer.provideMerge(checkpointReactorLayer),
+    Layer.provideMerge(
+      Layer.succeed(GroupResponderQueueReactor, {
+        start: () => Effect.void,
+        drain: Effect.void,
+        drainThrough: () => Effect.void,
+      }),
+    ),
     Layer.provideMerge(
       Layer.succeed(ThreadDeletionReactor, {
         start: () => Effect.void,

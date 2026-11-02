@@ -530,6 +530,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
       if (queue === undefined || next === undefined || answering) return [];
 
       const rest = queue.entries.slice(1);
+
       const group = thread.groupId
         ? readModel.groups.find((entry) => entry.id === thread.groupId)
         : undefined;

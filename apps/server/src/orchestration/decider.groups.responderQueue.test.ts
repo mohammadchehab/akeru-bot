@@ -110,6 +110,7 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
 
       if (queue?.type !== "thread.responder-queue.set") throw new Error("Expected queue event");
       if (start?.type !== "thread.turn-start-requested") throw new Error("Expected turn start");
+
       expect(queue.payload.entries.map((item: { readonly botId: string }) => item.botId)).toEqual([
         OTHER_SPECIALIST_ID,
       ]);
