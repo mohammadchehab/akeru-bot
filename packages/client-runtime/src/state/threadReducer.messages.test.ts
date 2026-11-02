@@ -469,3 +469,46 @@ describe("applyThreadDetailEvent", () => {
     });
   });
 });
+
+describe("applyThreadDetailEvent respondingBotId on live replies", () => {
+  const replyEvent = (respondingBotId: BotId | null | undefined, streaming: boolean) =>
+    ({
+      ...baseEventFields,
+      sequence: 9,
+      occurredAt: "2026-04-01T06:01:00.000Z",
+      aggregateKind: "thread",
+      aggregateId: baseThread.id,
+      type: "thread.message-sent",
+      payload: {
+        threadId: baseThread.id,
+        messageId: MessageId.make("msg-group-reply"),
+        role: "assistant",
+        text: "Bot2 here.",
+        turnId: TurnId.make("turn-group"),
+        ...(respondingBotId === undefined ? {} : { respondingBotId }),
+        streaming,
+        createdAt: "2026-04-01T06:00:00.000Z",
+        updatedAt: "2026-04-01T06:01:00.000Z",
+      },
+    }) as const;
+
+  it("keeps the responding bot on a new live reply", () => {
+    const result = applyThreadDetailEvent(baseThread, replyEvent(BotId.make("bot-2"), true));
+    assert(result.kind === "updated");
+    expect(result.thread.messages.at(-1)?.respondingBotId).toBe("bot-2");
+  });
+
+  it("keeps the responding bot while the reply streams and settles", () => {
+    const first = applyThreadDetailEvent(baseThread, replyEvent(BotId.make("bot-2"), true));
+    assert(first.kind === "updated");
+    const settled = applyThreadDetailEvent(first.thread, replyEvent(undefined, false));
+    assert(settled.kind === "updated");
+    expect(settled.thread.messages.at(-1)?.respondingBotId).toBe("bot-2");
+  });
+
+  it("leaves a reply without a responding bot unlabelled", () => {
+    const result = applyThreadDetailEvent(baseThread, replyEvent(undefined, false));
+    assert(result.kind === "updated");
+    expect(result.thread.messages.at(-1)?.respondingBotId).toBeUndefined();
+  });
+});
