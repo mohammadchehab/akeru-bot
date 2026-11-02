@@ -4,7 +4,9 @@ import * as Effect from "effect/Effect";
 
 const DATABASE_NAME = "isnadi:connection-runtime";
 
-const DATABASE_VERSION = 5;
+// Version 6 clears the cached threads: the reducer used to drop `respondingBotId` from live
+// replies, so threads it cached would keep labelling group replies as the boss after a reload.
+const DATABASE_VERSION = 6;
 
 export const CATALOG_STORE_NAME = "catalog";
 
@@ -42,7 +44,16 @@ export const openDatabaseAt = (name: string) =>
     }
 
     const request = indexedDB.open(name, DATABASE_VERSION);
-    request.addEventListener("upgradeneeded", () => {
+    request.addEventListener("upgradeneeded", (event) => {
+      // A thread cached before version 6 re-downloads from the snapshot, which carries the label.
+      if (
+        event.oldVersion > 0 &&
+        event.oldVersion < 6 &&
+        request.result.objectStoreNames.contains(THREAD_STORE_NAME)
+      ) {
+        request.transaction?.objectStore(THREAD_STORE_NAME).clear();
+      }
+
       for (const storeName of OBJECT_STORE_NAMES) {
         if (!request.result.objectStoreNames.contains(storeName)) {
           request.result.createObjectStore(storeName);
