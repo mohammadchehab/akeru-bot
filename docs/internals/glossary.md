@@ -60,7 +60,7 @@ The live sidebar is `BotRosterSidebar`. Pins and the main Bots list are a client
 
 #### Decisions
 
-The top group of the web roster sidebar: live chats in the primary environment where a bot waits on the user. `selectDecisions` in `packages/client-runtime/src/decisions.ts` derives it from `hasPendingApprovals` and `hasPendingUserInput` on thread shells, and a delegated sub-chat stands for its root chat. `environmentDecisionsAtom` emits only when the rows change, so streaming progress does not re-render the sidebar. `DecisionsGroup` renders it and `useOpenChat` jumps to a row.
+The top group of the web roster sidebar: live chats in the primary environment where a bot waits on the user. `selectDecisions` in `packages/client-runtime/src/decisions.ts` derives it from `hasPendingApprovals` and `hasPendingUserInput` on thread shells, and a delegated sub-chat stands for its root chat: the row shows the root's title, while `targetThreadId` names the chat that holds the prompt (the newest pending approval in the tree, otherwise the newest question) and is what the row opens. Rows order by `updatedAt`, which a streaming pending chat keeps bumping, so two pending rows can swap places mid-stream. `environmentDecisionsAtom` emits only when the rows change, so streaming progress does not re-render the sidebar. `DecisionsGroup` renders it and `useOpenChat` jumps to a row.
 
 #### Activity
 

@@ -8,6 +8,8 @@ export type DecisionKind = "approval" | "question";
 export interface Decision {
   readonly environmentId: EnvironmentId;
   readonly threadId: ThreadId;
+  /** The chat that holds the prompt: the pending chat itself, which may be a delegated sub-chat. */
+  readonly targetThreadId: ThreadId;
   readonly botId: string | null;
   readonly groupId: string | null;
   readonly title: string;
@@ -45,7 +47,8 @@ function rootOf(
 /**
  * Chats in the primary environment that wait on the user for an approval or a question,
  * newest first. A delegated sub-chat stands for its root chat, so one row covers the tree;
- * an approval outranks a question when both are pending anywhere in it.
+ * an approval outranks a question when both are pending anywhere in it. `targetThreadId` is
+ * the chat to open: the newest pending approval in the tree, otherwise the newest question.
  */
 export function selectDecisions(
   shells: ReadonlyArray<EnvironmentThreadShell>,
@@ -60,6 +63,7 @@ export function selectDecisions(
   }
 
   const byRoot = new Map<ThreadId, Decision>();
+  const targetUpdatedAt = new Map<ThreadId, string>();
 
   for (const shell of byId.values()) {
     const kind = pendingKind(shell);
@@ -74,9 +78,17 @@ export function selectDecisions(
 
     const existing = byRoot.get(root.id);
 
+    const supersedes =
+      existing === undefined ||
+      (kind === "approval" && existing.kind !== "approval") ||
+      (kind === existing.kind && shell.updatedAt > (targetUpdatedAt.get(root.id) ?? ""));
+
+    if (supersedes) targetUpdatedAt.set(root.id, shell.updatedAt);
+
     byRoot.set(root.id, {
       environmentId: root.environmentId,
       threadId: root.id,
+      targetThreadId: supersedes ? shell.id : existing.targetThreadId,
       botId: root.botId ?? null,
       groupId: root.groupId ?? null,
       title: root.title,
@@ -108,6 +120,7 @@ export function decisionsEqual(
         other !== undefined &&
         row.environmentId === other.environmentId &&
         row.threadId === other.threadId &&
+        row.targetThreadId === other.targetThreadId &&
         row.kind === other.kind &&
         row.title === other.title &&
         row.botId === other.botId &&

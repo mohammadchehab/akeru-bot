@@ -102,6 +102,7 @@ export function DecisionsList({
  */
 export function DecisionsGroup() {
   const decisions = useDecisions(usePrimaryEnvironmentId());
+  const { t } = useI18n();
   const openChat = useOpenChat();
   const bots = useRosterStore((state) => state.bots);
   const groups = useRosterStore((state) => state.groups);
@@ -111,7 +112,7 @@ export function DecisionsGroup() {
     if (decision.botId !== null) {
       const bot = bots.find((candidate) => candidate.id === decision.botId);
 
-      return { name: bot?.name ?? "", avatar: bot?.avatar ?? null };
+      return { name: bot?.name ?? t("Unknown bot"), avatar: bot?.avatar ?? null };
     }
 
     return {
@@ -125,7 +126,9 @@ export function DecisionsGroup() {
       decisions={decisions}
       expanded={expanded}
       ownerOf={ownerOf}
-      onOpen={(decision) => void openChat(decision)}
+      onOpen={(decision) =>
+        void openChat({ environmentId: decision.environmentId, threadId: decision.targetThreadId })
+      }
       onExpand={() => setExpanded(true)}
     />
   );

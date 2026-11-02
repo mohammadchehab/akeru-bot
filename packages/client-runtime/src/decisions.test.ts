@@ -111,7 +111,32 @@ describe("selectDecisions", () => {
       title: "Root chat",
       kind: "approval",
       updatedAt: "2026-06-03T00:00:00.000Z",
+      targetThreadId: "child",
     });
+  });
+
+  it("targets the root itself when it is the pending chat", () => {
+    const rows = selectDecisions(
+      [shell("root", "2026-06-01T00:00:00.000Z", { hasPendingUserInput: true })],
+      PRIMARY,
+    );
+
+    expect(rows[0]?.targetThreadId).toBe("root");
+  });
+
+  it("targets an approval over a newer question in the same tree", () => {
+    const rows = selectDecisions(
+      [
+        shell("root", "2026-06-05T00:00:00.000Z", { hasPendingUserInput: true }),
+        shell("child", "2026-06-01T00:00:00.000Z", {
+          parentThreadId: ThreadId.make("root"),
+          hasPendingApprovals: true,
+        }),
+      ],
+      PRIMARY,
+    );
+
+    expect(rows[0]?.targetThreadId).toBe("child");
   });
 
   it("drops a sub-chat whose root is archived or missing", () => {

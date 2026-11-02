@@ -38,6 +38,7 @@ function decision(id: string, kind: Decision["kind"], owner: Partial<Decision> =
   return {
     environmentId: EnvironmentId.make("env-1"),
     threadId: ThreadId.make(id),
+    targetThreadId: ThreadId.make(id),
     botId: "bot-a",
     groupId: null,
     title: `Chat ${id}`,
