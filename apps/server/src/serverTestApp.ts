@@ -62,6 +62,7 @@ import {
 
 import * as AgentController from "./provider/Services/AgentController.ts";
 
+import * as CursorLogin from "./provider/Layers/cursor/CursorLoginControl.ts";
 import * as ProviderRegistry from "./provider/Services/ProviderRegistry.ts";
 
 import { manualOnlyProviderMaintenanceCapabilities } from "./provider/providerMaintenance.ts";
@@ -148,6 +149,7 @@ export const buildAppUnderTest = (options?: {
   layers?: {
     keybindings?: Partial<Keybindings.Keybindings["Service"]>;
     providerRegistry?: Partial<ProviderRegistry.ProviderRegistry["Service"]>;
+    cursorLogin?: Partial<CursorLogin.CursorLogin["Service"]>;
     agentController?: Partial<AgentController.AgentController["Service"]>;
     serverSettings?: Partial<ServerSettings.ServerSettingsService["Service"]>;
     externalLauncher?: Partial<ExternalLauncher.ExternalLauncher["Service"]>;
@@ -387,6 +389,12 @@ export const buildAppUnderTest = (options?: {
             ...options?.layers?.providerRegistry,
           }),
           Layer.succeed(ProviderInstanceRegistryMutator, { reconcile: () => Effect.void }),
+          Layer.mock(CursorLogin.CursorLogin)({
+            start: () => Effect.succeed({ loginUrl: null }),
+            logout: () => Effect.void,
+            cancel: Effect.void,
+            ...options?.layers?.cursorLogin,
+          }),
           Layer.mock(AgentController.AgentController)({
             uploadFeedback: () => Effect.die("Provider feedback is not stubbed in this test"),
             ...options?.layers?.agentController,
