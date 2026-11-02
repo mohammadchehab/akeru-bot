@@ -139,11 +139,11 @@
 Get the latest release from
 [github.com/mohammadchehab/isnadibot/releases/latest](https://github.com/mohammadchehab/isnadibot/releases/latest):
 
-| System                | File                               | First launch                                                                         |
-| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
-| macOS (Apple Silicon) | `IsnadiBot-<version>-arm64.dmg`    | Not signed yet. Control-click the app and choose **Open** the first time.            |
-| Windows (x64)         | `IsnadiBot-<version>-x64.exe`      | Not signed yet. On the SmartScreen screen choose **More info**, then **Run anyway**. |
-| Linux (x64)           | `IsnadiBot-<version>-x64.AppImage` | `chmod +x` the file, then run it.                                                    |
+| System                | File                               | First launch                                                                                                                                                          |
+| --------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| macOS (Apple Silicon) | `IsnadiBot-<version>-arm64.dmg`    | Not signed yet. Open it once, then go to **System Settings → Privacy & Security → Open Anyway**, or run `xattr -dr com.apple.quarantine /Applications/IsnadiBot.app`. |
+| Windows (x64)         | `IsnadiBot-<version>-x64.exe`      | Not signed yet. On the SmartScreen screen choose **More info**, then **Run anyway**.                                                                                  |
+| Linux (x64)           | `IsnadiBot-<version>-x64.AppImage` | `chmod +x` the file, then run it.                                                                                                                                     |
 
 To run IsnadiBot on a server instead, use `install-remote.sh` (macOS and Linux) or
 `install-remote.ps1` (Windows), both attached to the release. See

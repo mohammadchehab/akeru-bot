@@ -130,8 +130,9 @@
 نزّل أحدث إصدار من
 [github.com/mohammadchehab/isnadibot/releases/latest](https://github.com/mohammadchehab/isnadibot/releases/latest):
 
-- macOS (Apple Silicon): ملف `IsnadiBot-<الإصدار>-arm64.dmg`. التطبيق غير موقَّع بعد، فاضغط عليه بزر
-  التحكم (Control) واختر **Open** في أول تشغيل.
+- macOS (Apple Silicon): ملف `IsnadiBot-<الإصدار>-arm64.dmg`. التطبيق غير موقَّع بعد، فافتحه مرة واحدة ثم
+  انتقل إلى **System Settings → Privacy & Security → Open Anyway**، أو نفّذ
+  `xattr -dr com.apple.quarantine /Applications/IsnadiBot.app`.
 - Windows (x64): ملف `IsnadiBot-<الإصدار>-x64.exe`. التطبيق غير موقَّع بعد، فاختر في شاشة SmartScreen
   **More info** ثم **Run anyway**.
 - Linux (x64): ملف `IsnadiBot-<الإصدار>-x64.AppImage`. نفّذ `chmod +x` على الملف ثم شغّله.
