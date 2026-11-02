@@ -57,6 +57,7 @@ import {
   ResponderQueueEntry,
   ResponderQueueReason,
   ResponderTrigger,
+  GroupHopBudget,
 } from "./thread.ts";
 
 export const OrchestrationEventType = Schema.Literals([
@@ -108,6 +109,7 @@ export const OrchestrationEventType = Schema.Literals([
   "thread.meta-updated",
   "thread.runtime-mode-set",
   "thread.interaction-mode-set",
+  "thread.hop-budget-set",
   "thread.message-sent",
   "thread.responder-queue.set",
   "thread.channel-delivery-set",
@@ -435,6 +437,12 @@ export const ThreadInteractionModeSetPayload = Schema.Struct({
   interactionMode: ProviderInteractionMode.pipe(
     Schema.withDecodingDefault(Effect.succeed(DEFAULT_PROVIDER_INTERACTION_MODE)),
   ),
+  updatedAt: IsoDateTime,
+});
+
+export const ThreadHopBudgetSetPayload = Schema.Struct({
+  threadId: ThreadId,
+  hopBudget: GroupHopBudget,
   updatedAt: IsoDateTime,
 });
 

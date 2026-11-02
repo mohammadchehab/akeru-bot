@@ -27,6 +27,7 @@ import {
 import { ChatAttachment, UploadChatAttachment } from "./attachments.ts";
 import {
   ChannelMessageOrigin,
+  GroupHopBudget,
   SourceProposedPlanReference,
   ThreadLinkedPullRequest,
 } from "./thread.ts";
@@ -170,6 +171,15 @@ export const ThreadInteractionModeSetCommand = Schema.Struct({
   commandId: CommandId,
   threadId: ThreadId,
   interactionMode: ProviderInteractionMode,
+  createdAt: IsoDateTime,
+});
+
+/** Group chats only: sets how many bot turns a chain of mentions may add per user message. */
+export const ThreadHopBudgetSetCommand = Schema.Struct({
+  type: Schema.Literal("thread.hop-budget.set"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  hopBudget: GroupHopBudget,
   createdAt: IsoDateTime,
 });
 

@@ -40,6 +40,7 @@ export const decideThreadLifecycle = Effect.fn("decideThreadLifecycle")(function
         | "thread.title.regeneration.complete"
         | "thread.runtime-mode.set"
         | "thread.interaction-mode.set"
+        | "thread.hop-budget.set"
         | "thread.channel-delivery.set"
         | "thread.history.restore";
     }
@@ -446,6 +447,36 @@ export const decideThreadLifecycle = Effect.fn("decideThreadLifecycle")(function
           threadId: command.threadId,
           interactionMode: command.interactionMode,
           updatedAt: occurredAt,
+        },
+      };
+    }
+
+    case "thread.hop-budget.set": {
+      const thread = yield* requireThread({
+        readModel,
+        command,
+        threadId: command.threadId,
+      });
+
+      if (thread.groupId === null || thread.groupId === undefined) {
+        return yield* new OrchestrationCommandInvariantError({
+          commandType: command.type,
+          detail: `Thread '${command.threadId}' is not a group chat, so it has no hop budget.`,
+        });
+      }
+
+      return {
+        ...(yield* withEventBase({
+          aggregateKind: "thread",
+          aggregateId: command.threadId,
+          occurredAt: command.createdAt,
+          commandId: command.commandId,
+        })),
+        type: "thread.hop-budget-set",
+        payload: {
+          threadId: command.threadId,
+          hopBudget: command.hopBudget,
+          updatedAt: command.createdAt,
         },
       };
     }

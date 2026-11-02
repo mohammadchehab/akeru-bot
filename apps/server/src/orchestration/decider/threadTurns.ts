@@ -24,6 +24,7 @@ import {
 } from "../commandInvariants.ts";
 import {
   BUDGET_AFTER_FIRST_TURN,
+  budgetOf,
   decideResponderAdvance,
   responderQueueSetEvent,
 } from "./responderQueue.ts";
@@ -489,7 +490,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           createdAt: command.createdAt,
           causationEventId: interruptEvent.eventId,
           entries: [],
-          budget: waiting,
+          budget: budgetOf(waiting),
           reason: "stopped",
         }),
       ];
