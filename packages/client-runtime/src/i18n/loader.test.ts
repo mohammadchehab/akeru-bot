@@ -16,8 +16,8 @@ function deferredCatalog() {
 }
 
 describe("lazy catalog loader", () => {
-  it("ships Simplified Chinese and uses English for unapproved locales", async () => {
-    expect(Object.keys(catalogRegistry)).toEqual(["zh-CN"]);
+  it("ships Simplified Chinese and Arabic and uses English for unapproved locales", async () => {
+    expect(Object.keys(catalogRegistry)).toEqual(["zh-CN", "ar"]);
     const load = vi.fn(async () => fixture);
     const loader = createCatalogLoader({ fr: load });
     await loader.selectLocale("en-GB");

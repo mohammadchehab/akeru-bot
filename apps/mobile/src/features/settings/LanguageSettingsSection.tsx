@@ -1,9 +1,9 @@
 import { useAtomSet, useAtomValue } from "@effect/atom-react";
-import { availableLanguages } from "@isnadi/client-runtime/i18n";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { Pressable, View } from "react-native";
 import { AppText as Text } from "../../components/AppText";
 import { useMobileI18n } from "../../lib/i18n";
+import { mobileLanguages } from "../../lib/languagePreferences";
 import { mobilePreferencesAtom, updateMobilePreferencesAtom } from "../../state/preferences";
 import { SettingsSection } from "./components/SettingsSection";
 
@@ -13,7 +13,7 @@ export function LanguageSettingsSection() {
   const save = useAtomSet(updateMobilePreferencesAtom);
   const result = useAtomValue(updateMobilePreferencesAtom);
   const ready = AsyncResult.isSuccess(preferences) && !preferences.waiting;
-  const options = [{ id: "system", label: t("System default") }, ...availableLanguages];
+  const options = [{ id: "system", label: t("System default") }, ...mobileLanguages];
 
   return (
     <View className="gap-3">

@@ -59,12 +59,12 @@ describe("directionForLocale", () => {
 });
 
 describe("catalog id", () => {
-  it("is derived from the listed languages and does not list Arabic yet", () => {
-    expect(availableLanguages.map((language) => language.id)).toEqual(["en", "zh-CN"]);
+  it("is derived from the listed languages and answers to any Arabic region", () => {
+    expect(availableLanguages.map((language) => language.id)).toEqual(["en", "zh-CN", "ar"]);
     expect(catalogIdForLocale("en-GB")).toBe("en");
     expect(catalogIdForLocale("zh-Hans-CN")).toBe("zh-CN");
-    expect(catalogIdForLocale("ar")).toBeUndefined();
-    expect(catalogIdForLocale("ar-EG")).toBeUndefined();
+    expect(catalogIdForLocale("ar")).toBe("ar");
+    expect(catalogIdForLocale("ar-EG")).toBe("ar");
   });
 });
 

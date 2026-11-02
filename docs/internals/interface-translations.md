@@ -6,7 +6,7 @@ Interface language is a client preference, not environment state. A browser prof
 
 The framework-free implementation lives in `packages/client-runtime/src/i18n`. React and React Native adapters own subscriptions and persistence. Device locale resolution is explicit so shared code does not depend on browser or native globals.
 
-English is the source and fallback language. The initial shipped set is English and Simplified Chinese (`zh-CN`). Traditional Chinese and other locales fall back to English. Test-only catalogs do not count as shipped translations. Additional languages load through the same lazy registry.
+English is the source and fallback language. The shipped set is English, Simplified Chinese (`zh-CN`), and, on web and desktop only, Arabic (`ar`). Traditional Chinese and other locales fall back to English. Test-only catalogs do not count as shipped translations. Additional languages load through the same lazy registry.
 
 Use shared messages when the meaning is the same. Translate static interface copy at its rendering boundary. Preserve whole sentences and named interpolation parameters rather than joining translated fragments. Plural messages need an `other` form and should use `Intl.PluralRules`; use the selected locale's `Intl` date and number formatters rather than formatting on the environment server.
 
@@ -33,7 +33,7 @@ Arabic (`ar`, Modern Standard Arabic) is the first right-to-left interface langu
 
 ### Locale, formatting, and plurals
 
-- One region-free `ar` catalog. Any `ar-*` device locale resolves to it. The catalog id type is derived from `availableLanguages` rather than repeated in `locale.ts`. `ar` joins `availableLanguages` and `catalogRegistry` only in the change that ships its catalog; until then, tests inject an RTL test catalog.
+- One region-free `ar` catalog. Any `ar-*` device locale resolves to it. The catalog id type is derived from `availableLanguages` rather than repeated in `locale.ts`. `ar` is in `availableLanguages` and `catalogRegistry`. Mobile filters right-to-left languages out of its selector and its device locales (`mobileLanguages` in `apps/mobile/src/lib/languagePreferences.ts`) until it restarts into the new layout direction.
 - `formattingLocale(locale)` in `formatters.ts` is the only locale every `Intl` formatter receives. For Arabic it adds `-u-nu-latn-ca-gregory`: Western digits and the Gregorian calendar. Without it, `ar-SA` formats Hijri dates with Arabic-Indic digits next to token counts, model ids, and code that use Western digits. The digit choice is a single constant.
 - Arabic uses six plural categories (zero, one, two, few, many, other). A plural's forms are written in English, so a catalog can only translate the English forms and cannot add new categories. A catalog may therefore add category entries keyed `<English other form>#<category>`. `plural` looks up that key first, then falls back to the translated form. Catalog validation rejects a `#` entry whose base is not an English plural `other` form, whose category is not a CLDR plural category, or whose parameters differ from the base form.
 - When the interface direction is right-to-left, the translator wraps each interpolated value in first-strong isolate characters (U+2068 … U+2069). An English bot name, a path, or a number inside an Arabic sentence then keeps its own order and does not reorder the punctuation around it. Left-to-right translators add nothing, so English and Simplified Chinese strings are unchanged.
@@ -90,7 +90,7 @@ English extraction is incremental. A catalog's existence is not evidence that ev
 | Confirm dialogs and alerts          | Dialog buttons and fallback title; caller messages translated where owned        | Native alerts and the confirm dialog Cancel fallback  |
 | Memory                              | Memory sheet, durable facts, transfer and import review, Privacy > Memory        | Memory screen, durable facts, Settings > Memory       |
 | Routines                            | Routine panel, routine form, and routine receipts in chat                        | Chat settings routine screen, approvals, and receipts |
-| Approved non-English catalogs       | Simplified Chinese (`zh-CN`)                                                     | Simplified Chinese (`zh-CN`)                          |
+| Approved non-English catalogs       | Simplified Chinese (`zh-CN`), Arabic (`ar`)                                      | Simplified Chinese (`zh-CN`)                          |
 
 The coverage test scans every file that imports `useI18n` or `useMobileI18n`, plus a short explicit list of plain modules that translate through a passed-in or module-level translator: `CommandPalette.logic.ts`, `composerProviderMenuItems.ts`, the mobile `app-updates.ts`, the onboarding logic modules, `botInbox.ts`, `durableMemory.ts`, `imageGeneration.ts`, `providerAvailability.ts`, and `errors/threadErrorPresentation.ts` in client-runtime, and `botEngineSelection.ts`, `routineReceipts.ts`, and `SettingsPanels.logic.ts` in the web app. Plural forms passed to `plural` are extracted as messages too. Mobile code outside React uses `translateOutsideReact` from `apps/mobile/src/lib/i18n.tsx`, which follows the mounted language provider.
 

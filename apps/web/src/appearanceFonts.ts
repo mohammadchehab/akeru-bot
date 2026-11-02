@@ -20,7 +20,7 @@ import {
 } from "@isnadi/contracts";
 
 export const DEFAULT_SANS_FONT_STACK =
-  '"Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
+  '"Geist Variable", -apple-system, "SF Arabic", "Geeza Pro", BlinkMacSystemFont, "Segoe UI", "Noto Sans Arabic", system-ui, sans-serif';
 
 // Concrete names first: some engines alias `ui-monospace` to the
 // proportional system UI font, which would break every code surface.

@@ -25,10 +25,11 @@ const testCatalog = {
 };
 
 describe("client locale resolution", () => {
-  it("offers English and Simplified Chinese and resolves explicit and device regional locales", () => {
+  it("offers English, Simplified Chinese, and Arabic and resolves explicit and device regional locales", () => {
     expect(availableLanguages).toEqual([
       { id: "en", label: "English" },
       { id: "zh-CN", label: "简体中文" },
+      { id: "ar", label: "العربية" },
     ]);
     expect(resolveLocale("en-gb", ["en-US"])).toBe("en-GB");
     expect(resolveLocale("zh-CN", ["en-US"])).toBe("zh-CN");
