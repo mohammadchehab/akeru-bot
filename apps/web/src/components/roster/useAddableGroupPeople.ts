@@ -1,10 +1,14 @@
 import { AuthAccessWriteScope, type EnvironmentId } from "@isnadi/contracts";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { listServerClientSessions } from "../../environments/primary/authAdministration";
+import {
+  listServerClientSessions,
+  type ServerClientSessionRecord,
+} from "../../environments/primary/authAdministration";
 import { usePrimaryEnvironmentId } from "../../state/environments";
 import { useEnvironmentSessionState } from "../../state/session";
 import { addableGroupPeople, type AddableGroupPerson } from "./groupPeople.logic";
+import { groupPersonMembers } from "./roster.logic";
 import type { Group } from "./types";
 
 const NONE: ReadonlyArray<AddableGroupPerson> = [];
@@ -33,9 +37,15 @@ export function useAddableGroupPeople(
     session.data?.authenticated === true &&
     session.data.scopes?.includes(AuthAccessWriteScope) === true;
 
-  const [people, setPeople] = useState(NONE);
+  const [sessions, setSessions] = useState<ReadonlyArray<ServerClientSessionRecord>>([]);
   const [reloads, setReloads] = useState(0);
   const refresh = useCallback(() => setReloads((count) => count + 1), []);
+
+  // Membership is the only part of the group that changes who can be added, so key on it
+  // rather than on the group object, which is new on every snapshot update.
+  const memberKey = groupPersonMembers(group)
+    .map((person) => person.personId)
+    .join(",");
 
   // The editor stays mounted while its panel is collapsed, so reload when the window returns.
   useEffect(() => {
@@ -48,7 +58,7 @@ export function useAddableGroupPeople(
 
   useEffect(() => {
     if (!canAdd) {
-      setPeople(NONE);
+      setSessions([]);
 
       return;
     }
@@ -57,17 +67,22 @@ export function useAddableGroupPeople(
 
     // Reload when membership changes too, so a removed person shows up here and an added one leaves.
     void listServerClientSessions()
-      .then((sessions) => {
-        if (!cancelled) setPeople(addableGroupPeople(group, sessions));
+      .then((next) => {
+        if (!cancelled) setSessions(next);
       })
       .catch(() => {
-        if (!cancelled) setPeople(NONE);
+        if (!cancelled) setSessions([]);
       });
 
     return () => {
       cancelled = true;
     };
-  }, [canAdd, group, reloads]);
+  }, [canAdd, memberKey, reloads]);
+
+  const people = useMemo(
+    () => (canAdd ? addableGroupPeople(group, sessions) : NONE),
+    [canAdd, group, sessions],
+  );
 
   return { canAdd, people, refresh };
 }
