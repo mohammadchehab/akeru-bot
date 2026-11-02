@@ -337,8 +337,14 @@ describe("group runtime errors", () => {
     const runtime = useGroupThreadRuntime("group-1");
 
     expect(runtime.providerAvailable).toBe(true);
-    expect(await runtime.send("@Scout, check this", [], "bot-2")).toBe(true);
-    expect(mocks.startTurn.mock.calls[0]?.[0].input.respondingBotId).toBe("bot-2");
+    expect(await runtime.send("@Scout, check this", [], { kind: "bots", botIds: ["bot-2"] })).toBe(
+      true,
+    );
+    expect(mocks.startTurn.mock.calls[0]?.[0].input.addressing).toEqual({
+      kind: "bots",
+      botIds: ["bot-2"],
+    });
+    expect(mocks.startTurn.mock.calls[0]?.[0].input.respondingBotId).toBeUndefined();
   });
 
   it("queues a group follow-up while the first send is still being accepted", async () => {

@@ -2,7 +2,8 @@ import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
 import { scopeThreadRef } from "@isnadi/client-runtime/environment";
-import { BotId, EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
+import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
+import { EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -31,6 +32,7 @@ import { DEFAULT_INTERACTION_MODE } from "../../types";
 import { sortScopedProjectsForSidebar } from "../Sidebar.logic";
 import {
   buildGroupTurnStartInput,
+  groupAddressing,
   createBotTurnSubmissionQueue,
   findLatestGroupThreadTarget,
   nextRetainedChat,
@@ -212,7 +214,11 @@ export function useGroupThreadRuntime(groupId: string) {
   }, [canResume, linkedThreadRef, resumeTurnCommand, resuming]);
 
   const send = useCallback(
-    async (prompt: string, files: readonly File[], requestedBotId?: string): Promise<boolean> => {
+    async (
+      prompt: string,
+      files: readonly File[],
+      requestedAddressing?: ComposerAddressing,
+    ): Promise<boolean> => {
       const pendingUserInput = pendingUserInputs[0];
 
       if (pendingUserInput && linkedThreadRef && files.length === 0) {
@@ -248,7 +254,9 @@ export function useGroupThreadRuntime(groupId: string) {
         return false;
       }
 
-      const respondingBotId = requestedBotId ?? group.bossBotId;
+      const addressing = groupAddressing(requestedAddressing);
+      // The first addressed bot picks the model for the send; the server resolves who answers.
+      const respondingBotId = addressing?.kind === "bots" ? addressing.botIds[0] : group.bossBotId;
 
       const respondingBot = bots.find(
         (bot) =>
@@ -317,7 +325,7 @@ export function useGroupThreadRuntime(groupId: string) {
             environmentId,
             input: buildGroupTurnStartInput({
               groupId: GroupId.make(groupId),
-              respondingBotId: BotId.make(respondingBot.id),
+              ...(addressing ? { addressing } : {}),
               threadId,
               projectId: activeProject.id,
               title: threadTitle(prompt, files),
