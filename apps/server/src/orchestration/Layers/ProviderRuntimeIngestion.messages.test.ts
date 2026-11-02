@@ -53,7 +53,13 @@ describe("ProviderRuntimeIngestion", () => {
 
     await waitForThread(
       harness,
-      (entry) => entry.session?.status === "ready" && entry.session.activeTurnId === null,
+      (entry) =>
+        entry.session?.status === "ready" &&
+        entry.session.activeTurnId === null &&
+        entry.messages.some(
+          (message) =>
+            message.role === "assistant" && message.turnId === turnId && !message.streaming,
+        ),
     );
 
     const events = await harness.run(
@@ -76,6 +82,50 @@ describe("ProviderRuntimeIngestion", () => {
 
     expect(finalReply).toBeGreaterThan(-1);
     expect(ready).toBeGreaterThan(finalReply);
+  });
+
+  it("still turns the session ready when finalizing a completed turn's reply fails", async () => {
+    const harness = await createHarness({
+      failDispatch: (command) => command.type === "thread.message.assistant.complete",
+    });
+
+    const turnId = asTurnId("turn-finalize-fails");
+
+    harness.emit({
+      type: "turn.started",
+      eventId: asEventId("evt-finalize-fails-started"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:01.000Z",
+      turnId,
+    });
+    harness.emit({
+      type: "content.delta",
+      eventId: asEventId("evt-finalize-fails-delta"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:02.000Z",
+      turnId,
+      itemId: asItemId("item-finalize-fails"),
+      payload: { streamKind: "assistant_text", delta: "Over to @bot-boss" },
+    });
+    harness.emit({
+      type: "turn.completed",
+      eventId: asEventId("evt-finalize-fails-completed"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:03.000Z",
+      turnId,
+      payload: { state: "completed" },
+    });
+
+    const thread = await waitForThread(
+      harness,
+      (entry) => entry.latestTurn?.turnId === turnId && entry.latestTurn.state === "completed",
+    );
+
+    expect(thread.session?.status).toBe("ready");
+    expect(thread.session?.activeTurnId).toBeNull();
   });
 
   it("adds a visible reply when a completed turn emitted only whitespace", async () => {
