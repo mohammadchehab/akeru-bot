@@ -10,7 +10,7 @@ import {
   cachedCatalogStore,
   migrateLegacyConnectionDatabase,
 } from "./storage";
-import { LEGACY_DATABASE_NAMES } from "./legacyDatabaseMigration";
+import { LEGACY_DATABASE_NAMES, RETIRED_DATABASE_NAMES } from "./legacyDatabaseMigration";
 
 const emptyCatalog = {
   schemaVersion: 1,
@@ -192,13 +192,65 @@ describe("migrateLegacyConnectionDatabase", () => {
               }),
           );
 
-          expect(created).toBe(true);
-          expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
+          if (RETIRED_DATABASE_NAMES.includes(legacyName)) {
+            expect(created).toBe(true);
+            expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
+          } else {
+            // T3 Code shares this origin: its database must come through the migration intact.
+            expect(created).toBe(false);
+            expect(Array.from(legacyAfter.objectStoreNames)).toContain("shell");
+            expect(
+              yield* Effect.promise(
+                () =>
+                  new Promise<unknown>((resolve, reject) => {
+                    const request = legacyAfter
+                      .transaction("shell", "readonly")
+                      .objectStore("shell")
+                      .get("env-1");
+
+                    request.addEventListener("success", () => resolve(request.result));
+                    request.addEventListener("error", () => reject(request.error));
+                  }),
+              ),
+            ).toBe("legacy-shell");
+          }
+
           legacyAfter.close();
           indexedDB.deleteDatabase(legacyName);
         }),
     );
   }
+
+  it.effect("does not create or upgrade a legacy database that does not exist", () =>
+    Effect.gen(function* () {
+      const fakeIndexedDB = yield* Effect.promise(() =>
+        import("fake-indexeddb").then((module) => new module.IDBFactory()),
+      );
+
+      vi.stubGlobal("indexedDB", fakeIndexedDB);
+
+      const migrated = yield* Effect.promise(
+        () =>
+          new Promise<IDBDatabase>((resolve, reject) => {
+            const request = indexedDB.open("isnadi:connection-runtime", 4);
+            request.addEventListener("upgradeneeded", () => {
+              for (const name of ["catalog", "shell", "thread", "server-config", "vcs-refs"]) {
+                request.result.createObjectStore(name);
+              }
+            });
+            request.addEventListener("success", () => resolve(request.result));
+            request.addEventListener("error", () => reject(request.error));
+          }),
+      );
+
+      yield* migrateLegacyConnectionDatabase(migrated);
+
+      const names = (yield* Effect.promise(() => indexedDB.databases())).map((info) => info.name);
+
+      expect(names).toEqual(["isnadi:connection-runtime"]);
+      migrated.close();
+    }),
+  );
 
   it.effect("does not restore records removed after an earlier migration", () =>
     Effect.gen(function* () {

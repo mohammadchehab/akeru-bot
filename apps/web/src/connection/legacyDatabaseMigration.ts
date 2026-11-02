@@ -5,13 +5,18 @@ import {
   CATALOG_STORE_NAME,
   catalogError,
   OBJECT_STORE_NAMES,
-  openDatabaseAt,
   readDatabaseValue,
+  writeDatabaseValue,
 } from "./indexedDbStorage";
 
 // Databases used under earlier product names, newest first so its records win.
-// Their stores are copied forward once and each is retired only after its copy succeeds.
+// Their stores are copied forward once.
 export const LEGACY_DATABASE_NAMES = ["akeru:connection-runtime", "t3code:connection-runtime"];
+
+// The only legacy database IsnadiBot deletes, and only after its copy succeeds. T3 Code is a
+// separate product that serves the same origin (both default to port 3773), so its
+// `t3code:` database is read and never modified or deleted.
+export const RETIRED_DATABASE_NAMES: ReadonlyArray<string> = ["akeru:connection-runtime"];
 
 // Written with the copied records so a legacy database that survives a blocked
 // deletion is never copied again over later removals.
@@ -89,6 +94,32 @@ const copyDatabaseContents = Effect.fn("web.connectionStorage.copyDatabaseConten
   });
 });
 
+/**
+ * Opens a database that already exists, at its current version, without ever creating or upgrading
+ * it: a database owned by another product on this origin must not change just because we looked.
+ * Resolves to undefined when it does not exist.
+ */
+const openExistingDatabase = (name: string) =>
+  Effect.callback<IDBDatabase | undefined, ConnectionTransientError>((resume) => {
+    const request = indexedDB.open(name);
+    request.addEventListener("upgradeneeded", () => {
+      // The database did not exist; abort so the empty one is never persisted.
+      request.transaction?.abort();
+    });
+    request.addEventListener("error", () => {
+      if (request.error?.name === "AbortError") {
+        resume(Effect.succeed(undefined));
+
+        return;
+      }
+
+      resume(Effect.fail(catalogError("open", request.error ?? "Unknown IndexedDB error")));
+    });
+    request.addEventListener("success", () => {
+      resume(Effect.succeed(request.result));
+    });
+  });
+
 const deleteLegacyDatabase = Effect.fn("web.connectionStorage.deleteLegacyDatabase")(function* (
   name: string,
 ) {
@@ -100,8 +131,9 @@ const deleteLegacyDatabase = Effect.fn("web.connectionStorage.deleteLegacyDataba
   });
 });
 
-/** Fill missing records from each old database, then retire it only after
- * its copy commits. A failed migration leaves the source for retry. */
+/** Fill missing records from each old database. Only IsnadiBot's own earlier database is
+ * retired, and only after its copy commits; T3 Code's database is left untouched. A failed
+ * migration leaves the sources for retry. */
 export const migrateLegacyConnectionDatabase = Effect.fn(
   "web.connectionStorage.migrateLegacyConnectionDatabase",
 )(function* (database: IDBDatabase) {
@@ -111,7 +143,7 @@ export const migrateLegacyConnectionDatabase = Effect.fn(
     return;
 
   for (const name of LEGACY_DATABASE_NAMES) {
-    const legacyResult = yield* Effect.result(openDatabaseAt(name));
+    const legacyResult = yield* Effect.result(openExistingDatabase(name));
 
     if (hasTag(legacyResult, "Failure")) {
       yield* Effect.logWarning("Could not open a legacy connection database for migration.").pipe(
@@ -121,15 +153,23 @@ export const migrateLegacyConnectionDatabase = Effect.fn(
       return;
     }
 
+    const legacyDatabase = legacyResult.success;
+
+    if (legacyDatabase === undefined) continue;
+
     yield* Effect.scoped(
       Effect.gen(function* () {
-        const legacy = yield* Effect.acquireRelease(Effect.succeed(legacyResult.success), (db) =>
+        const legacy = yield* Effect.acquireRelease(Effect.succeed(legacyDatabase), (db) =>
           Effect.sync(() => db.close()),
         );
 
         yield* copyDatabaseContents(legacy, database);
       }),
     );
-    yield* deleteLegacyDatabase(name);
+
+    if (RETIRED_DATABASE_NAMES.includes(name)) yield* deleteLegacyDatabase(name);
   }
+
+  // Nothing is deleted for T3 Code, so the marker is what stops a later start from copying it again.
+  yield* writeDatabaseValue(database, CATALOG_STORE_NAME, LEGACY_MIGRATED_KEY, true);
 });
