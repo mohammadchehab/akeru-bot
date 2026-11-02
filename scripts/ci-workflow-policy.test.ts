@@ -41,7 +41,9 @@ describe("CI workflow budget", () => {
       job.steps.flatMap((step) => (step.run ? [step.run] : [])),
     );
 
-    expect(Object.keys(ci.on)).toEqual(["pull_request", "workflow_dispatch"]);
+    expect(Object.keys(ci.on)).toEqual(["push", "pull_request", "workflow_dispatch"]);
+    // Main runs after each merge so the README build badge has a status.
+    expect(ci.on.push).toEqual({ branches: ["main"] });
     expect(ci.on.pull_request).toEqual({
       types: ["opened", "synchronize", "reopened", "ready_for_review"],
     });
@@ -59,13 +61,12 @@ describe("CI workflow budget", () => {
         },
       },
     });
-    expect(ci.on).not.toHaveProperty("push");
     expect(ci.on).not.toHaveProperty("merge_group");
     expect(ci.concurrency?.group).toBe("ci-${{ github.event.pull_request.number || github.ref }}");
     expect(ci.concurrency?.["cancel-in-progress"]).toBe(true);
     expect(Object.keys(ci.jobs)).toEqual(["check"]);
     expect(ci.jobs.check?.if).toBe(
-      "${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}",
+      "${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}",
     );
     expect(ci.jobs.check?.["runs-on"]).toBe("ubuntu-24.04");
     expect(ci.jobs.check?.steps.find((step) => step.name === "Checkout")?.with?.ref).toBe(
