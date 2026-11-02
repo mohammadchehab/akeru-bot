@@ -526,21 +526,21 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
           updatedAt: "2026-04-06T00:00:03.000Z",
         });
 
-      for (const [threadId, responderQueue] of [
-        ["thread-waiting", queue(["bot-a", "bot-b"])],
-        ["thread-emptied", queue([])],
+      for (const [threadId, responderQueue, hopBudget] of [
+        ["thread-waiting", queue(["bot-a", "bot-b"]), 3],
+        ["thread-emptied", queue([]), null],
       ] as const) {
         yield* sql`
           INSERT INTO projection_threads (
             thread_id, project_id, title, model_selection_json, runtime_mode, interaction_mode,
             branch, worktree_path, latest_turn_id, latest_user_message_at, pending_approval_count,
             pending_user_input_count, has_actionable_proposed_plan, created_at, updated_at,
-            archived_at, deleted_at, responder_queue_json
+            archived_at, deleted_at, responder_queue_json, hop_budget
           )
           VALUES (
             ${threadId}, 'project-queue', ${threadId}, '{"provider":"codex","model":"gpt-5-codex"}',
             'full-access', 'default', NULL, NULL, NULL, NULL, 0, 0, 0,
-            '2026-04-06T00:00:02.000Z', '2026-04-06T00:00:05.000Z', NULL, NULL, ${responderQueue}
+            '2026-04-06T00:00:02.000Z', '2026-04-06T00:00:05.000Z', NULL, NULL, ${responderQueue}, ${hopBudget}
           )
         `;
       }
@@ -568,12 +568,16 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
 
       assert.deepEqual(botIds(shellThread("thread-waiting")?.responderQueue), ["bot-a", "bot-b"]);
       assert.equal(shellThread("thread-emptied")?.responderQueue, undefined);
+      assert.equal(shellThread("thread-waiting")?.hopBudget, 3);
+      assert.equal(shellThread("thread-emptied")?.hopBudget, undefined);
 
       const upserted = yield* snapshotQuery.getThreadShellById(ThreadId.make("thread-waiting"));
       assert.deepEqual(botIds(Option.getOrUndefined(upserted)?.responderQueue), ["bot-a", "bot-b"]);
+      assert.equal(Option.getOrUndefined(upserted)?.hopBudget, 3);
 
       const detail = yield* snapshotQuery.getThreadDetailById(ThreadId.make("thread-waiting"));
       assert.deepEqual(botIds(Option.getOrUndefined(detail)?.responderQueue), ["bot-a", "bot-b"]);
+      assert.equal(Option.getOrUndefined(detail)?.hopBudget, 3);
 
       const emptiedDetail = yield* snapshotQuery.getThreadDetailById(
         ThreadId.make("thread-emptied"),

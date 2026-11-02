@@ -404,6 +404,13 @@ export function shellResponderQueue(
     : {};
 }
 
+/** A chat's own hop budget travels only once it has been set; absent means the default. */
+export function shellHopBudget(
+  hopBudget: number | null | undefined,
+): { readonly hopBudget: number } | Record<never, never> {
+  return hopBudget === null || hopBudget === undefined ? {} : { hopBudget };
+}
+
 export function mapLatestTurn(
   row: Schema.Schema.Type<typeof ProjectionLatestTurnDbRowSchema>,
 ): OrchestrationLatestTurn {

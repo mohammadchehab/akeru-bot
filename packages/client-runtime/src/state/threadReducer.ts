@@ -226,6 +226,16 @@ export function applyThreadDetailEvent(
     case "thread.turn-interrupt-requested":
       return applyTurnInterruptRequestedEvent(thread, event);
 
+    case "thread.hop-budget-set":
+      return {
+        kind: "updated",
+        thread: {
+          ...thread,
+          hopBudget: event.payload.hopBudget,
+          updatedAt: event.payload.updatedAt,
+        },
+      };
+
     // ── Group responder queue ───────────────────────────────────────
     // The event carries the whole queue; an empty one is left off, as the snapshots do, unless it
     // ended on the hop budget.
