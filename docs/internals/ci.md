@@ -21,7 +21,9 @@ CI runs as parallel jobs, so a run takes as long as its slowest job instead of t
 - **Desktop build and package tests.** Builds the desktop pipeline, checks the preload output, tests
   shipped desktop and shared packages, and checks release-only configuration. Relay and
   mobile-production packages are excluded.
-- **Server tests.** Runs the complete server suite. It excludes
+- **Server tests.** Runs the complete server suite as four parallel shards (`--shard=i/4`), each on its
+  own runner. Files inside a shard still run one at a time, because the suite is not safe to run in
+  parallel in one process. It excludes
   `orchestrationEngine.integration.test.ts` until the executor stack restores its test adapter and
   stops the fixture from calling OpenAI with a test credential.
 - **Resource monitor.** Checks formatting and tests the Rust crate.

@@ -18,6 +18,10 @@ type Job = {
   readonly needs?: string | ReadonlyArray<string>;
   readonly name?: string;
   readonly "runs-on": string;
+  readonly strategy?: {
+    readonly "fail-fast"?: boolean;
+    readonly matrix?: Readonly<Record<string, ReadonlyArray<number | string>>>;
+  };
   readonly steps: ReadonlyArray<Step>;
 };
 
@@ -212,7 +216,11 @@ describe("CI workflow budget", () => {
     expect(serverCommand).toContain(
       "--exclude integration/orchestrationEngine.integration.test.ts",
     );
-    expect(serverCommand).not.toContain("--shard");
+    expect(serverCommand).toContain("--shard=${{ matrix.shard }}/4");
+    expect(ci.jobs.server?.strategy).toEqual({
+      "fail-fast": false,
+      matrix: { shard: [1, 2, 3, 4] },
+    });
   });
 
   it("coalesces version updates on a 4-vCPU runner", () => {
