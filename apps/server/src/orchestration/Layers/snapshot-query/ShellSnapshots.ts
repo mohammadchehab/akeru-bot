@@ -22,6 +22,7 @@ import {
   mapGroupRow,
   mapTitleRegeneration,
   decodeShellSnapshot,
+  shellResponderQueue,
 } from "../ProjectionSnapshotRows.ts";
 import type { createEnvironmentRows } from "./EnvironmentRows.ts";
 import type { createProjectIdentity } from "./ProjectIdentity.ts";
@@ -250,6 +251,7 @@ export function createShellSnapshots({
                         ...(row.linkedPullRequest === null
                           ? {}
                           : { linkedPullRequest: row.linkedPullRequest }),
+                        ...shellResponderQueue(row.responderQueue),
                         latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                         createdAt: row.createdAt,
                         updatedAt: row.updatedAt,
@@ -442,6 +444,7 @@ export function createShellSnapshots({
                     ...(row.linkedPullRequest === null
                       ? {}
                       : { linkedPullRequest: row.linkedPullRequest }),
+                    ...shellResponderQueue(row.responderQueue),
                     latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                     createdAt: row.createdAt,
                     updatedAt: row.updatedAt,

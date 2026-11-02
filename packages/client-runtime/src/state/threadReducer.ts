@@ -226,6 +226,22 @@ export function applyThreadDetailEvent(
     case "thread.turn-interrupt-requested":
       return applyTurnInterruptRequestedEvent(thread, event);
 
+    // ── Group responder queue ───────────────────────────────────────
+    // The event carries the whole queue; an empty one is left off, as the snapshots do.
+    case "thread.responder-queue.set": {
+      const { threadId: _threadId, ...queue } = event.payload;
+      const { responderQueue: _previous, ...rest } = thread;
+
+      return {
+        kind: "updated",
+        thread: {
+          ...rest,
+          ...(queue.entries.length > 0 ? { responderQueue: queue } : {}),
+          updatedAt: event.occurredAt,
+        },
+      };
+    }
+
     // ── Messages ────────────────────────────────────────────────────
     case "thread.channel-delivery-set":
       return applyChannelDeliverySetEvent(thread, event);

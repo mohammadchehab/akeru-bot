@@ -389,6 +389,18 @@ export function computeSnapshotSequence(
   return Number.isFinite(minSequence) ? minSequence : 0;
 }
 
+/**
+ * Clients render "who is next" from the waiting queue, so it travels only while someone is
+ * waiting. An emptied queue is left off the wire, like a thread that never had one.
+ */
+export function shellResponderQueue(
+  queue: ResponderQueue | null | undefined,
+): { readonly responderQueue: ResponderQueue } | Record<never, never> {
+  return queue !== null && queue !== undefined && queue.entries.length > 0
+    ? { responderQueue: queue }
+    : {};
+}
+
 export function mapLatestTurn(
   row: Schema.Schema.Type<typeof ProjectionLatestTurnDbRowSchema>,
 ): OrchestrationLatestTurn {
