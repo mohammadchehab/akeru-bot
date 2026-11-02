@@ -5,7 +5,7 @@ import * as NodePath from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vite-plus/test";
 
 import { startStack, type Stack } from "../support/stack.ts";
-import { STUB_REPLY } from "../support/stubOpenAI.ts";
+import { stubReplyFrom } from "../support/stubOpenAI.ts";
 
 describe("web chat", () => {
   let stack: Stack;
@@ -65,12 +65,12 @@ describe("web chat", () => {
     await composer.press("Enter");
 
     await conversation().getByText("Hello from the e2e journey").waitFor();
-    await conversation().getByText(STUB_REPLY).waitFor();
+    await conversation().getByText(stubReplyFrom("Echo")).waitFor();
   });
 
   it("keeps the conversation after a reload", async () => {
     await page.reload();
 
-    await conversation().getByText(STUB_REPLY).waitFor();
+    await conversation().getByText(stubReplyFrom("Echo")).waitFor();
   });
 });
