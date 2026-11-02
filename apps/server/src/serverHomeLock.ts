@@ -58,9 +58,27 @@ export class ServerHomeLock extends Context.Service<
   }
 >()("isnadi/ServerHomeLock") {}
 
+// Lock paths this process currently holds. After a crash in a container the replacement often has
+// the same pid and hostname as the dead server, so "our pid" only means alive when we hold it.
+const heldLockPaths = new Set<string>();
+
+// An unexpected error from the probe means we cannot prove the holder is gone, so it counts as alive.
+const probeProcess = (pid: number): boolean => {
+  try {
+    return isProcessAlive(pid);
+  } catch {
+    return true;
+  }
+};
+
 // A holder on another host cannot be probed with a pid, so it always counts as alive.
-const isHolderAlive = (holder: ServerHomeLockRecord): boolean =>
-  holder.hostname !== NodeOS.hostname() || isProcessAlive(holder.pid);
+const isHolderAlive = (holder: ServerHomeLockRecord, lockPath: string): boolean => {
+  if (holder.hostname !== NodeOS.hostname()) return true;
+
+  if (holder.pid === process.pid) return heldLockPaths.has(lockPath);
+
+  return probeProcess(holder.pid);
+};
 
 const holderKey = (holder: Option.Option<ServerHomeLockRecord>): string =>
   Option.match(holder, {
@@ -123,7 +141,7 @@ const make = Effect.gen(function* () {
 
       const holder = yield* readHolder;
 
-      if (Option.isSome(holder) && isHolderAlive(holder.value)) {
+      if (Option.isSome(holder) && isHolderAlive(holder.value, lockPath)) {
         return yield* new ServerHomeLockHeldError({
           lockPath,
           pid: holder.value.pid,
@@ -174,7 +192,10 @@ const make = Effect.gen(function* () {
     Effect.catchCause((cause) => Effect.logWarning("Failed to release the server lock", { cause })),
   );
 
-  yield* Effect.acquireRelease(acquire, () => release);
+  yield* Effect.acquireRelease(
+    acquire.pipe(Effect.tap(() => Effect.sync(() => heldLockPaths.add(lockPath)))),
+    () => Effect.sync(() => heldLockPaths.delete(lockPath)).pipe(Effect.andThen(release)),
+  );
 
   const services = yield* Effect.context<FileSystem.FileSystem | Path.Path>();
 

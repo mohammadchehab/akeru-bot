@@ -75,7 +75,7 @@ describe("serverHomeLock", () => {
       const fs = yield* FileSystem.FileSystem;
       const lockPath = yield* lockPathOf;
 
-      yield* fs.writeFileString(lockPath, lockRecord({ pid: process.pid, port: 4_971 }));
+      yield* fs.writeFileString(lockPath, lockRecord({ pid: process.ppid, port: 4_971 }));
 
       const exit = yield* Effect.exit(Effect.scoped(Layer.build(ServerHomeLock.layer)));
 
@@ -83,7 +83,7 @@ describe("serverHomeLock", () => {
 
       const message = Exit.isFailure(exit) ? String(exit.cause) : "";
 
-      assert.include(message, `pid ${process.pid}`);
+      assert.include(message, `pid ${process.ppid}`);
       assert.include(message, "port 4971");
       assert.include(message, lockPath);
       assert.isTrue(yield* fs.exists(lockPath));
@@ -95,7 +95,7 @@ describe("serverHomeLock", () => {
       const fs = yield* FileSystem.FileSystem;
       const lockPath = yield* lockPathOf;
 
-      yield* fs.writeFileString(lockPath, lockRecord({ pid: process.pid }));
+      yield* fs.writeFileString(lockPath, lockRecord({ pid: process.ppid }));
 
       const error = yield* Effect.flip(Effect.scoped(Layer.build(ServerHomeLock.layer)));
 
@@ -169,6 +169,41 @@ describe("serverHomeLock", () => {
       );
 
       assert.strictEqual(yield* fs.readFileString(lockPath), other);
+    }).pipe(Effect.provide(TestLayer)),
+  );
+  it.effect("takes over a lock that carries this process's pid but is not held here", () =>
+    Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
+      const lockPath = yield* lockPathOf;
+
+      // A crashed server and its replacement share a pid and hostname in a container.
+      yield* fs.writeFileString(lockPath, lockRecord({ pid: process.pid, port: 4_971 }));
+
+      yield* Effect.scoped(
+        Effect.gen(function* () {
+          yield* ServerHomeLock.ServerHomeLock;
+
+          assert.strictEqual(JSON.parse(yield* fs.readFileString(lockPath)).port, null);
+        }).pipe(Effect.provide(ServerHomeLock.layer)),
+      );
+    }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect("refuses a second server in the same process while the first holds the lock", () =>
+    Effect.gen(function* () {
+      yield* Effect.scoped(
+        Effect.gen(function* () {
+          const first = yield* ServerHomeLock.ServerHomeLock;
+
+          yield* first.bindPort(4_971);
+
+          const error = yield* Effect.flip(Effect.scoped(Layer.build(ServerHomeLock.layer)));
+
+          assert.isTrue(isHeldError(error));
+          assert.include(error.message, `pid ${process.pid}`);
+          assert.include(error.message, "port 4971");
+        }).pipe(Effect.provide(ServerHomeLock.layer)),
+      );
     }).pipe(Effect.provide(TestLayer)),
   );
 });

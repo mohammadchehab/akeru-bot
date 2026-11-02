@@ -164,7 +164,8 @@ One server owns a state directory at a time. [`serverHomeLock.ts`][home-lock] ta
 (pid, hostname, port) in the state directory before the database opens, so a second server exits
 naming the holder instead of running migrations against the same file. A crash leaves the file
 behind; the next start takes it over when its pid is gone, and never when it was written by another
-host. CLI commands that read the database while a server runs do not take it.
+host. Two starters that find the same stale file in the same instant can still race; the lock
+narrows that to a re-read and a link, and a crashed predecessor is required. CLI commands that read the database while a server runs do not take it.
 
 ## Related
 
