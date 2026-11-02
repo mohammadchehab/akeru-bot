@@ -125,7 +125,7 @@ export function ProviderEnvironmentSection(props: {
                 <TableHead>Variable</TableHead>
                 <TableHead>Value</TableHead>
                 <TableHead className="w-20">Sensitive</TableHead>
-                <TableHead className="w-12 text-right">
+                <TableHead className="w-12 text-end">
                   <span className="sr-only">Options</span>
                 </TableHead>
               </TableRow>

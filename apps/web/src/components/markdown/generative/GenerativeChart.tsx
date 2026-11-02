@@ -144,20 +144,20 @@ function LineChart({ spec, max }: { readonly spec: ChartSpec; readonly max: numb
             );
           })}
         </svg>
-        <span className="absolute top-0 left-0 -translate-y-1/2 bg-card pr-1 text-10px text-muted-foreground tabular-nums">
+        <span className="absolute top-0 start-0 -translate-y-1/2 bg-card pe-1 text-10px text-muted-foreground tabular-nums">
           {formatChartValue(max, spec.unit)}
         </span>
         {hoverIndex !== null ? (
           <>
             <div
-              className="gen-crosshair pointer-events-none absolute inset-y-0 left-(--gen-x) w-px"
+              className="gen-crosshair pointer-events-none absolute inset-y-0 start-(--gen-x) w-px"
               style={{ "--gen-x": `${hoverLeft}%` }}
             />
             <div
               className={
                 hoverLeft > 60
-                  ? "pointer-events-none absolute top-1 right-(--gen-x-end) z-10 mr-2"
-                  : "pointer-events-none absolute top-1 left-(--gen-x) z-10 ml-2"
+                  ? "pointer-events-none absolute top-1 end-(--gen-x-end) z-10 me-2"
+                  : "pointer-events-none absolute top-1 start-(--gen-x) z-10 ms-2"
               }
               style={{ "--gen-x": `${hoverLeft}%`, "--gen-x-end": `${100 - hoverLeft}%` }}
             >
@@ -178,7 +178,7 @@ function BarChart({ spec, max }: { readonly spec: ChartSpec; readonly max: numbe
   return (
     <div>
       <div className="relative flex h-40 items-end gap-2 border-b border-border/70">
-        <span className="absolute top-0 left-0 -translate-y-1/2 bg-card pr-1 text-10px text-muted-foreground tabular-nums">
+        <span className="absolute top-0 start-0 -translate-y-1/2 bg-card pe-1 text-10px text-muted-foreground tabular-nums">
           {formatChartValue(max, spec.unit)}
         </span>
         {spec.x.map((label, index) => (

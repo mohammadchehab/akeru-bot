@@ -4,7 +4,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { WorkspacePageHeader, detailsToggleInsetClass } from "./WorkspacePageHeader";
 
 const TOGGLE_INSET =
-  "pr-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!";
+  "pe-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!";
 
 describe("detailsToggleInsetClass", () => {
   it("reserves the floating toggle at every width while the desktop panel is closed", () => {

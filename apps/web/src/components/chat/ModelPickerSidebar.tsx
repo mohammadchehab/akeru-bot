@@ -28,10 +28,10 @@ function describeUnavailableInstance(
 }
 
 const SELECTED_INDICATOR_CLASS =
-  "pointer-events-none absolute -right-1 top-1/2 z-10 h-5 w-0.75 -translate-y-1/2 rounded-l-full bg-foreground/70";
+  "pointer-events-none absolute -end-1 top-1/2 z-10 h-5 w-0.75 -translate-y-1/2 rounded-s-full bg-foreground/70";
 
 const BADGE_BASE_CLASS =
-  "pointer-events-none absolute -right-0.5 top-0.5 z-10 flex size-3.5 items-center justify-center rounded-full bg-transparent shadow-sm ";
+  "pointer-events-none absolute -end-0.5 top-0.5 z-10 flex size-3.5 items-center justify-center rounded-full bg-transparent shadow-sm ";
 
 const NEW_BADGE_CLASS = `${BADGE_BASE_CLASS} text-update-foreground `;
 
@@ -103,7 +103,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
               data-model-picker-selected-indicator="true"
               className={cn(
                 SELECTED_INDICATOR_CLASS,
-                "right-0 top-(--indicator-top) translate-y-0 transition-top duration-200 ease-out",
+                "end-0 top-(--indicator-top) translate-y-0 transition-top duration-200 ease-out",
               )}
               style={{ "--indicator-top": `${selectedIndicatorTop}px` }}
             />

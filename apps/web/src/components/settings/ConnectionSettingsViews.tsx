@@ -96,7 +96,7 @@ export function connectionSettingsViews(settings: ReturnType<typeof useDesktopBa
         type="button"
         aria-pressed={selected}
         className={cn(
-          "group flex min-h-24 items-start gap-3 rounded-lg border p-4 text-left",
+          "group flex min-h-24 items-start gap-3 rounded-lg border p-4 text-start",
           selected ? "border-foreground/50 bg-muted/70" : "border-border/60 hover:bg-muted/40",
         )}
         disabled={isAddingSavedBackend}
@@ -435,7 +435,7 @@ export function connectionSettingsViews(settings: ReturnType<typeof useDesktopBa
           <SettingsRow
             title="WSL only"
             description="Stop the Windows backend and run only the WSL backend. Useful if you develop entirely inside WSL and don't want a second backend process. IsnadiBot restarts when you change this."
-            className="bg-muted/20 pl-7 sm:pl-8"
+            className="bg-muted/20 ps-7 sm:ps-8"
             control={
               <Switch
                 checked={desktopWslState.wslOnly}

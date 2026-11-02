@@ -73,9 +73,9 @@ function ThemeVariantRadial({ variantNavigation }: { variantNavigation: ThemeVar
     >
       {radialModeGroups.map(({ mode, options, selected }) => {
         if (!selected) return null;
-        // Each mode's root ball sits 52px (ml-13) either side of center.
+        // Each mode's root ball sits 52px (ms-13) either side of center.
         const rootOffsetX = mode === "light" ? -52 : 52;
-        const rootOffsetClassName = mode === "light" ? "-ml-13" : "ml-13";
+        const rootOffsetClassName = mode === "light" ? "-ms-13" : "ms-13";
         const isOpen = radialModeOpen === mode;
         const isActive = selected.option.activeModes.includes(mode);
         const modeLabel = mode === "light" ? "Light" : "Dark";
@@ -91,7 +91,7 @@ function ThemeVariantRadial({ variantNavigation }: { variantNavigation: ThemeVar
                 }
                 aria-pressed={isActive}
                 className={cn(
-                  "absolute left-1/2 top-2 z-20 flex size-14 -translate-x-1/2 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "absolute start-1/2 top-2 z-20 flex size-14 -translate-x-1/2 rtl:translate-x-1/2 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   rootOffsetClassName,
                 )}
                 type="button"
@@ -110,7 +110,7 @@ function ThemeVariantRadial({ variantNavigation }: { variantNavigation: ThemeVar
                   />
                 ) : null}
                 {isActive ? (
-                  <span className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full border border-border/70 bg-card text-foreground shadow-sm">
+                  <span className="pointer-events-none absolute -bottom-0.5 -end-0.5 flex size-4 items-center justify-center rounded-full border border-border/70 bg-card text-foreground shadow-sm">
                     {mode === "light" ? (
                       <SunIcon className="size-2.5" />
                     ) : (
@@ -122,7 +122,7 @@ function ThemeVariantRadial({ variantNavigation }: { variantNavigation: ThemeVar
             </ThemeVariantTooltip>
             <span
               className={cn(
-                "pointer-events-none absolute bottom-0 left-1/2 inline-flex max-w-24 -translate-x-1/2 items-center gap-1 text-11px font-medium text-foreground",
+                "pointer-events-none absolute bottom-0 start-1/2 inline-flex max-w-24 -translate-x-1/2 rtl:translate-x-1/2 items-center gap-1 text-11px font-medium text-foreground",
                 rootOffsetClassName,
               )}
             >
@@ -154,7 +154,7 @@ function ThemeVariantRadial({ variantNavigation }: { variantNavigation: ThemeVar
                         aria-label={`Use ${option.label} for ${mode} mode${optionIsActive ? ", currently active" : ""}`}
                         aria-pressed={optionIsActive}
                         className={cn(
-                          "absolute left-1/2 top-1 z-30 flex size-7 transform-(--option-transform) items-center justify-center rounded-full bg-card shadow-sm outline-none transition-transform-opacity delay-(--option-delay) duration-200 ease-out motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-ring",
+                          "absolute start-1/2 top-1 z-30 flex size-7 transform-(--option-transform) items-center justify-center rounded-full bg-card shadow-sm outline-none transition-transform-opacity delay-(--option-delay) duration-200 ease-out motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-ring",
                           optionIsActive ? "ring-2 ring-ring" : "ring-1 ring-border/70",
                           isOpen ? "opacity-100" : "pointer-events-none opacity-0",
                         )}
@@ -247,7 +247,7 @@ export function ThemeLibraryCard({
                   <button
                     aria-label={`Use ${variantNavigation ? `${variantNavigation.collectionLabel}, ${theme.label} variant` : `${theme.label} theme`}${isActive ? ", currently active" : ""}`}
                     aria-pressed={isActive}
-                    className="min-w-0 cursor-pointer truncate rounded-sm text-left text-sm font-medium text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    className="min-w-0 cursor-pointer truncate rounded-sm text-start text-sm font-medium text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();

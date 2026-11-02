@@ -222,7 +222,7 @@ export function WhenExpressionNodeEditor({
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="ml-auto size-7"
+              className="ms-auto size-7"
               aria-label={t("Remove negated group")}
               onClick={onRemove}
             >
@@ -230,9 +230,9 @@ export function WhenExpressionNodeEditor({
             </Button>
           ) : null}
         </div>
-        <div className="relative pl-4">
-          <span className="absolute top-0 bottom-0 left-1.5 w-px bg-border/70" aria-hidden />
-          <span className="absolute top-4 left-1.5 h-px w-2.5 bg-border/70" aria-hidden />
+        <div className="relative ps-4">
+          <span className="absolute top-0 bottom-0 start-1.5 w-px bg-border/70" aria-hidden />
+          <span className="absolute top-4 start-1.5 h-px w-2.5 bg-border/70" aria-hidden />
           <WhenExpressionNodeEditor
             node={node.node}
             variables={variables}
@@ -367,7 +367,7 @@ export function WhenExpressionNodeEditor({
             type="button"
             variant="ghost"
             size="icon-sm"
-            className="ml-auto size-7"
+            className="ms-auto size-7"
             aria-label={t("Remove group")}
             onClick={onRemove}
           >
@@ -377,17 +377,17 @@ export function WhenExpressionNodeEditor({
       </div>
       <div className="space-y-2">
         {childEntries.map(({ child, key }) => (
-          <div key={key} className="relative pl-4">
+          <div key={key} className="relative ps-4">
             <span
               className={cn(
-                "absolute top-0 bottom-0 left-1.5 w-px",
+                "absolute top-0 bottom-0 start-1.5 w-px",
                 depth === 0 ? "bg-border" : "bg-border/70",
               )}
               aria-hidden
             />
             <span
               className={cn(
-                "absolute top-4 left-1.5 h-px w-2.5",
+                "absolute top-4 start-1.5 h-px w-2.5",
                 depth === 0 ? "bg-border" : "bg-border/70",
               )}
               aria-hidden
@@ -494,7 +494,7 @@ export function WhenExpressionBuilder({
             className="h-7 sm:h-7"
           />
           {unknownIdentifiers.length > 0 ? (
-            <span className="absolute inset-y-0 right-2 flex items-center">
+            <span className="absolute inset-y-0 end-2 flex items-center">
               <UnknownWhenVariableWarning identifiers={unknownIdentifiers} />
             </span>
           ) : null}

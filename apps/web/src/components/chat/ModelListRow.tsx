@@ -60,7 +60,7 @@ export const ModelListRow = memo(function ModelListRow(props: {
           "data-disabled:pointer-events-auto data-disabled:cursor-not-allowed",
       )}
     >
-      <div className="min-w-0 flex-1 text-left">
+      <div className="min-w-0 flex-1 text-start">
         <div className="flex min-w-0 items-center gap-2">
           <div className="min-w-0 truncate text-xs font-medium leading-snug">
             {props.useTriggerLabel
@@ -104,7 +104,7 @@ export const ModelListRow = memo(function ModelListRow(props: {
                 presentation={
                   props.isFavorite ? "model-favorite-toggle-on" : "model-favorite-toggle"
                 }
-                className="-mr-1 shrink-0"
+                className="-me-1 shrink-0"
                 onClick={(event) => {
                   event.stopPropagation();
                   props.onToggleFavorite();

@@ -194,7 +194,7 @@ function LinkedAccountCard({
         </p>
       </div>
       <div className="flex shrink-0 items-center gap-0.5">
-        {fix ? <span className="mr-1.5">{fix}</span> : null}
+        {fix ? <span className="me-1.5">{fix}</span> : null}
         {count > 1 ? (
           <>
             <Button

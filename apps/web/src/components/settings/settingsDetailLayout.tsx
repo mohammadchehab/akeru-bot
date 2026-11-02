@@ -124,7 +124,7 @@ export function SettingsLinkRow<TRouter extends RegisteredRouter, TOptions>({
         <SettingsStatus tone={tone} label={statusLabel} />
         <ChevronRightIcon
           aria-hidden
-          className="size-4 shrink-0 text-muted-foreground/60 transition-colors group-hover:text-muted-foreground"
+          className="size-4 shrink-0 text-muted-foreground/60 transition-colors rtl:-scale-x-100 group-hover:text-muted-foreground"
         />
       </span>
     </Link>
@@ -156,7 +156,7 @@ export function SettingsDetailHeader({
         params={{ section: back.section }}
         className="-ms-1 inline-flex h-6 items-center gap-0.5 rounded-md pe-1.5 text-13px text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <ChevronLeftIcon aria-hidden className="size-4" />
+        <ChevronLeftIcon aria-hidden className="size-4 rtl:-scale-x-100" />
         {back.label}
       </Link>
       <div className="flex items-center gap-3.5">
