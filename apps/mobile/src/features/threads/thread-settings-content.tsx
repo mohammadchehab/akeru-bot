@@ -174,11 +174,17 @@ function StepperRow(props: {
 }
 
 function HopBudgetRow(props: {
-  readonly hopBudget: { readonly value: number; readonly onChange: (next: GroupHopBudget) => void };
+  readonly hopBudget: {
+    readonly value: number;
+    readonly onChange: (next: GroupHopBudget) => Promise<boolean>;
+  };
   readonly isLast: boolean;
 }) {
   const { t } = useMobileI18n();
-  const { value, onChange } = props.hopBudget;
+  const { onChange } = props.hopBudget;
+  // The server value lags a press, so fast presses step from what was just chosen.
+  const [chosen, setChosen] = useState<{ base: number; value: number } | null>(null);
+  const value = chosen?.base === props.hopBudget.value ? chosen.value : props.hopBudget.value;
 
   return (
     <StepperRow
@@ -189,7 +195,11 @@ function HopBudgetRow(props: {
       onStep={(direction) => {
         const next = stepHopBudget(value, direction);
 
-        if (next !== null) onChange(next);
+        if (next === null) return;
+        setChosen({ base: props.hopBudget.value, value: next });
+        void onChange(next).then((ok) => {
+          if (!ok) setChosen(null);
+        });
       }}
     />
   );

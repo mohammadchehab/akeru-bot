@@ -2,7 +2,10 @@ import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
 import { scopeThreadRef } from "@isnadi/client-runtime/environment";
-import { type ComposerAddressing, groupAddressing } from "@isnadi/shared/composerBotMentions";
+import {
+  type SendableComposerAddressing,
+  groupAddressing,
+} from "@isnadi/shared/composerBotMentions";
 import {
   EnvironmentId,
   GroupId,
@@ -233,7 +236,10 @@ export function useGroupThreadRuntime(groupId: string) {
   const stop = useCallback(async (): Promise<boolean> => {
     const session = rememberedThread?.session;
 
-    if (!linkedThreadRef || (session?.status !== "running" && session?.status !== "starting")) {
+    const running = session?.status === "running" || session?.status === "starting";
+
+    // Between hops nothing runs but bots still wait in the queue; the server interrupt empties it.
+    if (!linkedThreadRef || (!running && !rememberedThread?.responderQueue?.entries.length)) {
       return false;
     }
 
@@ -241,7 +247,7 @@ export function useGroupThreadRuntime(groupId: string) {
       environmentId: linkedThreadRef.environmentId,
       input: {
         threadId: linkedThreadRef.threadId,
-        ...(session.activeTurnId ? { turnId: session.activeTurnId } : {}),
+        ...(running && session?.activeTurnId ? { turnId: session.activeTurnId } : {}),
       },
     });
 
@@ -252,7 +258,12 @@ export function useGroupThreadRuntime(groupId: string) {
     }
 
     return true;
-  }, [interruptTurnCommand, linkedThreadRef, rememberedThread?.session]);
+  }, [
+    interruptTurnCommand,
+    linkedThreadRef,
+    rememberedThread?.responderQueue,
+    rememberedThread?.session,
+  ]);
 
   // A change applies from the next user message; the server rejects it for a non-group chat.
   const setHopBudget = useCallback(
@@ -279,7 +290,7 @@ export function useGroupThreadRuntime(groupId: string) {
     async (
       prompt: string,
       files: readonly File[],
-      requestedAddressing?: ComposerAddressing,
+      requestedAddressing?: SendableComposerAddressing,
       replyToMessageId?: string,
     ): Promise<boolean> => {
       const pendingUserInput = pendingUserInputs[0];
@@ -317,7 +328,17 @@ export function useGroupThreadRuntime(groupId: string) {
         return false;
       }
 
-      const addressing = groupAddressing(requestedAddressing, replyToMessageId);
+      const replyTarget = replyToMessageId
+        ? messages.find((message) => message.id === replyToMessageId)
+        : undefined;
+
+      const addressing = groupAddressing(
+        requestedAddressing,
+        replyToMessageId
+          ? { messageId: replyToMessageId, respondingBotId: replyTarget?.respondingBotId }
+          : undefined,
+      );
+
       // The first addressed bot picks the model for the send; the server resolves who answers.
       const respondingBotId = addressing?.kind === "bots" ? addressing.botIds[0] : group.bossBotId;
 

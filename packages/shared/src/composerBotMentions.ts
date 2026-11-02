@@ -1,3 +1,4 @@
+import { BotId, MessageId, type GroupAddressing } from "@isnadi/contracts";
 import { collectComposerInlineTokens } from "./composerInlineTokens.ts";
 
 export interface ComposerMentionBot {
@@ -99,6 +100,12 @@ export type ComposerAddressing =
   | { readonly kind: "bots"; readonly botIds: readonly [string, ...string[]] }
   | { readonly kind: "ambiguous"; readonly name: string };
 
+/** An addressing a send can carry: every shape except the ambiguous name the caller blocks. */
+export type SendableComposerAddressing = Exclude<
+  ComposerAddressing,
+  { readonly kind: "ambiguous" }
+>;
+
 const EVERYONE_TOKEN = /(^|\s)@everyone(?=[\s,.:;!?)]|$)/;
 
 /**
@@ -179,4 +186,29 @@ export function botReplyMentionText(reply: string): string {
     .replace(INLINE_CODE, " ")
     .replace(QUOTED_LINE, " ")
     .replace(EVERYONE_MENTION, "$1");
+}
+
+/**
+ * The wire addressing for what the composer resolved. Ambiguous names are not accepted: callers
+ * block the send first. A reply goes to the bot that wrote the quoted message, unless the prompt
+ * names someone itself. A quoted message with no `respondingBotId` (older group messages, rows
+ * a person wrote) has no bot to answer it, so the quote stays and the server routes the send.
+ */
+export function groupAddressing(
+  addressing: SendableComposerAddressing | undefined,
+  replyTo?: { readonly messageId: string; readonly respondingBotId?: string | null | undefined },
+): GroupAddressing | undefined {
+  if (addressing?.kind === "everyone") return { kind: "everyone" };
+
+  if (addressing?.kind === "bots") {
+    const [first, ...rest] = addressing.botIds;
+
+    return { kind: "bots", botIds: [BotId.make(first), ...rest.map((id) => BotId.make(id))] };
+  }
+
+  if (replyTo?.respondingBotId) {
+    return { kind: "reply", messageId: MessageId.make(replyTo.messageId) };
+  }
+
+  return undefined;
 }

@@ -32,6 +32,10 @@
       "types": "./src/voice.ts",
       "default": "./src/voice.ts"
     },
+    "./responder-queue": {
+      "types": "./src/responderQueue.ts",
+      "default": "./src/responderQueue.ts"
+    },
     "./silent-run": {
       "types": "./src/silentRun.ts",
       "default": "./src/silentRun.ts"

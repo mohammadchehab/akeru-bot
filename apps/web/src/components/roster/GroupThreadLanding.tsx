@@ -1,3 +1,4 @@
+import { responderQueueNames } from "@isnadi/client-runtime/responder-queue";
 import { Predicate } from "effect";
 import { threadDelegations } from "@isnadi/client-runtime/delegation-presentation";
 import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
@@ -28,7 +29,6 @@ import { useReplyPlaybackThread } from "~/lib/replyPlaybackThread";
 import { useI18n } from "~/i18n";
 import { GroupResponderQueue } from "./GroupResponderQueue";
 import { GroupHopBudgetControl } from "./GroupHopBudgetControl";
-import { responderQueueNames } from "./groupThreadModel.logic";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
 import { useOptionalVoiceCall } from "../voice/VoiceCall";
@@ -345,7 +345,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               {runtime.linkedThreadRef ? (
                 <GroupHopBudgetControl
                   hopBudget={runtime.hopBudget}
-                  onChange={(hopBudget) => void runtime.setHopBudget(hopBudget)}
+                  onChange={runtime.setHopBudget}
                 />
               ) : null}
               <ChatActionsMenu threadRef={runtime.linkedThreadRef} />

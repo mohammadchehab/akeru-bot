@@ -24,6 +24,8 @@ const mocks = vi.hoisted(() => ({
   primaryEnvironmentId: "env-a" as EnvironmentId,
   groupAtom: Symbol("groups"),
   startTurnAtom: Symbol("start-turn"),
+  interruptTurnAtom: Symbol("interrupt-turn"),
+  interruptTurn: vi.fn(),
   providersAtom: Symbol("providers"),
   providers: [] as ReturnType<typeof makeComposerTestProvider>[],
   serverGroups: [] as Array<{ id: string }>,
@@ -87,12 +89,16 @@ vi.mock("../../state/environments", () => ({
 vi.mock("../../state/server", () => ({ primaryServerProvidersAtom: mocks.providersAtom }));
 
 vi.mock("../../state/threads", () => ({
-  threadEnvironment: { startTurn: mocks.startTurnAtom },
+  threadEnvironment: { startTurn: mocks.startTurnAtom, interruptTurn: mocks.interruptTurnAtom },
 }));
 
 vi.mock("../../state/use-atom-command", () => ({
   useAtomCommand: <T>(atom: T) =>
-    atom === mocks.startTurnAtom ? mocks.startTurn : vi.fn().mockResolvedValue({ _tag: "Success" }),
+    atom === mocks.startTurnAtom
+      ? mocks.startTurn
+      : atom === mocks.interruptTurnAtom
+        ? mocks.interruptTurn
+        : vi.fn().mockResolvedValue({ _tag: "Success" }),
 }));
 
 vi.mock("../../session-logic", () => ({ derivePendingUserInputs: () => [] }));
@@ -119,6 +125,7 @@ beforeEach(() => {
   mocks.serverGroups = [];
   mocks.projects = [];
   mocks.startTurn = vi.fn().mockResolvedValue({ _tag: "Success" });
+  mocks.interruptTurn = vi.fn().mockResolvedValue({ _tag: "Success" });
   mocks.providers = [makeComposerTestProvider()];
   mocks.bots = [];
   mocks.groups = [];
@@ -345,6 +352,50 @@ describe("group runtime errors", () => {
       botIds: ["bot-2"],
     });
     expect(mocks.startTurn.mock.calls[0]?.[0].input.respondingBotId).toBeUndefined();
+  });
+
+  it("keeps the quote but sends no reply addressing when the target has no responding bot", async () => {
+    mocks.serverGroups = [{ id: "group-1" }];
+    mocks.projects = [
+      { id: "project-1", environmentId: mocks.primaryEnvironmentId, defaultModelSelection: null },
+    ];
+    mocks.groups = [
+      {
+        id: "group-1",
+        name: "Project team",
+        bossBotId: "bot-1",
+        members: [{ kind: "bot", botId: BotId.make("bot-1"), role: "boss" }],
+        createdAt: "2026-09-13T00:00:00.000Z",
+        updatedAt: "2026-09-13T00:00:00.000Z",
+      },
+    ];
+    mocks.bots = [
+      {
+        id: "bot-1",
+        engine: { provider: "codex", model: "gpt-5.6-sol" },
+        archivedAt: null,
+        runtimeMode: "full-access" as const,
+      } as Bot,
+    ];
+    mocks.messageProjection = {
+      ...mocks.messageProjection,
+      messages: [
+        { id: "old-1", role: "assistant", text: "older" },
+        { id: "bot-msg", role: "assistant", text: "hi", respondingBotId: "bot-1" },
+      ] as never,
+    };
+
+    hooks.beginRender();
+    const runtime = useGroupThreadRuntime("group-1");
+
+    await runtime.send("> quote\n\nthanks", [], undefined, "old-1");
+    expect(mocks.startTurn.mock.calls[0]?.[0].input.addressing).toBeUndefined();
+
+    await runtime.send("> quote\n\nthanks", [], undefined, "bot-msg");
+    expect(mocks.startTurn.mock.calls[1]?.[0].input.addressing).toEqual({
+      kind: "reply",
+      messageId: "bot-msg",
+    });
   });
 
   it("queues a group follow-up while the first send is still being accepted", async () => {
@@ -640,5 +691,43 @@ describe("group runtime errors", () => {
       unavailability: "expired-login",
     });
     expect(runtime.error).toBe("Claude authentication failed.");
+  });
+});
+
+describe("group runtime stop", () => {
+  const shell = {
+    environmentId: mocks.primaryEnvironmentId,
+    id: ThreadId.make("thread-1"),
+    groupId: "group-1",
+    updatedAt: "2026-09-13T00:00:00.000Z",
+    archivedAt: null,
+  };
+
+  it("interrupts between hops, when bots wait but nothing runs", async () => {
+    mocks.threadShells = [shell];
+    mocks.threadShell = {
+      ...shell,
+      session: { status: "ready", activeTurnId: null },
+      responderQueue: {
+        entries: [{ botId: "bot-2", trigger: { kind: "user", messageId: "message-1" } }],
+      },
+    };
+
+    hooks.beginRender();
+    const runtime = useGroupThreadRuntime("group-1");
+
+    expect(await runtime.stop()).toBe(true);
+    expect(mocks.interruptTurn.mock.calls[0]?.[0].input).toEqual({ threadId: shell.id });
+  });
+
+  it("does nothing when nothing runs and nobody waits", async () => {
+    mocks.threadShells = [shell];
+    mocks.threadShell = { ...shell, session: { status: "ready", activeTurnId: null } };
+
+    hooks.beginRender();
+    const runtime = useGroupThreadRuntime("group-1");
+
+    expect(await runtime.stop()).toBe(false);
+    expect(mocks.interruptTurn).not.toHaveBeenCalled();
   });
 });

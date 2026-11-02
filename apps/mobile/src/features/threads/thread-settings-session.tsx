@@ -44,7 +44,7 @@ export type ThreadSettingsSessionProps = {
   /** Group chats only: the reply budget and the setter. Absent in direct chats. */
   readonly hopBudget?: {
     readonly value: number;
-    readonly onChange: (hopBudget: GroupHopBudget) => void;
+    readonly onChange: (hopBudget: GroupHopBudget) => Promise<boolean>;
   };
   /** Deletes the chat's bot. Resolves false when the server refuses. */
   /** Resolves to null on success, or the reason the delete failed. */

@@ -1,6 +1,9 @@
 import { useAtomValue } from "@effect/atom-react";
 import { composerActionIsDictation } from "@isnadi/client-runtime/dictation";
-import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
+import {
+  resolveComposerAddressing,
+  type SendableComposerAddressing,
+} from "@isnadi/shared/composerBotMentions";
 import {
   ArrowUpIcon,
   AtSignIcon,
@@ -137,7 +140,7 @@ export function BotPromptComposer({
   onSubmit: (
     prompt: string,
     files: readonly File[],
-    addressing?: ComposerAddressing,
+    addressing?: SendableComposerAddressing,
   ) => Promise<boolean>;
 }) {
   const { t } = useI18n();
@@ -180,6 +183,8 @@ export function BotPromptComposer({
   const draftMention = resolveBotMention(draft, mentionBots);
   const mentionHint = botMentionHint(draftMention, t);
   const addressedBotId = draftMention.kind === "bot" ? draftMention.botId : null;
+  // A prompt that names someone beats the reply target; the chip keeps the quote and says so.
+  const draftAddressesSomeone = resolveComposerAddressing(draft, mentionBots).kind !== "none";
   useEffect(() => {
     onAddressedBotChange?.(addressedBotId);
   }, [addressedBotId, onAddressedBotChange]);
@@ -447,6 +452,9 @@ export function BotPromptComposer({
                 data-testid="composer-reply-preview"
               >
                 <CornerDownRightIcon aria-hidden="true" className="size-3.5 shrink-0 opacity-60" />
+                <span className="shrink-0 text-muted-foreground">
+                  {draftAddressesSomeone ? t("Quoting") : t("Replying to")}
+                </span>
                 <span className="shrink-0 font-medium">{replyPreview.label}</span>
                 <span className="min-w-0 flex-1 truncate text-muted-foreground">
                   {replyPreview.text}
