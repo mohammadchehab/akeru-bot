@@ -265,7 +265,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
   (it) => {
     describe("ProviderRegistryLive", () => {
       it.effect(
-        "does not register Cursor and skips its probe when settings use their defaults",
+        "registers Cursor disabled and skips its probe when settings use their defaults",
         () =>
           Effect.gen(function* () {
             const serverSettings = yield* makeMutableServerSettingsService(
@@ -349,6 +349,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
               assert.deepStrictEqual(providers.map((provider) => provider.instanceId).toSorted(), [
                 "claudeAgent",
                 "codex",
+                "cursor",
                 "customOpenai",
                 "grok",
                 "kimi",

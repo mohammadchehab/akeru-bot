@@ -64,7 +64,7 @@ interface ActiveTurn {
   readonly turnId: TurnId;
   stopRequested: boolean;
   interrupt: Effect.Effect<void>;
-  fiber: Fiber.Fiber<void, unknown> | undefined;
+  fiber: Fiber.Fiber<void> | undefined;
 }
 
 interface CursorSessionContext {
@@ -482,7 +482,11 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       payload: model ? { model } : {},
     });
 
-    const fiber = yield* runTurn(context, turnId, prompt, model).pipe(Effect.forkIn(scope));
+    // Failures are already turned into a failed turn inside runTurn; nothing is left to join on.
+    const fiber = yield* runTurn(context, turnId, prompt, model).pipe(
+      Effect.ignore,
+      Effect.forkIn(scope),
+    );
 
     if (context.active?.turnId === turnId) context.active.fiber = fiber;
 
