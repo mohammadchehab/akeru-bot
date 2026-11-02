@@ -162,7 +162,7 @@ export const makeCursorLoginControl = Effect.fn("makeCursorLoginControl")(functi
 export class CursorLogin extends Context.Service<
   CursorLogin,
   Effect.Success<ReturnType<typeof makeCursorLoginControl>>
->()("isnadibot/provider/CursorLogin") {}
+>()("isnadibot/provider/Layers/cursor/CursorLoginControl/CursorLogin") {}
 
 /** Resolves the instance from settings and refreshes the provider registry after a login. */
 export const layer = Layer.effect(
