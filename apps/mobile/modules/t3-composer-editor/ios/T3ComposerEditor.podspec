@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary        = 'Native attributed composer editor for IsnadiBot mobile.'
   s.description    = 'UIKit-backed rich text composer with atomic skill and file tokens.'
   s.author         = 'IsnadiBot maintainers'
-  s.homepage       = 'https://github.com/opencoredev/akeru-bot'
+  s.homepage       = 'https://github.com/mohammadchehab/isnadibot'
   s.license        = { :type => 'MIT', :file => '../LICENSE' }
   s.platforms      = {
     :ios => '16.4',

@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "opencoredev/akeru-bot", "disableThanks": true }
+    { "repo": "mohammadchehab/isnadibot", "disableThanks": true }
   ],
   "commit": false,
   "fixed": [["isnadibot", "@isnadi/contracts", "@isnadi/desktop", "@isnadi/web"]],

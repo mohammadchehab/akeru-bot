@@ -27,7 +27,7 @@ export const FeedbackWorker = Cloudflare.Worker("FeedbackWorker", {
       Config.withDefault(Redacted.make("")),
     ),
     GITHUB_REPOSITORY: Config.string("ISNADI_FEEDBACK_GITHUB_REPOSITORY").pipe(
-      Config.withDefault("opencoredev/akeru-bot"),
+      Config.withDefault("mohammadchehab/isnadibot"),
     ),
     GITHUB_APP_ID: Config.string("ISNADI_FEEDBACK_GITHUB_APP_ID").pipe(Config.withDefault("")),
     GITHUB_APP_INSTALLATION_ID: Config.string("ISNADI_FEEDBACK_GITHUB_APP_INSTALLATION_ID").pipe(

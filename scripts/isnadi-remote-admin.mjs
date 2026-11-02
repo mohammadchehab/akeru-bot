@@ -94,10 +94,10 @@ const download = async (url) => {
 // ISNADI_REMOTE_TEST_RELEASE=1 because the launcher forwards every `isnadi remote` argument, and
 // `--manifest-key-file` replaces the pinned key for that one invocation.
 const update = async (parameters) => {
-  const repo = process.env.ISNADI_REMOTE_REPOSITORY || "opencoredev/akeru-bot";
+  const repo = process.env.ISNADI_REMOTE_REPOSITORY || "mohammadchehab/isnadibot";
 
   if (
-    repo !== "opencoredev/akeru-bot" &&
+    repo !== "mohammadchehab/isnadibot" &&
     process.env.ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY !== "1"
   ) {
     throw new Error("Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1.");

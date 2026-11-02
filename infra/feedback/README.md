@@ -7,7 +7,7 @@ Set these deployment values:
 - `ISNADI_FEEDBACK_HMAC_SECRET`: required HMAC secret.
 - `ISNADI_FEEDBACK_TURNSTILE_SITE_KEY`: optional Turnstile site key.
 - `ISNADI_FEEDBACK_TURNSTILE_SECRET_KEY`: optional Turnstile secret key. Both keys together enable the challenge step; without them the endpoint rejects further submissions from a coarse network after five accepted submissions in one hour.
-- `ISNADI_FEEDBACK_GITHUB_REPOSITORY`: `owner/repository` that receives accepted reports as issues. Defaults to `opencoredev/akeru-bot`.
+- `ISNADI_FEEDBACK_GITHUB_REPOSITORY`: `owner/repository` that receives accepted reports as issues. Defaults to `mohammadchehab/isnadibot`.
 - `ISNADI_FEEDBACK_GITHUB_APP_ID`: ID of the GitHub App that delivers feedback.
 - `ISNADI_FEEDBACK_GITHUB_APP_INSTALLATION_ID`: repository-scoped installation ID for the App.
 - `ISNADI_FEEDBACK_GITHUB_APP_PRIVATE_KEY`: private key for minting short-lived installation tokens. Store it only as a Worker secret.

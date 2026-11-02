@@ -6,7 +6,7 @@ the same server for web and remote clients.
 ## Desktop app
 
 Download the current installer from
-[GitHub Releases](https://github.com/opencoredev/akeru-bot/releases).
+[GitHub Releases](https://github.com/mohammadchehab/isnadibot/releases).
 
 - macOS: Apple silicon DMG, signed and notarized. Open the DMG and drag **IsnadiBot** into
   **Applications**. The app opens without a Gatekeeper warning.

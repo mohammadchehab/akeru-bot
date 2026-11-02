@@ -57,8 +57,8 @@ it("keeps the package identity and explicit approval gate", () => {
   );
 
   assert.include(packageManifest, '"name": "isnadibot"');
-  assert.include(packageManifest, '"url": "https://github.com/opencoredev/akeru-bot"');
-  assert.include(packageManifest, '"akeru": "./dist/bin.mjs"');
+  assert.include(packageManifest, '"url": "https://github.com/mohammadchehab/isnadibot"');
+  assert.include(packageManifest, '"isnadi": "./dist/bin.mjs"');
   // ISNADI_HOME wins and T3CODE_HOME stays a fallback, through the shared alias reader.
   assert.include(triageSource, 'aliasedEnv(Config.string, "HOME")');
   assert.include(TRIAGE_PLAYBOOK, "Show the user the complete final issue text");

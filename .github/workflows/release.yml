@@ -114,7 +114,7 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.preflight.outputs.version }}
       RELEASE_CHANNEL: ${{ needs.preflight.outputs.channel }}
-      T3CODE_DESKTOP_UPDATE_REPOSITORY: opencoredev/akeru-bot
+      T3CODE_DESKTOP_UPDATE_REPOSITORY: mohammadchehab/isnadibot
     strategy:
       fail-fast: false
       matrix:

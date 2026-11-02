@@ -42,14 +42,14 @@ function Invoke-WebRequest {
   Assert-True ((Split-Path -Parent $directory) -eq $env:TEMP) 'Download escaped the private TEMP directory.'
   Assert-True (Test-Path -LiteralPath $directory -PathType Container) 'Download directory does not exist.'
   $testState.requests += $Uri
-  if ($Uri -eq 'https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.exe') {
+  if ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.exe') {
     $testState.downloadDirectories += $directory
     $testState.installerFile = $OutFile
     [IO.File]::WriteAllText($OutFile, 'Harmless installer fixture, never executed.')
     if ($testState.scenario -eq 'exe-download') { throw 'fixture exe download failed' }
     return
   }
-  Assert-True ($Uri -eq 'https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/SHA256SUMS') "Unexpected URL: $Uri"
+  Assert-True ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/SHA256SUMS') "Unexpected URL: $Uri"
   Assert-True ($directory -eq (Split-Path -Parent $testState.installerFile)) 'Downloads used different directories.'
   $hash = (Get-FileHash -LiteralPath $testState.installerFile -Algorithm SHA256).Hash.ToLowerInvariant()
   $entry = "$hash *IsnadiBot-1.2.3-x64.exe"
@@ -139,14 +139,14 @@ try {
   function Invoke-RestMethod {
     [CmdletBinding()]
     param([Parameter(Position = 0)][string]$Uri)
-    if ($Uri -ne 'https://api.github.com/repos/opencoredev/akeru-bot/releases/latest') { throw 'Unexpected release URL.' }
+    if ($Uri -ne 'https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest') { throw 'Unexpected release URL.' }
     [pscustomobject]@{ tag_name = 'v1.2.3' }
   }
   function Invoke-WebRequest {
     [CmdletBinding()]
     param([Parameter(Position = 0)][string]$Uri, [string]$OutFile, [switch]$UseBasicParsing)
     if (-not $UseBasicParsing) { throw 'Bootstrap must avoid Internet Explorer parsing.' }
-    if ($Uri -ne 'https://raw.githubusercontent.com/opencoredev/akeru-bot/v1.2.3/scripts/install-windows.ps1') { throw 'Unexpected script URL.' }
+    if ($Uri -ne 'https://raw.githubusercontent.com/mohammadchehab/isnadibot/v1.2.3/scripts/install-windows.ps1') { throw 'Unexpected script URL.' }
     if ((Split-Path -Parent $OutFile) -ne $env:TEMP) { throw 'Bootstrap escaped private TEMP.' }
     [IO.File]::WriteAllText((Join-Path $caseDirectory 'download-path'), $OutFile)
     $fixture = [Text.Encoding]::Unicode.GetString([Convert]::FromBase64String('__FIXTURE__'))

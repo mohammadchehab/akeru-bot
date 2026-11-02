@@ -124,7 +124,7 @@ describe("feedback worker", () => {
       submission(),
       env({
         DB: emptyInboxDatabase(),
-        GITHUB_REPOSITORY: "opencoredev/akeru-bot",
+        GITHUB_REPOSITORY: "mohammadchehab/isnadibot",
         GITHUB_APP_ID: "12345",
         GITHUB_APP_INSTALLATION_ID: "67890",
         GITHUB_APP_PRIVATE_KEY: "invalid-test-key",

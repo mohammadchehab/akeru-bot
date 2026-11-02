@@ -5,7 +5,7 @@ import { decodeGenerativeBlock, generativeKindForLanguage } from "./generativeSc
 describe("generative blocks", () => {
   it("maps only akeru- fences to block kinds", () => {
     expect(generativeKindForLanguage("akeru-chart")).toBe("chart");
-    expect(generativeKindForLanguage("ISNADI-Tasks")).toBe("tasks");
+    expect(generativeKindForLanguage("AKERU-Tasks")).toBe("tasks");
     expect(generativeKindForLanguage("akeru-unknown")).toBeNull();
     expect(generativeKindForLanguage("json")).toBeNull();
   });

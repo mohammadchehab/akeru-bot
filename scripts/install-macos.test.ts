@@ -59,7 +59,7 @@ describe("install-macos.sh", () => {
     NodeAssert.match(script, /--tag=\*\)/);
     NodeAssert.match(
       script,
-      /curl -fsSL https:\/\/api\.github\.com\/repos\/opencoredev\/akeru-bot\/releases\/latest/,
+      /curl -fsSL https:\/\/api\.github\.com\/repos\/mohammadchehab\/isnadibot\/releases\/latest/,
     );
     NodeAssert.match(script, /if \[ -z "\$tag" \]; then/);
   });
@@ -85,7 +85,7 @@ describe("install-macos.sh", () => {
     NodeAssert.match(script, /dmg="IsnadiBot-\$\{version\}-arm64\.dmg"/);
     NodeAssert.match(
       script,
-      /base="https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$\{tag\}"/,
+      /base="https:\/\/github\.com\/mohammadchehab\/isnadibot\/releases\/download\/\$\{tag\}"/,
     );
     NodeAssert.match(script, /curl -fsSL -o "\$tmp\/SHA256SUMS" "\$base\/SHA256SUMS"/);
     NodeAssert.match(script, /curl -fL -o "\$tmp\/\$dmg" "\$base\/\$dmg"/);

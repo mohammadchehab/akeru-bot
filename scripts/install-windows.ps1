@@ -1,6 +1,6 @@
 # One-line Windows installer for IsnadiBot (x64).
 #
-#   $t = (Invoke-RestMethod https://api.github.com/repos/opencoredev/akeru-bot/releases/latest -ErrorAction Stop).tag_name; if ($t -match '^v\d+\.\d+\.\d+$') { $f = Join-Path $env:TEMP $("isnadi-install-$([Guid]::NewGuid()).ps1"); try { Invoke-WebRequest "https://raw.githubusercontent.com/opencoredev/akeru-bot/$t/scripts/install-windows.ps1" -OutFile $f -UseBasicParsing -ErrorAction Stop; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f -Tag $t; if ($LASTEXITCODE -ne 0) { throw "IsnadiBot installer failed with exit code $LASTEXITCODE." } } finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue } } else { throw "Could not resolve the latest IsnadiBot release." }
+#   $t = (Invoke-RestMethod https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest -ErrorAction Stop).tag_name; if ($t -match '^v\d+\.\d+\.\d+$') { $f = Join-Path $env:TEMP $("isnadi-install-$([Guid]::NewGuid()).ps1"); try { Invoke-WebRequest "https://raw.githubusercontent.com/mohammadchehab/isnadibot/$t/scripts/install-windows.ps1" -OutFile $f -UseBasicParsing -ErrorAction Stop; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f -Tag $t; if ($LASTEXITCODE -ne 0) { throw "IsnadiBot installer failed with exit code $LASTEXITCODE." } } finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue } } else { throw "Could not resolve the latest IsnadiBot release." }
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-windows.ps1 -Tag v1.2.3
 #
 # Downloads the GitHub exe for the latest stable tag (or -Tag), checks
@@ -24,7 +24,7 @@ if ($env:PROCESSOR_ARCHITECTURE -ne 'AMD64') {
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
 if (-not $Tag) {
-  $Tag = (Invoke-RestMethod -Uri 'https://api.github.com/repos/opencoredev/akeru-bot/releases/latest').tag_name
+  $Tag = (Invoke-RestMethod -Uri 'https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest').tag_name
 }
 if (-not $Tag) {
   throw 'install-windows.ps1: could not resolve a release tag.'
@@ -37,7 +37,7 @@ $version = $Tag.Substring(1)
 Write-Output "Installing IsnadiBot $Tag for Windows (x64)..."
 
 $asset = "IsnadiBot-$version-x64.exe"
-$base = "https://github.com/opencoredev/akeru-bot/releases/download/$Tag"
+$base = "https://github.com/mohammadchehab/isnadibot/releases/download/$Tag"
 $tempDirectory = Join-Path $env:TEMP "isnadi-install-$([Guid]::NewGuid())"
 $null = New-Item -ItemType Directory -Path $tempDirectory
 try {

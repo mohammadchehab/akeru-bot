@@ -38,7 +38,7 @@ export const SHOWCASE_PROJECTS = [
     id: "t3code",
     title: "IsnadiBot",
     directory: "isnadibot",
-    repositoryUrl: "https://github.com/opencoredev/akeru-bot.git",
+    repositoryUrl: "https://github.com/mohammadchehab/isnadibot.git",
   },
   {
     id: "react",

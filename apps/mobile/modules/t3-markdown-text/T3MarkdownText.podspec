@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.version = package["version"]
   s.summary = "Native selectable markdown renderer for IsnadiBot mobile."
   s.description = "Fabric-backed attributed text and markdown rendering primitives owned by IsnadiBot."
-  s.homepage = "https://github.com/opencoredev/akeru-bot"
+  s.homepage = "https://github.com/mohammadchehab/isnadibot"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.author = "IsnadiBot maintainers"
   s.platforms = { :ios => min_ios_version_supported }

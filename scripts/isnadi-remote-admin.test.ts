@@ -310,7 +310,7 @@ describe("Isnadi Remote administration", () => {
           }),
         );
 
-        if (request.url === "/repos/opencoredev/akeru-bot/releases/latest") {
+        if (request.url === "/repos/mohammadchehab/isnadibot/releases/latest") {
           const assets = Array.from(files.keys()).map((file) => ({
             name: file.slice("/download/".length),
             browser_download_url: `${origin}${file}`,

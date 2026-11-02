@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
-repo="${ISNADI_REMOTE_REPOSITORY:-opencoredev/akeru-bot}"
-[ "$repo" = opencoredev/akeru-bot ] || [ "${ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY:-0}" = 1 ] || { printf 'Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1 and artifacts signed by the pinned Isnadi release key.\n' >&2; exit 1; }
+repo="${ISNADI_REMOTE_REPOSITORY:-mohammadchehab/isnadibot}"
+[ "$repo" = mohammadchehab/isnadibot ] || [ "${ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY:-0}" = 1 ] || { printf 'Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1 and artifacts signed by the pinned Isnadi release key.\n' >&2; exit 1; }
 install_root="${ISNADI_INSTALL_ROOT:-$HOME/.local/share/isnadi}"
 bin_dir="${ISNADI_BIN_DIR:-$HOME/.local/bin}"
 tag="${ISNADI_VERSION:-}"

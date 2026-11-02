@@ -60,7 +60,7 @@ case "$command_name" in
     ;;
   update)
     [ "${ISNADI_REMOTE_CONTAINER:-0}" != 1 ] || { printf 'Docker manages Isnadi updates by changing the image tag; use the documented Compose update flow.\n' >&2; exit 2; }
-    repo="${ISNADI_REMOTE_REPOSITORY:-opencoredev/akeru-bot}"
+    repo="${ISNADI_REMOTE_REPOSITORY:-mohammadchehab/isnadibot}"
     tag="$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1)"
     [ -n "$tag" ] || { printf 'Could not resolve the latest Isnadi release.\n' >&2; exit 1; }
     target_version="${tag#v}"

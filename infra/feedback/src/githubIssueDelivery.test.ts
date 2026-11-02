@@ -40,7 +40,7 @@ function outbox(overrides: Partial<FeedbackDeliveryOutbox> = {}): FeedbackDelive
 }
 
 const destination = {
-  repository: "opencoredev/akeru-bot",
+  repository: "mohammadchehab/isnadibot",
   appId: "12345",
   installationId: "67890",
   privateKey: "private-key",
@@ -100,7 +100,7 @@ describe("GitHub feedback delivery", () => {
       .mockResolvedValueOnce(installationTokenResponse())
       .mockResolvedValueOnce(
         Response.json(
-          { number: 42, html_url: "https://github.com/opencoredev/akeru-bot/issues/42" },
+          { number: 42, html_url: "https://github.com/mohammadchehab/isnadibot/issues/42" },
           { status: 201 },
         ),
       );
@@ -125,7 +125,7 @@ describe("GitHub feedback delivery", () => {
       "https://api.github.com/app/installations/67890/access_tokens",
     );
     expect(request.mock.calls[1]?.[0]).toBe(
-      "https://api.github.com/repos/opencoredev/akeru-bot/issues",
+      "https://api.github.com/repos/mohammadchehab/isnadibot/issues",
     );
     expect(request.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
     expect(request.mock.calls[1]?.[1]?.signal).toBeInstanceOf(AbortSignal);
@@ -133,7 +133,7 @@ describe("GitHub feedback delivery", () => {
       "fb_example",
       "claim-example",
       42,
-      "https://github.com/opencoredev/akeru-bot/issues/42",
+      "https://github.com/mohammadchehab/isnadibot/issues/42",
     );
   });
 

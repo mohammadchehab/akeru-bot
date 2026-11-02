@@ -85,8 +85,8 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 case "$url" in
-  https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/SHA256SUMS) cp "$FIXTURE_ROOT/checksums" "$out" ;;
-  https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.AppImage)
+  https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/SHA256SUMS) cp "$FIXTURE_ROOT/checksums" "$out" ;;
+  https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.AppImage)
     [ "$FIXTURE_SCENARIO" != download ] || exit 22
     cp "$FIXTURE_ROOT/payload" "$out" ;;
   *) exit 99 ;;
@@ -162,7 +162,7 @@ describe("install-linux.sh", () => {
     NodeAssert.match(script, /--tag=\*\)/);
     NodeAssert.match(
       script,
-      /curl -fsSL https:\/\/api\.github\.com\/repos\/opencoredev\/akeru-bot\/releases\/latest/,
+      /curl -fsSL https:\/\/api\.github\.com\/repos\/mohammadchehab\/isnadibot\/releases\/latest/,
     );
     NodeAssert.match(script, /if \[ -z "\$tag" \]; then/);
   });
@@ -194,7 +194,7 @@ describe("install-linux.sh", () => {
     NodeAssert.match(script, /appimage="IsnadiBot-\$\{version\}-x64\.AppImage"/);
     NodeAssert.match(
       script,
-      /base="https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$\{tag\}"/,
+      /base="https:\/\/github\.com\/mohammadchehab\/isnadibot\/releases\/download\/\$\{tag\}"/,
     );
     NodeAssert.match(script, /curl -fsSL -o "\$tmp\/SHA256SUMS" "\$base\/SHA256SUMS"/);
     NodeAssert.match(script, /curl -fL -o "\$tmp\/\$appimage" "\$base\/\$appimage"/);
@@ -237,7 +237,7 @@ describe("install-linux.sh", () => {
     NodeAssert.match(script, /if \[ -z "\$t" \]; then/);
     NodeAssert.match(
       script,
-      /raw\.githubusercontent\.com\/opencoredev\/akeru-bot\/\$t\/scripts\/install-linux\.sh/,
+      /raw\.githubusercontent\.com\/mohammadchehab\/isnadibot\/\$t\/scripts\/install-linux\.sh/,
     );
     NodeAssert.match(script, /--tag "\$t"/);
     NodeAssert.match(script, /f=\$\(mktemp \/tmp\/isnadi-install\.XXXXXX\)/);

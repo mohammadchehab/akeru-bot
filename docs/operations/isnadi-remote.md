@@ -18,9 +18,9 @@ helpers derive the server's `T3CODE_HOME` from that value, so an ambient T3 Code
 Pass `--base-dir PATH` to an `isnadi` server command to choose another directory explicitly.
 
 ```sh
-curl -fsSL --proto '=https' https://github.com/opencoredev/akeru-bot/releases/latest/download/install-remote.sh | sh
+curl -fsSL --proto '=https' https://github.com/mohammadchehab/isnadibot/releases/latest/download/install-remote.sh | sh
 # or, on Windows:
-# irm https://github.com/opencoredev/akeru-bot/releases/latest/download/install-remote.ps1 -OutFile install-remote.ps1
+# irm https://github.com/mohammadchehab/isnadibot/releases/latest/download/install-remote.ps1 -OutFile install-remote.ps1
 # powershell -NoProfile -ExecutionPolicy Bypass -File .\install-remote.ps1
 ```
 

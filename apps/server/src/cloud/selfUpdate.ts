@@ -93,7 +93,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
 
   const verifiedWindowsArchiveChecksum = (version: string) =>
     Effect.gen(function* () {
-      const repository = environment.ISNADI_REMOTE_REPOSITORY || "opencoredev/akeru-bot";
+      const repository = environment.ISNADI_REMOTE_REPOSITORY || "mohammadchehab/isnadibot";
       const base = `https://github.com/${repository}/releases/download/v${version}`;
 
       const [manifest, signature] = yield* Effect.all(

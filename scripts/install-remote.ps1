@@ -11,8 +11,8 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
-$Repository = if ($env:ISNADI_REMOTE_REPOSITORY) { $env:ISNADI_REMOTE_REPOSITORY } else { "opencoredev/akeru-bot" }
-if ($Repository -ne "opencoredev/akeru-bot" -and $env:ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY -ne "1") { throw "Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1." }
+$Repository = if ($env:ISNADI_REMOTE_REPOSITORY) { $env:ISNADI_REMOTE_REPOSITORY } else { "mohammadchehab/isnadibot" }
+if ($Repository -ne "mohammadchehab/isnadibot" -and $env:ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY -ne "1") { throw "Custom release repositories require ISNADI_REMOTE_ALLOW_CUSTOM_REPOSITORY=1." }
 
 $InstallRoot = if ($env:ISNADI_INSTALL_ROOT) { $env:ISNADI_INSTALL_ROOT } else { Join-Path $env:LOCALAPPDATA "Isnadi\Remote" }
 $BinDir = if ($env:ISNADI_BIN_DIR) { $env:ISNADI_BIN_DIR } else { Join-Path $env:LOCALAPPDATA "Isnadi\bin" }

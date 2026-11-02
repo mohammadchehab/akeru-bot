@@ -28,7 +28,7 @@ The installer downloads the latest release, verifies its signed manifest and SHA
 installs under a per-user directory, and registers a background service. On Linux and macOS:
 
 ```sh
-curl -fsSL --proto '=https' https://github.com/opencoredev/akeru-bot/releases/latest/download/install-remote.sh | sh
+curl -fsSL --proto '=https' https://github.com/mohammadchehab/isnadibot/releases/latest/download/install-remote.sh | sh
 ```
 
 On Windows, download the installer to a file and run it from PowerShell. The saved file is what
@@ -36,7 +36,7 @@ lets the installer request administrator access for the background service:
 
 ```powershell
 Invoke-WebRequest -UseBasicParsing -OutFile "$env:TEMP\install-remote.ps1" `
-  https://github.com/opencoredev/akeru-bot/releases/latest/download/install-remote.ps1
+  https://github.com/mohammadchehab/isnadibot/releases/latest/download/install-remote.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install-remote.ps1"
 ```
 

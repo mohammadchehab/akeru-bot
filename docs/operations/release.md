@@ -70,7 +70,7 @@ release announcements.
 
 CI and release workflows run through GitHub Actions. Tenki provides Linux runners. GitHub provides
 the Apple Silicon macOS and Windows runners. The Tenki Runner GitHub App must have access to
-`opencoredev/akeru-bot`.
+`mohammadchehab/isnadibot`.
 
 - Linux uses the 4-vCPU `tenki-standard-medium-4c-8g` runner.
 - Windows uses the GitHub-hosted `windows-2025` runner.

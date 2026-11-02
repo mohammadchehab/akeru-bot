@@ -29,7 +29,7 @@ describe("install-windows.ps1", () => {
     NodeAssert.match(script, /Invoke-RestMethod/);
     NodeAssert.match(
       script,
-      /https:\/\/api\.github\.com\/repos\/opencoredev\/akeru-bot\/releases\/latest/,
+      /https:\/\/api\.github\.com\/repos\/mohammadchehab\/isnadibot\/releases\/latest/,
     );
     NodeAssert.match(script, /if \(-not \$Tag\)/);
   });
@@ -42,7 +42,7 @@ describe("install-windows.ps1", () => {
     NodeAssert.match(script, /IsnadiBot-\$version-x64\.exe/);
     NodeAssert.match(
       script,
-      /\$base = "https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$Tag"/,
+      /\$base = "https:\/\/github\.com\/mohammadchehab\/isnadibot\/releases\/download\/\$Tag"/,
     );
     NodeAssert.match(script, /Join-Path \$env:TEMP/);
     NodeAssert.match(script, /Invoke-WebRequest -Uri "\$base\/\$asset" -OutFile \$installerPath/);

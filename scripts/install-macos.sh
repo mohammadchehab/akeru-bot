@@ -2,7 +2,7 @@
 #
 # One-line macOS installer for IsnadiBot (Apple Silicon).
 #
-#   t=$(curl -fsSL https://api.github.com/repos/opencoredev/akeru-bot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1); if [ -z "$t" ]; then echo "Could not resolve the latest IsnadiBot release." >&2; (exit 1); else f=$(mktemp /tmp/isnadi-install.XXXXXX) && curl -fsSL -o "$f" "https://raw.githubusercontent.com/opencoredev/akeru-bot/$t/scripts/install-macos.sh" && bash "$f" --tag "$t"; rc=$?; rm -f "${f:-/tmp/isnadi-install-none}"; (exit $rc); fi
+#   t=$(curl -fsSL https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1); if [ -z "$t" ]; then echo "Could not resolve the latest IsnadiBot release." >&2; (exit 1); else f=$(mktemp /tmp/isnadi-install.XXXXXX) && curl -fsSL -o "$f" "https://raw.githubusercontent.com/mohammadchehab/isnadibot/$t/scripts/install-macos.sh" && bash "$f" --tag "$t"; rc=$?; rm -f "${f:-/tmp/isnadi-install-none}"; (exit $rc); fi
 #   bash install-macos.sh --tag v1.2.3
 #
 # Downloads the GitHub DMG for the latest stable tag (or --tag), checks
@@ -46,7 +46,7 @@ trap 'hdiutil detach "$mnt" >/dev/null 2>&1 || true; rm -rf "$tmp"' EXIT
 mkdir -p "$mnt"
 
 if [ -z "$tag" ]; then
-  tag="$(curl -fsSL https://api.github.com/repos/opencoredev/akeru-bot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1)"
+  tag="$(curl -fsSL https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1)"
 fi
 [[ "$tag" =~ ^v[0-9]+[.][0-9]+[.][0-9]+$ ]]
 
@@ -54,7 +54,7 @@ version="${tag#v}"
 echo "Installing IsnadiBot $tag for macOS (arm64)..."
 
 dmg="IsnadiBot-${version}-arm64.dmg"
-base="https://github.com/opencoredev/akeru-bot/releases/download/${tag}"
+base="https://github.com/mohammadchehab/isnadibot/releases/download/${tag}"
 curl -fsSL -o "$tmp/SHA256SUMS" "$base/SHA256SUMS"
 curl -fL -o "$tmp/$dmg" "$base/$dmg"
 
