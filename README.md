@@ -241,17 +241,13 @@ over the same authenticated WebSocket connection.
 
 ---
 
-## 🤝 Collaborate
+## 🤝 Contributors
 
 IsnadiBot is looking for collaborators. The [roadmap](ROADMAP.md) lists features that are open to
 pick up, from end-to-end tests for group chats to CI, and [CONTRIBUTING.md](CONTRIBUTING.md)
 explains how to get started. Comment on an issue, or open one, to claim it.
 
 If IsnadiBot is useful to you, a ⭐ helps other people find it.
-
----
-
-## 👥 Contributors
 
 IsnadiBot started as a fork of OpenCore's fork of T3 Code. Every commit from both projects
 is still in this repository, so everyone below helped build it. Thank you.
