@@ -289,6 +289,10 @@ export const CursorSettings = providerSettingsSchema(
         },
       }),
     ),
+    customModels: Schema.Array(Schema.String).pipe(
+      Schema.withDecodingDefault(Effect.succeed([])),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
   },
   { order: ["binaryPath"] },
 );
@@ -365,6 +369,7 @@ export const CustomOpenaiSettingsPatch = Schema.Struct({
 export const CursorSettingsPatch = Schema.Struct({
   enabled: Schema.optionalKey(Schema.Boolean),
   binaryPath: Schema.optionalKey(TrimmedString),
+  customModels: Schema.optionalKey(Schema.Array(Schema.String)),
 });
 
 export const OpenCodeSettingsPatch = Schema.Struct({

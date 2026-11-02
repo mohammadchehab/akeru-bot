@@ -295,6 +295,10 @@ describe("CursorSettings", () => {
     expect(decodeCursorSettings({})).toMatchObject({ enabled: false, binaryPath: "agent" });
   });
 
+  it("carries a custom model list like every other driver", () => {
+    expect(decodeCursorSettings({}).customModels).toEqual([]);
+  });
+
   it("keeps a configured binary path", () => {
     expect(decodeCursorSettings({ binaryPath: "/opt/cursor/agent" }).binaryPath).toBe(
       "/opt/cursor/agent",
