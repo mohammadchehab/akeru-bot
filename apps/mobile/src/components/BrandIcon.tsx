@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 
-const source = require("../../../marketing/public/icon.png");
+const source = require("../../../../assets/prod/app-icon.png");
 
 export function BrandIcon(props: { readonly borderRadius: number; readonly size: number }) {
   return (
