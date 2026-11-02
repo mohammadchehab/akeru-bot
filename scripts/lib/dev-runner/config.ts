@@ -224,6 +224,12 @@ export function createDevRunnerEnv({
         `http://${isDesktopMode ? DESKTOP_DEV_LOOPBACK_HOST : "localhost"}:${webPort}`,
     };
 
+    // The server reads ISNADI_HOME (and the AKERU_HOME it was migrated from) ahead of
+    // T3CODE_HOME, so an inherited one would outrank the worktree or --home-dir choice
+    // and point the dev server at the live install.
+    delete output.ISNADI_HOME;
+    delete output.AKERU_HOME;
+
     if (configuredBaseDir !== undefined) {
       output.T3CODE_HOME = resolvedBaseDir;
     } else {

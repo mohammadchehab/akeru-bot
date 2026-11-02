@@ -95,6 +95,33 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       }),
     );
 
+    it.effect("never lets an inherited ISNADI_HOME or AKERU_HOME reach the child", () =>
+      Effect.gen(function* () {
+        const input = {
+          mode: "dev",
+          baseEnv: { ISNADI_HOME: "/live", AKERU_HOME: "/live", T3CODE_HOME: "/live" },
+          serverOffset: 0,
+          webOffset: 0,
+          browser: undefined,
+          autoBootstrapProjectFromCwd: undefined,
+          logWebSocketEvents: undefined,
+          host: undefined,
+          port: undefined,
+          devUrl: undefined,
+        } as const;
+
+        const explicit = yield* createDevRunnerEnv({ ...input, t3Home: "/tmp/isnadi-explicit" });
+        const implicit = yield* createDevRunnerEnv({ ...input, t3Home: undefined });
+
+        for (const env of [explicit, implicit]) {
+          assert.equal(env.ISNADI_HOME, undefined);
+          assert.equal(env.AKERU_HOME, undefined);
+        }
+        assert.equal(explicit.T3CODE_HOME, "/tmp/isnadi-explicit");
+        assert.equal(implicit.T3CODE_HOME, undefined);
+      }),
+    );
+
     it.effect("allows browser auto-open to be explicitly enabled", () =>
       Effect.gen(function* () {
         const env = yield* createDevRunnerEnv({
