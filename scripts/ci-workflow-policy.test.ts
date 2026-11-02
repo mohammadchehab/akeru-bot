@@ -6,6 +6,7 @@ import { parse } from "yaml";
 
 type Step = {
   readonly name?: string;
+  readonly strategy?: unknown;
   readonly id?: string;
   readonly if?: string;
   readonly run?: string;
@@ -212,7 +213,11 @@ describe("CI workflow budget", () => {
     expect(serverCommand).toContain(
       "--exclude integration/orchestrationEngine.integration.test.ts",
     );
-    expect(serverCommand).not.toContain("--shard");
+    expect(serverCommand).toContain("--shard=${{ matrix.shard }}/4");
+    expect(ci.jobs.server?.strategy).toEqual({
+      "fail-fast": false,
+      matrix: { shard: [1, 2, 3, 4] },
+    });
   });
 
   it("coalesces version updates on a 4-vCPU runner", () => {
