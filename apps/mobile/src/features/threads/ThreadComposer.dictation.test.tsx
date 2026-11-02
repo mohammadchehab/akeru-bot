@@ -150,6 +150,8 @@ vi.mock("../../state/server", () => ({
   serverEnvironment: { subscriptionAuth: () => Symbol("subscriptionAuth") },
 }));
 
+vi.mock("../../state/threads", () => ({ threadEnvironment: { setHopBudget: {} } }));
+
 vi.mock("../../state/query", () => ({ useEnvironmentQuery: () => ({ data: null }) }));
 
 vi.mock("../../state/use-atom-command", () => ({ useAtomCommand: () => vi.fn() }));
