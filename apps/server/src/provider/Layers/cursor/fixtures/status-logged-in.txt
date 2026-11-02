@@ -1,0 +1,2 @@
+✓ Logged in as dev@example.com
+Team: Example (id 1)

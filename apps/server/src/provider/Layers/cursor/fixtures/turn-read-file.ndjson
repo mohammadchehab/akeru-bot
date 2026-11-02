@@ -1,0 +1,57 @@
+{"type":"system","subtype":"init","apiKeySource":"login","cwd":"/work/project","session_id":"00000000-0000-4000-8000-000000000001","model":"Auto Balance","permissionMode":"default"}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"Read notes.txt and tell me the launch codeword in one short sentence."}]},"session_id":"00000000-0000-4000-8000-000000000001"}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"> Auto routed to Grok 4.7\n\n"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622094777}
+{"type":"thinking","subtype":"delta","text":"The","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622096455}
+{"type":"thinking","subtype":"delta","text":" user wants me","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622096701}
+{"type":"thinking","subtype":"delta","text":" to","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622096738}
+{"type":"thinking","subtype":"delta","text":" read","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622096781}
+{"type":"thinking","subtype":"delta","text":" notes.tx","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622096875}
+{"type":"thinking","subtype":"delta","text":"t","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097025}
+{"type":"thinking","subtype":"delta","text":" and","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097037}
+{"type":"thinking","subtype":"delta","text":" tell","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097101}
+{"type":"thinking","subtype":"delta","text":" them","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097188}
+{"type":"thinking","subtype":"delta","text":" the","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097276}
+{"type":"thinking","subtype":"delta","text":" launch","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097370}
+{"type":"thinking","subtype":"delta","text":" codeword","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097459}
+{"type":"thinking","subtype":"delta","text":" in","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097598}
+{"type":"thinking","subtype":"delta","text":" one","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097651}
+{"type":"thinking","subtype":"delta","text":" short","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097718}
+{"type":"thinking","subtype":"delta","text":" sentence","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097821}
+{"type":"thinking","subtype":"delta","text":".","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622097980}
+{"type":"thinking","subtype":"delta","text":"\n\nI'll read notes.txt now. Ask mode restricts me to read-only tools.","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099216}
+{"type":"thinking","subtype":"completed","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099216}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"I'll"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" read"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" `"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"notes"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":".txt"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"`"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" and"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" report"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" the"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" launch"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099221}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" code"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"word"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" in"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" one"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" sentence"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"."}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099222}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"> Auto routed to Grok 4.7\n\nI'll read `notes.txt` and report the launch codeword in one sentence."}]},"session_id":"00000000-0000-4000-8000-000000000001","model_call_id":"id-2","timestamp_ms":1793622099243}
+{"type":"tool_call","subtype":"started","call_id":"call-1","tool_call":{"readToolCall":{"args":{"path":"/work/project/notes.txt"}},"hookAdditionalContexts":[],"toolCallId":"call-1","startedAtMs":"1793622099405"},"model_call_id":"id-2","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099243}
+{"type":"tool_call","subtype":"completed","call_id":"call-1","tool_call":{"readToolCall":{"args":{"path":"/work/project/notes.txt"},"result":{"success":{"content":"The launch codeword is KESTREL.\n","isEmpty":false,"exceededLimit":false,"totalLines":2,"fileSize":32,"path":"/work/project/notes.txt","readRange":{"startLine":1,"endLine":2},"relatedCursorRulePaths":[],"relatedCursorRules":[]}}},"hookAdditionalContexts":[],"toolCallId":"call-1","startedAtMs":"1793622099405","completedAtMs":"1793622099921"},"model_call_id":"id-2","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622099760}
+{"type":"thinking","subtype":"delta","text":"The","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622100686}
+{"type":"thinking","subtype":"delta","text":" notes.tx","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622100686}
+{"type":"thinking","subtype":"delta","text":"t file says","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622100907}
+{"type":"thinking","subtype":"delta","text":" \"The launch codeword is KESTREL.\" The user asked for one short sentence.","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"thinking","subtype":"completed","session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"The"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" launch"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" code"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"word"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" is"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":" K"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"EST"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101188}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"REL"}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101189}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"."}]},"session_id":"00000000-0000-4000-8000-000000000001","timestamp_ms":1793622101189}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"The launch codeword is KESTREL."}]},"session_id":"00000000-0000-4000-8000-000000000001"}
+{"type":"result","subtype":"success","duration_ms":8443,"duration_api_ms":8443,"is_error":false,"result":"> Auto routed to Grok 4.7\n\nI'll read `notes.txt` and report the launch codeword in one sentence.The launch codeword is KESTREL.","session_id":"00000000-0000-4000-8000-000000000001","request_id":"id-3","usage":{"inputTokens":13443,"outputTokens":338,"cacheReadTokens":25088,"cacheWriteTokens":0}}
