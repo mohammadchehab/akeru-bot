@@ -12,6 +12,7 @@ on:
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
       - patches/**
+      - .github/actions/install/**
       - package.json
       - .github/workflows/mobile-bundle.yml
   pull_request:
@@ -22,6 +23,7 @@ on:
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
       - patches/**
+      - .github/actions/install/**
       - package.json
       - .github/workflows/mobile-bundle.yml
 
