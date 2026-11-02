@@ -2,6 +2,7 @@ import { Predicate } from "effect";
 import type { StartThreadTurnInput } from "@isnadi/client-runtime/state/threads";
 import { PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
 import type {
+  BotId,
   GroupAddressing,
   GroupId,
   ModelSelection,
