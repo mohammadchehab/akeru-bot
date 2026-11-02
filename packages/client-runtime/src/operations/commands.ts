@@ -105,6 +105,7 @@ export {
   type ReorderPinnedThreadInput,
   type UpdateThreadMetadataInput,
   type SetThreadRuntimeModeInput,
+  type SetThreadHopBudgetInput,
   type SetThreadInteractionModeInput,
   type SetThreadMessageReactionInput,
   createThread,
@@ -120,6 +121,7 @@ export {
   reorderPinnedThread,
   updateThreadMetadata,
   setThreadRuntimeMode,
+  setThreadHopBudget,
   setThreadInteractionMode,
   setThreadMessageReaction,
 } from "./commands/thread.ts";

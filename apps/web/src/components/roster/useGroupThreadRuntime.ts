@@ -2,8 +2,15 @@ import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
 import { scopeThreadRef } from "@isnadi/client-runtime/environment";
-import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
-import { EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
+import { type ComposerAddressing, groupAddressing } from "@isnadi/shared/composerBotMentions";
+import {
+  EnvironmentId,
+  GroupId,
+  type GroupHopBudget,
+  ThreadId,
+  type ScopedThreadRef,
+} from "@isnadi/contracts";
+import { effectiveHopBudget } from "@isnadi/shared/groupHopBudget";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -162,6 +169,10 @@ export function useGroupThreadRuntime(groupId: string) {
     reportFailure: false,
   });
 
+  const setHopBudgetCommand = useAtomCommand(threadEnvironment.setHopBudget, {
+    reportFailure: false,
+  });
+
   const startTurn = useAtomCommand(threadEnvironment.startTurn, { reportFailure: false });
 
   const interruptTurnCommand = useAtomCommand(threadEnvironment.interruptTurn, {
@@ -242,6 +253,27 @@ export function useGroupThreadRuntime(groupId: string) {
 
     return true;
   }, [interruptTurnCommand, linkedThreadRef, rememberedThread?.session]);
+
+  // A change applies from the next user message; the server rejects it for a non-group chat.
+  const setHopBudget = useCallback(
+    async (hopBudget: GroupHopBudget): Promise<boolean> => {
+      if (!linkedThreadRef) return false;
+
+      const result = await setHopBudgetCommand({
+        environmentId: linkedThreadRef.environmentId,
+        input: { threadId: linkedThreadRef.threadId, hopBudget },
+      });
+
+      if (Predicate.isTagged(result, "Failure")) {
+        setError(commandFailure(result));
+
+        return false;
+      }
+
+      return true;
+    },
+    [linkedThreadRef, setHopBudgetCommand],
+  );
 
   const send = useCallback(
     async (
@@ -473,6 +505,8 @@ export function useGroupThreadRuntime(groupId: string) {
     respondingRequestIds,
     respondingBotId: rememberedThread?.respondingBotId ?? group?.bossBotId ?? null,
     responderQueue: rememberedThread?.responderQueue ?? null,
+    hopBudget: effectiveHopBudget(rememberedThread?.hopBudget),
+    setHopBudget,
     stop,
     resume,
     resuming,
