@@ -74,6 +74,8 @@ export default defineConfig({
     environment: "node",
     exclude: [
       "**/.repos/**",
+      "**/.claude/**",
+      "**/worktrees/**",
       "**/node_modules/**",
       "**/dist/**",
       "**/dist-electron/**",
@@ -83,6 +85,19 @@ export default defineConfig({
     ],
     hookTimeout: 60_000,
     testTimeout: 60_000,
+    // A root run must load each package's own config (aliases, plugins, assetsInclude).
+    // The root project itself covers the repo-level scripts and oxlint plugins.
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "root",
+          include: ["scripts/**/*.test.ts", "oxlint-plugin-isnadi/**/*.test.ts"],
+        },
+      },
+      "apps/*",
+      "packages/*",
+    ],
   },
   staged: {
     // Formatter only for now — no lint or typecheck on commit.
