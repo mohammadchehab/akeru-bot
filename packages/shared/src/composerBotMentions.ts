@@ -28,7 +28,7 @@ export function composerBotMentionDetail(
  * A mention runs to the first character that cannot be part of a member name, so whitespace,
  * the end of the text, or one of `, . : ; ! ? )` ends it and it still resolves.
  */
-function endsMention(after: string | undefined): boolean {
+export function endsMention(after: string | undefined): boolean {
   return after === undefined || /[\s,.:;!?)]/.test(after);
 }
 
