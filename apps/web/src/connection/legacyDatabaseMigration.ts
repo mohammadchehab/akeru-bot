@@ -97,10 +97,10 @@ const copyDatabaseContents = Effect.fn("web.connectionStorage.copyDatabaseConten
 /**
  * Opens a database that already exists, at its current version, without ever creating or upgrading
  * it: a database owned by another product on this origin must not change just because we looked.
- * Resolves to undefined when it does not exist.
+ * Resolves to null when it does not exist.
  */
 const openExistingDatabase = (name: string) =>
-  Effect.callback<IDBDatabase | undefined, ConnectionTransientError>((resume) => {
+  Effect.callback<IDBDatabase | null, ConnectionTransientError>((resume) => {
     const request = indexedDB.open(name);
     request.addEventListener("upgradeneeded", () => {
       // The database did not exist; abort so the empty one is never persisted.
@@ -108,7 +108,7 @@ const openExistingDatabase = (name: string) =>
     });
     request.addEventListener("error", () => {
       if (request.error?.name === "AbortError") {
-        resume(Effect.succeed(undefined));
+        resume(Effect.succeed(null));
 
         return;
       }
@@ -155,7 +155,7 @@ export const migrateLegacyConnectionDatabase = Effect.fn(
 
     const legacyDatabase = legacyResult.success;
 
-    if (legacyDatabase === undefined) continue;
+    if (legacyDatabase === null) continue;
 
     yield* Effect.scoped(
       Effect.gen(function* () {
