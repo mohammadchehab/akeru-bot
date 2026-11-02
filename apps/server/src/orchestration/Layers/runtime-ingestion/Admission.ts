@@ -2,6 +2,8 @@ import { type ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
+import * as PlatformError from "effect/PlatformError";
+import type { OrchestrationDispatchError } from "../../Errors.ts";
 import { resolveControllerBotId } from "../ProviderCommandReactor.ts";
 import {
   toTurnId,
@@ -381,7 +383,9 @@ export function createAdmission({
           ? yield* getSourceProposedPlanReferenceForAcceptedTurnStart(thread.id, eventTurnId)
           : null;
 
-      let deferredLifecycle: Effect.Effect<void, unknown> | undefined;
+      let deferredLifecycle:
+        | Effect.Effect<void, OrchestrationDispatchError | PlatformError.PlatformError>
+        | undefined;
 
       if (
         event.type === "session.started" ||
