@@ -1,15 +1,15 @@
-import * as NodeOS from "node:os";
-import * as NodePath from "node:path";
+import { type Browser, type BrowserContext, type Page } from "playwright-core";
+import { afterAll, beforeAll, describe, expect, it } from "vite-plus/test";
 
-import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vite-plus/test";
-
+import { watchPage } from "../support/diagnostics.ts";
+import { journeyReport, launchBrowser } from "../support/journey.ts";
 import { startStack, type Stack } from "../support/stack.ts";
 
 describe("group people", () => {
   let stack: Stack;
   let browser: Browser;
   let owner: Page;
+  let seen: () => ReadonlyArray<string>;
   let guestContext: BrowserContext;
   let guest: Page;
 
@@ -26,27 +26,14 @@ describe("group people", () => {
 
   beforeAll(async () => {
     stack = await startStack();
-    browser = await chromium.launch({
-      channel: process.env.E2E_BROWSER_CHANNEL ?? "chrome",
-      headless: process.env.E2E_HEADED !== "1",
-    });
+    browser = await launchBrowser();
     owner = await browser.newPage();
+    seen = watchPage(owner);
     guestContext = await browser.newContext();
     guest = await guestContext.newPage();
   });
 
-  // A failing step leaves a screenshot behind; the path is in the test output.
-  afterEach(async ({ task }) => {
-    if (task.result?.state !== "fail") return;
-
-    const path = NodePath.join(
-      process.env.E2E_ARTIFACTS_DIR ?? NodeOS.tmpdir(),
-      `isnadi-e2e-${task.name.replace(/\W+/g, "-")}.png`,
-    );
-
-    await owner.screenshot({ path });
-    console.error(`Screenshot: ${path}`);
-  });
+  journeyReport(() => ({ stack, page: owner, seen }));
 
   afterAll(async () => {
     await browser?.close();

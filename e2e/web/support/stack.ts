@@ -25,6 +25,8 @@ const ENTRY_SCRIPT_PATTERN =
 
 const POLL_INTERVAL_MS = 250;
 
+const REQUEST_TIMEOUT_MS = 5_000;
+
 /**
  * Waits until the dev stack can serve a browser: the web server answers `/`, has transformed its
  * entry module, and the API proxy reaches the server. The server prints its pairing URL as soon as
@@ -51,7 +53,10 @@ async function waitUntilServed(origin: string, budgetMs: number): Promise<void> 
         response.on("error", () => resolve(null));
       });
 
-      // Nothing is listening yet.
+      // A server that accepts the connection and never answers must not stall the poll loop.
+      request.setTimeout(REQUEST_TIMEOUT_MS, () => request.destroy(new Error("request timed out")));
+
+      // Nothing is listening yet, or the request timed out.
       request.on("error", (error) => {
         lastSeen = error.message;
         resolve(null);
