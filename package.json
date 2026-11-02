@@ -27,6 +27,7 @@
     "lint": "vp lint --report-unused-disable-directives && node scripts/check-lint-suppressions.ts",
     "lint:mobile": "node scripts/mobile-native-static-check.ts",
     "test": "vp run -r test",
+    "test:e2e:web": "vp run --filter @isnadi/e2e-web e2e",
     "test:resource-monitor": "cargo test --locked --manifest-path native/resource-monitor/Cargo.toml",
     "test:desktop-smoke": "vp run --filter @isnadi/desktop smoke-test",
     "test:desktop-packaged-mac": "vp run --filter @isnadi/desktop smoke-test:packaged-mac",
