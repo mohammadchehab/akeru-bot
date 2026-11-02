@@ -461,6 +461,22 @@ export function createServerEnvironmentAtoms<R, E>(
         key: ({ environmentId }) => environmentId,
       },
     }),
+    cursorLogin: createEnvironmentRpcCommand(runtime, {
+      label: "environment-data:server:cursor-login",
+      tag: WS_METHODS.serverCursorLogin,
+      concurrency: {
+        mode: "singleFlight",
+        key: ({ environmentId }) => environmentId,
+      },
+    }),
+    cursorLogout: createEnvironmentRpcCommand(runtime, {
+      label: "environment-data:server:cursor-logout",
+      tag: WS_METHODS.serverCursorLogout,
+      concurrency: {
+        mode: "singleFlight",
+        key: ({ environmentId }) => environmentId,
+      },
+    }),
     updateProvider: createEnvironmentRpcCommand(runtime, {
       label: "environment-data:server:update-provider",
       tag: WS_METHODS.serverUpdateProvider,

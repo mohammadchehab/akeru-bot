@@ -1,6 +1,8 @@
 import { useAtomValue } from "@effect/atom-react";
 import type { EnvironmentId, ServerProvider } from "@isnadi/contracts";
 
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { CursorAccountSection } from "./CursorAccountSection";
 import { useSettingsEnvironmentId } from "../../settingsDialogStore";
 import { EMPTY_SERVER_PROVIDERS, serverEnvironment } from "../../state/server";
 import { PROVIDER_CATALOG, type ProviderCatalogEntry } from "./providerCatalog";
@@ -17,6 +19,8 @@ import { SettingsPageContainer, SettingsSection } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { useI18n } from "../../i18n";
 import { subscriptionProviderTargetId } from "./subscriptionProviders";
+
+const CURSOR_DRIVER = ProviderDriverKind.make("cursor");
 
 /**
  * The live snapshot for a catalog entry's default instance. A provider can
@@ -157,6 +161,8 @@ function ConnectedProviderDetail({
           <ProviderAccountSection environmentId={environmentId} definition={entry.account} />
           <ProviderAccountsSection environmentId={environmentId} definition={entry.account} />
         </>
+      ) : entry.drivers[0] === CURSOR_DRIVER ? (
+        <CursorAccountSection environmentId={environmentId} entry={entry} />
       ) : null}
       <ProviderInstancesSection
         environmentId={environmentId}

@@ -373,4 +373,23 @@ export const settingsCatalog = {
   Subscription: "订阅",
   "Pay per request instead of using the subscription.": "按请求付费，而不使用订阅。",
   "Finish signing in to {provider} in the browser.": "在浏览器中完成 {provider} 的登录。",
+  "Could not start Cursor sign-in.": "无法启动 Cursor 登录。",
+  "Could not sign out of Cursor.": "无法退出 Cursor。",
+  "Checking Cursor…": "正在检查 Cursor…",
+  "Cursor CLI not found": "未找到 Cursor CLI",
+  "Install the Cursor CLI (`agent`) on the machine that runs this environment.":
+    "请在运行此环境的机器上安装 Cursor CLI（`agent`）。",
+  "Signed in": "已登录",
+  "Signed in through the Cursor CLI.": "已通过 Cursor CLI 登录。",
+  "Sign out": "退出登录",
+  "Sign in": "登录",
+  "Sign in with your Cursor account. Cursor bills your own Cursor plan; IsnadiBot stores no Cursor credential.":
+    "使用你的 Cursor 账号登录。费用计入你自己的 Cursor 套餐；IsnadiBot 不保存任何 Cursor 凭据。",
+  "Sign in with Cursor": "使用 Cursor 登录",
+  "Run `agent login` on the machine that runs this environment, then refresh.":
+    "请在运行此环境的机器上运行 `agent login`，然后刷新。",
+  "Finish signing in": "完成登录",
+  "Open the sign-in page on this device. This page updates once Cursor confirms.":
+    "在此设备上打开登录页面。Cursor 确认后此页面会自动更新。",
+  "Open sign-in page": "打开登录页面",
 } as const;

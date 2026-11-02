@@ -387,4 +387,23 @@ export const settingsCatalog = {
     "Pay per request instead of using the subscription.",
   "Finish signing in to {provider} in the browser.":
     "Finish signing in to {provider} in the browser.",
+  "Could not start Cursor sign-in.": "Could not start Cursor sign-in.",
+  "Could not sign out of Cursor.": "Could not sign out of Cursor.",
+  "Checking Cursor…": "Checking Cursor…",
+  "Cursor CLI not found": "Cursor CLI not found",
+  "Install the Cursor CLI (`agent`) on the machine that runs this environment.":
+    "Install the Cursor CLI (`agent`) on the machine that runs this environment.",
+  "Signed in": "Signed in",
+  "Signed in through the Cursor CLI.": "Signed in through the Cursor CLI.",
+  "Sign out": "Sign out",
+  "Sign in": "Sign in",
+  "Sign in with your Cursor account. Cursor bills your own Cursor plan; IsnadiBot stores no Cursor credential.":
+    "Sign in with your Cursor account. Cursor bills your own Cursor plan; IsnadiBot stores no Cursor credential.",
+  "Sign in with Cursor": "Sign in with Cursor",
+  "Run `agent login` on the machine that runs this environment, then refresh.":
+    "Run `agent login` on the machine that runs this environment, then refresh.",
+  "Finish signing in": "Finish signing in",
+  "Open the sign-in page on this device. This page updates once Cursor confirms.":
+    "Open the sign-in page on this device. This page updates once Cursor confirms.",
+  "Open sign-in page": "Open sign-in page",
 } as const;
