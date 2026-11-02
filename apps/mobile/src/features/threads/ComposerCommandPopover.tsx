@@ -52,6 +52,12 @@ export type ComposerCommandItem =
     }
   | {
       readonly id: string;
+      readonly type: "everyone-mention";
+      readonly label: string;
+      readonly description: string;
+    }
+  | {
+      readonly id: string;
       readonly type: "bot-mention";
       readonly botId: string;
       readonly label: string;
@@ -109,6 +115,7 @@ function itemIcon(item: ComposerCommandItem): AppSymbolName | null {
     case "browser-mention":
       return "globe";
     case "bot-mention":
+    case "everyone-mention":
       return "person.crop.circle";
     case "thread-mention":
       return "text.bubble";
