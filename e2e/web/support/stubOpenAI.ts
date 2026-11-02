@@ -9,6 +9,8 @@ export interface StubCompletion {
   readonly bot: string;
   /** The last user message of the request, which is the turn being answered. */
   readonly user: string;
+  /** The raw request body, for tests that check what a bot was actually sent. */
+  readonly body: string;
 }
 
 export interface StubOpenAI {
@@ -78,7 +80,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
       void readBody(request).then((body) => {
         const bot = botNameFrom(body);
 
-        completions.push({ bot, user: lastUserTextFrom(body) });
+        completions.push({ bot, user: lastUserTextFrom(body), body });
 
         if (wantsStream(body)) {
           response.writeHead(200, {
