@@ -197,7 +197,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
               message: "Failed to refresh OpenCode models.",
             } satisfies ServerProvider;
 
-            const changes = yield* PubSub.unbounded<ServerProvider>();
+            const nextRefresh = yield* Ref.make<ServerProvider>(authoritativeProvider);
 
             const instance = {
               instanceId: openCodeInstanceId,
@@ -214,8 +214,8 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
                   packageName: null,
                 }),
                 getSnapshot: Effect.succeed(initialProvider),
-                refresh: Effect.succeed(authoritativeProvider),
-                streamChanges: Stream.fromPubSub(changes),
+                refresh: Ref.get(nextRefresh),
+                streamChanges: Stream.empty,
               },
               adapter: {} as ProviderInstance["adapter"],
               textGeneration: {} as ProviderInstance["textGeneration"],
@@ -265,34 +265,19 @@ it.layer(Layer.mergeAll(NodeServices.layer, ServerSettingsModule.layerTest(), Te
                 instanceId: openCodeInstanceId,
               });
 
-              yield* PubSub.publish(changes, authoritativeProvider);
+              // `refresh` returns once the probe result is applied and persisted.
+              yield* registry.refresh();
 
               let cachedProvider = yield* readProviderStatusCache(filePath);
 
-              for (
-                let attempt = 0;
-                attempt < 50 && cachedProvider?.checkedAt !== authoritativeProvider.checkedAt;
-                attempt += 1
-              ) {
-                yield* TestClock.adjust("10 millis");
-                yield* Effect.yieldNow;
-                cachedProvider = yield* readProviderStatusCache(filePath);
-              }
-
+              assert.strictEqual(cachedProvider?.checkedAt, authoritativeProvider.checkedAt);
               assert.deepStrictEqual(cachedProvider?.models, [authoritativeProvider.models[0]!]);
 
-              yield* PubSub.publish(changes, failedProvider);
+              yield* Ref.set(nextRefresh, failedProvider);
+              yield* registry.refresh();
+              cachedProvider = yield* readProviderStatusCache(filePath);
 
-              for (
-                let attempt = 0;
-                attempt < 50 && cachedProvider?.checkedAt !== failedProvider.checkedAt;
-                attempt += 1
-              ) {
-                yield* TestClock.adjust("10 millis");
-                yield* Effect.yieldNow;
-                cachedProvider = yield* readProviderStatusCache(filePath);
-              }
-
+              assert.strictEqual(cachedProvider?.checkedAt, failedProvider.checkedAt);
               assert.deepStrictEqual(cachedProvider?.models, [authoritativeProvider.models[0]!]);
               assert.deepStrictEqual((yield* registry.getProviders)[0]?.models, [
                 authoritativeProvider.models[0]!,
