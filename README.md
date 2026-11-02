@@ -251,14 +251,6 @@ If IsnadiBot is useful to you, a ⭐ helps other people find it.
 
 ---
 
-<p align="center">
-  <a href="https://github.com/mohammadchehab/isnadibot/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=mohammadchehab/isnadibot&max=200&columns=12" alt="IsnadiBot contributors">
-  </a>
-</p>
-
----
-
 ## 👥 Contributors
 
 IsnadiBot started as a fork of OpenCore's fork of T3 Code. Every commit from both projects
