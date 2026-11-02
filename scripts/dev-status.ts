@@ -129,7 +129,7 @@ export function describeStatusClients(env: Readonly<Record<string, string | unde
   return {
     desktop: `${validDebugPort ? `debug port ${String(Number(debugPort))} configured` : debugPort ? "invalid debug port" : "debug port not configured"}; running unknown`,
     mobile:
-      "installed/running unknown; resolve development identity with node .agents/skills/test-t3-mobile/scripts/app-identity.mjs <scheme|ios-bundle-id|android-package>",
+      "installed/running unknown; resolve development identity with node .agents/skills/test-isnadi-mobile/scripts/app-identity.mjs <scheme|ios-bundle-id|android-package>",
   };
 }
 

@@ -78,7 +78,7 @@ refuses a legacy symlink. Changes to the worktree copy do not change the source 
 Use `vp run dev:fixture --base-dir <empty-home> --case <empty|populated|edge>` for repeatable,
 offline visual data. The command runs migrations, guards the home and database, and backs up repeated
 fixture writes. After pairing or business activity, create a fresh fixture home. See
-[the fixture recipe](../../.agents/skills/test-t3-app/references/sqlite-fixtures.md).
+[the fixture recipe](../../.agents/skills/test-isnadi-app/references/sqlite-fixtures.md).
 
 Follow [local verification](verification.md) for client coverage, evidence, and environment lifetime.
 The app testing skill includes Electron debug attachment; mobile testing resolves development identity

@@ -11,7 +11,7 @@ const posixIt = it.skipIf(HostProcessPlatform.defaultValue() === "win32");
 
 const root = NodeURL.fileURLToPath(new URL("../../", import.meta.url));
 
-const scripts = NodePath.join(root, ".agents/skills/test-t3-mobile/scripts");
+const scripts = NodePath.join(root, ".agents/skills/test-isnadi-mobile/scripts");
 
 const directories: string[] = [];
 

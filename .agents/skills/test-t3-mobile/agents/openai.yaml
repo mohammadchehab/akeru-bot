@@ -1,4 +1,0 @@
-interface:
-  display_name: "Test IsnadiBot Mobile"
-  short_description: "Verify IsnadiBot on iOS or Android"
-  default_prompt: "Use $test-t3-mobile to connect IsnadiBot to an isolated environment and verify the affected flow on an available simulator or emulator."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "IsnadiBot App Testing"
+  short_description: "Verify isolated web and desktop environments"
+  default_prompt: "Use $test-isnadi-app to verify IsnadiBot in an isolated web or desktop client and retain evidence of the affected behavior."
