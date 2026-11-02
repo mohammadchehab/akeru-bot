@@ -43,7 +43,6 @@ import { DEFAULT_INTERACTION_MODE } from "../../types";
 import { sortScopedProjectsForSidebar } from "../Sidebar.logic";
 import {
   buildGroupTurnStartInput,
-  groupAddressing,
   createBotTurnSubmissionQueue,
   findLatestGroupThreadTarget,
   nextRetainedChat,
