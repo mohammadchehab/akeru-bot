@@ -28,8 +28,14 @@ describe("createCursorStreamReducer on a recorded read-file turn", () => {
 
   it("streams each text segment once, dropping Cursor's per-segment full-text repeat", () => {
     expect(textOf(events, "text.delta")).toBe(
-      "> Auto routed to Grok 4.7\n\nI'll read `notes.txt` and report the launch codeword in one sentence.The launch codeword is KESTREL.",
+      "I'll read `notes.txt` and report the launch codeword in one sentence.The launch codeword is KESTREL.",
     );
+  });
+
+  it("reports Cursor's `Auto routed to` banner as the routed model, not as message text", () => {
+    expect(events.filter((event) => event.type === "routed")).toEqual([
+      { type: "routed", model: "Grok 4.7" },
+    ]);
   });
 
   it("maps thinking deltas to reasoning", () => {
@@ -104,5 +110,33 @@ describe("createCursorStreamReducer edge cases", () => {
       JSON.stringify({ type: "assistant", message: { content: [{ type: "text", text }] } });
 
     expect(textOf(run([delta("\n\n"), delta("\n\n")]).events, "text.delta")).toBe("\n\n");
+  });
+
+  it("closes a tool that is still open when the turn ends, so no spinner lies", () => {
+    const { reducer } = run([
+      JSON.stringify({
+        type: "tool_call",
+        subtype: "started",
+        call_id: "call-1",
+        tool_call: { readToolCall: { args: { path: "a" } } },
+      }),
+    ]);
+
+    expect(reducer.finish()).toEqual([
+      { type: "tool.completed", callId: "call-1", kind: "read", result: undefined, aborted: true },
+    ]);
+    expect(reducer.finish()).toEqual([]);
+  });
+
+  it("has nothing to close after a tool completed", () => {
+    const tool = (subtype: string) =>
+      JSON.stringify({
+        type: "tool_call",
+        subtype,
+        call_id: "call-1",
+        tool_call: { readToolCall: { args: {} } },
+      });
+
+    expect(run([tool("started"), tool("completed")]).reducer.finish()).toEqual([]);
   });
 });

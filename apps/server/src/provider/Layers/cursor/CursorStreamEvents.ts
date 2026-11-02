@@ -20,6 +20,8 @@ export type CursorTurnEvent =
   | { readonly type: "session"; readonly sessionId: string }
   | { readonly type: "text.delta"; readonly text: string }
   | { readonly type: "reasoning.delta"; readonly text: string }
+  /** The model Cursor's `auto` picked, from its `> Auto routed to <model>` banner. */
+  | { readonly type: "routed"; readonly model: string }
   | {
       readonly type: "tool.started";
       readonly callId: string;
@@ -31,6 +33,8 @@ export type CursorTurnEvent =
       readonly callId: string;
       readonly kind: string;
       readonly result: unknown;
+      /** True when the turn ended before Cursor reported this tool as completed. */
+      readonly aborted?: boolean;
     }
   | {
       readonly type: "result";
@@ -44,6 +48,8 @@ export interface CursorStreamReducer {
   readonly push: (line: string) => ReadonlyArray<CursorTurnEvent>;
   /** True once a `result` event was seen; a signalled exit without one is an interrupted turn. */
   readonly sawResult: () => boolean;
+  /** Closes every tool still open, once; call when the turn ends for any reason. */
+  readonly finish: () => ReadonlyArray<CursorTurnEvent>;
 }
 
 const UsageLine = Schema.Struct({
@@ -95,6 +101,8 @@ const decodeLine = Schema.decodeUnknownOption(Schema.fromJsonString(CursorLine))
 
 const decodeToolBody = Schema.decodeUnknownOption(ToolBody);
 
+const ROUTED_BANNER = /^> Auto routed to (.+)\n\n$/;
+
 const TOOL_KEY = /^(.+)ToolCall$/;
 
 /** The tool kind is the key name (`readToolCall` -> `read`); there is no separate name field. */
@@ -111,6 +119,7 @@ function findTool(toolCall: typeof ToolCallRecord.Type) {
 export function createCursorStreamReducer(): CursorStreamReducer {
   let segment = "";
   let resultSeen = false;
+  const openTools = new Map<string, string>();
 
   const push = (line: string): ReadonlyArray<CursorTurnEvent> => {
     const decoded = decodeLine(line);
@@ -144,6 +153,11 @@ export function createCursorStreamReducer(): CursorStreamReducer {
 
         segment += text;
 
+        // The banner still counts toward the segment so its later full-text repeat is dropped.
+        const routed = ROUTED_BANNER.exec(text)?.[1];
+
+        if (routed !== undefined) return [{ type: "routed", model: routed }];
+
         return [{ type: "text.delta", text }];
       }
 
@@ -156,6 +170,8 @@ export function createCursorStreamReducer(): CursorStreamReducer {
         const body = Option.getOrUndefined(tool.body);
 
         if (event.subtype === "completed") {
+          openTools.delete(event.call_id);
+
           return [
             {
               type: "tool.completed",
@@ -167,6 +183,8 @@ export function createCursorStreamReducer(): CursorStreamReducer {
         }
 
         // Any other subtype (failed, error, ...) is dropped rather than read as a second start.
+        if (event.subtype === "started") openTools.set(event.call_id, tool.kind);
+
         return event.subtype === "started"
           ? [{ type: "tool.started", callId: event.call_id, kind: tool.kind, args: body?.args }]
           : [];
@@ -193,5 +211,21 @@ export function createCursorStreamReducer(): CursorStreamReducer {
     }
   };
 
-  return { push, sawResult: () => resultSeen };
+  const finish = (): ReadonlyArray<CursorTurnEvent> => {
+    const open = [...openTools].map(
+      ([callId, kind]): CursorTurnEvent => ({
+        type: "tool.completed",
+        callId,
+        kind,
+        result: undefined,
+        aborted: true,
+      }),
+    );
+
+    openTools.clear();
+
+    return open;
+  };
+
+  return { push, sawResult: () => resultSeen, finish };
 }
