@@ -5,6 +5,13 @@ export const STUB_MODEL = "e2e-stub-model";
 /** The stub answers as the bot named in the system prompt ("You are <name>, ..."), so a wrong responder shows. */
 export const stubReplyFrom = (botName: string) => `Stub reply from ${botName}.`;
 
+/**
+ * Scripted words, switched on by a marker in the user's own message: `[say:Bot1=@Bot2, go on;Bot2=...]`
+ * appends each listed bot's text to its reply, on a new paragraph. `~` stands for `@`, since an `@Name` in the user's own message would address that bot. A chained turn reads the user's message
+ * through shared history, so the marker keeps working for every bot that answers after it.
+ */
+const SAY_MARKER = /\[say:([^\]]*)\]/;
+
 export interface StubCompletion {
   readonly bot: string;
   /** The last user message of the request, which is the turn being answered. */
@@ -37,6 +44,30 @@ function lastUserTextFrom(body: string): string {
   const users = [...body.matchAll(/"role":"user","content":"((?:[^"\\]|\\.)*)"/g)];
 
   return users.at(-1)?.[1] ?? "";
+}
+
+/** The latest message the user wrote, skipping other bots' replies that history replays as `<group-message>` user turns. */
+function lastHumanTextFrom(body: string): string {
+  const users = [...body.matchAll(/"role":"user","content":"((?:[^"\\]|\\.)*)"/g)].map(
+    (match) => match[1] ?? "",
+  );
+
+  return users.findLast((text) => !text.startsWith("<group-message")) ?? "";
+}
+
+/** The reply `bot` gives: the stub line, plus the words the user's message scripts for it. */
+function replyFor(bot: string, human: string): string {
+  const script = SAY_MARKER.exec(human)?.[1] ?? "";
+
+  for (const entry of script.split(";")) {
+    const at = entry.indexOf("=");
+
+    if (at > 0 && entry.slice(0, at) === bot) {
+      return `${stubReplyFrom(bot)}\n\n${entry.slice(at + 1).replaceAll("~", "@")}`;
+    }
+  }
+
+  return stubReplyFrom(bot);
 }
 
 function wantsStream(body: string): boolean {
@@ -78,6 +109,8 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
       void readBody(request).then((body) => {
         const bot = botNameFrom(body);
 
+        const text = replyFor(bot, lastHumanTextFrom(body));
+
         completions.push({ bot, user: lastUserTextFrom(body) });
 
         if (wantsStream(body)) {
@@ -86,7 +119,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
             "cache-control": "no-cache",
           });
           response.write(chunk({ role: "assistant", content: "" }, null));
-          response.write(chunk({ content: stubReplyFrom(bot) }, null));
+          response.write(chunk({ content: text }, null));
           response.write(chunk({}, "stop"));
           response.end("data: [DONE]\n\n");
 
@@ -103,7 +136,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
             choices: [
               {
                 index: 0,
-                message: { role: "assistant", content: stubReplyFrom(bot) },
+                message: { role: "assistant", content: text },
                 finish_reason: "stop",
               },
             ],
