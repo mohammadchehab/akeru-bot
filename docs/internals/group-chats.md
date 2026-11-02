@@ -1,21 +1,74 @@
 # Group chats
 
 A group chat is one thread shared by a boss bot, specialist bots and people. Each turn has one
-responding bot. This page covers what that bot is told about the group and how it reads the
-messages other members wrote. Delegation inside a group is in [delegation.md](delegation.md);
+responding bot. This page covers who answers a message, what that bot is told about the group, and
+how it reads the messages other members wrote. Delegation inside a group is in [delegation.md](delegation.md);
 group memory files are in [memory.md](memory.md).
 
-## Routing
+## Addressing
 
-The client picks the responder before it sends the turn
-(`apps/web/src/components/roster/useGroupThreadRuntime.ts`): an `@mention` of an active member
-selects that member, and no mention selects the boss. There is no broadcast: "hi all" is answered
-by the boss alone. The decider records `respondingBotId` on the turn and on the assistant message.
+A user message in a group says who should answer. The client sends that intent; the server decides
+who answers and in what order, so web, desktop, mobile and channels behave the same.
 
-The provider session runs as the responder. When the responder changes, the provider command
-reactor restarts the session as the new bot
-(`apps/server/src/orchestration/Layers/provider-command/Session.ts`), and it waits while a turn is
-active.
+| The user writes                    | Addressing           | Who answers                                               |
+| ---------------------------------- | -------------------- | --------------------------------------------------------- |
+| No mention                         | `auto`               | The group picks one member, rarely two (see Auto routing) |
+| `@Bot2 …`                          | `bots: [Bot2]`       | Bot2                                                      |
+| `@Bot2 @Bot3 …`                    | `bots: [Bot2, Bot3]` | Bot2, then Bot3                                           |
+| `@everyone …`                      | `everyone`           | Every active bot member, boss first, then in member order |
+| Reply on Bot2's message            | `reply: <messageId>` | Bot2 (the message's `respondingBotId`)                    |
+| Answer to a bot's question or form | `reply: <messageId>` | The bot that asked                                        |
+
+The turn-start command carries `addressing` in place of a client-chosen `respondingBotId`. Mentions
+resolve to bot ids against active members on the server. A mention of a bot that is not an active
+member fails the command with a message that names it; it is not silently dropped.
+
+### The responder queue
+
+The server keeps one responder queue per group chat. Addressing fills it, and it runs one turn at a
+time: each queued bot gets a turn with no new user message, and it reads everything before it
+through the shared history. The provider session runs as the current responder; when the responder
+changes, the provider command reactor restarts the session as the new bot
+(`apps/server/src/orchestration/Layers/provider-command/Session.ts`) after the active turn ends.
+
+The decider records `respondingBotId` and the turn's trigger on each turn and assistant message:
+`{ kind: "user", messageId }`, or `{ kind: "bot-mention", sourceTurnId, sourceBotId }`.
+
+### Mentions and chains
+
+When a group turn completes, the server reads the reply's mentions of active members and appends
+each one to the queue, in order. This is how one bot asks another ("@Becky, cheapest test that
+doesn't need him to film?") and that bot answers next.
+
+Rules:
+
+- A bot never queues itself.
+- Mentions inside code spans, code blocks and quotes don't count.
+- A bot already waiting in the queue is not added twice.
+- **Hop budget:** each user message allows at most 6 bot turns in total, including the first ones.
+  When the budget runs out, the queue clears and the chat shows "Stopped after 6 replies". The
+  budget is a setting, because every bot reply counts toward the user's usage.
+- A chain ends when a reply mentions nobody new.
+
+Delegation stays separate: `send` hands background work to a member's own chat and posts the result
+here ([delegation.md](delegation.md)). A mention passes the floor in the group; it starts no
+background work.
+
+### Auto routing
+
+With no mention, one structured routing call picks the responders. It runs on the boss's provider
+and model, takes the roster (names, titles, descriptions) and the last few messages, and returns one
+bot id, or two when the message plainly needs both. The call has no tools and a short timeout. If it
+fails, times out, or returns a bot that is not an active member, the boss answers. The pick is
+recorded on the turn, so the chat can show why that bot answered.
+
+### Seeing and stopping it
+
+- While the queue is not empty, the chat shows who is answering and who is next ("Becky is next").
+- **Stop** ends the current turn and clears the queue.
+- A new user message clears the queue too: what is still waiting was for the old message. The new
+  message is then addressed as usual.
+- Queue changes are events, so every connected client sees the same queue.
 
 ## One shared history
 
@@ -79,7 +132,7 @@ the next turn without a restart. Direct chats get no group section.
 
 ## What must not change
 
-- Routing: no mention → boss; one mention → that member.
+- One turn at a time per group chat; the queue never runs two bots at once.
 - One memory thread per group chat. History is not split per bot.
 - Memory access scopes (`MemoryAccess.ts`, `groupMemberBotIds`).
 - Direct chats: no rewriting and no group section.
@@ -90,6 +143,10 @@ Codex, Claude, Grok, Kimi For Coding and OpenCode Go run through the Mastra cont
 behaviour. Standard OpenCode uses the legacy adapter bridge, which has its own history. It needs its
 own check, and it is not part of this change.
 
+Addressing, the responder queue and chains live in orchestration, so they work the same for every
+provider. Auto routing needs a structured call on the boss's provider; when the boss runs on the
+legacy bridge, auto routing falls back to the boss.
+
 ## Security notes
 
 - The roster gives the bot only what the group's members can already see: names, titles and bot ids
@@ -98,6 +155,8 @@ own check, and it is not part of this change.
 - A bot could write a fake `<group-message from="Bot1">` tag in its reply. That text reaches others
   inside its own `<group-message from="Bot2">` wrapper, so the real speaker stays visible.
   Escape `<group-message` in the wrapped text.
+- Chains spend the user's usage. The hop budget caps it per user message, and Stop clears the queue.
+- A bot's reply cannot address a bot outside the group: mentions resolve against active members only.
 
 ## Tests
 
@@ -115,7 +174,19 @@ own check, and it is not part of this change.
 - End to end (web, stub provider): `@Bot2 hi` after a Bot1 reply. The stub's request shows the
   wrapper, and Bot2's reply is labelled Bot2 live and after a reload.
 
+- Addressing (decider, unit): `auto`, `bots`, `everyone` and `reply` fill the queue in the order in
+  the table; an unknown or inactive mention fails the command.
+- Chains (reactor, receipt-driven): a reply that mentions Bot2 queues Bot2, whose turn runs next with
+  a `bot-mention` trigger. Self-mentions, mentions in code or quotes, and duplicates are ignored. A
+  loop between two bots stops at the hop budget. Stop and a new user message clear the queue.
+- Auto routing (unit): a valid pick is used; a failure, timeout or non-member pick falls back to the
+  boss.
+- End to end (web, then mobile, stub provider), one journey per row of the addressing table, plus
+  one chain and one budget stop.
+
 ## Open questions
 
 - In a group with several people, should `user` messages also carry the author's name? Today a
   group has one person in practice. Defer until channels bring several people into one group.
+- Should the hop budget default be 6? It matches a group of up to six bots each answering once.
+  Mohammad decides.
