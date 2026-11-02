@@ -11,6 +11,7 @@
 <p align="center"><em>Bots with memory · Group chats · Their own computer · Telegram, Slack, WhatsApp & more · Desktop, web & mobile</em></p>
 
 <p align="center">
+  <a href="https://github.com/mohammadchehab/isnadibot/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/mohammadchehab/isnadibot/actions/workflows/ci.yml/badge.svg?branch=main&event=push" alt="Build status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href="https://github.com/mohammadchehab/isnadibot/stargazers"><img src="https://img.shields.io/github/stars/mohammadchehab/isnadibot?style=social" alt="GitHub stars"></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Web%20%7C%20iOS-lightgrey" alt="Platforms">

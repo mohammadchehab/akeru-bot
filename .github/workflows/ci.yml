@@ -1,8 +1,10 @@
-# GitHub-hosted CI validates pull requests before they reach main.
+# GitHub-hosted CI validates pull requests before they reach main, and main after each merge.
 
 name: CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
@@ -23,7 +25,7 @@ concurrency:
 jobs:
   check:
     name: Repository checks
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
