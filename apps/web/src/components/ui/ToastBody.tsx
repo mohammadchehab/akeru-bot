@@ -49,7 +49,7 @@ function errorDescriptionClampClass(
 }
 
 /** Dismiss-only: circular control overlapping the card corner (iOS notification–style). */
-export const toastCornerDismissClass = "absolute z-20 -top-1.5 -right-1.5";
+export const toastCornerDismissClass = "absolute z-20 -top-1.5 -end-1.5";
 
 export const toastCornerOrbClass = cn(
   "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border/60 bg-popover text-muted-foreground shadow-sm outline-none",
@@ -84,7 +84,7 @@ function CopyErrorButton({ text }: { text: string }) {
 
 /** Scrollable cap for long expandable lists (~10rem); keeps the toast from growing without bound. */
 const toastExpandablePanelClassName =
-  "mt-2 max-h-40 min-h-0 overflow-y-auto overscroll-contain pr-0.5 select-text";
+  "mt-2 max-h-40 min-h-0 overflow-y-auto overscroll-contain pe-0.5 select-text";
 
 function ToastExpandableSection({
   children,
@@ -102,7 +102,7 @@ function ToastExpandableSection({
     <div className="min-w-0">
       <button
         aria-expanded={open}
-        className="inline-flex cursor-pointer items-center gap-1 rounded-md py-0.5 text-left text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex cursor-pointer items-center gap-1 rounded-md py-0.5 text-start text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
         onClick={() => setOpen((prev) => !prev)}
         type="button"
       >
@@ -173,7 +173,7 @@ function ToastDescriptionAndExpandable({
               aria-label={open ? collapseLabel : expandLabel}
               aria-expanded={open}
               className={cn(
-                "group flex min-w-0 w-full cursor-pointer select-none items-start gap-1.5 rounded-sm text-left outline-none ring-offset-background",
+                "group flex min-w-0 w-full cursor-pointer select-none items-start gap-1.5 rounded-sm text-start outline-none ring-offset-background",
                 "transition-colors hover:bg-muted/40",
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
               )}
@@ -258,7 +258,7 @@ export function deriveToastBodyDescriptor(toast: {
     hasAdditionalActions ||
     hasSecondaryAction;
 
-  const inlineContentEndPad = hasTrailingControls ? "pr-6" : "pr-10";
+  const inlineContentEndPad = hasTrailingControls ? "pe-6" : "pe-10";
 
   return {
     Icon,
@@ -318,7 +318,7 @@ export function ToastBodyContent({
         <div
           className={cn(
             "flex min-h-0 min-w-0 flex-1 flex-col gap-0.5",
-            stackedActionLayout && "pr-5",
+            stackedActionLayout && "pe-5",
           )}
         >
           <Toast.Title className="min-w-0 wrap-break-word font-medium" data-slot="toast-title" />

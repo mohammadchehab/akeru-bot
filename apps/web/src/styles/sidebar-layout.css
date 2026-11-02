@@ -6,11 +6,13 @@
   padding-bottom: max(env(safe-area-inset-bottom), 0px);
 }
 
-@utility pl-safe {
+/* Safe-area padding is physical on purpose: the notch and the OS window controls sit at a fixed
+   edge of the screen whatever the interface direction. */
+@utility safe-pad-left {
   padding-left: max(env(safe-area-inset-left), 0px);
 }
 
-@utility pr-safe {
+@utility safe-pad-right {
   padding-right: max(env(safe-area-inset-right), 0px);
 }
 
