@@ -6,8 +6,15 @@ import type { Stack } from "./stack.ts";
 export function watchPage(page: Page): () => ReadonlyArray<string> {
   const lines: Array<string> = [];
 
+  page.on("framenavigated", (frame) => {
+    if (frame === page.mainFrame()) lines.push(`navigated: ${frame.url()}`);
+  });
   page.on("console", (message) => {
-    if (message.type() === "error" || message.type() === "warning") {
+    if (
+      message.type() === "error" ||
+      message.type() === "warning" ||
+      message.text().startsWith("[vite]")
+    ) {
       lines.push(`console.${message.type()}: ${message.text()}`);
     }
   });
