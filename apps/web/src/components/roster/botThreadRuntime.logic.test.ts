@@ -4,7 +4,6 @@ import { describe, expect, it, vi } from "vite-plus/test";
 import {
   buildBotTurnStartInput,
   buildGroupTurnStartInput,
-  groupAddressing,
   createBotTurnSubmissionQueue,
   findLatestBotThreadTarget,
   findLatestGroupThreadIds,
@@ -405,40 +404,5 @@ describe("bot thread runtime", () => {
         },
       ]),
     ).toBeNull();
-  });
-});
-
-describe("groupAddressing", () => {
-  it("sends none for a prompt that mentions nobody", () => {
-    expect(groupAddressing(undefined)).toBeUndefined();
-    expect(groupAddressing({ kind: "none" })).toBeUndefined();
-  });
-
-  it("carries everyone and the mentioned bots in order", () => {
-    expect(groupAddressing({ kind: "everyone" })).toEqual({ kind: "everyone" });
-    expect(groupAddressing({ kind: "bots", botIds: ["bot-1", "bot-2"] })).toEqual({
-      kind: "bots",
-      botIds: ["bot-1", "bot-2"],
-    });
-  });
-});
-
-describe("groupAddressing replies", () => {
-  it("sends a reply when nobody is mentioned", () => {
-    expect(groupAddressing(undefined, "message-1")).toEqual({
-      kind: "reply",
-      messageId: "message-1",
-    });
-    expect(groupAddressing({ kind: "none" }, "message-1")).toEqual({
-      kind: "reply",
-      messageId: "message-1",
-    });
-  });
-
-  it("lets a mention in the reply win", () => {
-    expect(groupAddressing({ kind: "bots", botIds: ["bot-1"] }, "message-1")).toEqual({
-      kind: "bots",
-      botIds: ["bot-1"],
-    });
   });
 });

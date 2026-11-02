@@ -41,6 +41,7 @@ export const commonMessagesCatalog = {
   "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?":
     "新版本已下载，将在你下次离开应用时自动安装。要立即安装吗？",
   "An error occurred.": "发生错误。",
+  "Mention {name} by picking one from the @ menu.": "请从 @ 菜单中选择一个来提及 {name}。",
   "Mention {name}": "提及 {name}",
   "Remove {name}": "移除 {name}",
   "Select one or more.": "选择一项或多项。",
