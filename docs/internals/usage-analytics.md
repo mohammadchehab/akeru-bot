@@ -3,14 +3,16 @@
 > For maintainers. Using IsnadiBot? See [Anonymous usage analytics](../user/analytics.md).
 
 IsnadiBot sends one PostHog event named `usage_3h` for each non-empty, closed
-three-hour UTC bucket. The default destination is
-`https://us.i.posthog.com/batch/`. `T3CODE_POSTHOG_HOST` changes the host and keeps
-the `/batch/` path. Packaged builds use the Isnadi production project by default.
-`T3CODE_POSTHOG_KEY` changes the public project key for distributor builds.
+three-hour UTC bucket, but only when a PostHog project key is configured. No key
+ships with the source, so a build without one never sends anything and keeps no
+analytics state. `ISNADI_POSTHOG_KEY` sets the public project key for a
+distributor's builds. `ISNADI_POSTHOG_HOST` changes the host (default
+`https://us.i.posthog.com`) and keeps the `/batch/` path.
 
-Packaged production builds enable analytics by default. Development and CI disable
-it by default. `T3CODE_TELEMETRY_ENABLED` overrides that default for packaged,
-headless, development, and CI runs.
+With a key set, packaged builds enable analytics by default. Development and CI
+disable it by default. `ISNADI_TELEMETRY_ENABLED` overrides that default for
+packaged, headless, development, and CI runs. Each `ISNADI_*` name still accepts
+its older `T3CODE_*` name as a fallback.
 
 ## Payload contract
 

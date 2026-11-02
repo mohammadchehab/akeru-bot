@@ -24,6 +24,7 @@ import * as HttpClientRequest from "effect/unstable/http/HttpClientRequest";
 import * as HttpClientResponse from "effect/unstable/http/HttpClientResponse";
 import packageJson from "../../package.json" with { type: "json" };
 import { writeFileStringAtomically } from "../atomicWrite.ts";
+import { aliasedEnv } from "../cli/envAliases.ts";
 import * as ServerConfig from "../config.ts";
 import * as ServerSettings from "../serverSettings.ts";
 import {
@@ -59,17 +60,15 @@ const MAX_BUCKETS_PER_PASS = 8;
 
 const MAX_BATCH_BYTES = 64 * 1_024;
 
-const DEFAULT_POSTHOG_KEY = "phc_yuXg3geGrykvtEkQdeG6jWf2jvdA2WSZnQdrKVnMKUa7";
+const DEFAULT_POSTHOG_HOST = "https://us.i.posthog.com";
 
+// No project key ships with IsnadiBot. Delivery stays off until a distributor sets one.
 const TelemetryEnvConfig = Config.all({
-  posthogKey: Config.string("T3CODE_POSTHOG_KEY").pipe(
-    Config.withDefault(DEFAULT_POSTHOG_KEY),
-    Config.option,
+  posthogKey: aliasedEnv(Config.string, "POSTHOG_KEY"),
+  posthogHost: aliasedEnv(Config.string, "POSTHOG_HOST").pipe(
+    Config.map(Option.getOrElse(() => DEFAULT_POSTHOG_HOST)),
   ),
-  posthogHost: Config.string("T3CODE_POSTHOG_HOST").pipe(
-    Config.withDefault("https://us.i.posthog.com"),
-  ),
-  enabled: Config.option(Config.boolean("T3CODE_TELEMETRY_ENABLED")),
+  enabled: aliasedEnv(Config.boolean, "TELEMETRY_ENABLED"),
   nodeEnvironment: Config.option(Config.string("NODE_ENV")),
   ci: Config.option(Config.boolean("CI")),
 });
