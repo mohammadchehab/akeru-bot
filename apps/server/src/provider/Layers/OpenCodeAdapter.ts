@@ -327,6 +327,10 @@ export function makeOpenCodeAdapter(
       const savedVariant = getModelSelectionStringOptionValue(modelSelection, "variant");
       const variant = savedVariant === OPENCODE_PROVIDER_DEFAULT_VARIANT ? undefined : savedVariant;
 
+      // Mark the prompt as in flight before the turn is marked active, so a Stop that lands from here on waits for it (see interruptTurn).
+      const promptInFlight = yield* Deferred.make<void>();
+      context.promptInFlight = promptInFlight;
+
       context.activeTurnId = turnId;
       context.activeAgent = agent;
       context.activeVariant = variant;
@@ -350,10 +354,6 @@ export function makeOpenCodeAdapter(
           },
         });
       }
-
-      // Mark the prompt as in flight so a Stop that lands now waits for it (see interruptTurn).
-      const promptInFlight = yield* Deferred.make<void>();
-      context.promptInFlight = promptInFlight;
 
       yield* runOpenCodeSdk("session.promptAsync", () =>
         context.client.session.promptAsync({
