@@ -72,8 +72,8 @@ describe("CI workflow budget", () => {
       },
     });
     expect(ci.on).not.toHaveProperty("merge_group");
-    expect(ci.concurrency?.group).toBe("ci-${{ github.event.pull_request.number || github.ref }}");
-    // Pull request revisions supersede each other; runs on main always finish.
+    expect(ci.concurrency?.group).toBe("ci-${{ github.event.pull_request.number || github.sha }}");
+    // Pull request revisions supersede each other. Each push gets its own group by SHA, because a group keeps only one pending run and would cancel the queued one.
     expect(ci.concurrency?.["cancel-in-progress"]).toBe(
       "${{ github.event_name == 'pull_request' }}",
     );
