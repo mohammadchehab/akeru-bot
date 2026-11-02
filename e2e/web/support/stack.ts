@@ -16,6 +16,8 @@ const STARTUP_TIMEOUT_MS = 180_000;
 export const STUB_INSTANCE_ID = "custom_openai_e2e";
 
 export interface Stack {
+  /** The tail of what the dev runner has printed, for failure reports. */
+  readonly output: () => string;
   /** One-time URL that pairs a fresh browser with the environment. */
   readonly pairingUrl: string;
   readonly stub: StubOpenAI;
@@ -124,5 +126,5 @@ export async function startStack(): Promise<Stack> {
     NodeFS.rmSync(home, { recursive: true, force: true });
   };
 
-  return { pairingUrl, stub, stop };
+  return { pairingUrl, stub, stop, output: () => output };
 }
