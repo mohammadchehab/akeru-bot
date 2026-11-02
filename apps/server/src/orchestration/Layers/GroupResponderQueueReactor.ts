@@ -3,6 +3,7 @@ import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
+import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
@@ -10,6 +11,7 @@ import * as SubscriptionRef from "effect/SubscriptionRef";
 
 import { forkParked } from "../../serverActivation.ts";
 import { OrchestrationEngineService } from "../Services/OrchestrationEngine.ts";
+import { ProjectionSnapshotQuery } from "../Services/ProjectionSnapshotQuery.ts";
 import {
   GroupResponderQueueReactor,
   type GroupResponderQueueReactorShape,
@@ -20,9 +22,13 @@ import {
  * message is addressed; this reactor notices the moment the running bot finishes (a session going
  * from running to anything else) and asks the decider to start the next one. The decider is the
  * authority: it ignores the request when the queue is empty or a turn is still running.
+ *
+ * A restart can leave a queue persisted with nobody running. No session event will follow, so
+ * start reads the persisted queues once and advances every one that is not mid-turn.
  */
 const make = Effect.gen(function* () {
   const orchestrationEngine = yield* OrchestrationEngineService;
+  const projectionSnapshotQuery = yield* ProjectionSnapshotQuery;
   const crypto = yield* Crypto.Crypto;
 
   // Per thread: whether anyone is still queued, and the last session status seen.
@@ -56,6 +62,8 @@ const make = Effect.gen(function* () {
 
   const worker = yield* makeDrainableWorker(advance);
   const seenSequence = yield* SubscriptionRef.make(0);
+  // Completes once the persisted queues have been read and any waiting chat has been enqueued.
+  const restored = yield* Deferred.make<void>();
 
   const noteSeen = (sequence: number) =>
     SubscriptionRef.update(seenSequence, (seen) => Math.max(seen, sequence));
@@ -87,14 +95,47 @@ const make = Effect.gen(function* () {
       : Effect.void;
   };
 
+  const restoreQueues = projectionSnapshotQuery.getCommandReadModel().pipe(
+    Effect.flatMap((readModel) =>
+      Effect.forEach(
+        readModel.threads,
+        (thread) => {
+          if (thread.deletedAt !== null || (thread.responderQueue?.entries.length ?? 0) === 0) {
+            return Effect.void;
+          }
+
+          const status = thread.session?.status ?? null;
+          queued.add(thread.id);
+
+          if (status !== null) lastStatus.set(thread.id, status);
+
+          return status === "running" ? Effect.void : worker.enqueue(thread.id);
+        },
+        { discard: true },
+      ),
+    ),
+    Effect.catchCause((cause) =>
+      Cause.hasInterruptsOnly(cause)
+        ? Effect.failCause(cause)
+        : Effect.logWarning("group responder queue could not restore waiting chats", {
+            cause: Cause.pretty(cause),
+          }),
+    ),
+    Effect.ensuring(Deferred.succeed(restored, undefined)),
+  );
+
+  const drainRestored = Deferred.await(restored).pipe(Effect.andThen(worker.drain));
+
   const start: GroupResponderQueueReactorShape["start"] = Effect.fn("start")(function* () {
-    // Subscribe before returning so no event between start and the first read is missed.
+    // Subscribe before reading so no event between the read and the first delivery is missed.
+    // A duplicate advance is harmless: the decider ignores it when the queue is empty or running.
     const domainEvents = yield* orchestrationEngine.subscribeDomainEvents;
     yield* forkParked(
       Stream.runForEach(domainEvents, (event) =>
         observe(event).pipe(Effect.andThen(noteSeen(event.sequence))),
       ),
     );
+    yield* forkParked(restoreQueues);
   });
 
   const drainThrough: GroupResponderQueueReactorShape["drainThrough"] = Effect.fn(
@@ -104,10 +145,10 @@ const make = Effect.gen(function* () {
       Stream.filter((seen) => seen >= target),
       Stream.runHead,
     );
-    yield* worker.drain;
+    yield* drainRestored;
   });
 
-  return { start, drain: worker.drain, drainThrough } satisfies GroupResponderQueueReactorShape;
+  return { start, drain: drainRestored, drainThrough } satisfies GroupResponderQueueReactorShape;
 });
 
 export const GroupResponderQueueReactorLive = Layer.effect(GroupResponderQueueReactor, make);

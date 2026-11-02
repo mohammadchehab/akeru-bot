@@ -6,6 +6,7 @@ import {
   ThreadId,
   type OrchestrationCommand,
   type OrchestrationEvent,
+  type OrchestrationThread,
 } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Deferred from "effect/Deferred";
@@ -17,6 +18,8 @@ import { describe, expect } from "vite-plus/test";
 
 import { ServerActivation } from "../../serverActivation.ts";
 import { OrchestrationEngineService } from "../Services/OrchestrationEngine.ts";
+import { ProjectionSnapshotQuery } from "../Services/ProjectionSnapshotQuery.ts";
+import { makeGroupThread, makeReadModel } from "../test-support/GroupDeciderFixtures.ts";
 import { GroupResponderQueueReactor } from "../Services/GroupResponderQueueReactor.ts";
 import { GroupResponderQueueReactorLive } from "./GroupResponderQueueReactor.ts";
 
@@ -99,9 +102,39 @@ const harness = Effect.gen(function* () {
   return { dispatched, events, engine, activation };
 });
 
+const queuedThread = (
+  status: "running" | "ready" | null,
+  entries: ReadonlyArray<string> = ["bot-specialist"],
+): OrchestrationThread => ({
+  ...makeGroupThread(),
+  id: THREAD,
+  responderQueue: {
+    entries: entries.map((botId) => ({
+      botId: BotId.make(botId),
+      trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
+    })),
+    hopsLeft: 6,
+    reason: "addressed" as const,
+    updatedAt: NOW,
+  },
+  session:
+    status === null
+      ? null
+      : {
+          threadId: THREAD,
+          status,
+          providerName: "codex",
+          runtimeMode: "full-access" as const,
+          activeTurnId: null,
+          lastError: null,
+          updatedAt: NOW,
+        },
+});
+
 const run = <A, E>(
   h: Effect.Success<typeof harness>,
   body: (reactor: GroupResponderQueueReactor["Service"]) => Effect.Effect<A, E>,
+  persisted: ReadonlyArray<OrchestrationThread> = [],
 ) =>
   Effect.gen(function* () {
     const reactor = yield* GroupResponderQueueReactor;
@@ -113,6 +146,11 @@ const run = <A, E>(
     Effect.provide(
       GroupResponderQueueReactorLive.pipe(
         Layer.provide(Layer.succeed(OrchestrationEngineService, h.engine)),
+        Layer.provide(
+          Layer.mock(ProjectionSnapshotQuery)({
+            getCommandReadModel: () => Effect.succeed(makeReadModel({ threads: persisted })),
+          }),
+        ),
         Layer.provide(NodeServices.layer),
       ),
     ),
@@ -177,6 +215,64 @@ describe("GroupResponderQueueReactor", () => {
 
           expect(h.dispatched).toEqual([]);
         }),
+      );
+    }).pipe(Effect.scoped),
+  );
+  it.effect("picks a queue back up after a restart left it waiting with no turn running", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(
+        h,
+        (reactor) =>
+          Effect.gen(function* () {
+            yield* reactor.drain;
+
+            expect(h.dispatched).toHaveLength(1);
+            expect(h.dispatched[0]).toMatchObject({
+              type: "thread.responder.advance",
+              threadId: THREAD,
+            });
+          }),
+        [queuedThread("ready")],
+      );
+    }).pipe(Effect.scoped),
+  );
+
+  it.effect("waits for a persisted running turn to finish before advancing a restored queue", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(
+        h,
+        (reactor) =>
+          Effect.gen(function* () {
+            yield* reactor.drain;
+            expect(h.dispatched).toEqual([]);
+
+            yield* PubSub.publish(h.events, sessionSet(1, THREAD, "ready"));
+            yield* reactor.drainThrough(1);
+
+            expect(h.dispatched).toHaveLength(1);
+          }),
+        [queuedThread("running")],
+      );
+    }).pipe(Effect.scoped),
+  );
+
+  it.effect("leaves chats with an empty or absent queue alone after a restart", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(
+        h,
+        (reactor) =>
+          Effect.gen(function* () {
+            yield* reactor.drain;
+
+            expect(h.dispatched).toEqual([]);
+          }),
+        [queuedThread("ready", []), { ...makeGroupThread(), id: OTHER_THREAD, session: null }],
       );
     }).pipe(Effect.scoped),
   );
