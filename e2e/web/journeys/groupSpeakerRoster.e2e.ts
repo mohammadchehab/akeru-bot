@@ -1,9 +1,8 @@
-import * as NodeOS from "node:os";
-import * as NodePath from "node:path";
+import { type Browser, type Page } from "playwright-core";
+import { afterAll, beforeAll, describe, expect, it } from "vite-plus/test";
 
-import { chromium, type Browser, type Page } from "playwright-core";
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vite-plus/test";
-
+import { watchPage } from "../support/diagnostics.ts";
+import { journeyReport, launchBrowser } from "../support/journey.ts";
 import { startStack, type Stack } from "../support/stack.ts";
 import { stubReplyFrom } from "../support/stubOpenAI.ts";
 
@@ -34,6 +33,7 @@ describe("group chat speaker attribution and roster", () => {
   let stack: Stack;
   let browser: Browser;
   let page: Page;
+  let seen: () => ReadonlyArray<string>;
 
   const replies = () => page.getByTestId("group-provider-message");
 
@@ -79,11 +79,9 @@ describe("group chat speaker attribution and roster", () => {
 
   beforeAll(async () => {
     stack = await startStack();
-    browser = await chromium.launch({
-      channel: process.env.E2E_BROWSER_CHANNEL ?? "chrome",
-      headless: process.env.E2E_HEADED !== "1",
-    });
+    browser = await launchBrowser();
     page = await browser.newPage();
+    seen = watchPage(page);
 
     await page.goto(stack.pairingUrl, { waitUntil: "domcontentloaded" });
     await page.getByText("Create your first bot").waitFor();
@@ -108,18 +106,7 @@ describe("group chat speaker attribution and roster", () => {
     await dialog.waitFor({ state: "hidden" });
   });
 
-  // A failing step leaves a screenshot behind; the path is in the test output.
-  afterEach(async ({ task }) => {
-    if (task.result?.state !== "fail") return;
-
-    const path = NodePath.join(
-      process.env.E2E_ARTIFACTS_DIR ?? NodeOS.tmpdir(),
-      `isnadi-e2e-${task.name.replace(/\W+/g, "-")}.png`,
-    );
-
-    await page.screenshot({ path });
-    console.error(`Screenshot: ${path}`);
-  });
+  journeyReport(() => ({ stack, page, seen }));
 
   afterAll(async () => {
     await browser?.close();
