@@ -13,6 +13,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.ReplacementSpan
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -47,6 +48,10 @@ class T3ComposerEditorView(context: Context, appContext: AppContext) : ExpoView(
   init {
     editor.setBackgroundColor(Color.TRANSPARENT)
     editor.gravity = Gravity.TOP or Gravity.START
+    // Each paragraph reads and aligns the way its first strong letter does, so Arabic typed in an
+    // English interface sits at the right and English typed in an Arabic one sits at the left.
+    editor.textDirection = View.TEXT_DIRECTION_FIRST_STRONG
+    editor.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
     editor.includeFontPadding = false
     editor.isSingleLine = false
     editor.minLines = 1

@@ -36,7 +36,7 @@ static void T3MarkdownTextApplyParagraphStyles(
     paragraphStyle.headIndent = styleRange.headIndent;
     paragraphStyle.paragraphSpacing = styleRange.paragraphSpacing;
     paragraphStyle.tabStops = @[
-      [[NSTextTab alloc] initWithTextAlignment:NSTextAlignmentLeft
+      [[NSTextTab alloc] initWithTextAlignment:NSTextAlignmentNatural
                                       location:styleRange.headIndent
                                        options:@{}]
     ];

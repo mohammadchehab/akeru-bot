@@ -685,7 +685,7 @@ public final class T3ComposerEditorView: ExpoView, UITextViewDelegate, UITextDro
         x += 19
       }
       let paragraph = NSMutableParagraphStyle()
-      paragraph.alignment = .left
+      paragraph.alignment = .natural
       (label as NSString).draw(
         in: CGRect(x: x, y: 3, width: textSize.width + 1, height: 18),
         withAttributes: [
