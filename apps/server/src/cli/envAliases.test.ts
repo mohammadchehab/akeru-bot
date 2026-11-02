@@ -30,6 +30,18 @@ describe("aliasedEnv", () => {
     }),
   );
 
+  it.effect("never aliases T3CODE_HOME to ISNADI_HOME", () =>
+    Effect.gen(function* () {
+      const readHome = (env: Record<string, string>) =>
+        aliasedEnv(Config.string, "HOME")
+          .parse(ConfigProvider.fromEnv({ env }))
+          .pipe(Effect.map(Option.getOrUndefined));
+
+      expect(yield* readHome({ T3CODE_HOME: "/home/user/.t3" })).toBeUndefined();
+      expect(yield* readHome({ ISNADI_HOME: "/a", T3CODE_HOME: "/home/user/.t3" })).toBe("/a");
+    }),
+  );
+
   it.effect("reports a missing value as none", () =>
     Effect.gen(function* () {
       expect(yield* readPort({})).toBeUndefined();
@@ -38,6 +50,7 @@ describe("aliasedEnv", () => {
 });
 
 describe("readAliasedEnv", () => {
+  // Only the service launcher reads HOME this way, from units IsnadiBot itself wrote.
   it("prefers ISNADI_ and falls back to T3CODE_", () => {
     expect(readAliasedEnv({ ISNADI_HOME: "/a", T3CODE_HOME: "/b" }, "HOME")).toBe("/a");
     expect(readAliasedEnv({ T3CODE_HOME: "/b" }, "HOME")).toBe("/b");

@@ -89,7 +89,7 @@ The most common defect in this repo is a change that works on the path you teste
 ## Dev servers
 
 - `vp i` installs. Worktree setup installs dependencies, copies optional `.env` configuration without sharing later edits, and warms the web cache. It preserves existing local `.env` files and refuses legacy symlinks. If module resolution is broken, check setup first.
-- `vp run dev` starts server and web. In a worktree, state defaults to that worktree's gitignored `.isnadi`, which deliberately outranks an ambient `T3CODE_HOME` or `ISNADI_HOME` so you cannot land on shared state by accident. An explicit `--home-dir` still wins.
+- `vp run dev` starts server and web. In a worktree, state defaults to that worktree's gitignored `.isnadi`, which deliberately outranks an ambient `ISNADI_HOME` (`T3CODE_HOME` is ignored) so you cannot land on shared state by accident. An explicit `--home-dir` still wins.
 - Ports derive from the worktree path and are stable across restarts, but read the real ones from the `[dev-runner]` line since occupied ports shift.
 - Sharing over the tailnet is three steps: run `vp run dev --share` in the background, wait for the `pairingUrl:` line in its output, paste that full URL (token included) in your reply. Do not wire up `tailscale serve` by hand for this, and do not open the URL yourself.
 - The web app requires pairing. Hand over the pairing URL, not the bare origin. A URL without its token is useless to whoever you gave it to. If the token got consumed, mint a fresh one with `node apps/server/src/bin.ts pair` — note it carries standard scopes, while the startup URL carries admin scopes (needed for Settings → Connections management).

@@ -1,4 +1,5 @@
 import * as Predicate from "effect/Predicate";
+import { ignoredT3HomeWarning } from "@isnadi/shared/legacyEnv";
 import * as NetService from "@isnadi/shared/Net";
 import { parsePersistedServerObservabilitySettings } from "@isnadi/shared/serverSettings";
 import { DesktopBackendBootstrap, PortSchema } from "@isnadi/contracts";
@@ -309,6 +310,13 @@ export const resolveServerConfig = (
       resolveOptionPrecedence(normalizedFlags.devUrl, Option.fromUndefinedOr(env.devUrl)),
       () => undefined,
     );
+
+    const t3HomeWarning = ignoredT3HomeWarning({
+      T3CODE_HOME: Option.getOrUndefined(yield* Config.option(Config.string("T3CODE_HOME"))),
+      ISNADI_HOME: env.t3Home,
+    });
+
+    if (t3HomeWarning) yield* Effect.logWarning(t3HomeWarning);
 
     const explicitBaseDir = resolveOptionPrecedence(
       normalizedFlags.baseDir,

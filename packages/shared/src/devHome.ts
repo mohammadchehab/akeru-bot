@@ -4,9 +4,9 @@
  *
  * A linked git worktree gets its own (gitignored) `.isnadi`: feature work in a
  * throwaway branch must not share a database with the real app, and an ambient
- * `T3CODE_HOME` or `ISNADI_HOME` counts as an explicit base dir — flipping the
- * state directory from `<base>/dev` to `<base>/userdata`, the live production
- * database.
+ * `ISNADI_HOME` counts as an explicit base dir — flipping the state directory from
+ * `<base>/dev` to `<base>/userdata`, the live production database. `T3CODE_HOME` is T3 Code's
+ * own variable and is ignored everywhere.
  */
 
 /** Product data directory name. Separate from T3 Code's `.t3`. */

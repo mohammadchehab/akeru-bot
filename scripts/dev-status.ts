@@ -39,7 +39,7 @@ export const resolveDevStatusHome = Effect.fn("resolveDevStatusHome")(function* 
   const path = yield* Path.Path;
   const worktree = yield* resolveGitWorktreePath(input.cwd);
   const worktreeHome = yield* resolveWorktreeT3Home(input.cwd);
-  const selected = input.homeDir?.trim() || worktreeHome || input.env.T3CODE_HOME?.trim();
+  const selected = input.homeDir?.trim() || worktreeHome;
 
   const expanded =
     selected === "~"

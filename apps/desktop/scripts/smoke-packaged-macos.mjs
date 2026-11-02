@@ -196,7 +196,7 @@ async function main() {
 
     const env = {
       ...process.env,
-      T3CODE_HOME: stateRoot,
+      ISNADI_HOME: stateRoot,
       T3CODE_PORT: String(backendPort),
       ELECTRON_ENABLE_LOGGING: "1",
     };

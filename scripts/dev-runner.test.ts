@@ -212,7 +212,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
 
     // `tailscale serve` config outlives the process, so a dry run that shared
     // would replace and then tear down whatever mapping the port already had.
-    // Base-dir precedence (--home-dir > worktree .isnadi > ambient T3CODE_HOME)
+    // Base-dir precedence (--home-dir > worktree .isnadi)
     // lives in runDevRunnerWithInput; the env builder must not consult the
     // ambient variable on its own, or it would silently outrank the worktree
     // default and land dev state on the user's real database.
@@ -603,7 +603,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             ),
           );
 
-          return captured?.T3CODE_HOME;
+          return captured?.ISNADI_HOME;
         });
 
       it.effect("prefers an explicit --home-dir over the worktree default", () =>
@@ -651,17 +651,15 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         }).pipe(Effect.scoped),
       );
 
-      it.effect("falls back to an ambient T3CODE_HOME outside a worktree", () =>
+      it.effect("ignores an ambient T3CODE_HOME outside a worktree", () =>
         Effect.gen(function* () {
-          const path = yield* Path.Path;
-
           const home = yield* spawnedHome({
             t3Home: undefined,
             cwd: NodeOS.tmpdir(),
             ambientHome: "/home/user/.t3",
           });
 
-          assert.equal(home, path.resolve("/home/user/.t3"));
+          assert.equal(home, undefined);
         }),
       );
 

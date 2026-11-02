@@ -90,7 +90,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: undefined,
         });
 
-        assert.equal(env.T3CODE_HOME, undefined);
+        assert.equal(env.ISNADI_HOME, undefined);
         assert.equal(env.T3CODE_NO_BROWSER, "1");
       }),
     );
@@ -114,12 +114,12 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         const implicit = yield* createDevRunnerEnv({ ...input, t3Home: undefined });
 
         for (const env of [explicit, implicit]) {
-          assert.equal(env.ISNADI_HOME, undefined);
           assert.equal(env.AKERU_HOME, undefined);
+          assert.equal(env.T3CODE_HOME, undefined);
         }
 
-        assert.equal(explicit.T3CODE_HOME, "/tmp/isnadi-explicit");
-        assert.equal(implicit.T3CODE_HOME, undefined);
+        assert.equal(explicit.ISNADI_HOME, "/tmp/isnadi-explicit");
+        assert.equal(implicit.ISNADI_HOME, undefined);
       }),
     );
 
@@ -181,7 +181,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: new URL("http://localhost:7331"),
         });
 
-        assert.equal(env.T3CODE_HOME, path.resolve("/tmp/custom-t3"));
+        assert.equal(env.ISNADI_HOME, path.resolve("/tmp/custom-t3"));
         assert.equal(env.T3CODE_PORT, "4222");
         assert.equal(env.VITE_HTTP_URL, "http://localhost:4222");
         assert.equal(env.VITE_WS_URL, "ws://localhost:4222");
@@ -280,7 +280,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: undefined,
         });
 
-        assert.equal(env.T3CODE_HOME, path.resolve("/tmp/my-t3"));
+        assert.equal(env.ISNADI_HOME, path.resolve("/tmp/my-t3"));
       }),
     );
 
@@ -309,7 +309,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: undefined,
         });
 
-        assert.equal(env.T3CODE_HOME, path.resolve("/tmp/my-t3"));
+        assert.equal(env.ISNADI_HOME, path.resolve("/tmp/my-t3"));
         assert.equal(env.PORT, "5733");
         assert.equal(env.VITE_DEV_SERVER_URL, "http://127.0.0.1:5733");
         assert.equal(env.HOST, "127.0.0.1");

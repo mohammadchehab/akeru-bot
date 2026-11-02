@@ -95,7 +95,7 @@ describe("dev status home", () => {
     }).pipe(Effect.provide(NodeServices.layer)),
   );
 
-  it.effect("uses userdata for explicit and ambient homes", () =>
+  it.effect("uses userdata for explicit homes and ignores an ambient T3CODE_HOME", () =>
     Effect.gen(function* () {
       const root = fixture(false);
 
@@ -107,7 +107,7 @@ describe("dev status home", () => {
           env: { T3CODE_HOME: "/configured" },
         });
 
-      expect((yield* resolve()).dataDir).toBe("/configured/userdata");
+      expect((yield* resolve()).dataDir).toBe("/users/test/.isnadi/dev");
       expect((yield* resolve("local")).dataDir).toBe(NodePath.join(root, "local/userdata"));
       expect((yield* resolve("~/sandbox")).dataDir).toBe("/users/test/sandbox/userdata");
       const linked = fixture();

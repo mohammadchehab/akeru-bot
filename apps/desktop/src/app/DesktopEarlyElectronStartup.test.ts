@@ -11,7 +11,7 @@ describe("DesktopEarlyElectronStartup", () => {
 
   it("reads the persisted linux password-store preference before Electron is ready", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
-      env: { T3CODE_HOME: "/home/user/.t3-test" },
+      env: { ISNADI_HOME: "/home/user/.t3-test" },
       homeDirectory: "/home/user",
       joinPath,
       exists: () => false,
@@ -27,7 +27,7 @@ describe("DesktopEarlyElectronStartup", () => {
 
   it("accepts JSONC in the early desktop settings file", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
-      env: { T3CODE_HOME: "/home/user/.t3-test" },
+      env: { ISNADI_HOME: "/home/user/.t3-test" },
       homeDirectory: "/home/user",
       joinPath,
       exists: () => false,
@@ -56,7 +56,7 @@ describe("DesktopEarlyElectronStartup", () => {
 
   it("preserves absolute root paths when resolving early settings", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
-      env: { T3CODE_HOME: "/" },
+      env: { ISNADI_HOME: "/" },
       homeDirectory: "/home/user",
       joinPath,
       exists: () => false,
@@ -73,7 +73,7 @@ describe("DesktopEarlyElectronStartup", () => {
   it("resolves the early linux Electron switches", () => {
     const options = resolveEarlyLinuxElectronOptions({
       env: {
-        T3CODE_HOME: "/home/user/.t3-test",
+        ISNADI_HOME: "/home/user/.t3-test",
         XDG_CURRENT_DESKTOP: "niri",
         VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
       },
@@ -93,7 +93,7 @@ describe("DesktopEarlyElectronStartup", () => {
     });
   });
 
-  it("keeps implicit development state under ~/.isnadi/dev when T3CODE_HOME is unset", () => {
+  it("keeps implicit development state under ~/.isnadi/dev when ISNADI_HOME is unset", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
       env: {
         VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
@@ -111,10 +111,10 @@ describe("DesktopEarlyElectronStartup", () => {
     assert.equal(preference, "kwallet");
   });
 
-  it("treats whitespace-only T3CODE_HOME as unconfigured in development", () => {
+  it("treats whitespace-only ISNADI_HOME as unconfigured in development", () => {
     const preference = resolveEarlyLinuxPasswordStorePreference({
       env: {
-        T3CODE_HOME: "   ",
+        ISNADI_HOME: "   ",
         VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
       },
       homeDirectory: "/home/user",
@@ -128,5 +128,24 @@ describe("DesktopEarlyElectronStartup", () => {
     });
 
     assert.equal(preference, "gnome-libsecret");
+  });
+
+  it("never reads T3 Code's T3CODE_HOME as the data directory", () => {
+    const preference = resolveEarlyLinuxPasswordStorePreference({
+      env: {
+        T3CODE_HOME: "/home/user/.t3",
+        VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
+      },
+      homeDirectory: "/home/user",
+      joinPath,
+      exists: () => false,
+      readFileString: (path) => {
+        assert.equal(path, "/home/user/.isnadi/dev/desktop-settings.json");
+
+        return JSON.stringify({ linuxPasswordStore: "kwallet" });
+      },
+    });
+
+    assert.equal(preference, "kwallet");
   });
 });

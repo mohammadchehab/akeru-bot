@@ -17,4 +17,18 @@ export function applyLegacyProductEnv(env: Record<string, string | undefined>): 
   }
 }
 
+/**
+ * `T3CODE_HOME` is T3 Code's own data-directory variable, set by its service units and inherited
+ * by its child processes. IsnadiBot never uses it as a data directory, so a stray one must not
+ * redirect IsnadiBot into `~/.t3`. Returns the startup warning when it is set without
+ * `ISNADI_HOME`, otherwise undefined.
+ */
+export function ignoredT3HomeWarning(
+  env: Readonly<Record<string, string | undefined>>,
+): string | undefined {
+  if (!env.T3CODE_HOME?.trim() || env.ISNADI_HOME?.trim()) return undefined;
+
+  return "T3CODE_HOME is set but IsnadiBot ignores it; set ISNADI_HOME to choose the data directory.";
+}
+
 applyLegacyProductEnv(process.env);

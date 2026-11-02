@@ -187,7 +187,7 @@ export const triageCommand = Command.make("triage", {
       const path = yield* Path.Path;
 
       // Triage is a user-facing feature: always the userdata state, never dev.
-      // --base-dir wins; ISNADI_HOME (or legacy T3CODE_HOME) is its documented env equivalent (same
+      // --base-dir wins; ISNADI_HOME is its documented env equivalent (same
       // precedence as `isnadi pair`).
       const explicitBaseDir = Option.getOrUndefined(flags.baseDir);
       const envHome = yield* aliasedEnv(Config.string, "HOME");

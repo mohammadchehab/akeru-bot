@@ -62,7 +62,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
                   T3CODE_MODE: "desktop",
                   T3CODE_PORT: "4001",
                   T3CODE_HOST: "0.0.0.0",
-                  T3CODE_HOME: baseDir,
+                  ISNADI_HOME: baseDir,
                   VITE_DEV_SERVER_URL: "http://127.0.0.1:5173",
                   T3CODE_DEV_ALLOWED_ORIGINS:
                     "https://host.example.ts.net, https://phone.example.ts.net ",
@@ -146,6 +146,43 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
       expect(resolved.baseDir).toBe(baseDir);
       expect(resolved.host).toBe("0.0.0.0");
       expect(resolved.otlpServiceName).toBe("isnadi-test");
+    }),
+  );
+
+  it.effect("ignores T3 Code's T3CODE_HOME and resolves the default ~/.isnadi", () =>
+    Effect.gen(function* () {
+      const { join } = yield* Path.Path;
+      const t3Home = join(NodeOS.tmpdir(), "t3-code-home-that-must-be-ignored");
+
+      const resolved = yield* resolveServerConfig(
+        {
+          mode: Option.none(),
+          port: Option.none(),
+          host: Option.none(),
+          baseDir: Option.none(),
+          cwd: Option.none(),
+          devUrl: Option.none(),
+          noBrowser: Option.none(),
+          bootstrapFd: Option.none(),
+          autoBootstrapProjectFromCwd: Option.none(),
+          logWebSocketEvents: Option.none(),
+          tailscaleServeEnabled: Option.none(),
+          tailscaleServePort: Option.none(),
+          publicOrigin: Option.none(),
+        },
+        Option.none(),
+      ).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(ConfigProvider.fromEnv({ env: { T3CODE_HOME: t3Home } })),
+            NetService.layer,
+            NodeServices.layer,
+          ),
+        ),
+      );
+
+      assert.notEqual(resolved.baseDir, t3Home);
+      assert.equal(resolved.baseDir, join(NodeOS.homedir(), ".isnadi"));
     }),
   );
 
