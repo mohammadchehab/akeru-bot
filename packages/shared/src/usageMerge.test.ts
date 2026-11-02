@@ -104,7 +104,8 @@ describe("mergeUsage", () => {
       USAGE_CONTRACT_VERSION,
     );
 
-    expect(merged.buckets.map((entry) => entry.provider)).toEqual(["cursor"]);
+    expect(merged.providers.map((entry) => entry.provider)).toEqual(["cursor"]);
+    expect(merged.costUsd).toBe(10);
   });
 
   it("sums environments that read different transcript directories", () => {
