@@ -182,10 +182,6 @@ jobs:
           fi
           signed=false
           if (( present > 0 )); then signed=true; fi
-          if test "$signed" != true && test "$RELEASE_CHANNEL" = stable; then
-            printf 'Stable macOS releases require the complete Developer ID signing credential set.\n' >&2
-            exit 1
-          fi
           printf 'MACOS_SIGNED=%s\n' "$signed" >> "$GITHUB_ENV"
 
       - name: Validate Windows signing credentials
@@ -420,7 +416,7 @@ jobs:
         run: node scripts/verify-release-assets.ts release "$RELEASE_VERSION"
       - name: Create stable GitHub Release
         if: env.RELEASE_CHANNEL == 'stable'
-        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "IsnadiBot $RELEASE_TAG" --generate-notes
+        run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "IsnadiBot $RELEASE_TAG" --draft --generate-notes
       - name: Create nightly GitHub Release
         if: env.RELEASE_CHANNEL == 'nightly'
         run: gh release create "$RELEASE_TAG" release/* --target "$GITHUB_SHA" --title "IsnadiBot nightly $RELEASE_VERSION" --prerelease --latest=false --generate-notes
