@@ -36,6 +36,40 @@ export const RUNTIME_MODE_CHOICES: ReadonlyArray<{
   },
 ];
 
+/**
+ * Cursor cannot pause a turn to ask, so it runs read-only unless it is given full access. Every
+ * other provider keeps the full list.
+ */
+export function runtimeModeChoicesFor(driver: string | null) {
+  return driver === "cursor" ? CURSOR_RUNTIME_MODE_CHOICES : RUNTIME_MODE_CHOICES;
+}
+
+/**
+ * The label for the active mode. Cursor treats every mode but full access as read-only, so a chat
+ * that carries another mode still reads as Read-only.
+ */
+export function runtimeModeLabel(driver: string | null, mode: RuntimeMode) {
+  const choices = runtimeModeChoicesFor(driver);
+
+  return (
+    choices.find((choice) => choice.mode === mode)?.label ??
+    (driver === "cursor" ? "Read-only" : undefined)
+  );
+}
+
+const CURSOR_RUNTIME_MODE_CHOICES: typeof RUNTIME_MODE_CHOICES = [
+  {
+    mode: "auto",
+    label: "Read-only",
+    description: "Cursor reads and answers; it does not edit files or run commands.",
+  },
+  {
+    mode: "full-access",
+    label: "Full access",
+    description: "Cursor edits files and runs commands without asking.",
+  },
+];
+
 export function selectableChoices(
   descriptor: Extract<ProviderOptionDescriptor, { type: "select" }>,
 ) {

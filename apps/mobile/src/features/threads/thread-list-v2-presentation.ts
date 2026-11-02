@@ -18,6 +18,7 @@ const PROVIDER_BOT_NAMES = new Map(
     kimi: "Kimi",
     opencode: "OpenCode",
     opencodeGo: "OpenCode",
+    cursor: "Cursor",
     customOpenai: "Custom API",
   } as const),
 );

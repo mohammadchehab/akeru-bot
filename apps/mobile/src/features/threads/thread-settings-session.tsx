@@ -120,6 +120,8 @@ export type ThreadSettingsSessionValue = {
   readonly onDeleteBot: ThreadSettingsSessionProps["onDeleteBot"];
   /** False when the shown model's provider can neither hand off work nor receive it. */
   readonly canDelegate: boolean;
+  /** The provider driver of the shown model, which decides the runtime modes on offer. */
+  readonly displayedDriver: string | null;
 };
 
 const ThreadSettingsSessionContext = createContext<ThreadSettingsSessionValue | null>(null);
@@ -262,10 +264,12 @@ export function ThreadSettingsSessionProvider(
       routinesRef: props.routinesRef,
       onDeleteBot: props.onDeleteBot,
       canDelegate,
+      displayedDriver,
     }),
     [
       applyOptionChange,
       canDelegate,
+      displayedDriver,
       commitPendingModel,
       displayedDescriptors,
       providerExpansionOverrides,

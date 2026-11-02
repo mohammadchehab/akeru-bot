@@ -14,7 +14,11 @@ import {
   NATIVE_MAIL_SEARCH_TOOLBAR_CONTENT_INSET,
   NATIVE_MAIL_SEARCH_TOOLBAR_SUPPORTED,
 } from "../layout/native-mail-search-toolbar";
-import { RUNTIME_MODE_CHOICES, selectableChoices } from "./thread-settings-options";
+import {
+  runtimeModeChoicesFor,
+  runtimeModeLabel,
+  selectableChoices,
+} from "./thread-settings-options";
 import {
   type ThreadSettingsSubmenuPage,
   useThreadSettingsSession,
@@ -181,9 +185,7 @@ export function ThreadSettingsOptionsItem(props: {
           <DisclosureRow
             isLast={!session.memoryThreadRef && !session.routinesRef}
             label={t("Runtime")}
-            value={
-              RUNTIME_MODE_CHOICES.find((choice) => choice.mode === session.runtimeMode)?.label
-            }
+            value={runtimeModeLabel(session.displayedDriver, session.runtimeMode)}
             onPress={() => props.onOpenSubmenu({ kind: "runtime" })}
           />
         </Animated.View>
@@ -320,7 +322,7 @@ export function ThreadSettingsChoiceContent(props: {
   const submenuContent =
     props.submenu.kind === "runtime"
       ? {
-          rows: RUNTIME_MODE_CHOICES.map((choice) => ({
+          rows: runtimeModeChoicesFor(session.displayedDriver).map((choice) => ({
             id: choice.mode,
             label: choice.label,
             description: choice.description,
