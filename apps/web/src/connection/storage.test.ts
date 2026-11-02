@@ -119,11 +119,12 @@ describe("migrateLegacyConnectionDatabase", () => {
           yield* Effect.promise(
             () =>
               new Promise<void>((resolve, reject) => {
-                const tx = legacy.transaction(["catalog", "shell"], "readwrite");
+                const tx = legacy.transaction(["catalog", "shell", "thread"], "readwrite");
                 tx.addEventListener("complete", () => resolve());
                 tx.addEventListener("error", () => reject(tx.error));
                 tx.objectStore("catalog").put("legacy-catalog-doc", "document");
                 tx.objectStore("shell").put("legacy-shell", "env-1");
+                tx.objectStore("thread").put("legacy-cached-thread", "env-1/thread-1");
                 tx.objectStore("shell").put("legacy-numeric", 1);
                 tx.objectStore("shell").put("legacy-second", 2);
               }),
@@ -174,6 +175,8 @@ describe("migrateLegacyConnectionDatabase", () => {
 
           expect(yield* read("catalog", "document")).toBe("legacy-catalog-doc");
           expect(yield* read("shell", "env-1")).toBe("legacy-shell");
+          // Cached threads are a cache and may predate the responding-bot label.
+          expect(yield* read("thread", "env-1/thread-1")).toBeUndefined();
           expect(yield* read("shell", 1)).toBe("current-numeric");
           expect(yield* read("shell", 2)).toBe("legacy-second");
           migrated.close();
