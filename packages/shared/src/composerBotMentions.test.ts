@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { serializeComposerBotMention } from "./composerInlineTokens.ts";
 import {
   composerBotMentionDetail,
   resolveComposerAddressing,
@@ -133,5 +134,36 @@ describe("a mention followed by punctuation", () => {
 
   it("does not count a name that only starts the word", () => {
     expect(resolveComposerAddressing("@Beckyland, hi", bots)).toEqual({ kind: "none" });
+  });
+});
+
+describe("an @bot:<id> mention followed by punctuation", () => {
+  const bots = [
+    { id: "bot-abc", name: "Becky" },
+    { id: "a.b:c", name: "Odd" },
+  ];
+
+  it.each([",", ".", ";", ":", "!", "?", ")"])("resolves the id before %s", (mark) => {
+    expect(resolveComposerAddressing(`ask @bot:bot-abc${mark} now`, bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-abc"],
+    });
+  });
+
+  it("resolves at the end of the text and keeps inner marks in the id", () => {
+    expect(resolveComposerAddressing("ask @bot:bot-abc", bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-abc"],
+    });
+    expect(resolveComposerAddressing("ask @bot:a.b:c.", bots)).toEqual({
+      kind: "bots",
+      botIds: ["a.b:c"],
+    });
+  });
+
+  it("serializes only ids that start and end with a letter or digit", () => {
+    expect(serializeComposerBotMention("a.b:c")).toBe("@bot:a.b:c");
+    expect(serializeComposerBotMention("bot-1:")).toBeNull();
+    expect(serializeComposerBotMention(".bot")).toBeNull();
   });
 });
