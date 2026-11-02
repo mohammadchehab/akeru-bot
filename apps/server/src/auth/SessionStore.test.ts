@@ -4,6 +4,7 @@ import { EnvironmentId } from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
+import * as Fiber from "effect/Fiber";
 import * as Layer from "effect/Layer";
 import * as TestClock from "effect/testing/TestClock";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -323,6 +324,32 @@ it.layer(NodeServices.layer)("SessionStore.layer", (it) => {
         expect(revokedClientWebSocket.sessionId).toBe(client.sessionId);
         expect(revokedClientWebSocket.revokedAt.epochMilliseconds).toBeGreaterThanOrEqual(0);
       }
+    }).pipe(Effect.provide(makeSessionStoreLayer())),
+  );
+
+  it.effect("ends the watch for a session revoked before the watch started", () =>
+    Effect.gen(function* () {
+      const sessions = yield* SessionStore.SessionStore;
+      const issued = yield* sessions.issue({ subject: "browser", scopes: ["orchestration:read"] });
+
+      // The revoke lands after the websocket upgrade authenticated but before the
+      // handler subscribed to changes; the change event is already gone.
+      yield* sessions.revoke(issued.sessionId);
+
+      yield* sessions.untilEnded(issued.sessionId);
+    }).pipe(Effect.provide(makeSessionStoreLayer())),
+  );
+
+  it.effect("ends the watch when a watched session is revoked", () =>
+    Effect.gen(function* () {
+      const sessions = yield* SessionStore.SessionStore;
+      const issued = yield* sessions.issue({ subject: "browser", scopes: ["orchestration:read"] });
+
+      const watch = yield* Effect.forkChild(sessions.untilEnded(issued.sessionId));
+      yield* Effect.yieldNow;
+      yield* sessions.revoke(issued.sessionId);
+
+      yield* Fiber.join(watch);
     }).pipe(Effect.provide(makeSessionStoreLayer())),
   );
 
