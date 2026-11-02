@@ -17,7 +17,7 @@ describe("keybindingsToastAction", () => {
     });
   });
 
-  it("leaves the toast without an action for a tailnet primary", () => {
+  it("leaves the toast without an action without local shell access", () => {
     expect(
       keybindingsToastAction({
         canOpenInEditor: false,
