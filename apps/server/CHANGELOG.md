@@ -1,5 +1,45 @@
 # isnadibot
 
+## 0.0.2
+
+### Patch Changes
+
+- [#38](https://github.com/mohammadchehab/isnadibot/pull/38) [`8408d4a`](https://github.com/mohammadchehab/isnadibot/commit/8408d4a1ed8cfa2c491bddca6d3a3a762f732ba7) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Bots that pass a group member's name to CheckAgent or StopAgent now reach that member. An unknown target fails with a not-found error that lists the valid members.
+
+- [#36](https://github.com/mohammadchehab/isnadibot/pull/36) [`6eb303d`](https://github.com/mohammadchehab/isnadibot/commit/6eb303d79e4d20a3c9eff0e0ccacb65cec57875a) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A revoked or expired session now closes its open WebSocket instead of leaving it working.
+
+- [#39](https://github.com/mohammadchehab/isnadibot/pull/39) [`ef9a1a6`](https://github.com/mohammadchehab/isnadibot/commit/ef9a1a699e93dc68d552459b4ef1f98d623922cf) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The desktop app now serves its privileged IPC channels only to its own window, so a preview page can no longer call them.
+
+- [#28](https://github.com/mohammadchehab/isnadibot/pull/28) [`fe433f7`](https://github.com/mohammadchehab/isnadibot/commit/fe433f7c78720c3925eb2c5e8d7654feb34c572f) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The dev runner no longer lets an inherited `ISNADI_HOME` or `AKERU_HOME` override the worktree home or `--home-dir`.
+
+- [#44](https://github.com/mohammadchehab/isnadibot/pull/44) [`e6638a2`](https://github.com/mohammadchehab/isnadibot/commit/e6638a282c9f87defad44173f690e0d8c4f5e1e8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A group's details now list the paired people who are not in the group, so someone who was removed can be added back. Removing a person, or leaving a group yourself, asks for confirmation first.
+
+- [#60](https://github.com/mohammadchehab/isnadibot/pull/60) [`b0d7b74`](https://github.com/mohammadchehab/isnadibot/commit/b0d7b74f6640a7f1734c0796c97630c0a315e619) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - In a group chat, each bot now knows who said what: other members' messages reach a bot as quoted group messages instead of its own words, and every bot is told who is in the group each turn.
+
+- [#26](https://github.com/mohammadchehab/isnadibot/pull/26) [`976df55`](https://github.com/mohammadchehab/isnadibot/commit/976df55874bc87a12c9afd13ae19de43e5a95be5) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Remote clients no longer show "Open logs folder", "Open keybindings.json", or the invalid-keybindings toast action. They used to open the editor on the server machine and report success, so from a phone or a laptop over Tailscale nothing visible happened.
+
+- [#40](https://github.com/mohammadchehab/isnadibot/pull/40) [`8249aa2`](https://github.com/mohammadchehab/isnadibot/commit/8249aa2a925d43a87ee6d11d9d837cc3c4731352) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Isnadi no longer reads `T3CODE_HOME`, which belongs to T3 Code, as its data directory. With only `T3CODE_HOME` set, the server, desktop app and dev runner now use `~/.isnadi` (or the worktree's `.isnadi`) and log one warning that names `ISNADI_HOME`. Set `ISNADI_HOME` to use another folder.
+
+- [#42](https://github.com/mohammadchehab/isnadibot/pull/42) [`e57facd`](https://github.com/mohammadchehab/isnadibot/commit/e57facdafe5eb8ed6c400b3e128bd25d4436ab01) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The Remote installers (scripts and the copies served from the web app) now move an existing `~/.akeru` into `~/.isnadi` before creating it, so chats, pairing and the environment ID carry over.
+
+- [#52](https://github.com/mohammadchehab/isnadibot/pull/52) [`9a8c6b4`](https://github.com/mohammadchehab/isnadibot/commit/9a8c6b4805b0c638cdad082dbc1e53be4aea40a5) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Isnadi now names its browser session cookie `isnadi_session` instead of `t3_session`. Sessions created before the update keep working: the old cookie is still accepted and replaced with the new one the next time the page checks the session.
+
+- [#41](https://github.com/mohammadchehab/isnadibot/pull/41) [`0c47634`](https://github.com/mohammadchehab/isnadibot/commit/0c476345197153effa7146fa80aa2f075ee431df) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Opening IsnadiBot in a browser on the same address as T3 Code (both use port 3773) no longer deletes T3 Code's saved connections, and Isnadi no longer imports them. Isnadi never opens, copies or removes T3 Code's browser data.
+
+- [#47](https://github.com/mohammadchehab/isnadibot/pull/47) [`23961c6`](https://github.com/mohammadchehab/isnadibot/commit/23961c6926155ca8b88d01a0ba7e3eb1884d9ebb) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - In group chats, a reply now shows the name and avatar of the bot that wrote it as it arrives, instead of the boss bot until you reload.
+
+  Threads that web and mobile had already cached are dropped once, so group replies loaded from the cache after an update also show the right bot.
+
+- [#25](https://github.com/mohammadchehab/isnadibot/pull/25) [`59d307d`](https://github.com/mohammadchehab/isnadibot/commit/59d307db07d7870b9dcb9c23c5869eeb5a357276) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - IsnadiBot no longer ships a built-in analytics key, so a build from source sends no usage analytics unless one is configured.
+
+- [#32](https://github.com/mohammadchehab/isnadibot/pull/32) [`5390f5e`](https://github.com/mohammadchehab/isnadibot/commit/5390f5ea2910e6de6904193e03f23f04b300f5e5) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A read-only pairing link now works from the desktop and mobile apps. They ask for read and operate access, and the link used to be consumed and then rejected. The connection now pairs with read-only access.
+
+- [#37](https://github.com/mohammadchehab/isnadibot/pull/37) [`23ca29b`](https://github.com/mohammadchehab/isnadibot/commit/23ca29b25c0ed468609fdfeca07afddbb9e61aa8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The Windows Isnadi Remote installer now checks the release manifest's signature against IsnadiBot's pinned key and refuses to install an archive the signed manifest does not list.
+
+- [#33](https://github.com/mohammadchehab/isnadibot/pull/33) [`4ae33b0`](https://github.com/mohammadchehab/isnadibot/commit/4ae33b08a34545bb705733caab234ad2f5837550) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - SSH hosts whose alias, hostname or username starts with "-" or contains whitespace or control characters are now rejected, and SSH connections end their options with "--" so a host name can never be read as an ssh option.
+
+- [#48](https://github.com/mohammadchehab/isnadibot/pull/48) [`de147c3`](https://github.com/mohammadchehab/isnadibot/commit/de147c359a47ce6492234e82f1749aedb27ca1cf) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A routine's skill picker now offers only the skills the bot's engine has enabled. A skill the engine no longer provides is not offered.
+
 ## 0.0.1
 
 First IsnadiBot release.

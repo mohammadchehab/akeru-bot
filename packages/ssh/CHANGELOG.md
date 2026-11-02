@@ -1,5 +1,13 @@
 # @isnadi/ssh
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @isnadi/contracts@0.0.2
+  - @isnadi/shared@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
