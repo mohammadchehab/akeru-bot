@@ -27,6 +27,49 @@ Display translated explanatory error copy by matching a stable error code at the
 
 Connection failures follow this rule. `EnvironmentConnectionPresentation.errorCode` in `packages/client-runtime/src/connection/presentation.ts` carries the failure reason from the connection state machine (`ConnectionTransientReason` or `ConnectionBlockedReason`). `connectionFailureMessage` maps each code to one catalog sentence, and `translateConnectionStatus` builds the status line from the phase and that sentence. The raw `error` string never goes through translation. Web shows it in the status tooltip's `title`; mobile shows it in the expanded environment row and in the connection notice detail. A new failure code must be added to `connectionFailureMessage`, which the type checker enforces.
 
+## Right-to-left languages
+
+Arabic (`ar`, Modern Standard Arabic) is the first right-to-left interface language. Two rules decide every case. The interface direction follows the interface language. The direction of content (messages, names, titles) follows the content itself, whatever language the interface uses.
+
+### Locale, formatting, and plurals
+
+- One region-free `ar` catalog. Any `ar-*` device locale resolves to it. The catalog id type is derived from `availableLanguages` rather than repeated in `locale.ts`. `ar` joins `availableLanguages` and `catalogRegistry` only in the change that ships its catalog; until then, tests inject an RTL test catalog.
+- `formattingLocale(locale)` in `formatters.ts` is the only locale every `Intl` formatter receives. For Arabic it adds `-u-nu-latn-ca-gregory`: Western digits and the Gregorian calendar. Without it, `ar-SA` formats Hijri dates with Arabic-Indic digits next to token counts, model ids, and code that use Western digits. The digit choice is a single constant.
+- Arabic uses six plural categories (zero, one, two, few, many, other). A plural's forms are written in English, so a catalog can only translate the English forms and cannot add new categories. A catalog may therefore add category entries keyed `<English other form>#<category>`. `plural` looks up that key first, then falls back to the translated form. Catalog validation rejects a `#` entry whose base is not an English plural `other` form, whose category is not a CLDR plural category, or whose parameters differ from the base form.
+- When the interface direction is right-to-left, the translator wraps each interpolated value in first-strong isolate characters (U+2068 … U+2069). An English bot name, a path, or a number inside an Arabic sentence then keeps its own order and does not reorder the punctuation around it. Left-to-right translators add nothing, so English and Simplified Chinese strings are unchanged.
+
+### Direction
+
+- `directionForLocale` returns `rtl` for the base languages `ar`, `fa`, `he`, `ur`, `ps`, `sd`, `ug`, `yi`, `dv`, and `ckb`, and `ltr` for everything else. It uses a fixed list because `Intl.Locale` text info is missing on Hermes and inconsistent across browsers. The translator and the catalog loader snapshot expose the direction of the catalog actually in use, so a failed Arabic load shows English, left to right.
+- Mirrored: layout, sidebars, sheets and drawers, chevrons and arrows that mean back, forward, or sideways expansion, horizontal progress, and swipe directions.
+- Not mirrored: icons that carry no direction (search, check, clock, media playback) and the operating system's window controls. On macOS the traffic lights stay top-left, and on Windows the title bar overlay and the resize inset stay right. Those insets live as CSS custom properties in `apps/web/src/styles/chrome.css` and are the only physical offsets the interface keeps.
+- An _LTR island_ is an element pinned to `dir="ltr"` whatever the interface direction: code blocks and inline code, diffs, the terminal, the file browser and paths, URLs, model ids, shortcut chords, JSON and log views, and font previews. Inputs whose value is a path, URL, command, environment variable, or token are LTR islands too.
+
+### Chat content
+
+- Every message block (paragraph, list item, heading, quote, table cell) gets `dir="auto"`, and its text aligns to `start`. The direction goes on each block rather than on the whole message because one reply often mixes an Arabic paragraph with an English one. Code stays an LTR island.
+- The composer resolves direction per paragraph as the user types, and its placeholder follows the interface direction.
+- User content embedded in interface copy (bot and group names in the roster, the chat header, speaker labels, mention chips, conversation titles) is isolated with `dir="auto"` (`<bdi>` on web).
+- Mobile native text uses natural direction per paragraph. On iOS that is `baseWritingDirection` and `alignment` set to `.natural` instead of `.left`. On Android it is `TEXT_DIRECTION_FIRST_STRONG` with view-start alignment. Both the markdown module and the native composer editors follow this.
+
+### Web and desktop renderer
+
+- `LanguageProvider` sets `document.documentElement.dir` together with `lang`, before the app shell paints. `index.html` declares `dir="ltr"` for the moment before settings hydrate. Base UI's `DirectionProvider` wraps the app with the same value, so menus, popovers, tabs, sliders, and their arrow keys follow it. Switching between an LTR and an RTL language applies in place, without a reload.
+- Spacing, position, alignment, borders, and radii use logical utilities only: `ms-`/`me-`, `ps-`/`pe-`, `start-`/`end-`, `text-start`/`text-end`, `border-s`/`border-e`, `rounded-s`/`rounded-e`. Raw CSS uses logical properties (`margin-inline-start`, `inset-inline-end`). Physical utilities are a lint error in `apps/web/src`, and `chrome.css` holds the only physical offsets. Transforms (`translate-x`) and directional icons carry an `rtl:` variant. Resize handles and horizontal drags measure their delta in the reading direction. Custom Left and Right arrow-key handlers swap in RTL.
+- The desktop native menu, context menus, updater dialogs, and splash stay English and left to right, as listed under Untranslated exceptions. The renderer needs nothing desktop-specific.
+- Fonts: Geist has no Arabic glyphs, and browsers fall back per glyph. The font stacks in `appearanceFonts.ts` therefore name system Arabic families after Geist (SF Arabic and Geeza Pro on macOS, Segoe UI on Windows, Noto Sans Arabic on Linux) instead of bundling an Arabic font.
+
+### Mobile
+
+- React Native reads its layout direction once, at startup (`I18nManager.isRTL`). Choosing a language with a different direction asks to restart. On confirmation the app calls `I18nManager.allowRTL(true)` and `I18nManager.forceRTL(rtl)`, then reloads with `Updates.reloadAsync()` (`DevSettings.reload()` in development). At launch, if the stored language and `I18nManager.isRTL` disagree (System default after a device language change, for example), the app forces the direction and reloads once per launch, never in a loop.
+- The native projects allow RTL layout (Android `supportsRtl`, plus the Expo app config).
+- Styles use start and end (`marginStart`, `paddingEnd`, `start`, `end`, Uniwind `ms-`/`me-`/`ps-`/`pe-`). React Native swaps left and right in RTL by default, but start and end state the intent. `flex-row` mirrors by itself.
+- DM Sans has no Arabic glyphs. iOS and Android fall back per glyph to the system Arabic font, so the app bundles none.
+
+### Out of scope
+
+Server-built text, provider output, and the desktop native shell keep their current rules. The interface language never tells a bot which language to answer in. Other RTL languages reuse this mechanism, but each one still needs approval and its own catalog.
+
 ## Coverage and release gate
 
 English extraction is incremental. A catalog's existence is not evidence that every route uses it. `coverage.test.ts` snapshots every file that calls the translator, the number of literal messages, and the finite label sources it checks, so a change in coverage shows up in review.
@@ -92,3 +135,5 @@ The first extra startup file is Vite's preload helper, split out by the catalog'
 ### Verification still owed
 
 Verify every translated route in Simplified Chinese and in English. Exercise switching back, reset to system, restart and reconnect, two clients with different languages, unsupported locales, missing messages, connection errors, long strings, narrow layouts, CJK text, and large native text sizes. Browser screenshots alone do not prove these behaviors; native mobile and Electron need their own integrated checks.
+
+For a right-to-left language, also verify on web, desktop, iOS, and Android: the mirrored layout, switching between LTR and RTL in both directions (in place on web, through the restart on mobile), a message that mixes Arabic and English paragraphs, code and paths staying left to right, Arabic typed in the composer, an English name inside an Arabic sentence, and the macOS and Windows title bar controls staying where the operating system puts them.
