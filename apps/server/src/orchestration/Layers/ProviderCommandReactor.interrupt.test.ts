@@ -1,9 +1,13 @@
-import { CommandId, ThreadId } from "@isnadi/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it as effectIt } from "@effect/vitest";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import { ProviderAdapterRequestError } from "../../provider/Errors.ts";
-import { asTurnId, createProviderCommandHarness } from "./test-support/ProviderCommandHarness.ts";
+import {
+  asMessageId,
+  asTurnId,
+  createProviderCommandHarness,
+} from "./test-support/ProviderCommandHarness.ts";
 
 describe("ProviderCommandReactor", () => {
   const testScope = createProviderCommandHarness();
@@ -263,5 +267,47 @@ describe("ProviderCommandReactor", () => {
         thread?.activities.some((activity) => activity.kind === "provider.turn.interrupt.failed"),
       ).toBe(false);
     }),
+  );
+
+  effectIt.effect(
+    "a Stop right behind a turn start reaches the provider after the turn began",
+    () =>
+      Effect.gen(function* () {
+        const harness = yield* Effect.promise(() => createHarness());
+        const now = "2026-01-01T00:00:00.000Z";
+
+        yield* harness.engine.dispatch({
+          type: "thread.turn.start",
+          commandId: CommandId.make("cmd-turn-start-then-stop"),
+          threadId: ThreadId.make("thread-1"),
+          message: {
+            messageId: asMessageId("user-message-start-then-stop"),
+            role: "user",
+            text: "hello",
+            attachments: [],
+          },
+          interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+          runtimeMode: "approval-required",
+          createdAt: now,
+        });
+
+        yield* harness.engine.dispatch({
+          type: "thread.turn.interrupt",
+          commandId: CommandId.make("cmd-stop-right-after-start"),
+          threadId: ThreadId.make("thread-1"),
+          createdAt: now,
+        });
+
+        yield* Effect.promise(() => harness.drain());
+
+        // The controller captures the turn's admission generation when sendTurn begins, so a Stop
+        // that got there first would bump the generation for nothing and the turn would still run.
+        const started = harness.sendTurn.mock.invocationCallOrder[0];
+        const stopped = harness.interruptTurn.mock.invocationCallOrder[0];
+
+        expect(started).toBeDefined();
+        expect(stopped).toBeDefined();
+        expect(started).toBeLessThan(stopped ?? 0);
+      }),
   );
 });
