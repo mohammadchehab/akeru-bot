@@ -22,7 +22,7 @@ orchestration layer does not know which one is behind a thread.
 Each driver declares its `driverKind`, a `configSchema`, and a `create` function that builds a
 provider instance in a child scope. The five subscription drivers and Custom API supply a Mastra
 connection; standard OpenCode supplies a legacy adapter. Adapter implementations live beside them in
-`apps/server/src/provider/Layers/` (`CodexAdapter.ts`, `ClaudeAdapter.ts`, and so on) and conform to
+`apps/server/src/provider/Layers/` (`ClaudeAdapter.ts`, `OpenCodeAdapter.ts`, and so on) and conform to
 [`ProviderAdapter.ts`][adapter]. Read the driver plus its adapter to see how a specific agent's
 transport, config, and event shapes are mapped.
 
