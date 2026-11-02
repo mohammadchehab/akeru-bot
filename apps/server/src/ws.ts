@@ -1,7 +1,6 @@
 import * as Effect from "effect/Effect";
 import * as DateTime from "effect/DateTime";
 import * as Layer from "effect/Layer";
-import * as Stream from "effect/Stream";
 import { type OrchestrationClientOrigin, WsRpcGroup } from "@isnadi/contracts";
 import {
   HttpRouter,
@@ -130,13 +129,7 @@ export const websocketRpcRouteLayer = Layer.unwrap(
         const { expiresAt } = session;
 
         const sessionEnded = Effect.raceFirst(
-          sessions.streamChanges.pipe(
-            Stream.filter(
-              (change) => change.type === "clientRemoved" && change.sessionId === session.sessionId,
-            ),
-            Stream.take(1),
-            Stream.runDrain,
-          ),
+          sessions.untilEnded(session.sessionId),
           expiresAt === undefined
             ? Effect.never
             : DateTime.now.pipe(

@@ -105,6 +105,14 @@ export class SessionStore extends Context.Service<
       SessionCredentialInternalError
     >;
     readonly streamChanges: Stream.Stream<SessionCredentialChange>;
+    /**
+     * Completes once the session is revoked or expired. Subscribes to changes
+     * before re-reading the session row, so a revoke that lands between the
+     * caller's authentication and this call is still observed. A failed row
+     * read counts as ended: the caller closes the socket rather than keep
+     * serving a session it cannot confirm.
+     */
+    readonly untilEnded: (sessionId: AuthSessionId) => Effect.Effect<void>;
     readonly revoke: (
       sessionId: AuthSessionId,
     ) => Effect.Effect<boolean, SessionCredentialInternalError>;
@@ -561,6 +569,31 @@ export const make = Effect.gen(function* () {
     Effect.mapError((cause) => new ActiveSessionsListError({ cause })),
   );
 
+  const untilEnded: SessionStore["Service"]["untilEnded"] = (sessionId) =>
+    Effect.scoped(
+      Effect.gen(function* () {
+        const changes = yield* PubSub.subscribe(changesPubSub);
+        const now = yield* DateTime.now;
+        const row = yield* authSessions.getById({ sessionId });
+
+        if (
+          Option.isNone(row) ||
+          row.value.revokedAt !== null ||
+          row.value.expiresAt.epochMilliseconds <= now.epochMilliseconds
+        ) {
+          return;
+        }
+
+        while (true) {
+          const change = yield* PubSub.take(changes);
+
+          if (change.type === "clientRemoved" && change.sessionId === sessionId) {
+            return;
+          }
+        }
+      }),
+    ).pipe(Effect.catch(() => Effect.void));
+
   const revoke: SessionStore["Service"]["revoke"] = Effect.fn("SessionStore.revoke")(
     function* (sessionId) {
       const revokedAt = yield* DateTime.now;
@@ -636,6 +669,7 @@ export const make = Effect.gen(function* () {
     get streamChanges() {
       return Stream.fromPubSub(changesPubSub);
     },
+    untilEnded,
     revoke,
     revokeAllExcept,
     markConnected,
