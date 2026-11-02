@@ -39,6 +39,7 @@ import { shellEnvironment } from "../state/shell";
 import { useAtomValue } from "@effect/atom-react";
 import { useAtomCommand } from "../state/use-atom-command";
 import { useLocalShellAccess } from "../localShellAccess";
+import { keybindingsToastAction } from "./-keybindingsToastAction";
 import { usePrimaryEnvironment } from "../state/environments";
 import {
   primaryServerConfigAtom,
@@ -265,49 +266,45 @@ function EventRouter() {
         type: "warning",
         title: t("Invalid keybindings configuration"),
         description: decision.message,
-        ...(canOpenInEditor
-          ? {
-              actionVariant: "outline" as const,
-              actionProps: {
-                children: t("Open keybindings.json"),
-                onClick: () => {
-                  if (!serverConfig || !primaryEnvironment) {
-                    return;
-                  }
-
-                  const editor = resolveAndPersistPreferredEditor(serverConfig.availableEditors);
-
-                  if (!editor) {
-                    return;
-                  }
-
-                  void (async () => {
-                    const result = await openInEditor({
-                      environmentId: primaryEnvironment.environmentId,
-                      input: {
-                        cwd: serverConfig.keybindingsConfigPath,
-                        editor,
-                      },
-                    });
-
-                    if (hasTag(result, "Success")) {
-                      return;
-                    }
-
-                    const error = squashAtomCommandFailure(result);
-                    toastManager.add(
-                      stackedThreadToast({
-                        type: "error",
-                        title: t("Unable to open keybindings file"),
-                        description:
-                          error instanceof Error ? error.message : t("Unknown error opening file."),
-                      }),
-                    );
-                  })();
-                },
-              },
+        ...keybindingsToastAction({
+          canOpenInEditor,
+          label: t("Open keybindings.json"),
+          onOpen: () => {
+            if (!serverConfig || !primaryEnvironment) {
+              return;
             }
-          : {}),
+
+            const editor = resolveAndPersistPreferredEditor(serverConfig.availableEditors);
+
+            if (!editor) {
+              return;
+            }
+
+            void (async () => {
+              const result = await openInEditor({
+                environmentId: primaryEnvironment.environmentId,
+                input: {
+                  cwd: serverConfig.keybindingsConfigPath,
+                  editor,
+                },
+              });
+
+              if (hasTag(result, "Success")) {
+                return;
+              }
+
+              const error = squashAtomCommandFailure(result);
+              toastManager.add(
+                stackedThreadToast({
+                  type: "error",
+                  title: t("Unable to open keybindings file"),
+                  description:
+                    error instanceof Error ? error.message : t("Unknown error opening file."),
+                }),
+              );
+            })();
+          },
+        }),
       }),
     );
   });
