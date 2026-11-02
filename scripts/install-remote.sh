@@ -7,6 +7,8 @@ bin_dir="${ISNADI_BIN_DIR:-$HOME/.local/bin}"
 tag="${ISNADI_VERSION:-}"
 # Isnadi state always lives in ISNADI_HOME or ~/.isnadi. The bundled server reads T3CODE_HOME, so it is
 # derived here and never taken from an ambient T3 Code environment.
+default_home=0
+[ -n "${ISNADI_HOME:-}" ] || default_home=1
 runtime_home="${ISNADI_HOME:-$HOME/.isnadi}"
 ISNADI_HOME="$runtime_home"
 T3CODE_HOME="$runtime_home"
@@ -84,6 +86,13 @@ mkdir -p "$next"
 tar -xzf "$tmp/$archive" -C "$next" --strip-components=1
 test -x "$next/isnadi"
 if [ "$prepare_only" -eq 0 ]; then
+  # Akeru-era installs keep their data in ~/.akeru. Move it before anything creates ~/.isnadi,
+  # and leave a link behind for old tools (the same step productHome.ts takes).
+  if [ "$default_home" -eq 1 ] && [ ! -e "$HOME/.isnadi" ] && [ -d "$HOME/.akeru" ] && [ ! -L "$HOME/.akeru" ]; then
+    if mv "$HOME/.akeru" "$HOME/.isnadi"; then
+      ln -s "$HOME/.isnadi" "$HOME/.akeru" || true
+    fi
+  fi
   mkdir -p "$runtime_home/userdata"
   identity_path="$runtime_home/userdata/remote-link-identity.json"
   ISNADI_IDENTITY_NODE="$next/node/bin/node" \

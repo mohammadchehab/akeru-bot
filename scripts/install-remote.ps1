@@ -91,9 +91,8 @@ $InstallRoot = if ($env:ISNADI_INSTALL_ROOT) { $env:ISNADI_INSTALL_ROOT } else {
 $BinDir = if ($env:ISNADI_BIN_DIR) { $env:ISNADI_BIN_DIR } else { Join-Path $env:LOCALAPPDATA "Isnadi\bin" }
 # Isnadi state always lives in ISNADI_HOME or ~/.isnadi. The bundled server reads T3CODE_HOME, so it is
 # derived here and never taken from an ambient T3 Code environment.
+$DefaultHome = -not $env:ISNADI_HOME
 $RuntimeHome = if ($env:ISNADI_HOME) { $env:ISNADI_HOME } else { Join-Path $HOME ".isnadi" }
-$env:ISNADI_HOME = $RuntimeHome
-$env:T3CODE_HOME = $RuntimeHome
 $IsAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $PrepareOnly -and -not $IsAdministrator) {
   if (-not $PSCommandPath) { throw "Save the installer to a file before running it so Windows can request administrator access." }
@@ -106,6 +105,11 @@ if (-not $PrepareOnly -and -not $IsAdministrator) {
   $process = Start-Process powershell.exe -Verb RunAs -ArgumentList $Forward -Wait -PassThru
   exit $process.ExitCode
 }
+
+# Set only after the elevated relaunch: the elevated child inherits this environment, and an
+# inherited ISNADI_HOME would make it look like the home was chosen, so it would skip moving ~/.akeru.
+$env:ISNADI_HOME = $RuntimeHome
+$env:T3CODE_HOME = $RuntimeHome
 
 $Release = if ($Tag) {
   Invoke-RestMethod -Headers @{ "User-Agent" = "Isnadi-Remote-Installer" } "https://api.github.com/repos/$Repository/releases/tags/$Tag"
@@ -157,6 +161,15 @@ try {
   if (-not (Test-Path $Target)) { Move-Item -LiteralPath $Source -Destination $Target }
   if ($PrepareOnly) { Write-Host "Prepared Isnadi Remote $Version for a transactional service update."; exit 0 }
 
+  # Akeru-era installs keep their data in ~/.akeru. Move it before anything creates ~/.isnadi,
+  # and leave a link behind for old tools (the same step productHome.ts takes).
+  $LegacyHome = Join-Path $HOME ".akeru"
+  if ($DefaultHome -and -not (Test-Path $RuntimeHome) -and (Test-Path $LegacyHome -PathType Container) -and -not (Get-Item $LegacyHome -Force).LinkType) {
+    try {
+      Move-Item -LiteralPath $LegacyHome -Destination $RuntimeHome -ErrorAction Stop
+      New-Item -ItemType Junction -Path $LegacyHome -Target $RuntimeHome -ErrorAction SilentlyContinue | Out-Null
+    } catch { }
+  }
   New-Item -ItemType Directory -Force -Path (Join-Path $RuntimeHome "userdata") | Out-Null
   if ($MigrateEnvironmentId) { $env:ISNADI_REMOTE_ALLOW_IDENTITY_MIGRATION = "1" }
   & (Join-Path $Target "node\node.exe") (Join-Path $Target "initialize-remote-identity.cjs")
