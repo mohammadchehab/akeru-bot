@@ -7,6 +7,7 @@ import {
   createTranslator,
   directionForLocale,
   englishCatalog,
+  firstStrongDirection,
   formattingLocale,
   validateCatalog,
 } from "./index.ts";
@@ -25,6 +26,20 @@ const OTHER = QUEUED.other;
 const FSI = String.fromCodePoint(0x2068);
 
 const PDI = String.fromCodePoint(0x2069);
+
+describe("firstStrongDirection", () => {
+  it.each([
+    ["بند عربي", "rtl"],
+    ["שלום world", "rtl"],
+    ["English first، ثم عربي", "ltr"],
+    ["12. - «» بند", "rtl"],
+    ["12. - «» item", "ltr"],
+    ["123 !?", undefined],
+    ["", undefined],
+  ] as const)("reads %j as %s", (text, direction) => {
+    expect(firstStrongDirection(text)).toBe(direction);
+  });
+});
 
 describe("directionForLocale", () => {
   it.each([

@@ -70,9 +70,19 @@ describe("chat markdown direction", () => {
     // Two paragraphs plus the one inside the quote.
     expect(html.match(/<p[^>]*dir="auto"/g)).toHaveLength(3);
     expect(html).toMatch(/<li[^>]*dir="auto"/);
-    expect(html).toMatch(/<blockquote[^>]*dir="auto"/);
+    expect(html).toMatch(/<blockquote[^>]*dir="rtl"/);
     expect(html).toMatch(/<th[^>]*dir="auto"/);
     expect(html).toMatch(/<td[^>]*dir="auto"/);
+  });
+
+  it("gives quotes and lists the direction of their first letter", () => {
+    expect(render("> اقتباس")).toMatch(/<blockquote[^>]*dir="rtl"/);
+    expect(render("> [!NOTE]\n> ملاحظة")).toMatch(/<div role="note"[^>]*dir="rtl"/);
+    expect(render("- بند\n- item")).toMatch(/<ul[^>]*dir="rtl"/);
+    expect(render("1. بند\n2. item")).toMatch(/<ol[^>]*dir="rtl"/);
+    expect(render("- item\n- بند")).toMatch(/<ul[^>]*dir="ltr"/);
+    expect(render("> quote")).toMatch(/<blockquote[^>]*dir="ltr"/);
+    expect(render("- 1\n- 2")).not.toMatch(/<ul[^>]*dir=/);
   });
 
   it("keeps inline code on the left-to-right island", () => {

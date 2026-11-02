@@ -103,6 +103,13 @@
   list-style-type: lower-roman;
 }
 
+/* An item whose direction differs from its list would paint its outside marker past the list's
+   padding, where the column clips it. Keep the marker inside the item's box instead. */
+.chat-markdown :is(ul, ol):dir(ltr) > li:dir(rtl),
+.chat-markdown :is(ul, ol):dir(rtl) > li:dir(ltr) {
+  list-style-position: inside;
+}
+
 .chat-markdown li + li {
   margin-top: 0.25rem;
 }
