@@ -51,7 +51,9 @@ describe.skipIf(!arabicShips)("Arabic interface", () => {
         language: box("#language-preference"),
         text: document.body.innerText.slice(0, 200),
         message: [...document.querySelectorAll("main *")]
-          .filter((element) => element.textContent?.includes("هذه رسالة") && element.children.length < 4)
+          .filter(
+            (element) => element.textContent?.includes("هذه رسالة") && element.children.length < 4,
+          )
           .slice(-2)
           .map((element) => element.outerHTML.slice(0, 600)),
       };
