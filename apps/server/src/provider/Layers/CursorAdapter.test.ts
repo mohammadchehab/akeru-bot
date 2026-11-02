@@ -150,6 +150,59 @@ describe("CursorAdapter", () => {
     ),
   );
 
+  it.effect("leaves no active turn id on the session once the turn is over", () =>
+    withAdapter(`cat ${JSON.stringify(fixturePath)}`, ({ adapter, dir, terminal }) =>
+      Effect.gen(function* () {
+        yield* start(adapter, dir, "auto");
+        yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+        yield* Deferred.await(terminal);
+
+        // The session is persisted from this list, so a stale key would outlive the turn.
+        const [session] = yield* adapter.listSessions();
+
+        expect(session).not.toHaveProperty("activeTurnId");
+        expect(session).not.toHaveProperty("lastError");
+      }),
+    ),
+  );
+
+  it.live("clears a failed turn's lastError once a later turn succeeds", () =>
+    withAdapter(
+      [
+        `if [ -f "$(dirname "$0")/second" ]; then cat ${JSON.stringify(fixturePath)}; exit 0; fi`,
+        `touch "$(dirname "$0")/second"`,
+        `printf '%s\n' '${INIT}' '${ERROR_RESULT}'`,
+      ].join("\n"),
+      ({ adapter, dir, events }) =>
+        Effect.gen(function* () {
+          const done = (count: number) =>
+            Effect.gen(function* () {
+              for (let attempt = 0; attempt < 200; attempt++) {
+                if (events.filter((event) => event.type === "turn.completed").length >= count)
+                  return;
+
+                yield* Effect.sleep("25 millis");
+              }
+            });
+
+          yield* start(adapter, dir, "auto");
+          yield* adapter.sendTurn({ threadId: THREAD, input: "one" });
+          yield* done(1);
+          expect((yield* adapter.listSessions())[0]).toMatchObject({
+            lastError: "model overloaded",
+          });
+
+          yield* adapter.sendTurn({ threadId: THREAD, input: "two" });
+          yield* done(2);
+
+          const [session] = yield* adapter.listSessions();
+
+          expect(session).not.toHaveProperty("lastError");
+          expect(session).not.toHaveProperty("activeTurnId");
+        }),
+    ),
+  );
+
   it.effect("is read-only for every mode but full-access, which alone gets --force", () =>
     Effect.gen(function* () {
       for (const [mode, flag] of [

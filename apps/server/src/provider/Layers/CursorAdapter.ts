@@ -194,6 +194,20 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       ),
     );
 
+  /**
+   * Ends a turn on the session record: `activeTurnId` and a previous `lastError` are removed, not
+   * left stale, because the session is persisted from `listSessions`.
+   */
+  const endTurnOnSession = (
+    context: CursorSessionContext,
+    patch: Partial<ProviderSession>,
+    updatedAt: string,
+  ) => {
+    const { activeTurnId: _activeTurnId, lastError: _lastError, ...rest } = context.session;
+
+    context.session = { ...rest, ...patch, updatedAt };
+  };
+
   const startSession: CursorAdapterShape["startSession"] = Effect.fn("startSession")(
     function* (input) {
       if (input.provider !== undefined && input.provider !== PROVIDER) {
@@ -268,7 +282,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
   const abortTurn = (context: CursorSessionContext, turnId: TurnId) =>
     Effect.gen(function* () {
       context.active = undefined;
-      touch(context, { status: "ready" }, yield* nowIso);
+      endTurnOnSession(context, { status: "ready" }, yield* nowIso);
       yield* emitAborted(context.session.threadId, turnId);
     });
 
@@ -301,6 +315,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         args: spawnCommand.args,
         cwd: context.cwd,
         env: environment,
+        shell: spawnCommand.shell,
         prompt,
       }).pipe(Effect.provideService(ChildProcessSpawner.ChildProcessSpawner, spawner));
 
@@ -345,7 +360,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
 
       context.active = undefined;
 
-      touch(
+      endTurnOnSession(
         context,
         {
           status: result.outcome === "failed" ? "error" : "ready",
@@ -395,7 +410,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
             const message = "Failed to run the Cursor CLI.";
 
             context.active = undefined;
-            touch(context, { status: "error", lastError: message }, yield* nowIso);
+            endTurnOnSession(context, { status: "error", lastError: message }, yield* nowIso);
             yield* Effect.logWarning(message, { cause });
             yield* emit({
               ...(yield* eventBase({ threadId, turnId })),

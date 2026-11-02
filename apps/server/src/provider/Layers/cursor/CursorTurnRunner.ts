@@ -28,6 +28,8 @@ export interface CursorTurnStartInput {
   readonly args: ReadonlyArray<string>;
   readonly cwd: string;
   readonly env: NodeJS.ProcessEnv;
+  /** From `resolveSpawnCommand`: true for a Windows `.cmd` shim, which must run through a shell. */
+  readonly shell?: boolean | undefined;
   /** Written to the child's stdin, which is then closed: `agent -p` reads its prompt from there. */
   readonly prompt: string;
 }
@@ -52,6 +54,7 @@ export const startCursorTurn = Effect.fn("startCursorTurn")(function* (
       cwd: input.cwd,
       env: input.env,
       extendEnv: true,
+      ...(input.shell !== undefined ? { shell: input.shell } : {}),
       stdin: Stream.make(new TextEncoder().encode(input.prompt)),
     }),
   );

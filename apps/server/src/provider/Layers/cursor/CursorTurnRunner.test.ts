@@ -5,6 +5,8 @@ import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import * as Stream from "effect/Stream";
 
+import { ChildProcessSpawner } from "effect/unstable/process";
+
 import { startCursorTurn, type CursorTurnResult } from "./CursorTurnRunner.ts";
 import type { CursorTurnEvent } from "./CursorStreamEvents.ts";
 
@@ -109,6 +111,31 @@ describe("startCursorTurn", () => {
       expect(result.message).toContain("agent login");
       expect(result.exitCode).toBe(1);
     }),
+  );
+
+  it.effect("passes the shell option through, for a Windows .cmd shim", () =>
+    Effect.gen(function* () {
+      let spawned: { readonly options?: { readonly shell?: unknown } } | undefined;
+
+      const spawner = ChildProcessSpawner.make((command) => {
+        spawned = command as typeof spawned;
+
+        return Effect.die("captured");
+      });
+
+      yield* Effect.exit(
+        startCursorTurn({
+          command: "agent.cmd",
+          args: [],
+          cwd: "/",
+          env: {},
+          prompt: "x",
+          shell: true,
+        }).pipe(Effect.provideService(ChildProcessSpawner.ChildProcessSpawner, spawner)),
+      );
+
+      expect(spawned?.options?.shell).toBe(true);
+    }).pipe(Effect.scoped),
   );
 
   it.effect("keeps only the tail of a very long stderr", () =>
