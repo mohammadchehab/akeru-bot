@@ -91,7 +91,7 @@ export function CursorAccountSection({
       {state.kind === "signed-in" ? (
         <SettingsRow
           title={t("Signed in")}
-          description={state.email ?? t("Signed in through the Cursor CLI.")}
+          description={state.detail ?? t("Signed in through the Cursor CLI.")}
           control={
             <Button
               size="sm"

@@ -20,20 +20,20 @@ describe("cursorAccountState", () => {
     ).toEqual({ kind: "signed-out" });
   });
 
-  it("shows the account email once signed in", () => {
+  it("shows the account the CLI reports once signed in", () => {
     expect(
       cursorAccountState(
         provider({
           installed: true,
-          auth: { status: "authenticated", email: "dev@example.com" },
+          auth: { status: "authenticated", type: "cached_token", label: "dev@example.com" },
         }),
       ),
-    ).toEqual({ kind: "signed-in", email: "dev@example.com" });
+    ).toEqual({ kind: "signed-in", detail: "dev@example.com" });
   });
 
-  it("keeps sign-out available when the login came from CURSOR_API_KEY without an email", () => {
+  it("keeps sign-out available when the CLI reports no account label", () => {
     expect(
       cursorAccountState(provider({ installed: true, auth: { status: "authenticated" } })),
-    ).toEqual({ kind: "signed-in", email: null });
+    ).toEqual({ kind: "signed-in", detail: null });
   });
 });

@@ -43,6 +43,8 @@ export interface ProviderClientDefinition {
    * built-in default or custom — advertises the same marker.
    */
   readonly badgeLabel?: string;
+  /** The environment runs one instance of this driver, so the page offers no way to add another. */
+  readonly singleInstance?: true;
 }
 
 export const PROVIDER_CLIENT_DEFINITIONS: readonly ProviderClientDefinition[] = [
@@ -82,6 +84,7 @@ export const PROVIDER_CLIENT_DEFINITIONS: readonly ProviderClientDefinition[] = 
     value: ProviderDriverKind.make("cursor"),
     label: "Cursor",
     icon: CursorIcon,
+    singleInstance: true,
     settingsSchema: CursorSettings,
   },
   {

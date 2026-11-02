@@ -344,7 +344,7 @@ export function ProviderInstancesSection({
               )}
               {t("Refresh")}
             </Button>
-            {addDriverOption ? (
+            {addDriverOption && !addDriverOption.singleInstance ? (
               <Button size="xs" variant="ghost-muted" onClick={() => setIsAddDialogOpen(true)}>
                 <PlusIcon className="size-3.5" />
                 {account ? t("Add separate account") : t("Add account")}
@@ -456,7 +456,7 @@ export function ProviderInstancesSection({
         )}
       </SettingsSection>
 
-      {isAddDialogOpen && addDriverOption ? (
+      {isAddDialogOpen && addDriverOption && !addDriverOption.singleInstance ? (
         <AddProviderInstanceDialog
           open
           environmentId={environmentId}
