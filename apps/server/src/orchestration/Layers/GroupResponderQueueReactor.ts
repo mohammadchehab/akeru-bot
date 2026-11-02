@@ -14,10 +14,12 @@ import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
+import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as SubscriptionRef from "effect/SubscriptionRef";
 
 import { forkParked } from "../../serverActivation.ts";
+import { COMMAND_PRODUCED_NO_EVENTS, OrchestrationCommandInvariantError } from "../Errors.ts";
 import { OrchestrationEngineService } from "../Services/OrchestrationEngine.ts";
 import { ProjectionSnapshotQuery } from "../Services/ProjectionSnapshotQuery.ts";
 import {
@@ -76,6 +78,13 @@ const make = Effect.gen(function* () {
         ),
       ),
       Effect.asVoid,
+      // A decider that finds nothing to do (a reply with no new mention, a spent budget, a Stop that
+      // got there first) is the normal outcome of most hand-off attempts, not a failure.
+      Effect.catchIf(
+        (error) => isInvariantError(error) && error.detail === COMMAND_PRODUCED_NO_EVENTS,
+        () =>
+          Effect.logDebug("group responder queue command had nothing to do", { threadId, what }),
+      ),
       Effect.catchCause((cause) =>
         Cause.hasInterruptsOnly(cause)
           ? Effect.failCause(cause)
@@ -250,5 +259,7 @@ const make = Effect.gen(function* () {
 
   return { start, drain: drainRestored, drainThrough } satisfies GroupResponderQueueReactorShape;
 });
+
+const isInvariantError = Schema.is(OrchestrationCommandInvariantError);
 
 export const GroupResponderQueueReactorLive = Layer.effect(GroupResponderQueueReactor, make);
