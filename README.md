@@ -9,6 +9,12 @@
   Named AI teammates that run on <em>your</em> machine, use <em>your</em> subscriptions, and keep <em>your</em> data.
 </p>
 <p align="center"><em>Bots with memory · Group chats · Their own computer · Telegram, Slack, WhatsApp & more · Desktop, web & mobile</em></p>
+<p align="center"><sub>Born as <a href="https://github.com/opencoredev/akeru-bot">Akeru Bot</a>, which grew out of <a href="https://t3.codes">T3 Code</a>.</sub></p>
+
+<p align="center">
+  <strong>English</strong> ·
+  <a href="./README.ar.md">العربية</a>
+</p>
 
 <p align="center">
   <a href="https://github.com/mohammadchehab/isnadibot/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/mohammadchehab/isnadibot/actions/workflows/ci.yml/badge.svg?branch=main&event=push" alt="Build status"></a>
@@ -38,6 +44,9 @@
 > Your bots run in an environment you own (your laptop, your server, or a sandbox you pick), and they
 > work through the Claude, ChatGPT, Grok, or Kimi subscription you already pay for. There's no
 > IsnadiBot account and no IsnadiBot cloud.
+>
+> IsnadiBot started as a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot) and keeps its
+> full history. See [Credits](#-credits).
 
 ---
 
@@ -60,14 +69,14 @@
 
 ## 🆚 IsnadiBot vs. hosted AI teammates
 
-|                          | **IsnadiBot**                                       | **Hosted (e.g. Grok Bot)**     |
-| ------------------------ | --------------------------------------------------- | ------------------------------ |
-| Source code              | ✅ Open source, MIT                                 | ❌ Closed                      |
-| Where your bots run      | Your machine, your server, or a sandbox you choose | The vendor's cloud             |
-| Models                   | Claude, ChatGPT, Grok, Kimi, OpenCode, mixed freely | The vendor's own models        |
-| Your files, chats, logins | Stay in your environment                            | Stored with the vendor         |
-| Account required         | None                                                | Vendor account                 |
-| Fork it, extend it       | ✅ Plugins, MCP servers, or the code itself         | ❌                             |
+|                           | **IsnadiBot**                                       | **Hosted (e.g. Grok Bot)** |
+| ------------------------- | --------------------------------------------------- | -------------------------- |
+| Source code               | ✅ Open source, MIT                                 | ❌ Closed                  |
+| Where your bots run       | Your machine, your server, or a sandbox you choose  | The vendor's cloud         |
+| Models                    | Claude, ChatGPT, Grok, Kimi, OpenCode, mixed freely | The vendor's own models    |
+| Your files, chats, logins | Stay in your environment                            | Stored with the vendor     |
+| Account required          | None                                                | Vendor account             |
+| Fork it, extend it        | ✅ Plugins, MCP servers, or the code itself         | ❌                         |
 
 ---
 
@@ -228,6 +237,19 @@ If IsnadiBot is useful to you, a ⭐ helps other people find it.
 
 Thanks to everyone whose work is in IsnadiBot, including the Akeru Bot and T3 Code contributors
 whose commits this project is built on.
+
+<p align="center">
+  <a href="https://github.com/mohammadchehab/isnadibot/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=mohammadchehab/isnadibot&max=200&columns=12" alt="IsnadiBot contributors">
+  </a>
+</p>
+
+---
+
+## 👥 Contributors
+
+IsnadiBot started as Akeru Bot, and Akeru Bot started as T3 Code. Every commit from both projects
+is still in this repository, so everyone below helped build it. Thank you.
 
 <p align="center">
   <a href="https://github.com/mohammadchehab/isnadibot/graphs/contributors">
