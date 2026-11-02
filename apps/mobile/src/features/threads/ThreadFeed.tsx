@@ -65,6 +65,9 @@ import {
 } from "./thread-feed-images";
 import { useMarkdownStyles } from "./thread-feed-markdown";
 import { ThreadFeedPlaceholder, renderFeedEntry } from "./thread-feed-rows";
+import { presentGroupReplyActions } from "./group-reply-actions";
+import type { GroupReplyTarget } from "./groupReply";
+import { setGroupReplyTarget } from "../../state/group-reply-target";
 import { useThreadFeedDisclosure } from "./use-thread-feed-disclosure";
 import { useThreadFeedFollow } from "./use-thread-feed-follow";
 import { useMarkdownLinkPress } from "./use-thread-feed-link-press";
@@ -423,6 +426,23 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
 
   // LegendList repaints visible rows only when their item or extraData changes, never for a
   // new renderItem closure. Everything rows read lives here and doubles as extraData.
+  // Group chats only: a long-press on a bot's message offers Reply, which fills the composer chip.
+  const isGroupChat = props.speakerGroup != null;
+
+  const onReplyToMessage = useMemo(
+    () =>
+      isGroupChat
+        ? (target: GroupReplyTarget) =>
+            presentGroupReplyActions({
+              target,
+              replyLabel: t("Reply"),
+              cancelLabel: t("Cancel"),
+              onReply: (chosen) => setGroupReplyTarget(feedThreadKey, chosen),
+            })
+        : undefined,
+    [feedThreadKey, isGroupChat, t],
+  );
+
   const feedRenderContext = useMemo(
     () => ({
       environmentId: props.environmentId,
@@ -449,6 +469,8 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
       replySynthesis,
       formatDate,
       unknownBotLabel: t("Unknown bot"),
+      onReplyToMessage,
+      replyLabel: t("Reply"),
     }),
     [
       formatDate,
@@ -472,6 +494,7 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
       props.environmentId,
       props.skills,
       props.silentRun,
+      onReplyToMessage,
       renderMarkdownImage,
       replyPlayback,
       replySynthesis,

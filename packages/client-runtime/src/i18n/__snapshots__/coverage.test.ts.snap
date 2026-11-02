@@ -352,6 +352,7 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/mobile/src/features/threads/ComposerCommandPopover.tsx",
     "apps/mobile/src/features/threads/ComputerDesktopNotice.tsx",
     "apps/mobile/src/features/threads/DurableFactsCard.tsx",
+    "apps/mobile/src/features/threads/GroupReplyChip.tsx",
     "apps/mobile/src/features/threads/NewTaskContextPickerScreens.tsx",
     "apps/mobile/src/features/threads/NewTaskDraftScreen.tsx",
     "apps/mobile/src/features/threads/NewTaskRouteScreen.tsx",

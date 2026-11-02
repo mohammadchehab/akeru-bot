@@ -42,6 +42,12 @@ type GroupAddressing =
   mentions with the same parser chains use, against active members.
 - `reply` names a message in the same thread. A user message, or one with no `respondingBotId`,
   fails the command.
+- Mobile starts a reply with a long-press on a bot message in a group chat (Reply or Cancel in a
+  native sheet, plus a "Reply" accessibility action). Only messages with a `respondingBotId`
+  qualify; user messages, older messages and direct chats offer nothing. The target is held in
+  memory per chat, not in the draft, and clears on send, on the chip's X, when the chat changes,
+  or when the message leaves the read model. A mention in the draft beats the reply, and the chip
+  then reads "Quoting".
 - Compatibility: until the clients send `addressing`, a `respondingBotId` alone is read as
   `bots: [respondingBotId]`. Sending both fails the command. The field is removed once web and
   mobile send `addressing`.

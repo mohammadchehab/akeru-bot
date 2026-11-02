@@ -120,7 +120,8 @@ Open a group and use its group sidebar to manage it:
 Without a mention, the group decides who answers. Type `@` and a bot's name, such as `@Mori`, to
 send that message to that bot. It answers with its own provider and model. Mention several bots to
 have each answer in the order you wrote them, or type `@everyone` to have every bot answer. To
-answer one message, use **Reply** on a bot's message on web and desktop; the bot that wrote it
+answer one message, use **Reply** on a bot's message on web and desktop, or press and hold a bot's
+message on mobile and choose **Reply**; the bot that wrote it
 answers. A mention in your message wins over the reply, and the reply chip then reads **Quoting**
 and keeps the quote. If two bots in the group share a name, Isnadi cannot tell them apart, so it
 holds the message and asks you to pick one from the `@` menu. Mentions of people, such as `@Leo`,

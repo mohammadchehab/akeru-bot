@@ -11,9 +11,9 @@ import {
 import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
 import { formatElapsed } from "@isnadi/shared/orchestrationTiming";
 import { formatTokens, formatUsd } from "@isnadi/shared/usageFormat";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, type ReactNode } from "react";
 import { Markdown } from "react-native-nitro-markdown";
-import { Platform, Text as NativeText, type ColorValue, View } from "react-native";
+import { Platform, Pressable, Text as NativeText, type ColorValue, View } from "react-native";
 import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 import { hasWideMarkdownBlock } from "../../lib/wideMarkdownBlocks";
 import {
@@ -34,6 +34,7 @@ import { useOptionalReplyPlayback } from "../replyPlayback/ReplyPlaybackProvider
 import { cn } from "../../lib/cn";
 import type { ThreadFeedEntry } from "../../lib/threadActivity";
 import { formatBotStepEngine, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
+import { groupReplyTarget, type GroupReplyTarget } from "./groupReply";
 import { ThreadWorkGroupToggle, ThreadWorkLog } from "./thread-work-log";
 import { MessageAttachmentFile, MessageAttachmentImage } from "./thread-feed-images";
 import type { MarkdownStyleSet, MarkdownStyleSets } from "./thread-feed-markdown";
@@ -62,6 +63,19 @@ function formatMessageTime(
 // remounts rows when they scroll back into view, and replaying an entrance for
 // old content would be its own kind of jank.
 const FRESH_ENTRY_WINDOW_MS = 3_000;
+
+/** A long-press on a bot's message in a group opens the Reply sheet; elsewhere it is inert. */
+function ReplyLongPress(props: {
+  readonly target: GroupReplyTarget | null;
+  readonly onReply: ((target: GroupReplyTarget) => void) | undefined;
+  readonly children: ReactNode;
+}) {
+  const { target, onReply } = props;
+
+  if (!target || !onReply) return <>{props.children}</>;
+
+  return <Pressable onLongPress={() => onReply(target)}>{props.children}</Pressable>;
+}
 
 function isFreshTimestamp(input: string): boolean {
   const timestamp = Date.parse(input);
@@ -95,6 +109,9 @@ type ThreadFeedRenderContext = {
   readonly replyPlayback: ReturnType<typeof useOptionalReplyPlayback>;
   readonly formatDate: (value: number, options: Intl.DateTimeFormatOptions) => string;
   readonly unknownBotLabel: string;
+  /** Group chats only: set when a long-press on a bot's message may start a reply. */
+  readonly onReplyToMessage?: ((target: GroupReplyTarget) => void) | undefined;
+  readonly replyLabel: string;
 };
 
 export function renderFeedEntry(
@@ -254,43 +271,60 @@ export function renderFeedEntry(
       ? stabilizeStreamingMarkdown(message.text)
       : message.text;
 
+    const replyBotId = message.respondingBotId ?? null;
+
+    const replyTarget = groupReplyTarget({
+      isGroup: props.onReplyToMessage !== undefined,
+      message,
+      botName:
+        (replyBotId ? props.botsById?.get(replyBotId)?.name : undefined) ?? props.unknownBotLabel,
+    });
+
     return (
       <Animated.View
         className={cn(showAssistantMeta ? "mb-5 px-1" : "mb-2 px-1")}
         {...(enterAnimated ? { entering: FadeIn.duration(220) } : {})}
+        {...(replyTarget && props.onReplyToMessage
+          ? {
+              accessibilityActions: [{ name: "reply", label: props.replyLabel }],
+              onAccessibilityAction: () => props.onReplyToMessage?.(replyTarget),
+            }
+          : {})}
       >
-        {speakerBotId ? (
-          <View className="mb-1.5 flex-row items-center gap-2">
-            <BotAvatarView
-              avatar={speakerBot?.avatar ?? seededBlobAvatar(speakerBotId)}
-              size={20}
-            />
-            <Text className="font-t3-medium text-sm text-foreground" numberOfLines={1}>
-              {speakerBot?.name ?? props.unknownBotLabel}
-            </Text>
-          </View>
-        ) : null}
-        {entry.botStepMeter ? <BotStepMeter meter={entry.botStepMeter} /> : null}
-        {message.text.trim().length > 0 ? (
-          hasNativeSelectableMarkdownText() ? (
-            <SelectableMarkdownText
-              markdown={assistantMarkdown}
-              skills={props.skills}
-              textStyle={styles.nativeTextStyle}
-              onLinkPress={props.onMarkdownLinkPress}
-              renderImage={props.renderMarkdownImage}
-            />
-          ) : (
-            <Markdown
-              options={{ gfm: true }}
-              renderers={styles.renderers}
-              styles={styles.styles}
-              theme={styles.theme}
-            >
-              {assistantMarkdown}
-            </Markdown>
-          )
-        ) : null}
+        <ReplyLongPress target={replyTarget} onReply={props.onReplyToMessage}>
+          {speakerBotId ? (
+            <View className="mb-1.5 flex-row items-center gap-2">
+              <BotAvatarView
+                avatar={speakerBot?.avatar ?? seededBlobAvatar(speakerBotId)}
+                size={20}
+              />
+              <Text className="font-t3-medium text-sm text-foreground" numberOfLines={1}>
+                {speakerBot?.name ?? props.unknownBotLabel}
+              </Text>
+            </View>
+          ) : null}
+          {entry.botStepMeter ? <BotStepMeter meter={entry.botStepMeter} /> : null}
+          {message.text.trim().length > 0 ? (
+            hasNativeSelectableMarkdownText() ? (
+              <SelectableMarkdownText
+                markdown={assistantMarkdown}
+                skills={props.skills}
+                textStyle={styles.nativeTextStyle}
+                onLinkPress={props.onMarkdownLinkPress}
+                renderImage={props.renderMarkdownImage}
+              />
+            ) : (
+              <Markdown
+                options={{ gfm: true }}
+                renderers={styles.renderers}
+                styles={styles.styles}
+                theme={styles.theme}
+              >
+                {assistantMarkdown}
+              </Markdown>
+            )
+          ) : null}
+        </ReplyLongPress>
         {attachments.map((attachment) => {
           return attachment.type === "file" ? (
             <MessageAttachmentFile
