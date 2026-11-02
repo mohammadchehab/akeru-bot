@@ -379,7 +379,33 @@ describe("GroupResponderQueueReactor", () => {
     }).pipe(Effect.scoped),
   );
 
-  it.effect("hands over a reply finished after the session already went ready", () =>
+  it.effect("with a bot waiting, sends the mention before the one advance", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(h, (reactor) =>
+        Effect.gen(function* () {
+          yield* PubSub.publish(h.events, queueSet(1, THREAD, ["bot-writer"]));
+          yield* PubSub.publish(h.events, sessionSet(2, THREAD, "running"));
+          yield* PubSub.publish(
+            h.events,
+            reply(3, THREAD, "@bot-boss, over", { streaming: true, messageId: "msg-1" }),
+          );
+          // Ingestion finalizes the reply before it sets the session ready.
+          yield* PubSub.publish(h.events, reply(4, THREAD, "", { messageId: "msg-1" }));
+          yield* PubSub.publish(h.events, sessionSet(5, THREAD, "ready"));
+          yield* reactor.drainThrough(5);
+
+          expect(h.dispatched.map((command) => command.type)).toEqual([
+            "thread.responder.mention",
+            "thread.responder.advance",
+          ]);
+        }),
+      );
+    }).pipe(Effect.scoped),
+  );
+
+  it.effect("hands a stopped turn's half-streamed reply to nobody", () =>
     Effect.gen(function* () {
       const h = yield* harness;
 
@@ -390,15 +416,12 @@ describe("GroupResponderQueueReactor", () => {
             h.events,
             reply(2, THREAD, "Over to @bot-boss", { streaming: true, messageId: "msg-1" }),
           );
-          // `turn.completed` sets the session ready before it flushes the turn's last message.
-          yield* PubSub.publish(h.events, sessionSet(3, THREAD, "ready"));
+          yield* PubSub.publish(h.events, sessionSet(3, THREAD, "error"));
+          // A later reply finishing under the same id must not be treated as a mention.
           yield* PubSub.publish(h.events, reply(4, THREAD, "", { messageId: "msg-1" }));
           yield* reactor.drainThrough(4);
 
-          expect(h.dispatched.map((command) => command.type)).toEqual([
-            "thread.responder.mention",
-            "thread.responder.advance",
-          ]);
+          expect(h.dispatched).toEqual([]);
         }),
       );
     }).pipe(Effect.scoped),

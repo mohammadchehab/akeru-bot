@@ -19,6 +19,65 @@ describe("ProviderRuntimeIngestion", () => {
   const testScope = createRuntimeIngestionHarness();
   const { createHarness } = testScope;
   afterEach(testScope.dispose);
+  it("finalizes a completed turn's reply before the session turns ready", async () => {
+    const harness = await createHarness();
+    const turnId = asTurnId("turn-reply-before-ready");
+
+    harness.emit({
+      type: "turn.started",
+      eventId: asEventId("evt-order-started"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:01.000Z",
+      turnId,
+    });
+    harness.emit({
+      type: "content.delta",
+      eventId: asEventId("evt-order-delta"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:02.000Z",
+      turnId,
+      itemId: asItemId("item-order"),
+      payload: { streamKind: "assistant_text", delta: "Over to @bot-boss" },
+    });
+    harness.emit({
+      type: "turn.completed",
+      eventId: asEventId("evt-order-completed"),
+      provider: ProviderDriverKind.make("codex"),
+      threadId: asThreadId("thread-1"),
+      createdAt: "2026-01-01T00:00:03.000Z",
+      turnId,
+      payload: { state: "completed" },
+    });
+
+    await waitForThread(
+      harness,
+      (entry) => entry.session?.status === "ready" && entry.session.activeTurnId === null,
+    );
+
+    const events = await harness.run(
+      Stream.runCollect(harness.engine.readEvents(0, 1000)).pipe(
+        Effect.map((chunk) => Array.from(chunk)),
+      ),
+    );
+
+    const finalReply = events.findIndex(
+      (event) =>
+        event.type === "thread.message-sent" &&
+        event.payload.role === "assistant" &&
+        event.payload.turnId === turnId &&
+        !event.payload.streaming,
+    );
+
+    const ready = events.findLastIndex(
+      (event) => event.type === "thread.session-set" && event.payload.session.status === "ready",
+    );
+
+    expect(finalReply).toBeGreaterThan(-1);
+    expect(ready).toBeGreaterThan(finalReply);
+  });
+
   it("adds a visible reply when a completed turn emitted only whitespace", async () => {
     const harness = await createHarness();
     const turnId = asTurnId("turn-whitespace-only");

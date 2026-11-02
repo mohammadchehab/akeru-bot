@@ -381,6 +381,8 @@ export function createAdmission({
           ? yield* getSourceProposedPlanReferenceForAcceptedTurnStart(thread.id, eventTurnId)
           : null;
 
+      let deferredLifecycle: Effect.Effect<void, unknown> | undefined;
+
       if (
         event.type === "session.started" ||
         event.type === "session.state.changed" ||
@@ -435,7 +437,7 @@ export function createAdmission({
                 ? null
                 : (thread.session?.lastError ?? null);
 
-        if (shouldApplyThreadLifecycle) {
+        const applyLifecycle = Effect.gen(function* () {
           if (event.type === "turn.started" && acceptedTurnStartedSourcePlan !== null) {
             yield* markSourceProposedPlanImplemented(
               acceptedTurnStartedSourcePlan.sourceThreadId,
@@ -475,6 +477,13 @@ export function createAdmission({
             },
             createdAt: now,
           });
+        });
+
+        // A completed turn's replies are finalized before its session turns ready, so
+        // consumers of the ready session (the responder queue) see the final reply.
+        if (shouldApplyThreadLifecycle) {
+          if (event.type === "turn.completed") deferredLifecycle = applyLifecycle;
+          else yield* applyLifecycle;
         }
       }
 
@@ -486,6 +495,7 @@ export function createAdmission({
         conflictsWithActiveTurn,
         pendingTurnStart,
         shouldApplyThreadLifecycle,
+        deferredLifecycle,
       };
     });
 

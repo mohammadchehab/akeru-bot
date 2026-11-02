@@ -253,7 +253,12 @@ export const decideResponderMention = Effect.fn("decideResponderMention")(functi
   // finished event carries none.
   const reply = thread.messages.findLast((message) => message.id === command.messageId);
 
-  if (reply === undefined || reply.role !== "assistant" || reply.turnId !== command.turnId) {
+  if (
+    reply === undefined ||
+    reply.role !== "assistant" ||
+    reply.turnId !== command.turnId ||
+    reply.respondingBotId !== command.botId
+  ) {
     return [];
   }
 
