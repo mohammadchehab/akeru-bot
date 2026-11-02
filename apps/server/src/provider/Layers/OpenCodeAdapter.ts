@@ -19,6 +19,7 @@ import {
   TurnId,
 } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
+import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as FileSystem from "effect/FileSystem";
@@ -69,6 +70,9 @@ import {
   abortOpenCodeSessionForTeardown,
   stopOpenCodeContext,
 } from "./opencode/OpenCodeSessionLifecycle.ts";
+
+/** How long a Stop waits for an in-flight prompt before aborting anyway. */
+const PROMPT_SETTLE_TIMEOUT = "10 seconds";
 
 export interface OpenCodeAdapterLiveOptions {
   readonly instanceId?: ProviderInstanceId;
@@ -323,6 +327,10 @@ export function makeOpenCodeAdapter(
       const savedVariant = getModelSelectionStringOptionValue(modelSelection, "variant");
       const variant = savedVariant === OPENCODE_PROVIDER_DEFAULT_VARIANT ? undefined : savedVariant;
 
+      // Mark the prompt as in flight before the turn is marked active, so a Stop that lands from here on waits for it (see interruptTurn).
+      const promptInFlight = yield* Deferred.make<void>();
+      context.promptInFlight = promptInFlight;
+
       context.activeTurnId = turnId;
       context.activeAgent = agent;
       context.activeVariant = variant;
@@ -356,42 +364,54 @@ export function makeOpenCodeAdapter(
           ...(input.persistentMemoryContext ? { system: input.persistentMemoryContext } : {}),
           parts: [...(text.trim() ? [{ type: "text" as const, text }] : []), ...fileParts],
         }),
-      ).pipe(
-        Effect.mapError(toRequestError),
-        // On failure of a fresh turn: clear active-turn state, flip the
-        // session back to ready with lastError set, emit turn.aborted, then
-        // let the typed error propagate. We don't need to rebuild the error
-        // here — `toRequestError` already produced the right shape. A failed
-        // steer leaves the still-running original turn untouched.
-        Effect.tapError((requestError) =>
-          steeringTurnId !== undefined
-            ? Effect.void
-            : Effect.gen(function* () {
-                context.activeTurnId = undefined;
-                context.activeAgent = undefined;
-                context.activeVariant = undefined;
-                yield* updateProviderSession(
-                  context,
-                  {
-                    status: "ready",
-                    model: modelSelection?.model ?? context.session.model,
-                    lastError: requestError.detail,
-                  },
-                  { clearActiveTurnId: true },
-                );
-                yield* emit({
-                  ...(yield* buildEventBase({
-                    threadId: input.threadId,
-                    turnId,
-                  })),
-                  type: "turn.aborted",
-                  payload: {
-                    reason: requestError.detail,
-                  },
-                });
-              }),
-        ),
-      );
+      )
+        .pipe(
+          Effect.mapError(toRequestError),
+          // On failure of a fresh turn: clear active-turn state, flip the
+          // session back to ready with lastError set, emit turn.aborted, then
+          // let the typed error propagate. We don't need to rebuild the error
+          // here — `toRequestError` already produced the right shape. A failed
+          // steer leaves the still-running original turn untouched.
+          Effect.tapError((requestError) =>
+            steeringTurnId !== undefined
+              ? Effect.void
+              : Effect.gen(function* () {
+                  context.activeTurnId = undefined;
+                  context.activeAgent = undefined;
+                  context.activeVariant = undefined;
+                  yield* updateProviderSession(
+                    context,
+                    {
+                      status: "ready",
+                      model: modelSelection?.model ?? context.session.model,
+                      lastError: requestError.detail,
+                    },
+                    { clearActiveTurnId: true },
+                  );
+                  yield* emit({
+                    ...(yield* buildEventBase({
+                      threadId: input.threadId,
+                      turnId,
+                    })),
+                    type: "turn.aborted",
+                    payload: {
+                      reason: requestError.detail,
+                    },
+                  });
+                }),
+          ),
+        )
+        .pipe(
+          Effect.ensuring(
+            Deferred.succeed(promptInFlight, undefined).pipe(
+              Effect.andThen(
+                Effect.sync(() => {
+                  if (context.promptInFlight === promptInFlight) context.promptInFlight = undefined;
+                }),
+              ),
+            ),
+          ),
+        );
 
       return {
         threadId: input.threadId,
@@ -407,6 +427,14 @@ export function makeOpenCodeAdapter(
     const interruptTurn: OpenCodeAdapterShape["interruptTurn"] = Effect.fn("interruptTurn")(
       function* (threadId, turnId) {
         const context = yield* ensureSessionContext(sessions, threadId);
+
+        // A prompt still travelling to the server would outlive an abort that beat it there.
+        if (context.promptInFlight) {
+          yield* Deferred.await(context.promptInFlight).pipe(
+            Effect.timeoutOption(PROMPT_SETTLE_TIMEOUT),
+          );
+        }
+
         yield* runOpenCodeSdk("session.abort", () =>
           context.client.session.abort({ sessionID: context.openCodeSessionId }),
         ).pipe(

@@ -70,6 +70,12 @@ export function makeOpenCodeAdapterHarness() {
       revertMessageID: undefined as string | undefined,
       promptCalls: [] as Array<unknown>,
       promptAsyncError: null as Error | null,
+      /** Holds `promptAsync` open, like a request still travelling to the server. */
+      promptAsyncHold: null as (() => Promise<void>) | null,
+      /** Called when `promptAsync` is entered, before it is held. */
+      onPromptEntered: null as (() => void) | null,
+      /** Order in which the server saw a prompt being accepted and an abort. */
+      callOrder: [] as string[],
       closeError: null as Error | null,
       messages: [] as MessageEntry[],
       subscribedEvents: [] as unknown[],
@@ -113,6 +119,9 @@ export function makeOpenCodeAdapterHarness() {
       this.state.revertMessageID = undefined;
       this.state.promptCalls.length = 0;
       this.state.promptAsyncError = null;
+      this.state.promptAsyncHold = null;
+      this.state.onPromptEntered = null;
+      this.state.callOrder.length = 0;
       this.state.closeError = null;
       this.state.messages = [];
       this.state.subscribedEvents = [];
@@ -237,6 +246,7 @@ export function makeOpenCodeAdapterHarness() {
           },
           abort: async ({ sessionID }: { sessionID: string }) => {
             runtimeMock.state.abortCalls.push(sessionID);
+            runtimeMock.state.callOrder.push("abort");
             await runtimeMock.state.abortImplementation?.(sessionID);
           },
           children: async ({ sessionID }: { sessionID: string }) => {
@@ -246,10 +256,14 @@ export function makeOpenCodeAdapterHarness() {
           },
           promptAsync: async <Input>(input: Input) => {
             runtimeMock.state.promptCalls.push(input);
+            runtimeMock.state.onPromptEntered?.();
+            await runtimeMock.state.promptAsyncHold?.();
 
             if (runtimeMock.state.promptAsyncError) {
               throw runtimeMock.state.promptAsyncError;
             }
+
+            runtimeMock.state.callOrder.push("prompt");
           },
           messages: async () => ({ data: runtimeMock.state.messages }),
           revert: async ({ sessionID, messageID }: { sessionID: string; messageID?: string }) => {
