@@ -125,7 +125,11 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
   p: function MarkdownParagraph({ node: _node, children, ...props }) {
     const { skills } = use(ChatMarkdownRendererContext);
 
-    return <p {...props}>{renderSkillInlineMarkdownChildren(children, skills)}</p>;
+    return (
+      <p {...props} dir="auto">
+        {renderSkillInlineMarkdownChildren(children, skills)}
+      </p>
+    );
   },
   blockquote: function MarkdownBlockquote({ node: _node, children, ...props }) {
     const alert = recordLookup(
@@ -134,13 +138,17 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
     );
 
     if (!alert) {
-      return <blockquote {...props}>{children}</blockquote>;
+      return (
+        <blockquote {...props} dir="auto">
+          {children}
+        </blockquote>
+      );
     }
 
     // Not a <blockquote>: the stylesheet mutes those, and an alert's body is ordinary
     // text under a colored title — which is how the host renders it.
     return (
-      <div role="note" className={cn("my-1 border-l-2 pl-3", alert.borderClassName)}>
+      <div role="note" dir="auto" className={cn("my-1 border-s-2 ps-3", alert.borderClassName)}>
         <p className={cn("flex items-center gap-1.5 font-medium", alert.titleClassName)}>
           <alert.Icon aria-hidden className="size-3.5 shrink-0" />
           {alert.label}
@@ -181,7 +189,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
       : null;
 
     return (
-      <li {...props} data-task-marker-offset={markerOffset ?? undefined}>
+      <li {...props} dir="auto" data-task-marker-offset={markerOffset ?? undefined}>
         {renderSkillInlineMarkdownChildren(children, skills)}
       </li>
     );
@@ -356,7 +364,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
     }
 
     return (
-      <code {...props} className={className}>
+      <code {...props} dir="ltr" className={className}>
         {children}
       </code>
     );
@@ -387,6 +395,14 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
 
     return <ChatMarkdownImageFallback alt={altText} />;
   },
+  h1: ({ node: _node, ...props }) => <h1 {...props} dir="auto" />,
+  h2: ({ node: _node, ...props }) => <h2 {...props} dir="auto" />,
+  h3: ({ node: _node, ...props }) => <h3 {...props} dir="auto" />,
+  h4: ({ node: _node, ...props }) => <h4 {...props} dir="auto" />,
+  h5: ({ node: _node, ...props }) => <h5 {...props} dir="auto" />,
+  h6: ({ node: _node, ...props }) => <h6 {...props} dir="auto" />,
+  th: ({ node: _node, ...props }) => <th {...props} dir="auto" />,
+  td: ({ node: _node, ...props }) => <td {...props} dir="auto" />,
   table: function MarkdownTableRenderer({ node: _node, ...props }) {
     return <MarkdownTable {...props} />;
   },
