@@ -447,6 +447,7 @@ export function ProviderModelsSection({
 
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <Input
+          dir="ltr"
           id={`provider-instance-${instanceId}-custom-model`}
           value={input}
           onChange={(event) => {

@@ -132,6 +132,7 @@ export function ShortcutRecorder({
     return (
       <>
         <Input
+          dir="ltr"
           data-keybinding-capture=""
           autoFocus
           readOnly

@@ -365,3 +365,13 @@
   direction: ltr;
   text-align: left;
 }
+
+/* LTR islands: code-like text keeps its own order inside a right-to-left interface. */
+code,
+kbd,
+samp,
+pre,
+.font-mono {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

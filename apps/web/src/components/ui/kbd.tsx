@@ -16,6 +16,7 @@ function Kbd({
         variant === "jump" && "rounded-sm px-1.5 text-10px",
         className,
       )}
+      dir="ltr"
       data-slot="kbd"
       {...props}
     />
@@ -26,6 +27,7 @@ function KbdGroup({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
       className={cn("inline-flex items-center gap-1", className)}
+      dir="ltr"
       data-slot="kbd-group"
       {...props}
     />
