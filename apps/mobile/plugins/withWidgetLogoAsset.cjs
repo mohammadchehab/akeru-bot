@@ -56,6 +56,7 @@ function withAssetFiles(config) {
         "prod",
         "app-icon.png",
       );
+
       const catalogDir = path.join(cfg.modRequest.platformProjectRoot, TARGET_NAME, CATALOG_NAME);
       const imageSetDir = path.join(catalogDir, IMAGE_SET);
       fs.mkdirSync(imageSetDir, { recursive: true });
