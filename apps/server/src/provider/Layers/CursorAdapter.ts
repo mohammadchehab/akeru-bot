@@ -133,13 +133,15 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       }
     });
 
-  const requireContext = (threadId: ThreadId) => {
+  const requireContext = Effect.fn("requireContext")(function* (threadId: ThreadId) {
     const context = sessions.get(threadId);
 
-    return context
-      ? Effect.succeed(context)
-      : Effect.fail(new ProviderAdapterSessionNotFoundError({ provider: PROVIDER, threadId }));
-  };
+    if (!context) {
+      return yield* new ProviderAdapterSessionNotFoundError({ provider: PROVIDER, threadId });
+    }
+
+    return context;
+  });
 
   const touch = (
     context: CursorSessionContext,

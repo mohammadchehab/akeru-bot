@@ -17,7 +17,12 @@ export type CursorRuntimeDraft =
       readonly payload: ContentDeltaPayload;
     }
   | {
-      readonly type: "item.started" | "item.completed";
+      readonly type: "item.started";
+      readonly itemId: string;
+      readonly payload: ItemLifecyclePayload;
+    }
+  | {
+      readonly type: "item.completed";
       readonly itemId: string;
       readonly payload: ItemLifecyclePayload;
     }

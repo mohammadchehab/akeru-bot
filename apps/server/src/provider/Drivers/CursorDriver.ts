@@ -8,9 +8,12 @@
 import { CursorSettings, ProviderDriverKind, type ServerProvider } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
+import * as FileSystem from "effect/FileSystem";
+import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 import { ChildProcessSpawner } from "effect/unstable/process";
 
+import * as BackgroundPolicy from "../../background/BackgroundPolicy.ts";
 import { ProviderDriverError } from "../Errors.ts";
 import { makeCursorAdapter } from "../Layers/CursorAdapter.ts";
 import {
@@ -46,8 +49,11 @@ const UPDATE = staticProviderMaintenanceResolver(
 );
 
 export type CursorDriverEnv =
+  | BackgroundPolicy.BackgroundPolicy
   | ChildProcessSpawner.ChildProcessSpawner
   | Crypto.Crypto
+  | FileSystem.FileSystem
+  | Path.Path
   | ServerSettingsService;
 
 const withInstanceIdentity =
