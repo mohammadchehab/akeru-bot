@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vite-plus/test";
 import {
   buildBotTurnStartInput,
   buildGroupTurnStartInput,
+  groupAddressing,
   createBotTurnSubmissionQueue,
   findLatestBotThreadTarget,
   findLatestGroupThreadIds,
@@ -238,7 +239,7 @@ describe("bot thread runtime", () => {
   it("associates a group thread and routes a mention to its selected bot", () => {
     const input = buildGroupTurnStartInput({
       groupId: GroupId.make("group-product"),
-      respondingBotId: BotId.make("bot-specialist"),
+      addressing: { kind: "bots", botIds: [BotId.make("bot-specialist")] },
       threadId: ThreadId.make("thread-product"),
       projectId: ProjectId.make("project-isnadi"),
       title: "Review this",
@@ -259,7 +260,8 @@ describe("bot thread runtime", () => {
     });
 
     expect(input.bootstrap?.createThread?.groupId).toBe("group-product");
-    expect(input.respondingBotId).toBe("bot-specialist");
+    expect(input.addressing).toEqual({ kind: "bots", botIds: ["bot-specialist"] });
+    expect(input.respondingBotId).toBeUndefined();
   });
 
   it("restores the latest durable thread owned by the bot", () => {
@@ -403,5 +405,20 @@ describe("bot thread runtime", () => {
         },
       ]),
     ).toBeNull();
+  });
+});
+
+describe("groupAddressing", () => {
+  it("sends none for a prompt that mentions nobody", () => {
+    expect(groupAddressing(undefined)).toBeUndefined();
+    expect(groupAddressing({ kind: "none" })).toBeUndefined();
+  });
+
+  it("carries everyone and the mentioned bots in order", () => {
+    expect(groupAddressing({ kind: "everyone" })).toEqual({ kind: "everyone" });
+    expect(groupAddressing({ kind: "bots", botIds: ["bot-1", "bot-2"] })).toEqual({
+      kind: "bots",
+      botIds: ["bot-1", "bot-2"],
+    });
   });
 });

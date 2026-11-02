@@ -1,4 +1,8 @@
 import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@isnadi/contracts";
+import {
+  type ComposerAddressing,
+  resolveComposerAddressing,
+} from "@isnadi/shared/composerBotMentions";
 import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 import {
@@ -26,7 +30,6 @@ import {
   canSubmitBotPrompt,
   isBotPromptSubmissionCurrent,
   type MentionBot,
-  resolveBotMention,
   restoreBotStashPrompt,
 } from "./botPromptComposer.logic";
 
@@ -395,16 +398,16 @@ export function useBotComposerDraft(input: {
     readonly onSubmit: (
       prompt: string,
       files: readonly File[],
-      respondingBotId?: string,
+      addressing?: ComposerAddressing,
     ) => Promise<boolean>;
   }) => {
     const prompt = draft.trim();
     const submittedAttachments = [...attachmentsRef.current];
-    const submittedMention = resolveBotMention(prompt, submission.mentionBots);
+    const submittedAddressing = resolveComposerAddressing(prompt, submission.mentionBots);
 
     if (!canSubmitBotPrompt(submission.disabled, prompt, submittedAttachments.length)) return;
 
-    if (submittedMention.kind === "ambiguous") return;
+    if (submittedAddressing.kind === "ambiguous") return;
     const submittedFailedIds = new Set(failedAttachmentIds);
     persistDraft("");
     setDictationGeneration((generation) => generation + 1);
@@ -420,7 +423,7 @@ export function useBotComposerDraft(input: {
       .onSubmit(
         prompt,
         submittedAttachments.map((attachment) => attachment.file),
-        submittedMention.kind === "bot" ? submittedMention.botId : undefined,
+        submittedAddressing.kind === "none" ? undefined : submittedAddressing,
       )
       .then(
         (sent) => {

@@ -1,8 +1,9 @@
 import { Predicate } from "effect";
 import type { StartThreadTurnInput } from "@isnadi/client-runtime/state/threads";
-import { PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
+import { BotId, PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
+import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import type {
-  BotId,
+  GroupAddressing,
   GroupId,
   ModelSelection,
   ProjectId,
@@ -88,9 +89,24 @@ export function buildBotTurnStartInput(input: {
   };
 }
 
+/** The wire addressing for what the composer resolved. A prompt that mentions nobody sends none. */
+export function groupAddressing(
+  addressing: ComposerAddressing | undefined,
+): GroupAddressing | undefined {
+  if (addressing?.kind === "everyone") return { kind: "everyone" };
+
+  if (addressing?.kind === "bots") {
+    const [first, ...rest] = addressing.botIds;
+
+    return { kind: "bots", botIds: [BotId.make(first), ...rest.map((id) => BotId.make(id))] };
+  }
+
+  return undefined;
+}
+
 export function buildGroupTurnStartInput(input: {
   groupId: GroupId;
-  respondingBotId?: BotId;
+  addressing?: GroupAddressing;
   threadId: ThreadId;
   projectId: ProjectId;
   title: string;
@@ -107,7 +123,7 @@ export function buildGroupTurnStartInput(input: {
     modelSelection: input.modelSelection,
     runtimeMode: input.runtimeMode,
     interactionMode: input.interactionMode,
-    ...(input.respondingBotId ? { respondingBotId: input.respondingBotId } : {}),
+    ...(input.addressing ? { addressing: input.addressing } : {}),
     ...(input.createThread
       ? {
           bootstrap: {

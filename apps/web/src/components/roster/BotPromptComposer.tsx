@@ -1,5 +1,6 @@
 import { useAtomValue } from "@effect/atom-react";
 import { composerActionIsDictation } from "@isnadi/client-runtime/dictation";
+import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import {
   ArrowUpIcon,
   AtSignIcon,
@@ -130,7 +131,11 @@ export function BotPromptComposer({
   sendBlockedDescriptionId?: string | undefined;
   /** Reports the bot the draft's mention addresses, or null when it addresses none. */
   onAddressedBotChange?: (botId: string | null) => void;
-  onSubmit: (prompt: string, files: readonly File[], respondingBotId?: string) => Promise<boolean>;
+  onSubmit: (
+    prompt: string,
+    files: readonly File[],
+    addressing?: ComposerAddressing,
+  ) => Promise<boolean>;
 }) {
   const { t } = useI18n();
   const prefersReducedMotion = useReducedMotion();

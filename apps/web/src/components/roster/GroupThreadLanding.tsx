@@ -571,11 +571,11 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
             sendBlockedDescriptionId={
               runtime.providerAvailable || waitingForUserInput ? undefined : noProviderNoticeId
             }
-            onSubmit={async (prompt, files, respondingBotId) => {
+            onSubmit={async (prompt, files, addressing) => {
               const sent = await runtime.send(
                 buildReplyPrompt(replyTarget, prompt),
                 files,
-                respondingBotId,
+                addressing,
               );
 
               if (sent) setReplyTarget(null);
