@@ -31,6 +31,28 @@ describe.skipIf(!arabicShips)("Arabic interface", () => {
       lang: document.documentElement.lang,
     }));
 
+  // Where the page, the sidebar and the main column sit, so a failure says what overlapped what.
+  const layoutReport = () =>
+    page.evaluate(() => {
+      const box = (selector: string) => {
+        const rect = document.querySelector(selector)?.getBoundingClientRect();
+
+        return rect ? [rect.x, rect.y, rect.width, rect.height].map(Math.round) : null;
+      };
+
+      return {
+        url: location.pathname,
+        dir: document.documentElement.dir,
+        viewport: [innerWidth, innerHeight],
+        sidebar: box('[data-slot="sidebar"]'),
+        sidebarInner: box('[data-slot="sidebar-container"]'),
+        mains: document.querySelectorAll("main").length,
+        main: box("main"),
+        language: box("#language-preference"),
+        text: document.body.innerText.slice(0, 200),
+      };
+    });
+
   // The centre of the chat column: left of the window's middle when the roster sits on the right.
   const chatCentre = async () => {
     const box = await conversation().boundingBox();
@@ -66,6 +88,7 @@ describe.skipIf(!arabicShips)("Arabic interface", () => {
 
     await page.screenshot({ path });
     console.error(`Screenshot: ${path}`);
+    console.error(`Layout: ${JSON.stringify(await layoutReport())}`);
   });
 
   afterAll(async () => {
