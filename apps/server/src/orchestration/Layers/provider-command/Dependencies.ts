@@ -5,7 +5,6 @@ import {
   type ModelSelection,
   type McpServer,
 } from "@isnadi/contracts";
-import * as Cache from "effect/Cache";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -23,6 +22,7 @@ import { ServerSettingsService } from "../../../serverSettings.ts";
 import { GitWorkflowService } from "../../../git/GitWorkflowService.ts";
 import { ComposioService } from "../../../composio/ComposioService.ts";
 import { HANDLED_TURN_REQUEST_KEY_MAX, HANDLED_TURN_REQUEST_KEY_TTL } from "./Fields.ts";
+import { createHandledRequests } from "./HandledRequests.ts";
 
 export const createDependencies = Effect.fn("makeprovider-command-Dependencies")(function* () {
   const crypto = yield* Crypto.Crypto;
@@ -99,18 +99,12 @@ export const createDependencies = Effect.fn("makeprovider-command-Dependencies")
 
   const serverEventId = () => crypto.randomUUIDv4.pipe(Effect.map(EventId.make));
 
-  const handledTurnRequestKeys = yield* Cache.make<string, true>({
+  const handledTurnRequests = createHandledRequests({
     capacity: HANDLED_TURN_REQUEST_KEY_MAX,
     timeToLive: HANDLED_TURN_REQUEST_KEY_TTL,
-    lookup: () => Effect.succeed(true),
   });
 
-  const hasHandledTurnRequestRecently = (key: string) =>
-    Cache.getOption(handledTurnRequestKeys, key).pipe(
-      Effect.flatMap((cached) =>
-        Cache.set(handledTurnRequestKeys, key, true).pipe(Effect.as(Option.isSome(cached))),
-      ),
-    );
+  const hasHandledTurnRequestRecently = handledTurnRequests.claim;
 
   const threadModelSelections = new Map<string, ModelSelection>();
 
@@ -140,7 +134,6 @@ export const createDependencies = Effect.fn("makeprovider-command-Dependencies")
     runPromise,
     serverCommandId,
     serverEventId,
-    handledTurnRequestKeys,
     hasHandledTurnRequestRecently,
     threadModelSelections,
     threadBotWorkspaceKeys,
