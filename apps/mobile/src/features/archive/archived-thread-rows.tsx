@@ -46,12 +46,12 @@ export function ArchivedThreadRow(props: {
   readonly onUnarchive: () => void;
   readonly thread: EnvironmentThreadShell;
 }) {
-  const { t } = useMobileI18n();
+  const { t, plural } = useMobileI18n();
   const { width: windowWidth } = useWindowDimensions();
   const cardColor = useThemeColor("--color-card");
   const iconColor = useThemeColor("--color-icon-subtle");
   const separatorColor = useThemeColor("--color-separator");
-  const timestamp = relativeTime(props.thread.archivedAt ?? props.thread.updatedAt);
+  const timestamp = relativeTime(props.thread.archivedAt ?? props.thread.updatedAt, { t, plural });
 
   const subtitle = [props.environmentLabel, props.thread.branch].filter((part): part is string =>
     Boolean(part),

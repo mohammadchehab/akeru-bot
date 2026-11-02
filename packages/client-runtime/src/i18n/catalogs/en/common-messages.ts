@@ -27,6 +27,8 @@ export const commonMessagesCatalog = {
   "Expand user input, {count} questions": "Expand user input, {count} questions",
   "{count} question": "{count} question",
   "{count} questions": "{count} questions",
+  "<1m": "<1m",
+  "{time} ago": "{time} ago",
   "Delete {title}": "Delete {title}",
   "Deleting…": "Deleting…",
   "“{title}” has not been sent yet and will be removed from the outbox.":

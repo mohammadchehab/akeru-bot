@@ -28,8 +28,6 @@ const HEALTH_TEXT_CLASS = {
   secondary: "text-foreground-muted",
 } as const;
 
-const ago = (iso: string) => `${relativeTime(iso)} ago`;
-
 export interface ImageProvidersQueryView {
   readonly data: { readonly providers: ReadonlyArray<ImageProviderStatus> } | null;
   readonly error: string | null;
@@ -49,7 +47,14 @@ export function ImageGenerationSummaryView({
   readonly query: ImageProvidersQueryView;
   readonly onRetry: () => void;
 }) {
-  const { t } = useMobileI18n();
+  const { t, plural } = useMobileI18n();
+
+  const ago = (iso: string) => {
+    const time = relativeTime(iso, { t, plural });
+
+    return t("{time} ago", { time });
+  };
+
   const statuses = new Map(query.data?.providers.map((status) => [status.provider, status]) ?? []);
   const loadFailed = query.data === null && query.error !== null;
   const defaultProvider = effectiveDefaultProvider(settings);

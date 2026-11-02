@@ -14,7 +14,7 @@ import {
 import { scopeThreadRef } from "@isnadi/client-runtime/environment";
 import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import { formatDuration } from "@isnadi/shared/orchestrationTiming";
-import { formatTokens } from "@isnadi/shared/usageFormat";
+import { useUsageFormat } from "../usage/useUsageFormat";
 import { useMemo, useState, type ReactNode } from "react";
 
 import { useI18n } from "../../i18n";
@@ -197,6 +197,7 @@ export function DelegationCard({
   readonly actions?: ReactNode;
 }) {
   const { t } = useI18n();
+  const fmt = useUsageFormat();
   const environmentId = usePrimaryEnvironmentId();
   const [detailOpen, setDetailOpen] = useState(false);
   const presentation = presentDelegation(delegation);
@@ -266,7 +267,7 @@ export function DelegationCard({
               name: childName,
             })}
           >
-            {t("{tokens} tokens", { tokens: formatTokens(usageTokens) })}
+            {t("{tokens} tokens", { tokens: fmt.tokens(usageTokens) })}
           </span>
         )}
       </div>
