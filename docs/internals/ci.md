@@ -4,8 +4,9 @@
 
 [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs on each ready pull request revision and
 on every push to `main`. Draft pull requests do not use a runner. A new revision cancels the older run
-for that pull request. Runs on `main` are never cancelled, so every merge gets its own verdict and a
-broken `main` points at the merge that broke it. Maintainers can also dispatch the workflow manually
+for that pull request. Runs on `main` are never cancelled, and each push has its own concurrency group keyed by commit SHA
+(a shared group would cancel the one queued run when a newer one arrived), so every merge gets its own
+verdict and a broken `main` points at the merge that broke it. Maintainers can also dispatch the workflow manually
 for diagnostics. Every CI job uses a GitHub-hosted `ubuntu-24.04` runner. The issue-label and PR-size
 jobs use Tenki Linux runners.
 
