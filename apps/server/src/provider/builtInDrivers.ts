@@ -22,6 +22,7 @@
  */
 import { ClaudeDriver, type ClaudeDriverEnv } from "./Drivers/ClaudeDriver.ts";
 import { CodexDriver, type CodexDriverEnv } from "./Drivers/CodexDriver.ts";
+import { CursorDriver, type CursorDriverEnv } from "./Drivers/CursorDriver.ts";
 import { CustomOpenaiDriver, type CustomOpenaiDriverEnv } from "./Drivers/CustomOpenaiDriver.ts";
 import { GrokDriver, type GrokDriverEnv } from "./Drivers/GrokDriver.ts";
 import { KimiDriver, type KimiDriverEnv } from "./Drivers/KimiDriver.ts";
@@ -42,6 +43,7 @@ export type BuiltInDriversEnv =
   | KimiDriverEnv
   | OpenCodeDriverEnv
   | OpenCodeGoDriverEnv
+  | CursorDriverEnv
   | CustomOpenaiDriverEnv;
 
 /**
@@ -56,5 +58,6 @@ export const BUILT_IN_DRIVERS: ReadonlyArray<AnyProviderDriver<BuiltInDriversEnv
   registeredProviderDriver(KimiDriver),
   registeredProviderDriver(OpenCodeDriver),
   registeredProviderDriver(OpenCodeGoDriver),
+  registeredProviderDriver(CursorDriver),
   registeredProviderDriver(CustomOpenaiDriver),
 ];
