@@ -8,6 +8,18 @@
 
 @custom-variant light (&:not(.dark, .dark *));
 
+/* LTR islands: code-like text keeps its own order inside a right-to-left interface. */
+@layer base {
+  code,
+  kbd,
+  samp,
+  pre,
+  .font-mono {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+}
+
 /* Window Controls Overlay: active when Electron exposes native titlebar control geometry. */
 
 @custom-variant wco (&:is(.wco, .wco *));

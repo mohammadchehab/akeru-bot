@@ -359,19 +359,3 @@
   max-width: 24rem;
   overflow-wrap: anywhere;
 }
-
-/* Code stays an LTR island inside right-to-left messages. */
-.chat-markdown pre {
-  direction: ltr;
-  text-align: left;
-}
-
-/* LTR islands: code-like text keeps its own order inside a right-to-left interface. */
-code,
-kbd,
-samp,
-pre,
-.font-mono {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
