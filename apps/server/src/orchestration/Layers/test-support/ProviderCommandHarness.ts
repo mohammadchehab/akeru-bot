@@ -347,7 +347,7 @@ export function createProviderCommandHarness() {
           title: "Configured bot",
           avatar: { kind: "dither", seed: "configured-bot" },
           engine: input.botEngine,
-          sandbox: "local",
+          sandbox: input.botSandbox ?? "local",
           runtimeMode: "approval-required",
           groupId: null,
           createdAt: now,
