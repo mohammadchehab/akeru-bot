@@ -2,6 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { serializeComposerBotMention } from "./composerInlineTokens.ts";
 import {
+  botReplyMentionText,
   composerBotMentionDetail,
   resolveComposerAddressing,
   resolveComposerBotMention,
@@ -165,5 +166,64 @@ describe("an @bot:<id> mention followed by punctuation", () => {
     expect(serializeComposerBotMention("a.b:c")).toBe("@bot:a.b:c");
     expect(serializeComposerBotMention("bot-1:")).toBeNull();
     expect(serializeComposerBotMention(".bot")).toBeNull();
+  });
+});
+
+describe("the longest name at a position wins", () => {
+  const bots = [
+    { id: "bot-1", name: "Bo" },
+    { id: "bot-2", name: "Bo Two" },
+    { id: "bot-3", name: "Mika" },
+    { id: "bot-4", name: "Mika" },
+  ];
+
+  it("reads '@Bo Two' as Bo Two, not as Bo", () => {
+    expect(resolveComposerAddressing("@Bo Two please", bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-2"],
+    });
+    expect(resolveComposerAddressing("@Bo please", bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-1"],
+    });
+  });
+
+  it("still calls two bots with the same longest name ambiguous", () => {
+    expect(resolveComposerAddressing("@Mika hi", bots)).toEqual({
+      kind: "ambiguous",
+      name: "Mika",
+    });
+  });
+});
+
+describe("botReplyMentionText", () => {
+  const bots = [
+    { id: "bot-1", name: "Mori" },
+    { id: "bot-2", name: "Omar" },
+  ];
+
+  const mentioned = (reply: string) => resolveComposerAddressing(botReplyMentionText(reply), bots);
+
+  it("keeps a plain mention", () => {
+    expect(mentioned("Over to @Mori.")).toEqual({ kind: "bots", botIds: ["bot-1"] });
+  });
+
+  it("ignores a mention inside inline code or a code block", () => {
+    expect(mentioned("Run `@Mori` to see it")).toEqual({ kind: "none" });
+    expect(mentioned("```\n@Mori ping\n```\nDone.")).toEqual({ kind: "none" });
+    expect(mentioned("```text\n@Mori ping")).toEqual({ kind: "none" });
+  });
+
+  it("ignores a mention in a quoted line, such as the user's message echoed back", () => {
+    expect(mentioned("> @Mori check this\nNoted.")).toEqual({ kind: "none" });
+    expect(mentioned("You wrote:\n  > @Mori check this\n@Omar, thoughts?")).toEqual({
+      kind: "bots",
+      botIds: ["bot-2"],
+    });
+  });
+
+  it("does not let a bot address everyone, but still reads the bots it names", () => {
+    expect(mentioned("@everyone status?")).toEqual({ kind: "none" });
+    expect(mentioned("@everyone, @Mori check")).toEqual({ kind: "bots", botIds: ["bot-1"] });
   });
 });

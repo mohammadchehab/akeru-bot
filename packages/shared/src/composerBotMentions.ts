@@ -114,20 +114,35 @@ export function resolveComposerAddressing(
   if (EVERYONE_TOKEN.test(prompt)) return { kind: "everyone" };
 
   const found: Array<{ readonly index: number; readonly botId: string }> = [];
+  const byName: Array<{ readonly index: number; readonly bot: ComposerMentionBot }> = [];
 
   for (const bot of bots) {
     const token = `@${bot.name}`;
-    const namesakes = bots.filter((other) => other.name === bot.name);
 
     for (let from = prompt.indexOf(token); from >= 0; from = prompt.indexOf(token, from + 1)) {
       const before = prompt[from - 1];
       const after = prompt[from + token.length];
 
       if ((before === undefined || /\s/.test(before)) && endsMention(after)) {
-        if (namesakes.length > 1) return { kind: "ambiguous", name: bot.name };
-        found.push({ index: from, botId: bot.id });
+        byName.push({ index: from, bot });
       }
     }
+  }
+
+  // Where one name is the start of another ("Bo" and "Bo Two"), the longest name at a position
+  // is the one meant. Only then can two bots at that position be namesakes: they share the name.
+  const positions = new Set(byName.map((mention) => mention.index));
+
+  for (const index of positions) {
+    const here = byName.filter((mention) => mention.index === index);
+    const longest = Math.max(...here.map((mention) => mention.bot.name.length));
+    const winners = here.filter((mention) => mention.bot.name.length === longest);
+    const [winner] = winners;
+
+    if (winner === undefined) continue;
+
+    if (winners.length > 1) return { kind: "ambiguous", name: winner.bot.name };
+    found.push({ index, botId: winner.bot.id });
   }
 
   for (const token of collectComposerInlineTokens(`${prompt}\n`)) {
@@ -143,4 +158,25 @@ export function resolveComposerAddressing(
   const [first, ...rest] = botIds;
 
   return first === undefined ? { kind: "none" } : { kind: "bots", botIds: [first, ...rest] };
+}
+
+const FENCED_CODE = /(```|~~~)[\s\S]*?(\1|$)/g;
+
+const INLINE_CODE = /`[^`\n]*`/g;
+
+const QUOTED_LINE = /^[ \t]*>.*$/gm;
+
+const EVERYONE_MENTION = /(^|\s)@everyone(?=[\s,.:;!?)]|$)/g;
+
+/**
+ * What of a bot's reply may hand the chat to another member. A mention in code, a code block or a
+ * quoted line is not addressed to anyone (a bot echoing the user's "@Mori ..." must not re-queue
+ * Mori), and bots cannot address `@everyone`. Feed the result to `resolveComposerAddressing`.
+ */
+export function botReplyMentionText(reply: string): string {
+  return reply
+    .replace(FENCED_CODE, " ")
+    .replace(INLINE_CODE, " ")
+    .replace(QUOTED_LINE, " ")
+    .replace(EVERYONE_MENTION, "$1");
 }

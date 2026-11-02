@@ -78,7 +78,16 @@ doesn't need him to film?") and that bot answers next.
 Rules:
 
 - A bot never queues itself.
-- Mentions inside code spans, code blocks and quotes don't count.
+- Mentions inside code spans, code blocks and quoted lines (`> ...`) don't count, so a bot that
+  echoes the user's "@Becky ..." does not queue Becky again. The server strips them before reading
+  the reply (`botReplyMentionText` in `packages/shared`).
+- Bots cannot address `@everyone`. The token is ignored in a reply, and the members it names beside
+  it still queue.
+- A name shared by two members is ambiguous, and a reply cannot disambiguate it, so it queues
+  nobody. Where one name starts another ("Bo" and "Bo Two"), the longest name at that position is
+  the one meant.
+- The hand-over is read from the reply when the turn ends and is held in memory until then. A server
+  restart between the reply and the end of the turn drops it, and the chain stops there.
 - A bot already waiting in the queue is not added twice.
 - A mention runs to the first character that cannot be part of a member name, so `@Becky,` counts.
   A typed `@bot:<id>` ends the same way: an id may contain `.` `:` `-` `_` inside but starts and ends

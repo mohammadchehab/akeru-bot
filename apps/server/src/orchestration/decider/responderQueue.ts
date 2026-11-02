@@ -18,7 +18,7 @@ import type * as PlatformError from "effect/PlatformError";
 
 import { requireThread } from "../commandInvariants.ts";
 import type { OrchestrationCommandInvariantError } from "../Errors.ts";
-import { resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
+import { botReplyMentionText, resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { activeGroupBotIds, withEventBase } from "./eventBase.ts";
 
 /** What a queue event says about the budget; the decider keeps both numbers true at each turn start. */
@@ -255,7 +255,7 @@ export const decideResponderMention = Effect.fn("decideResponderMention")(functi
     bot.archivedAt === null && activeIds.has(bot.id) ? [{ id: bot.id, name: bot.name }] : [],
   );
 
-  const addressing = resolveComposerAddressing(command.text, members);
+  const addressing = resolveComposerAddressing(botReplyMentionText(command.text), members);
 
   if (addressing.kind !== "bots") return [];
 
@@ -278,6 +278,9 @@ export const decideResponderMention = Effect.fn("decideResponderMention")(functi
   const budget = queue === undefined ? budgetAfterFirstTurn(thread) : budgetOf(queue);
   const added = fresh.slice(0, Math.max(0, budget.hopsLeft - entries.length));
   const dropped = added.length < fresh.length;
+
+  // Everything was dropped and the chain is already marked as cut: nothing would change.
+  if (added.length === 0 && queue?.budgetExhausted === true) return [];
 
   return [
     yield* responderQueueSetEvent({
