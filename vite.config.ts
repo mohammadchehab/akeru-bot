@@ -65,6 +65,8 @@ const NO_RESTYLE = {
 };
 
 export default defineConfig({
+  // Lets a repo-root vitest run import vendored .wasm files (apps/web sets the same).
+  assetsInclude: ["**/*.wasm"],
   resolve: {
     alias: {
       "~": NodeURL.fileURLToPath(new URL("./apps/web/src", import.meta.url)),
@@ -85,19 +87,6 @@ export default defineConfig({
     ],
     hookTimeout: 60_000,
     testTimeout: 60_000,
-    // A root run must load each package's own config (aliases, plugins, assetsInclude).
-    // The root project itself covers the repo-level scripts and oxlint plugins.
-    projects: [
-      {
-        extends: true,
-        test: {
-          name: "root",
-          include: ["scripts/**/*.test.ts", "oxlint-plugin-isnadi/**/*.test.ts"],
-        },
-      },
-      "apps/*",
-      "packages/*",
-    ],
   },
   staged: {
     // Formatter only for now — no lint or typecheck on commit.
