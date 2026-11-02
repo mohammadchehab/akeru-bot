@@ -47,8 +47,17 @@ export const DEV_RUNNER_MODES = Object.keys(MODE_ARGS).filter((mode): mode is De
   Object.hasOwn(MODE_ARGS, mode),
 );
 
-export function getDevRunnerModeArgs(mode: DevMode): ReadonlyArray<string> {
-  return MODE_ARGS[mode];
+/**
+ * The Vite+ run args for a mode. Without watch, the `dev` and `dev:server` modes run each package's
+ * `dev:once` task, which starts the same process without a file watcher, so a touched dependency
+ * cannot restart the server under a running test.
+ */
+export function getDevRunnerModeArgs(mode: DevMode, watch = true): ReadonlyArray<string> {
+  const args: ReadonlyArray<string> = MODE_ARGS[mode];
+
+  if (watch || (mode !== "dev" && mode !== "dev:server")) return args;
+
+  return args.map((arg) => (arg === "dev" ? "dev:once" : arg));
 }
 
 export class DevRunnerConfigurationError extends Schema.TaggedErrorClass<DevRunnerConfigurationError>()(

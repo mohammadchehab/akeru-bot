@@ -54,5 +54,6 @@ export const devServerInput = {
   devUrl: undefined,
   dryRun: false,
   share: false,
+  noWatch: false,
   runArgs: ["--inspect", "secret-token-value"],
 } as const;

@@ -82,6 +82,8 @@ async function waitUntilServed(origin: string, budgetMs: number): Promise<void> 
 }
 
 export interface Stack {
+  /** Throws if the server restarted since the stack started; call it where a journey can fail fast. */
+  readonly assertNotRestarted: () => void;
   /** The tail of what the dev runner has printed, for failure reports. */
   readonly output: () => string;
   /** One-time URL that pairs a fresh browser with the environment. */
@@ -133,14 +135,15 @@ export async function startStack(): Promise<Stack> {
   // Detached so the whole process tree can be signalled as one group.
   const child = NodeChildProcess.spawn(
     process.execPath,
-    ["scripts/dev-runner.ts", "dev", "--home-dir", home],
+    ["scripts/dev-runner.ts", "dev", "--no-watch", "--home-dir", home],
     { cwd: REPO_ROOT, env, detached: true, stdio: ["ignore", "pipe", "pipe"] },
   );
 
   let output = "";
 
-  // The server runs under `node --watch`, so a touched dependency restarts it mid-journey. Keep those lines.
-  const watchLines: Array<string> = [];
+  // A server that restarts mid-journey loses its sessions; keep the lines that show it.
+  const restartLines: Array<string> = [];
+  let listening = 0;
 
   const pairingUrl = await new Promise<string>((resolve, reject) => {
     const timer = setTimeout(
@@ -154,7 +157,14 @@ export async function startStack(): Promise<Stack> {
       output = (output + text).slice(-20_000);
 
       for (const line of text.split("\n")) {
-        if (/Restarting '|Change detected in/.test(line)) watchLines.push(line.trim());
+        if (/Listening on http/.test(line)) listening += 1;
+
+        if (
+          /Restarting '|Change detected in/.test(line) ||
+          (listening > 1 && /Listening on http/.test(line))
+        ) {
+          restartLines.push(line.trim());
+        }
       }
 
       const match = PAIRING_URL_PATTERN.exec(output);
@@ -199,11 +209,9 @@ export async function startStack(): Promise<Stack> {
       });
     }
 
-    console.error(
-      `[e2e] server watch restarts: ${String(watchLines.filter((line) => line.startsWith("Restarting")).length)}`,
-    );
+    console.error(`[e2e] server starts: ${String(listening)}`);
 
-    for (const line of watchLines) console.error(`[e2e]   ${line}`);
+    for (const line of restartLines) console.error(`[e2e]   ${line}`);
 
     await stub.close();
     NodeFS.rmSync(home, { recursive: true, force: true });
@@ -221,5 +229,13 @@ export async function startStack(): Promise<Stack> {
 
   console.error(`[e2e] stack served after ${String(Math.round(performance.now() - launchedAt))}ms`);
 
-  return { pairingUrl, stub, stop, output: () => output };
+  return {
+    pairingUrl,
+    stub,
+    stop,
+    output: () => output,
+    assertNotRestarted: () => {
+      if (listening > 1) throw new Error(`server restarted mid-run:\n${restartLines.join("\n")}`);
+    },
+  };
 }

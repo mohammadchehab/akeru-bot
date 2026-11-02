@@ -35,6 +35,39 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
     );
   });
 
+  describe("getDevRunnerModeArgs without watch", () => {
+    it.effect("runs the dev:once task in dev and dev:server modes", () =>
+      Effect.sync(() => {
+        assert.deepStrictEqual(getDevRunnerModeArgs("dev", false), [
+          "run",
+          "--filter=@isnadi/contracts",
+          "--filter=@isnadi/web",
+          "--filter=isnadibot",
+          "--parallel",
+          "dev:once",
+        ]);
+        assert.deepStrictEqual(getDevRunnerModeArgs("dev:server", false), [
+          "run",
+          "--filter=isnadibot",
+          "dev:once",
+        ]);
+      }),
+    );
+
+    it.effect("leaves the desktop and web-only modes alone", () =>
+      Effect.sync(() => {
+        assert.deepStrictEqual(
+          getDevRunnerModeArgs("dev:desktop", false),
+          getDevRunnerModeArgs("dev:desktop"),
+        );
+        assert.deepStrictEqual(
+          getDevRunnerModeArgs("dev:web", false),
+          getDevRunnerModeArgs("dev:web"),
+        );
+      }),
+    );
+  });
+
   describe("resolveOffset", () => {
     it.effect("uses explicit T3CODE_PORT_OFFSET when provided", () =>
       Effect.gen(function* () {

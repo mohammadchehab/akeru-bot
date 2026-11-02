@@ -36,7 +36,7 @@ import {
   BASE_WEB_PORT,
   MAX_PORT,
   DEFAULT_T3_HOME,
-  MODE_ARGS,
+  getDevRunnerModeArgs,
   type DevMode,
   DEV_RUNNER_MODES,
   DevRunnerConfigurationError,
@@ -411,6 +411,7 @@ interface DevRunnerCliInput {
   readonly devUrl: URL | undefined;
   readonly dryRun: boolean;
   readonly share: boolean;
+  readonly noWatch: boolean;
   readonly runArgs: ReadonlyArray<string>;
 }
 
@@ -597,7 +598,7 @@ export function runDevRunnerWithInput(input: DevRunnerCliInput) {
 
     const spawnCommand = yield* resolveSpawnCommand(
       "vp",
-      [...MODE_ARGS[input.mode], ...input.runArgs],
+      [...getDevRunnerModeArgs(input.mode, !input.noWatch), ...input.runArgs],
       { env },
     );
 
@@ -700,6 +701,12 @@ const devRunnerCli = Command.make("dev-runner", {
   share: Flag.boolean("share").pipe(
     Flag.withDescription(
       "Publish the web dev server on this machine's tailnet over HTTPS (via `tailscale serve`) and print the pairing URL for it. Removed again on exit.",
+    ),
+    Flag.withDefault(false),
+  ),
+  noWatch: Flag.boolean("no-watch").pipe(
+    Flag.withDescription(
+      "Run the server without a file watcher (dev and dev:server modes). For tests that pin one SHA: a changed dependency file would otherwise restart the server mid-run.",
     ),
     Flag.withDefault(false),
   ),
