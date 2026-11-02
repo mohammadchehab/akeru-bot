@@ -1,5 +1,5 @@
-import { PortSchema } from "@akeru/contracts";
-import { DEFAULT_TAILSCALE_SERVE_PORT } from "@akeru/tailscale";
+import { PortSchema } from "@isnadi/contracts";
+import { DEFAULT_TAILSCALE_SERVE_PORT } from "@isnadi/tailscale";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

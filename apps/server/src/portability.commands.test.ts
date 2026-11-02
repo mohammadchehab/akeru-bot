@@ -1,4 +1,4 @@
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it as effectIt } from "@effect/vitest";
 import * as Effect from "effect/Effect";
@@ -292,7 +292,7 @@ describe("portability import", () => {
   });
 
   it("reports failed and partly applied records separately", () => {
-    const botItem = { recordType: "bot" as const, id: BOT_ID, title: "Akeru" };
+    const botItem = { recordType: "bot" as const, id: BOT_ID, title: "Isnadi" };
     const groupItem = { recordType: "group" as const, id: GROUP_ID, title: "Builders" };
 
     expect(

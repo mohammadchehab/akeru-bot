@@ -1,11 +1,11 @@
-import { OrchestrationMessage } from "@akeru/contracts";
+import { OrchestrationMessage } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   MessageSentPayloadSchema,
   ThreadMessageReactionSetPayload,
   ThreadProposedPlanUpsertedPayload,
 } from "../Schemas.ts";
-import type { OrchestrationReadModel, OrchestrationEvent } from "@akeru/contracts";
+import type { OrchestrationReadModel, OrchestrationEvent } from "@isnadi/contracts";
 import type { OrchestrationProjectorDecodeError } from "../Errors.ts";
 import {
   decodeForEvent,

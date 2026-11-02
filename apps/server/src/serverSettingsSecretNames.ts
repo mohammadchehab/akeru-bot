@@ -3,7 +3,7 @@ import {
   type ProviderInstanceEnvironmentVariable,
   type SandboxProviderConnection,
   ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export const textEncoder = new TextEncoder();
 

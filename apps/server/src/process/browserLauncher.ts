@@ -1,5 +1,5 @@
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { isCommandAvailable } from "@akeru/shared/shell";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { isCommandAvailable } from "@isnadi/shared/shell";
 import * as Effect from "effect/Effect";
 import * as Encoding from "effect/Encoding";
 import * as FileSystem from "effect/FileSystem";

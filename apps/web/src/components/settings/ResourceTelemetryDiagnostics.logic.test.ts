@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import type { ResourceTelemetryProcess } from "@akeru/contracts";
+import type { ResourceTelemetryProcess } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 
 import {

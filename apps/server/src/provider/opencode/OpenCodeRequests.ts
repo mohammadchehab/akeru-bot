@@ -5,7 +5,7 @@ import type {
   ChatAttachment,
   ProviderApprovalDecision,
   RuntimeMode,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   type FilePartInput,
   type PermissionRuleset,

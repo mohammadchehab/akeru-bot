@@ -1,4 +1,4 @@
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import type { MenuAction } from "@react-native-menu/menu";
 import { useCallback, useMemo, type RefObject } from "react";
 import { type LayoutChangeEvent, TextInput, View } from "react-native";

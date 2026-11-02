@@ -59,7 +59,7 @@ describe("install-macos.sh", () => {
     NodeAssert.match(script, /--tag=\*\)/);
     NodeAssert.match(
       script,
-      /curl -fsSL https:\/\/api\.github\.com\/repos\/opencoredev\/akeru-bot\/releases\/latest/,
+      /curl -fsSL https:\/\/api\.github\.com\/repos\/mohammadchehab\/isnadibot\/releases\/latest/,
     );
     NodeAssert.match(script, /if \[ -z "\$tag" \]; then/);
   });
@@ -82,10 +82,10 @@ describe("install-macos.sh", () => {
   });
 
   it("downloads the same-tag DMG and SHA256SUMS", () => {
-    NodeAssert.match(script, /dmg="Akeru-Bot-\$\{version\}-arm64\.dmg"/);
+    NodeAssert.match(script, /dmg="IsnadiBot-\$\{version\}-arm64\.dmg"/);
     NodeAssert.match(
       script,
-      /base="https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$\{tag\}"/,
+      /base="https:\/\/github\.com\/mohammadchehab\/isnadibot\/releases\/download\/\$\{tag\}"/,
     );
     NodeAssert.match(script, /curl -fsSL -o "\$tmp\/SHA256SUMS" "\$base\/SHA256SUMS"/);
     NodeAssert.match(script, /curl -fL -o "\$tmp\/\$dmg" "\$base\/\$dmg"/);
@@ -106,7 +106,7 @@ describe("install-macos.sh", () => {
 
   it("asserts the bundle identifier before installing", () => {
     NodeAssert.match(script, /Print :CFBundleIdentifier/);
-    NodeAssert.match(script, /^\[ "\$identifier" = dev\.leodoes\.akeru \]$/m);
+    NodeAssert.match(script, /^\[ "\$identifier" = dev\.leodoes\.isnadi \]$/m);
   });
 
   it("installs atomically with backup and rollback", () => {
@@ -116,11 +116,11 @@ describe("install-macos.sh", () => {
     );
     NodeAssert.match(
       script,
-      /new_app="\/Applications\/\.Akeru Bot \(Alpha\)\.app\.installing\.\$install_id"/,
+      /new_app="\/Applications\/\.IsnadiBot \(Alpha\)\.app\.installing\.\$install_id"/,
     );
     NodeAssert.match(
       script,
-      /old_app="\/Applications\/\.Akeru Bot \(Alpha\)\.app\.backup\.\$install_id"/,
+      /old_app="\/Applications\/\.IsnadiBot \(Alpha\)\.app\.backup\.\$install_id"/,
     );
     NodeAssert.match(script, /mv " & installedApp & " " & oldApp/);
     NodeAssert.match(script, /mv " & newApp & " " & installedApp/);
@@ -148,7 +148,7 @@ describe("install-macos.sh", () => {
     for (const line of echoes) {
       NodeAssert.match(
         line,
-        /usage:|unknown argument|--tag requires a value|Installing|Verifying checksum|Installed Akeru Bot/,
+        /usage:|unknown argument|--tag requires a value|Installing|Verifying checksum|Installed IsnadiBot/,
       );
     }
   });

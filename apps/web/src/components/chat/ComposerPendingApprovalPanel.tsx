@@ -1,8 +1,11 @@
 import { Predicate, Schema, Option } from "effect";
 import { ClockIcon } from "lucide-react";
 import { memo } from "react";
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import { AKERU_CREATE_ROUTINE_TOOL_NAME, AKERU_PRODUCT_FEEDBACK_TOOL_NAME } from "@akeru/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import {
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
+} from "@isnadi/contracts";
 import { type PendingApproval } from "../../session-logic";
 import { describeCommandApproval } from "~/lib/commandApprovalDetails";
 import { useI18n } from "~/i18n";
@@ -265,8 +268,8 @@ export const ComposerPendingApprovalPanel = memo(function ComposerPendingApprova
   hideLabel = false,
 }: ComposerPendingApprovalPanelProps) {
   const { t, plural } = useI18n();
-  const isProductFeedback = approval.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME;
-  const isRoutine = approval.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME;
+  const isProductFeedback = approval.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME;
+  const isRoutine = approval.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME;
 
   const fallbackLabel = isRoutine
     ? t("Routine approval")

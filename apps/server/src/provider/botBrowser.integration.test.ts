@@ -52,7 +52,7 @@ describe.runIf(process.env.T3_BOT_BROWSER_INTEGRATION === "1")(
       const browser = createBotBrowser({
         threadId: "bottom-edge-integration",
         workspace,
-        cacheDir: NodePath.join(NodeOS.tmpdir(), "akeru-lightpanda-cache"),
+        cacheDir: NodePath.join(NodeOS.tmpdir(), "isnadi-lightpanda-cache"),
       });
 
       try {

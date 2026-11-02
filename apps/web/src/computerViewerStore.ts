@@ -1,4 +1,4 @@
-import type { BotEngine, BotSandbox, ScopedThreadRef } from "@akeru/contracts";
+import type { BotEngine, BotSandbox, ScopedThreadRef } from "@isnadi/contracts";
 import { create } from "zustand";
 
 /** The one computer viewer on screen. Every entry point opens the same thread's computer. */

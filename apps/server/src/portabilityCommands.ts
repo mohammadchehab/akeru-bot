@@ -16,7 +16,7 @@ import {
   type OrchestrationReadModel,
   type ServerSettings,
   type ServerSettingsPatch,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   item,

@@ -7,7 +7,7 @@ import { afterEach, assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as FileSystem from "effect/FileSystem";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import { writeFileStringAtomically } from "./atomicWrite.ts";
 
@@ -24,7 +24,7 @@ afterEach(async () => {
 it.effect("syncs durable contents before publishing and the directory afterward", () =>
   Effect.gen(function* () {
     const directory = yield* Effect.promise(() =>
-      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-atomic-write-")),
+      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-atomic-write-")),
     );
 
     directories.push(directory);
@@ -77,7 +77,7 @@ it.effect("syncs durable contents before publishing and the directory afterward"
 it.effect("keeps the previous file when syncing the replacement fails", () =>
   Effect.gen(function* () {
     const directory = yield* Effect.promise(() =>
-      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-atomic-write-")),
+      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-atomic-write-")),
     );
 
     directories.push(directory);
@@ -107,7 +107,7 @@ it.effect("keeps the previous file when syncing the replacement fails", () =>
 it.effect("checks beforeReplace after syncing and keeps the previous file when it fails", () =>
   Effect.gen(function* () {
     const directory = yield* Effect.promise(() =>
-      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-atomic-write-")),
+      NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-atomic-write-")),
     );
 
     directories.push(directory);

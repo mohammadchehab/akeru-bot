@@ -1,4 +1,4 @@
-import type { EnvironmentThreadSearchMatch } from "@akeru/client-runtime/state/thread-search";
+import type { EnvironmentThreadSearchMatch } from "@isnadi/client-runtime/state/thread-search";
 
 import { AppText as Text } from "../../components/AppText";
 import { cn } from "../../lib/cn";

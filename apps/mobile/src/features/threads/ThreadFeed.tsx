@@ -1,12 +1,12 @@
 import { Predicate } from "effect";
-import type { ThreadSilentRun } from "@akeru/client-runtime/silent-run";
+import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
 import * as Haptics from "expo-haptics";
 import { KeyboardAwareLegendList } from "@legendapp/list/keyboard";
 import type { LegendListRef } from "@legendapp/list/react-native";
-import type { BotId, EnvironmentId, MessageId, ThreadId, TurnId } from "@akeru/contracts";
-import { classifyMarkdownImageSource } from "@akeru/client-runtime/markdown-images";
-import { CHAT_LIST_ANCHOR_OFFSET, resolveChatListAnchoredEndSpace } from "@akeru/shared/chatList";
+import type { BotId, EnvironmentId, MessageId, ThreadId, TurnId } from "@isnadi/contracts";
+import { classifyMarkdownImageSource } from "@isnadi/client-runtime/markdown-images";
+import { CHAT_LIST_ANCHOR_OFFSET, resolveChatListAnchoredEndSpace } from "@isnadi/shared/chatList";
 import { HeaderHeightContext } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -41,7 +41,7 @@ import type {
   SelectableMarkdownSkill,
 } from "../../native/SelectableMarkdownText";
 import { AppText as Text } from "../../components/AppText";
-import type { OrchestrationBot } from "@akeru/contracts";
+import type { OrchestrationBot } from "@isnadi/contracts";
 import { useReplyPlaybackThread } from "../replyPlayback/useReplyPlaybackThread";
 import { useOptionalReplyPlayback } from "../replyPlayback/ReplyPlaybackProvider";
 import { useEnvironmentPresentation } from "../../state/presentation";
@@ -53,7 +53,7 @@ import {
 import { scaledTypographyLineHeight } from "../../lib/appearancePreferences";
 import { MOBILE_TYPOGRAPHY } from "../../lib/typography";
 import { useAppearancePreferences } from "../settings/appearance/AppearancePreferencesProvider";
-import { resolveMarkdownLinkPresentation } from "@akeru/mobile-markdown-text/links";
+import { resolveMarkdownLinkPresentation } from "@isnadi/mobile-markdown-text/links";
 import {
   deriveGroupSpeakerLabels,
   deriveThreadFeedPresentation,
@@ -64,7 +64,7 @@ import {
 import type { ThreadContentPresentation } from "./threadContentPresentation";
 import { ThreadChannels } from "./ThreadChannels";
 import { collapsedWorkLogHeight, WORK_GROUP_TOGGLE_HEIGHT } from "./thread-work-log";
-import { isAppDeepLink } from "@akeru/client-runtime/settings-deep-link";
+import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
 import { resolveMobileSettingsDestination } from "../settings/settingsDeepLink";
 import {
   ThreadMarkdownImage,

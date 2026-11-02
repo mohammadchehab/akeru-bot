@@ -9,15 +9,15 @@ import {
   removeCatalogValue,
   removeConnectionFromCatalog,
   replaceCatalogValue,
-} from "@akeru/client-runtime/platform";
-import { CredentialStore, ProfileStore } from "@akeru/client-runtime/connection";
+} from "@isnadi/client-runtime/platform";
+import { CredentialStore, ProfileStore } from "@isnadi/client-runtime/connection";
 import {
   EnvironmentId,
   OrchestrationShellSnapshot,
   OrchestrationThreadDetailSnapshot,
   ServerConfig,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";

@@ -1,4 +1,4 @@
-import { NonNegativeInt } from "@akeru/contracts";
+import { NonNegativeInt } from "@isnadi/contracts";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import * as SqlSchema from "effect/unstable/sql/SqlSchema";
 import * as Effect from "effect/Effect";

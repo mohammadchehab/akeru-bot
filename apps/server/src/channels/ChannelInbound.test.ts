@@ -26,7 +26,7 @@ import {
   externalAdapters,
 } from "./testUtils/channelRuntime.ts";
 import * as NodeCrypto from "node:crypto";
-import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@akeru/contracts";
+import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it } from "@effect/vitest";
 import { describe, expect, vi } from "vite-plus/test";
@@ -213,7 +213,7 @@ describe("channel runtime", () => {
 
       const invalidSignature = yield* handleWhatsAppWebhook(
         BOT_ID,
-        new Request(`https://akeru.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
+        new Request(`https://isnadi.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
           method: "POST",
           body: payload,
         }),
@@ -288,7 +288,7 @@ describe("channel runtime", () => {
       const current = makeChatSdkMessage(
         threadId,
         "mention-current",
-        "@Akeru investigate",
+        "@Isnadi investigate",
         "U-current",
         true,
       );
@@ -316,7 +316,7 @@ describe("channel runtime", () => {
       const current = makeChatSdkMessage(
         threadId,
         "current",
-        "@Akeru investigate",
+        "@Isnadi investigate",
         "U-current",
         true,
       );
@@ -363,7 +363,7 @@ describe("channel runtime", () => {
         slackChat.processMessage(
           slackAdapter,
           channelThreadId,
-          makeChatSdkMessage(channelThreadId, "slack-mention-1", "@Akeru investigate", "U2", true),
+          makeChatSdkMessage(channelThreadId, "slack-mention-1", "@Isnadi investigate", "U2", true),
         ),
       );
       yield* Effect.promise(() =>
@@ -436,7 +436,7 @@ describe("channel runtime", () => {
           context = transportContext;
 
           return {
-            externalIdentity: "akeru-discord",
+            externalIdentity: "isnadi-discord",
             runtime: { post: async () => undefined, shutdown: async () => undefined },
           };
         },
@@ -457,7 +457,7 @@ describe("channel runtime", () => {
           externalThreadId: "discord:guild-1:channel-1:thread-1",
           externalMessageId: "discord-mention-1",
           externalSenderId: "D2",
-          text: "@Akeru investigate",
+          text: "@Isnadi investigate",
         }),
       );
       yield* Effect.promise(async () =>
@@ -513,7 +513,7 @@ describe("channel runtime", () => {
             callbacks.push(onInbound);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown },
             };
           },
@@ -575,7 +575,7 @@ describe("channel runtime", () => {
       expect(posts).toEqual([
         {
           externalThreadId,
-          text: `Approved answer\n\nOpen in IsnadiBot: https://akeru.example/bots/${BOT_ID}`,
+          text: `Approved answer\n\nOpen in IsnadiBot: https://isnadi.example/bots/${BOT_ID}`,
         },
       ]);
     }),
@@ -672,7 +672,7 @@ describe("channel runtime", () => {
       const directThreadId = "slack:D123:";
       yield* process(
         directThreadId,
-        makeChatSdkMessage(directThreadId, "slack-self-dm", "Echo", "U-AKERU", false, {
+        makeChatSdkMessage(directThreadId, "slack-self-dm", "Echo", "U-ISNADI", false, {
           isBot: true,
           isMe: true,
         }),
@@ -686,7 +686,7 @@ describe("channel runtime", () => {
       const channelThreadId = "slack:C123:1710000000.000001";
       yield* process(
         channelThreadId,
-        makeChatSdkMessage(channelThreadId, "slack-mention", "@Akeru investigate", "U2", true),
+        makeChatSdkMessage(channelThreadId, "slack-mention", "@Isnadi investigate", "U2", true),
       );
       yield* process(
         channelThreadId,
@@ -696,7 +696,7 @@ describe("channel runtime", () => {
       );
       yield* process(
         channelThreadId,
-        makeChatSdkMessage(channelThreadId, "slack-self-followup", "My reply", "U-AKERU", false, {
+        makeChatSdkMessage(channelThreadId, "slack-self-followup", "My reply", "U-ISNADI", false, {
           isBot: true,
           isMe: true,
         }),

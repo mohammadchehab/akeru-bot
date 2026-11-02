@@ -1,15 +1,15 @@
 import * as Predicate from "effect/Predicate";
 import {
-  AKERU_DELEGATION_TRANSITIONS,
-  akeruDelegationStateOf,
-  isAkeruDelegationTerminal,
+  ISNADI_DELEGATION_TRANSITIONS,
+  isnadiDelegationStateOf,
+  isIsnadiDelegationTerminal,
   isThreadWaitingOnChildren,
-  type AkeruDelegationRecord,
-  type AkeruDelegationState,
-  type AkeruDelegationTrigger,
+  type IsnadiDelegationRecord,
+  type IsnadiDelegationState,
+  type IsnadiDelegationTrigger,
   type ThreadId,
-} from "@akeru/contracts";
-import { withoutErrorStack } from "@akeru/shared/errorText";
+} from "@isnadi/contracts";
+import { withoutErrorStack } from "@isnadi/shared/errorText";
 
 /**
  * Whether the parent bot has received a finished result. Completed and failed
@@ -19,7 +19,7 @@ import { withoutErrorStack } from "@akeru/shared/errorText";
 export type DelegationDelivery = "pending" | "delivered";
 
 export interface DelegationPresentation {
-  readonly state: AkeruDelegationState;
+  readonly state: IsnadiDelegationState;
   readonly terminal: boolean;
   readonly outcome:
     | { readonly kind: "result"; readonly text: string }
@@ -30,15 +30,15 @@ export interface DelegationPresentation {
   /** The child's chat, once the work has started. Opens the read-only detail view. */
   readonly childThreadId: ThreadId | null;
   /** Scheduled work comes from a routine, not from the parent bot's reply. */
-  readonly trigger: AkeruDelegationTrigger;
+  readonly trigger: IsnadiDelegationTrigger;
   /** Whether this card retries earlier Failed or Canceled work. */
   readonly retried: boolean;
 }
 
 /** Card state shared by the web and mobile delegation views. */
-export function presentDelegation(delegation: AkeruDelegationRecord): DelegationPresentation {
+export function presentDelegation(delegation: IsnadiDelegationRecord): DelegationPresentation {
   const phase = delegation.phase;
-  const state = akeruDelegationStateOf(phase);
+  const state = isnadiDelegationStateOf(phase);
 
   const delivery: DelegationDelivery | null =
     Predicate.isTagged(phase, "Completed") || Predicate.isTagged(phase, "Failed")
@@ -49,7 +49,7 @@ export function presentDelegation(delegation: AkeruDelegationRecord): Delegation
 
   return {
     state,
-    terminal: isAkeruDelegationTerminal(phase),
+    terminal: isIsnadiDelegationTerminal(phase),
     // Records written before the phase union can decode without details; the text is then empty.
     // Older failures stored a full server stack, so only its first readable line is shown.
     outcome: Predicate.isTagged(phase, "Completed")
@@ -70,7 +70,10 @@ export function presentDelegation(delegation: AkeruDelegationRecord): Delegation
  * Milliseconds the work has run: from start (or creation while queued) to its
  * end, or to `now` while it is live. Null when the timestamps do not parse.
  */
-export function delegationElapsedMs(delegation: AkeruDelegationRecord, now: number): number | null {
+export function delegationElapsedMs(
+  delegation: IsnadiDelegationRecord,
+  now: number,
+): number | null {
   const phase = delegation.phase;
 
   const startedAt = Date.parse(
@@ -91,12 +94,12 @@ export function delegationElapsedMs(delegation: AkeruDelegationRecord, now: numb
 
 /** Delegations a chat started, oldest first, and whether any are still working. */
 type ThreadDelegationsResult = {
-  readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
   readonly waitingOnChildren: boolean;
 };
 
 export function threadDelegations(
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
   threadId: ThreadId,
 ): ThreadDelegationsResult {
   return {
@@ -110,8 +113,8 @@ export function threadDelegations(
  * second retry of the same record, so a superseded card offers no Try again.
  */
 export function isDelegationSuperseded(
-  delegation: AkeruDelegationRecord,
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegation: IsnadiDelegationRecord,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
 ): boolean {
   return delegations.some((candidate) => candidate.retryOfDelegationId === delegation.delegationId);
 }
@@ -125,8 +128,8 @@ export function isDelegationSuperseded(
 export type DelegationAction = "keep" | "cancel" | "retry";
 
 export function delegationActions(
-  delegation: AkeruDelegationRecord,
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegation: IsnadiDelegationRecord,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
 ): ReadonlyArray<DelegationAction> {
   const phase = delegation.phase._tag;
 
@@ -139,13 +142,13 @@ export function delegationActions(
 
   if (!delegation.keep) actions.push("keep");
 
-  if (AKERU_DELEGATION_TRANSITIONS[phase].has("Canceled")) actions.push("cancel");
+  if (ISNADI_DELEGATION_TRANSITIONS[phase].has("Canceled")) actions.push("cancel");
 
   return actions;
 }
 
 function isQueuedPhase(
-  value: AkeruDelegationRecord["phase"],
-): value is Extract<AkeruDelegationRecord["phase"], { readonly _tag: "Queued" }> {
+  value: IsnadiDelegationRecord["phase"],
+): value is Extract<IsnadiDelegationRecord["phase"], { readonly _tag: "Queued" }> {
   return Predicate.isTagged(value, "Queued");
 }

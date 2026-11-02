@@ -1,7 +1,7 @@
 import { failureInjection } from "./testUtils/memoryApprovals.ts";
 import { access, testLayer, inbox } from "./testUtils/memoryApprovals.ts";
 import { assert, it } from "@effect/vitest";
-import { AkeruMemoryId } from "@akeru/contracts";
+import { IsnadiMemoryId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { MemoryApprovals, memoryApprovalIncidentKey } from "./MemoryApprovals.ts";
 import { EntityMemoryRepository } from "./Services/EntityMemoryRepository.ts";
@@ -79,7 +79,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make(`approval:${proposed.candidateId}`),
+        memoryId: IsnadiMemoryId.make(`approval:${proposed.candidateId}`),
         createdAt: "2026-01-01T00:00:00.000Z",
       });
 
@@ -177,7 +177,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make(`approval:${second.candidateId}`),
+        memoryId: IsnadiMemoryId.make(`approval:${second.candidateId}`),
         createdAt: "2026-01-01T00:00:00.000Z",
       });
       failureInjection.crashAfterRetractOnce = true;
@@ -223,7 +223,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make(`approval:${proposed.candidateId}`),
+        memoryId: IsnadiMemoryId.make(`approval:${proposed.candidateId}`),
         createdAt: "2026-01-01T00:00:00.000Z",
       });
       failureInjection.crashAfterRetractOnce = true;
@@ -305,7 +305,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make(`approval:${proposed.candidateId}`),
+        memoryId: IsnadiMemoryId.make(`approval:${proposed.candidateId}`),
         createdAt: "2026-01-01T00:00:00.000Z",
       });
 
@@ -353,7 +353,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
         sensitive: false,
         confidence: 1,
         sourceMessageId: null,
-        memoryId: AkeruMemoryId.make(`approval:${proposed.candidateId}`),
+        memoryId: IsnadiMemoryId.make(`approval:${proposed.candidateId}`),
         createdAt: "2026-01-01T00:00:00.000Z",
       });
 

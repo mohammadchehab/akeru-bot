@@ -1,4 +1,4 @@
-import { OrchestrationThread, ThreadChannelDeliverySetPayload } from "@akeru/contracts";
+import { OrchestrationThread, ThreadChannelDeliverySetPayload } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   ThreadArchivedPayload,
@@ -17,7 +17,7 @@ import {
   ThreadUnsettledPayload,
   ThreadUnsnoozedPayload,
 } from "../Schemas.ts";
-import type { OrchestrationReadModel, OrchestrationEvent } from "@akeru/contracts";
+import type { OrchestrationReadModel, OrchestrationEvent } from "@isnadi/contracts";
 import type { OrchestrationProjectorDecodeError } from "../Errors.ts";
 import { decodeForEvent, updateThread, findProjectedThread } from "./Updates.ts";
 

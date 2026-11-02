@@ -10,9 +10,9 @@ import {
   resolveProviderInstanceEnabled,
   ServerSettings,
   ServerSettingsError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
-import { isModelSelectionProviderEnabled } from "@akeru/shared/serverSettings";
+import { isModelSelectionProviderEnabled } from "@isnadi/shared/serverSettings";
 
 import * as Schema from "effect/Schema";
 

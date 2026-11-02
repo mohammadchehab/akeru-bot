@@ -1,4 +1,4 @@
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import {
   ApprovalRequestId,
   BotId,
@@ -7,7 +7,7 @@ import {
   DEFAULT_PROVIDER_INTERACTION_MODE,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ChannelRuntime from "../../channels/ChannelRuntime.ts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import {
@@ -50,7 +50,7 @@ describe("ProviderRuntimeIngestion", () => {
       await channel.inbound(message);
 
       const threadId = ChannelRuntime.channelThreadId(
-        BotId.make("bot-akeru"),
+        BotId.make("bot-isnadi"),
         asProjectId("project-1"),
         provider,
         message.externalThreadId,
@@ -128,7 +128,7 @@ describe("ProviderRuntimeIngestion", () => {
       await harness.drain();
       expect([...signals]).toEqual(["check"]);
       expect(adds).toEqual(["eyes", "hourglass", "eyes", "check"]);
-      await harness.disconnectChannel(BotId.make("bot-akeru"), provider);
+      await harness.disconnectChannel(BotId.make("bot-isnadi"), provider);
     },
   );
 
@@ -158,7 +158,7 @@ describe("ProviderRuntimeIngestion", () => {
       await channel.inbound(message);
 
       const threadId = ChannelRuntime.channelThreadId(
-        BotId.make("bot-akeru"),
+        BotId.make("bot-isnadi"),
         asProjectId("project-1"),
         "slack",
         message.externalThreadId,
@@ -211,7 +211,7 @@ describe("ProviderRuntimeIngestion", () => {
       expect(markWaiting).not.toHaveBeenCalled();
       expect([...signals]).toEqual(["x"]);
       markWaiting.mockRestore();
-      await harness.disconnectChannel(BotId.make("bot-akeru"), "slack");
+      await harness.disconnectChannel(BotId.make("bot-isnadi"), "slack");
     },
   );
 
@@ -267,11 +267,11 @@ describe("ProviderRuntimeIngestion", () => {
         delegation: {
           delegationId: DelegationId.make("channel-delegation"),
           parentDelegationId: null,
-          parentBotId: BotId.make("bot-akeru"),
+          parentBotId: BotId.make("bot-isnadi"),
           childBotId: BotId.make("bot-child"),
           parentThreadId: ownerThreadId,
           parentTurnId: ownerTurnId,
-          ancestorBotIds: [BotId.make("bot-akeru")],
+          ancestorBotIds: [BotId.make("bot-isnadi")],
           depth: 1,
           task: "Research the answer",
           expectedResult: "A concise answer",
@@ -401,7 +401,7 @@ describe("ProviderRuntimeIngestion", () => {
       await harness.drain();
       expect(posts).toEqual(expectedPosts);
       expect(
-        (await harness.readModel()).bots.find((bot) => bot.id === "bot-akeru")?.channelBindings[0]
+        (await harness.readModel()).bots.find((bot) => bot.id === "bot-isnadi")?.channelBindings[0]
           ?.sentMessageIds,
       ).toEqual(ownerState === "completed" ? [asMessageId("assistant:item-owner-turn")] : []);
     },

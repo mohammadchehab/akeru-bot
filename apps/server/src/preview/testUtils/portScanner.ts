@@ -1,6 +1,6 @@
 import * as NodeNet from "node:net";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import * as Net from "@akeru/shared/Net";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import * as Net from "@isnadi/shared/Net";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as PlatformError from "effect/PlatformError";

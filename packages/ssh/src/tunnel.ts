@@ -1,4 +1,7 @@
-import type { DesktopSshEnvironmentBootstrap, DesktopSshEnvironmentTarget } from "@akeru/contracts";
+import type {
+  DesktopSshEnvironmentBootstrap,
+  DesktopSshEnvironmentTarget,
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -34,7 +37,7 @@ import { reserveLocalTunnelPort, startSshTunnel } from "./tunnelTransport.ts";
 
 // Re-exported from the shared HTTP readiness module so existing importers
 // (notably tunnel.test.ts) keep resolving it from here.
-export { describeReadinessCause } from "@akeru/shared/httpReadiness";
+export { describeReadinessCause } from "@isnadi/shared/httpReadiness";
 
 const makeSshEnvironmentManager = Effect.fn("ssh/tunnel.SshEnvironmentManager.make")(function* (
   options: SshEnvironmentManagerOptions = {},
@@ -517,7 +520,7 @@ const makeSshEnvironmentManager = Effect.fn("ssh/tunnel.SshEnvironmentManager.ma
 export class SshEnvironmentManager extends Context.Service<
   SshEnvironmentManager,
   SshEnvironmentManagerShape
->()("@akeru/ssh/tunnel/SshEnvironmentManager") {
+>()("@isnadi/ssh/tunnel/SshEnvironmentManager") {
   static readonly layer = (options: SshEnvironmentManagerOptions = {}) =>
     Layer.effect(SshEnvironmentManager, makeSshEnvironmentManager(options));
 }

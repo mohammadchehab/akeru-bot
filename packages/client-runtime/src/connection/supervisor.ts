@@ -195,7 +195,7 @@ export class EnvironmentSupervisor extends Context.Service<
     /** Retries only while connection is still desired, leaving intent unchanged. */
     readonly retryIfDesired: Effect.Effect<void>;
   }
->()("@akeru/client-runtime/connection/supervisor/EnvironmentSupervisor") {}
+>()("@isnadi/client-runtime/connection/supervisor/EnvironmentSupervisor") {}
 
 export const make = Effect.fn("EnvironmentSupervisor.make")(function* (
   entry: ConnectionCatalogEntry,

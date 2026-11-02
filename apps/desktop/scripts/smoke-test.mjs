@@ -45,7 +45,7 @@ export function createSmokeEnvironment(root, inherited = process.env) {
   const env = Object.fromEntries(
     Object.entries(inherited).filter(
       ([key]) =>
-        !/^(T3CODE_|AKERU_|VITE_|ELECTRON_|NODE_OPTIONS$|NODE_PATH$|APPIMAGE$|APPDIR$|HOME$|USERPROFILE$|HOMEDRIVE$|HOMEPATH$|APPDATA$|LOCALAPPDATA$|XDG_(CONFIG|DATA|CACHE|STATE)_HOME$|TMPDIR$|TMP$|TEMP$)/i.test(
+        !/^(T3CODE_|ISNADI_|VITE_|ELECTRON_|NODE_OPTIONS$|NODE_PATH$|APPIMAGE$|APPDIR$|HOME$|USERPROFILE$|HOMEDRIVE$|HOMEPATH$|APPDATA$|LOCALAPPDATA$|XDG_(CONFIG|DATA|CACHE|STATE)_HOME$|TMPDIR$|TMP$|TEMP$)/i.test(
           key,
         ),
     ),
@@ -68,8 +68,8 @@ export function createSmokeEnvironment(root, inherited = process.env) {
     XDG_DATA_HOME: NodePath.join(home, ".local", "share"),
     XDG_CACHE_HOME: NodePath.join(home, ".cache"),
     XDG_STATE_HOME: NodePath.join(home, ".local", "state"),
-    T3CODE_HOME: NodePath.join(root, "akeru"),
-    AKERU_HOME: NodePath.join(root, "akeru"),
+    T3CODE_HOME: NodePath.join(root, "isnadi"),
+    ISNADI_HOME: NodePath.join(root, "isnadi"),
     T3CODE_DISABLE_AUTO_UPDATE: "true",
     ELECTRON_ENABLE_LOGGING: "1",
   };
@@ -81,7 +81,7 @@ export async function runSmokeTest({
   runtime = smokeRuntime,
 } = {}) {
   const electronPath = resolveSmokeElectronPath(runtime);
-  const root = runtime.mkdtempSync(NodePath.join(runtime.tmpdir(), "akeru-desktop-smoke-"));
+  const root = runtime.mkdtempSync(NodePath.join(runtime.tmpdir(), "isnadi-desktop-smoke-"));
   let child;
   let pid;
   let closed = false;

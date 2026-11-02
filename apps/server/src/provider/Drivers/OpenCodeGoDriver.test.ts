@@ -3,7 +3,7 @@ import * as NodePath from "node:path";
 
 import { NodeServices } from "@effect/platform-node";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 
@@ -34,7 +34,7 @@ describe("OpenCodeGoDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-opencode-go-driver-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-opencode-go-driver-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),
@@ -84,7 +84,7 @@ describe("OpenCodeGoDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-opencode-go-refresh-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-opencode-go-refresh-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),

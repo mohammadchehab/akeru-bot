@@ -2,8 +2,8 @@ import * as FileSystem from "effect/FileSystem";
 import * as NodePath from "@effect/platform-node/NodePath";
 import * as Path from "effect/Path";
 
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { SpawnExecutableResolution } from "@akeru/shared/shell";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { SpawnExecutableResolution } from "@isnadi/shared/shell";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 

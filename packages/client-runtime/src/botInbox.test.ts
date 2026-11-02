@@ -1,4 +1,4 @@
-import { AkeruMemoryCandidateId, BotId, ThreadId } from "@akeru/contracts";
+import { IsnadiMemoryCandidateId, BotId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -18,7 +18,7 @@ function incident(overrides: Partial<BotInboxItem> = {}): BotInboxItem {
     kind: "connector-failure",
     status: "open",
     botId: BotId.make("bot-1"),
-    botName: "Akeru",
+    botName: "Isnadi",
     taskOrRoutine: "Provider access",
     lastFailure: "The request failed.",
     nextAction: "Reconnect the provider.",
@@ -47,7 +47,7 @@ describe("selectOpenBotInboxItems", () => {
 
 describe("botInboxItemCopy", () => {
   const memoryApproval = {
-    candidateId: AkeruMemoryCandidateId.make("candidate-1"),
+    candidateId: IsnadiMemoryCandidateId.make("candidate-1"),
     fact: "Standups start at ten.",
     scope: "group",
     sensitive: true,
@@ -141,7 +141,7 @@ describe("botInboxRowAction", () => {
       kind: "approval-request",
       incidentKey: "memory-approval:candidate-1",
       memoryApproval: {
-        candidateId: AkeruMemoryCandidateId.make("candidate-1"),
+        candidateId: IsnadiMemoryCandidateId.make("candidate-1"),
         fact: "Deploys happen on Fridays.",
         scope: "project",
         sensitive: false,
@@ -159,7 +159,7 @@ describe("botInboxRowAction", () => {
       kind: "approval-request",
       incidentKey: "memory-approval:candidate-2",
       memoryApproval: {
-        candidateId: AkeruMemoryCandidateId.make("candidate-2"),
+        candidateId: IsnadiMemoryCandidateId.make("candidate-2"),
         fact: "Ada's home address is on file.",
         scope: "project",
         sensitive: true,

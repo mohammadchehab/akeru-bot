@@ -1,4 +1,4 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import { useEffect, useMemo, useState } from "react";
 
 import { useI18n } from "../../i18n";

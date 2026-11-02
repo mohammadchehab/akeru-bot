@@ -1,4 +1,4 @@
-import type { DesktopBridge } from "@akeru/contracts";
+import type { DesktopBridge } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "@effect/vitest";
 
 import { __resetDesktopPrimaryAuthForTests, readDesktopPrimaryBearerToken } from "./desktopAuth";

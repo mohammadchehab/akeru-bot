@@ -2,8 +2,8 @@ import {
   type AdvertisedEndpoint,
   type DesktopServerExposureMode,
   type DesktopServerExposureState,
-} from "@akeru/contracts";
-import { readTailscaleStatus } from "@akeru/tailscale";
+} from "@isnadi/contracts";
+import { readTailscaleStatus } from "@isnadi/tailscale";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -74,7 +74,7 @@ export class DesktopServerExposure extends Context.Service<
     }) => Effect.Effect<DesktopServerExposureChange, DesktopTailscaleServePersistenceError>;
     readonly getAdvertisedEndpoints: Effect.Effect<readonly AdvertisedEndpoint[]>;
   }
->()("@akeru/desktop/backend/DesktopServerExposure") {}
+>()("@isnadi/desktop/backend/DesktopServerExposure") {}
 
 export const make = Effect.gen(function* () {
   const config = yield* DesktopConfig.DesktopConfig;

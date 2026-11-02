@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { safeErrorLogAttributes } from "@akeru/client-runtime/errors";
+import { safeErrorLogAttributes } from "@isnadi/client-runtime/errors";
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import {
   applyThemePalette,

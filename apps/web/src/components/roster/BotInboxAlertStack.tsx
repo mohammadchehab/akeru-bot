@@ -1,6 +1,6 @@
 import { CircleAlertIcon } from "lucide-react";
 
-import { botInboxKindLabel, type BotInboxItem } from "@akeru/client-runtime/bot-inbox";
+import { botInboxKindLabel, type BotInboxItem } from "@isnadi/client-runtime/bot-inbox";
 import { useI18n } from "../../i18n";
 import { Button } from "../ui/button";
 import { ComposerBannerStack } from "../chat/ComposerBannerStack";

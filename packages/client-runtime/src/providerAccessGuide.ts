@@ -3,7 +3,7 @@ import {
   type ServerProvider,
   type SubscriptionProviderId,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { createTranslator, type MessageKey, type TranslationParams } from "./i18n/index.ts";
 import { SUBSCRIPTION_PROVIDER_BY_DRIVER } from "./providerAuth.ts";

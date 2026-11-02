@@ -2,7 +2,7 @@ import * as NodeHttp from "node:http";
 import * as NodeZlib from "node:zlib";
 
 import * as NodeSocket from "@effect/platform-node/NodeSocket";
-import { WsRpcGroup } from "@akeru/contracts";
+import { WsRpcGroup } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";

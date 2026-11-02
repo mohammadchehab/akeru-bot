@@ -29,7 +29,7 @@ describe("install-windows.ps1", () => {
     NodeAssert.match(script, /Invoke-RestMethod/);
     NodeAssert.match(
       script,
-      /https:\/\/api\.github\.com\/repos\/opencoredev\/akeru-bot\/releases\/latest/,
+      /https:\/\/api\.github\.com\/repos\/mohammadchehab\/isnadibot\/releases\/latest/,
     );
     NodeAssert.match(script, /if \(-not \$Tag\)/);
   });
@@ -39,10 +39,10 @@ describe("install-windows.ps1", () => {
   });
 
   it("downloads the same-tag exe and SHA256SUMS to TEMP", () => {
-    NodeAssert.match(script, /Akeru-Bot-\$version-x64\.exe/);
+    NodeAssert.match(script, /IsnadiBot-\$version-x64\.exe/);
     NodeAssert.match(
       script,
-      /\$base = "https:\/\/github\.com\/opencoredev\/akeru-bot\/releases\/download\/\$Tag"/,
+      /\$base = "https:\/\/github\.com\/mohammadchehab\/isnadibot\/releases\/download\/\$Tag"/,
     );
     NodeAssert.match(script, /Join-Path \$env:TEMP/);
     NodeAssert.match(script, /Invoke-WebRequest -Uri "\$base\/\$asset" -OutFile \$installerPath/);
@@ -76,7 +76,7 @@ describe("install-windows.ps1", () => {
   it("isolates payload downloads and removes them in finally", () => {
     NodeAssert.match(
       script,
-      /\$tempDirectory = Join-Path \$env:TEMP "akeru-install-\$\(\[Guid\]::NewGuid\(\)\)"/,
+      /\$tempDirectory = Join-Path \$env:TEMP "isnadi-install-\$\(\[Guid\]::NewGuid\(\)\)"/,
     );
     NodeAssert.match(script, /New-Item -ItemType Directory -Path \$tempDirectory\r?\ntry \{/);
     NodeAssert.match(script, /\$installerPath = Join-Path \$tempDirectory \$asset/);
@@ -90,7 +90,7 @@ describe("install-windows.ps1", () => {
   it("bootstraps in a Bypass child and always removes the downloaded script", () => {
     const bootstrap = script.split(/\r?\n/).find((line) => line.startsWith("#   $t = "));
     NodeAssert.ok(bootstrap);
-    NodeAssert.match(bootstrap, /akeru-install-\$\(\[Guid\]::NewGuid\(\)\)\.ps1/);
+    NodeAssert.match(bootstrap, /isnadi-install-\$\(\[Guid\]::NewGuid\(\)\)\.ps1/);
     NodeAssert.match(bootstrap, /Invoke-RestMethod .* -ErrorAction Stop/);
     NodeAssert.match(
       bootstrap,
@@ -121,6 +121,6 @@ describe("install-windows.ps1", () => {
   });
 
   it("prints the exact success sentence", () => {
-    NodeAssert.match(script, /Write-Output "Installed Akeru Bot \$Tag\."/);
+    NodeAssert.match(script, /Write-Output "Installed IsnadiBot \$Tag\."/);
   });
 });

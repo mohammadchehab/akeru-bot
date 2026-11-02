@@ -2,7 +2,7 @@
 
 import { hasTag } from "~/lib/taggedUnion";
 
-import type { PreviewViewportSetting, ScopedThreadRef } from "@akeru/contracts";
+import type { PreviewViewportSetting, ScopedThreadRef } from "@isnadi/contracts";
 import { useShallow } from "zustand/react/shallow";
 import { useCallback, useEffect, useRef, useState } from "react";
 

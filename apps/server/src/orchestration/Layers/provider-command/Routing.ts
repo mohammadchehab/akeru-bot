@@ -1,5 +1,5 @@
 import * as Data from "effect/Data";
-import type { AkeruDelegationDispatch } from "../../../provider/AkeruDelegationRuntime.ts";
+import type { IsnadiDelegationDispatch } from "../../../provider/IsnadiDelegationRuntime.ts";
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
 import * as Cause from "effect/Cause";
@@ -16,7 +16,7 @@ import type { createSession } from "./Session.ts";
 import type { createTurns } from "./Turns.ts";
 import type { createRequests } from "./Requests.ts";
 
-const DelegationDispatch = Data.taggedEnum<AkeruDelegationDispatch>();
+const DelegationDispatch = Data.taggedEnum<IsnadiDelegationDispatch>();
 
 export const createRouting = Effect.fn("makeprovider-command-Routing")(function* ({
   agentController,

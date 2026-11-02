@@ -5,7 +5,7 @@ import {
   ProviderInstanceId,
   type ServerProvider,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { type ProviderInstanceEntry } from "./providers/instanceTypes";
 import { isProviderInstancePickerReady } from "./providers/instanceAvailability";
 import { deriveProviderInstanceEntries } from "./providers/instanceCatalog";
@@ -16,7 +16,7 @@ import { deriveProviderInstanceEntries } from "./providers/instanceCatalog";
  * send until a live provider replaces it.
  */
 export const NO_PROVIDER_MODEL_SELECTION: ModelSelection = {
-  instanceId: ProviderInstanceId.make("akeru_no_provider"),
+  instanceId: ProviderInstanceId.make("isnadi_no_provider"),
   model: "",
 };
 

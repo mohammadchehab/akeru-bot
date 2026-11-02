@@ -2,8 +2,8 @@
 
 import { hasTag } from "~/lib/taggedUnion";
 
-import { parseScopedThreadKey } from "@akeru/client-runtime/environment";
-import { FILL_PREVIEW_VIEWPORT } from "@akeru/contracts";
+import { parseScopedThreadKey } from "@isnadi/client-runtime/environment";
+import { FILL_PREVIEW_VIEWPORT } from "@isnadi/contracts";
 import { useEffect, useMemo } from "react";
 
 import { isElectron } from "~/env";

@@ -9,7 +9,7 @@ import * as Stream from "effect/Stream";
 
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
 
-import { buildRemoteNodeEnvScript } from "@akeru/ssh/tunnel";
+import { buildRemoteNodeEnvScript } from "@isnadi/ssh/tunnel";
 
 export const PROCESS_TERMINATE_GRACE = Duration.seconds(1);
 

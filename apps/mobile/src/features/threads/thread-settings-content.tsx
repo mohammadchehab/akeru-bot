@@ -1,5 +1,5 @@
 import { useMobileI18n } from "../../lib/i18n";
-import { getProviderOptionCurrentLabel, getProviderOptionCurrentValue } from "@akeru/shared/model";
+import { getProviderOptionCurrentLabel, getProviderOptionCurrentValue } from "@isnadi/shared/model";
 import * as Haptics from "expo-haptics";
 import { useState } from "react";
 import { Alert, Platform, Pressable, ScrollView, View } from "react-native";

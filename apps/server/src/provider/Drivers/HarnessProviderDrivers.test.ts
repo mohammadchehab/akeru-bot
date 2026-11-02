@@ -3,7 +3,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodePath from "node:path";
 import { NodeServices } from "@effect/platform-node";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -37,7 +37,7 @@ import { GrokDriver } from "./GrokDriver.ts";
 const epoch = DateTime.makeUnsafe("1970-01-01T00:00:00.000Z");
 
 const testLayer = Layer.mergeAll(
-  ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-driver-" }).pipe(
+  ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-driver-" }).pipe(
     Layer.provideMerge(NodeServices.layer),
   ),
   settingsLayer(),
@@ -525,7 +525,7 @@ it.layer(testLayer)("Harness provider drivers without CLIs", (it) => {
                 expect(snapshot.status).toBe(value ? "ready" : "warning");
                 expect(snapshot.auth.status).toBe(value ? "authenticated" : "unauthenticated");
 
-                if (!value) expect(snapshot.message).toContain("Akeru harness");
+                if (!value) expect(snapshot.message).toContain("Isnadi harness");
               }
             }),
           ),

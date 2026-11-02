@@ -1,6 +1,6 @@
 import { Toast } from "@base-ui/react/toast";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import type { ScopedThreadRef, ThreadId } from "@akeru/contracts";
+import type { ScopedThreadRef, ThreadId } from "@isnadi/contracts";
 
 export type ThreadToastData = {
   threadRef?: ScopedThreadRef | null;

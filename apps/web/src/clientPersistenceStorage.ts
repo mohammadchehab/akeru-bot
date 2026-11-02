@@ -1,8 +1,8 @@
-import { ClientSettingsSchema, type ClientSettings } from "@akeru/contracts";
+import { ClientSettingsSchema, type ClientSettings } from "@isnadi/contracts";
 
 import { getFirstLocalStorageItem, setLocalStorageItem } from "./hooks/useLocalStorage";
 
-export const CLIENT_SETTINGS_STORAGE_KEY = "akeru:client-settings:v1";
+export const CLIENT_SETTINGS_STORAGE_KEY = "isnadi:client-settings:v1";
 
 // Pre-rebrand key, kept so existing installs keep their client settings.
 export const LEGACY_CLIENT_SETTINGS_STORAGE_KEY = "t3code:client-settings:v1";

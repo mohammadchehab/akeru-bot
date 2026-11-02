@@ -9,7 +9,7 @@ import {
   ORCHESTRATION_WS_METHODS,
   ProviderDriverKind,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

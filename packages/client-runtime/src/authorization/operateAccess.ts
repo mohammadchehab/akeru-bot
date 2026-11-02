@@ -1,4 +1,4 @@
-import { AuthOrchestrationOperateScope, type AuthSessionState } from "@akeru/contracts";
+import { AuthOrchestrationOperateScope, type AuthSessionState } from "@isnadi/contracts";
 
 /**
  * Whether the session may change environment state on an environment.

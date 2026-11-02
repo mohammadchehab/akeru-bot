@@ -1,5 +1,5 @@
-import { createEnvironmentProjectAtoms } from "@akeru/client-runtime/state/projects";
-import { createProjectEnvironmentAtoms } from "@akeru/client-runtime/state/projects";
+import { createEnvironmentProjectAtoms } from "@isnadi/client-runtime/state/projects";
+import { createProjectEnvironmentAtoms } from "@isnadi/client-runtime/state/projects";
 
 import { environmentCatalog } from "../connection/catalog";
 import { connectionAtomRuntime } from "../connection/runtime";

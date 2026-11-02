@@ -30,7 +30,7 @@ describe("parseChatPath", () => {
     expect(isRecordableChatPath("/")).toBe(false);
     expect(isRecordableChatPath("/settings/appearance")).toBe(false);
     expect(isRecordableChatPath("/projects/my-project")).toBe(false);
-    expect(isRecordableChatPath("/bots/bot-akeru")).toBe(false);
+    expect(isRecordableChatPath("/bots/bot-isnadi")).toBe(false);
     expect(isRecordableChatPath("/draft/draft-123")).toBe(false);
     expect(isRecordableChatPath("/usage")).toBe(false);
   });

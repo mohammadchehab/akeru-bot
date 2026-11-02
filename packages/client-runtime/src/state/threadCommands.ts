@@ -1,6 +1,6 @@
 import * as Crypto from "effect/Crypto";
 import { Atom } from "effect/unstable/reactivity";
-import { WS_METHODS } from "@akeru/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 
 import {
   createAtomCommandScheduler,

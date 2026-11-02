@@ -1,5 +1,5 @@
 import * as NodeCrypto from "node:crypto";
-import type { SubscriptionAuthStartInput } from "@akeru/contracts";
+import type { SubscriptionAuthStartInput } from "@isnadi/contracts";
 import { startAnthropicLogin } from "./providers/anthropic.ts";
 import { startCodexDeviceLogin } from "./providers/openaiCodex.ts";
 import { startKimiDeviceLogin } from "./providers/kimi.ts";

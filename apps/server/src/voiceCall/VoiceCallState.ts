@@ -3,7 +3,7 @@ import {
   type VoiceCallSnapshot,
   type VoiceSettings,
   type VoiceApiProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface ActiveVoiceCall {
   readonly callId: string;

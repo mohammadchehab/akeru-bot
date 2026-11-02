@@ -2,7 +2,7 @@ import type {
   ResourceTelemetryAggregate,
   ResourceTelemetryProcess,
   ResourceTelemetryProcessCategory,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   MAX_DELTA_INTERVAL_MS,
   type ProcessState,

@@ -3,7 +3,7 @@ import {
   type BotEngine,
   type ModelSelection,
   type SubscriptionProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 interface DesktopOnboardingProvider {
   readonly instanceId: string;

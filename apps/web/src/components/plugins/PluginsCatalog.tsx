@@ -1,4 +1,4 @@
-import type { McpServer, ProviderAccessStatus } from "@akeru/contracts";
+import type { McpServer, ProviderAccessStatus } from "@isnadi/contracts";
 import type { PluginDirectoryDefinition } from "../../../../../plugins";
 import { useI18n } from "../../i18n";
 import { DirectorySection, PluginCard } from "./PluginCatalogCards";

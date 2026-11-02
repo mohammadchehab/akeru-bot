@@ -1,6 +1,6 @@
 import * as Exit from "effect/Exit";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { ProjectId, ThreadId, TurnId, ProviderInstanceId } from "@akeru/contracts";
+import { ProjectId, ThreadId, TurnId, ProviderInstanceId } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";

@@ -1,9 +1,9 @@
 import { recordLookup } from "../recordLookup";
-import type { KeybindingWhenNode } from "@akeru/contracts";
+import type { KeybindingWhenNode } from "@isnadi/contracts";
 import {
   DEFAULT_RESOLVED_KEYBINDINGS,
   parseKeybindingWhenExpression,
-} from "@akeru/shared/keybindings";
+} from "@isnadi/shared/keybindings";
 
 export type WhenVariableOption = string;
 

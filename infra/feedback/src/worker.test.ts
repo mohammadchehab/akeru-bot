@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vite-plus/test";
 import type { FeedbackWorkerEnv } from "../alchemy.run.ts";
 import worker, { makeGitHubIssueOutbox } from "./worker.ts";
 
-const ENDPOINT = "https://akeru-feedback.leoisadev.workers.dev/v1/feedback";
+const ENDPOINT = "https://isnadi-feedback.example.workers.dev/v1/feedback";
 
 function unexpectedDatabaseOperation(): never {
   throw new Error("Unexpected database fixture operation");
@@ -124,7 +124,7 @@ describe("feedback worker", () => {
       submission(),
       env({
         DB: emptyInboxDatabase(),
-        GITHUB_REPOSITORY: "opencoredev/akeru-bot",
+        GITHUB_REPOSITORY: "mohammadchehab/isnadibot",
         GITHUB_APP_ID: "12345",
         GITHUB_APP_INSTALLATION_ID: "67890",
         GITHUB_APP_PRIVATE_KEY: "invalid-test-key",
@@ -160,7 +160,7 @@ describe("feedback worker", () => {
       {} as ExecutionContext,
     );
 
-    expect(prepare).toHaveBeenCalledWith("DELETE FROM akeru_feedback_inbox WHERE expires_at <= ?");
+    expect(prepare).toHaveBeenCalledWith("DELETE FROM isnadi_feedback_inbox WHERE expires_at <= ?");
     expect(bind).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/));
     expect(run).toHaveBeenCalledOnce();
   });

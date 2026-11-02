@@ -2,7 +2,9 @@ import { assert, describe, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
+import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
+import * as Path from "effect/Path";
 import * as PlatformError from "effect/PlatformError";
 import { beforeEach, vi } from "vite-plus/test";
 
@@ -59,7 +61,7 @@ describe("BrowserSession", () => {
       const first = yield* browserSessions.getSession("scope-a");
       const second = yield* browserSessions.getSession("scope-a");
 
-      assert.strictEqual(partition, "persist:akeru-preview-f051bb2c68cb7b2fe969");
+      assert.strictEqual(partition, "persist:isnadi-preview-f051bb2c68cb7b2fe969");
       assert.strictEqual(first, second);
       assert.strictEqual(fromPartition.mock.calls.length, 1);
     }).pipe(Effect.provide(layer)),
@@ -247,4 +249,78 @@ describe("BrowserSession", () => {
       }
     }).pipe(Effect.provide(layer)),
   );
+
+  describe("migrateLegacyPreviewPartitions", () => {
+    it.effect("renames legacy preview partitions and leaves everything else alone", () =>
+      Effect.gen(function* () {
+        const fileSystem = yield* FileSystem.FileSystem;
+        const path = yield* Path.Path;
+
+        const userData = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "isnadi-preview-partitions-",
+        });
+
+        const partitions = path.join(userData, "Partitions");
+        const legacyDir = `${BrowserSession.LEGACY_AKERU_PREVIEW_PARTITION_NAME_PREFIX}aaaa`;
+        yield* fileSystem.makeDirectory(path.join(partitions, legacyDir), { recursive: true });
+        yield* fileSystem.writeFileString(path.join(partitions, legacyDir, "Cookies"), "cookies");
+        yield* fileSystem.makeDirectory(path.join(partitions, "unrelated-partition"));
+
+        const result = yield* BrowserSession.migrateLegacyPreviewPartitions(userData);
+
+        assert.deepEqual(result, { renamed: [legacyDir], skipped: [] });
+        assert.deepEqual((yield* fileSystem.readDirectory(partitions)).toSorted(), [
+          "isnadi-preview-aaaa",
+          "unrelated-partition",
+        ]);
+        assert.equal(
+          yield* fileSystem.readFileString(path.join(partitions, "isnadi-preview-aaaa", "Cookies")),
+          "cookies",
+        );
+      }).pipe(Effect.scoped, Effect.provide(NodeServices.layer)),
+    );
+
+    it.effect("skips a legacy partition whose target already exists", () =>
+      Effect.gen(function* () {
+        const fileSystem = yield* FileSystem.FileSystem;
+        const path = yield* Path.Path;
+
+        const userData = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "isnadi-preview-partitions-",
+        });
+
+        const partitions = path.join(userData, "Partitions");
+        const legacyDir = `${BrowserSession.LEGACY_AKERU_PREVIEW_PARTITION_NAME_PREFIX}bbbb`;
+        yield* fileSystem.makeDirectory(path.join(partitions, legacyDir), { recursive: true });
+        yield* fileSystem.makeDirectory(path.join(partitions, "isnadi-preview-bbbb"));
+        yield* fileSystem.writeFileString(
+          path.join(partitions, "isnadi-preview-bbbb", "Cookies"),
+          "current",
+        );
+
+        const result = yield* BrowserSession.migrateLegacyPreviewPartitions(userData);
+
+        assert.deepEqual(result, { renamed: [], skipped: [legacyDir] });
+        assert.isTrue(yield* fileSystem.exists(path.join(partitions, legacyDir)));
+        assert.equal(
+          yield* fileSystem.readFileString(path.join(partitions, "isnadi-preview-bbbb", "Cookies")),
+          "current",
+        );
+      }).pipe(Effect.scoped, Effect.provide(NodeServices.layer)),
+    );
+
+    it.effect("is a no-op when there is no Partitions directory", () =>
+      Effect.gen(function* () {
+        const fileSystem = yield* FileSystem.FileSystem;
+
+        const userData = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "isnadi-preview-partitions-",
+        });
+
+        const result = yield* BrowserSession.migrateLegacyPreviewPartitions(userData);
+
+        assert.deepEqual(result, { renamed: [], skipped: [] });
+      }).pipe(Effect.scoped, Effect.provide(NodeServices.layer)),
+    );
+  });
 });

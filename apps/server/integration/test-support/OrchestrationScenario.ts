@@ -12,7 +12,7 @@ import {
   ThreadId,
   ModelSelection,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import type { TestTurnResponse } from "../TestProviderAdapter.integration.ts";

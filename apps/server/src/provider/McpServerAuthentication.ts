@@ -1,5 +1,5 @@
 import type { McpManager, McpServerStatus } from "@mastra/code-sdk/mcp/index";
-import type { McpServer, McpServerId } from "@akeru/contracts";
+import type { McpServer, McpServerId } from "@isnadi/contracts";
 
 interface AuthenticateMcpServerOptions {
   readonly server: McpServer;

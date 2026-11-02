@@ -12,7 +12,7 @@ import {
   HostProcessEnvironment,
   HostProcessPlatform,
   HostProcessWorkingDirectory,
-} from "@akeru/shared/hostProcess";
+} from "@isnadi/shared/hostProcess";
 
 import { assert, describe, it } from "@effect/vitest";
 
@@ -212,7 +212,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
 
     // `tailscale serve` config outlives the process, so a dry run that shared
     // would replace and then tear down whatever mapping the port already had.
-    // Base-dir precedence (--home-dir > worktree .akeru > ambient T3CODE_HOME)
+    // Base-dir precedence (--home-dir > worktree .isnadi > ambient T3CODE_HOME)
     // lives in runDevRunnerWithInput; the env builder must not consult the
     // ambient variable on its own, or it would silently outrank the worktree
     // default and land dev state on the user's real database.
@@ -632,11 +632,11 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             ambientHome: "/home/user/.t3",
           });
 
-          assert.equal(home, path.join(path.resolve(root), ".akeru"));
+          assert.equal(home, path.join(path.resolve(root), ".isnadi"));
         }).pipe(Effect.scoped),
       );
 
-      it.effect("prefers the worktree .akeru over an ambient T3CODE_HOME", () =>
+      it.effect("prefers the worktree .isnadi over an ambient T3CODE_HOME", () =>
         Effect.gen(function* () {
           const path = yield* Path.Path;
           const root = yield* makeWorktree;
@@ -647,7 +647,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             ambientHome: "/home/user/.t3",
           });
 
-          assert.equal(home, path.join(path.resolve(root), ".akeru"));
+          assert.equal(home, path.join(path.resolve(root), ".isnadi"));
         }).pipe(Effect.scoped),
       );
 

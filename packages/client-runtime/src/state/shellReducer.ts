@@ -1,12 +1,12 @@
 import * as Arr from "effect/Array";
 import {
-  akeruDelegationStateOf,
+  isnadiDelegationStateOf,
   isTerminalDelegationState,
   SHELL_RECENT_TERMINAL_DELEGATIONS_PER_THREAD,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   type OrchestrationShellSnapshot,
   type OrchestrationShellStreamEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 /**
  * Reduce a single shell stream event into an existing snapshot, returning a new
@@ -99,7 +99,7 @@ export function applyShellStreamEvent(
 
       return {
         ...snapshot,
-        delegations: isTerminalDelegationState(akeruDelegationStateOf(event.delegation.phase))
+        delegations: isTerminalDelegationState(isnadiDelegationStateOf(event.delegation.phase))
           ? capTerminalDelegations(delegations, event.delegation.parentThreadId)
           : delegations,
         snapshotSequence: event.sequence,
@@ -205,13 +205,13 @@ const compareText = (left: string, right: string) => (left < right ? -1 : left >
 // Keeps the same finished delegations as the shell snapshot, which ranks them
 // by updatedAt DESC, createdAt ASC, delegation_id ASC.
 function capTerminalDelegations(
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
-  parentThreadId: AkeruDelegationRecord["parentThreadId"],
-): ReadonlyArray<AkeruDelegationRecord> {
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
+  parentThreadId: IsnadiDelegationRecord["parentThreadId"],
+): ReadonlyArray<IsnadiDelegationRecord> {
   const terminal = delegations.filter(
     (delegation) =>
       delegation.parentThreadId === parentThreadId &&
-      isTerminalDelegationState(akeruDelegationStateOf(delegation.phase)),
+      isTerminalDelegationState(isnadiDelegationStateOf(delegation.phase)),
   );
 
   if (terminal.length <= SHELL_RECENT_TERMINAL_DELEGATIONS_PER_THREAD) return delegations;

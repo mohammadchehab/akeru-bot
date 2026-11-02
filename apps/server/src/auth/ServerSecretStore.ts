@@ -151,7 +151,7 @@ export class ServerSecretStore extends Context.Service<
     ) => Effect.Effect<Uint8Array, SecretStoreError>;
     readonly remove: (name: string) => Effect.Effect<void, SecretStoreError>;
   }
->()("akeru-bot/auth/ServerSecretStore") {}
+>()("isnadibot/auth/ServerSecretStore") {}
 
 export const make = Effect.gen(function* () {
   const crypto = yield* Crypto.Crypto;

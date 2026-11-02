@@ -1,13 +1,13 @@
-import type { AkeruModelOptions } from "../../ReasoningOptions.ts";
-import type { AkeruControllerHarness } from "../../mastra/AkeruHarnessTypes.ts";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
-import { akeruToolCategory } from "../../AkeruMastraHarness.ts";
-import type { createAkeruWebFetch } from "../../AkeruWebFetch.ts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import type { IsnadiModelOptions } from "../../ReasoningOptions.ts";
+import type { IsnadiControllerHarness } from "../../mastra/IsnadiHarnessTypes.ts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { isnadiToolCategory } from "../../IsnadiMastraHarness.ts";
+import type { createIsnadiWebFetch } from "../../IsnadiWebFetch.ts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 import type { ProviderServiceError } from "../../Errors.ts";
-import type { RuntimeMode } from "@akeru/contracts";
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import type { RuntimeMode } from "@isnadi/contracts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
 import type { AgentControllerEvent } from "@mastra/core/agent-controller";
@@ -18,32 +18,32 @@ import {
   type ProviderRuntimeEvent,
   type ProviderSession,
   ThreadId,
-  type AkeruDelegationAccessGrant,
-  type AkeruDelegationRecord,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiDelegationAccessGrant,
+  type IsnadiDelegationRecord,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 
 import { BotInboxService } from "../../../bot-inbox/service.ts";
 import { BotMemoryStore, type BotMemoryAccess } from "../../../memory/BotMemory.ts";
-import { type AkeruMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
+import { type IsnadiMemoryToolHandler } from "../../../memory/BotMemoryToolHandlers.ts";
 
 import { ProjectionSnapshotQuery } from "../../../orchestration/Services/ProjectionSnapshotQuery.ts";
 
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
 
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
-import type { AkeruWorkerRuntime } from "../../AkeruWorkerRuntime.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
+import type { IsnadiWorkerRuntime } from "../../IsnadiWorkerRuntime.ts";
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
 
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
-import { AkeruSessionResources } from "../../AkeruSessionResources.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
+import { IsnadiSessionResources } from "../../IsnadiSessionResources.ts";
 
 import { AgentControllerRuntimeError, ProviderValidationError } from "../../Errors.ts";
 
@@ -56,15 +56,15 @@ import {
 } from "./State.ts";
 
 export interface SessionLifecycleDependencies {
-  readonly webFetch: ReturnType<typeof createAkeruWebFetch>;
-  readonly runPromise: AkeruRuntimeSeam["runPromise"];
+  readonly webFetch: ReturnType<typeof createIsnadiWebFetch>;
+  readonly runPromise: IsnadiRuntimeSeam["runPromise"];
   readonly projectionSnapshotQuery: Option.Option<ProjectionSnapshotQuery["Service"]>;
-  readonly workerRuntime: AkeruWorkerRuntime;
+  readonly workerRuntime: IsnadiWorkerRuntime;
   readonly wired: () => {
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   };
@@ -105,28 +105,28 @@ export interface SessionLifecycleDependencies {
         never
       >;
   readonly memoryHandlers: (
-    access: AkeruMemoryThreadAccess | undefined,
-    allowedScopes: AkeruDelegationAccessGrant["memoryScopes"],
-  ) => { memory: AkeruMemoryToolHandler } | undefined;
+    access: IsnadiMemoryThreadAccess | undefined,
+    allowedScopes: IsnadiDelegationAccessGrant["memoryScopes"],
+  ) => { memory: IsnadiMemoryToolHandler } | undefined;
   readonly delegationFor: (input: {
     readonly threadId: ThreadId;
     readonly botId: BotId;
-    readonly parentDelegation: AkeruDelegationRecord | undefined;
-    readonly access: AkeruDelegationAccessGrant;
+    readonly parentDelegation: IsnadiDelegationRecord | undefined;
+    readonly access: IsnadiDelegationAccessGrant;
     readonly activeChildDelegations: number;
-  }) => NonNullable<AkeruToolSession["delegation"]>;
+  }) => NonNullable<IsnadiToolSession["delegation"]>;
   readonly workersFor: (
     threadId: ThreadId,
-    access: AkeruDelegationAccessGrant,
-  ) => NonNullable<AkeruToolSession["workers"]>;
+    access: IsnadiDelegationAccessGrant,
+  ) => NonNullable<IsnadiToolSession["workers"]>;
   readonly memoryAccessFor: (
-    access: AkeruMemoryThreadAccess | undefined,
+    access: IsnadiMemoryThreadAccess | undefined,
   ) => BotMemoryAccess | undefined;
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly toProviderSession: (threadId: ThreadId, active: ActiveSession) => ProviderSession;
   readonly legacyResourceIdentity: Map<string, LegacyResourceIdentity>;
   readonly memoryAccessKey: (access: BotMemoryAccess | undefined) => string | undefined;
-  readonly sessionResources: AkeruSessionResources;
+  readonly sessionResources: IsnadiSessionResources;
   readonly stopSessionWithResources: (
     input: { readonly threadId: ThreadId },
     destroyResources: boolean,
@@ -134,14 +134,14 @@ export interface SessionLifecycleDependencies {
   readonly preparePreviewMcpSession: (
     threadId: ThreadId,
     providerInstanceId: ProviderInstanceId,
-    memoryHandler?: AkeruMemoryToolHandler,
+    memoryHandler?: IsnadiMemoryToolHandler,
   ) => Effect.Effect<void, never, never>;
   readonly clearPreviewMcpSession: (threadId: ThreadId) => Effect.Effect<void, never, never>;
-  readonly entityMemoryContext: (access: AkeruMemoryThreadAccess | undefined) => Promise<string>;
+  readonly entityMemoryContext: (access: IsnadiMemoryThreadAccess | undefined) => Promise<string>;
   readonly subscriptionAuth: SubscriptionAuthService;
   readonly botInbox: BotInboxService;
   readonly deleteCatalogMcpServer: (
-    runtime: Pick<AkeruPluginRuntimeOptions, "readSnapshot" | "dispatch">,
+    runtime: Pick<IsnadiPluginRuntimeOptions, "readSnapshot" | "dispatch">,
     serverId: string,
     commandPrefix: "mcp-delete" | "mcp-remove",
   ) => Promise<{
@@ -150,12 +150,12 @@ export interface SessionLifecycleDependencies {
     dependentBots: { id: BotId; name: string }[];
     clearedDisabledFor: { id: BotId; name: string }[];
   }>;
-  readonly bundle: AkeruControllerHarness;
-  readonly mastraModelOptions: (resolved: ResolvedEngine) => AkeruModelOptions | undefined;
+  readonly bundle: IsnadiControllerHarness;
+  readonly mastraModelOptions: (resolved: ResolvedEngine) => IsnadiModelOptions | undefined;
   readonly DEFAULT_MODE_ID: string;
   readonly permissionPolicy: (
     runtimeMode: RuntimeMode,
-    category: ReturnType<typeof akeruToolCategory>,
+    category: ReturnType<typeof isnadiToolCategory>,
   ) => "allow" | "ask";
   readonly handleControllerEvent: (
     threadId: ThreadId,

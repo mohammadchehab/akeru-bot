@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { useEffect, useRef, useState, type ComponentType } from "react";
@@ -41,7 +41,7 @@ function writeDraft(draft: DesktopOnboardingDraft): void {
 function readCaptureMode(): boolean {
   return (
     import.meta.env.DEV &&
-    new URLSearchParams(window.location.search).get("akeru-onboarding-capture") === "1"
+    new URLSearchParams(window.location.search).get("isnadi-onboarding-capture") === "1"
   );
 }
 

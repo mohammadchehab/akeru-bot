@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { useCanGoBack, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect } from "react";
 

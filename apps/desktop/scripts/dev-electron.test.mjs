@@ -106,7 +106,7 @@ describe("desktop development process ownership", () => {
     },
   );
 
-  it.each([undefined, { appBundleId: "dev.akeru.test" }])(
+  it.each([undefined, { appBundleId: "dev.isnadi.test" }])(
     "binds enabled remote debugging to loopback with protocol client %j",
     async (protocolClient) => {
       vi.stubEnv("T3CODE_DESKTOP_REMOTE_DEBUGGING_PORT", " 9222 ");

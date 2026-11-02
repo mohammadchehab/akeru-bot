@@ -8,14 +8,14 @@ import {
   ProviderInstanceId,
   type ServerProvider,
   type ServerSettingsPatch,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   createModelSelection,
   normalizeCustomModelSlug,
   resolveSelectableModel,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import { getComposerProviderState } from "./components/chat/composerProviderState";
-import { UnifiedSettings } from "@akeru/contracts/settings";
+import { UnifiedSettings } from "@isnadi/contracts/settings";
 import * as Arr from "effect/Array";
 import * as Result from "effect/Result";
 import {

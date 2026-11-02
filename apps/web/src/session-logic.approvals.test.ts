@@ -1,4 +1,4 @@
-import { type OrchestrationThreadActivity } from "@akeru/contracts";
+import { type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { derivePendingApprovals, derivePendingUserInputs } from "./session-logic";
 import { makeActivity } from "./session-logic.test-support";
@@ -37,14 +37,14 @@ describe("derivePendingApprovals", () => {
         payload: {
           requestId: "feedback-approval",
           requestType: "dynamic_tool_call",
-          toolName: "akeru_product_feedback",
+          toolName: "isnadi_product_feedback",
           args,
         },
       }),
     ]);
 
     expect(approvals[0]).toMatchObject({
-      toolName: "akeru_product_feedback",
+      toolName: "isnadi_product_feedback",
       args,
     });
   });

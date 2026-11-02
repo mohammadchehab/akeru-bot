@@ -12,7 +12,7 @@ import {
   MessageId,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -165,7 +165,7 @@ function testLayer(input: {
 }
 
 const tempBaseDir = () =>
-  NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-image-runtime-"));
+  NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-image-runtime-"));
 
 const createBot = (
   botId: BotId,
@@ -205,7 +205,7 @@ const createProject = Effect.gen(function* () {
     commandId: CommandId.make("cmd-project"),
     projectId,
     title: "Images",
-    workspaceRoot: "/tmp/akeru-image-runtime",
+    workspaceRoot: "/tmp/isnadi-image-runtime",
     defaultModelSelection: modelSelection,
     createdAt,
   });

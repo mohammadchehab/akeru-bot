@@ -1,7 +1,7 @@
 import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
-import { WS_METHODS, WsRpcGroup } from "@akeru/contracts";
+import { WS_METHODS, WsRpcGroup } from "@isnadi/contracts";
 import { decideCommandSequence } from "./orchestration/decider.ts";
 import * as Portability from "./portability.ts";
 
@@ -45,7 +45,7 @@ export const createWsPortabilityHandlers = ({
               const archive = Portability.createPortabilityArchive(snapshot, settings, exportedAt);
 
               return {
-                filename: `akeru-${exportedAt.slice(0, 10)}.akeru.archive`,
+                filename: `isnadi-${exportedAt.slice(0, 10)}.isnadi.archive`,
                 contents: Portability.serializePortabilityArchive(archive),
               };
             },

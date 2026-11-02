@@ -3,8 +3,8 @@ import {
   derivePendingUserInputs,
   type PendingApproval,
   type PendingUserInput,
-} from "@akeru/client-runtime/pending-requests";
-import { ProviderDriverKind } from "@akeru/contracts";
+} from "@isnadi/client-runtime/pending-requests";
+import { ProviderDriverKind } from "@isnadi/contracts";
 
 export type ProviderPickerKind = ProviderDriverKind;
 
@@ -52,7 +52,7 @@ export type { PendingApproval, PendingUserInput };
 
 export { derivePendingApprovals, derivePendingUserInputs };
 
-export { formatDuration, formatElapsed } from "@akeru/shared/orchestrationTiming";
+export { formatDuration, formatElapsed } from "@isnadi/shared/orchestrationTiming";
 
 export { deriveWorkLogEntries } from "./session/workLogEntries";
 

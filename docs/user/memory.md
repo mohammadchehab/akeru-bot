@@ -34,13 +34,13 @@ Saving during an ordinary reply depends on the model. A bot may miss a preferenc
 
 After ten successful prompts in the same scope, a quiet review becomes due at the next safe turn.
 Private chats and each group count separately. This gives the bot another chance to save something
-it missed. Failed or cancelled prompts do not count, and restarting Akeru preserves the count.
+it missed. Failed or cancelled prompts do not count, and restarting Isnadi preserves the count.
 The review uses a limited selection of recent inputs, so memory is selective rather than a complete
 record of everything you say.
 
 Notes have small limits because they are supplied as context when the bot works. When a document is
 full, the bot must shorten or replace an entry before adding more. If a file is edited outside
-Akeru and exceeds its limit, its contents are withheld from the bot until shortened. The file stays
+Isnadi and exceeds its limit, its contents are withheld from the bot until shortened. The file stays
 intact so you can edit it. Bot profile instructions remain
 separate and under your control.
 
@@ -56,7 +56,7 @@ when they exceed that budget.
 
 ## Keeping your data
 
-Memory stays on your environment server under Akeru home. Akeru writes files atomically with private
+Memory stays on your environment server under Isnadi home. Isnadi writes files atomically with private
 permissions and rejects recognizable credentials and common instruction-override patterns. These
 checks are limited; avoid putting secrets in memory or its exports.
 
@@ -65,7 +65,7 @@ applying changes and restores both. Restore an archive in its original chat. Pen
 in an archive become active observations when restored. Keep exports private because they can
 contain personal details.
 
-When upgrading from saved facts, Akeru migrates approved user, bot, and matching group facts once.
+When upgrading from saved facts, Isnadi migrates approved user, bot, and matching group facts once.
 Facts that do not fit, have unsupported scopes, or fail validation are preserved in a migration
 archive instead of being silently discarded or shared more broadly.
 
@@ -90,12 +90,12 @@ Each fact has its own actions:
   still see it. A forgotten fact can only be deleted.
 - **Delete** removes a fact for good after you confirm. It can't be restored.
 
-If the same fact changed on another device while you were working, Akeru shows the latest version
+If the same fact changed on another device while you were working, Isnadi shows the latest version
 with a short message instead of overwriting it. Try the change again on the fresh version. A
 connection paired with read-only access can view facts but not change them.
 
 Observation work continues in the background after a reply. A restart picks queued work back up.
-If condensing older conversation keeps failing after a few tries, Akeru drops that one piece of
+If condensing older conversation keeps failing after a few tries, Isnadi drops that one piece of
 work, notes it in the chat, and keeps newer observations coming; nothing else about the chat is
 lost.
 
@@ -105,7 +105,7 @@ for approval, rejected facts, and forgotten facts stay out of what the bot uses.
 ### Approving shared memory
 
 A bot can ask to save a fact for the whole project, its group, or the workspace, so other bots and
-later chats know it too. By default, Akeru asks you first. The chat shows a card above the message
+later chats know it too. By default, Isnadi asks you first. The chat shows a card above the message
 box, such as "Save to project memory?", with the bot that asked, the fact, and the bots that would
 see it. Facts the bot marks as sensitive, such as personal, health, or financial details, are
 labeled "Sensitive, always needs approval" and always wait for you, even when shared project memory

@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { BotAvatar } from "@akeru/contracts";
+import type { BotAvatar } from "@isnadi/contracts";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { View } from "react-native";

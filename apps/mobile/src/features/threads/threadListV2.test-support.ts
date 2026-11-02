@@ -1,4 +1,4 @@
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
 import {
   CommandId,
   EnvironmentId,
@@ -6,7 +6,7 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { PendingNewTask } from "../../state/use-pending-new-tasks";
 
 export const environmentId = EnvironmentId.make("environment-1");

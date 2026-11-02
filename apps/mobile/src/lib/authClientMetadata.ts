@@ -1,5 +1,5 @@
 import { Match } from "effect";
-import type { AuthClientPresentationMetadata } from "@akeru/contracts";
+import type { AuthClientPresentationMetadata } from "@isnadi/contracts";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
 

@@ -1,4 +1,4 @@
-import type { PreviewViewportSetting } from "@akeru/contracts";
+import type { PreviewViewportSetting } from "@isnadi/contracts";
 
 import { browserViewportSettingKey } from "~/browser/browserViewportLayout";
 

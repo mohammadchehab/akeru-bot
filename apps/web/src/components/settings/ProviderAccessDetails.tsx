@@ -1,8 +1,8 @@
-import type { SubscriptionProviderId } from "@akeru/contracts";
+import type { SubscriptionProviderId } from "@isnadi/contracts";
 import {
   providerAccessGuide,
   type ProviderAccessStatusInput,
-} from "@akeru/client-runtime/provider-access";
+} from "@isnadi/client-runtime/provider-access";
 
 import { useI18n } from "../../i18n";
 

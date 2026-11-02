@@ -28,12 +28,12 @@ describe("roster drag ids", () => {
 });
 
 describe("roster drag drop planning", () => {
-  const akeru = { kind: "bot" as const, id: "akeru" };
+  const isnadi = { kind: "bot" as const, id: "isnadi" };
   const mori = { kind: "bot" as const, id: "mori" };
   const crew = { kind: "group" as const, id: "crew" };
 
   const items = buildRosterListItems({
-    pinnedItems: [akeru],
+    pinnedItems: [isnadi],
     sections: [{ id: "news", name: "News", items: [crew], collapsed: false }],
     unassignedItems: [mori],
   });
@@ -41,7 +41,7 @@ describe("roster drag drop planning", () => {
   it("builds pinned, named-section, and unassigned targets including empty placeholders", () => {
     expect(items.map((item) => (item.kind === "marker" ? item.marker : item.item.id))).toEqual([
       "pinned-header",
-      "akeru",
+      "isnadi",
       "pinned-divider",
       { kind: "section-header", sectionId: "news" },
       { kind: "section-placeholder", sectionId: "news" },
@@ -61,21 +61,21 @@ describe("roster drag drop planning", () => {
     );
 
     expect(target?.zone).toBe("pinned");
-    expect(target?.order).toEqual([mori, akeru]);
+    expect(target?.order).toEqual([mori, isnadi]);
     expect(
       planRosterDrop({
         activeId: rosterEntryId(mori),
         from: "unassigned",
         target: target!,
-        pinnedOrder: [akeru],
+        pinnedOrder: [isnadi],
       }),
-    ).toEqual({ kind: "pin", item: mori, order: [mori, akeru] });
+    ).toEqual({ kind: "pin", item: mori, order: [mori, isnadi] });
   });
 
   it("unpins a bot dropped into Unassigned and keeps the named section as a move", () => {
     const unpin = resolveRosterDropTarget(
       items,
-      rosterEntryId(akeru),
+      rosterEntryId(isnadi),
       rosterMarkerId("unassigned-placeholder"),
       "news",
     );
@@ -83,16 +83,16 @@ describe("roster drag drop planning", () => {
     expect(unpin?.zone).toBe("unassigned");
     expect(
       planRosterDrop({
-        activeId: rosterEntryId(akeru),
+        activeId: rosterEntryId(isnadi),
         from: "pinned",
         target: unpin!,
-        pinnedOrder: [akeru],
+        pinnedOrder: [isnadi],
       }),
     ).toEqual({
       kind: "move",
-      item: akeru,
+      item: isnadi,
       zone: "unassigned",
-      order: [akeru, mori],
+      order: [isnadi, mori],
       unpin: true,
     });
   });
@@ -130,40 +130,40 @@ describe("roster drag drop planning", () => {
   it("does not plan a no-op pin reorder", () => {
     const target = resolveRosterDropTarget(
       items,
-      rosterEntryId(akeru),
-      rosterEntryId(akeru),
+      rosterEntryId(isnadi),
+      rosterEntryId(isnadi),
       "news",
     );
 
     expect(
       planRosterDrop({
-        activeId: rosterEntryId(akeru),
+        activeId: rosterEntryId(isnadi),
         from: "pinned",
         target: target!,
-        pinnedOrder: [akeru],
+        pinnedOrder: [isnadi],
       }).kind,
     ).toBe("none");
   });
 
   it("nudges an item one slot without wrapping past the ends", () => {
-    const order = [akeru, mori, crew];
+    const order = [isnadi, mori, crew];
     expect(moveRosterItemInOrder(order, mori, -1)?.map((item) => item.id)).toEqual([
       "mori",
-      "akeru",
+      "isnadi",
       "crew",
     ]);
-    expect(moveRosterItemInOrder(order, akeru, -1)).toBeNull();
+    expect(moveRosterItemInOrder(order, isnadi, -1)).toBeNull();
     expect(moveRosterItemInOrder(order, crew, 1)).toBeNull();
   });
 
   it("resolves the visible order for each roster zone", () => {
     const layout = {
-      pinnedItems: [akeru],
+      pinnedItems: [isnadi],
       sections: [{ id: "news", items: [mori] }],
       unassignedItems: [crew],
     };
 
-    expect(rosterItemsForZone("pinned", layout)).toEqual([akeru]);
+    expect(rosterItemsForZone("pinned", layout)).toEqual([isnadi]);
     expect(rosterItemsForZone("unassigned", layout)).toEqual([crew]);
     expect(rosterItemsForZone({ sectionId: "news" }, layout)).toEqual([mori]);
     expect(rosterItemsForZone({ sectionId: "missing" }, layout)).toEqual([]);

@@ -41,7 +41,7 @@ import { createConversation } from "./agentController/Conversation.ts";
 
 import { createMcpManager } from "@mastra/code-sdk/mcp/index";
 
-import { TurnId, type ProviderRuntimeEvent, type RuntimeMode, ThreadId } from "@akeru/contracts";
+import { TurnId, type ProviderRuntimeEvent, type RuntimeMode, ThreadId } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -59,14 +59,14 @@ import { ProjectionTurnRepositoryLive } from "../../persistence/Layers/Projectio
 
 import * as McpMemoryToolSession from "../../mcp/McpMemoryToolSession.ts";
 
-import { createAkeruChannelRuntime } from "../AkeruChannelRuntime.ts";
-import { createAkeruBotStateRuntime } from "../AkeruBotStateRuntime.ts";
-import { type AkeruMemoryTurn } from "../AkeruMemoryTurnHarness.ts";
+import { createIsnadiChannelRuntime } from "../IsnadiChannelRuntime.ts";
+import { createIsnadiBotStateRuntime } from "../IsnadiBotStateRuntime.ts";
+import { type IsnadiMemoryTurn } from "../IsnadiMemoryTurnHarness.ts";
 
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../IsnadiCatalogToolHandlers.ts";
 
 import { authenticateMcpServer } from "../McpServerAuthentication.ts";
 
@@ -312,7 +312,7 @@ const make = (options?: AgentControllerLiveOptions) =>
     };
 
     const legacyBufferedTerminals = new Map<string, Map<string, ProviderRuntimeEvent>>();
-    const mastraMemoryTurns = new Map<string, AkeruMemoryTurn>();
+    const mastraMemoryTurns = new Map<string, IsnadiMemoryTurn>();
 
     const mastraReservationKey = (threadId: ThreadId, turnId: TurnId) =>
       `${String(threadId)}:${String(turnId)}`;
@@ -438,7 +438,7 @@ const make = (options?: AgentControllerLiveOptions) =>
 
     function startPendingTurn(active: ActiveSession, pending: PendingTurn) {
       forkPromise(
-        "Akeru turn admission failed.",
+        "Isnadi turn admission failed.",
         () => runPromise(admitPendingTurn(active, pending)),
         {
           annotations: { threadId: pending.threadId, turnId: pending.turnId },
@@ -663,17 +663,17 @@ const make = (options?: AgentControllerLiveOptions) =>
       get streamEvents() {
         return auxiliary.streamEvents;
       },
-      configurePluginRuntime: (input: AkeruPluginRuntimeOptions) =>
+      configurePluginRuntime: (input: IsnadiPluginRuntimeOptions) =>
         Ref.update(lateWiring, (current) => ({
           ...current,
           pluginRuntimeOptions: input,
-          pluginRuntime: createAkeruPluginRuntime(input),
+          pluginRuntime: createIsnadiPluginRuntime(input),
         })),
       configureDelegation: (input) =>
         Ref.update(lateWiring, (current) => ({
           ...current,
-          botStateRuntime: createAkeruBotStateRuntime(input),
-          channelRuntime: createAkeruChannelRuntime(input),
+          botStateRuntime: createIsnadiBotStateRuntime(input),
+          channelRuntime: createIsnadiChannelRuntime(input),
           delegationRuntime: current.delegationRuntime ?? makeDelegationRuntime(input),
           workerOrchestration: current.workerOrchestration ?? input,
         })),
@@ -714,7 +714,7 @@ const make = (options?: AgentControllerLiveOptions) =>
             createManager: () =>
               (options?.makeMcpManager ?? createMcpManager)(
                 path.join(config.stateDir, "bot-mcp-runtime"),
-                ".akeru-runtime",
+                ".isnadi-runtime",
                 toMcpServerConfigs([server]),
               ),
             onAuthorizationUrl,
@@ -763,7 +763,7 @@ export const AgentControllerLive = Layer.effect(
 );
 
 export {
-  createAkeruMastraAuthStorage,
+  createIsnadiMastraAuthStorage,
   delegatedUsageReceipt,
   mastraConnectionIssue,
   recordProviderAccessHealth,

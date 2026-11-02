@@ -1,4 +1,4 @@
-import type { ThreadId } from "@akeru/contracts";
+import type { ThreadId } from "@isnadi/contracts";
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef } from "react";
 import type { ThreadFeedEntry } from "../../lib/threadActivity";

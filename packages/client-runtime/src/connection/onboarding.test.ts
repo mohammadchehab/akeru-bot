@@ -1,4 +1,4 @@
-import { AuthStandardClientScopes, EnvironmentId } from "@akeru/contracts";
+import { AuthStandardClientScopes, EnvironmentId } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

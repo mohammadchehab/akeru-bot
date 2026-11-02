@@ -3,7 +3,7 @@ import {
   type DesktopHostTelemetrySnapshot,
   type ResourceMonitorProcessSample,
   type ResourceMonitorSnapshotEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 import { emptyTelemetryCounters, mergeProcesses, type MergeProcessesResult } from "../Model.ts";

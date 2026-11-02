@@ -1,28 +1,28 @@
-# Akeru Bot
+# IsnadiBot
 
-Akeru Bot is an independent fork of [T3 Code](https://t3.codes). It is a desktop app for named teammate bots, with web and mobile clients that connect to the same environment server.
+IsnadiBot is an independent fork of [T3 Code](https://t3.codes). It is a desktop app for named teammate bots, with web and mobile clients that connect to the same environment server.
 
-Akeru Bot is local-first software. It has no hosted account and does not provide model access. Users connect an existing ChatGPT, Claude, Grok, or Kimi For Coding subscription. Five provider drivers ship built in: Codex, Claude, Grok, Kimi For Coding, and OpenCode.
+IsnadiBot is local-first software. It has no hosted account and does not provide model access. Users connect an existing ChatGPT, Claude, Grok, or Kimi For Coding subscription. Five provider drivers ship built in: Codex, Claude, Grok, Kimi For Coding, and OpenCode.
 
-Conversations, bot profiles, settings, secrets, and logs live under `~/.akeru`. Worktree state lives under `.akeru`. Akeru Bot never shares T3 Code's `~/.t3` database or desktop profile.
+Conversations, bot profiles, settings, secrets, and logs live under `~/.isnadi`. Worktree state lives under `.isnadi`. IsnadiBot never shares T3 Code's `~/.t3` database or desktop profile.
 
-Akeru Bot is not affiliated with ping.gg.
+IsnadiBot is not affiliated with ping.gg.
 
 ## Project ownership and upstream
 
-Leo maintains Akeru Bot and sets its product direction.
+Leo maintains IsnadiBot and sets its product direction.
 
-Akeru Bot began as a fork of T3 Code. The T3 Code team and contributors created the original codebase. Preserve their copyright, the MIT license, and clear credit for their work.
+IsnadiBot began as a fork of T3 Code. The T3 Code team and contributors created the original codebase. Preserve their copyright, the MIT license, and clear credit for their work.
 
-Akeru Bot may port or adapt upstream T3 Code changes when they fit. Treat each one as a reviewed port, not a blind sync. Check it against Akeru's product identity, `.akeru` data boundary, provider architecture, and current tests. Do not describe upstream work as original Akeru work.
+IsnadiBot may port or adapt upstream T3 Code changes when they fit. Treat each one as a reviewed port, not a blind sync. Check it against Isnadi's product identity, `.isnadi` data boundary, provider architecture, and current tests. Do not describe upstream work as original Isnadi work.
 
 ## Product principles
 
-Akeru keeps the upstream qualities that made T3 Code useful while it develops its own product and makes its own decisions.
+Isnadi keeps the upstream qualities that made T3 Code useful while it develops its own product and makes its own decisions.
 
 ### 1. Open at the core
 
-Akeru Bot remains open source. Keep changes understandable to users and fork maintainers.
+IsnadiBot remains open source. Keep changes understandable to users and fork maintainers.
 
 ### 2. Performance without compromise
 
@@ -30,17 +30,17 @@ Protect performance. Common regressions come from oversized WebSocket payloads, 
 
 ### 3. Remote ready
 
-Akeru Bot's WebSocket layer and `npx akeru-bot` server support local networks, SSH, Tailscale, and user-managed tunnels. New features must work when the client and environment server run on different machines.
+IsnadiBot's WebSocket layer and `npx isnadibot` server support local networks, SSH, Tailscale, and user-managed tunnels. New features must work when the client and environment server run on different machines.
 
 ### 4. Multi-surface
 
-Akeru Bot has three client surfaces: **web**, **desktop**, and **mobile**.
+IsnadiBot has three client surfaces: **web**, **desktop**, and **mobile**.
 
 **Web** is hosted by the environment server and uses the same authenticated RPC connection as the other clients.
 
-**Desktop** is the main Akeru Bot product. It is an Electron app that bundles the server runner and can host remote client connections.
+**Desktop** is the main IsnadiBot product. It is an Electron app that bundles the server runner and can host remote client connections.
 
-**Mobile** is a React Native client for iOS and Android. It connects to an Akeru Bot environment server to control work remotely.
+**Mobile** is a React Native client for iOS and Android. It connects to an IsnadiBot environment server to control work remotely.
 
 ## Engineering direction
 
@@ -48,30 +48,30 @@ Build ambitious ideas with simple systems. Do not preserve complexity because it
 
 Measure twice, cut once. Apply YAGNI. Control scope and follow Leo's intent when a general rule conflicts with the task.
 
-Most Akeru Bot contributions come from an agent running through the product itself, often under remote control. Be careful with data and dev servers because the contributor may be using the same environment.
+Most IsnadiBot contributions come from an agent running through the product itself, often under remote control. Be careful with data and dev servers because the contributor may be using the same environment.
 
 ## A small glossary
 
 We need to be on the same page with terminology. When communicating, use this language:
 
-- **you** means the agent reading this file and changing Akeru Bot.
-- **we, us, and maintainers** mean Leo and the people working with him on Akeru Bot. Theo, Julius, and the T3 Code contributors are upstream authors and maintainers.
-- **user** means the person using Akeru Bot to work with named teammate bots.
-- **bot** means the named teammate a user configures and talks to in Akeru Bot.
+- **you** means the agent reading this file and changing IsnadiBot.
+- **we, us, and maintainers** mean Leo and the people working with him on IsnadiBot. Theo, Julius, and the T3 Code contributors are upstream authors and maintainers.
+- **user** means the person using IsnadiBot to work with named teammate bots.
+- **bot** means the named teammate a user configures and talks to in IsnadiBot.
 - **agent** means the provider runtime or coding process behind a bot. Depending on context, agent may also include you.
-- **provider** means the agent runtime Akeru Bot talks to: Codex, Claude, Grok, Kimi For Coding, or OpenCode.
+- **provider** means the agent runtime IsnadiBot talks to: Codex, Claude, Grok, Kimi For Coding, or OpenCode.
 - **client** means the web, desktop, or mobile UI.
-- **environment** means one running Akeru Bot server and the machine, filesystem, provider credentials, and state it owns.
+- **environment** means one running IsnadiBot server and the machine, filesystem, provider credentials, and state it owns.
 - **project** means an environment-local workspace record rooted at a directory.
 - **chat** means the user-facing conversation with a bot. Use chat or conversation in interface copy and user documentation.
 - **thread** means the internal durable record for one chat and its work history. Use thread in source identifiers, contracts, architecture documentation, logs, and compatibility paths.
 - **turn** means one user request and the bot work that follows it inside a chat.
-- **Akeru home** means the base data directory. Runtime state normally lives below its userdata directory.
+- **Isnadi home** means the base data directory. Runtime state normally lives below its userdata directory.
 
 ## The three ways to hurt yourself
 
 1. **Killing by pattern.** Never `pkill -f`, `pgrep | kill`, or `kill` a PID you found by matching a name, path, or worktree string. Your own agent process has this worktree's path in its argv, and this machine runs several other dev servers at once. Kill only a PID you captured at spawn, or the owner of your port from `ss -H -ltnp` after confirming `/proc/<pid>/cwd` is your worktree.
-2. **Writing to the live install.** `~/.akeru/userdata` is the developer's real Akeru Bot database, in use while you work. Reading it and copying from it are fine, and a good way to get real test data (see Test data). Never start a server against it, never open it read-write, never clean it up.
+2. **Writing to the live install.** `~/.isnadi/userdata` is the developer's real IsnadiBot database, in use while you work. Reading it and copying from it are fine, and a good way to get real test data (see Test data). Never start a server against it, never open it read-write, never clean it up.
 3. **Baking in origins.** Never set `VITE_HTTP_URL` or `VITE_WS_URL` for dev. Dev is single-origin and Vite proxies `/api`, `/ws`, `/oauth`, and `/.well-known`. Setting them bakes localhost into the bundle and silently breaks every remote browser.
 
 ## Hit every surface
@@ -80,7 +80,7 @@ The most common defect in this repo is a change that works on the path you teste
 
 - **Entry points.** A behavior reachable from the chat view is usually also reachable from Settings, the command palette, and a keybinding. Fixing one is not fixing the feature.
 - **Clients.** Web, desktop (wraps web, adds Electron shell/IPC), and mobile (React Native, separate navigation). Shared logic lives in `packages/client-runtime`
-- **Providers.** Codex, Claude, Grok, Kimi For Coding, and OpenCode each need an explicit decision. Codex, Claude, Grok, Kimi For Coding, and OpenCode Go use Akeru's Mastra controller; standard OpenCode uses the legacy adapter bridge. See [provider routing](docs/internals/providers.md).
+- **Providers.** Codex, Claude, Grok, Kimi For Coding, and OpenCode each need an explicit decision. Codex, Claude, Grok, Kimi For Coding, and OpenCode Go use Isnadi's Mastra controller; standard OpenCode uses the legacy adapter bridge. See [provider routing](docs/internals/providers.md).
 - **Contracts.** Anything crossing the wire is typed in `packages/contracts`. Change the schema and the server, web, mobile, and desktop all follow.
 - **Reverse states.** If you added a way in, add the way out and the way to see it. Snooze needs unsnooze. Close needs reopen. A one-way door is a bug.
 - **Connection modes.** Local, remote/relay, and tunnel behave differently. Multi-device and multi-environment cases are real.
@@ -89,7 +89,7 @@ The most common defect in this repo is a change that works on the path you teste
 ## Dev servers
 
 - `vp i` installs. Worktree setup installs dependencies, copies optional `.env` configuration without sharing later edits, and warms the web cache. It preserves existing local `.env` files and refuses legacy symlinks. If module resolution is broken, check setup first.
-- `vp run dev` starts server and web. In a worktree, state defaults to that worktree's gitignored `.akeru`, which deliberately outranks an ambient `T3CODE_HOME` or `AKERU_HOME` so you cannot land on shared state by accident. An explicit `--home-dir` still wins.
+- `vp run dev` starts server and web. In a worktree, state defaults to that worktree's gitignored `.isnadi`, which deliberately outranks an ambient `T3CODE_HOME` or `ISNADI_HOME` so you cannot land on shared state by accident. An explicit `--home-dir` still wins.
 - Ports derive from the worktree path and are stable across restarts, but read the real ones from the `[dev-runner]` line since occupied ports shift.
 - Sharing over the tailnet is three steps: run `vp run dev --share` in the background, wait for the `pairingUrl:` line in its output, paste that full URL (token included) in your reply. Do not wire up `tailscale serve` by hand for this, and do not open the URL yourself.
 - The web app requires pairing. Hand over the pairing URL, not the bare origin. A URL without its token is useless to whoever you gave it to. If the token got consumed, mint a fresh one with `node apps/server/src/bin.ts pair` — note it carries standard scopes, while the startup URL carries admin scopes (needed for Settings → Connections management).
@@ -97,15 +97,15 @@ The most common defect in this repo is a change that works on the path you teste
 
 ## Test data
 
-Choose meaningful test data. Use deterministic visual fixtures for repeatable UI checks; see [SQLite fixtures](.agents/skills/test-t3-app/references/sqlite-fixtures.md). For a data-specific defect, seed your worktree's `.akeru` with a safe snapshot instead of pointing at live state:
+Choose meaningful test data. Use deterministic visual fixtures for repeatable UI checks; see [SQLite fixtures](.agents/skills/test-t3-app/references/sqlite-fixtures.md). For a data-specific defect, seed your worktree's `.isnadi` with a safe snapshot instead of pointing at live state:
 
-- Copy from `~/.akeru/userdata` or `~/.akeru/dev`. Worktree state lives at `<worktree>/.akeru/userdata`.
+- Copy from `~/.isnadi/userdata` or `~/.isnadi/dev`. Worktree state lives at `<worktree>/.isnadi/userdata`.
 - Snapshot the database with `VACUUM INTO`, which is safe even while a server has the source open and yields one consistent file:
 
   ```bash
-  SNAPSHOT_HOME=$(mktemp -d /tmp/akeru-snapshot.XXXXXX)
+  SNAPSHOT_HOME=$(mktemp -d /tmp/isnadi-snapshot.XXXXXX)
   mkdir -p "$SNAPSHOT_HOME/userdata"
-  SNAPSHOT_HOME="$SNAPSHOT_HOME" node -e "const { DatabaseSync } = require('node:sqlite'); const db = new DatabaseSync(process.env.HOME + '/.akeru/userdata/state.sqlite', { readOnly: true }); db.prepare('VACUUM INTO ?').run(process.env.SNAPSHOT_HOME + '/userdata/state.sqlite'); db.close();"
+  SNAPSHOT_HOME="$SNAPSHOT_HOME" node -e "const { DatabaseSync } = require('node:sqlite'); const db = new DatabaseSync(process.env.HOME + '/.isnadi/userdata/state.sqlite', { readOnly: true }); db.prepare('VACUUM INTO ?').run(process.env.SNAPSHOT_HOME + '/userdata/state.sqlite'); db.close();"
   # Start the test server with --home-dir "$SNAPSHOT_HOME".
   ```
 
@@ -125,7 +125,7 @@ Choose meaningful test data. Use deterministic visual fixtures for repeatable UI
 ## Lint
 
 - Oxlint runs anti-slop, Effect, and shadcn design-system rules on top of the built-ins. Run `vp lint <paths>` on the files you touched and fix what it reports there. Do not lower a rule from `error` to `warn` to get a change through.
-- No suppressions. Never write `oxlint-disable`, `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `@ts-nocheck`, or `@effect-diagnostics`, and never reach for `any` or `as unknown as`. Fix the code: parse untrusted input with a schema, narrow with `Predicate`, fix the type at its source. If a rule is wrong for a whole category of code, change its configuration in `vite.config.ts` (lint) or the `overrides` in `tsconfig.base.json` (Effect diagnostics) and write down why. `akeru/no-lint-suppressions` and `scripts/check-lint-suppressions.ts` enforce this in CI.
+- No suppressions. Never write `oxlint-disable`, `eslint-disable`, `@ts-ignore`, `@ts-expect-error`, `@ts-nocheck`, or `@effect-diagnostics`, and never reach for `any` or `as unknown as`. Fix the code: parse untrusted input with a schema, narrow with `Predicate`, fix the type at its source. If a rule is wrong for a whole category of code, change its configuration in `vite.config.ts` (lint) or the `overrides` in `tsconfig.base.json` (Effect diagnostics) and write down why. `isnadi/no-lint-suppressions` and `scripts/check-lint-suppressions.ts` enforce this in CI.
 - Keep files under 800 lines. Split along real seams such as a component, a service, or a test fixture group, not at an arbitrary line.
 - New web UI uses the primitives in `apps/web/src/components/ui` and the theme tokens in `apps/web/src/index.css`. No raw palette colors, no arbitrary values such as `w-[13px]`, and no restyling a primitive through `className`. Pick a variant or size, or add one to the primitive.
 - Rule groups, the warn-to-error ratchet, and the shadcn contracts are in [docs/internals/lint.md](docs/internals/lint.md).

@@ -4,14 +4,14 @@ import {
   channelBindingNeedsProject,
   channelBindingPresentation,
   channelFailureReason,
-} from "@akeru/client-runtime/channel-presentation";
+} from "@isnadi/client-runtime/channel-presentation";
 import {
   AuthAccessWriteScope,
   type BotId,
   type ChannelBinding,
   type EnvironmentId,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { useState } from "react";

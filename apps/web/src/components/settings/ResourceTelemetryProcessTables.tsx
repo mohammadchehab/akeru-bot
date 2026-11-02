@@ -2,7 +2,7 @@ import type {
   ResourceTelemetryProcess,
   ResourceTelemetryProcessSummary,
   ServerProcessSignal,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { cn } from "../../lib/utils";

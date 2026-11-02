@@ -24,7 +24,7 @@ describe("voice call contracts", () => {
         callId: "call-1",
         status: "live",
         botId: BotId.make("bot-voice"),
-        botName: "Akeru",
+        botName: "Isnadi",
         startedAt: "2026-08-27T00:00:00.000Z",
       },
       answerSdp: sdp,

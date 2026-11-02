@@ -1,8 +1,8 @@
 import type { BrowserRpcParams } from "./browser/BotBrowserTypes.ts";
 import { Clock, Effect } from "effect";
-import { ComputerError, type ComputerAction, type ComputerFrame } from "@akeru/contracts";
+import { ComputerError, type ComputerAction, type ComputerFrame } from "@isnadi/contracts";
 import type { BotBrowserRpc } from "./botBrowser.ts";
-import type { AkeruBrowserEndpoint, AkeruWorkspaceState } from "./botWorkspace.ts";
+import type { IsnadiBrowserEndpoint, IsnadiWorkspaceState } from "./botWorkspace.ts";
 import { ComputerGate } from "./computerGate.ts";
 import { ComputerCdp } from "./computerCdp.ts";
 
@@ -20,14 +20,14 @@ export class WorkspaceComputer implements BotBrowserRpc {
   readonly workspaceId: string;
   readonly desktop: ComputerDesktop;
   private readonly launch: () => Promise<void>;
-  private readonly endpoint: () => Promise<AkeruBrowserEndpoint>;
-  private readonly inspect: () => Promise<AkeruWorkspaceState>;
+  private readonly endpoint: () => Promise<IsnadiBrowserEndpoint>;
+  private readonly inspect: () => Promise<IsnadiWorkspaceState>;
   constructor(
     workspaceId: string,
     desktop: ComputerDesktop,
     launch: () => Promise<void>,
-    endpoint: () => Promise<AkeruBrowserEndpoint>,
-    inspect: () => Promise<AkeruWorkspaceState>,
+    endpoint: () => Promise<IsnadiBrowserEndpoint>,
+    inspect: () => Promise<IsnadiWorkspaceState>,
     clock: Clock.Clock = Effect.runSync(Clock.Clock),
   ) {
     this.gate = new ComputerGate(clock);

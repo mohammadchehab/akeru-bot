@@ -1,4 +1,4 @@
-import type { SubscriptionAuthStatuses } from "@akeru/contracts";
+import type { SubscriptionAuthStatuses } from "@isnadi/contracts";
 
 import { MEMORY_APPROVAL_ACTIONS } from "./durableMemory.ts";
 import type { MessageKey, TranslationParams } from "./i18n/index.ts";

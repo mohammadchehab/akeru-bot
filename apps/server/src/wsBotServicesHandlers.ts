@@ -2,13 +2,13 @@ import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import {
-  AkeruBotUsageReadError,
+  IsnadiBotUsageReadError,
   RoutineReadError,
   RoutineThreadReadError,
   type SubscriptionProviderId,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import type { WsConnection } from "./wsConnection.ts";
 
@@ -89,7 +89,7 @@ export const createWsBotServicesHandlers = ({
           const bot = yield* projectionBots.getById({ botId: input.botId }).pipe(
             Effect.mapError(
               (cause) =>
-                new AkeruBotUsageReadError({
+                new IsnadiBotUsageReadError({
                   botId: input.botId,
                   detail: cause.message,
                 }),
@@ -97,7 +97,7 @@ export const createWsBotServicesHandlers = ({
           );
 
           if (Option.isNone(bot)) {
-            return yield* new AkeruBotUsageReadError({
+            return yield* new IsnadiBotUsageReadError({
               botId: input.botId,
               detail: `Bot ${input.botId} was not found.`,
             });
@@ -106,7 +106,7 @@ export const createWsBotServicesHandlers = ({
           const summary = yield* botUsageLedger.summarize(input.botId).pipe(
             Effect.mapError(
               (cause) =>
-                new AkeruBotUsageReadError({
+                new IsnadiBotUsageReadError({
                   botId: input.botId,
                   detail: cause.message,
                 }),
@@ -118,7 +118,7 @@ export const createWsBotServicesHandlers = ({
             .pipe(
               Effect.mapError(
                 (cause) =>
-                  new AkeruBotUsageReadError({ botId: input.botId, detail: cause.message }),
+                  new IsnadiBotUsageReadError({ botId: input.botId, detail: cause.message }),
               ),
             );
 

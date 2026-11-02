@@ -6,7 +6,7 @@ import type {
   DesktopPreviewColorScheme,
   DesktopPreviewRecordingFrame,
   PreviewAutomationActionEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { webContents } from "electron";
 import * as Cause from "effect/Cause";

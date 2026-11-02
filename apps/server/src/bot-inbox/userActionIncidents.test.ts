@@ -3,7 +3,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 
 import { BotInboxService } from "./service.ts";
 import { recordUserActionIncident, userActionIncidentKey } from "./userActionIncidents.ts";
@@ -17,7 +17,7 @@ afterEach(() => {
 });
 
 function makeService() {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-user-action-inbox-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-user-action-inbox-"));
   directories.push(directory);
   const filePath = NodePath.join(directory, "bot-inbox.json");
 
@@ -25,8 +25,8 @@ function makeService() {
 }
 
 const input = {
-  botId: BotId.make("bot-akeru"),
-  botName: "Akeru",
+  botId: BotId.make("bot-isnadi"),
+  botName: "Isnadi",
   toolId: "request_box_help",
   summary: "Sign in to the bank site.",
   nextAction: "Open the bot workspace and complete the requested step.",
@@ -73,8 +73,8 @@ describe("user-action inbox incidents", () => {
         .map((item) => item.incidentKey)
         .sort(),
     ).toEqual([
-      "user-action:bot-akeru:request_box_help:captcha",
-      "user-action:bot-akeru:request_box_help:login",
+      "user-action:bot-isnadi:request_box_help:captcha",
+      "user-action:bot-isnadi:request_box_help:login",
     ]);
   });
 

@@ -1,15 +1,15 @@
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryRevision,
-  AkeruMemoryRootId,
-  type AkeruMemoryTargetScope,
-} from "@akeru/contracts";
+  IsnadiMemoryEntityId,
+  IsnadiMemoryRevision,
+  IsnadiMemoryRootId,
+  type IsnadiMemoryTargetScope,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { toPersistenceSqlError } from "../../persistence/Errors.ts";
 import {
-  AkeruMemoryAccessDenied,
+  IsnadiMemoryAccessDenied,
   resolveAuthorizedMemoryPartitions,
   type AuthorizedMemoryPartition,
 } from "../EntityMemoryAccess.ts";
@@ -135,7 +135,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${revision.id}, updated_at = ${revision.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}
@@ -184,7 +184,7 @@ export const entityMemoryWrites = (dependencies: {
             });
           }
 
-          const next: AkeruMemoryRevision = {
+          const next: IsnadiMemoryRevision = {
             ...current,
             id: input.memoryId,
             revision: current.revision + 1,
@@ -198,7 +198,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${next.id}, updated_at = ${input.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}
@@ -243,7 +243,7 @@ export const entityMemoryWrites = (dependencies: {
 
         const rows = yield* sql
           .unsafe<EntityMemoryDbRow>(
-            `SELECT ${selectColumns} FROM akeru_memory_revisions
+            `SELECT ${selectColumns} FROM isnadi_memory_revisions
          WHERE tenant_id = ? AND root_id = ?`,
             [input.access.tenantId, input.rootId],
           )
@@ -254,7 +254,7 @@ export const entityMemoryWrites = (dependencies: {
         const revisions = yield* Effect.forEach(rows, decodeRow);
 
         if (!revisions.every(isRevisionAuthorized(partitions))) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: "Every historical revision must be authorized before permanent deletion.",
           });
         }
@@ -262,11 +262,11 @@ export const entityMemoryWrites = (dependencies: {
         // Clear observations before the derived-copy rows that locate them are removed.
         yield* invalidateObservations(input.access.tenantId, input.rootId);
         yield* sql`
-        DELETE FROM akeru_memory_revisions
+        DELETE FROM isnadi_memory_revisions
         WHERE tenant_id = ${input.access.tenantId} AND root_id = ${input.rootId}
       `.pipe(Effect.mapError(toPersistenceSqlError("EntityMemoryRepository.deleteRoot:query")));
         yield* sql`
-        DELETE FROM akeru_memory_derived_copies
+        DELETE FROM isnadi_memory_derived_copies
         WHERE tenant_id = ${input.access.tenantId} AND root_id = ${input.rootId}
       `.pipe(
           Effect.mapError(
@@ -280,7 +280,7 @@ export const entityMemoryWrites = (dependencies: {
 
     const targetScopePartition = (
       access: Parameters<typeof resolveAuthorizedMemoryPartitions>[0],
-      scope: AkeruMemoryTargetScope,
+      scope: IsnadiMemoryTargetScope,
       partitions: ReadonlyArray<AuthorizedMemoryPartition>,
     ) => {
       const authorized = partitions.filter((partition) => {
@@ -317,16 +317,16 @@ export const entityMemoryWrites = (dependencies: {
         const partition = targetScopePartition(input.access, input.scope, partitions);
 
         if (!partition) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: `The ${input.scope} memory scope is not available to this thread.`,
           });
         }
 
         const authorBotId = input.access.respondingBotId ?? input.access.botId;
 
-        const draft: AkeruMemoryRevision = {
+        const draft: IsnadiMemoryRevision = {
           id: input.memoryId,
-          rootId: AkeruMemoryRootId.make(input.memoryId),
+          rootId: IsnadiMemoryRootId.make(input.memoryId),
           revision: 1,
           partition: {
             tenantId: partition.tenantId,
@@ -334,7 +334,7 @@ export const entityMemoryWrites = (dependencies: {
             partitionId: partition.partitionId,
           },
           entityKind: "other",
-          entityId: AkeruMemoryEntityId.make("pending"),
+          entityId: IsnadiMemoryEntityId.make("pending"),
           kind: "fact",
           value: {},
           fact: input.fact,
@@ -364,7 +364,7 @@ export const entityMemoryWrites = (dependencies: {
         const entity = expectedEntity(input.access, draft);
 
         if (entity === null) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: `The ${input.scope} memory scope has no owner in this thread.`,
           });
         }
@@ -396,14 +396,14 @@ export const entityMemoryWrites = (dependencies: {
 
           // A forgotten fact only accepts permanent deletion.
           if (current.deletionState !== "active" && input.mutation.operation !== "fact.delete") {
-            return yield* new AkeruMemoryAccessDenied({
+            return yield* new IsnadiMemoryAccessDenied({
               reason: "A forgotten fact can only be deleted.",
             });
           }
 
           const partitions = yield* resolveAuthorizedMemoryPartitions(input.access);
 
-          const nextFor = (revision: AkeruMemoryRevision): AkeruMemoryRevision => ({
+          const nextFor = (revision: IsnadiMemoryRevision): IsnadiMemoryRevision => ({
             ...revision,
             id: input.memoryId,
             revision: current.revision + 1,
@@ -413,7 +413,7 @@ export const entityMemoryWrites = (dependencies: {
             updatedAt: input.updatedAt,
           });
 
-          let next: AkeruMemoryRevision;
+          let next: IsnadiMemoryRevision;
 
           switch (input.mutation.operation) {
             case "fact.edit": {
@@ -442,7 +442,7 @@ export const entityMemoryWrites = (dependencies: {
               );
 
               if (!partition) {
-                return yield* new AkeruMemoryAccessDenied({
+                return yield* new IsnadiMemoryAccessDenied({
                   reason: `The ${input.mutation.scope} memory scope is not available to this thread.`,
                 });
               }
@@ -457,7 +457,7 @@ export const entityMemoryWrites = (dependencies: {
               });
 
               if (entity === null) {
-                return yield* new AkeruMemoryAccessDenied({
+                return yield* new IsnadiMemoryAccessDenied({
                   reason: `The ${input.mutation.scope} memory scope has no owner in this thread.`,
                 });
               }
@@ -529,7 +529,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${next.id}, updated_at = ${next.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}

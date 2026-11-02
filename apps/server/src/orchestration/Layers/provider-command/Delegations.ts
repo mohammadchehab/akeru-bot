@@ -1,8 +1,8 @@
 import * as Predicate from "effect/Predicate";
 import {
-  type AkeruDelegationRecord,
-  releaseAkeruDelegationAcknowledgement,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+  releaseIsnadiDelegationAcknowledgement,
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Schedule from "effect/Schedule";
@@ -18,13 +18,13 @@ export function createDelegations({
   Effect.Success<ReturnType<typeof createDependencies>>,
   "serverCommandId" | "orchestrationEngine" | "projectionSnapshotQuery"
 >) {
-  const dispatchDelegationRelease = (delegation: AkeruDelegationRecord) =>
+  const dispatchDelegationRelease = (delegation: IsnadiDelegationRecord) =>
     serverCommandId("delegation-release").pipe(
       Effect.flatMap((commandId) =>
         orchestrationEngine.dispatch({
           type: "delegation.state.set",
           commandId,
-          delegation: releaseAkeruDelegationAcknowledgement(delegation),
+          delegation: releaseIsnadiDelegationAcknowledgement(delegation),
         }),
       ),
     );

@@ -1,6 +1,6 @@
 import { ServerConfig } from "../config.ts";
 import * as Effect from "effect/Effect";
-import { GitCommandError } from "@akeru/contracts";
+import { GitCommandError } from "@isnadi/contracts";
 import type * as GitVcsDriver from "./GitVcsDriver.ts";
 import { parseRemoteRefWithRemoteNames } from "../git/remoteRefs.ts";
 import {

@@ -1,7 +1,7 @@
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { CommandId, EventId, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { CommandId, EventId, ThreadId } from "@isnadi/contracts";
 import { it as effectIt } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { afterEach, describe, expect } from "vite-plus/test";

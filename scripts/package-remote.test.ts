@@ -19,38 +19,38 @@ const scripts = import.meta.dirname;
 
 const read = (name: string) => NodeFS.readFileSync(NodePath.join(scripts, name), "utf8");
 
-const temporary = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-package-test-"));
+const temporary = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-package-test-"));
 
 describe("package-remote", () => {
   it("publishes exactly the archives the installers download", () => {
     const unix = read("install-remote.sh");
     const windows = read("install-remote.ps1");
-    expect(unix).toContain('archive="Akeru-Remote-$version-$platform-$arch.tar.gz"');
+    expect(unix).toContain('archive="Isnadi-Remote-$version-$platform-$arch.tar.gz"');
     expect(unix).toContain("linux-x64|darwin-arm64) ;;");
-    expect(unix).toContain('"$base/AKERU-REMOTE-MANIFEST.txt"');
-    expect(unix).toContain('"$base/AKERU-REMOTE-MANIFEST.sig"');
-    expect(windows).toContain('$ArchiveName = "Akeru-Remote-$Version-win32-$Architecture.zip"');
+    expect(unix).toContain('"$base/ISNADI-REMOTE-MANIFEST.txt"');
+    expect(unix).toContain('"$base/ISNADI-REMOTE-MANIFEST.sig"');
+    expect(windows).toContain('$ArchiveName = "Isnadi-Remote-$Version-win32-$Architecture.zip"');
     expect(REMOTE_TARGETS.map((target) => `${target.platform}-${target.arch}`)).toEqual([
       "linux-x64",
       "darwin-arm64",
       "win32-x64",
     ]);
     expect(expectedRemoteAssetNames("1.2.3")).toEqual([
-      "Akeru-Remote-1.2.3-linux-x64.tar.gz",
-      "Akeru-Remote-1.2.3-darwin-arm64.tar.gz",
-      "Akeru-Remote-1.2.3-win32-x64.zip",
-      "AKERU-REMOTE-MANIFEST.txt",
-      "AKERU-REMOTE-MANIFEST.sig",
+      "Isnadi-Remote-1.2.3-linux-x64.tar.gz",
+      "Isnadi-Remote-1.2.3-darwin-arm64.tar.gz",
+      "Isnadi-Remote-1.2.3-win32-x64.zip",
+      "ISNADI-REMOTE-MANIFEST.txt",
+      "ISNADI-REMOTE-MANIFEST.sig",
       "install-remote.sh",
       "install-remote.ps1",
     ]);
     expect(() => remoteTargetFor("linux", "arm64")).toThrow(/not published/);
   });
 
-  it("packages a Unix archive whose launcher stays inside the Akeru home", () => {
+  it("packages a Unix archive whose launcher stays inside the Isnadi home", () => {
     const root = temporary();
     const runtime = NodePath.join(root, "runtime");
-    const dist = NodePath.join(runtime, "node_modules", "akeru-bot", "dist");
+    const dist = NodePath.join(runtime, "node_modules", "isnadibot", "dist");
     NodeFS.mkdirSync(dist, { recursive: true });
     NodeFS.writeFileSync(NodePath.join(dist, "bin.mjs"), "");
     NodeFS.writeFileSync(NodePath.join(dist, "service-launcher.mjs"), "");
@@ -70,7 +70,7 @@ describe("package-remote", () => {
       license,
     });
 
-    expect(NodePath.basename(archive)).toBe("Akeru-Remote-1.2.3-linux-x64.tar.gz");
+    expect(NodePath.basename(archive)).toBe("Isnadi-Remote-1.2.3-linux-x64.tar.gz");
 
     // Extract the way install-remote.sh does.
     const installed = NodePath.join(root, "installed");
@@ -84,14 +84,14 @@ describe("package-remote", () => {
     ]);
 
     for (const file of [
-      "akeru",
+      "isnadi",
       "node/bin/node",
       "remote-admin",
       "initialize-remote-identity.sh",
       "install-remote.sh",
       "VERSION",
-      "node_modules/akeru-bot/dist/bin.mjs",
-      "node_modules/akeru-bot/dist/service-launcher.mjs",
+      "node_modules/isnadibot/dist/bin.mjs",
+      "node_modules/isnadibot/dist/service-launcher.mjs",
     ]) {
       expect(NodeFS.existsSync(NodePath.join(installed, file)), file).toBe(true);
     }
@@ -99,28 +99,28 @@ describe("package-remote", () => {
     expect(NodeFS.readFileSync(NodePath.join(installed, "VERSION"), "utf8")).toBe("1.2.3\n");
 
     // The installer links the launcher into the user's bin directory.
-    const link = NodePath.join(root, "akeru-link");
-    NodeFS.symlinkSync(NodePath.join(installed, "akeru"), link);
+    const link = NodePath.join(root, "isnadi-link");
+    NodeFS.symlinkSync(NodePath.join(installed, "isnadi"), link);
     const home = NodePath.join(root, "home");
     const env = { PATH: process.env.PATH, HOME: home, T3CODE_HOME: "/legacy/.t3" };
     const serve = NodeChildProcess.execFileSync(link, ["serve"], { env, encoding: "utf8" });
     expect(serve).toBe(
-      `${NodePath.join(home, ".akeru")}|${NodePath.join(installed, "node_modules/akeru-bot/dist/bin.mjs")}\n`,
+      `${NodePath.join(home, ".isnadi")}|${NodePath.join(installed, "node_modules/isnadibot/dist/bin.mjs")}\n`,
     );
 
     const custom = NodeChildProcess.execFileSync(link, ["serve"], {
-      env: { ...env, AKERU_HOME: "/srv/akeru" },
+      env: { ...env, ISNADI_HOME: "/srv/isnadi" },
       encoding: "utf8",
     });
 
-    expect(custom.split("|")[0]).toBe("/srv/akeru");
+    expect(custom.split("|")[0]).toBe("/srv/isnadi");
 
     const doctor = NodeChildProcess.spawnSync(link, ["remote", "doctor"], {
       env,
       encoding: "utf8",
     });
 
-    expect(doctor.stdout).toContain(`${NodePath.join(home, ".akeru")}|`);
+    expect(doctor.stdout).toContain(`${NodePath.join(home, ".isnadi")}|`);
   });
 
   it("signs a manifest the installer's openssl check accepts", () => {
@@ -162,9 +162,9 @@ describe("package-remote", () => {
 
     const lines = manifest.trimEnd().split("\n");
     expect(lines.map((line) => line.slice(66))).toEqual([
-      "Akeru-Remote-1.2.3-linux-x64.tar.gz",
-      "Akeru-Remote-1.2.3-darwin-arm64.tar.gz",
-      "Akeru-Remote-1.2.3-win32-x64.zip",
+      "Isnadi-Remote-1.2.3-linux-x64.tar.gz",
+      "Isnadi-Remote-1.2.3-darwin-arm64.tar.gz",
+      "Isnadi-Remote-1.2.3-win32-x64.zip",
       "install-remote.sh",
       "install-remote.ps1",
       "tailscale_1.88.4_amd64.tgz",
@@ -182,9 +182,9 @@ describe("package-remote", () => {
       publicKeyPath,
       "-rawin",
       "-in",
-      NodePath.join(directory, "AKERU-REMOTE-MANIFEST.txt"),
+      NodePath.join(directory, "ISNADI-REMOTE-MANIFEST.txt"),
       "-sigfile",
-      NodePath.join(directory, "AKERU-REMOTE-MANIFEST.sig"),
+      NodePath.join(directory, "ISNADI-REMOTE-MANIFEST.sig"),
     ]);
 
     expect(verified.status).toBe(0);

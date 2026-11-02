@@ -5,9 +5,9 @@ import {
   type KeybindingShortcut,
   type ResolvedKeybindingRule,
   type ResolvedKeybindingsConfig,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
-import { DEFAULT_RESOLVED_KEYBINDINGS } from "@akeru/shared/keybindings";
+import { DEFAULT_RESOLVED_KEYBINDINGS } from "@isnadi/shared/keybindings";
 
 import { isMacPlatform } from "../../lib/utils";
 import { whenAstToExpression } from "./KeybindingWhen.logic";
@@ -251,7 +251,7 @@ function seriesParts(command: KeybindingCommand): { id: string; index: number } 
 }
 
 /**
- * Commands for surfaces Akeru no longer has: the terminal drawer, diff panel,
+ * Commands for surfaces Isnadi no longer has: the terminal drawer, diff panel,
  * file browser, project scripts, preview-panel shortcuts, and local-versus-
  * worktree new chats. They still decode from older keybindings files, but
  * nothing handles them, so settings hides them.

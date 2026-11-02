@@ -1,9 +1,9 @@
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import {
   joinProviderUnavailability,
   providerReasonNeedsSignIn,
   type ProviderAvailabilityPresentation,
-} from "@akeru/client-runtime/provider-availability";
+} from "@isnadi/client-runtime/provider-availability";
 import { CircleAlertIcon, Settings2Icon } from "lucide-react";
 
 import { useI18n } from "../../i18n";
@@ -43,7 +43,7 @@ export function ProviderLogoTile({ provider }: { readonly provider: ProviderCata
 
 /**
  * The next step for a provider failure: a button into that provider's
- * settings, or into this bot's usage settings when an Akeru cap blocked the
+ * settings, or into this bot's usage settings when an Isnadi cap blocked the
  * turn. Renders nothing when waiting or picking another model is the only step.
  */
 export function ProviderRepairAction({

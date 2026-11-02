@@ -1,4 +1,4 @@
-import type { DesktopPreviewAnnotationTheme } from "@akeru/contracts";
+import type { DesktopPreviewAnnotationTheme } from "@isnadi/contracts";
 import { PRIMARY, createButton } from "./AnnotationStyleControls.ts";
 import { OVERLAY_ATTRIBUTE, CONTENT_LAYER_Z_INDEX, createBox } from "./AnnotationGeometry.ts";
 import { previewAnnotationStyles } from "./AnnotationStyles.generated.ts";

@@ -1,7 +1,7 @@
 import { claudeMessage } from "./test-support/claudeMessages.ts";
 
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

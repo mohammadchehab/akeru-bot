@@ -5,7 +5,7 @@ import {
   PreviewAutomationNoAvailableHostError,
   PreviewTabId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Stream from "effect/Stream";

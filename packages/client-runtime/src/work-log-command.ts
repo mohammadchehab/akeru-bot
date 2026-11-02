@@ -1,9 +1,9 @@
 import { flow } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { TrimmedNonEmptyString } from "@akeru/contracts";
+import { TrimmedNonEmptyString } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
-import { isToolLifecycleItemType } from "@akeru/contracts";
+import { isToolLifecycleItemType } from "@isnadi/contracts";
 import { requestKindFromRequestType } from "./pendingRequests.ts";
 
 // Tool data is an opaque provider object; each presentation field is decoded separately.

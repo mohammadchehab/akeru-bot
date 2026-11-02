@@ -1,4 +1,4 @@
-import { EventId, TurnId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { EventId, TurnId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { expect, it } from "vite-plus/test";
 import { dropSupersededToolUpdatedActivities } from "./ActivityRetention.ts";
 

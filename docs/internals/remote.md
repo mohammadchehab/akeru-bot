@@ -1,8 +1,8 @@
 # Remote architecture
 
-> For maintainers. Using Akeru Bot? See [remote access](../user/remote-access.md).
+> For maintainers. Using IsnadiBot? See [remote access](../user/remote-access.md).
 
-A client connects to one Akeru Bot server over HTTP and WebSocket. The server owns providers,
+A client connects to one IsnadiBot server over HTTP and WebSocket. The server owns providers,
 projects, threads, git, and filesystem access. Remote access changes how the client
 reaches the server. It does not split that runtime.
 
@@ -29,7 +29,7 @@ session and saves the connection locally. The pairing credential is single-use f
 
 A pairing URL contains the server address and keeps the credential in the URL fragment. The client
 removes the credential from browser history after the exchange. The client then connects directly to
-that server. No Akeru service proxies the session.
+that server. No Isnadi service proxies the session.
 
 The server may advertise loopback, LAN, Tailscale, or custom HTTPS endpoints. Clients treat those
 addresses as hints. A connection attempt is the final reachability check. Automatic LAN discovery
@@ -47,7 +47,7 @@ authorization.
 
 ## Desktop SSH access
 
-The desktop app can start or reuse Akeru Bot on an SSH host and open a local port forward. The
+The desktop app can start or reuse IsnadiBot on an SSH host and open a local port forward. The
 remote host owns all server state. The desktop stores an `SshConnectionTarget` and reconnects
 through the forwarded endpoint. Managed remote servers exec the resolved CLI without an npm wrapper
 so the recorded PID is the server itself. A stop that does not confirm exit keeps ownership files
@@ -60,7 +60,7 @@ a directly reachable server after normal pairing.
 
 Each server stores a stable `environmentId` in its state directory. Clients use that identifier to
 reject endpoints that point at a different server than the saved target. Remote production web
-cookies use that same identity, so two `akeru serve` instances on one hostname keep separate
+cookies use that same identity, so two `isnadi serve` instances on one hostname keep separate
 sessions. Initialization publishes a complete ID atomically. Empty or whitespace-only ID files are
 repaired using a retained `<stateDir>/environment-id.recovery` file so concurrent and delayed
 repairs choose the same ID. Existing nonempty ID files remain authoritative.

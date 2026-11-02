@@ -145,6 +145,6 @@ export const CheckpointRef = makeEntityId("CheckpointRef");
 
 export type CheckpointRef = typeof CheckpointRef.Type;
 
-export const AkeruUsageReservationId = makeEntityId("AkeruUsageReservationId");
+export const IsnadiUsageReservationId = makeEntityId("IsnadiUsageReservationId");
 
-export type AkeruUsageReservationId = typeof AkeruUsageReservationId.Type;
+export type IsnadiUsageReservationId = typeof IsnadiUsageReservationId.Type;

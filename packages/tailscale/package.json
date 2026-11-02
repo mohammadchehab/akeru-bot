@@ -1,5 +1,5 @@
 {
-  "name": "@akeru/tailscale",
+  "name": "@isnadi/tailscale",
   "version": "0.0.4",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "test": "vp test run"
   },
   "dependencies": {
-    "@akeru/shared": "workspace:*",
+    "@isnadi/shared": "workspace:*",
     "effect": "catalog:"
   },
   "devDependencies": {

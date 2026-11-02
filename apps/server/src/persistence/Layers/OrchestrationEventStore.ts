@@ -17,7 +17,7 @@ import {
   RoutineRunId,
   SkillAssignmentId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import * as SqlSchema from "effect/unstable/sql/SqlSchema";
 import * as Effect from "effect/Effect";

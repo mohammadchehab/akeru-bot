@@ -8,33 +8,33 @@ import { describe, expect, it } from "vite-plus/test";
 import { BOOT_SERVICE_UNIT_FILE } from "../cloud/bootService.ts";
 import { runRemoteDoctor, writeRemoteSupportBundle } from "./diagnostics.ts";
 
-describe("Akeru Remote diagnostics", () => {
+describe("Isnadi Remote diagnostics", () => {
   it("repairs a fresh container without an update token", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-container-repair-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-container-repair-"));
     NodeFS.mkdirSync(NodePath.join(baseDir, "userdata"), { recursive: true });
-    const prior = process.env.AKERU_REMOTE_CONTAINER;
-    process.env.AKERU_REMOTE_CONTAINER = "1";
+    const prior = process.env.ISNADI_REMOTE_CONTAINER;
+    process.env.ISNADI_REMOTE_CONTAINER = "1";
 
     try {
       await expect(
         runRemoteDoctor({ baseDir, repair: true, platform: "linux" }),
       ).resolves.toBeDefined();
     } finally {
-      if (prior === undefined) delete process.env.AKERU_REMOTE_CONTAINER;
-      else process.env.AKERU_REMOTE_CONTAINER = prior;
+      if (prior === undefined) delete process.env.ISNADI_REMOTE_CONTAINER;
+      else process.env.ISNADI_REMOTE_CONTAINER = prior;
       NodeFS.rmSync(baseDir, { recursive: true, force: true });
     }
   });
 
   it("reports a healthy Compose container without systemd or launcher state", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-container-doctor-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-container-doctor-"));
     const binDir = NodePath.join(baseDir, "bin");
     NodeFS.mkdirSync(NodePath.join(baseDir, "userdata"), { recursive: true });
     NodeFS.mkdirSync(binDir);
     NodeFS.writeFileSync(NodePath.join(binDir, "curl"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
-    const priorContainer = process.env.AKERU_REMOTE_CONTAINER;
+    const priorContainer = process.env.ISNADI_REMOTE_CONTAINER;
     const priorPath = process.env.PATH;
-    process.env.AKERU_REMOTE_CONTAINER = "1";
+    process.env.ISNADI_REMOTE_CONTAINER = "1";
     process.env.PATH = `${binDir}:${priorPath ?? ""}`;
 
     try {
@@ -46,15 +46,15 @@ describe("Akeru Remote diagnostics", () => {
       expect(report.checks.some((check) => check.id === "update-state")).toBe(false);
       expect(report.overall).not.toBe("fail");
     } finally {
-      if (priorContainer === undefined) delete process.env.AKERU_REMOTE_CONTAINER;
-      else process.env.AKERU_REMOTE_CONTAINER = priorContainer;
+      if (priorContainer === undefined) delete process.env.ISNADI_REMOTE_CONTAINER;
+      else process.env.ISNADI_REMOTE_CONTAINER = priorContainer;
       process.env.PATH = priorPath;
       NodeFS.rmSync(baseDir, { recursive: true, force: true });
     }
   });
 
   it("probes a Windows server over HTTP instead of systemd", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-win32-doctor-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-win32-doctor-"));
     const binDir = NodePath.join(baseDir, "bin");
     NodeFS.mkdirSync(NodePath.join(baseDir, "userdata"), { recursive: true });
     NodeFS.mkdirSync(binDir);
@@ -69,10 +69,10 @@ describe("Akeru Remote diagnostics", () => {
     NodeFS.writeFileSync(NodePath.join(binDir, "systemctl"), "#!/bin/sh\nexit 1\n", {
       mode: 0o755,
     });
-    const priorContainer = process.env.AKERU_REMOTE_CONTAINER;
+    const priorContainer = process.env.ISNADI_REMOTE_CONTAINER;
     const priorPath = process.env.PATH;
     const priorPort = process.env.T3CODE_PORT;
-    delete process.env.AKERU_REMOTE_CONTAINER;
+    delete process.env.ISNADI_REMOTE_CONTAINER;
     delete process.env.T3CODE_PORT;
     process.env.PATH = `${binDir}:${priorPath ?? ""}`;
 
@@ -86,7 +86,7 @@ describe("Akeru Remote diagnostics", () => {
         "http://127.0.0.1:4555/.well-known/t3/environment",
       );
     } finally {
-      if (priorContainer !== undefined) process.env.AKERU_REMOTE_CONTAINER = priorContainer;
+      if (priorContainer !== undefined) process.env.ISNADI_REMOTE_CONTAINER = priorContainer;
 
       if (priorPort !== undefined) process.env.T3CODE_PORT = priorPort;
       process.env.PATH = priorPath;
@@ -95,7 +95,7 @@ describe("Akeru Remote diagnostics", () => {
   });
 
   it("reports storage health and repairs private binding permissions", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-doctor-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-doctor-"));
     const stateDir = NodePath.join(baseDir, "userdata");
     NodeFS.mkdirSync(NodePath.join(baseDir, "runtime"), { recursive: true });
     NodeFS.mkdirSync(stateDir, { recursive: true });
@@ -140,7 +140,7 @@ describe("Akeru Remote diagnostics", () => {
   });
 
   it("formats free disk space for people", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-disk-format-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-disk-format-"));
     const stateDir = NodePath.join(baseDir, "userdata");
     NodeFS.mkdirSync(stateDir, { recursive: true });
     const report = await runRemoteDoctor({ baseDir, repair: false });
@@ -151,7 +151,7 @@ describe("Akeru Remote diagnostics", () => {
   });
 
   it("reports a missing optional account link as pass", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-binding-optional-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-binding-optional-"));
     const stateDir = NodePath.join(baseDir, "userdata");
     NodeFS.mkdirSync(stateDir, { recursive: true });
     const report = await runRemoteDoctor({ baseDir, repair: false });
@@ -162,9 +162,9 @@ describe("Akeru Remote diagnostics", () => {
   });
 
   it("reports a fresh home as not created yet instead of raw file errors", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-fresh-home-"));
-    const prior = process.env.AKERU_REMOTE_CONTAINER;
-    delete process.env.AKERU_REMOTE_CONTAINER;
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-fresh-home-"));
+    const prior = process.env.ISNADI_REMOTE_CONTAINER;
+    delete process.env.ISNADI_REMOTE_CONTAINER;
 
     try {
       const report = await runRemoteDoctor({ baseDir, repair: false });
@@ -179,21 +179,21 @@ describe("Akeru Remote diagnostics", () => {
       expect(providers?.message).toContain("Kimi For Coding");
       expect(providers?.details?.inServer).toBe("kimi,opencodeGo");
     } finally {
-      if (prior !== undefined) process.env.AKERU_REMOTE_CONTAINER = prior;
+      if (prior !== undefined) process.env.ISNADI_REMOTE_CONTAINER = prior;
       NodeFS.rmSync(baseDir, { recursive: true, force: true });
     }
   });
 
   it("repairs only the checks it was asked to repair", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-selective-repair-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-selective-repair-"));
     const stateDir = NodePath.join(baseDir, "userdata");
     NodeFS.mkdirSync(stateDir, { recursive: true });
     const bindingPath = NodePath.join(stateDir, "remote-directory.json");
     NodeFS.writeFileSync(bindingPath, JSON.stringify({ endpointKind: "custom-https" }), {
       mode: 0o644,
     });
-    const prior = process.env.AKERU_REMOTE_CONTAINER;
-    process.env.AKERU_REMOTE_CONTAINER = "1";
+    const prior = process.env.ISNADI_REMOTE_CONTAINER;
+    process.env.ISNADI_REMOTE_CONTAINER = "1";
 
     try {
       const untouched = await runRemoteDoctor({ baseDir, repair: new Set(["logs"]) });
@@ -208,22 +208,22 @@ describe("Akeru Remote diagnostics", () => {
       expect(repaired.repairsApplied).toEqual(["binding-permissions"]);
       expect(NodeFS.statSync(bindingPath).mode & 0o077).toBe(0);
     } finally {
-      if (prior === undefined) delete process.env.AKERU_REMOTE_CONTAINER;
-      else process.env.AKERU_REMOTE_CONTAINER = prior;
+      if (prior === undefined) delete process.env.ISNADI_REMOTE_CONTAINER;
+      else process.env.ISNADI_REMOTE_CONTAINER = prior;
       NodeFS.rmSync(baseDir, { recursive: true, force: true });
     }
   });
 
-  it("names the systemd unit that `akeru service install` writes in every remote script", () => {
-    // The installer health check and `akeru remote logs` query systemd by name. A stale name makes
+  it("names the systemd unit that `isnadi service install` writes in every remote script", () => {
+    // The installer health check and `isnadi remote logs` query systemd by name. A stale name makes
     // them silently miss the running service.
-    const scripts = ["install-remote.sh", "akeru-remote-admin.sh"].map((name) =>
+    const scripts = ["install-remote.sh", "isnadi-remote-admin.sh"].map((name) =>
       NodeFS.readFileSync(new URL(`../../../../scripts/${name}`, import.meta.url), "utf8"),
     );
 
     for (const script of scripts) {
       expect(script).toContain(BOOT_SERVICE_UNIT_FILE);
-      expect(script).not.toContain("akeru.service");
+      expect(script).not.toContain("isnadi.service");
     }
   });
 });

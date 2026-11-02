@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { CommandId, ORCHESTRATION_WS_METHODS, ProjectId, ThreadId } from "@akeru/contracts";
+import { CommandId, ORCHESTRATION_WS_METHODS, ProjectId, ThreadId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertTrue } from "@effect/vitest/utils";
 import * as Effect from "effect/Effect";

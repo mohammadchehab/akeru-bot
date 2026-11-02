@@ -9,8 +9,8 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -44,7 +44,7 @@ const PARENT_THREAD_ID = ThreadId.make("thread-parent");
 
 const CHILD_THREAD_ID = ThreadId.make("thread-child");
 
-const delegation: AkeruDelegationRecord = {
+const delegation: IsnadiDelegationRecord = {
   delegationId: DelegationId.make("delegation-restart"),
   parentDelegationId: null,
   parentBotId: PARENT_BOT_ID,
@@ -236,7 +236,7 @@ const seedParentAndChild = Effect.gen(function* () {
     delegation,
   });
 
-  const running: AkeruDelegationRecord = {
+  const running: IsnadiDelegationRecord = {
     ...delegation,
     phase: {
       _tag: "Running",

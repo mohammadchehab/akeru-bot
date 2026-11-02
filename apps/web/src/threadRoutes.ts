@@ -1,5 +1,5 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { EnvironmentId, type ScopedThreadRef, ThreadId } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { EnvironmentId, type ScopedThreadRef, ThreadId } from "@isnadi/contracts";
 import { DraftId } from "./composerDraftStore";
 
 export type ThreadRouteTarget =

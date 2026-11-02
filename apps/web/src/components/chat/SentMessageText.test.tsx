@@ -9,14 +9,14 @@ describe("SentMessageText", () => {
     const markup = renderToStaticMarkup(
       <SentMessageText
         text={buildReplyPrompt(
-          { messageId: "message-1", label: "Akeru", text: "First line\nSecond line" },
+          { messageId: "message-1", label: "Isnadi", text: "First line\nSecond line" },
           "Sounds right",
         )}
       />,
     );
 
     expect(markup).toContain('data-testid="sent-reply-backlink"');
-    expect(markup).toContain("Akeru");
+    expect(markup).toContain("Isnadi");
     expect(markup).toContain("truncate");
     expect(markup).toContain("Sounds right");
     expect(markup).not.toContain("&gt; Replying to");

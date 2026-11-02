@@ -1,6 +1,6 @@
-import { catalogRegistry } from "@akeru/client-runtime/i18n";
-import { EnvironmentId } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
+import { catalogRegistry } from "@isnadi/client-runtime/i18n";
+import { EnvironmentId } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";

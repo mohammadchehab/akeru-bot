@@ -13,7 +13,7 @@ import {
   ProjectionPendingApprovalStatus,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -107,5 +107,5 @@ export class ProjectionPendingApprovalRepository extends Context.Service<
   ProjectionPendingApprovalRepository,
   ProjectionPendingApprovalRepositoryShape
 >()(
-  "akeru-bot/persistence/Services/ProjectionPendingApprovals/ProjectionPendingApprovalRepository",
+  "isnadibot/persistence/Services/ProjectionPendingApprovals/ProjectionPendingApprovalRepository",
 ) {}

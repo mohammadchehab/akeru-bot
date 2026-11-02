@@ -1,4 +1,4 @@
-import type { OrchestrationThreadDetailSnapshot, ThreadId } from "@akeru/contracts";
+import type { OrchestrationThreadDetailSnapshot, ThreadId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -87,7 +87,7 @@ export class ThreadSnapshotLoader extends Context.Service<
       window?: ThreadSnapshotWindow,
     ) => Effect.Effect<Option.Option<OrchestrationThreadDetailSnapshot>>;
   }
->()("@akeru/client-runtime/state/threadSnapshotHttp/ThreadSnapshotLoader") {}
+>()("@isnadi/client-runtime/state/threadSnapshotHttp/ThreadSnapshotLoader") {}
 
 export const threadSnapshotLoaderLayer: Layer.Layer<
   ThreadSnapshotLoader,

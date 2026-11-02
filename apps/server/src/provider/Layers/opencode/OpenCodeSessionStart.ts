@@ -9,7 +9,7 @@ import {
   type RuntimeRequestId,
   type ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -161,7 +161,7 @@ export function createOpenCodeSessionStart(deps: {
             if (mcpSession && !server.external) {
               yield* runOpenCodeSdk("mcp.add", () =>
                 client.mcp.add({
-                  name: "akeru",
+                  name: "isnadi",
                   config: {
                     type: "remote",
                     url: mcpSession.endpoint,

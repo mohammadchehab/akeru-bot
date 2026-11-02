@@ -1,9 +1,9 @@
 import { makeMobileBot } from "../../lib/mobile-fixtures.test-support";
-import { BotId, GroupId, ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { BotId, GroupId, ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import { makeMobileGroup } from "../../lib/mobile-fixtures.test-support";
 import { describe, expect, it } from "vite-plus/test";
 
-import { resolveComposerBotMention } from "@akeru/shared/composerBotMentions";
+import { resolveComposerBotMention } from "@isnadi/shared/composerBotMentions";
 
 import {
   buildComposerMentionItems,

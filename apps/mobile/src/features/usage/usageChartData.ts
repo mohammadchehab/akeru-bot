@@ -4,8 +4,8 @@
  *
  * @module usageChartData
  */
-import type { UsageProviderKind } from "@akeru/contracts";
-import type { DailyTotals } from "@akeru/shared/usageMerge";
+import type { UsageProviderKind } from "@isnadi/contracts";
+import type { DailyTotals } from "@isnadi/shared/usageMerge";
 
 import { PROVIDER_ORDER } from "./usageProviders";
 

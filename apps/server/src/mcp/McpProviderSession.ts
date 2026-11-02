@@ -1,4 +1,4 @@
-import type { EnvironmentId, ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import type { EnvironmentId, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 
 export interface McpProviderSessionConfig {
   readonly environmentId: EnvironmentId;

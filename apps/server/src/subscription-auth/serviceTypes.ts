@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { SubscriptionBaseUrl, type BotId, type ProviderInstanceId } from "@akeru/contracts";
+import { SubscriptionBaseUrl, type BotId, type ProviderInstanceId } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import {
   isSubscriptionCredential,
@@ -28,7 +28,7 @@ export const OPENCODE_GO_AUTH_URL = "https://opencode.ai/auth";
 
 export const OPENCODE_GO_USAGE_URL = "https://opencode.ai/zen/go/v1/usage";
 
-export const OPENCODE_GO_USER_AGENT = "akeru-bot/0.0.37";
+export const OPENCODE_GO_USER_AGENT = "isnadibot/0.0.37";
 
 export const SUBSCRIPTION_PROVIDER_IDS = [
   "anthropic",

@@ -1,8 +1,8 @@
 import * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
 import {
-  AKERU_ARCHIVE_FORMAT,
-  AKERU_ARCHIVE_VERSION,
+  ISNADI_ARCHIVE_FORMAT,
+  ISNADI_ARCHIVE_VERSION,
   BALANCED_BOT_PERSONALITY_TONE,
   EventId,
   MessageId,
@@ -10,7 +10,7 @@ import {
   type PortabilityArchiveRecord,
   type OrchestrationReadModel,
   type ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { portabilityChecksum, canonicalJson, canonicalValue } from "./portabilityChecksums.ts";
 import {
@@ -292,8 +292,8 @@ export function createPortabilityArchive(
   const records = portableRecords(snapshot, settings);
 
   const body = {
-    format: AKERU_ARCHIVE_FORMAT,
-    version: AKERU_ARCHIVE_VERSION,
+    format: ISNADI_ARCHIVE_FORMAT,
+    version: ISNADI_ARCHIVE_VERSION,
     exportedAt,
     manifest: {
       recordCounts: Object.fromEntries(

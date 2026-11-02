@@ -198,7 +198,7 @@ export function decodeImageGenerationRequest(
   }
 }
 
-/** A completed image saved as a local Akeru attachment. */
+/** A completed image saved as a local Isnadi attachment. */
 export const ImageArtifact = Schema.Struct({
   attachmentId: TrimmedNonEmptyString,
   mimeType: Schema.Literals(["image/png", "image/jpeg", "image/webp"]),

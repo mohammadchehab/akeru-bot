@@ -3,7 +3,7 @@ import type {
   PortabilityApplyImportResult,
   PortabilityProjectFolderMap,
   ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useRef, useState } from "react";
 import { useI18n } from "../../i18n";
 import { usePrimaryEnvironment, usePrimaryEnvironmentId } from "../../state/environments";

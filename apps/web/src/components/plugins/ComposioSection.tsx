@@ -2,13 +2,13 @@ import { Predicate } from "effect";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import type {
   ComposioConnection,
   ComposioConnectionStatus,
   ComposioToolkit,
   EnvironmentId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useDeferredValue, useEffect, useState } from "react";
 import type { PluginDirectoryDefinition } from "../../../../../plugins";
 import { useI18n } from "../../i18n";
@@ -130,7 +130,7 @@ export function ComposioAccounts({
 
 /**
  * Composio key, accounts, and toolkit search for the Plugins directory. The user
- * brings a Composio API key; Composio runs each app's sign-in, so Akeru holds no
+ * brings a Composio API key; Composio runs each app's sign-in, so Isnadi holds no
  * vendor OAuth credentials.
  */
 export function ComposioSection({

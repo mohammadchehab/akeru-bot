@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import { projectionSnapshotLayer } from "./test-support/ProjectionSnapshotHarness.ts";
-import { MessageId, ThreadId } from "@akeru/contracts";
+import { MessageId, ThreadId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

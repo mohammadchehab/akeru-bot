@@ -1,8 +1,8 @@
-const AKERU_BROWSER_TOOL_INSTRUCTIONS = `
+const ISNADI_BROWSER_TOOL_INSTRUCTIONS = `
 
 ## IsnadiBot collaborative browser
 
-You are running inside IsnadiBot. The \`akeru\` MCP server is the product-native collaborative browser shared with the user. When it exposes \`preview_*\` tools, prefer those tools for browser navigation, inspection, interaction, screenshots, and recordings.
+You are running inside IsnadiBot. The \`isnadi\` MCP server is the product-native collaborative browser shared with the user. When it exposes \`preview_*\` tools, prefer those tools for browser navigation, inspection, interaction, screenshots, and recordings.
 
 For browser work, first call \`preview_status\`. If no automation-capable preview is attached, call \`preview_open\` before concluding that the browser is unavailable. Then use \`preview_navigate\`, \`preview_snapshot\`, and the focused interaction tools. Prefer snapshot-provided locators over coordinates.
 
@@ -17,7 +17,7 @@ Do not switch to global browser skills, Chrome, Node REPL browser automation, st
  * the only browser automation it still has.
  */
 const browserToolInstructions = (browserToolsAvailable: boolean): string =>
-  browserToolsAvailable ? AKERU_BROWSER_TOOL_INSTRUCTIONS : "";
+  browserToolsAvailable ? ISNADI_BROWSER_TOOL_INSTRUCTIONS : "";
 
 export const codexDefaultModeDeveloperInstructions = (
   browserToolsAvailable: boolean,
@@ -48,7 +48,7 @@ function toSingleLine(value: string): string {
 export function buildCodexDeveloperInstructions(
   runtime: CodexRuntimeInfo,
   /**
-   * Whether the `akeru` MCP server is attached to this turn. Callers derive
+   * Whether the `isnadi` MCP server is attached to this turn. Callers derive
    * it from the session's actual MCP configuration rather than re-reading the
    * setting, so the prompt cannot claim tools the turn doesn't have.
    */

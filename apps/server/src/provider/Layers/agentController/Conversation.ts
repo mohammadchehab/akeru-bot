@@ -1,11 +1,11 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 
 import * as FileSystem from "effect/FileSystem";
 
 import type { MastraDBMessage } from "@mastra/core/agent-controller";
 
-import { TurnId, type BotId, type ProviderRuntimeEvent, ThreadId } from "@akeru/contracts";
+import { TurnId, type BotId, type ProviderRuntimeEvent, ThreadId } from "@isnadi/contracts";
 
 import * as DateTime from "effect/DateTime";
 
@@ -21,13 +21,13 @@ import { retainProjectionMessagesAfterRevert } from "../../../orchestration/Reta
 import { ProjectionThreadMessageRepository } from "../../../persistence/Services/ProjectionThreadMessages.ts";
 import { ProjectionTurnRepository } from "../../../persistence/Services/ProjectionTurns.ts";
 
-import type { AkeruControllerHarness } from "../../mastra/AkeruHarnessTypes.ts";
+import type { IsnadiControllerHarness } from "../../mastra/IsnadiHarnessTypes.ts";
 
-import type { AkeruWorkerRuntime } from "../../AkeruWorkerRuntime.ts";
+import type { IsnadiWorkerRuntime } from "../../IsnadiWorkerRuntime.ts";
 
 import { cancelActiveImageGenerations } from "../../../image-generation/ImageGenerationRuntime.ts";
 
-import { AkeruSessionResources } from "../../AkeruSessionResources.ts";
+import { IsnadiSessionResources } from "../../IsnadiSessionResources.ts";
 
 import { AgentControllerRuntimeError } from "../../Errors.ts";
 import { type AgentControllerShape } from "../../Services/AgentController.ts";
@@ -52,12 +52,12 @@ export function createConversation(deps: {
     operation: string,
     run: (signal: AbortSignal) => Promise<A>,
   ) => Effect.Effect<A, AgentControllerRuntimeError, never>;
-  readonly sessionResources: AkeruSessionResources;
+  readonly sessionResources: IsnadiSessionResources;
   readonly clearPreviewMcpSession: (threadId: ThreadId) => Effect.Effect<void, never, never>;
   readonly legacyResourceIdentity: Map<string, LegacyResourceIdentity>;
   readonly usesMastraCode: (provider: ProviderDriverKind) => boolean;
   readonly resolvedByThread: Map<string, ResolvedEngine>;
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly endTurnAdmissionGeneration: (active: ActiveSession) => void;
   readonly releaseMastraReservations: (threadId: ThreadId) => Effect.Effect<void, never, never>;
   readonly finishTurn: (
@@ -73,9 +73,9 @@ export function createConversation(deps: {
     state: "ready" | "running" | "waiting" | "stopped" | "error",
     reason?: string,
   ) => void;
-  readonly bundle: AkeruControllerHarness;
+  readonly bundle: IsnadiControllerHarness;
   readonly memoryUsageByThread: Map<string, { readonly botId: BotId; turnId: TurnId }>;
-  readonly workerRuntime: AkeruWorkerRuntime;
+  readonly workerRuntime: IsnadiWorkerRuntime;
   readonly workerTurnDefaults: Map<
     string,
     "approval-required" | "auto-accept-edits" | "auto" | "full-access"

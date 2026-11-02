@@ -1,4 +1,4 @@
-import { BotId, type AkeruBotUsageSnapshot } from "@akeru/contracts";
+import { BotId, type IsnadiBotUsageSnapshot } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -10,7 +10,7 @@ import {
   formatUsageMeasurement,
 } from "./botUsagePresentation";
 
-const snapshot: AkeruBotUsageSnapshot = {
+const snapshot: IsnadiBotUsageSnapshot = {
   botId: BotId.make("bot-1"),
   consumedTokens: 12_345,
   reservedTokens: 750,

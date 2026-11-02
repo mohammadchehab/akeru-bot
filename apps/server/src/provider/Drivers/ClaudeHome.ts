@@ -1,6 +1,6 @@
 import * as NodeOS from "node:os";
 
-import type { ClaudeSettings } from "@akeru/contracts";
+import type { ClaudeSettings } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";

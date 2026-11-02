@@ -1,6 +1,6 @@
 import { recordLookup } from "../recordLookup";
 import { Predicate } from "effect";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 import type { BotAvatar, BotBlobShape } from "./types";
 
 export const BLOB_SHAPES: readonly BotBlobShape[] = [

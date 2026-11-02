@@ -1,6 +1,6 @@
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
-import { GitCommandError } from "@akeru/contracts";
+import { GitCommandError } from "@isnadi/contracts";
 import { parseRemoteNames } from "../git/remoteRefs.ts";
 import {
   STATUS_UPSTREAM_REFRESH_TIMEOUT,

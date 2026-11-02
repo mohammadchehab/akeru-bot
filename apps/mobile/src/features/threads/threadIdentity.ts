@@ -1,6 +1,10 @@
-import { isGroupBotMember, type OrchestrationBot, type OrchestrationGroup } from "@akeru/contracts";
+import {
+  isGroupBotMember,
+  type OrchestrationBot,
+  type OrchestrationGroup,
+} from "@isnadi/contracts";
 
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
 
 /**
  * Bot members of a group, boss first — the avatars that stand in for a group

@@ -4,7 +4,7 @@ import {
   type ProviderOptionDescriptor,
   type ProviderOptionSelection,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { getComposerPromptInjectionState, getComposerProviderState } from "./composerProviderState";
 
 // Everything in composerProviderState is now data-driven by the model's

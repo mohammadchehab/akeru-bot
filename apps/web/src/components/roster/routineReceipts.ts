@@ -1,6 +1,6 @@
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import { withoutErrorStack } from "@akeru/shared/errorText";
-import type { Routine, RoutineReceiptSource, RoutineRun, ThreadId } from "@akeru/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import { withoutErrorStack } from "@isnadi/shared/errorText";
+import type { Routine, RoutineReceiptSource, RoutineRun, ThreadId } from "@isnadi/contracts";
 import type { BotConversationEntry } from "./botConversationPresentation";
 
 export interface RoutineReceipt {

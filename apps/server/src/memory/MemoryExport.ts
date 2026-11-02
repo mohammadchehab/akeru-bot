@@ -1,12 +1,12 @@
 import * as NodeCrypto from "node:crypto";
 
 import {
-  AkeruMemoryArchiveV2,
-  type AkeruConversationMemorySnapshot,
-  type AkeruMemoryArchiveTarget,
-  type AkeruMemoryRevision,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  IsnadiMemoryArchiveV2,
+  type IsnadiConversationMemorySnapshot,
+  type IsnadiMemoryArchiveTarget,
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
@@ -14,13 +14,13 @@ import type { EntityMemoryRepositoryShape } from "./Services/EntityMemoryReposit
 import { resolveMemoryArchivePartitions } from "./EntityMemoryAccess.ts";
 import { encodeMemoryArchiveJson } from "./MemoryArchiveJson.ts";
 
-const decodeMemoryArchive = Schema.decodeUnknownEffect(AkeruMemoryArchiveV2);
+const decodeMemoryArchive = Schema.decodeUnknownEffect(IsnadiMemoryArchiveV2);
 
 const checksum = (content: string) => NodeCrypto.createHash("sha256").update(content).digest("hex");
 
 const safeName = (value: string) => value.replaceAll(/[^a-zA-Z0-9._-]/g, "_");
 
-const frontmatter = (revision: AkeruMemoryRevision) => ({
+const frontmatter = (revision: IsnadiMemoryRevision) => ({
   memoryId: revision.rootId,
   revisionId: revision.id,
   revision: revision.revision,
@@ -43,21 +43,21 @@ const frontmatter = (revision: AkeruMemoryRevision) => ({
   supersededById: revision.supersededById,
 });
 
-export const memoryRevisionArchivePath = (revision: AkeruMemoryRevision) =>
+export const memoryRevisionArchivePath = (revision: IsnadiMemoryRevision) =>
   `durable/${safeName(revision.rootId)}/${revision.revision}.md`;
 
-export const renderMemoryRevision = (revision: AkeruMemoryRevision) =>
-  `---\nakeru-memory: ${encodeMemoryArchiveJson(frontmatter(revision))}\n---\n\n${revision.fact}\n`;
+export const renderMemoryRevision = (revision: IsnadiMemoryRevision) =>
+  `---\nisnadi-memory: ${encodeMemoryArchiveJson(frontmatter(revision))}\n---\n\n${revision.fact}\n`;
 
-export function exportAkeruMemory(input: {
+export function exportIsnadiMemory(input: {
   readonly repository: Pick<EntityMemoryRepositoryShape, "listByPartitions">;
-  readonly access: AkeruMemoryThreadAccess;
-  readonly target: AkeruMemoryArchiveTarget;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly target: IsnadiMemoryArchiveTarget;
   readonly complete: boolean;
   readonly createdAt: string;
   readonly conversations: ReadonlyArray<{
-    readonly threadId: AkeruMemoryThreadAccess["threadId"];
-    readonly snapshot: AkeruConversationMemorySnapshot;
+    readonly threadId: IsnadiMemoryThreadAccess["threadId"];
+    readonly snapshot: IsnadiConversationMemorySnapshot;
   }>;
 }) {
   return Effect.gen(function* () {

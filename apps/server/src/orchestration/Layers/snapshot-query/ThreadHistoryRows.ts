@@ -1,4 +1,4 @@
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 
 import * as Schema from "effect/Schema";
 
@@ -353,7 +353,7 @@ pending_approval_requests AS (
         ),
         pending_memory_approval_activities AS (
           SELECT activity.activity_id
-          FROM akeru_memory_candidates AS candidate
+          FROM isnadi_memory_candidates AS candidate
           INNER JOIN projection_thread_activities AS activity
             ON activity.activity_id = 'memory-approval:' || candidate.candidate_id || ':requested'
           WHERE candidate.source_thread_id = ${threadId}

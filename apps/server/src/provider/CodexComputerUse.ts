@@ -1,5 +1,5 @@
 import * as Schema from "effect/Schema";
-import type { AkeruToolResult } from "./tools/AkeruToolTypes.ts";
+import type { IsnadiToolResult } from "./tools/IsnadiToolTypes.ts";
 import * as Predicate from "effect/Predicate";
 import * as NodeChildProcess from "node:child_process";
 import * as NodeFS from "node:fs";
@@ -133,12 +133,12 @@ function screenshotDataUrl(url: string, temporaryDirectory?: string): string {
 }
 
 export function sanitizeCodexComputerUseResult(
-  value: AkeruToolResult,
+  value: IsnadiToolResult,
   options?: { readonly temporaryDirectory?: string },
-): AkeruToolResult {
+): IsnadiToolResult {
   let remaining = 10_000;
 
-  const visit = (entry: AkeruToolResult, field?: string): AkeruToolResult => {
+  const visit = (entry: IsnadiToolResult, field?: string): IsnadiToolResult => {
     remaining -= 1;
 
     if (remaining < 0) throw new Error("Computer Use returned too much data.");
@@ -294,7 +294,7 @@ export async function resolveCodexComputerUseServer(options: {
     env: {
       HOME: NodeOS.homedir(),
       ...(process.env.CODEX_HOME ? { CODEX_HOME: process.env.CODEX_HOME } : {}),
-      TMPDIR: NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-computer-use-")),
+      TMPDIR: NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-computer-use-")),
     },
   } satisfies McpServerConfig;
 }

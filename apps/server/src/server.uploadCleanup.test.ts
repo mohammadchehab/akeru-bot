@@ -5,7 +5,7 @@ import {
   CommandId,
   MessageId,
   ORCHESTRATION_WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

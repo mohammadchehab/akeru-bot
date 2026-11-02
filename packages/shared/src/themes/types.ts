@@ -1,7 +1,7 @@
 export const BUILT_IN_THEME_IDS = [
-  "akeru-noir",
-  "akeru-paper",
-  "akeru-chat",
+  "isnadi-noir",
+  "isnadi-paper",
+  "isnadi-chat",
   "grove",
   "ocean",
   "ember",
@@ -9,7 +9,7 @@ export const BUILT_IN_THEME_IDS = [
 ] as const;
 
 /** The mobile app's own hand-tuned palette, which is not part of the built-in library. */
-export const MOBILE_DEFAULT_THEME_ID = "akeru-classic";
+export const MOBILE_DEFAULT_THEME_ID = "isnadi-classic";
 
 /**
  * Every palette the mobile app can render. Declared here so host-side tooling

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import type { OrchestrationShellSnapshot } from "@akeru/contracts";
+import type { OrchestrationShellSnapshot } from "@isnadi/contracts";
 import { applyShellStreamEvent } from "./shellReducer.ts";
 import { baseSnapshot, stubBot, stubGroup } from "./shellReducer.test-support.ts";
 

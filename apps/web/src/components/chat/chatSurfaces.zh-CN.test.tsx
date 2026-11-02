@@ -1,9 +1,9 @@
-import { catalogRegistry, createTranslator } from "@akeru/client-runtime/i18n";
+import { catalogRegistry, createTranslator } from "@isnadi/client-runtime/i18n";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
   ApprovalRequestId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
@@ -52,7 +52,7 @@ describe("chat surfaces in Simplified Chinese", () => {
       <ComposerPendingApprovalActions
         requestId={ApprovalRequestId.make("approval-routine")}
         requestKind="command"
-        toolName={AKERU_CREATE_ROUTINE_TOOL_NAME}
+        toolName={ISNADI_CREATE_ROUTINE_TOOL_NAME}
         isResponding={false}
         onRespondToApproval={async () => undefined}
       />,
@@ -69,7 +69,7 @@ describe("chat surfaces in Simplified Chinese", () => {
         approval={{
           requestId: ApprovalRequestId.make("approval-weekly-routine"),
           requestKind: "command",
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           createdAt: "2026-08-31T00:00:00.000Z",
           args: {
             name: "Friday review",

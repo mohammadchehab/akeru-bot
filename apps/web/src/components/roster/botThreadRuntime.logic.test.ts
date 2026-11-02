@@ -1,4 +1,4 @@
-import { BotId, GroupId, ProjectId, ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { BotId, GroupId, ProjectId, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import {
@@ -193,7 +193,7 @@ describe("bot thread runtime", () => {
     const start = async () => {
       starts += 1;
       await Promise.resolve();
-      retained = { threadId: "thread-akeru" };
+      retained = { threadId: "thread-isnadi" };
 
       return retained;
     };
@@ -211,12 +211,12 @@ describe("bot thread runtime", () => {
 
   it("associates the first durable thread with its bot", () => {
     const input = buildBotTurnStartInput({
-      botId: BotId.make("bot-akeru"),
-      threadId: ThreadId.make("thread-akeru"),
-      projectId: ProjectId.make("project-akeru"),
+      botId: BotId.make("bot-isnadi"),
+      threadId: ThreadId.make("thread-isnadi"),
+      projectId: ProjectId.make("project-isnadi"),
       title: "Hello",
       message: {
-        messageId: "message-akeru" as never,
+        messageId: "message-isnadi" as never,
         role: "user",
         text: "Hello",
         attachments: [],
@@ -231,8 +231,8 @@ describe("bot thread runtime", () => {
       createThread: true,
     });
 
-    expect(input.bootstrap?.createThread?.botId).toBe("bot-akeru");
-    expect(input.bootstrap?.createThread?.projectId).toBe("project-akeru");
+    expect(input.bootstrap?.createThread?.botId).toBe("bot-isnadi");
+    expect(input.bootstrap?.createThread?.projectId).toBe("project-isnadi");
   });
 
   it("associates a group thread and routes a mention to its selected bot", () => {
@@ -240,7 +240,7 @@ describe("bot thread runtime", () => {
       groupId: GroupId.make("group-product"),
       respondingBotId: BotId.make("bot-specialist"),
       threadId: ThreadId.make("thread-product"),
-      projectId: ProjectId.make("project-akeru"),
+      projectId: ProjectId.make("project-isnadi"),
       title: "Review this",
       message: {
         messageId: "message-product" as never,
@@ -264,11 +264,11 @@ describe("bot thread runtime", () => {
 
   it("restores the latest durable thread owned by the bot", () => {
     expect(
-      findLatestBotThreadTarget("bot-akeru", "env-a", [
+      findLatestBotThreadTarget("bot-isnadi", "env-a", [
         {
           environmentId: "env-a",
           id: "thread-old",
-          botId: "bot-akeru",
+          botId: "bot-isnadi",
           updatedAt: "2026-08-26T00:00:00.000Z",
           archivedAt: null,
           deletedAt: null,
@@ -284,7 +284,7 @@ describe("bot thread runtime", () => {
         {
           environmentId: "env-a",
           id: "delegated-child",
-          botId: "bot-akeru",
+          botId: "bot-isnadi",
           parentThreadId: "parent-thread",
           updatedAt: "2026-08-29T00:00:00.000Z",
           archivedAt: null,
@@ -293,7 +293,7 @@ describe("bot thread runtime", () => {
         {
           environmentId: "env-b",
           id: "thread-new",
-          botId: "bot-akeru",
+          botId: "bot-isnadi",
           updatedAt: "2026-08-27T00:00:00.000Z",
           archivedAt: null,
           deletedAt: null,
@@ -304,11 +304,11 @@ describe("bot thread runtime", () => {
 
   it("does not target a parent-linked child thread", () => {
     expect(
-      findLatestBotThreadTarget("bot-akeru", "env-a", [
+      findLatestBotThreadTarget("bot-isnadi", "env-a", [
         {
           environmentId: "env-a",
           id: "delegated-child",
-          botId: "bot-akeru",
+          botId: "bot-isnadi",
           parentThreadId: "parent-thread",
           updatedAt: "2026-08-29T00:00:00.000Z",
           archivedAt: null,

@@ -1,4 +1,4 @@
-import { EnvironmentId, ProjectId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ProjectId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { createKnownEnvironment } from "./knownEnvironment.ts";

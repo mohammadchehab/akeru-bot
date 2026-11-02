@@ -1,9 +1,9 @@
-import { type PendingApproval } from "@akeru/client-runtime/pending-requests";
+import { type PendingApproval } from "@isnadi/client-runtime/pending-requests";
 import {
   type OrchestrationThreadActivity,
   type ToolLifecycleItemType,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ChatMessage } from "../types";
 
 export type WorkLogToolLifecycleStatus =

@@ -1,6 +1,6 @@
 import { describe } from "vite-plus/test";
 import { it as effectIt } from "@effect/vitest";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as TestClock from "effect/testing/TestClock";

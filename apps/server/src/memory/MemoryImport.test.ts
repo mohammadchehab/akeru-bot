@@ -1,25 +1,25 @@
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProjectId,
   ThreadId,
-  type AkeruMemoryArchive,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryArchive,
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
-import { exportAkeruMemory } from "./MemoryExport.ts";
-import { previewAkeruMemoryImport } from "./MemoryImport.ts";
+import { exportIsnadiMemory } from "./MemoryExport.ts";
+import { previewIsnadiMemoryImport } from "./MemoryImport.ts";
 
 const access = {
-  tenantId: AkeruMemoryTenantId.make("local"),
-  userId: AkeruMemoryUserId.make("owner"),
+  tenantId: IsnadiMemoryTenantId.make("local"),
+  userId: IsnadiMemoryUserId.make("owner"),
   threadId: ThreadId.make("thread-import"),
   projectId: ProjectId.make("project-import"),
   workspaceRoot: "/workspace/import",
@@ -30,16 +30,16 @@ const access = {
 } as const;
 
 const revision = {
-  id: AkeruMemoryId.make("revision-import"),
-  rootId: AkeruMemoryRootId.make("root-import"),
+  id: IsnadiMemoryId.make("revision-import"),
+  rootId: IsnadiMemoryRootId.make("root-import"),
   revision: 1,
   partition: {
     tenantId: access.tenantId,
     scope: "bot" as const,
-    partitionId: AkeruMemoryPartitionId.make(access.botId),
+    partitionId: IsnadiMemoryPartitionId.make(access.botId),
   },
   entityKind: "bot" as const,
-  entityId: AkeruMemoryEntityId.make(access.botId),
+  entityId: IsnadiMemoryEntityId.make(access.botId),
   kind: "fact" as const,
   value: {},
   fact: "The imported bot uses Bun.",
@@ -59,10 +59,10 @@ const revision = {
   pinned: false,
   sensitive: false,
   affectedBotIds: [access.botId],
-} satisfies AkeruMemoryRevision;
+} satisfies IsnadiMemoryRevision;
 
 const archiveWithRevisions = (
-  revisions: ReadonlyArray<AkeruMemoryRevision>,
+  revisions: ReadonlyArray<IsnadiMemoryRevision>,
   target: "bot" | "all" = "bot",
   complete = true,
 ) => {
@@ -70,7 +70,7 @@ const archiveWithRevisions = (
     listByPartitions: () => Effect.succeed(revisions),
   };
 
-  return exportAkeruMemory({
+  return exportIsnadiMemory({
     repository,
     access,
     target,
@@ -100,9 +100,9 @@ it.effect("rejects readable V1 archives for import", () =>
       createdAt: "2026-08-30T21:00:00.000Z",
       files: [],
       manifestSha256: "a".repeat(64),
-    } satisfies AkeruMemoryArchive;
+    } satisfies IsnadiMemoryArchive;
 
-    const failure = yield* previewAkeruMemoryImport({
+    const failure = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "thread",
@@ -117,7 +117,7 @@ it.effect("rejects current-state and all-authority archives", () =>
   Effect.gen(function* () {
     const currentOnly = yield* archive("bot", false);
 
-    const incomplete = yield* previewAkeruMemoryImport({
+    const incomplete = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "bot",
@@ -128,7 +128,7 @@ it.effect("rejects current-state and all-authority archives", () =>
 
     const all = yield* archive("all", true);
 
-    const allFailure = yield* previewAkeruMemoryImport({
+    const allFailure = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "all",
@@ -143,7 +143,7 @@ it.effect("rejects target, checksum, and readable-file mismatches", () =>
   Effect.gen(function* () {
     const valid = yield* archive("bot", true);
 
-    const targetFailure = yield* previewAkeruMemoryImport({
+    const targetFailure = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "project",
@@ -154,7 +154,7 @@ it.effect("rejects target, checksum, and readable-file mismatches", () =>
 
     if (valid.schemaVersion !== 2) return assert.fail("Expected a V2 archive.");
 
-    const checksumFailure = yield* previewAkeruMemoryImport({
+    const checksumFailure = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "bot",
@@ -169,9 +169,9 @@ it.effect("rejects target, checksum, and readable-file mismatches", () =>
     const fileMismatch = {
       ...valid,
       files: [],
-    } satisfies AkeruMemoryArchive;
+    } satisfies IsnadiMemoryArchive;
 
-    const mismatch = yield* previewAkeruMemoryImport({
+    const mismatch = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "bot",
@@ -184,7 +184,7 @@ it.effect("rejects target, checksum, and readable-file mismatches", () =>
 
 it.effect("keeps pending and rejected revisions importable", () =>
   Effect.gen(function* () {
-    const pendingId = AkeruMemoryId.make("revision-import-pending");
+    const pendingId = IsnadiMemoryId.make("revision-import-pending");
 
     const rejected = yield* archiveWithRevisions([
       { ...revision, id: pendingId, approvalState: "pending", supersededById: revision.id },
@@ -197,7 +197,7 @@ it.effect("keeps pending and rejected revisions importable", () =>
       },
     ]);
 
-    const preview = yield* previewAkeruMemoryImport({
+    const preview = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "bot",
@@ -210,8 +210,8 @@ it.effect("keeps pending and rejected revisions importable", () =>
 
 it.effect("rejects resurrected archive revisions", () =>
   Effect.gen(function* () {
-    const tombstoneId = AkeruMemoryId.make("revision-import-tombstone");
-    const activeId = AkeruMemoryId.make("revision-import-resurrected");
+    const tombstoneId = IsnadiMemoryId.make("revision-import-tombstone");
+    const activeId = IsnadiMemoryId.make("revision-import-resurrected");
 
     const tombstone = {
       ...revision,
@@ -231,7 +231,7 @@ it.effect("rejects resurrected archive revisions", () =>
 
     const resurrectedArchive = yield* archiveWithRevisions([tombstone, resurrected]);
 
-    const resurrectedFailure = yield* previewAkeruMemoryImport({
+    const resurrectedFailure = yield* previewIsnadiMemoryImport({
       repository: previewRepository,
       access,
       target: "bot",

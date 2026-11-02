@@ -1,6 +1,6 @@
 import { claudeMessage } from "./test-support/claudeMessages.ts";
 import type { PermissionMode } from "@anthropic-ai/claude-agent-sdk";
-import { ProviderDriverKind, type RuntimeMode } from "@akeru/contracts";
+import { ProviderDriverKind, type RuntimeMode } from "@isnadi/contracts";
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

@@ -1,7 +1,7 @@
 import type { StateStorage } from "./storage";
 
 /**
- * Web persisted state moved from the upstream `t3code:` prefix to `akeru:`.
+ * Web persisted state moved from the upstream `t3code:` prefix to `isnadi:`.
  * The wrapped storage reads the legacy key when the new key is empty, and the
  * first write to the new key removes the legacy entry, so existing installs
  * keep their data without a one-shot migration pass.

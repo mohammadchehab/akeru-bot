@@ -1,6 +1,6 @@
 import { makeShellSnapshot } from "../test-support/fixtures";
 import { Predicate } from "effect";
-import { EnvironmentId, type OrchestrationBot, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, type OrchestrationBot, ThreadId } from "@isnadi/contracts";
 import { Children, isValidElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";

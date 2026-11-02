@@ -1,12 +1,12 @@
 import { asRecord } from "../../ActivityPayloadBounds.ts";
 import * as Predicate from "effect/Predicate";
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   CommandId,
   MessageId,
   ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -198,7 +198,7 @@ export function createRecovery({
   // recorded a failure, whose background release a restart cancelled. Turn
   // starts that are still pending are replayed instead and read the results.
   const releaseStrandedDelegationResults = Effect.fn("releaseStrandedDelegationResults")(function* (
-    delegations: ReadonlyArray<AkeruDelegationRecord>,
+    delegations: ReadonlyArray<IsnadiDelegationRecord>,
     pendingTurnStarts: ReadonlyArray<{ readonly threadId: ThreadId; readonly requestedAt: string }>,
   ) {
     const hasTurnStartFailure = projectionSnapshotQuery.hasTurnStartFailure;
@@ -214,7 +214,7 @@ export function createRecovery({
 
     const byTurnStart = new Map<
       string,
-      { threadId: ThreadId; requestedAt: string; delegations: Array<AkeruDelegationRecord> }
+      { threadId: ThreadId; requestedAt: string; delegations: Array<IsnadiDelegationRecord> }
     >();
 
     for (const delegation of delegations) {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import type { ModelCapabilities } from "@akeru/contracts";
+import type { ModelCapabilities } from "@isnadi/contracts";
 
 import {
   applyProviderOptionSelection,

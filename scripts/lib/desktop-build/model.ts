@@ -4,7 +4,7 @@ import * as Path from "effect/Path";
 
 import * as Schema from "effect/Schema";
 
-export const DESKTOP_PACKAGE_NAME = "akeru-bot";
+export const DESKTOP_PACKAGE_NAME = "isnadibot";
 
 export const BuildPlatform = Schema.Literals(["mac", "linux", "win"]);
 

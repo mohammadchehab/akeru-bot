@@ -1,9 +1,9 @@
 import { toFtsQuery } from "./EntityMemoryRows.ts";
-import { AkeruMemoryRevision } from "@akeru/contracts";
+import { IsnadiMemoryRevision } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { toPersistenceSqlError } from "../../persistence/Errors.ts";
 import {
-  AkeruMemoryAccessDenied,
+  IsnadiMemoryAccessDenied,
   resolveAuthorizedMemoryPartitions,
   type AuthorizedMemoryPartition,
 } from "../EntityMemoryAccess.ts";
@@ -35,11 +35,11 @@ export const entityMemoryQueries = (dependencies: {
 
       const from =
         ftsQuery === null
-          ? "FROM akeru_memory_revisions memory"
-          : "FROM akeru_memory_revisions memory JOIN akeru_memory_fts fts ON fts.memory_id = memory.memory_id";
+          ? "FROM isnadi_memory_revisions memory"
+          : "FROM isnadi_memory_revisions memory JOIN isnadi_memory_fts fts ON fts.memory_id = memory.memory_id";
 
-      const match = ftsQuery === null ? "" : "AND akeru_memory_fts MATCH ?";
-      const relevance = ftsQuery === null ? "0" : "bm25(akeru_memory_fts)";
+      const match = ftsQuery === null ? "" : "AND isnadi_memory_fts MATCH ?";
+      const relevance = ftsQuery === null ? "0" : "bm25(isnadi_memory_fts)";
 
       return sql.unsafe<EntityMemoryDbRow & { readonly relevance: number }>(
         `SELECT ${selectColumns.replaceAll(/\b([a-z_]+) AS/g, "memory.$1 AS")}, ${relevance} AS relevance
@@ -105,7 +105,7 @@ export const entityMemoryQueries = (dependencies: {
             (partition) =>
               sql
                 .unsafe<EntityMemoryDbRow>(
-                  `SELECT ${selectColumns} FROM akeru_memory_revisions
+                  `SELECT ${selectColumns} FROM isnadi_memory_revisions
                WHERE tenant_id = ? AND scope = ? AND partition_id = ? AND visibility = ?
                  AND superseded_by_id IS NULL
                  AND approval_state = 'approved'
@@ -135,7 +135,7 @@ export const entityMemoryQueries = (dependencies: {
     // Keeps only revisions stored in a partition the caller can read, so a fact moved out of
     // a private scope does not reveal its earlier private text.
     const isRevisionAuthorized =
-      (partitions: ReadonlyArray<AuthorizedMemoryPartition>) => (revision: AkeruMemoryRevision) =>
+      (partitions: ReadonlyArray<AuthorizedMemoryPartition>) => (revision: IsnadiMemoryRevision) =>
         partitions.some(
           (partition) =>
             partition.tenantId === revision.partition.tenantId &&
@@ -151,7 +151,7 @@ export const entityMemoryQueries = (dependencies: {
 
         const rows = yield* sql
           .unsafe<EntityMemoryDbRow>(
-            `SELECT ${selectColumns} FROM akeru_memory_revisions
+            `SELECT ${selectColumns} FROM isnadi_memory_revisions
          WHERE tenant_id = ? AND root_id = ? ORDER BY revision DESC`,
             [input.access.tenantId, input.rootId],
           )
@@ -165,7 +165,7 @@ export const entityMemoryQueries = (dependencies: {
     const listByPartitions: EntityMemoryRepositoryShape["listByPartitions"] = (input) =>
       Effect.gen(function* () {
         if (input.partitions.some((candidate) => candidate.tenantId !== input.access.tenantId)) {
-          return yield* new AkeruMemoryAccessDenied({
+          return yield* new IsnadiMemoryAccessDenied({
             reason: "Every export partition must belong to the requested tenant.",
           });
         }
@@ -178,14 +178,14 @@ export const entityMemoryQueries = (dependencies: {
                 // A complete export carries the whole history of every fact that currently
                 // lives here, including revisions written before a scope move.
                 input.complete
-                  ? `SELECT ${selectColumns} FROM akeru_memory_revisions
+                  ? `SELECT ${selectColumns} FROM isnadi_memory_revisions
              WHERE tenant_id = ? AND root_id IN (
-               SELECT root_id FROM akeru_memory_revisions
+               SELECT root_id FROM isnadi_memory_revisions
                WHERE tenant_id = ? AND scope = ? AND partition_id = ? AND visibility = ?
                  AND superseded_by_id IS NULL
              )
              ORDER BY root_id ASC, revision ASC`
-                  : `SELECT ${selectColumns} FROM akeru_memory_revisions
+                  : `SELECT ${selectColumns} FROM isnadi_memory_revisions
              WHERE tenant_id = ? AND scope = ? AND partition_id = ? AND visibility = ?
                AND superseded_by_id IS NULL AND approval_state = 'approved' AND deletion_state = 'active'
              ORDER BY root_id ASC, revision ASC`,

@@ -1,4 +1,4 @@
-import { collectComposerMentionDisplays } from "@akeru/shared/composerInlineTokens";
+import { collectComposerMentionDisplays } from "@isnadi/shared/composerInlineTokens";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 vi.mock("react-native", () => ({

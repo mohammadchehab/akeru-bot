@@ -1,9 +1,9 @@
 import { recordLookup } from "./recordLookup";
 import { Predicate } from "effect";
-import { classifyMarkdownImageSource } from "@akeru/client-runtime/markdown-images";
-import { stabilizeStreamingMarkdown } from "@akeru/client-runtime/markdown-streaming";
-import { isAppDeepLink } from "@akeru/client-runtime/settings-deep-link";
-import { isAtomCommandInterrupted } from "@akeru/client-runtime/state/runtime";
+import { classifyMarkdownImageSource } from "@isnadi/client-runtime/markdown-images";
+import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
+import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
+import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
 import "katex/dist/katex.min.css";
 import {
   InfoIcon,

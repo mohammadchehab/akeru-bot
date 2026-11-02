@@ -14,7 +14,7 @@ import {
   type OrchestrationGroup,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { decideOrchestrationCommand } from "../decider.ts";

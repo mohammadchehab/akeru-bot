@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# One-line macOS installer for Akeru Bot (Apple Silicon).
+# One-line macOS installer for IsnadiBot (Apple Silicon).
 #
-#   t=$(curl -fsSL https://api.github.com/repos/opencoredev/akeru-bot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1); if [ -z "$t" ]; then echo "Could not resolve the latest Akeru Bot release." >&2; (exit 1); else f=$(mktemp /tmp/akeru-install.XXXXXX) && curl -fsSL -o "$f" "https://raw.githubusercontent.com/opencoredev/akeru-bot/$t/scripts/install-macos.sh" && bash "$f" --tag "$t"; rc=$?; rm -f "${f:-/tmp/akeru-install-none}"; (exit $rc); fi
+#   t=$(curl -fsSL https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1); if [ -z "$t" ]; then echo "Could not resolve the latest IsnadiBot release." >&2; (exit 1); else f=$(mktemp /tmp/isnadi-install.XXXXXX) && curl -fsSL -o "$f" "https://raw.githubusercontent.com/mohammadchehab/isnadibot/$t/scripts/install-macos.sh" && bash "$f" --tag "$t"; rc=$?; rm -f "${f:-/tmp/isnadi-install-none}"; (exit $rc); fi
 #   bash install-macos.sh --tag v1.2.3
 #
 # Downloads the GitHub DMG for the latest stable tag (or --tag), checks
@@ -46,15 +46,15 @@ trap 'hdiutil detach "$mnt" >/dev/null 2>&1 || true; rm -rf "$tmp"' EXIT
 mkdir -p "$mnt"
 
 if [ -z "$tag" ]; then
-  tag="$(curl -fsSL https://api.github.com/repos/opencoredev/akeru-bot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1)"
+  tag="$(curl -fsSL https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest | sed -n 's/.*"tag_name":[[:space:]]*"\(v[0-9][^"]*\)".*/\1/p' | head -1)"
 fi
 [[ "$tag" =~ ^v[0-9]+[.][0-9]+[.][0-9]+$ ]]
 
 version="${tag#v}"
-echo "Installing Akeru Bot $tag for macOS (arm64)..."
+echo "Installing IsnadiBot $tag for macOS (arm64)..."
 
-dmg="Akeru-Bot-${version}-arm64.dmg"
-base="https://github.com/opencoredev/akeru-bot/releases/download/${tag}"
+dmg="IsnadiBot-${version}-arm64.dmg"
+base="https://github.com/mohammadchehab/isnadibot/releases/download/${tag}"
 curl -fsSL -o "$tmp/SHA256SUMS" "$base/SHA256SUMS"
 curl -fL -o "$tmp/$dmg" "$base/$dmg"
 
@@ -64,15 +64,15 @@ line="$(grep -E "^[a-fA-F0-9]{64}[[:space:]]+\*?${dmg}\$" "$tmp/SHA256SUMS")" ||
 
 echo "Installing..."
 hdiutil attach "$tmp/$dmg" -nobrowse -readonly -mountpoint "$mnt"
-app="/Applications/Akeru Bot (Alpha).app"
-source_app="$mnt/Akeru Bot (Alpha).app"
-prepared_app="$tmp/Akeru Bot (Alpha).app"
+app="/Applications/IsnadiBot (Alpha).app"
+source_app="$mnt/IsnadiBot (Alpha).app"
+prepared_app="$tmp/IsnadiBot (Alpha).app"
 ditto "$source_app" "$prepared_app"
 identifier="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$prepared_app/Contents/Info.plist")"
-[ "$identifier" = dev.leodoes.akeru ]
+[ "$identifier" = dev.leodoes.isnadi ]
 install_id="$(uuidgen)"
-new_app="/Applications/.Akeru Bot (Alpha).app.installing.$install_id"
-old_app="/Applications/.Akeru Bot (Alpha).app.backup.$install_id"
+new_app="/Applications/.IsnadiBot (Alpha).app.installing.$install_id"
+old_app="/Applications/.IsnadiBot (Alpha).app.backup.$install_id"
 osascript - "$prepared_app" "$new_app" "$old_app" "$app" <<'APPLESCRIPT'
 on run argv
   set preparedApp to quoted form of item 1 of argv
@@ -84,4 +84,4 @@ end run
 APPLESCRIPT
 xattr -d com.apple.quarantine "$app" 2>/dev/null || true
 open "$app"
-echo "Installed Akeru Bot $tag."
+echo "Installed IsnadiBot $tag."

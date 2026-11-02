@@ -1,4 +1,4 @@
-import { ProjectId, ThreadId } from "@akeru/contracts";
+import { ProjectId, ThreadId } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import {

@@ -3,12 +3,12 @@ import { Predicate } from "effect";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import type {
   EnvironmentId,
   RemoteDiagnosticCheck,
   RemoteDiagnosticStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useState } from "react";
 
 import { cn } from "../../lib/utils";
@@ -64,7 +64,7 @@ function CheckStatus({ status }: { readonly status: RemoteDiagnosticStatus }) {
 }
 
 /**
- * Health of an Akeru Remote install, from the same checks as `akeru remote doctor`. Renders nothing
+ * Health of an Isnadi Remote install, from the same checks as `isnadi remote doctor`. Renders nothing
  * on an environment that is not a remote install. Callers mount it for admin clients only. Repairs
  * run only when the user asks, and only for checks the server marks repairable.
  */

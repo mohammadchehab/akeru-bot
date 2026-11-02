@@ -1,7 +1,7 @@
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { CommandId, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { CommandId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import { checkpointRefForThreadTurn } from "../../checkpointing/Utils.ts";

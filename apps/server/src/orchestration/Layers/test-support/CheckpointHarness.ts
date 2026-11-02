@@ -1,5 +1,5 @@
 import type { ActivityRecord } from "../../ActivityPayloadBounds.ts";
-import { type OrchestrationReadModel, type OrchestrationEvent } from "@akeru/contracts";
+import { type OrchestrationReadModel, type OrchestrationEvent } from "@isnadi/contracts";
 import { createObservationHistory } from "../../test-support/Observations.ts";
 
 interface CheckpointObservation {
@@ -30,14 +30,14 @@ import {
   ProviderRuntimeEvent,
   ProviderSession,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   CommandId,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   ProjectId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 
 import * as Effect from "effect/Effect";

@@ -1,9 +1,9 @@
 import { Predicate } from "effect";
-import { createReplyPlaybackSession } from "@akeru/client-runtime/reply-playback";
-import { EnvironmentId } from "@akeru/contracts";
-import { storedReplySynthesisCapability } from "@akeru/client-runtime/reply-playback";
+import { createReplyPlaybackSession } from "@isnadi/client-runtime/reply-playback";
+import { EnvironmentId } from "@isnadi/contracts";
+import { storedReplySynthesisCapability } from "@isnadi/client-runtime/reply-playback";
 import { createExpoReplyAudio } from "./expoReplyAudio";
-import { synthesizeVoiceChunks } from "@akeru/client-runtime/voice";
+import { synthesizeVoiceChunks } from "@isnadi/client-runtime/voice";
 import { decodeReplyAudioBase64 } from "./base64";
 import * as SecureStore from "expo-secure-store";
 

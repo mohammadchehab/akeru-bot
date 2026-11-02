@@ -1,6 +1,6 @@
 import * as Data from "effect/Data";
 import * as Predicate from "effect/Predicate";
-import type { AkeruDelegationRecord, MessageId, TurnId } from "@akeru/contracts";
+import type { IsnadiDelegationRecord, MessageId, TurnId } from "@isnadi/contracts";
 
 /** The message fields the timeline needs to place rows. */
 export interface BotChatTimelineMessage {
@@ -33,7 +33,7 @@ export type BotChatTimelineEntry<
   | {
       readonly _tag: "Delegation";
       readonly key: string;
-      readonly delegation: AkeruDelegationRecord;
+      readonly delegation: IsnadiDelegationRecord;
     };
 
 export interface BotChatTimelineInput<
@@ -43,7 +43,7 @@ export interface BotChatTimelineInput<
   readonly messages: ReadonlyArray<TMessage>;
   readonly receipts?: ReadonlyArray<TReceipt>;
   /** Delegations this chat started, as returned by `threadDelegations`. */
-  readonly delegations?: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegations?: ReadonlyArray<IsnadiDelegationRecord>;
 }
 
 /**

@@ -1,4 +1,4 @@
-import type { AdvertisedEndpoint, DesktopWslState } from "@akeru/contracts";
+import type { AdvertisedEndpoint, DesktopWslState } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import {
   applyWslEnableSelection,
@@ -203,7 +203,7 @@ describe("selectQrEndpointOption", () => {
 });
 
 describe("parsePairingUrlFields", () => {
-  const origin = "https://akeru.example.com";
+  const origin = "https://isnadi.example.com";
 
   it("pairs a direct link with its own origin", () => {
     expect(parsePairingUrlFields("https://box.tail.ts.net:3773/pair#token=abc", origin)).toEqual({

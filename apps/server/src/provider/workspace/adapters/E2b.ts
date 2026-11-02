@@ -1,7 +1,7 @@
-import { type AkeruRemoteSession } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession } from "../BotWorkspaceTypes.ts";
 import { commandLine } from "../BotWorkspaceLifecycle.ts";
 
-export function e2b(initial: import("e2b").Sandbox, apiKey?: string): AkeruRemoteSession {
+export function e2b(initial: import("e2b").Sandbox, apiKey?: string): IsnadiRemoteSession {
   let sandbox = initial;
   const providerId = sandbox.sandboxId;
   const options = apiKey ? { apiKey } : {};

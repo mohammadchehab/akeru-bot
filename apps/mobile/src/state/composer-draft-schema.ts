@@ -5,7 +5,7 @@ import {
   type ModelSelection,
   type ProviderInteractionMode,
   type RuntimeMode,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { flow } from "effect";
 import * as Schema from "effect/Schema";
 import { DraftComposerImageAttachmentSchema } from "../lib/composer-image-schema";

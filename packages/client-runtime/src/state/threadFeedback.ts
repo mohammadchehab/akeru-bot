@@ -3,7 +3,7 @@ import {
   MessageId,
   type OrchestrationMessage,
   type ProviderUploadFeedbackResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   isAtomCommandInterrupted,

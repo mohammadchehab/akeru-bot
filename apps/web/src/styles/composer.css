@@ -545,7 +545,7 @@
       color-mix(in srgb, var(--color-white) 5%, transparent)
     );
 
-    html[data-theme-id="akeru-chat"] & {
+    html[data-theme-id="isnadi-chat"] & {
       --chat-composer-attached-outline: #241e28;
     }
   }
@@ -555,7 +555,7 @@
   }
 
   @variant dark {
-    html[data-theme-id]:not([data-theme-id="akeru-chat"]) & {
+    html[data-theme-id]:not([data-theme-id="isnadi-chat"]) & {
       --chat-composer-attached-outline: var(
         --chat-composer-outline,
         color-mix(in srgb, var(--app-theme-input) 30%, var(--background))

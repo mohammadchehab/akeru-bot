@@ -1,7 +1,7 @@
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@akeru/contracts/settings";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@isnadi/contracts/settings";
 import { describe, expect, it } from "vite-plus/test";
-import { createModelSelection } from "@akeru/shared/model";
+import { createModelSelection } from "@isnadi/shared/model";
 import { deriveProviderInstanceEntries } from "./providerInstances";
 import {
   getAppModelOptionsForInstance,
@@ -75,7 +75,7 @@ function settingsWithGrokCustomModel(): UnifiedSettings {
 describe("instance-scoped model selection", () => {
   it("returns an explicit empty selection when no provider is available", () => {
     expect(resolveAppModelSelectionState(DEFAULT_UNIFIED_SETTINGS, [])).toEqual({
-      instanceId: ProviderInstanceId.make("akeru_no_provider"),
+      instanceId: ProviderInstanceId.make("isnadi_no_provider"),
       model: "",
     });
   });

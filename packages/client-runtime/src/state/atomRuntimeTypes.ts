@@ -1,4 +1,4 @@
-import { type EnvironmentId as EnvironmentIdType } from "@akeru/contracts";
+import { type EnvironmentId as EnvironmentIdType } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import { AtomRegistry } from "effect/unstable/reactivity";

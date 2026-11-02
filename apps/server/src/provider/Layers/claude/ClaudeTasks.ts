@@ -8,7 +8,7 @@ import {
   type RuntimeTaskStatus,
   type RuntimeTaskUsage,
   type TaskAgentLinkage,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   type ToolInFlight,

@@ -1,7 +1,10 @@
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
-import { threadSearchMatchKey } from "@akeru/client-runtime/state/thread-search";
-import type { EnvironmentId, SidebarProjectGroupingMode } from "@akeru/contracts";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
+import { threadSearchMatchKey } from "@isnadi/client-runtime/state/thread-search";
+import type { EnvironmentId, SidebarProjectGroupingMode } from "@isnadi/contracts";
 import { useCallback, useMemo, useRef } from "react";
 import { ActivityIndicator, FlatList, Pressable, View } from "react-native";
 import type { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable";

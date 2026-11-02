@@ -11,7 +11,7 @@ import {
   type ScopedProjectRef,
   type ScopedThreadRef,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { type ChatImageAttachment } from "../types";
 import { type TerminalContextDraft } from "../lib/terminalContext";

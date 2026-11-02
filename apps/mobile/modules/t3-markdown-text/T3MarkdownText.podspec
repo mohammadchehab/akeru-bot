@@ -6,11 +6,11 @@ new_arch_enabled = ENV["RCT_NEW_ARCH_ENABLED"] == "1"
 Pod::Spec.new do |s|
   s.name = "T3MarkdownText"
   s.version = package["version"]
-  s.summary = "Native selectable markdown renderer for Akeru Bot mobile."
-  s.description = "Fabric-backed attributed text and markdown rendering primitives owned by Akeru Bot."
-  s.homepage = "https://github.com/opencoredev/akeru-bot"
+  s.summary = "Native selectable markdown renderer for IsnadiBot mobile."
+  s.description = "Fabric-backed attributed text and markdown rendering primitives owned by IsnadiBot."
+  s.homepage = "https://github.com/mohammadchehab/isnadibot"
   s.license = { :type => "MIT", :file => "LICENSE" }
-  s.author = "Akeru Bot maintainers"
+  s.author = "IsnadiBot maintainers"
   s.platforms = { :ios => min_ios_version_supported }
   s.source = { :path => "." }
   s.source_files = "ios/**/*.{h,m,mm,cpp}"

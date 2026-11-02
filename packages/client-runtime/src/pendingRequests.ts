@@ -6,7 +6,7 @@ import {
   ProviderApprovalOption,
   ProviderRequestKind,
   UserInputQuestion,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import * as NodeFS from "node:fs";
 
-import { BUILT_IN_THEME_IDS, BUILT_IN_THEMES } from "@akeru/shared/themePalettes";
+import { BUILT_IN_THEME_IDS, BUILT_IN_THEMES } from "@isnadi/shared/themePalettes";
 import { DEFAULT_MOBILE_THEME_VARIABLES } from "./mobileDefaultTheme";
 
 import {
@@ -101,7 +101,7 @@ describe("mobile themes", () => {
   });
 
   it("shares all built-in desktop palettes", () => {
-    expect(BUILT_IN_THEME_IDS).toContain("akeru-paper");
+    expect(BUILT_IN_THEME_IDS).toContain("isnadi-paper");
     expect(BUILT_IN_THEMES.map((theme) => theme.id)).toEqual(BUILT_IN_THEME_IDS);
 
     for (const themeId of BUILT_IN_THEME_IDS) {
@@ -175,11 +175,11 @@ describe("mobile themes", () => {
   });
 
   it("changes either theme without switching the active appearance", () => {
-    const themeIds = { light: "akeru-chat", dark: "grove" } as const;
+    const themeIds = { light: "isnadi-chat", dark: "grove" } as const;
     expect(createMobileThemeSelectionPatch(themeIds, "light", "dark", "ocean")).toEqual({
-      lightThemeId: "akeru-chat",
+      lightThemeId: "isnadi-chat",
       darkThemeId: "ocean",
-      themeId: "akeru-chat",
+      themeId: "isnadi-chat",
     });
     expect(createMobileThemeSelectionPatch(themeIds, "light", "light", "iris")).toEqual({
       lightThemeId: "iris",

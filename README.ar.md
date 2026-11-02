@@ -11,7 +11,7 @@
   زملاء عمل بالذكاء الاصطناعي، لكل منهم اسم، يعملون على <em>جهازك</em>، باشتراكاتك <em>أنت</em>، وبياناتك تبقى <em>عندك</em>.
 </p>
 <p align="center"><em>بوتات بذاكرة · محادثات جماعية · حاسوب خاص بكل بوت · تيليجرام وسلاك وواتساب وغيرها · سطح المكتب والويب والجوال</em></p>
-<p align="center"><sub>بدأ المشروع باسم <a href="https://github.com/opencoredev/akeru-bot">Akeru Bot</a>، الذي انطلق بدوره من <a href="https://t3.codes">T3 Code</a>.</sub></p>
+<p align="center"><sub>بُني المشروع على مشروع مرخّص بـ MIT من <a href="https://github.com/opencoredev">OpenCore</a>، الذي انطلق بدوره من <a href="https://t3.codes">T3 Code</a>.</sub></p>
 
 <p align="center">
   <a href="./README.md">English</a> ·
@@ -36,7 +36,7 @@
 > بوتاتك تعمل في بيئة تملكها أنت (حاسوبك، أو خادمك، أو بيئة معزولة تختارها)، وتعمل عبر اشتراك Claude أو
 > ChatGPT أو Grok أو Kimi الذي تدفع له أصلًا. لا يوجد حساب IsnadiBot ولا سحابة IsnadiBot.
 >
-> بدأ IsnadiBot نسخةً متفرعة من [Akeru Bot](https://github.com/opencoredev/akeru-bot) ويحتفظ بتاريخه
+> بدأ IsnadiBot نسخةً متفرعة من مشروع مرخّص بـ MIT من [OpenCore](https://github.com/opencoredev) ويحتفظ بتاريخه
 > الكامل. راجع قسم «شكر وتقدير» في الأسفل.
 
 ---
@@ -175,7 +175,7 @@ vp run ios:release  # or build a self-contained release app, installed as "Isnad
 `T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID`. هذا البناء لا يتضمن الأدوات المصغّرة، وامتداد المشاركة، والإشعارات،
 وتسجيل الدخول عبر Apple.
 
-لربط التطبيق، شغّل `akeru pair` على الجهاز الذي يعمل عليه IsnadiBot وامسح رمز QR الذي يظهر. الربط عبر
+لربط التطبيق، شغّل `isnadi pair` على الجهاز الذي يعمل عليه IsnadiBot وامسح رمز QR الذي يظهر. الربط عبر
 الشبكة المحلية أو Tailscale يعمل بالطريقة نفسها؛ راجع [الوصول عن بُعد](docs/user/remote-access.md) و
 [دليل تطبيق الجوال](apps/mobile/README.md).
 
@@ -183,8 +183,8 @@ vp run ios:release  # or build a self-contained release app, installed as "Isnad
 
 ### 📂 أين تُحفظ بياناتك
 
-المحادثات والبوتات والإعدادات والأسرار والسجلات تبقى على جهازك في `~/.akeru`. يحتفظ المجلد باسمه الأصلي
-لتنتقل البيانات من Akeru Bot كما هي.
+المحادثات والبوتات والإعدادات والأسرار والسجلات تبقى على جهازك في `~/.isnadi`. يُنقل مجلد البيانات القديم إليه عند أول تشغيل
+لتنتقل بياناتك كما هي.
 
 ---
 
@@ -219,7 +219,7 @@ IsnadiBot مستودع pnpm متعدد الحزم. خادم البيئة يقو�
 
 ## 👥 المساهمون
 
-بدأ IsnadiBot باسم Akeru Bot، وبدأ Akeru Bot باسم T3 Code. كل الإيداعات من المشروعين ما زالت في هذا
+بدأ IsnadiBot نسخةً متفرعة من نسخة OpenCore المتفرعة من T3 Code. كل الإيداعات من المشروعين ما زالت في هذا
 المستودع، لذا ساهم كل من في الأسفل في بنائه. شكرًا لكم.
 
 <p align="center">
@@ -232,10 +232,10 @@ IsnadiBot مستودع pnpm متعدد الحزم. خادم البيئة يقو�
 
 ## 🙏 شكر وتقدير
 
-IsnadiBot نسخة متفرعة من [Akeru Bot](https://github.com/opencoredev/akeru-bot)، وهو بدوره نسخة متفرعة من
-[T3 Code](https://t3.codes). شكرًا لمشرفي Akeru Bot وT3 Code والمساهمين فيهما، فهم من بنوا معظم هذا العمل.
+IsnadiBot نسخة متفرعة من مشروع مرخّص بـ MIT من [OpenCore](https://github.com/opencoredev)، وهو بدوره نسخة متفرعة من
+[T3 Code](https://t3.codes). شكرًا لمشرفي OpenCore وT3 Code والمساهمين فيهما، فهم من بنوا معظم هذا العمل.
 
-IsnadiBot غير مرتبط بـ OpenCore أو Akeru Bot أو T3 Tools أو ping.gg أو xAI أو Anthropic أو OpenAI أو
+IsnadiBot غير مرتبط بـ OpenCore أو T3 Tools أو ping.gg أو xAI أو Anthropic أو OpenAI أو
 Moonshot AI. ‏Grok وGrok Bot علامتان تجاريتان لشركة xAI، وذُكرتا هنا للمقارنة فقط.
 
 ## 📄 الرخصة

@@ -1,5 +1,5 @@
-import type { DesktopSshEnvironmentTarget } from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
+import type { DesktopSshEnvironmentTarget } from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as FileSystem from "effect/FileSystem";

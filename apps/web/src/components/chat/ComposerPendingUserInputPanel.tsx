@@ -1,4 +1,4 @@
-import { type ApprovalRequestId, type UserInputQuestion } from "@akeru/contracts";
+import { type ApprovalRequestId, type UserInputQuestion } from "@isnadi/contracts";
 import { ChevronLeftIcon } from "lucide-react";
 import { memo, useEffect, useRef, useState, type RefObject } from "react";
 import { useI18n } from "~/i18n";

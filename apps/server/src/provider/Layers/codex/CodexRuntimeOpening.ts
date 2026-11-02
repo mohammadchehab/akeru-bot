@@ -1,4 +1,4 @@
-import { type ProviderSession, RuntimeMode, ThreadId } from "@akeru/contracts";
+import { type ProviderSession, RuntimeMode, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as CodexErrors from "effect-codex-app-server/errors";
 import * as CodexRpc from "effect-codex-app-server/rpc";

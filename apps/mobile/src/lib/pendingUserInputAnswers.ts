@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { UserInputQuestion } from "@akeru/contracts";
+import type { UserInputQuestion } from "@isnadi/contracts";
 
 export interface PendingUserInputDraftAnswer {
   readonly selectedOptionLabels?: ReadonlyArray<string>;

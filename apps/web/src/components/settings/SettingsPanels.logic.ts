@@ -10,19 +10,19 @@ import type {
   ServerSettings,
   SidebarProjectGroupingMode,
   UnifiedSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   createTranslator,
   type MessageKey,
   type TranslationParams,
-} from "@akeru/client-runtime/i18n";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
+} from "@isnadi/client-runtime/i18n";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
 import {
   getBackgroundActivityBaseProfile,
   normalizeBackgroundActivitySettings,
   normalizeServerBackgroundActivitySettings,
   resolveServerBackgroundActivitySettings,
-} from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/shared/backgroundActivitySettings";
 import * as Duration from "effect/Duration";
 import * as Equal from "effect/Equal";
 
@@ -41,7 +41,7 @@ export function projectGroupingModeFromToggle(
   return lastEnabledMode === "repository_path" ? "repository_path" : "repository";
 }
 
-const LAST_ENABLED_PROJECT_GROUPING_MODE_KEY = "akeru:last-enabled-project-grouping-mode";
+const LAST_ENABLED_PROJECT_GROUPING_MODE_KEY = "isnadi:last-enabled-project-grouping-mode";
 
 // Pre-rebrand key, kept as a read fallback so the grouping preference survives.
 const LEGACY_LAST_ENABLED_PROJECT_GROUPING_MODE_KEY = "t3code:last-enabled-project-grouping-mode";

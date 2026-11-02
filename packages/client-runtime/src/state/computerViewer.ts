@@ -6,7 +6,7 @@ import type {
   ComputerFrame,
   ComputerSession,
   ComputerState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const Action = Data.taggedEnum<ComputerAction>();
 

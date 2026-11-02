@@ -6,12 +6,12 @@ import {
   removeConnectionFromCatalog,
   removeCatalogValue,
   replaceCatalogValue,
-} from "@akeru/client-runtime/platform";
+} from "@isnadi/client-runtime/platform";
 import {
   ConnectionTransientError,
   CredentialStore,
   ProfileStore,
-} from "@akeru/client-runtime/connection";
+} from "@isnadi/client-runtime/connection";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

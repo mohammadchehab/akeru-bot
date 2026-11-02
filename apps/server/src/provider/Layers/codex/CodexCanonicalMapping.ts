@@ -10,7 +10,7 @@ import {
   RuntimeItemId,
   RuntimeRequestId,
   ProviderApprovalDecision,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";
 

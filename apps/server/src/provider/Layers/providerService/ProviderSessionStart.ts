@@ -1,4 +1,4 @@
-import { ProviderSessionStartInput } from "@akeru/contracts";
+import { ProviderSessionStartInput } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 

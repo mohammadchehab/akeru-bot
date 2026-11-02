@@ -1,4 +1,4 @@
-import type { OrchestrationMessageReaction } from "@akeru/contracts";
+import type { OrchestrationMessageReaction } from "@isnadi/contracts";
 
 import { useI18n } from "~/i18n";
 import { cn } from "~/lib/utils";

@@ -1,10 +1,10 @@
-import type { EnvironmentId, OrchestrationMessage, ServerProviderSkill } from "@akeru/contracts";
-import type { AnsweredUserInputQuestion } from "@akeru/client-runtime/user-input-answers";
+import type { EnvironmentId, OrchestrationMessage, ServerProviderSkill } from "@isnadi/contracts";
+import type { AnsweredUserInputQuestion } from "@isnadi/client-runtime/user-input-answers";
 import { SmilePlusIcon } from "lucide-react";
 import { memo } from "react";
 
 import { useI18n } from "~/i18n";
-import { channelOriginLabel } from "@akeru/client-runtime/channel-origin-presentation";
+import { channelOriginLabel } from "@isnadi/client-runtime/channel-origin-presentation";
 import { replyPlaybackControlProps } from "~/lib/replyPlaybackThread";
 import { cn } from "~/lib/utils";
 import ChatMarkdown from "../ChatMarkdown";

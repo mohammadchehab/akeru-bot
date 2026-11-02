@@ -1,4 +1,4 @@
-import type { EnvironmentId, ServerSettingsPatch } from "@akeru/contracts";
+import type { EnvironmentId, ServerSettingsPatch } from "@isnadi/contracts";
 
 export type PrivacyControl = "analytics" | "product-feedback" | "voice" | "provider-update-checks";
 

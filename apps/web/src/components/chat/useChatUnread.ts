@@ -1,5 +1,5 @@
-import { scopedThreadKey, scopeThreadRef } from "@akeru/client-runtime/environment";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import { scopedThreadKey, scopeThreadRef } from "@isnadi/client-runtime/environment";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 import { useBotChatCompletions, useThreadShell } from "../../state/entities";
 import { usePrimaryEnvironmentId } from "../../state/environments";

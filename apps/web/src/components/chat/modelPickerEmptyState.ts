@@ -1,5 +1,5 @@
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import type { ProviderInstanceId } from "@akeru/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import type { ProviderInstanceId } from "@isnadi/contracts";
 
 const englishTranslator = createTranslator("en");
 

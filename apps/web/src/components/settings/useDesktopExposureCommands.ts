@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { type AdvertisedEndpoint, type DesktopServerExposureState } from "@akeru/contracts";
+import { type AdvertisedEndpoint, type DesktopServerExposureState } from "@isnadi/contracts";
 import { stackedThreadToast, toastManager } from "../ui/toast";
 import { refreshDesktopNetworkAccessState } from "~/state/desktopNetworkAccess";
 

@@ -1,7 +1,7 @@
 import * as Option from "effect/Option";
 import { decodeThemeJson } from "./themeTypes";
 import * as Predicate from "effect/Predicate";
-import { type ThemeAppearance } from "@akeru/shared/themePalettes";
+import { type ThemeAppearance } from "@isnadi/shared/themePalettes";
 import { type ThemePreference, type ThemePreferenceMode, isRecord } from "./themeTypes";
 import {
   getThemeDefinition,

@@ -1,4 +1,4 @@
-import type { PreviewAutomationRequest } from "@akeru/contracts";
+import type { PreviewAutomationRequest } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import type {
   PreviewAutomationOperation,
@@ -10,7 +10,7 @@ import type {
   PreviewAutomationSnapshot,
   PreviewAutomationStatus,
   PreviewTabId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as McpInvocationContext from "../../McpInvocationContext.ts";
 import * as PreviewAutomationBroker from "../../PreviewAutomationBroker.ts";
@@ -41,7 +41,7 @@ const invoke = Effect.fn("PreviewToolkit.invoke")(function* <A>(
   tabId?: PreviewTabId,
 ): Effect.fn.Return<
   A,
-  import("@akeru/contracts").PreviewAutomationError,
+  import("@isnadi/contracts").PreviewAutomationError,
   McpInvocationContext.McpInvocationContext | PreviewAutomationBroker.PreviewAutomationBroker
 > {
   const scope = yield* McpInvocationContext.requireMcpCapability("preview");

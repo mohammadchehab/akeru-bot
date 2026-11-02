@@ -1,21 +1,21 @@
 import type { MessageEntry } from "./openCodeAdapterHarness.ts";
 import type { Session } from "@mastra/core/agent-controller";
 import type { OpencodeClient } from "@opencode-ai/sdk/v2";
-import type { AkeruMastraState } from "../../AkeruMastraHarness.ts";
+import type { IsnadiMastraState } from "../../IsnadiMastraHarness.ts";
 
 type SessionFixture = Partial<
-  Omit<Session<AkeruMastraState>, "state" | "mode" | "model" | "permissions">
+  Omit<Session<IsnadiMastraState>, "state" | "mode" | "model" | "permissions">
 > & {
-  state?: Partial<Session<AkeruMastraState>["state"]>;
-  mode?: Partial<Session<AkeruMastraState>["mode"]>;
-  model?: Partial<Session<AkeruMastraState>["model"]>;
-  permissions?: Partial<Session<AkeruMastraState>["permissions"]>;
+  state?: Partial<Session<IsnadiMastraState>["state"]>;
+  mode?: Partial<Session<IsnadiMastraState>["mode"]>;
+  model?: Partial<Session<IsnadiMastraState>["model"]>;
+  permissions?: Partial<Session<IsnadiMastraState>["permissions"]>;
 };
 
 /** Supply only the SDK methods that the adapter exercises in this test. */
-export function sessionFixture(fixture: SessionFixture): Session<AkeruMastraState> {
+export function sessionFixture(fixture: SessionFixture): Session<IsnadiMastraState> {
   // SAFETY: Tests supply checked SDK methods and exercise only that subset.
-  return fixture as Session<AkeruMastraState>;
+  return fixture as Session<IsnadiMastraState>;
 }
 
 type EndpointFixture<Method, Output> = Method extends (...args: infer Args) => infer _Result

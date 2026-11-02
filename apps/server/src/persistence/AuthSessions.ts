@@ -12,7 +12,7 @@ import {
   AuthSessionId,
   ClientSurface,
   ServerAuthSessionMethod,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import {
   type AuthSessionRepositoryError,
@@ -124,7 +124,7 @@ export class AuthSessionRepository extends Context.Service<
       input: SetAuthSessionClientConnectionInput,
     ) => Effect.Effect<void, AuthSessionRepositoryError>;
   }
->()("akeru-bot/persistence/AuthSessions/AuthSessionRepository") {}
+>()("isnadibot/persistence/AuthSessions/AuthSessionRepository") {}
 
 const AuthSessionDbRow = Schema.Struct({
   sessionId: AuthSessionId,

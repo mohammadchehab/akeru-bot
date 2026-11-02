@@ -3,7 +3,7 @@ import type {
   ResourceMonitorProcessSample,
   ResourceTelemetryProcess,
   ResourceTelemetryProcessCategory,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ELECTRON_IDENTITY_TOLERANCE_MS, type ProcessState } from "./ProcessModelTypes.ts";
 
 export function processIdentityKey(pid: number, startTimeMs: number): string {

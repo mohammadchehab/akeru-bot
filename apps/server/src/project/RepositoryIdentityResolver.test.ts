@@ -49,7 +49,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
           return {
             stdout: input.args.includes("rev-parse")
               ? "/repo\n"
-              : "origin\tgit@github.com:OpenCoreDev/akeru-bot.git (fetch)\n",
+              : "origin\tgit@github.com:MohammadChehab/isnadibot.git (fetch)\n",
             stderr: "",
             code: ChildProcessSpawner.ExitCode(0),
             timedOut: false,
@@ -71,7 +71,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
       const first = yield* resolver.resolve("/repo/packages/web");
       const second = yield* resolver.resolve("/repo/packages/web");
 
-      expect(first?.canonicalKey).toBe("github.com/opencoredev/akeru-bot");
+      expect(first?.canonicalKey).toBe("github.com/mohammadchehab/isnadibot");
       expect(second).toEqual(first);
       expect(calls).toEqual([
         ["-C", "/repo/packages/web", "rev-parse", "--show-toplevel"],
@@ -96,7 +96,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
               ? failed
                 ? ""
                 : "/repo\n"
-              : "origin\tgit@github.com:OpenCoreDev/akeru-bot.git (fetch)\n",
+              : "origin\tgit@github.com:MohammadChehab/isnadibot.git (fetch)\n",
             stderr: failed ? "temporary Git failure" : "",
             code: ChildProcessSpawner.ExitCode(failed ? 1 : 0),
             timedOut: false,
@@ -219,7 +219,7 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
       });
 
       yield* git(cwd, ["init"]);
-      yield* git(cwd, ["remote", "add", "origin", "git@github.com:OpenCoreDev/akeru-bot.git"]);
+      yield* git(cwd, ["remote", "add", "origin", "git@github.com:MohammadChehab/isnadibot.git"]);
       yield* git(cwd, ["remote", "add", "upstream", "git@github.com:pingdotgg/t3code.git"]);
 
       const resolver = yield* RepositoryIdentityResolver.RepositoryIdentityResolver;
@@ -227,8 +227,8 @@ it.layer(NodeServices.layer)("RepositoryIdentityResolverLive", (it) => {
 
       expect(identity).not.toBeNull();
       expect(identity?.locator.remoteName).toBe("origin");
-      expect(identity?.canonicalKey).toBe("github.com/opencoredev/akeru-bot");
-      expect(identity?.displayName).toBe("opencoredev/akeru-bot");
+      expect(identity?.canonicalKey).toBe("github.com/mohammadchehab/isnadibot");
+      expect(identity?.displayName).toBe("mohammadchehab/isnadibot");
     }).pipe(Effect.provide(RepositoryIdentityResolver.layer)),
   );
 

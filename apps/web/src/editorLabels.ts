@@ -1,4 +1,4 @@
-import { EDITORS, type EditorId } from "@akeru/contracts";
+import { EDITORS, type EditorId } from "@isnadi/contracts";
 
 import { getLocalFileManagerName } from "~/lib/utils";
 

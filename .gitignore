@@ -15,7 +15,7 @@ build/
 release/
 release-mock/
 .t3
-.akeru
+.isnadi
 .idea/
 apps/web/.playwright
 apps/web/playwright-report

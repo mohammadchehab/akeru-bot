@@ -1,4 +1,4 @@
-import { EnvironmentId, MessageId, ProviderInstanceId, TurnId } from "@akeru/contracts";
+import { EnvironmentId, MessageId, ProviderInstanceId, TurnId } from "@isnadi/contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 import type { ThreadShell } from "../types";

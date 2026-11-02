@@ -14,12 +14,12 @@ import {
   type ServerProvider,
   type ServerProviderSlashCommand,
   type ServerSettings as ContractServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as PlatformError from "effect/PlatformError";
 import { HttpClient, HttpClientResponse } from "effect/unstable/http";
 import { ChildProcessSpawner } from "effect/unstable/process";
-import { createModelCapabilities } from "@akeru/shared/model";
-import { applyServerSettingsPatch } from "@akeru/shared/serverSettings";
+import { createModelCapabilities } from "@isnadi/shared/model";
+import { applyServerSettingsPatch } from "@isnadi/shared/serverSettings";
 import { type CodexAppServerProviderSnapshot } from "../CodexProvider.ts";
 import * as BackgroundPolicy from "../../../background/BackgroundPolicy.ts";
 import * as ServerSettingsModule from "../../../serverSettings.ts";

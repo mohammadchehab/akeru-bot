@@ -9,7 +9,7 @@ import {
   setupRecordingTest,
   cleanupRecordingTest,
 } from "./browserRecording.test-support";
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import {
   BrowserRecordingConflictError,

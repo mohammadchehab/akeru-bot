@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
 import { mapCodexRequestEvents } from "./CodexRequestEvents.ts";
 import { mapCodexTelemetryEvents } from "./CodexTelemetryEvents.ts";
-import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@akeru/contracts";
+import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@isnadi/contracts";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";
 
 import {

@@ -1,4 +1,4 @@
-import type { DesktopDiscoveredSshHost } from "@akeru/contracts";
+import type { DesktopDiscoveredSshHost } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AtomRegistry } from "effect/unstable/reactivity";
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult";

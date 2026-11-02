@@ -1,9 +1,9 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import type {
   ProviderInstanceEnvironmentVariable,
   SandboxProvider,
   SandboxSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export type CloudSandboxProvider = Exclude<SandboxProvider, "local">;
 

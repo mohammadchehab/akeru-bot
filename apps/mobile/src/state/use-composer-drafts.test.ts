@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "@effect/vitest";
-import { EnvironmentId, ProviderInstanceId } from "@akeru/contracts";
+import { EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
 import { vi } from "vite-plus/test";
 import { appAtomRegistry } from "./atom-registry";
 import {

@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import * as Cause from "effect/Cause";
 
-import { VOICE_AUDIO_MAX_BYTES, EnvironmentId, type VoiceTranscribeInput } from "@akeru/contracts";
+import { VOICE_AUDIO_MAX_BYTES, EnvironmentId, type VoiceTranscribeInput } from "@isnadi/contracts";
 
 import type { DictationAudio, DictationDependencies, DictationLimits } from "./session.ts";
 

@@ -15,8 +15,8 @@ import {
   ProviderDriverKind,
   type ProviderInstanceId,
   type ServerProviderModel,
-} from "@akeru/contracts";
-import { normalizeCustomModelSlug } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { normalizeCustomModelSlug } from "@isnadi/shared/model";
 
 import { cn } from "../../lib/utils";
 import { sortModelsForProviderInstance } from "../../modelOrdering";

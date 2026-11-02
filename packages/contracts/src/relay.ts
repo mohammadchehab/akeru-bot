@@ -7,7 +7,7 @@ export const RelayProtocolVersion = Schema.Literal("1");
 
 export type RelayProtocolVersion = typeof RelayProtocolVersion.Type;
 
-/** Stable names that bind one relay route to one Akeru environment. */
+/** Stable names that bind one relay route to one Isnadi environment. */
 export const RelayRouteBinding = Schema.Struct({
   protocolVersion: RelayProtocolVersion,
   routeId: TrimmedNonEmptyString,

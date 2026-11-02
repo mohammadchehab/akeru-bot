@@ -2,8 +2,8 @@ import {
   ProviderDriverKind,
   type ServerProvider,
   type ServerProviderVersionAdvisory,
-} from "@akeru/contracts";
-import { compareSemverVersions } from "@akeru/shared/semver";
+} from "@isnadi/contracts";
+import { compareSemverVersions } from "@isnadi/shared/semver";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -29,7 +29,7 @@ export interface ProviderVersionCacheEntry {
 }
 
 export const ProviderVersionCache = Context.Reference<Map<string, ProviderVersionCacheEntry>>(
-  "@akeru/server/providerMaintenance/ProviderVersionCache",
+  "@isnadi/server/providerMaintenance/ProviderVersionCache",
   {
     defaultValue: () => new Map(),
   },

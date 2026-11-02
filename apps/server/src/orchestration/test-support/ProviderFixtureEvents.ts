@@ -1,5 +1,5 @@
 import * as Match from "effect/Match";
-import { ProviderRuntimeEvent } from "@akeru/contracts";
+import { ProviderRuntimeEvent } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 interface FixtureIds {

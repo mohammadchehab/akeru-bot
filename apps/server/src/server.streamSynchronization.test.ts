@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   BotId,
   DelegationId,
   EventId,
@@ -12,7 +12,7 @@ import {
   ProjectId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -133,7 +133,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
     Effect.gen(function* () {
       const now = "2026-08-31T00:00:00.000Z";
 
-      const record = (delegationId: DelegationId): AkeruDelegationRecord => ({
+      const record = (delegationId: DelegationId): IsnadiDelegationRecord => ({
         delegationId,
         parentDelegationId: null,
         parentBotId: BotId.make("bot-parent"),
@@ -167,7 +167,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
 
       const created = record(DelegationId.make("delegation-created"));
 
-      const updated: AkeruDelegationRecord = {
+      const updated: IsnadiDelegationRecord = {
         ...record(DelegationId.make("delegation-updated")),
         phase: {
           _tag: "Completed",

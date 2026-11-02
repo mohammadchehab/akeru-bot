@@ -17,7 +17,7 @@ import {
   RuntimeRequestId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -27,7 +27,7 @@ import * as Queue from "effect/Queue";
 import * as Ref from "effect/Ref";
 import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
 import { resolveAttachmentPath } from "../../attachmentStore.ts";
 import { ServerConfig } from "../../config.ts";
 import { type EventNdjsonLogger } from "./logging/EventLogTypes.ts";

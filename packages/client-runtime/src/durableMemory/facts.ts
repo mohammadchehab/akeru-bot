@@ -1,27 +1,27 @@
 import * as Predicate from "effect/Predicate";
 import {
-  type AkeruMemoryApprovalState,
-  type AkeruMemoryArchiveV2,
-  type AkeruMemoryDeletionState,
-  type AkeruMemoryMutation,
-  type AkeruMemoryRevision,
-  type AkeruMemoryRootId,
-  type AkeruMemoryScope,
-  type AkeruMemoryTargetScope,
+  type IsnadiMemoryApprovalState,
+  type IsnadiMemoryArchiveV2,
+  type IsnadiMemoryDeletionState,
+  type IsnadiMemoryMutation,
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryRootId,
+  type IsnadiMemoryScope,
+  type IsnadiMemoryTargetScope,
   type BotId,
   type ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { type MessageKey } from "../i18n/index.ts";
 import { type DurableMemoryTranslator, englishTranslator } from "./types.ts";
 
 export interface DurableMemoryFact {
-  readonly rootId: AkeruMemoryRootId;
+  readonly rootId: IsnadiMemoryRootId;
   readonly fact: string;
-  readonly scope: AkeruMemoryScope;
+  readonly scope: IsnadiMemoryScope;
   readonly sourceThreadId: ThreadId | null;
   readonly affectedBotIds: ReadonlyArray<BotId>;
-  readonly approvalState: AkeruMemoryApprovalState;
-  readonly deletionState: AkeruMemoryDeletionState;
+  readonly approvalState: IsnadiMemoryApprovalState;
+  readonly deletionState: IsnadiMemoryDeletionState;
   readonly pinned: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
@@ -32,11 +32,11 @@ export interface DurableMemoryFact {
 
 /** Collapses archive revision chains into one current fact per root, newest update first. */
 export function summarizeDurableFacts(
-  revisions: ReadonlyArray<AkeruMemoryRevision>,
+  revisions: ReadonlyArray<IsnadiMemoryRevision>,
 ): ReadonlyArray<DurableMemoryFact> {
   const byId = new Map(revisions.map((revision) => [revision.id, revision]));
-  const latest = new Map<AkeruMemoryRootId, AkeruMemoryRevision>();
-  const first = new Map<AkeruMemoryRootId, AkeruMemoryRevision>();
+  const latest = new Map<IsnadiMemoryRootId, IsnadiMemoryRevision>();
+  const first = new Map<IsnadiMemoryRootId, IsnadiMemoryRevision>();
 
   for (const revision of revisions) {
     const current = latest.get(revision.rootId);
@@ -72,13 +72,13 @@ export function summarizeDurableFacts(
   );
 }
 
-export function durableFactsFromArchive(archive: AkeruMemoryArchiveV2) {
+export function durableFactsFromArchive(archive: IsnadiMemoryArchiveV2) {
   return summarizeDurableFacts(archive.revisions.map(({ revision }) => revision));
 }
 
 /** Where a fact can be moved, labeled as the action. Group and workspace scopes stay server-managed. */
 export const DURABLE_FACT_MOVE_SCOPES: ReadonlyArray<{
-  readonly scope: AkeruMemoryTargetScope;
+  readonly scope: IsnadiMemoryTargetScope;
   readonly label: MessageKey;
 }> = [
   { scope: "private", label: "Make private" },
@@ -86,14 +86,14 @@ export const DURABLE_FACT_MOVE_SCOPES: ReadonlyArray<{
   { scope: "project", label: "Share with project" },
 ];
 
-const MOVE_SCOPE_BY_FACT_SCOPE: Partial<Record<AkeruMemoryScope, AkeruMemoryTargetScope>> = {
+const MOVE_SCOPE_BY_FACT_SCOPE: Partial<Record<IsnadiMemoryScope, IsnadiMemoryTargetScope>> = {
   "bot-user": "private",
   bot: "bot",
   project: "project",
 };
 
 /** Scopes the server refuses to move facts into while private bot memory is off. */
-const BOT_PRIVATE_MOVE_SCOPES: ReadonlySet<AkeruMemoryTargetScope> = new Set(["private", "bot"]);
+const BOT_PRIVATE_MOVE_SCOPES: ReadonlySet<IsnadiMemoryTargetScope> = new Set(["private", "bot"]);
 
 /** What the connected environment lets this client change. Mirrors the server's facts.mutate gates. */
 export interface DurableFactPolicy {
@@ -191,7 +191,7 @@ export type DurableFactIntent =
   | { readonly action: "edit"; readonly fact: string }
   | { readonly action: "pin" }
   | { readonly action: "unpin" }
-  | { readonly action: "move"; readonly scope: AkeruMemoryTargetScope }
+  | { readonly action: "move"; readonly scope: IsnadiMemoryTargetScope }
   | { readonly action: "approve" }
   | { readonly action: "reject" }
   | { readonly action: "forget" }
@@ -226,7 +226,7 @@ export function durableFactActions(
 export function durableFactMutation(
   fact: Pick<DurableMemoryFact, "rootId" | "revision">,
   intent: DurableFactIntent,
-): AkeruMemoryMutation {
+): IsnadiMemoryMutation {
   const target = { memoryId: fact.rootId, expectedRevision: fact.revision };
 
   switch (intent.action) {

@@ -1,6 +1,6 @@
 # Memory architecture
 
-Akeru has two complementary memory layers:
+Isnadi has two complementary memory layers:
 
 1. `BotMemoryStore` owns small Markdown documents scoped to a named bot. `USER.md` and `MEMORY.md`
    are private to the bot. `groups/<group-id>/GROUP.md` is also bot-owned; there is no group-wide
@@ -40,7 +40,7 @@ can rebuild it.
 
 ## Automatic curation
 
-`AkeruMemoryTurnHarness` is the single provider-neutral memory lifecycle. Every provider enters the
+`IsnadiMemoryTurnHarness` is the single provider-neutral memory lifecycle. Every provider enters the
 same interface to reserve a review, assemble its scoped snapshot, wrap the memory handler, record
 foreground success, verify exactly one successful review call, and release or retry the claim.
 Provider adapters only decide how their native transport carries the supplied context and terminal
@@ -68,7 +68,7 @@ array, including brackets and separators, fits the 8,000-character budget. The g
 prompt is capped at 12,000 characters.
 
 Cadence files are scheduling metadata, not memory. A malformed or invalid file is renamed under the
-same private bot directory with a `.memory-review.corrupt-...json` name and `0600` permissions. Akeru
+same private bot directory with a `.memory-review.corrupt-...json` name and `0600` permissions. Isnadi
 then writes a valid conservative state that makes the next successful prompt carry a review.
 
 Codex, Claude, Grok, Kimi For Coding, and OpenCode Go receive the due bundle through the
@@ -84,7 +84,7 @@ leave the claimed inputs due for retry. Reviews emit no user-visible message and
 
 Recent selection groups provider messages at user-turn boundaries. It never takes part of a turn,
 and unobserved messages are mandatory even when they exceed the ordinary count or token budget. The
-canonical Akeru projection remains the user-facing conversation record. Provider-local history is
+canonical Isnadi projection remains the user-facing conversation record. Provider-local history is
 used at the model boundary because it preserves native tool-call/result structures that the
 projection intentionally renders as activities.
 
@@ -137,7 +137,7 @@ root and its history outright. The result is `{ kind: "revision", revision }`
 or `{ kind: "deleted", memoryId }`. Each write goes through the M1-T11
 `authorizeRevision` ownership checks, re-resolves the target scope's partition
 against the same thread context for scope changes, and deletes the root's
-`akeru_memory_derived_copies` rows so packet and summary readers rebuild from
+`isnadi_memory_derived_copies` rows so packet and summary readers rebuild from
 the new chain. The RPC requires the operate scope.
 
 Server settings carry the durable memory switches as `settings.memory`:
@@ -172,7 +172,7 @@ observational snapshot checksum, and a manifest checksum. Preview validates all 
 hash of the archive plus current destination state. Apply recomputes it and refuses stale previews.
 Import holds all affected file locks and captures original files before applying changes. A failed
 write or observation restore rolls back the attempted changes before releasing the locks. A failed
-observation restore fails with `AkeruObservationRestoreError`, whose `cause` is the original
+observation restore fails with `IsnadiObservationRestoreError`, whose `cause` is the original
 failure; `rolledBack` says whether the original records came back, and `rollbackCause` carries the
 rollback failure when both fail. File locks renew their lease while held. Observation restores and
 clears share the per-thread observation lock.
@@ -183,13 +183,13 @@ promoted into active observations on restore so Mastra's chunk-based storage ret
 ## Durable entity archive format
 
 The durable ledger export is a version 2 JSON envelope whose `files` are UTF-8 Markdown
-records. Each record is at `durable/<root-id>/<revision>.md`; its `akeru-memory`
+records. Each record is at `durable/<root-id>/<revision>.md`; its `isnadi-memory`
 frontmatter contains the root and revision IDs, partition scope and ID, entity ownership,
 provenance, approval and deletion state, timestamps, and revision links. The `sha256` value
 on every file and revision covers its canonical JSON or Markdown content. `manifestSha256`
 covers the schema version, target, completeness flag, timestamps, and the file, revision, and
 conversation checksums. Complete exports include every revision in a chain, including a
-terminal tombstone, so another tool can inspect history without Akeru.
+terminal tombstone, so another tool can inspect history without Isnadi.
 
 Import first validates checksums, chain links, approval state, tombstone position, and that
 every partition and entity belongs to the importing user's authorized thread. Preview reports
@@ -224,7 +224,7 @@ returns resolutions only after every conflicting root has one.
 
 Observation work is a rebuildable cache, but queue admission is durable. Each completed turn first
 records a pending observation in `mastra-observational-memory.sqlite.queue.sqlite`, a dedicated
-store beside the Mastra memory DB. The queue store is owned by `AkeruMastraHarness`, which opens it
+store beside the Mastra memory DB. The queue store is owned by `IsnadiMastraHarness`, which opens it
 directly and never sees the Effect migration runner, so it versions itself with `PRAGMA
 user_version` instead of an environment-store migration. A background drain claims one row at a time
 with a single conditional `UPDATE` (a lease expires after five minutes so a crashed drain cannot
@@ -236,12 +236,12 @@ so a restart does not silently lose queued work, and `busy_timeout` plus enqueue
 queue contention off the reply path. Observer and Reflector calls use the same usage ledger hooks
 for every provider path, including legacy external turns.
 
-`makeAkeruMastraHarness` is a scoped Effect. It acquires the Mastra memory store and the queue store
+`makeIsnadiMastraHarness` is a scoped Effect. It acquires the Mastra memory store and the queue store
 and releases both when its scope closes; the agent controller layer owns that scope. Observation,
 restore, clear, and drain work runs in fibers the harness scope owns, and each thread's memory work
 takes that thread's one-permit semaphore, so work on one thread runs in order while other threads
 run alongside. Closing the scope first stops admission, so later calls fail with
-`AkeruObservationQueueClosedError`, a completed turn writes no queue row, and the drain stops
+`IsnadiObservationQueueClosedError`, a completed turn writes no queue row, and the drain stops
 claiming rows. It then gives admitted work `observationCloseGrace` (five seconds by default) to
 finish, interrupts anything still running or waiting for a permit, and hands claimed rows back to the
 queue with their attempt count unchanged before it closes the stores. Rows left in the queue are
@@ -263,15 +263,15 @@ the `sharedProjectMemory` mode.
 
 In `"auto"` mode a non-sensitive fact is written directly with
 `EntityMemoryRepository.insertScopedFact`. Otherwise `propose` stores a
-pending row in `akeru_memory_candidates`, appends a
+pending row in `isnadi_memory_candidates`, appends a
 `memory.approval.requested` thread activity whose payload is an
-`AkeruMemoryApprovalRequest`, and opens an `approval-request` bot inbox item
+`IsnadiMemoryApprovalRequest`, and opens an `approval-request` bot inbox item
 keyed `memory-approval:<candidateId>` that carries the same request as
 `memoryApproval`. The tool result reports `pending` so the bot does not retry.
 
 `candidate.decide` on `memory.facts.mutate` calls `MemoryApprovals.decide`.
 Decisions are serialized, must come from the candidate's source thread, and
-write an `akeru_memory_candidate_receipts` row. Approve (optionally with an
+write an `isnadi_memory_candidate_receipts` row. Approve (optionally with an
 edited `fact`) inserts an approved revision; reject writes nothing. The
 decision then appends `memory.approval.resolved` and resolves the inbox item.
 A repeat decision for the same candidate returns the first receipt, so the

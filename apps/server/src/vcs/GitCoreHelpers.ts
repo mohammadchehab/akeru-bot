@@ -12,9 +12,9 @@ import * as Schema from "effect/Schema";
 import * as Scope from "effect/Scope";
 import * as Semaphore from "effect/Semaphore";
 import * as Stream from "effect/Stream";
-import { GitCommandError, type VcsRef } from "@akeru/contracts";
-import { compactTraceAttributes } from "@akeru/shared/observability";
-import { decodeJsonResult } from "@akeru/shared/schemaJson";
+import { GitCommandError, type VcsRef } from "@isnadi/contracts";
+import { compactTraceAttributes } from "@isnadi/shared/observability";
+import { decodeJsonResult } from "@isnadi/shared/schemaJson";
 import type * as GitVcsDriver from "./GitVcsDriver.ts";
 import { parseRemoteRefWithRemoteNames } from "../git/remoteRefs.ts";
 

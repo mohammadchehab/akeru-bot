@@ -1,15 +1,15 @@
-import type { DelegationAction } from "@akeru/client-runtime/delegation-presentation";
-import type { PendingApproval } from "@akeru/client-runtime/pending-requests";
+import type { DelegationAction } from "@isnadi/client-runtime/delegation-presentation";
+import type { PendingApproval } from "@isnadi/client-runtime/pending-requests";
 import type {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   ChannelProvider,
   OrchestrationLatestTurn,
   OrchestrationThread,
   OrchestrationThreadActivity,
   ToolLifecycleItemType,
   TurnId,
-} from "@akeru/contracts";
-import type { BotStepMeterData } from "@akeru/client-runtime/bot-step-usage";
+} from "@isnadi/contracts";
+import type { BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
 
 export interface ThreadFeedActivity {
   readonly id: string;
@@ -93,7 +93,7 @@ export type ThreadFeedEntry =
       readonly type: "delegation";
       readonly id: string;
       readonly createdAt: string;
-      readonly delegation: AkeruDelegationRecord;
+      readonly delegation: IsnadiDelegationRecord;
       /** Reverse-state moves the card offers, judged against the whole chat. */
       readonly actions: ReadonlyArray<DelegationAction>;
     }

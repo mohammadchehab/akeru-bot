@@ -1,4 +1,4 @@
-import { type CheckpointRef, type OrchestrationEvent } from "@akeru/contracts";
+import { type CheckpointRef, type OrchestrationEvent } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

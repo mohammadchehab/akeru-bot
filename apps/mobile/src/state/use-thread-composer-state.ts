@@ -1,5 +1,5 @@
 import { Schema } from "effect";
-import { AkeruDelegationRecord, EnvironmentId, ThreadId } from "@akeru/contracts";
+import { IsnadiDelegationRecord, EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
 import { Atom } from "effect/unstable/reactivity";
@@ -12,16 +12,16 @@ import {
   type ModelSelection,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   type RuntimeMode,
-} from "@akeru/contracts";
-import { safeErrorLogAttributes } from "@akeru/client-runtime/errors";
+} from "@isnadi/contracts";
+import { safeErrorLogAttributes } from "@isnadi/client-runtime/errors";
 import {
   codexFeedbackMessage,
   parseCodexFeedbackCommand,
   submitCodexFeedback,
   type CodexFeedbackSubmission,
-} from "@akeru/client-runtime/state/threads";
-import { isAtomCommandInterrupted } from "@akeru/client-runtime/state/runtime";
-import { deriveActiveWorkStartedAt } from "@akeru/shared/orchestrationTiming";
+} from "@isnadi/client-runtime/state/threads";
+import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
+import { deriveActiveWorkStartedAt } from "@isnadi/shared/orchestrationTiming";
 import { createQueuedMessageMetadata } from "../lib/commandMetadata";
 import {
   convertPastedImagesToAttachments,
@@ -64,7 +64,7 @@ import { useThreadEngineBot } from "./use-thread-engine-bot";
 
 const decodeFeedDelegations = Schema.decodeUnknownSync(
   Schema.Struct({
-    delegations: Schema.Array(AkeruDelegationRecord),
+    delegations: Schema.Array(IsnadiDelegationRecord),
     waitingOnChildren: Schema.Boolean,
   }),
 );

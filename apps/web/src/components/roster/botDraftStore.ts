@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
 
-const DRAFTS_KEY = "akeru:bot-drafts:v1";
+const DRAFTS_KEY = "isnadi:bot-drafts:v1";
 
 const MAX_DRAFT_CHARS = 20_000;
 

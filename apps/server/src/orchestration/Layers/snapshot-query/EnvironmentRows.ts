@@ -1,4 +1,4 @@
-import { BotId, GroupId, IsoDateTime, MessageId, TurnId, ThreadId } from "@akeru/contracts";
+import { BotId, GroupId, IsoDateTime, MessageId, TurnId, ThreadId } from "@isnadi/contracts";
 
 import * as Schema from "effect/Schema";
 

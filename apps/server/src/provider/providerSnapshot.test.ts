@@ -1,8 +1,8 @@
 import * as Predicate from "effect/Predicate";
 import { describe, expect, it } from "@effect/vitest";
-import { type ModelCapabilities, ProviderDriverKind } from "@akeru/contracts";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
-import { createModelCapabilities } from "@akeru/shared/model";
+import { type ModelCapabilities, ProviderDriverKind } from "@isnadi/contracts";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
+import { createModelCapabilities } from "@isnadi/shared/model";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as PlatformError from "effect/PlatformError";

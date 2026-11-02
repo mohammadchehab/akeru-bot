@@ -4,13 +4,13 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProviderDriverKind,
   ProjectId,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -45,14 +45,14 @@ describe("AgentControllerLive", () => {
   it.effect("reads entity memory for the access of a reused Mastra session", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-entity-reuse-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-entity-reuse-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-entity-reuse");
 
     const accessFor = (project: string) =>
       ({
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: codexThreadId,
         projectId: ProjectId.make(project),
         workspaceRoot: "/workspace/entity-reuse",
@@ -118,8 +118,8 @@ describe("AgentControllerLive", () => {
     const botId = BotId.make("bot-entity-memory-off");
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: claudeThreadId,
       projectId: ProjectId.make("project-entity-memory-off"),
       workspaceRoot: "/workspace/entity-memory-off",
@@ -177,8 +177,8 @@ describe("AgentControllerLive", () => {
 
     const accessFor = (project: string) =>
       ({
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId: ProjectId.make(project),
         workspaceRoot: "/workspace/entity-memory-moved",
@@ -250,8 +250,8 @@ describe("AgentControllerLive", () => {
       const projectId = ProjectId.make("project-entity-private-legacy");
 
       const access = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId,
         workspaceRoot: "/workspace/entity-private-legacy",
@@ -265,7 +265,7 @@ describe("AgentControllerLive", () => {
       const listCurrent = vi.fn(() => Effect.succeed(revisions));
 
       const recordDerivedCopies = vi.fn(
-        (_input: { readonly revisions: ReadonlyArray<AkeruMemoryRevision> }) => Effect.void,
+        (_input: { readonly revisions: ReadonlyArray<IsnadiMemoryRevision> }) => Effect.void,
       );
 
       return provideController(
@@ -347,14 +347,18 @@ describe("AgentControllerLive", () => {
     () => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-entity-private-"));
+
+      const memoryDir = NodeFS.mkdtempSync(
+        NodePath.join(NodeOS.tmpdir(), "isnadi-entity-private-"),
+      );
+
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-entity-private-mastra");
       const projectId = ProjectId.make("project-entity-private-mastra");
 
       const access = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: codexThreadId,
         projectId,
         workspaceRoot: "/workspace/entity-private-mastra",
@@ -428,13 +432,13 @@ describe("AgentControllerLive", () => {
   it.effect("applies the Private bot memory toggle mid-session on the legacy path", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-private-toggle-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-private-toggle-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-private-toggle-legacy");
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: claudeThreadId,
       projectId: ProjectId.make("project-private-toggle-legacy"),
       workspaceRoot: "/workspace/private-toggle-legacy",

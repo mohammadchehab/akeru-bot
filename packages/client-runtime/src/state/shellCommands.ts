@@ -1,4 +1,4 @@
-import { WS_METHODS } from "@akeru/contracts";
+import { WS_METHODS } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 
 import { createEnvironmentRpcCommand } from "./runtime.ts";

@@ -1,4 +1,4 @@
-import { CommandId, EventId, type ModelSelection, type McpServer } from "@akeru/contracts";
+import { CommandId, EventId, type ModelSelection, type McpServer } from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";

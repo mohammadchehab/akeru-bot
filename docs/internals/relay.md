@@ -1,6 +1,6 @@
 # Self-hosted relay boundary
 
-This document describes the relay protocol slice that is safe to implement without a central Akeru service. It is an internal contract, not a deployment guide for a public proxy.
+This document describes the relay protocol slice that is safe to implement without a central Isnadi service. It is an internal contract, not a deployment guide for a public proxy.
 
 ## Boundary
 
@@ -10,7 +10,7 @@ The route binding contains three values:
 
 - `protocolVersion` must be a supported protocol version.
 - `routeId` identifies the configured relay route.
-- `environmentId` identifies the Akeru environment that owns the route.
+- `environmentId` identifies the Isnadi environment that owns the route.
 
 An enrollment secret authorizes attaching a route. It is a separate credential from a pairing credential or a bearer session. The relay must not mint, substitute, or interpret environment sessions. After attachment, the environment's existing pairing and session authorization remains authoritative for HTTP and WebSocket operations.
 

@@ -1,4 +1,4 @@
-import type { UsageProviderKind } from "@akeru/contracts";
+import type { UsageProviderKind } from "@isnadi/contracts";
 import { useAppearancePreferences } from "../settings/appearance/AppearancePreferencesProvider";
 
 /**

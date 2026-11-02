@@ -13,8 +13,8 @@ import type {
   ProjectListEntriesResult,
   ProjectSearchEntriesInput,
   ProjectSearchEntriesResult,
-} from "@akeru/contracts";
-import { normalizeSearchQuery } from "@akeru/shared/searchRanking";
+} from "@isnadi/contracts";
+import { normalizeSearchQuery } from "@isnadi/shared/searchRanking";
 
 import * as WorkspacePaths from "./WorkspacePaths.ts";
 import * as WorkspaceSearchIndex from "./WorkspaceSearchIndex.ts";
@@ -43,7 +43,7 @@ export class WorkspaceEntries extends Context.Service<
     readonly drain?: Effect.Effect<void>;
     readonly refresh: (cwd: string) => Effect.Effect<void>;
   }
->()("akeru-bot/workspace/WorkspaceEntries") {}
+>()("isnadibot/workspace/WorkspaceEntries") {}
 
 type WorkspaceRefreshState = {
   requestedGeneration: number;

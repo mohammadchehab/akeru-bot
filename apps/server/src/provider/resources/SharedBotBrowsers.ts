@@ -1,15 +1,15 @@
 import type { BotBrowser } from "../browser/BotBrowserTypes.ts";
 import type {
-  AkeruSessionResourcesOptions,
+  IsnadiSessionResourcesOptions,
   BrowserAttribution,
-} from "./AkeruSessionResourceTypes.ts";
+} from "./IsnadiSessionResourceTypes.ts";
 
 export class SharedBotBrowsers {
   private readonly options: Pick<
-    AkeruSessionResourcesOptions,
+    IsnadiSessionResourcesOptions,
     "onBrowserFailure" | "onBrowserReady"
   >;
-  constructor(options: Pick<AkeruSessionResourcesOptions, "onBrowserFailure" | "onBrowserReady">) {
+  constructor(options: Pick<IsnadiSessionResourcesOptions, "onBrowserFailure" | "onBrowserReady">) {
     this.options = options;
   }
   readonly threadBrowsers = new Map<string, BotBrowser>();

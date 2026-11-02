@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 
 import * as ConfigProvider from "effect/ConfigProvider";
 

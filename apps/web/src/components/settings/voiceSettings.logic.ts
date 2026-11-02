@@ -7,7 +7,7 @@ import {
   type VoiceProvider,
   type VoiceSettings,
   type VoiceTranscriptionProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export const VOICE_MODE_LABELS: Readonly<Record<VoiceProvider, string>> = {
   chatgpt: "ChatGPT subscription",
@@ -48,7 +48,7 @@ export const VOICE_SYNTHESIS_PROVIDERS = VOICE_API_PROVIDERS.filter(
   (provider) => VOICE_PROVIDER_CAPABILITIES[provider].synthesis,
 );
 
-/** Plain-language list of what a provider can do in Akeru voice calls. */
+/** Plain-language list of what a provider can do in Isnadi voice calls. */
 export function voiceCapabilityLabel(provider: VoiceApiProvider): string {
   const capability = VOICE_PROVIDER_CAPABILITIES[provider];
 

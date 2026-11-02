@@ -5,7 +5,7 @@ import {
 import {
   collectComposerInlineTokens,
   type ComposerInlineToken,
-} from "@akeru/shared/composerInlineTokens";
+} from "@isnadi/shared/composerInlineTokens";
 
 export type ComposerPromptSegment =
   | {

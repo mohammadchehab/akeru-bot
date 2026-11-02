@@ -1,14 +1,14 @@
 import { recordLookup } from "../recordLookup";
 import { Predicate, Schema } from "effect";
-import type { SubscriptionProviderId } from "@akeru/contracts";
+import type { SubscriptionProviderId } from "@isnadi/contracts";
 
 import type { BotAvatar, BotBlobShape } from "../roster/types";
 import { BLOB_SHAPES, isBotAvatarColor } from "../roster/roster.logic";
 import { normalizeDesktopOnboardingGoal } from "./goalPlan.logic";
 
-export const DESKTOP_ONBOARDING_STORAGE_KEY = "akeru:desktop-onboarding:v1";
+export const DESKTOP_ONBOARDING_STORAGE_KEY = "isnadi:desktop-onboarding:v1";
 
-export const DESKTOP_ONBOARDING_COMPLETED_STORAGE_KEY = "akeru:desktop-onboarding-completed:v1";
+export const DESKTOP_ONBOARDING_COMPLETED_STORAGE_KEY = "isnadi:desktop-onboarding-completed:v1";
 
 export function markDesktopOnboardingCompleted(
   storage: Pick<Storage, "removeItem" | "setItem">,
@@ -22,9 +22,9 @@ export function markDesktopOnboardingCompleted(
  * the moment the first message goes out, so a reload mid-handoff neither
  * reopens setup (and resends) nor loses the chat the user was being taken to.
  */
-export const DESKTOP_ONBOARDING_HANDOFF_STORAGE_KEY = "akeru:desktop-onboarding-handoff:v2";
+export const DESKTOP_ONBOARDING_HANDOFF_STORAGE_KEY = "isnadi:desktop-onboarding-handoff:v2";
 
-export const DESKTOP_ONBOARDING_LEGACY_HANDOFF_STORAGE_KEY = "akeru:desktop-onboarding-handoff:v1";
+export const DESKTOP_ONBOARDING_LEGACY_HANDOFF_STORAGE_KEY = "isnadi:desktop-onboarding-handoff:v1";
 
 export function markDesktopOnboardingHandoffStarted(
   storage: Pick<Storage, "removeItem" | "setItem">,

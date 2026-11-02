@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -31,11 +31,11 @@ describe.skipIf(HostProcessPlatform.defaultValue() === "win32")(
           const fs = yield* FileSystem.FileSystem;
           const path = yield* Path.Path;
           const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;
-          const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-runner-" });
+          const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-runner-" });
           const bin = path.join(fixture, "bin");
           const cliPath = path.join(fixture, "installed cli.mjs");
           const callsPath = path.join(fixture, "package-manager-calls.jsonl");
-          const packageSpec = "akeru-bot@0.0.35";
+          const packageSpec = "isnadibot@0.0.35";
           yield* fs.makeDirectory(bin);
           yield* fs.symlink(process.execPath, path.join(bin, "node"));
           yield* fs.writeFileString(
@@ -169,7 +169,7 @@ if (args.includes("--package")) {
             "--",
             "sh",
             "-c",
-            "command -v akeru",
+            "command -v isnadi",
           ];
 
           assert.deepEqual(calls, [expectedCall, expectedCall]);
@@ -188,7 +188,7 @@ describe.skipIf(HostProcessPlatform.defaultValue() === "win32")(
           const fs = yield* FileSystem.FileSystem;
           const path = yield* Path.Path;
           const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;
-          const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-stop-" });
+          const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-stop-" });
           const signalPath = path.join(fixture, "signals");
 
           const child = yield* spawner.spawn(
@@ -347,11 +347,11 @@ describe.skipIf(HostProcessPlatform.defaultValue() === "win32")(
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
         const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;
-        const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-runner-install-" });
+        const fixture = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-runner-install-" });
         const bin = path.join(fixture, "bin");
         const cliPath = path.join(fixture, "installed cli.mjs");
         const callsPath = path.join(fixture, "installer-calls.jsonl");
-        const packageSpec = "akeru-bot@0.0.39-nightly.20260905.1286";
+        const packageSpec = "isnadibot@0.0.39-nightly.20260905.1286";
         const args = ["serve", "a path with spaces"];
         yield* fs.makeDirectory(bin);
         yield* fs.symlink(process.execPath, path.join(bin, "node"));
@@ -383,7 +383,7 @@ if (mode === "etarget" || mode === "failed-with-path") {
         );
         yield* fs.chmod(path.join(bin, packageManager), 0o700);
 
-        if (mode === "existing-cli") yield* fs.symlink(cliPath, path.join(bin, "akeru"));
+        if (mode === "existing-cli") yield* fs.symlink(cliPath, path.join(bin, "isnadi"));
 
         const child = yield* spawner.spawn(
           ChildProcess.make("/bin/sh", ["-s", "--", ...args], {
@@ -435,7 +435,7 @@ if (mode === "etarget" || mode === "failed-with-path") {
           assert.notInclude(stderr, "Install a C toolchain");
         } else if (missingExecutable) {
           assert.include(stderr, `Remote host installed ${packageSpec}`);
-          assert.include(stderr, "npm produced no akeru executable");
+          assert.include(stderr, "npm produced no isnadi executable");
           assert.include(stderr, "Install a C toolchain");
         } else {
           assert.equal(stderr, "");
@@ -449,7 +449,7 @@ if (mode === "etarget" || mode === "failed-with-path") {
           "--",
           "sh",
           "-c",
-          "command -v akeru",
+          "command -v isnadi",
         ];
 
         const usesInstaller = mode !== "existing-cli" && mode !== "node-override";

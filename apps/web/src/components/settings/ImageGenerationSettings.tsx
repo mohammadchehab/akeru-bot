@@ -4,12 +4,12 @@ import type {
   ImageGenerationSettings,
   ImageProviderId,
   ImageProviderStatus,
-} from "@akeru/contracts";
-import { IMAGE_PROVIDER_IDS } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { IMAGE_PROVIDER_IDS } from "@isnadi/contracts";
 import {
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { LoaderIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -38,7 +38,7 @@ import {
   imageProviderOperationsLabel,
   imageProviderTogglePatch,
   isImageProviderEnabled,
-} from "@akeru/client-runtime/image-generation";
+} from "@isnadi/client-runtime/image-generation";
 import { SettingsPageContainer, SettingsRow, SettingsSection } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { subscriptionProviderTargetId } from "./subscriptionProviders";

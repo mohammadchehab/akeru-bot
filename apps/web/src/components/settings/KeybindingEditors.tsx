@@ -3,7 +3,7 @@ import {
   type KeybindingWhenNode,
   type ServerRemoveKeybindingInput,
   type ServerUpsertKeybindingInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { PlusIcon, TriangleAlertIcon } from "lucide-react";
 import { type KeyboardEvent, useEffect, useId, useReducer, useRef, useState } from "react";
 import { useI18n } from "../../i18n";

@@ -1,5 +1,5 @@
-import { createModelCapabilities } from "@akeru/shared/model";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { createModelCapabilities } from "@isnadi/shared/model";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { CLAUDE_MODEL_CATALOG, getClaudeModelCapabilities } from "./Layers/claude/ClaudeModels.ts";
 import { reasoningCapabilities } from "./ReasoningOptions.ts";
 import { BUNDLED_MODEL_CATALOG, catalogModelsFor, type CatalogModel } from "./modelCatalogData.ts";

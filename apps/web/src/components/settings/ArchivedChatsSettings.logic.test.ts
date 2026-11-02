@@ -5,7 +5,7 @@ import {
   type OrchestrationGroup,
   type OrchestrationShellSnapshot,
   type OrchestrationThreadShell,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildArchivedChatSections } from "./ArchivedChatsSettings.logic";
@@ -36,7 +36,7 @@ function snapshot(
 
 const mori = { id: "bot-mori", name: "Mori" } as OrchestrationBot;
 
-const akeru = { id: "bot-akeru", name: "Akeru" } as OrchestrationBot;
+const isnadi = { id: "bot-isnadi", name: "Isnadi" } as OrchestrationBot;
 
 const crew = { id: "group-crew", name: "Crew" } as OrchestrationGroup;
 
@@ -46,16 +46,16 @@ describe("buildArchivedChatSections", () => {
       environmentId,
       snapshot: snapshot([
         thread("a", "2026-09-10T00:00:00.000Z", { botId: "bot-mori" }),
-        thread("b", "2026-09-20T00:00:00.000Z", { botId: "bot-akeru" }),
+        thread("b", "2026-09-20T00:00:00.000Z", { botId: "bot-isnadi" }),
         thread("c", "2026-09-15T00:00:00.000Z", { botId: "bot-mori" }),
         thread("d", "2026-09-12T00:00:00.000Z", { groupId: "group-crew", botId: "bot-mori" }),
       ]),
-      bots: [mori, akeru],
+      bots: [mori, isnadi],
       groups: [crew],
     });
 
     expect(sections.map((section) => [section.kind, section.name])).toEqual([
-      ["bot", "Akeru"],
+      ["bot", "Isnadi"],
       ["bot", "Mori"],
       ["group", "Crew"],
     ]);

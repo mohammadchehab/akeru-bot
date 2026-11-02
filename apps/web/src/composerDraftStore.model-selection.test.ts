@@ -1,6 +1,6 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { ThreadId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { ThreadId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import { beforeEach, describe, expect, it } from "vite-plus/test";
 import { useComposerDraftStore } from "./composerDraftStore";
 import {

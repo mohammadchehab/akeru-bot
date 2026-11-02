@@ -1,4 +1,4 @@
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import * as Config from "effect/Config";
 

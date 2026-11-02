@@ -1,5 +1,5 @@
 import * as NodeFS from "node:fs";
-import { BotId, McpServerId, ThreadId, type McpServer } from "@akeru/contracts";
+import { BotId, McpServerId, ThreadId, type McpServer } from "@isnadi/contracts";
 
 import { describe, expect, it } from "vite-plus/test";
 
@@ -188,7 +188,7 @@ describe("sidebar footer", () => {
 
     expect(rosterSource).toContain("runtimeMode: DEFAULT_BOT_RUNTIME_MODE");
     expect(rosterSource).not.toContain('runtimeMode: "full-access"');
-    expect(syncSource).not.toContain('BotId.make("bot-akeru")');
+    expect(syncSource).not.toContain('BotId.make("bot-isnadi")');
     expect(syncSource).not.toContain("botEnvironment.create");
   });
 

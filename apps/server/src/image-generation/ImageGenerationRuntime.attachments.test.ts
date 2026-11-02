@@ -17,7 +17,7 @@ import {
 } from "./testUtils/imageGenerationRuntime.ts";
 import * as NodeFS from "node:fs";
 import { assert, describe, it } from "@effect/vitest";
-import { AuthSessionId, BotId, CommandId, GroupId, ThreadId } from "@akeru/contracts";
+import { AuthSessionId, BotId, CommandId, GroupId, ThreadId } from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -415,7 +415,7 @@ describe("ImageGenerationRuntime", () => {
         SELECT payload_json AS "payload" FROM orchestration_events
       `;
 
-      const usage = yield* sql<Schema.JsonObject>`SELECT * FROM akeru_bot_usage_entries`;
+      const usage = yield* sql<Schema.JsonObject>`SELECT * FROM isnadi_bot_usage_entries`;
       assert.equal(events.length > 0 && usage.length === 1, true);
 
       const stored = [

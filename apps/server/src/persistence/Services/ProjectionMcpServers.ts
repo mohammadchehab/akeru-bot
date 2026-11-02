@@ -1,5 +1,5 @@
 /** Workspace-level raw MCP server projection persistence. */
-import { McpServer, McpServerId } from "@akeru/contracts";
+import { McpServer, McpServerId } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -34,4 +34,4 @@ export interface ProjectionMcpServerRepositoryShape {
 export class ProjectionMcpServerRepository extends Context.Service<
   ProjectionMcpServerRepository,
   ProjectionMcpServerRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionMcpServers/ProjectionMcpServerRepository") {}
+>()("isnadibot/persistence/Services/ProjectionMcpServers/ProjectionMcpServerRepository") {}

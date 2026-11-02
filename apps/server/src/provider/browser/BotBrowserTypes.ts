@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import type { ToolsInput } from "@mastra/core/agent";
 import type { Workspace } from "@mastra/core/workspace";
-import type { AkeruBrowserEndpoint } from "../workspace/BotWorkspaceTypes.ts";
+import type { IsnadiBrowserEndpoint } from "../workspace/BotWorkspaceTypes.ts";
 
 export interface BotBrowserAttachment {
   readonly browserUrl: string;
@@ -29,7 +29,7 @@ export interface BotBrowserProcessInput {
   readonly threadId: string;
   readonly workspace: Workspace;
   readonly cacheDir: string;
-  readonly browserEndpoint?: (port: number) => Promise<AkeruBrowserEndpoint>;
+  readonly browserEndpoint?: (port: number) => Promise<IsnadiBrowserEndpoint>;
   readonly onFailure?: (cause: unknown) => void;
   readonly onReady?: () => void;
 }

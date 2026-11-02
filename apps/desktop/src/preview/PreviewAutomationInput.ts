@@ -5,7 +5,7 @@ import type {
   PreviewAutomationClickInput,
   PreviewAutomationPressInput,
   PreviewAutomationTypeInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { webContents } from "electron";
 

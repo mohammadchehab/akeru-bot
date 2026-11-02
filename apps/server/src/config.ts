@@ -93,7 +93,7 @@ export class ServerConfig extends Context.Service<
     /** Public origin that forwards to this server, for provider webhooks. */
     readonly publicOrigin?: string | undefined;
   }
->()("akeru-bot/config/ServerConfig") {
+>()("isnadibot/config/ServerConfig") {
   /** @deprecated Import and use `layerTest` from this module. */
   static readonly layerTest = (
     cwd: string,
@@ -201,7 +201,7 @@ const makeTest = Effect.fn("ServerConfig.makeTest")(function* (
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     cwd,
     baseDir,
     ...derivedPaths,

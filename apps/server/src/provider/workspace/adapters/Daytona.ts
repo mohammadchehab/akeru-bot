@@ -1,14 +1,14 @@
 import * as Match from "effect/Match";
 import { DaytonaComputer } from "../../daytonaComputer.ts";
 import { WorkspaceComputer } from "../../workspaceComputer.ts";
-import { type AkeruRemoteSession, type AkeruWorkspaceState } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type IsnadiWorkspaceState } from "../BotWorkspaceTypes.ts";
 import { commandLine } from "../BotWorkspaceLifecycle.ts";
 
 export function daytona(
   client: import("@daytona/sdk").Daytona,
   sandbox: import("@daytona/sdk").Sandbox,
-): AkeruRemoteSession {
-  const inspect = async (): Promise<AkeruWorkspaceState> => {
+): IsnadiRemoteSession {
+  const inspect = async (): Promise<IsnadiWorkspaceState> => {
     await sandbox.refreshData();
     const current = String(sandbox.state);
 
@@ -26,7 +26,7 @@ export function daytona(
     // a second browser on the same profile and debugging port.
     async () => {
       const result = await sandbox.process.executeCommand(
-        "sh -c 'command -v chromium >/dev/null || command -v chromium-browser >/dev/null || exit 1; profile=/tmp/akeru-chromium; command -v pgrep >/dev/null && pgrep -f \"[-]-user-data-dir=$profile\" >/dev/null && exit 0; mkdir -p $profile; nohup ${CHROMIUM_BIN:-$(command -v chromium || command -v chromium-browser)} --no-sandbox --disable-dev-shm-usage --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --user-data-dir=$profile about:blank >/dev/null 2>&1 </dev/null &'",
+        "sh -c 'command -v chromium >/dev/null || command -v chromium-browser >/dev/null || exit 1; profile=/tmp/isnadi-chromium; command -v pgrep >/dev/null && pgrep -f \"[-]-user-data-dir=$profile\" >/dev/null && exit 0; mkdir -p $profile; nohup ${CHROMIUM_BIN:-$(command -v chromium || command -v chromium-browser)} --no-sandbox --disable-dev-shm-usage --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --user-data-dir=$profile about:blank >/dev/null 2>&1 </dev/null &'",
         undefined,
         { DISPLAY: ":1" },
       );

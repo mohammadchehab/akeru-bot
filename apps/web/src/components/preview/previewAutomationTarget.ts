@@ -1,4 +1,4 @@
-import type { PreviewSessionSnapshot } from "@akeru/contracts";
+import type { PreviewSessionSnapshot } from "@isnadi/contracts";
 
 interface PreviewAutomationSessionIndex {
   readonly snapshot: PreviewSessionSnapshot | null;

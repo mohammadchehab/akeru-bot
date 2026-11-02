@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderItemId, TurnId } from "@akeru/contracts";
+import { ProviderItemId, TurnId } from "@isnadi/contracts";
 import * as CodexRpc from "effect-codex-app-server/rpc";
 
 export type CodexServerNotification = {

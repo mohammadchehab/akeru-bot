@@ -1,9 +1,9 @@
 import { asRecord } from "../ActivityPayloadBounds.ts";
 import * as Predicate from "effect/Predicate";
 import {
-  AKERU_DELEGATION_TRANSITIONS,
-  type AkeruDelegationPhase,
-  type AkeruDelegationRecord,
+  ISNADI_DELEGATION_TRANSITIONS,
+  type IsnadiDelegationPhase,
+  type IsnadiDelegationRecord,
   BotId,
   EventId,
   GroupId,
@@ -13,7 +13,7 @@ import {
   type OrchestrationReadModel,
   type ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeUtil from "node:util";
 import * as DateTime from "effect/DateTime";
 import * as Crypto from "effect/Crypto";
@@ -61,35 +61,35 @@ export function userInputAnswerText(
 // QUEUED_TURN_START_GRACE_MS in client-runtime threadSettled.ts.
 export const QUEUED_TURN_START_GRACE_MS = 2 * 60 * 1_000;
 
-export const TERMINAL_DELEGATION_PHASES = new Set<AkeruDelegationPhase["_tag"]>([
+export const TERMINAL_DELEGATION_PHASES = new Set<IsnadiDelegationPhase["_tag"]>([
   "Failed",
   "Canceled",
   "Completed",
 ]);
 
 export const isDelegationTransitionAllowed = (
-  from: AkeruDelegationPhase["_tag"],
-  to: AkeruDelegationPhase["_tag"],
+  from: IsnadiDelegationPhase["_tag"],
+  to: IsnadiDelegationPhase["_tag"],
 ): boolean => {
   switch (from) {
     case "Queued":
     case "Running":
     case "Blocked":
-      return AKERU_DELEGATION_TRANSITIONS[from].has(to);
+      return ISNADI_DELEGATION_TRANSITIONS[from].has(to);
     default:
       return false;
   }
 };
 
-export const delegationChildThreadId = (phase: AkeruDelegationPhase): ThreadId | null =>
+export const delegationChildThreadId = (phase: IsnadiDelegationPhase): ThreadId | null =>
   "childThreadId" in phase ? phase.childThreadId : null;
 
-export const delegationChildTurnId = (phase: AkeruDelegationPhase): TurnId | null =>
+export const delegationChildTurnId = (phase: IsnadiDelegationPhase): TurnId | null =>
   "childTurnId" in phase ? phase.childTurnId : null;
 
 export function hasSameDelegationOwnership(
-  current: AkeruDelegationRecord,
-  next: AkeruDelegationRecord,
+  current: IsnadiDelegationRecord,
+  next: IsnadiDelegationRecord,
 ): boolean {
   const { phase: _currentPhase, updatedAt: _currentUpdatedAt, ...currentOwnership } = current;
   const { phase: _nextPhase, updatedAt: _nextUpdatedAt, ...nextOwnership } = next;

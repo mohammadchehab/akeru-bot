@@ -1,9 +1,9 @@
 import * as Predicate from "effect/Predicate";
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   RoutineRunId,
   type OrchestrationEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -187,7 +187,7 @@ const make = Effect.gen(function* () {
 
   // Scheduled bot work settles its run from the delegation's terminal phase.
   const settleDelegatedRun = Effect.fn("RoutineRuntime.settleDelegatedRun")(function* (
-    delegation: AkeruDelegationRecord,
+    delegation: IsnadiDelegationRecord,
   ) {
     const phase = delegation.phase;
 

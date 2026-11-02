@@ -4,7 +4,7 @@ import {
   type AuthEnvironmentScope,
   type AuthSessionId,
   type OrchestrationCommand,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface AuthenticatedCommandActor {
   readonly personId: AuthSessionId;

@@ -5,7 +5,7 @@ import type {
   AdvertisedEndpointReachability,
   AdvertisedEndpointSource,
   AdvertisedEndpointStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface CreateAdvertisedEndpointInput {
   readonly id: string;

@@ -1,10 +1,10 @@
 # Scripts
 
-> For maintainers. Using Akeru Bot? See [docs/user](../user/).
+> For maintainers. Using IsnadiBot? See [docs/user](../user/).
 
 ## First checkout
 
-Akeru Bot uses [Vite+](https://viteplus.dev/guide/). Install the global `vp` command, install
+IsnadiBot uses [Vite+](https://viteplus.dev/guide/). Install the global `vp` command, install
 dependencies, then start the dev stack:
 
 ```bash
@@ -39,26 +39,26 @@ authenticated.
 
 ### Dev state directories
 
-- Dev commands run from a linked **git worktree** default to that worktree's gitignored `.akeru`, even
-  when `T3CODE_HOME` is set, storing state in `<worktree>/.akeru/userdata`. Pass `--home-dir <path>` to
+- Dev commands run from a linked **git worktree** default to that worktree's gitignored `.isnadi`, even
+  when `T3CODE_HOME` is set, storing state in `<worktree>/.isnadi/userdata`. Pass `--home-dir <path>` to
   choose another isolated directory explicitly. Submodules are not worktrees and keep the normal
   precedence.
-- From the **main checkout**, dev commands implicitly use `~/.akeru/dev`, keeping development state
-  separate from `~/.akeru/userdata`. An explicit `--home-dir <path>` stores state under
+- From the **main checkout**, dev commands implicitly use `~/.isnadi/dev`, keeping development state
+  separate from `~/.isnadi/userdata`. An explicit `--home-dir <path>` stores state under
   `<path>/userdata`; the base directory remains available for caches, worktrees, and other shared
   data.
 
 ### Dev status
 
 Run `vp run dev:status` for a read-only status report. Use
-`vp run dev:status --home-dir <path>` to inspect an explicit Akeru home.
+`vp run dev:status --home-dir <path>` to inspect an explicit Isnadi home.
 The command uses the existing `server-runtime.json`; it does not scan ports or create a registry.
 
-- Reports the checkout root, linked worktree, Akeru home, data directory, recorded server and web
+- Reports the checkout root, linked worktree, Isnadi home, data directory, recorded server and web
   origins, trace path, and missing local prerequisites.
 - Uses the same worktree home helper as the dev runner. An explicit `--home-dir` wins, then the
-  worktree home, then `T3CODE_HOME`. The implicit main-checkout fallback is `~/.akeru/dev`.
-  Explicit and worktree homes use `userdata`. `AKERU_HOME` is not a dev-runner override.
+  worktree home, then `T3CODE_HOME`. The implicit main-checkout fallback is `~/.isnadi/dev`.
+  Explicit and worktree homes use `userdata`. `ISNADI_HOME` is not a dev-runner override.
 - Checks the recorded PID without sending a signal. Missing or stale runtime files remain unchanged.
   Recorded origins from stale files are historical, not proof that a server is running.
 - Makes credential-free HTTP HEAD checks only on loopback. It does not follow redirects or contact
@@ -86,7 +86,7 @@ from app configuration rather than copied identifiers.
 
 ## Build, check, test
 
-- `vp run build`: Fans out over `apps/*`, `packages/*`, `oxlint-plugin-akeru`, and `scripts`.
+- `vp run build`: Fans out over `apps/*`, `packages/*`, `oxlint-plugin-isnadi`, and `scripts`.
   Workspaces that define a build task run one: desktop, server (which depends on web), and web. Shared packages are consumed and bundled transitively rather than built separately.
 - `vp run build:desktop`: Builds the desktop pipeline (desktop plus server).
 - `vp run test:desktop-smoke`: Launches the built app with the installed raw Electron runtime in
@@ -120,14 +120,14 @@ from app configuration rather than copied identifiers.
 - Browser DMG downloads are still quarantined. The unsigned Mac path is a Terminal recipe that
   pins one GitHub release tag, downloads that tag's arm64 DMG and `SHA256SUMS`, verifies the
   checksum, then copies the app into `/Applications`. curl does not set `com.apple.quarantine`.
-- The DMG build uses `assets/prod/akeru-macos-1024.png`, a safe-area export of the production
+- The DMG build uses `assets/prod/isnadi-macos-1024.png`, a safe-area export of the production
   favicon artwork, as the production app icon source.
 - Production DMGs use neutral chrome. Blueprint artwork remains exclusive to Dev builds. Packaging
   rasterizes the selected SVG into standard and Retina PNGs inside the disposable staging
   directory.
 - The Finder window is 540×412 while its background is 540×380; the extra 32px accounts for the
   title bar included in Finder's window bounds.
-- Desktop production windows load the bundled UI from the `akeru://app/` root URL (not a
+- Desktop production windows load the bundled UI from the `isnadi://app/` root URL (not a
   `127.0.0.1` document URL, and not an explicit `index.html` path).
 - Desktop packaging includes `apps/server/dist` (the `t3` backend) and starts it on loopback with an
   auth token for WebSocket/API traffic.

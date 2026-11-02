@@ -1,4 +1,4 @@
-import { EnvironmentId, ProviderInstanceId } from "@akeru/contracts";
+import { EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { makeMobileBot } from "../../lib/mobile-fixtures.test-support";
 import type { ModelOption } from "../../lib/modelOptions";

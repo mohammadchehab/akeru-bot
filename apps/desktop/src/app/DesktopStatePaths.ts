@@ -1,4 +1,3 @@
-import { PRODUCT_HOME_DIRNAME } from "@akeru/shared/devHome";
 import * as Option from "effect/Option";
 
 export type JoinPath = (first: string, ...segments: string[]) => string;
@@ -13,14 +12,12 @@ function normalizeConfiguredBaseDir(t3Home: Option.Option<string>): Option.Optio
   return trimmed.length > 0 ? Option.some(trimmed) : Option.none();
 }
 
+/** The configured base dir, else `defaultBaseDir` (the product home under the user's home). */
 export function resolveDesktopBaseDir(input: {
-  readonly homeDirectory: string;
-  readonly joinPath: JoinPath;
+  readonly defaultBaseDir: string;
   readonly t3Home: Option.Option<string>;
 }): string {
-  return Option.getOrElse(normalizeConfiguredBaseDir(input.t3Home), () =>
-    input.joinPath(input.homeDirectory, PRODUCT_HOME_DIRNAME),
-  );
+  return Option.getOrElse(normalizeConfiguredBaseDir(input.t3Home), () => input.defaultBaseDir);
 }
 
 export function resolveDesktopStateDir(input: {

@@ -3,8 +3,8 @@ import {
   withFakeClaudeEnv,
 } from "./testUtils/claudeTextGeneration.ts";
 import { it } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import * as Effect from "effect/Effect";
 import * as Path from "effect/Path";
 import { expect } from "vite-plus/test";

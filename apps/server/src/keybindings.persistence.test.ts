@@ -1,4 +1,4 @@
-import { KeybindingCommand } from "@akeru/contracts";
+import { KeybindingCommand } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
 import { assertFailure } from "@effect/vitest/utils";

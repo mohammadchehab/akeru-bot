@@ -6,14 +6,14 @@ import {
   type DurableMemoryFact,
   describeDurableFactFailure,
   durableFactMutation,
-} from "@akeru/client-runtime/durable-memory";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/durable-memory";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import type {
-  AkeruMemoryDocument,
-  AkeruMemoryDocumentTarget,
+  IsnadiMemoryDocument,
+  IsnadiMemoryDocumentTarget,
   EnvironmentId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useRoute, type RouteProp } from "@react-navigation/native";
 import { useAtomValue } from "@effect/atom-react";
 import { useEffect, useMemo, useState } from "react";
@@ -46,17 +46,17 @@ const commandFailureMessage = (result: Parameters<typeof squashAtomCommandFailur
   return failure instanceof Error ? failure.message : null;
 };
 
-const titles: Record<AkeruMemoryDocumentTarget, string> = {
+const titles: Record<IsnadiMemoryDocumentTarget, string> = {
   user: "USER.md",
   memory: "MEMORY.md",
   group: "GROUP.md",
 };
 
 function MemoryEditor(props: {
-  readonly document: AkeruMemoryDocument;
+  readonly document: IsnadiMemoryDocument;
   readonly busy: boolean;
   readonly onSave: (
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
     expectedContent: string,
   ) => Promise<void>;
@@ -220,7 +220,7 @@ export function ThreadMemoryScreen() {
     : [];
 
   const save = async (
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
     expectedContent: string,
   ) => {

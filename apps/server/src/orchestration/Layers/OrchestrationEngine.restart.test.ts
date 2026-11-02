@@ -1,4 +1,9 @@
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, EventId, MessageId } from "@akeru/contracts";
+import {
+  CommandId,
+  DEFAULT_PROVIDER_INTERACTION_MODE,
+  EventId,
+  MessageId,
+} from "@isnadi/contracts";
 import { expect, it } from "vite-plus/test";
 import {
   createRestartSystem,

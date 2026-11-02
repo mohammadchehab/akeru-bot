@@ -8,7 +8,7 @@ import { it as effectIt } from "@effect/vitest";
 import {
   CONFIGURED_LOCAL_SERVER_URLS_MAX_ITEMS,
   type DiscoveredLocalServer,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";

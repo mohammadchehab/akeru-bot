@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { DEFAULT_CLIENT_SETTINGS, type ClientSettings } from "@akeru/contracts/settings";
+import { DEFAULT_CLIENT_SETTINGS, type ClientSettings } from "@isnadi/contracts/settings";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { LanguageProvider, useI18n } from "./i18n";
 import {
@@ -175,7 +175,7 @@ describe("language client settings persistence", () => {
     expect(JSON.parse(localStorage.getItem(CLIENT_SETTINGS_STORAGE_KEY)!)).toMatchObject({
       language: "en",
     });
-    expect(localStorage.getItem("akeru:language")).toBeNull();
+    expect(localStorage.getItem("isnadi:language")).toBeNull();
     await current.setPreference("system");
     expect(JSON.parse(localStorage.getItem(CLIENT_SETTINGS_STORAGE_KEY)!)).toMatchObject({
       language: "system",

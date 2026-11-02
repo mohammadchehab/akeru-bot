@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 
 import { privacyControlPatch, resolveSettingsEnvironmentId } from "./SettingsRouteScreen.logic";
 

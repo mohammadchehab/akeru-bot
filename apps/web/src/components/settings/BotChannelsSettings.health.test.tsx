@@ -1,12 +1,12 @@
 import { Schema } from "effect";
 import { Predicate } from "effect";
-import { AuthAccessWriteScope, type ChannelBinding } from "@akeru/contracts";
+import { AuthAccessWriteScope, type ChannelBinding } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { channelFailureReason } from "@akeru/client-runtime/channel-presentation";
-import { ChannelConnectionProfile } from "@akeru/contracts";
+import { channelFailureReason } from "@isnadi/client-runtime/channel-presentation";
+import { ChannelConnectionProfile } from "@isnadi/contracts";
 import { useChannelSettings } from "./BotChannelsSettings";
 import { ChannelConnectionRow } from "./ChannelDetailPage";
 import {
@@ -200,14 +200,14 @@ describe("channel health and repair", () => {
       {
         ...fixtureConnection,
         provider: "whatsapp",
-        webhookUrl: "https://akeru.example.com/channels/whatsapp/hook",
+        webhookUrl: "https://isnadi.example.com/channels/whatsapp/hook",
       },
     ];
     fixtures.bots = [boundBot("not-live", undefined, undefined, "whatsapp")];
     const html = renderPage("whatsapp");
     expect(html).toContain(">Not live<");
     expect(html).toContain("WhatsApp needs a public HTTPS address to receive messages.");
-    expect(html).toContain("https://akeru.example.com/channels/whatsapp/hook");
+    expect(html).toContain("https://isnadi.example.com/channels/whatsapp/hook");
     expect(button(html, "Reconnect")).toBeUndefined();
     expect(button(html, "Connect")).toBeUndefined();
   });
@@ -224,34 +224,34 @@ describe("channel health and repair", () => {
       {
         ...fixtureConnection,
         provider: "whatsapp",
-        webhookUrl: "https://akeru.example.com/channels/whatsapp/hook",
+        webhookUrl: "https://isnadi.example.com/channels/whatsapp/hook",
       },
     ];
     fixtures.bots = [boundBot("connected", undefined, undefined, "whatsapp")];
     const html = renderPage("whatsapp");
-    expect(html).toContain(">Assigned to Akeru<");
+    expect(html).toContain(">Assigned to Isnadi<");
     expect(html).toContain("Webhook URL");
-    expect(html).toContain("https://akeru.example.com/channels/whatsapp/hook");
+    expect(html).toContain("https://isnadi.example.com/channels/whatsapp/hook");
   });
 
   it("does not show a webhook URL for a connected non-WhatsApp channel", () => {
     fixtures.connections = [
-      { ...fixtureConnection, webhookUrl: "https://akeru.example.com/not-whatsapp" },
+      { ...fixtureConnection, webhookUrl: "https://isnadi.example.com/not-whatsapp" },
     ];
     fixtures.bots = [boundBot("connected")];
     const html = renderPage();
     expect(html).not.toContain("Webhook URL");
-    expect(html).not.toContain("https://akeru.example.com/not-whatsapp");
+    expect(html).not.toContain("https://isnadi.example.com/not-whatsapp");
   });
 
   it.each([
     ["failed", "credentials", "Connection failed", "Update credentials"],
     ["failed", "network", "Connection failed", "Reconnect"],
     ["needs-reconnect", undefined, "Needs reconnect", "Reconnect"],
-    ["disconnected", undefined, "Disconnected · Akeru", "Connect"],
-    ["connected", "credentials", "Needs attention · Akeru", "Update credentials"],
-    ["connected", "network", "Needs attention · Akeru", "Reconnect"],
-    ["connected", "restore", "Needs attention · Akeru", "Reconnect"],
+    ["disconnected", undefined, "Disconnected · Isnadi", "Connect"],
+    ["connected", "credentials", "Needs attention · Isnadi", "Update credentials"],
+    ["connected", "network", "Needs attention · Isnadi", "Reconnect"],
+    ["connected", "restore", "Needs attention · Isnadi", "Reconnect"],
   ] as const)("%s with %s failure shows one %s repair", (status, category, badge, repair) => {
     fixtures.bots = [boundBot(status, category ? "Fixed server copy." : undefined, category)];
     const html = renderPage();
@@ -322,7 +322,7 @@ describe("channel health and repair", () => {
       ),
     ];
     const html = renderPage();
-    expect(html).toContain(">Needs attention · Akeru<");
+    expect(html).toContain(">Needs attention · Isnadi<");
     expect(button(html, "Check the channel")).toContain(
       'href="https://provider.example.com/console"',
     );
@@ -334,7 +334,7 @@ describe("channel health and repair", () => {
   it("shows no repair for a healthy connected channel", () => {
     fixtures.bots = [boundBot("connected")];
     const html = renderPage();
-    expect(html).toContain(">Assigned to Akeru<");
+    expect(html).toContain(">Assigned to Isnadi<");
     expect(html).not.toContain('role="status"');
     expect(button(html, "Disconnect")).toBeDefined();
 
@@ -358,7 +358,7 @@ describe("failed channel attempts", () => {
     fixtures.bots = [boundBot("failed", "Fixed server copy.", "credentials")];
     const html = renderPage();
     expect(trigger(html, "Assign Fixture line")).toBeDefined();
-    expect(html).toContain(">Akeru<");
+    expect(html).toContain(">Isnadi<");
     expect(html).not.toContain("Choose a bot");
     expect(html).not.toContain(">Unassigned<");
     expect(html).toContain("Photon rejected the connection credentials.");

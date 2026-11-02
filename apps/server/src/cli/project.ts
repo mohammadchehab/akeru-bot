@@ -1,4 +1,4 @@
-import { CommandId, type OrchestrationReadModel, ProjectId } from "@akeru/contracts";
+import { CommandId, type OrchestrationReadModel, ProjectId } from "@isnadi/contracts";
 import * as Console from "effect/Console";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";

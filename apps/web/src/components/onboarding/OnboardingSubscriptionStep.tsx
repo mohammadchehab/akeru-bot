@@ -2,17 +2,17 @@ import { Predicate } from "effect";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import {
   apiKeyStartInput,
   apiKeyValidationError,
   providerSupportsBaseUrl,
-} from "@akeru/client-runtime/provider-auth";
+} from "@isnadi/client-runtime/provider-auth";
 import type {
   EnvironmentId,
   SubscriptionAuthLoginProgress,
   SubscriptionAuthStartResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ArrowRightIcon, CheckIcon, ExternalLinkIcon, LoaderIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

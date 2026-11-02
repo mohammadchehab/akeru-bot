@@ -1,6 +1,6 @@
 /// <reference types="vite-plus/client" />
 
-import type { DesktopBridge } from "@akeru/contracts";
+import type { DesktopBridge } from "@isnadi/contracts";
 
 interface ImportMetaEnv {
   readonly VITE_HTTP_URL: string;

@@ -1,4 +1,4 @@
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 
 export interface ComposerPathSearchEntry {
   readonly path: string;

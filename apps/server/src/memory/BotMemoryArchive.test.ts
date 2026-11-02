@@ -3,7 +3,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
 import { afterEach, assert, describe, expect, it, vi } from "@effect/vitest";
-import { BotId, GroupId, ThreadId, type AkeruConversationMemorySnapshot } from "@akeru/contracts";
+import { BotId, GroupId, ThreadId, type IsnadiConversationMemorySnapshot } from "@isnadi/contracts";
 
 import { BotMemoryStore } from "./BotMemory.ts";
 import {
@@ -22,9 +22,9 @@ const access = {
   groupMemberBotIds: [BotId.make("bot-1")],
 };
 
-const emptyConversation: AkeruConversationMemorySnapshot = { current: null, history: [] };
+const emptyConversation: IsnadiConversationMemorySnapshot = { current: null, history: [] };
 
-const conversation: AkeruConversationMemorySnapshot = {
+const conversation: IsnadiConversationMemorySnapshot = {
   current: {
     id: "observation-1",
     generationCount: 1,
@@ -41,7 +41,7 @@ const conversation: AkeruConversationMemorySnapshot = {
 };
 
 async function fixture() {
-  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-archive-"));
+  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-archive-"));
   directories.push(directory);
 
   return new BotMemoryStore(NodePath.join(directory, "userdata"));
@@ -154,7 +154,7 @@ describe("Markdown memory archive", () => {
     const preview = await previewBotMemoryImport(input);
 
     const restoreConversation = vi
-      .fn(async (_snapshot: AkeruConversationMemorySnapshot) => undefined)
+      .fn(async (_snapshot: IsnadiConversationMemorySnapshot) => undefined)
       .mockRejectedValueOnce(new Error("Transient observation write failure"));
 
     await expect(

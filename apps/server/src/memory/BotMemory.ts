@@ -3,22 +3,22 @@ import * as Predicate from "effect/Predicate";
 import * as NodeCrypto from "node:crypto";
 import * as NodePath from "node:path";
 import {
-  AKERU_BOT_MEMORY_MAX_CHARS,
-  AKERU_GROUP_MEMORY_MAX_CHARS,
-  AKERU_USER_MEMORY_MAX_CHARS,
-  type AkeruBotMemorySnapshot,
-  type AkeruMemoryDocument,
-  type AkeruMemoryDocumentTarget,
-  type AkeruMemoryFileMutationInput,
-  type AkeruMemoryFileMutationResult,
+  ISNADI_BOT_MEMORY_MAX_CHARS,
+  ISNADI_GROUP_MEMORY_MAX_CHARS,
+  ISNADI_USER_MEMORY_MAX_CHARS,
+  type IsnadiBotMemorySnapshot,
+  type IsnadiMemoryDocument,
+  type IsnadiMemoryDocumentTarget,
+  type IsnadiMemoryFileMutationInput,
+  type IsnadiMemoryFileMutationResult,
   type BotId,
   type GroupId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Schema from "effect/Schema";
 import {
-  AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS,
-  AKERU_MEMORY_REVIEW_PROMPT_INTERVAL,
+  ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL,
 } from "./BotMemoryReview.ts";
 import { scanMemoryContent } from "./memoryContentSafety.ts";
 import {
@@ -60,8 +60,8 @@ import {
 const isBotMemoryError = Schema.is(BotMemoryError);
 
 export {
-  AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS,
-  AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS,
 } from "./BotMemoryReview.ts";
 
 export class BotMemoryStore {
@@ -139,7 +139,7 @@ export class BotMemoryStore {
       reviewedThroughPromptCount: state.reviewedThroughPromptCount,
       dueOnNextAcceptedPrompt:
         state.acceptedPromptCount - state.reviewedThroughPromptCount >=
-        AKERU_MEMORY_REVIEW_PROMPT_INTERVAL,
+        ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL,
     };
   }
 
@@ -199,7 +199,7 @@ export class BotMemoryStore {
               pendingInput: {
                 ...reviewInput,
                 id: reviewInput.id ?? NodeCrypto.randomUUID(),
-                text: reviewInput.text.slice(0, AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS),
+                text: reviewInput.text.slice(0, ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS),
               },
             }
           : {}),
@@ -316,7 +316,7 @@ export class BotMemoryStore {
     });
   }
 
-  private resolve(access: BotMemoryAccess, target: AkeruMemoryDocumentTarget): ResolvedDocument {
+  private resolve(access: BotMemoryAccess, target: IsnadiMemoryDocumentTarget): ResolvedDocument {
     assertSafeId("Bot ID", access.botId);
     const botDirectory = NodePath.join(this.memoryRoot, "bots", access.botId);
 
@@ -324,7 +324,7 @@ export class BotMemoryStore {
       return {
         target,
         filePath: NodePath.join(botDirectory, "USER.md"),
-        charLimit: AKERU_USER_MEMORY_MAX_CHARS,
+        charLimit: ISNADI_USER_MEMORY_MAX_CHARS,
         memoryRoot: this.memoryRoot,
       };
     }
@@ -333,7 +333,7 @@ export class BotMemoryStore {
       return {
         target,
         filePath: NodePath.join(botDirectory, "MEMORY.md"),
-        charLimit: AKERU_BOT_MEMORY_MAX_CHARS,
+        charLimit: ISNADI_BOT_MEMORY_MAX_CHARS,
         memoryRoot: this.memoryRoot,
       };
     }
@@ -353,7 +353,7 @@ export class BotMemoryStore {
     return {
       target,
       filePath: NodePath.join(botDirectory, "groups", access.groupId, "GROUP.md"),
-      charLimit: AKERU_GROUP_MEMORY_MAX_CHARS,
+      charLimit: ISNADI_GROUP_MEMORY_MAX_CHARS,
       memoryRoot: this.memoryRoot,
     };
   }
@@ -384,7 +384,7 @@ export class BotMemoryStore {
     }
   }
 
-  private toDocument(resolved: ResolvedDocument, value: ReadDocumentResult): AkeruMemoryDocument {
+  private toDocument(resolved: ResolvedDocument, value: ReadDocumentResult): IsnadiMemoryDocument {
     const content = renderEntries(value.entries);
 
     return {
@@ -398,14 +398,14 @@ export class BotMemoryStore {
 
   async readDocument(
     access: BotMemoryAccess,
-    target: AkeruMemoryDocumentTarget,
-  ): Promise<AkeruMemoryDocument> {
+    target: IsnadiMemoryDocumentTarget,
+  ): Promise<IsnadiMemoryDocument> {
     const resolved = this.resolve(access, target);
 
     return this.toDocument(resolved, await this.readResolved(resolved));
   }
 
-  async readSnapshot(access: BotMemoryAccess): Promise<AkeruBotMemorySnapshot> {
+  async readSnapshot(access: BotMemoryAccess): Promise<IsnadiBotMemorySnapshot> {
     const [user, memory, group] = await Promise.all([
       this.readDocument(access, "user"),
       this.readDocument(access, "memory"),
@@ -415,7 +415,7 @@ export class BotMemoryStore {
     return { botId: access.botId, groupId: access.groupId, user, memory, group };
   }
 
-  async mutate(input: AkeruMemoryFileMutationInput): Promise<AkeruMemoryFileMutationResult> {
+  async mutate(input: IsnadiMemoryFileMutationInput): Promise<IsnadiMemoryFileMutationResult> {
     const access: BotMemoryAccess = input;
     const resolved = this.resolve(access, input.target);
 
@@ -461,11 +461,11 @@ export class BotMemoryStore {
 
   async replaceDocument(
     access: BotMemoryAccess,
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
     expectedBotId: BotId = access.botId,
     expectedContent?: string,
-  ): Promise<AkeruMemoryDocument> {
+  ): Promise<IsnadiMemoryDocument> {
     if (access.botId !== expectedBotId) {
       throw BotMemoryError.fromCode(
         "access-denied",
@@ -499,10 +499,10 @@ export class BotMemoryStore {
   async withDocumentTransaction<A>(
     access: BotMemoryAccess,
     use: (
-      replace: (target: AkeruMemoryDocumentTarget, content: string) => Promise<void>,
+      replace: (target: IsnadiMemoryDocumentTarget, content: string) => Promise<void>,
     ) => Promise<A>,
   ): Promise<A> {
-    const targets: AkeruMemoryDocumentTarget[] = [
+    const targets: IsnadiMemoryDocumentTarget[] = [
       "user",
       "memory",
       ...(access.groupId === null ? [] : ["group" as const]),
@@ -525,7 +525,7 @@ export class BotMemoryStore {
         });
 
       const originals = new Map<
-        AkeruMemoryDocumentTarget,
+        IsnadiMemoryDocumentTarget,
         { readonly resolved: ResolvedDocument; readonly content: string | null }
       >();
 
@@ -542,7 +542,7 @@ export class BotMemoryStore {
         originals.set(resolved.target, { resolved, content });
       }
 
-      const touched = new Set<AkeruMemoryDocumentTarget>();
+      const touched = new Set<IsnadiMemoryDocumentTarget>();
 
       try {
         return await use(async (target, content) => {
@@ -599,7 +599,7 @@ export class BotMemoryStore {
 
   validateDocumentReplacement(
     access: BotMemoryAccess,
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
   ): ValidateDocumentReplacementResult {
     const resolved = this.resolve(access, target);
@@ -617,11 +617,11 @@ export class BotMemoryStore {
     return { normalized, charLimit: resolved.charLimit };
   }
 
-  async readPromptSnapshot(access: BotMemoryAccess): Promise<AkeruBotMemorySnapshot> {
+  async readPromptSnapshot(access: BotMemoryAccess): Promise<IsnadiBotMemorySnapshot> {
     const snapshot = await this.readSnapshot(access);
 
-    const sanitize = (document: AkeruMemoryDocument): AkeruMemoryDocument => {
-      const blockedForSize = (): AkeruMemoryDocument => {
+    const sanitize = (document: IsnadiMemoryDocument): IsnadiMemoryDocument => {
+      const blockedForSize = (): IsnadiMemoryDocument => {
         const content = `[BLOCKED: ${document.target.toUpperCase()} memory exceeds its ${document.charLimit} character prompt limit. Shorten the memory file before using it.]`;
 
         return { ...document, content, charCount: content.length };

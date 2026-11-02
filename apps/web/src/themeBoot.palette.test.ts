@@ -1,4 +1,4 @@
-import { BUILT_IN_THEMES } from "@akeru/shared/themePalettes";
+import { BUILT_IN_THEMES } from "@isnadi/shared/themePalettes";
 
 import { describe, expect, it } from "vite-plus/test";
 
@@ -20,11 +20,11 @@ import {
 describe("index.html boot script", () => {
   it("marks built-in and custom themes on the document element", () => {
     const chat = runBootScript({
-      storage: { [THEME_STORAGE_KEY]: "akeru-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
+      storage: { [THEME_STORAGE_KEY]: "isnadi-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
       prefersDark: true,
     });
 
-    expect(chat.themeId).toBe("akeru-chat");
+    expect(chat.themeId).toBe("isnadi-chat");
     expect(chat.themeSelected).toBe("true");
     expect(chat.isDark).toBe(true);
 
@@ -34,7 +34,7 @@ describe("index.html boot script", () => {
       prefersDark: true,
     });
 
-    expect(legacyChat.themeId).toBe("akeru-chat");
+    expect(legacyChat.themeId).toBe("isnadi-chat");
     expect(legacyChat.themeSelected).toBe("true");
 
     const aurora = runBootScript({

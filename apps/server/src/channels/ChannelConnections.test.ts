@@ -29,7 +29,7 @@ import {
   ThreadId,
   type ChannelBinding,
   type OrchestrationMessage,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Stream from "effect/Stream";
@@ -79,7 +79,7 @@ describe("channel runtime", () => {
           callbacks.push(onDirectMessage);
 
           return {
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => {
@@ -124,7 +124,7 @@ describe("channel runtime", () => {
           callbacks.push(onDirectMessage);
 
           return {
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => undefined,
@@ -166,7 +166,7 @@ describe("channel runtime", () => {
       botId: BOT_ID,
       provider: "telegram",
       status: "connected",
-      externalIdentity: "@akeru",
+      externalIdentity: "@isnadi",
       connectedAt: NOW,
       sentMessageIds: [],
     };
@@ -185,7 +185,7 @@ describe("channel runtime", () => {
         botId: BOT_ID,
         provider: "telegram",
         status: "connected",
-        externalIdentity: "@akeru",
+        externalIdentity: "@isnadi",
         connectedAt: NOW,
         sentMessageIds: [],
       };
@@ -214,7 +214,7 @@ describe("channel runtime", () => {
         projectId: PROJECT_ID,
         provider: "telegram",
         status: "connected",
-        externalIdentity: "@akeru",
+        externalIdentity: "@isnadi",
         connectedAt: NOW,
         sentMessageIds: [],
       };
@@ -241,7 +241,7 @@ describe("channel runtime", () => {
         projectId: MISSING_PROJECT_ID,
         provider: "telegram",
         status: "connected",
-        externalIdentity: "@akeru",
+        externalIdentity: "@isnadi",
         connectedAt: NOW,
         sentMessageIds: [],
       };
@@ -307,7 +307,7 @@ describe("channel runtime", () => {
           starts += 1;
 
           return {
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => void (stops += 1),
@@ -397,7 +397,7 @@ describe("channel runtime", () => {
           failNextRead = true;
 
           return {
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => void (stops += 1),

@@ -1,10 +1,10 @@
 import * as Predicate from "effect/Predicate";
-import type { ProviderSendTurnInput, ProviderSession } from "@akeru/contracts";
+import type { ProviderSendTurnInput, ProviderSession } from "@isnadi/contracts";
 import {
   ProviderDriverKind,
   ProviderInstanceId,
   ProviderSessionStartInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it, assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

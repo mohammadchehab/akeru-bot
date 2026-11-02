@@ -3,7 +3,7 @@ import type {
   ProviderInstanceId,
   ServerProvider,
   ServerProviderUnavailability,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { instanceUsesSavedCredential } from "../subscription-auth/runtime.ts";
 import type { ProviderStatus, SubscriptionProviderId } from "../subscription-auth/service.ts";

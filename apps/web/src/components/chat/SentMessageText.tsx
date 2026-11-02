@@ -1,6 +1,6 @@
 import { Match } from "effect";
-import type { ServerProviderSkill } from "@akeru/contracts";
-import { collectComposerInlineTokens } from "@akeru/shared/composerInlineTokens";
+import type { ServerProviderSkill } from "@isnadi/contracts";
+import { collectComposerInlineTokens } from "@isnadi/shared/composerInlineTokens";
 import { AtSignIcon, GlobeIcon, MessageSquareIcon } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 

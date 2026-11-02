@@ -67,7 +67,7 @@ describe("DesktopAssets", () => {
     }),
   );
 
-  it.effect("uses the Akeru favicon artwork for unpackaged production", () =>
+  it.effect("uses the Isnadi favicon artwork for unpackaged production", () =>
     Effect.gen(function* () {
       const productionEnvironmentLayer = DesktopEnvironment.layer({
         dirname: "/repo/apps/desktop/dist-electron",
@@ -99,7 +99,7 @@ describe("DesktopAssets", () => {
       const icons = yield* assets.iconPaths;
 
       assert.match(Option.getOrThrow(icons.ico), /apps\/web\/public\/favicon\.ico$/);
-      assert.match(Option.getOrThrow(icons.png), /assets\/prod\/akeru-macos-1024\.png$/);
+      assert.match(Option.getOrThrow(icons.png), /assets\/prod\/isnadi-macos-1024\.png$/);
       assert.isTrue(Option.isNone(icons.icns));
     }),
   );

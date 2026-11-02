@@ -5,13 +5,13 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   type OrchestrationBot,
   type OrchestrationGroup,
   type OrchestrationReadModel,
   type OrchestrationSession,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { createEmptyReadModel } from "../projector.ts";
 
 export const NOW = "2026-09-29T12:00:00.000Z";
@@ -100,7 +100,7 @@ export function makeReadModel(input: {
   readonly bots?: ReadonlyArray<OrchestrationBot>;
   readonly groups?: ReadonlyArray<OrchestrationGroup>;
   readonly threads?: ReadonlyArray<OrchestrationThread>;
-  readonly delegations?: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegations?: ReadonlyArray<IsnadiDelegationRecord>;
 }): OrchestrationReadModel {
   return {
     ...createEmptyReadModel(NOW),
@@ -127,8 +127,8 @@ export function createSession(
 }
 
 export function makeDelegation(
-  input: Pick<AkeruDelegationRecord, "delegationId" | "parentBotId" | "childBotId" | "phase">,
-): AkeruDelegationRecord {
+  input: Pick<IsnadiDelegationRecord, "delegationId" | "parentBotId" | "childBotId" | "phase">,
+): IsnadiDelegationRecord {
   return {
     ...input,
     parentDelegationId: null,

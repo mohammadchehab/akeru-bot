@@ -1,7 +1,7 @@
 packages:
   - apps/*
   - infra/*
-  - oxlint-plugin-akeru
+  - oxlint-plugin-isnadi
   - oxlint-plugin-anti-slop
   - packages/*
   - scripts

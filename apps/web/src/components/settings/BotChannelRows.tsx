@@ -3,7 +3,7 @@ import {
   type ChannelBinding,
   type ChannelProvider,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface ChannelBot {
   readonly id: BotId;

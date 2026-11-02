@@ -8,8 +8,8 @@ import type {
   VcsListRemotesResult,
   VcsListWorkspaceFilesResult,
   VcsRepositoryIdentity,
-} from "@akeru/contracts";
-import { CheckpointRef } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { CheckpointRef } from "@isnadi/contracts";
 import * as VcsProcess from "./VcsProcess.ts";
 
 export interface VcsCaptureCheckpointInput {
@@ -73,4 +73,4 @@ export class VcsDriver extends Context.Service<
     ) => Effect.Effect<ReadonlyArray<string>, VcsError>;
     readonly initRepository: (input: VcsInitInput) => Effect.Effect<void, VcsError>;
   }
->()("akeru-bot/vcs/VcsDriver") {}
+>()("isnadibot/vcs/VcsDriver") {}

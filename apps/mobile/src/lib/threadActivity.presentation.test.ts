@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { EventId, MessageId, ProjectId, ThreadId, TurnId } from "@akeru/contracts";
+import { EventId, MessageId, ProjectId, ThreadId, TurnId } from "@isnadi/contracts";
 import {
   buildThreadFeed,
   deriveThreadFeedPresentation,

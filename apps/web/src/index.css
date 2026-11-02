@@ -13,47 +13,47 @@
 @custom-variant wco (&:is(.wco, .wco *));
 
 @utility chat-markdown-details {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility chat-markdown-math-block {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility chat-markdown-math-inline {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility chat-markdown-settings-link {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility language-mermaid {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility stage-art {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility stage-blueprint {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility bot-eyes {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility electron-drag-region {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility roster-drag-boundary-label {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 @utility provider-update-main {
-  --akeru-class-hook: initial;
+  --isnadi-class-hook: initial;
 }
 
 /* On mobile, morph the expanded hero composer into the compact docked

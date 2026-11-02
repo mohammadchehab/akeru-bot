@@ -8,7 +8,7 @@ import {
   DEFAULT_SERVER_SETTINGS,
   ProjectId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -55,7 +55,7 @@ function makeLayer(dbPath: string) {
     Layer.provideMerge(OrchestrationCommandReceiptRepositoryLive),
     Layer.provide(RepositoryIdentityResolver.layer),
     Layer.provide(sqlitePersistenceLayer(dbPath)),
-    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "akeru-inbound-restart-" })),
+    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-inbound-restart-" })),
     Layer.provideMerge(NodeServices.layer),
   );
 }
@@ -141,7 +141,7 @@ describe("channel inbound persistence across restart", () => {
         Effect.gen(function* () {
           const fs = yield* FileSystem.FileSystem;
           const path = yield* Path.Path;
-          const root = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-channel-inbound-" });
+          const root = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-channel-inbound-" });
           const dbPath = path.join(root, "state.sqlite");
 
           const input = {

@@ -17,7 +17,7 @@ import type {
   PreviewAnnotationStrokeTarget,
   PreviewAnnotationStyleChange,
   PreviewAnnotationSubmission,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { resolveAnnotationSubmission } from "./AnnotationKeyboard.ts";
 

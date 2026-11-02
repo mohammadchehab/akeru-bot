@@ -1,7 +1,7 @@
 import { Predicate, Schema } from "effect";
 import type { Action } from "expo-quick-actions";
 import type { NavigationState } from "@react-navigation/native";
-import { EnvironmentId, ThreadId, type ScopedThreadRef } from "@akeru/contracts";
+import { EnvironmentId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
 import type { RecentThreadShortcut } from "../../persistence/imperative";
 
 const decodeThreadRouteParams = Schema.decodeUnknownSync(

@@ -25,7 +25,7 @@ import {
   EnvironmentAuthorizationError,
   ImageGenerationError,
   SubscriptionAuthError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { SubscriptionAuthService } from "./subscription-auth/service.ts";
 import { apiKeySessionReset } from "./subscription-auth/sessionReset.ts";
 import { subscriptionProviderSettingsPatch } from "./subscription-auth/runtime.ts";

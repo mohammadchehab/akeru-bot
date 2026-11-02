@@ -1,4 +1,4 @@
-import type { DesktopDiscoveredSshHost } from "@akeru/contracts";
+import type { DesktopDiscoveredSshHost } from "@isnadi/contracts";
 
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";

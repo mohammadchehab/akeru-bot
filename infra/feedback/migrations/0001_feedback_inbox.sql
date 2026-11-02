@@ -1,4 +1,4 @@
-CREATE TABLE akeru_feedback_inbox (
+CREATE TABLE isnadi_feedback_inbox (
   feedback_id TEXT PRIMARY KEY,
   received_at TEXT NOT NULL,
   expires_at TEXT NOT NULL,
@@ -8,11 +8,11 @@ CREATE TABLE akeru_feedback_inbox (
   payload_json TEXT NOT NULL
 );
 
-CREATE INDEX idx_akeru_feedback_ip_received
-  ON akeru_feedback_inbox(coarse_ip_hash, received_at);
-CREATE INDEX idx_akeru_feedback_install_received
-  ON akeru_feedback_inbox(install_hash, received_at);
-CREATE INDEX idx_akeru_feedback_duplicate
-  ON akeru_feedback_inbox(install_hash, content_hash, received_at);
-CREATE INDEX idx_akeru_feedback_expires
-  ON akeru_feedback_inbox(expires_at);
+CREATE INDEX idx_isnadi_feedback_ip_received
+  ON isnadi_feedback_inbox(coarse_ip_hash, received_at);
+CREATE INDEX idx_isnadi_feedback_install_received
+  ON isnadi_feedback_inbox(install_hash, received_at);
+CREATE INDEX idx_isnadi_feedback_duplicate
+  ON isnadi_feedback_inbox(install_hash, content_hash, received_at);
+CREATE INDEX idx_isnadi_feedback_expires
+  ON isnadi_feedback_inbox(expires_at);

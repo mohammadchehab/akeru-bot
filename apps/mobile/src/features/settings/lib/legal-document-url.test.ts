@@ -2,23 +2,23 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { isLegalDocumentUrl } from "./legal-document-url";
 
+const REPO = "https://github.com/mohammadchehab/isnadibot";
+
 describe("isLegalDocumentUrl", () => {
   it.each([
-    "https://akeru.bot/legal",
-    "https://akeru.bot/legal/",
-    "https://akeru.bot/privacy-policy?source=app",
-    "https://akeru.bot/terms-of-service#updates",
-    "https://akeru.bot/security-policy",
+    `${REPO}/blob/main/LICENSE`,
+    `${REPO}/blob/main/LICENSE/`,
+    `${REPO}/blob/main/README.md?source=app`,
+    `${REPO}/blob/main/LICENSE#updates`,
+    `${REPO}/security`,
   ])("allows a configured legal document: %s", (url) => {
     expect(isLegalDocumentUrl(url)).toBe(true);
   });
 
-  it.each([
-    "https://akeru.bot/download",
-    "https://example.com/legal",
-    "javascript:alert(1)",
-    "not-a-url",
-  ])("rejects a URL outside the legal-document allowlist: %s", (url) => {
-    expect(isLegalDocumentUrl(url)).toBe(false);
-  });
+  it.each([`${REPO}/releases`, "https://example.com/legal", "javascript:alert(1)", "not-a-url"])(
+    "rejects a URL outside the legal-document allowlist: %s",
+    (url) => {
+      expect(isLegalDocumentUrl(url)).toBe(false);
+    },
+  );
 });

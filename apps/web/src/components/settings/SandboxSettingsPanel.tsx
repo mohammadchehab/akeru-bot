@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
-import type { EnvironmentId, SandboxProvider, SandboxSettings } from "@akeru/contracts";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import type { EnvironmentId, SandboxProvider, SandboxSettings } from "@isnadi/contracts";
 import { useState } from "react";
 
 import { useEnvironmentSettings } from "../../hooks/useSettings";

@@ -1,14 +1,14 @@
 import {
   createAdvertisedEndpoint,
   type CreateAdvertisedEndpointInput,
-} from "@akeru/shared/advertisedEndpoint";
+} from "@isnadi/shared/advertisedEndpoint";
 import {
   type AdvertisedEndpoint,
   type AdvertisedEndpointProvider,
   type DesktopServerExposureMode,
   type DesktopServerExposureState,
-} from "@akeru/contracts";
-import { isTailscaleIpv4Address } from "@akeru/tailscale";
+} from "@isnadi/contracts";
+import { isTailscaleIpv4Address } from "@isnadi/tailscale";
 
 import * as Option from "effect/Option";
 

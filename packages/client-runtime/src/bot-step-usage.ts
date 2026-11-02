@@ -1,11 +1,11 @@
 import {
-  AkeruStepUsageSnapshot,
+  IsnadiStepUsageSnapshot,
   type BotEngine,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
-const isAkeruStepUsageSnapshot = Schema.is(AkeruStepUsageSnapshot);
+const isIsnadiStepUsageSnapshot = Schema.is(IsnadiStepUsageSnapshot);
 
 export interface BotStepMeterData {
   readonly engine: BotEngine;
@@ -22,7 +22,7 @@ export function buildBotStepMeters(
     if (
       activity.kind !== "bot.step-usage.updated" ||
       activity.turnId === null ||
-      !isAkeruStepUsageSnapshot(activity.payload)
+      !isIsnadiStepUsageSnapshot(activity.payload)
     ) {
       continue;
     }

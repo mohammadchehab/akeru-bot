@@ -45,14 +45,14 @@ describe("BotAvatarView", () => {
   it("renders the same resting face whatever the bot is doing", () => {
     const avatar = { kind: "blob", shape: "square", color: "#5B7FD4" } as const;
     const eyes = (markup: string) => [...markup.matchAll(/<rect x="-4.2"[^>]*>/g)].map((m) => m[0]);
-    const idle = renderToStaticMarkup(<BotAvatarView name="Akeru" state="idle" avatar={avatar} />);
+    const idle = renderToStaticMarkup(<BotAvatarView name="Isnadi" state="idle" avatar={avatar} />);
 
     const working = renderToStaticMarkup(
-      <BotAvatarView name="Akeru" state="working" avatar={avatar} />,
+      <BotAvatarView name="Isnadi" state="working" avatar={avatar} />,
     );
 
     const waiting = renderToStaticMarkup(
-      <BotAvatarView name="Akeru" state="needs-you" avatar={avatar} />,
+      <BotAvatarView name="Isnadi" state="needs-you" avatar={avatar} />,
     );
 
     expect(working).toContain('data-bot-state="working"');
@@ -80,7 +80,7 @@ describe("BotAvatarView", () => {
 
   it("draws a legacy dither avatar as a blob", () => {
     const markup = renderToStaticMarkup(
-      <BotAvatarView name="Akeru" avatar={{ kind: "dither", seed: "akeru-seed" }} />,
+      <BotAvatarView name="Isnadi" avatar={{ kind: "dither", seed: "isnadi-seed" }} />,
     );
 
     expect(markup).toContain("data-avatar-shape=");

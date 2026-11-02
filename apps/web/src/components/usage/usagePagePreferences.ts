@@ -10,7 +10,7 @@ const UsagePagePreferencesSchema = Schema.Struct({
 
 export type UsagePagePreferences = typeof UsagePagePreferencesSchema.Type;
 
-const STORAGE_KEY = "akeru:usage-page-preferences:v1";
+const STORAGE_KEY = "isnadi:usage-page-preferences:v1";
 
 const DEFAULT_PREFERENCES: UsagePagePreferences = { metric: "limits", windowDays: 30 };
 

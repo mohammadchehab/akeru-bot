@@ -12,8 +12,8 @@ import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
-import { type DesktopBackendBootstrap as DesktopBackendBootstrapValue } from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
+import { type DesktopBackendBootstrap as DesktopBackendBootstrapValue } from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { deriveServerPaths } from "../config.ts";
 import { resolveServerConfig } from "./config.ts";
@@ -28,7 +28,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     devAllowedOrigins: [],
   } as const;
 

@@ -1,6 +1,6 @@
 import { QrCodeIcon } from "lucide-react";
 import { memo, useCallback, useId, useMemo, useState } from "react";
-import { type AuthEnvironmentScope, type AdvertisedEndpoint } from "@akeru/contracts";
+import { type AuthEnvironmentScope, type AdvertisedEndpoint } from "@isnadi/contracts";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { cn } from "../../lib/utils";
 import { formatElapsedDurationLabel, formatExpiresInLabel } from "../../timestampFormat";

@@ -1,17 +1,17 @@
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   GroupId,
   MessageId,
   ProjectId,
   ThreadId,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import * as Layer from "effect/Layer";
 import { SqlitePersistenceMemory } from "../../../persistence/Layers/Sqlite.ts";
 import { type EntityMemoryRepositoryShape } from "../../Services/EntityMemoryRepository.ts";
@@ -29,28 +29,28 @@ const repositoryLayer = Layer.mergeAll(
 const makeRevision = (
   id: string,
   partitionId: string,
-  overrides: Partial<AkeruMemoryRevision> = {},
-): AkeruMemoryRevision => {
+  overrides: Partial<IsnadiMemoryRevision> = {},
+): IsnadiMemoryRevision => {
   const authorBotId = BotId.make(partitionId.includes(":") ? partitionId.split(":")[0]! : "bot");
 
   return {
-    id: AkeruMemoryId.make(id),
-    rootId: AkeruMemoryRootId.make(id),
+    id: IsnadiMemoryId.make(id),
+    rootId: IsnadiMemoryRootId.make(id),
     revision: 1,
     partition: {
-      tenantId: AkeruMemoryTenantId.make("tenant"),
+      tenantId: IsnadiMemoryTenantId.make("tenant"),
       scope: "bot-user",
-      partitionId: AkeruMemoryPartitionId.make(partitionId),
+      partitionId: IsnadiMemoryPartitionId.make(partitionId),
     },
     entityKind: "user",
-    entityId: AkeruMemoryEntityId.make("user"),
+    entityId: IsnadiMemoryEntityId.make("user"),
     kind: "preference",
     value: { editor: "vim" },
     fact: `The user in ${partitionId} prefers vim.`,
     sourceThreadId: ThreadId.make(`thread-${authorBotId}`),
     sourceMessageId: MessageId.make("message"),
     authorBotId,
-    initiatingUserId: AkeruMemoryUserId.make("user"),
+    initiatingUserId: IsnadiMemoryUserId.make("user"),
     createdAt: "2026-08-30T21:00:00.000Z",
     confirmedAt: "2026-08-30T21:00:00.000Z",
     updatedAt: "2026-08-30T21:00:00.000Z",
@@ -69,8 +69,8 @@ const makeRevision = (
 
 const privateAccess = (botId: string) =>
   ({
-    tenantId: AkeruMemoryTenantId.make("tenant"),
-    userId: AkeruMemoryUserId.make("user"),
+    tenantId: IsnadiMemoryTenantId.make("tenant"),
+    userId: IsnadiMemoryUserId.make("user"),
     threadId: ThreadId.make(`thread-${botId}`),
     projectId: ProjectId.make("project"),
     workspaceRoot: "/workspace",
@@ -81,7 +81,7 @@ const privateAccess = (botId: string) =>
     groupMemberBotIds: [],
   }) as const;
 
-const insert = (repository: EntityMemoryRepositoryShape, revision: AkeruMemoryRevision) =>
+const insert = (repository: EntityMemoryRepositoryShape, revision: IsnadiMemoryRevision) =>
   repository.insert({
     access: privateAccess(revision.partition.partitionId.split(":")[0] ?? "bot"),
     revision,

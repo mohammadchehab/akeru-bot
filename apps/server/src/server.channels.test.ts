@@ -7,7 +7,7 @@ import {
   CommandId,
   ORCHESTRATION_WS_METHODS,
   ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { HttpBody, HttpClient } from "effect/unstable/http";

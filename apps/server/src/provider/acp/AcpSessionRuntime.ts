@@ -21,7 +21,7 @@ import * as ChildProcessSpawner from "effect/unstable/process/ChildProcessSpawne
 import * as EffectAcpClient from "effect-acp/client";
 import * as EffectAcpErrors from "effect-acp/errors";
 import type * as EffectAcpSchema from "effect-acp/schema";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import {
   collectSessionConfigOptionValues,
   extractModelConfigId,
@@ -63,7 +63,7 @@ export type {
 } from "./AcpSessionRuntimeService.ts";
 
 export class AcpSessionRuntime extends Context.Service<AcpSessionRuntime, AcpSessionRuntimeShape>()(
-  "akeru-bot/provider/acp/AcpSessionRuntime",
+  "isnadibot/provider/acp/AcpSessionRuntime",
 ) {}
 
 interface AcpStartedState extends AcpSessionRuntimeStartResult {}

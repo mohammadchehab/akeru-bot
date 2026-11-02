@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS, ProductFeedbackEndpoint } from "@akeru/contracts/settings";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS, ProductFeedbackEndpoint } from "@isnadi/contracts/settings";
 import * as Equal from "effect/Equal";
 import * as Schema from "effect/Schema";
 import {

@@ -1,6 +1,6 @@
 import { decodeRoutine, decodeRoutineRun } from "../test-support/fixtures";
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import { RoutineId, ThreadId, type OrchestrationMessage, type RoutineRun } from "@akeru/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import { RoutineId, ThreadId, type OrchestrationMessage, type RoutineRun } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { buildBotConversationEntries } from "./botConversationPresentation";
@@ -200,7 +200,7 @@ describe("deriveRoutineReceipts", () => {
       failure: {
         kind: "workspace",
         message:
-          "Error: The workspace is missing\n    at readWorkspace (file:///srv/akeru/server.ts:1:2)",
+          "Error: The workspace is missing\n    at readWorkspace (file:///srv/isnadi/server.ts:1:2)",
       },
       completedAt: "2026-09-19T09:02:00.000Z",
     });

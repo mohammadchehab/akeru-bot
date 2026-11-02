@@ -1,13 +1,13 @@
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import {
   CommandId,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   EventId,
   MessageId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it as effectIt } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";

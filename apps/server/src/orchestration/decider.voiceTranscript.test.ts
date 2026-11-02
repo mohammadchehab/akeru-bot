@@ -9,7 +9,7 @@ import {
   type OrchestrationBot,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
@@ -19,7 +19,7 @@ import { createEmptyReadModel } from "./projector.ts";
 
 const NOW = "2026-08-27T12:00:00.000Z";
 
-const BOT_ID = BotId.make("bot-akeru");
+const BOT_ID = BotId.make("bot-isnadi");
 
 const THREAD_ID = ThreadId.make("thread-voice");
 
@@ -28,7 +28,7 @@ const GROUP_ID = GroupId.make("group-product");
 function makeBot(archivedAt: string | null = null): OrchestrationBot {
   return {
     id: BOT_ID,
-    name: "Akeru",
+    name: "Isnadi",
     title: "Agent",
     label: null,
     description: null,

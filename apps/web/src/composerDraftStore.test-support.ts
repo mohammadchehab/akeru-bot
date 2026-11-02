@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { scopedThreadKey, scopeThreadRef } from "@akeru/client-runtime/environment";
+import { scopedThreadKey, scopeThreadRef } from "@isnadi/client-runtime/environment";
 import {
   defaultInstanceIdForDriver,
   EnvironmentId,
@@ -8,8 +8,8 @@ import {
   ThreadId,
   type ModelSelection,
   type ProviderOptionSelection,
-} from "@akeru/contracts";
-import { createModelSelection } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { createModelSelection } from "@isnadi/shared/model";
 import { vi } from "vite-plus/test";
 import { type ComposerImageAttachment, useComposerDraftStore } from "./composerDraftStore";
 import { type TerminalContextDraft } from "./lib/terminalContext";

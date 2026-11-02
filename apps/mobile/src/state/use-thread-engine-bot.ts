@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { type EnvironmentId, type OrchestrationBot } from "@akeru/contracts";
+import { type EnvironmentId, type OrchestrationBot } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 import { useMemo } from "react";
 

@@ -5,7 +5,7 @@ import {
   EventId,
   TurnId,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 let nextActivityId = 0;
 

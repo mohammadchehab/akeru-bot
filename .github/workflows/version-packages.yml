@@ -62,7 +62,7 @@ jobs:
         run: |
           version="$(jq -r .version apps/server/package.json)"
           {
-            echo "This PR was opened by the Version packages workflow. Merging it releases akeru-bot $version. Every push to main with new changesets updates it."
+            echo "This PR was opened by the Version packages workflow. Merging it releases isnadibot $version. Every push to main with new changesets updates it."
             # Every package whose changelog gained a release section, so web-only or desktop-only notes show too.
             git diff --name-only -- '*CHANGELOG.md' | while read -r changelog; do
               dir="$(dirname "$changelog")"

@@ -26,7 +26,7 @@ const makeEnvironment = (
     isPackaged: true,
     isDevelopment: false,
     displayName: "IsnadiBot",
-    linuxWmClass: "akeru-bot",
+    linuxWmClass: "isnadibot",
     linuxApplicationsDir: "/home/alice/.local/share/applications",
     appDataDirectory: "/home/alice/.config",
     appImagePath: Option.some("/home/alice/Applications/T3-Code.AppImage"),
@@ -125,7 +125,7 @@ describe("DesktopLinuxUrlHandler", () => {
     const entry = DesktopLinuxUrlHandler.renderUrlHandlerDesktopEntry({
       displayName: "IsnadiBot (Dev)",
       execTarget: '/home/al ice/Apps/T3 "100%" $HOME\\x.AppImage',
-      schemes: ["akeru"],
+      schemes: ["isnadi"],
     });
 
     assert.include(entry, "[Desktop Entry]");
@@ -139,35 +139,35 @@ describe("DesktopLinuxUrlHandler", () => {
     );
     assert.include(entry, "NoDisplay=true");
     assert.notInclude(entry, "StartupWMClass=");
-    assert.include(entry, "MimeType=x-scheme-handler/akeru;");
+    assert.include(entry, "MimeType=x-scheme-handler/isnadi;");
   });
 
   it("carries structured context on registration errors", () => {
     const writeError = new DesktopLinuxUrlHandler.DesktopLinuxUrlHandlerRegistrationError({
       step: "write-desktop-entry",
-      scheme: "akeru",
-      desktopEntryPath: "/home/alice/.local/share/applications/akeru-url-handler.desktop",
+      scheme: "isnadi",
+      desktopEntryPath: "/home/alice/.local/share/applications/isnadi-url-handler.desktop",
       cause: new Error("boom"),
     });
 
     assert.equal(
       writeError.message,
-      "Failed to register the akeru:// URL handler (step: write-desktop-entry).",
+      "Failed to register the isnadi:// URL handler (step: write-desktop-entry).",
     );
     assert.equal(
       writeError.desktopEntryPath,
-      "/home/alice/.local/share/applications/akeru-url-handler.desktop",
+      "/home/alice/.local/share/applications/isnadi-url-handler.desktop",
     );
 
     const exitError = new DesktopLinuxUrlHandler.DesktopLinuxUrlHandlerRegistrationError({
       step: "set-default-handler",
-      scheme: "akeru",
+      scheme: "isnadi",
       exitCode: 4,
     });
 
     assert.equal(
       exitError.message,
-      "Failed to register the akeru:// URL handler (step: set-default-handler, xdg-mime exit code 4).",
+      "Failed to register the isnadi:// URL handler (step: set-default-handler, xdg-mime exit code 4).",
     );
   });
 
@@ -181,17 +181,17 @@ describe("DesktopLinuxUrlHandler", () => {
       assert.equal(recorded.files.length, 1);
       assert.equal(
         recorded.files[0]?.path,
-        "/home/alice/.local/share/applications/akeru-url-handler.desktop",
+        "/home/alice/.local/share/applications/isnadi-url-handler.desktop",
       );
       assert.include(
         recorded.files[0]?.content,
         'Exec="/home/alice/Applications/T3-Code.AppImage" %U',
       );
-      assert.include(recorded.files[0]?.content, "MimeType=x-scheme-handler/akeru;");
+      assert.include(recorded.files[0]?.content, "MimeType=x-scheme-handler/isnadi;");
       assert.deepEqual(recorded.commands, [
         {
           command: "xdg-mime",
-          args: ["default", "akeru-url-handler.desktop", "x-scheme-handler/akeru"],
+          args: ["default", "isnadi-url-handler.desktop", "x-scheme-handler/isnadi"],
         },
       ]);
     });
@@ -201,9 +201,9 @@ describe("DesktopLinuxUrlHandler", () => {
     const cleaned = DesktopLinuxUrlHandler.removeRetiredSchemeAssociations(
       [
         "[Default Applications]",
-        "x-scheme-handler/t3code=akeru-url-handler.desktop",
-        "x-scheme-handler/t3code-dev=akeru-url-handler.desktop;other.desktop;",
-        "x-scheme-handler/akeru=akeru-url-handler.desktop",
+        "x-scheme-handler/t3code=isnadi-url-handler.desktop",
+        "x-scheme-handler/t3code-dev=isnadi-url-handler.desktop;other.desktop;",
+        "x-scheme-handler/isnadi=isnadi-url-handler.desktop",
         "x-scheme-handler/t3code=t3code-url-handler.desktop",
         "text/html=firefox.desktop",
       ].join("\n"),
@@ -214,27 +214,27 @@ describe("DesktopLinuxUrlHandler", () => {
       [
         "[Default Applications]",
         "x-scheme-handler/t3code-dev=other.desktop;",
-        "x-scheme-handler/akeru=akeru-url-handler.desktop",
+        "x-scheme-handler/isnadi=isnadi-url-handler.desktop",
         "x-scheme-handler/t3code=t3code-url-handler.desktop",
         "text/html=firefox.desktop",
       ].join("\n"),
     );
     assert.isNull(
       DesktopLinuxUrlHandler.removeRetiredSchemeAssociations(
-        "x-scheme-handler/akeru=akeru-url-handler.desktop\n",
+        "x-scheme-handler/isnadi=isnadi-url-handler.desktop\n",
       ),
     );
   });
 
-  it.effect("rewrites mimeapps.list when a retired scheme still points at Akeru", () => {
+  it.effect("rewrites mimeapps.list when a retired scheme still points at Isnadi", () => {
     const recorded = emptyRecording();
 
     return Effect.gen(function* () {
       yield* runRegister(recorded, {
         mimeappsContent: [
           "[Default Applications]",
-          "x-scheme-handler/t3code=akeru-url-handler.desktop",
-          "x-scheme-handler/akeru=akeru-url-handler.desktop",
+          "x-scheme-handler/t3code=isnadi-url-handler.desktop",
+          "x-scheme-handler/isnadi=isnadi-url-handler.desktop",
         ].join("\n"),
       });
 
@@ -244,12 +244,12 @@ describe("DesktopLinuxUrlHandler", () => {
 
       assert.equal(
         mimeappsWrite?.content,
-        ["[Default Applications]", "x-scheme-handler/akeru=akeru-url-handler.desktop"].join("\n"),
+        ["[Default Applications]", "x-scheme-handler/isnadi=isnadi-url-handler.desktop"].join("\n"),
       );
     });
   });
 
-  it.effect("leaves mimeapps.list alone when no retired scheme points at Akeru", () => {
+  it.effect("leaves mimeapps.list alone when no retired scheme points at Isnadi", () => {
     const recorded = emptyRecording();
 
     return Effect.gen(function* () {

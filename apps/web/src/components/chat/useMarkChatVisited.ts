@@ -1,5 +1,5 @@
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { useEffect } from "react";
 import { useThreadShell } from "../../state/entities";
 import { useUiStateStore } from "../../uiStateStore";

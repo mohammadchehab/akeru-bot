@@ -12,7 +12,7 @@ import type {
   OrchestrationBot,
   OrchestrationThreadShell,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { memo, useCallback, useState } from "react";
@@ -22,7 +22,7 @@ import {
   type PluginDefinition,
 } from "../../../../../plugins";
 
-import { createTranslator, type PluralForms } from "@akeru/client-runtime/i18n";
+import { createTranslator, type PluralForms } from "@isnadi/client-runtime/i18n";
 
 import { useEnvironmentIdentificationMode } from "../../hooks/useSettings";
 import { useI18n } from "../../i18n";
@@ -35,7 +35,7 @@ import { environmentMcpServersAtom, mcpServerEnvironment } from "../../state/mcp
 import { environmentSnapshotAtom } from "../../state/shell";
 import { threadEnvironment } from "../../state/threads";
 import { useAtomCommand } from "../../state/use-atom-command";
-import { AkeruWordmark } from "../AkeruWordmark";
+import { IsnadiWordmark } from "../IsnadiWordmark";
 import { isBuiltinMcpServer } from "../plugins/pluginRegistry";
 import { cn } from "../../lib/utils";
 import {
@@ -98,7 +98,7 @@ export const SidebarChromeHeader = memo(function SidebarChromeHeader({
             )}
             to="/"
           >
-            <AkeruWordmark />
+            <IsnadiWordmark />
           </Link>
           {pillLabel ? (
             <Badge

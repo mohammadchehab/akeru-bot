@@ -3,7 +3,7 @@
 import { Schema } from "effect";
 import { isTagged } from "../tagged";
 
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import {
   FILL_PREVIEW_VIEWPORT,
   PREVIEW_AUTOMATION_OPERATIONS,
@@ -26,8 +26,8 @@ import {
   type PreviewAutomationStatus,
   type PreviewRenderedViewportSize,
   type ScopedThreadRef,
-} from "@akeru/contracts";
-import { resolvePreviewViewport } from "@akeru/shared/previewViewport";
+} from "@isnadi/contracts";
+import { resolvePreviewViewport } from "@isnadi/shared/previewViewport";
 import { RegistryContext, useAtomSet, useAtomValue } from "@effect/atom-react";
 import { Atom } from "effect/unstable/reactivity";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";

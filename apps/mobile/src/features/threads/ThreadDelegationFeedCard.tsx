@@ -7,9 +7,9 @@ import { Match } from "effect";
  *
  * @module features/threads/ThreadDelegationFeedCard
  */
-import type { AkeruDelegationRecord, EnvironmentId, OrchestrationBot } from "@akeru/contracts";
-import type { DelegationAction } from "@akeru/client-runtime/delegation-presentation";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import type { IsnadiDelegationRecord, EnvironmentId, OrchestrationBot } from "@isnadi/contracts";
+import type { DelegationAction } from "@isnadi/client-runtime/delegation-presentation";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import { useCallback } from "react";
 import { Alert } from "react-native";
 
@@ -20,7 +20,7 @@ import { ThreadDelegationCard } from "./ThreadDelegationCard";
 
 export function ThreadDelegationFeedCard(props: {
   readonly environmentId: EnvironmentId;
-  readonly delegation: AkeruDelegationRecord;
+  readonly delegation: IsnadiDelegationRecord;
   readonly actions: ReadonlyArray<DelegationAction>;
   readonly childBot: OrchestrationBot | null;
   readonly parentBot: OrchestrationBot | null;

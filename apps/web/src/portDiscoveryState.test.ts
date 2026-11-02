@@ -1,4 +1,4 @@
-import { CONFIGURED_LOCAL_SERVER_URLS_MAX_ITEMS, PREVIEW_URL_MAX_LENGTH } from "@akeru/contracts";
+import { CONFIGURED_LOCAL_SERVER_URLS_MAX_ITEMS, PREVIEW_URL_MAX_LENGTH } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { boundConfiguredLocalServerUrls } from "./portDiscoveryState";

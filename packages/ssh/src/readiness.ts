@@ -1,6 +1,6 @@
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
-import { waitForHttpReady as waitForHttpReadyShared } from "@akeru/shared/httpReadiness";
+import { waitForHttpReady as waitForHttpReadyShared } from "@isnadi/shared/httpReadiness";
 import * as Effect from "effect/Effect";
 import { HttpClient } from "effect/unstable/http";
 import { SshHttpBridgeError, SshReadinessError } from "./errors.ts";

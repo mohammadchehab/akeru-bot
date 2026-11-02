@@ -186,7 +186,7 @@ export const make = (options?: StartupOptions) =>
         Effect.gen(function* () {
           if (isRemoteInstall({ launcherManaged: launcher.managed, env: process.env })) {
             // Remote installs run headless under the boot service or in a container, so the
-            // first admin link goes to stdout, which `akeru remote logs` and `docker logs` show.
+            // first admin link goes to stdout, which `isnadi remote logs` and `docker logs` show.
             const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
             yield* runStartupPhase(
               "remote.first-boot",

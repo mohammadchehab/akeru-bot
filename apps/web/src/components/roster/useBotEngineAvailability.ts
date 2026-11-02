@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { BotEngine } from "@akeru/contracts";
+import type { BotEngine } from "@isnadi/contracts";
 import { useMemo } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";

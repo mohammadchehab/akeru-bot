@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
-import { RuntimeTaskId } from "@akeru/contracts";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { RuntimeTaskId } from "@isnadi/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asEventId,

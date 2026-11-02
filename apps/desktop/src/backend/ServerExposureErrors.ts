@@ -1,4 +1,4 @@
-import { DesktopServerExposureModeSchema } from "@akeru/contracts";
+import { DesktopServerExposureModeSchema } from "@isnadi/contracts";
 
 import * as Schema from "effect/Schema";
 

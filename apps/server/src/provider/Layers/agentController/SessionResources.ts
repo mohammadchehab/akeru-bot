@@ -1,7 +1,7 @@
 import type { BotWorkspaceIO } from "../../workspace/BotWorkspaceIO.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 
 import { BotInboxService } from "../../../bot-inbox/service.ts";
 import {
@@ -14,7 +14,7 @@ import * as McpProviderSession from "../../../mcp/McpProviderSession.ts";
 
 import { SubscriptionAuthService } from "../../../subscription-auth/service.ts";
 
-import { AkeruSessionResources } from "../../AkeruSessionResources.ts";
+import { IsnadiSessionResources } from "../../IsnadiSessionResources.ts";
 
 import { toMcpServerConfigs } from "./McpConfiguration.ts";
 
@@ -26,7 +26,7 @@ export function createSessionResources(deps: {
   readonly botInbox: BotInboxService;
   readonly options: AgentControllerLiveOptions | undefined;
 }) {
-  const sessionResources = new AkeruSessionResources({
+  const sessionResources = new IsnadiSessionResources({
     io: deps.io,
     stateDir: deps.config.stateDir,
     hostPlatform: deps.hostPlatform,

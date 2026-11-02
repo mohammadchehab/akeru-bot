@@ -1,8 +1,8 @@
-import type { DiscoveredLocalServer } from "@akeru/contracts";
-import { isLoopbackHost } from "@akeru/shared/preview";
+import type { DiscoveredLocalServer } from "@isnadi/contracts";
+import { isLoopbackHost } from "@isnadi/shared/preview";
 import { useMemo } from "react";
 
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { resolveDiscoveredServerUrl } from "~/browser/browserTargetResolver";
 import { useDiscoveredPortsState } from "~/portDiscoveryState";
 

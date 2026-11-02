@@ -3,7 +3,7 @@ import {
   type OrchestrationLatestTurn,
   type OrchestrationThreadActivity,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

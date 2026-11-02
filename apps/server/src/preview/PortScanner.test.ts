@@ -6,7 +6,7 @@ import {
   commonNonHttpServer,
 } from "./testUtils/portScanner.ts";
 import { it as effectIt } from "@effect/vitest";
-import { PREVIEW_URL_MAX_LENGTH } from "@akeru/contracts";
+import { PREVIEW_URL_MAX_LENGTH } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";

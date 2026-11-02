@@ -9,7 +9,7 @@
  */
 import * as DateTime from "effect/DateTime";
 
-import type { UsageBucket, UsageDay, UsageResolution, UsageTokenTotals } from "@akeru/contracts";
+import type { UsageBucket, UsageDay, UsageResolution, UsageTokenTotals } from "@isnadi/contracts";
 
 import { addTotals, EMPTY_TOTALS, type UsageRecord } from "./usageTranscripts.ts";
 import { cacheSavingsUsd, priceUsage, type RateTable } from "./usagePricing.ts";

@@ -1,4 +1,4 @@
-import type { SupervisorConnectionState } from "@akeru/client-runtime/connection";
+import type { SupervisorConnectionState } from "@isnadi/client-runtime/connection";
 
 import type { ActiveVoiceCall } from "./voiceCallContext";
 

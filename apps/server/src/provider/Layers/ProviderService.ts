@@ -25,8 +25,8 @@ import {
   ProviderUploadFeedbackInput,
   type ProviderInstanceId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
-import { causeErrorTag } from "@akeru/shared/observability";
+} from "@isnadi/contracts";
+import { causeErrorTag } from "@isnadi/shared/observability";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -108,7 +108,7 @@ const makeProviderService = Effect.fn("makeProviderService")(function* (
   const nowIso = Effect.map(DateTime.now, DateTime.formatIso);
 
   /**
-   * Attach the `akeru` MCP server to the session that is about to start.
+   * Attach the `isnadi` MCP server to the session that is about to start.
    *
    * This is the only place a credential is minted, so withholding one here is
    * what disables agent browser access everywhere: every adapter already

@@ -20,7 +20,7 @@ import {
   discordConnect,
   externalAdapters,
 } from "./testUtils/channelRuntime.ts";
-import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@akeru/contracts";
+import { MessageId, ThreadId, TurnId, type OrchestrationThread } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { it } from "@effect/vitest";
 import { describe, expect } from "vite-plus/test";
@@ -109,7 +109,7 @@ describe("channel runtime", () => {
     "appends the Open in IsnadiBot footer only from a server-advertised public origin",
     () =>
       Effect.gen(function* () {
-        const url = `https://akeru.example.com/bots/${BOT_ID}`;
+        const url = `https://isnadi.example.com/bots/${BOT_ID}`;
 
         const cases = [
           {
@@ -191,7 +191,7 @@ describe("channel runtime", () => {
             { externalThreadId: entry.externalThreadId, text: "Approved answer" },
           ]);
 
-          const withOrigin = build("https://akeru.example.com/");
+          const withOrigin = build("https://isnadi.example.com/");
           yield* connectChannel(withOrigin.harness.dependencies, entry.connect);
           yield* sendChannelMessage(withOrigin.harness.dependencies, {
             botId: BOT_ID,

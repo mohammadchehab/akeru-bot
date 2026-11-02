@@ -87,7 +87,7 @@ describe("plugin catalog loader", () => {
       transport: { type: "unavailable" },
       connection: {
         type: "approval-pending",
-        blocker: "The vendor must approve Akeru as an OAuth client.",
+        blocker: "The vendor must approve Isnadi as an OAuth client.",
       },
       catalogStatus: "approval-pending",
     };
@@ -113,7 +113,7 @@ describe("plugin catalog loader", () => {
       transport: { type: "url", url: "https://mcp.pending.example/mcp" },
       connection: {
         type: "approval-pending",
-        blocker: "The vendor must approve Akeru as an OAuth client.",
+        blocker: "The vendor must approve Isnadi as an OAuth client.",
       },
       catalogStatus: "approval-pending",
     };
@@ -164,7 +164,7 @@ describe("plugin catalog loader", () => {
           catalogStatus: "approval-pending",
           connection: {
             type: "approval-pending",
-            blocker: "The vendor must approve Akeru as an OAuth client.",
+            blocker: "The vendor must approve Isnadi as an OAuth client.",
           },
         }),
       },
@@ -393,7 +393,7 @@ describe("plugin catalog loader", () => {
   });
 
   it("states blockers and setup as vendor or lifecycle facts, not as host work", () => {
-    const hostActor = /\bAkeru\b/;
+    const hostActor = /\bIsnadi\b/;
 
     for (const plugin of loadDirectoryCatalog()) {
       if (plugin.connection.type === "approval-pending") {
@@ -401,7 +401,7 @@ describe("plugin catalog loader", () => {
       }
 
       for (const step of plugin.setup) {
-        expect(step).not.toMatch(/\bAkeru (?:has|must|needs|completes|to)\b/);
+        expect(step).not.toMatch(/\bIsnadi (?:has|must|needs|completes|to)\b/);
       }
     }
   });

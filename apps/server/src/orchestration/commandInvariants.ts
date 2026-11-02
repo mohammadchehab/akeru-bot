@@ -1,6 +1,6 @@
-import { isGroupBotMember } from "@akeru/contracts";
+import { isGroupBotMember } from "@isnadi/contracts";
 import type {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   BotId,
   DelegationId,
   GroupId,
@@ -14,8 +14,8 @@ import type {
   OrchestrationThread,
   ProjectId,
   ThreadId,
-} from "@akeru/contracts";
-import { normalizeProjectPathForComparison } from "@akeru/shared/path";
+} from "@isnadi/contracts";
+import { normalizeProjectPathForComparison } from "@isnadi/shared/path";
 import * as Effect from "effect/Effect";
 
 import { OrchestrationCommandInvariantError } from "./Errors.ts";
@@ -67,7 +67,7 @@ export function findMcpServerById(
 export function findDelegationById(
   readModel: OrchestrationReadModel,
   delegationId: DelegationId,
-): AkeruDelegationRecord | undefined {
+): IsnadiDelegationRecord | undefined {
   return readModel.delegations.find((delegation) => delegation.delegationId === delegationId);
 }
 
@@ -176,7 +176,7 @@ export function requireDelegation(input: {
   readonly readModel: OrchestrationReadModel;
   readonly command: OrchestrationCommand;
   readonly delegationId: DelegationId;
-}): Effect.Effect<AkeruDelegationRecord, OrchestrationCommandInvariantError> {
+}): Effect.Effect<IsnadiDelegationRecord, OrchestrationCommandInvariantError> {
   const delegation = findDelegationById(input.readModel, input.delegationId);
 
   return delegation

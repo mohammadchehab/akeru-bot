@@ -1,6 +1,6 @@
 import * as NodeCrypto from "node:crypto";
 
-/** The pinned Ed25519 key that signs every Akeru Remote release manifest. */
+/** The pinned Ed25519 key that signs every Isnadi Remote release manifest. */
 export const RELEASE_MANIFEST_KEY = [
   "-----BEGIN PUBLIC KEY-----",
   "MCowBQYDK2VwAyEAA74gQCflQCtBbynI3b+W2z/unYne9w6mPsei/hpmEWg=",
@@ -20,7 +20,7 @@ export function signedArchiveChecksum(input: {
   if (
     !NodeCrypto.verify(null, input.manifest, input.key ?? RELEASE_MANIFEST_KEY, input.signature)
   ) {
-    throw new Error("The release manifest signature does not match the pinned Akeru release key.");
+    throw new Error("The release manifest signature does not match the pinned Isnadi release key.");
   }
 
   const expected = new TextDecoder()

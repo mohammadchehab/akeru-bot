@@ -3,13 +3,13 @@ import { useAtomValue } from "@effect/atom-react";
 import {
   channelBindingNeedsProject,
   channelFailureReason,
-} from "@akeru/client-runtime/channel-presentation";
+} from "@isnadi/client-runtime/channel-presentation";
 import {
   createTranslator,
   type PluralForms,
   type TranslationParams,
-} from "@akeru/client-runtime/i18n";
-import { defaultProjectIdForBot } from "@akeru/shared/channelProject";
+} from "@isnadi/client-runtime/i18n";
+import { defaultProjectIdForBot } from "@isnadi/shared/channelProject";
 import {
   BotId,
   type ChannelConnectionId,
@@ -18,7 +18,7 @@ import {
   type EnvironmentId,
   type OrchestrationBot,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {

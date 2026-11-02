@@ -171,24 +171,24 @@ importers:
 
   apps/desktop:
     dependencies:
-      '@akeru/client-runtime':
-        specifier: workspace:*
-        version: link:../../packages/client-runtime
-      '@akeru/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
-      '@akeru/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@akeru/ssh':
-        specifier: workspace:*
-        version: link:../../packages/ssh
-      '@akeru/tailscale':
-        specifier: workspace:*
-        version: link:../../packages/tailscale
       '@effect/platform-node':
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(bufferutil@4.1.0)(effect@4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6))(ioredis@5.11.0)(utf-8-validate@6.0.6)
+      '@isnadi/client-runtime':
+        specifier: workspace:*
+        version: link:../../packages/client-runtime
+      '@isnadi/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@isnadi/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@isnadi/ssh':
+        specifier: workspace:*
+        version: link:../../packages/ssh
+      '@isnadi/tailscale':
+        specifier: workspace:*
+        version: link:../../packages/tailscale
       effect:
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6)
@@ -232,18 +232,6 @@ importers:
 
   apps/mobile:
     dependencies:
-      '@akeru/client-runtime':
-        specifier: workspace:*
-        version: link:../../packages/client-runtime
-      '@akeru/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
-      '@akeru/mobile-markdown-text':
-        specifier: file:./modules/t3-markdown-text
-        version: file:apps/mobile/modules/t3-markdown-text(ed3009b8f2424467288a00b38bef28fe)
-      '@akeru/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@callstack/liquid-glass':
         specifier: ^0.7.1
         version: 0.7.1(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
@@ -259,6 +247,18 @@ importers:
       '@expo/ui':
         specifier: ~56.0.18
         version: 56.0.18(3cdc0dde9f93166d952f1e1bd0cb25c0)
+      '@isnadi/client-runtime':
+        specifier: workspace:*
+        version: link:../../packages/client-runtime
+      '@isnadi/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@isnadi/mobile-markdown-text':
+        specifier: file:./modules/t3-markdown-text
+        version: file:apps/mobile/modules/t3-markdown-text(ed3009b8f2424467288a00b38bef28fe)
+      '@isnadi/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@legendapp/list':
         specifier: 'catalog:'
         version: 3.3.5(patch_hash=064530db83875fa671559a81ae42dc159726dc2dd6ec4c982da44ff7c7a74706)(react-dom@19.2.3(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
@@ -582,21 +582,21 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@akeru/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
-      '@akeru/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@akeru/tailscale':
-        specifier: workspace:*
-        version: link:../../packages/tailscale
-      '@akeru/web':
-        specifier: workspace:*
-        version: link:../web
       '@effect/vitest':
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(patch_hash=a16b1e870d8c29e4a98b17cc4c638a4ff471753d8ca3487f78a22b759caf951b)(effect@4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6))
+      '@isnadi/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@isnadi/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@isnadi/tailscale':
+        specifier: workspace:*
+        version: link:../../packages/tailscale
+      '@isnadi/web':
+        specifier: workspace:*
+        version: link:../web
       '@types/bun':
         specifier: 1.3.14
         version: 1.3.14
@@ -618,15 +618,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@akeru/client-runtime':
-        specifier: workspace:*
-        version: link:../../packages/client-runtime
-      '@akeru/contracts':
-        specifier: workspace:*
-        version: link:../../packages/contracts
-      '@akeru/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@base-ui/react':
         specifier: ^1.4.1
         version: 1.5.0(@types/react@19.2.16)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -657,6 +648,15 @@ importers:
       '@hugeicons/react':
         specifier: ^1.1.10
         version: 1.1.10(react@19.2.6)
+      '@isnadi/client-runtime':
+        specifier: workspace:*
+        version: link:../../packages/client-runtime
+      '@isnadi/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@isnadi/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@legendapp/list':
         specifier: 'catalog:'
         version: 3.3.5(patch_hash=064530db83875fa671559a81ae42dc159726dc2dd6ec4c982da44ff7c7a74706)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -823,7 +823,7 @@ importers:
 
   infra/feedback:
     dependencies:
-      '@akeru/contracts':
+      '@isnadi/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
       alchemy:
@@ -846,14 +846,24 @@ importers:
         specifier: 'catalog:'
         version: 0.2.2(@opentelemetry/api@1.9.1)(@types/node@24.12.4)(bufferutil@4.1.0)(esbuild@0.28.1)(jiti@2.7.0)(msw@2.12.11(@types/node@24.12.4)(typescript@6.0.3))(terser@5.48.0)(tsx@4.23.15)(typescript@6.0.3)(unrun@0.2.39)(utf-8-validate@6.0.6)(yaml@2.9.0)
 
-  oxlint-plugin-akeru:
+  oxlint-plugin-anti-slop:
+    dependencies:
+      '@oxlint/plugins':
+        specifier: 1.72.0
+        version: 1.72.0
+    devDependencies:
+      oxlint:
+        specifier: 1.72.0
+        version: 1.72.0(oxlint-tsgolint@0.24.0)(vite-plus@0.2.2(@opentelemetry/api@1.9.1)(@types/node@24.12.4)(bufferutil@4.1.0)(esbuild@0.28.1)(jiti@2.7.0)(msw@2.12.11(@types/node@24.12.4)(typescript@6.0.3))(terser@5.48.0)(tsx@4.23.15)(typescript@6.0.3)(unrun@0.2.39)(utf-8-validate@6.0.6)(yaml@2.9.0))
+
+  oxlint-plugin-isnadi:
     dependencies:
       '@effect/platform-node':
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(bufferutil@4.1.0)(effect@4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6))(ioredis@5.11.0)(utf-8-validate@6.0.6)
       '@oxlint/plugins':
         specifier: ^1.63.0
-        version: 1.68.0
+        version: 1.72.0
       effect:
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6)
@@ -865,22 +875,12 @@ importers:
         specifier: 'catalog:'
         version: 0.2.2(@opentelemetry/api@1.9.1)(@types/node@24.12.4)(bufferutil@4.1.0)(esbuild@0.28.1)(jiti@2.7.0)(msw@2.12.11(@types/node@24.12.4)(typescript@6.0.3))(terser@5.48.0)(tsx@4.23.15)(typescript@6.0.3)(unrun@0.2.39)(utf-8-validate@6.0.6)(yaml@2.9.0)
 
-  oxlint-plugin-anti-slop:
-    dependencies:
-      '@oxlint/plugins':
-        specifier: 1.72.0
-        version: 1.72.0
-    devDependencies:
-      oxlint:
-        specifier: 1.72.0
-        version: 1.72.0(oxlint-tsgolint@0.24.0)(vite-plus@0.2.2(@opentelemetry/api@1.9.1)(@types/node@24.12.4)(bufferutil@4.1.0)(esbuild@0.28.1)(jiti@2.7.0)(msw@2.12.11(@types/node@24.12.4)(typescript@6.0.3))(terser@5.48.0)(tsx@4.23.15)(typescript@6.0.3)(unrun@0.2.39)(utf-8-validate@6.0.6)(yaml@2.9.0))
-
   packages/client-runtime:
     dependencies:
-      '@akeru/contracts':
+      '@isnadi/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@akeru/shared':
+      '@isnadi/shared':
         specifier: workspace:*
         version: link:../shared
       effect:
@@ -953,7 +953,7 @@ importers:
 
   packages/shared:
     dependencies:
-      '@akeru/contracts':
+      '@isnadi/contracts':
         specifier: workspace:*
         version: link:../contracts
       effect:
@@ -978,10 +978,10 @@ importers:
 
   packages/ssh:
     dependencies:
-      '@akeru/contracts':
+      '@isnadi/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@akeru/shared':
+      '@isnadi/shared':
         specifier: workspace:*
         version: link:../shared
       effect:
@@ -1003,7 +1003,7 @@ importers:
 
   packages/tailscale:
     dependencies:
-      '@akeru/shared':
+      '@isnadi/shared':
         specifier: workspace:*
         version: link:../shared
       effect:
@@ -1022,15 +1022,6 @@ importers:
 
   scripts:
     dependencies:
-      '@akeru/contracts':
-        specifier: workspace:*
-        version: link:../packages/contracts
-      '@akeru/shared':
-        specifier: workspace:*
-        version: link:../packages/shared
-      '@akeru/tailscale':
-        specifier: workspace:*
-        version: link:../packages/tailscale
       '@effect/platform-node':
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(bufferutil@4.1.0)(effect@4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6))(ioredis@5.11.0)(utf-8-validate@6.0.6)
@@ -1040,6 +1031,15 @@ importers:
       '@electron/osx-sign':
         specifier: 2.7.0
         version: 2.7.0
+      '@isnadi/contracts':
+        specifier: workspace:*
+        version: link:../packages/contracts
+      '@isnadi/shared':
+        specifier: workspace:*
+        version: link:../packages/shared
+      '@isnadi/tailscale':
+        specifier: workspace:*
+        version: link:../packages/tailscale
       effect:
         specifier: 4.0.0-beta.103
         version: 4.0.0-beta.103(patch_hash=af36b7948b6f9c56623074662b51dade5699880c1a7c71245de73e13c3185fb6)
@@ -1265,17 +1265,6 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
-
-  '@akeru/mobile-markdown-text@file:apps/mobile/modules/t3-markdown-text':
-    resolution: {directory: apps/mobile/modules/t3-markdown-text, type: directory}
-    peerDependencies:
-      expo-asset: '*'
-      expo-clipboard: '*'
-      expo-haptics: '*'
-      expo-symbols: '*'
-      react: '*'
-      react-native: '*'
-      react-native-nitro-markdown: '*'
 
   '@alcalzone/ansi-tokenize@0.2.5':
     resolution: {integrity: sha512-3NX/MpTdroi0aKz134A6RC2Gb2iXVECN4QaAXnvCIxxIm3C3AVB1mkUe8NaaiyvOpDfsrqWhYtj+Q6a62RrTsw==}
@@ -3306,6 +3295,17 @@ packages:
   '@isaacs/ttlcache@2.1.5':
     resolution: {integrity: sha512-VwGZqqjAWPICTmxUZnbpEfO60LhPWzquik+bmyXGY7pYRn6diEvCI5i6Ca+J6o2y4vS73HrpuMTo2dOvUevH8w==}
     engines: {node: '>=12'}
+
+  '@isnadi/mobile-markdown-text@file:apps/mobile/modules/t3-markdown-text':
+    resolution: {directory: apps/mobile/modules/t3-markdown-text, type: directory}
+    peerDependencies:
+      expo-asset: '*'
+      expo-clipboard: '*'
+      expo-haptics: '*'
+      expo-symbols: '*'
+      react: '*'
+      react-native: '*'
+      react-native-nitro-markdown: '*'
 
   '@jest/schemas@29.6.3':
     resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
@@ -13164,16 +13164,6 @@ snapshots:
       zod: 4.4.3
     optional: true
 
-  '@akeru/mobile-markdown-text@file:apps/mobile/modules/t3-markdown-text(ed3009b8f2424467288a00b38bef28fe)':
-    dependencies:
-      expo-asset: 56.0.17(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)(typescript@6.0.3)
-      expo-clipboard: 56.0.4(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
-      expo-haptics: 56.0.3(expo@56.0.12)
-      expo-symbols: 56.0.6(expo-font@56.0.7)(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
-      react: 19.2.3
-      react-native: 0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6)
-      react-native-nitro-markdown: 0.5.8(react-native-nitro-modules@0.35.9(patch_hash=825622aae63a8fb5b904f3c77908a0e216261d727ea171709f2c0b6088422675)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3))(react-native-svg@15.15.4(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
-
   '@alcalzone/ansi-tokenize@0.2.5':
     dependencies:
       ansi-styles: 6.2.3
@@ -15994,6 +15984,16 @@ snapshots:
   '@isaacs/ttlcache@1.4.1': {}
 
   '@isaacs/ttlcache@2.1.5': {}
+
+  '@isnadi/mobile-markdown-text@file:apps/mobile/modules/t3-markdown-text(ed3009b8f2424467288a00b38bef28fe)':
+    dependencies:
+      expo-asset: 56.0.17(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)(typescript@6.0.3)
+      expo-clipboard: 56.0.4(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
+      expo-haptics: 56.0.3(expo@56.0.12)
+      expo-symbols: 56.0.6(expo-font@56.0.7)(expo@56.0.12)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
+      react: 19.2.3
+      react-native: 0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6)
+      react-native-nitro-markdown: 0.5.8(react-native-nitro-modules@0.35.9(patch_hash=825622aae63a8fb5b904f3c77908a0e216261d727ea171709f2c0b6088422675)(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3))(react-native-svg@15.15.4(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.7)(@react-native/metro-config@0.85.3(@babel/core@7.29.7)(bufferutil@4.1.0)(utf-8-validate@6.0.6))(@types/react@19.2.16)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@6.0.6))(react@19.2.3)
 
   '@jest/schemas@29.6.3':
     dependencies:

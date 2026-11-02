@@ -1,4 +1,4 @@
-import type { EnvironmentId, ThreadId } from "@akeru/contracts";
+import type { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createContext, use } from "react";
 import type {

@@ -5,7 +5,7 @@ import {
   type ModelSelection,
   type ProviderInteractionMode,
   type RuntimeMode,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useEffect, useMemo } from "react";
 import { Atom } from "effect/unstable/reactivity";
 import type { DraftComposerImageAttachment } from "../lib/composerImages";

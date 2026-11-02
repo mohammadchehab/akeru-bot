@@ -10,7 +10,7 @@ import {
   type DesktopDiscoveredSshHost,
   type DesktopServerExposureState,
   type EnvironmentId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useI18n } from "../../i18n";
 import * as Option from "effect/Option";
 import {

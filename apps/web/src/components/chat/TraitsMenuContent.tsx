@@ -3,11 +3,11 @@ import {
   type ProviderInstanceId,
   type ProviderOptionDescriptor,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   applyClaudePromptEffortPrefix,
   buildProviderOptionSelectionsFromDescriptors,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import type { VariantProps } from "class-variance-authority";
 import { memo, useCallback } from "react";
 import { useI18n } from "~/i18n";

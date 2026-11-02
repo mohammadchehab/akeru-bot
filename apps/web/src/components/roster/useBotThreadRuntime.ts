@@ -1,7 +1,7 @@
 import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
 import {
   BotId,
   PLACEHOLDER_THREAD_TITLE,
@@ -9,7 +9,7 @@ import {
   type MessageId,
   type ModelSelection,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";

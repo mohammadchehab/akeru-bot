@@ -3,7 +3,7 @@ import * as Option from "effect/Option";
 import {
   DesktopPreviewRecordingFrameSchema,
   type DesktopPreviewRecordingFrame,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { contextBridge, ipcRenderer } from "electron";
 
 import { PREVIEW_PICTURE_IN_PICTURE_FRAME_CHANNEL } from "./ipc/channels.ts";

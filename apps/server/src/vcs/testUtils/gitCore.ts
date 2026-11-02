@@ -8,7 +8,7 @@ import * as Scope from "effect/Scope";
 import * as Sink from "effect/Sink";
 import * as Stream from "effect/Stream";
 import { ChildProcessSpawner } from "effect/unstable/process";
-import { GitCommandError } from "@akeru/contracts";
+import { GitCommandError } from "@isnadi/contracts";
 import { ServerConfig } from "../../config.ts";
 import * as GitVcsDriver from "../GitVcsDriver.ts";
 

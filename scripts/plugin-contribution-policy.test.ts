@@ -62,7 +62,7 @@ describe("plugin contribution policy", () => {
     expect(required).toEqual(
       expect.arrayContaining([
         "demand",
-        "akeru_job",
+        "isnadi_job",
         "lifecycle",
         "documentation",
         "health",

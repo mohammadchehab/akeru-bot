@@ -2,8 +2,8 @@ import {
   scopedProjectKey,
   scopeProjectRef,
   scopeThreadRef,
-} from "@akeru/client-runtime/environment";
-import { ProjectId, ThreadId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/environment";
+import { ProjectId, ThreadId } from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import {
   clearComposerDraftsEnvironment,

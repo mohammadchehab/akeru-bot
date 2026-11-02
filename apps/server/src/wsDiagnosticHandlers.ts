@@ -1,7 +1,7 @@
 import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
-import { WS_METHODS, WsRpcGroup } from "@akeru/contracts";
+import { WS_METHODS, WsRpcGroup } from "@isnadi/contracts";
 import { getRemoteDoctorStatus, repairRemoteDoctor } from "./remote/remoteDoctorRpc.ts";
 import * as TraceDiagnostics from "./diagnostics/TraceDiagnostics.ts";
 

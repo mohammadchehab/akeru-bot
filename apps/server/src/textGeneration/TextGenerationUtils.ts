@@ -1,4 +1,4 @@
-import { PLACEHOLDER_THREAD_TITLE, TextGenerationError } from "@akeru/contracts";
+import { PLACEHOLDER_THREAD_TITLE, TextGenerationError } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 

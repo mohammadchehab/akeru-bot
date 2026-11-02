@@ -2,7 +2,7 @@ import type {
   ResourceTelemetryAggregate,
   ResourceTelemetrySourceHealth,
   ResourceTelemetrySourceStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 import { type ComponentProps, type ReactNode } from "react";

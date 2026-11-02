@@ -1,4 +1,4 @@
-import { BotId, ProjectId, ThreadId } from "@akeru/contracts";
+import { BotId, ProjectId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { defaultProjectIdForBot, type ChannelProjectModel } from "./channelProject.ts";

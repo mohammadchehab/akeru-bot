@@ -3,13 +3,13 @@ import {
   type ProviderDriverKind,
   type ProviderOptionSelection,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   buildProviderOptionSelectionsFromDescriptors,
   getProviderOptionCurrentValue,
   getProviderOptionDescriptors,
   isClaudeUltrathinkPrompt,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 
 import { getProviderModelCapabilities } from "../../providerModels";
 

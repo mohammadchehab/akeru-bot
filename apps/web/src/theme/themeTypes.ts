@@ -5,13 +5,13 @@ import {
   THEME_COLOR_ROLES,
   type ThemeAppearance,
   type ThemeColorRole,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 
-export const AKERU_PAPER_THEME_ID = "akeru-paper" as const;
+export const ISNADI_PAPER_THEME_ID = "isnadi-paper" as const;
 
-export const AKERU_PAPER_THEME_LABEL = "Isnadi Paper";
+export const ISNADI_PAPER_THEME_LABEL = "Isnadi Paper";
 
-export const T3_CHAT_THEME_ID = "akeru-chat" as const;
+export const T3_CHAT_THEME_ID = "isnadi-chat" as const;
 
 // The shipped id before the rebrand; stored preferences keep working through
 // the alias table below.
@@ -37,13 +37,13 @@ export const IRIS_THEME_LABEL = "Iris";
 
 export const THEME_FILE_VERSION = 1 as const;
 
-export const CUSTOM_THEMES_STORAGE_KEY = "akeru:themes:v1";
+export const CUSTOM_THEMES_STORAGE_KEY = "isnadi:themes:v1";
 
-export const THEME_FOLLOW_SYSTEM_STORAGE_KEY = "akeru:theme-follow-system";
+export const THEME_FOLLOW_SYSTEM_STORAGE_KEY = "isnadi:theme-follow-system";
 
-export const THEME_APPEARANCE_MODE_STORAGE_KEY = "akeru:theme-appearance-mode";
+export const THEME_APPEARANCE_MODE_STORAGE_KEY = "isnadi:theme-appearance-mode";
 
-export const THEME_HALVES_STORAGE_KEY = "akeru:theme-halves:v1";
+export const THEME_HALVES_STORAGE_KEY = "isnadi:theme-halves:v1";
 
 // Theme persistence used the upstream `t3code:` prefix until the fork's
 // rebrand. Reads fall back to these keys and writes drain them.

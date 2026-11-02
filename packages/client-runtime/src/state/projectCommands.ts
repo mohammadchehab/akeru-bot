@@ -1,4 +1,4 @@
-import { type EnvironmentId, type ProjectReadFileResult, WS_METHODS } from "@akeru/contracts";
+import { type EnvironmentId, type ProjectReadFileResult, WS_METHODS } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import { Atom } from "effect/unstable/reactivity";
 

@@ -1,4 +1,4 @@
-import type { SubscriptionAuthStatuses } from "@akeru/contracts";
+import type { SubscriptionAuthStatuses } from "@isnadi/contracts";
 
 export type BotInboxItem = SubscriptionAuthStatuses["inbox"][number];
 

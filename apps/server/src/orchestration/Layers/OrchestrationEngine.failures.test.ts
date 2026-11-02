@@ -1,4 +1,4 @@
-import { CommandId, ProjectId, ProviderInstanceId } from "@akeru/contracts";
+import { CommandId, ProjectId, ProviderInstanceId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it } from "@effect/vitest";
 import * as Cause from "effect/Cause";

@@ -5,7 +5,7 @@ import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 
 import * as Electron from "electron";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 const electronSafeStorageErrorFields = {
   cause: Schema.Defect(),
@@ -66,7 +66,7 @@ export class ElectronSafeStorage extends Context.Service<
     ) => Effect.Effect<string, ElectronSafeStorageDecryptError>;
     readonly selectedStorageBackend: Effect.Effect<Option.Option<string>>;
   }
->()("@akeru/desktop/electron/ElectronSafeStorage") {}
+>()("@isnadi/desktop/electron/ElectronSafeStorage") {}
 
 export const make = Effect.gen(function* () {
   const platform = yield* HostProcessPlatform;

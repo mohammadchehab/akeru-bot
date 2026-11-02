@@ -11,8 +11,8 @@ import {
   type PortabilitySafeServerSettings,
   type OrchestrationReadModel,
   type ServerSettings,
-} from "@akeru/contracts";
-import { normalizeProjectPathForDispatch } from "@akeru/shared/path";
+} from "@isnadi/contracts";
+import { normalizeProjectPathForDispatch } from "@isnadi/shared/path";
 
 import { portabilityChecksum, canonicalJson } from "./portabilityChecksums.ts";
 import { portableRecords } from "./portabilityArchive.ts";

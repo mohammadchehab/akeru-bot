@@ -9,7 +9,7 @@
   Named AI teammates that run on <em>your</em> machine, use <em>your</em> subscriptions, and keep <em>your</em> data.
 </p>
 <p align="center"><em>Bots with memory · Group chats · Their own computer · Telegram, Slack, WhatsApp & more · Desktop, web & mobile</em></p>
-<p align="center"><sub>Born as <a href="https://github.com/opencoredev/akeru-bot">Akeru Bot</a>, which grew out of <a href="https://t3.codes">T3 Code</a>.</sub></p>
+<p align="center"><sub>Built on an MIT-licensed project by <a href="https://github.com/opencoredev">OpenCore</a>, which grew out of <a href="https://t3.codes">T3 Code</a>.</sub></p>
 
 <p align="center">
   <strong>English</strong> ·
@@ -45,8 +45,8 @@
 > work through the Claude, ChatGPT, Grok, or Kimi subscription you already pay for. There's no
 > IsnadiBot account and no IsnadiBot cloud.
 >
-> IsnadiBot started as a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot) and keeps its
-> full history. See [Credits](#-credits).
+> IsnadiBot started as a fork of an MIT-licensed project by [OpenCore](https://github.com/opencoredev)
+> and keeps its full history. See [Credits](#-credits).
 
 ---
 
@@ -175,7 +175,7 @@ With a free Apple account (Personal Team), set `T3CODE_IOS_PERSONAL_TEAM=1` and 
 in `T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID`. That build leaves out the widgets, the share extension,
 push notifications, and Sign in with Apple.
 
-To connect the app, run `akeru pair` on the machine running IsnadiBot and scan the QR code it
+To connect the app, run `isnadi pair` on the machine running IsnadiBot and scan the QR code it
 prints. Pairing over your local network or Tailscale works the same way; see
 [remote access](docs/user/remote-access.md) and the [mobile README](apps/mobile/README.md).
 
@@ -183,8 +183,8 @@ prints. Pairing over your local network or Tailscale works the same way; see
 
 ### 📂 Where your data lives
 
-Chats, bots, settings, secrets, and logs stay on your machine in `~/.akeru`. The folder keeps its
-upstream name so data carries over from Akeru Bot.
+Chats, bots, settings, secrets, and logs stay on your machine in `~/.isnadi`. An existing upstream
+data folder is moved there on first launch, so your data carries over.
 
 ---
 
@@ -233,11 +233,6 @@ If IsnadiBot is useful to you, a ⭐ helps other people find it.
 
 ---
 
-## 👥 Contributors
-
-Thanks to everyone whose work is in IsnadiBot, including the Akeru Bot and T3 Code contributors
-whose commits this project is built on.
-
 <p align="center">
   <a href="https://github.com/mohammadchehab/isnadibot/graphs/contributors">
     <img src="https://contrib.rocks/image?repo=mohammadchehab/isnadibot&max=200&columns=12" alt="IsnadiBot contributors">
@@ -248,7 +243,7 @@ whose commits this project is built on.
 
 ## 👥 Contributors
 
-IsnadiBot started as Akeru Bot, and Akeru Bot started as T3 Code. Every commit from both projects
+IsnadiBot started as a fork of OpenCore's fork of T3 Code. Every commit from both projects
 is still in this repository, so everyone below helped build it. Thank you.
 
 <p align="center">
@@ -261,11 +256,11 @@ is still in this repository, so everyone below helped build it. Thank you.
 
 ## 🙏 Credits
 
-IsnadiBot is a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot), which is itself a fork
-of [T3 Code](https://t3.codes). Thank you to the Akeru Bot and T3 Code maintainers and contributors,
+IsnadiBot is a fork of an MIT-licensed project by [OpenCore](https://github.com/opencoredev), which is
+itself a fork of [T3 Code](https://t3.codes). Thank you to the OpenCore and T3 Code maintainers and contributors,
 who built nearly all of this.
 
-IsnadiBot is not affiliated with OpenCore, Akeru Bot, T3 Tools, ping.gg, xAI, Anthropic, OpenAI, or
+IsnadiBot is not affiliated with OpenCore, T3 Tools, ping.gg, xAI, Anthropic, OpenAI, or
 Moonshot AI. Grok and Grok Bot are trademarks of xAI; they're named here only for comparison.
 
 ## 📄 License

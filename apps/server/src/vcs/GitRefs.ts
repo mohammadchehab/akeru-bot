@@ -3,8 +3,8 @@ import * as Cache from "effect/Cache";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
-import { type VcsRef } from "@akeru/contracts";
-import { dedupeRemoteBranchesWithLocalMatches } from "@akeru/shared/git";
+import { type VcsRef } from "@isnadi/contracts";
+import { dedupeRemoteBranchesWithLocalMatches } from "@isnadi/shared/git";
 import type * as GitVcsDriver from "./GitVcsDriver.ts";
 import { parseRemoteNames, parseRemoteRefWithRemoteNames } from "../git/remoteRefs.ts";
 import {

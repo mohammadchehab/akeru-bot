@@ -1,6 +1,6 @@
 import * as Schema from "effect/Schema";
 import * as Data from "effect/Data";
-import type { PreviewSessionSnapshot } from "@akeru/contracts";
+import type { PreviewSessionSnapshot } from "@isnadi/contracts";
 import * as Match from "effect/Match";
 import {
   DEFAULT_VIEWPORT,
@@ -25,9 +25,9 @@ import {
   type PreviewRenderedViewportSize,
   type PreviewTabId,
   type ThreadId,
-} from "@akeru/contracts";
-import { normalizePreviewUrl } from "@akeru/shared/preview";
-import { resolvePreviewViewport } from "@akeru/shared/previewViewport";
+} from "@isnadi/contracts";
+import { normalizePreviewUrl } from "@isnadi/shared/preview";
+import { resolvePreviewViewport } from "@isnadi/shared/previewViewport";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -78,10 +78,10 @@ export class ServerPreviewBrowser extends Context.Service<
   {
     readonly handle: (
       request: PreviewAutomationRequest,
-    ) => Promise<import("@akeru/contracts").PreviewAutomationResponse["result"]>;
+    ) => Promise<import("@isnadi/contracts").PreviewAutomationResponse["result"]>;
     readonly close: () => Promise<void>;
   }
->()("akeru-bot/preview/ServerPreviewBrowser") {}
+>()("isnadibot/preview/ServerPreviewBrowser") {}
 
 export const make = Effect.gen(function* ServerPreviewBrowserMake() {
   const runtimeContext = yield* Effect.context<never>();

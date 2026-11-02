@@ -215,7 +215,7 @@ describe("plugin catalog schema", () => {
       transport: { type: "unavailable" },
       connection: {
         type: "approval-pending",
-        blocker: "The vendor must approve Akeru as an OAuth client.",
+        blocker: "The vendor must approve Isnadi as an OAuth client.",
       },
       catalogStatus: "approval-pending",
     };

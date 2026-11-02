@@ -4,7 +4,7 @@ import {
   type DictationDependencies,
   type DictationDraft,
   type DictationIdentity,
-} from "@akeru/client-runtime/dictation";
+} from "@isnadi/client-runtime/dictation";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { useComposerDictation } from "./useComposerDictation";

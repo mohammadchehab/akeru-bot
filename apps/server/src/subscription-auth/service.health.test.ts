@@ -6,7 +6,7 @@ import { fixture } from "./testUtils/subscriptionAuthStorage.ts";
 import * as NodeFS from "node:fs";
 import { expect, it } from "@effect/vitest";
 import { describe, vi } from "vite-plus/test";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import { HEALTH_CHECK_TIMEOUT_MS } from "./serviceTypes.ts";
 import {
   makeTestSubscriptionAuthService,
@@ -204,7 +204,7 @@ describe("provider health checks", () => {
     expect(calls.map((call) => call.url)).toEqual(["https://api.kimi.com/coding/v1/models"]);
     expect(calls[0]?.headers.get("authorization")).toBe("Bearer kimi-for-coding-access");
     expect(calls[0]?.headers.get("x-msh-device-id")).toBe(kimiDeviceId);
-    expect(calls[0]?.headers.get("x-msh-platform")).toBe("akeru");
+    expect(calls[0]?.headers.get("x-msh-platform")).toBe("isnadi");
     expect(service.statuses().find((s) => s.provider === "kimi-for-coding")?.health).toBe(
       "healthy",
     );

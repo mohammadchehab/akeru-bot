@@ -1,4 +1,4 @@
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 
 import { useI18n } from "../../i18n";
 import { ProviderUnavailableNotice } from "../chat/ProviderUnavailableNotice";

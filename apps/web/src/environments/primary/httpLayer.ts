@@ -1,4 +1,4 @@
-import { remoteHttpClientLayer } from "@akeru/client-runtime/rpc";
+import { remoteHttpClientLayer } from "@isnadi/client-runtime/rpc";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http";

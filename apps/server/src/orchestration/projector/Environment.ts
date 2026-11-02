@@ -14,7 +14,7 @@ import {
   RoutineRunningPayload,
   RoutineSkillAssignedPayload,
   RoutineSkillUnassignedPayload,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   McpServerCreatedPayload,
@@ -23,7 +23,7 @@ import {
   ProjectDeletedPayload,
   ProjectMetaUpdatedPayload,
 } from "../Schemas.ts";
-import type { OrchestrationReadModel, OrchestrationEvent } from "@akeru/contracts";
+import type { OrchestrationReadModel, OrchestrationEvent } from "@isnadi/contracts";
 import type { OrchestrationProjectorDecodeError } from "../Errors.ts";
 import { decodeForEvent } from "./Updates.ts";
 

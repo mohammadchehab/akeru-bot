@@ -1,6 +1,6 @@
 import * as Match from "effect/Match";
 import {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   BotAvatar,
   BotEngine,
   BotId,
@@ -37,7 +37,7 @@ import {
   ProjectId,
   ThreadLinkedPullRequest,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as Struct from "effect/Struct";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -97,7 +97,7 @@ export const ProjectionGroupDbRowSchema = ProjectionGroup.mapFields(
 );
 
 export const ProjectionDelegationDbRowSchema = Schema.Struct({
-  delegation: Schema.fromJsonString(AkeruDelegationRecord),
+  delegation: Schema.fromJsonString(IsnadiDelegationRecord),
 });
 
 export const ProjectionProjectDbRowSchema = ProjectionProject.mapFields(

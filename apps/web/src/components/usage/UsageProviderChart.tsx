@@ -1,14 +1,14 @@
-import type { UsageProviderKind } from "@akeru/contracts";
+import type { UsageProviderKind } from "@isnadi/contracts";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import type { DailyTotals, HourlyTotals } from "@akeru/shared/usageMerge";
+import type { DailyTotals, HourlyTotals } from "@isnadi/shared/usageMerge";
 import {
   formatDayShort,
   formatHourShort,
   formatRelativeHourShort,
   formatTokens,
   formatUsd,
-} from "@akeru/shared/usageFormat";
+} from "@isnadi/shared/usageFormat";
 import { PROVIDER_ORDER, PROVIDER_PRESENTATION } from "./usageProviders";
 
 const VIEW_WIDTH = 960;

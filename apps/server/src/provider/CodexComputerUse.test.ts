@@ -15,7 +15,7 @@ import {
 const directories = new Set<string>();
 
 function plugin(command = "./bin/launcher") {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-computer-use-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-computer-use-"));
   directories.add(root);
   NodeFS.mkdirSync(NodePath.join(root, "bin"));
   NodeFS.writeFileSync(NodePath.join(root, "bin", "launcher"), "#!/bin/sh\n", { mode: 0o700 });
@@ -74,7 +74,7 @@ describe("Codex Computer Use resolver", () => {
       env: {
         HOME: NodeOS.homedir(),
         ...(process.env.CODEX_HOME ? { CODEX_HOME: process.env.CODEX_HOME } : {}),
-        TMPDIR: expect.stringMatching(/akeru-computer-use-/),
+        TMPDIR: expect.stringMatching(/isnadi-computer-use-/),
       },
     });
 
@@ -105,7 +105,7 @@ describe("Codex Computer Use resolver", () => {
 
   it("rejects a launcher outside the plugin directory", async () => {
     const root = plugin();
-    const external = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-external-"));
+    const external = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-external-"));
     directories.add(external);
     const externalLauncher = NodePath.join(external, "launcher");
     NodeFS.writeFileSync(externalLauncher, "#!/bin/sh\n", { mode: 0o700 });
@@ -121,7 +121,7 @@ describe("Codex Computer Use resolver", () => {
 
   it("rejects a manifest outside the plugin directory", async () => {
     const root = plugin();
-    const external = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-external-"));
+    const external = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-external-"));
     directories.add(external);
     const externalManifest = NodePath.join(external, ".mcp.json");
     NodeFS.renameSync(NodePath.join(root, ".mcp.json"), externalManifest);
@@ -136,7 +136,7 @@ describe("Codex Computer Use resolver", () => {
   });
 
   it("validates in-memory frames and removes temporary originals", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-frame-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-frame-"));
     directories.add(directory);
     const path = NodePath.join(directory, "frame.png");
     const png = new PNG({ width: 1, height: 1 });

@@ -10,9 +10,25 @@ import * as Electron from "electron";
 
 export const DESKTOP_HOST = "app";
 
-export const DESKTOP_PRODUCTION_SCHEME = "akeru";
+export const DESKTOP_PRODUCTION_SCHEME = "isnadi";
 
-export const DESKTOP_DEVELOPMENT_SCHEME = "akeru-dev";
+export const DESKTOP_DEVELOPMENT_SCHEME = "isnadi-dev";
+
+/**
+ * Compatibility only: builds released before the Isnadi rename served the
+ * renderer from these schemes. Chromium keys web storage by origin, so the
+ * legacy origins stay registered as privileged schemes so their localStorage
+ * can be read once and carried over (see LegacyRendererStorageMigration.ts).
+ */
+export const LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME = "akeru";
+
+export const LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME = "akeru-dev";
+
+export function getLegacyDesktopScheme(isDevelopment: boolean): string {
+  return isDevelopment
+    ? LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME
+    : LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME;
+}
 
 export function getDesktopScheme(isDevelopment: boolean): string {
   return isDevelopment ? DESKTOP_DEVELOPMENT_SCHEME : DESKTOP_PRODUCTION_SCHEME;
@@ -63,7 +79,7 @@ export class ElectronProtocol extends Context.Service<
       input: DesktopProtocolRegistrationInput,
     ) => Effect.Effect<void, ElectronProtocolRegistrationError, Scope.Scope>;
   }
->()("@akeru/desktop/electron/ElectronProtocol") {}
+>()("@isnadi/desktop/electron/ElectronProtocol") {}
 
 export function makeDesktopContentSecurityPolicy(input: DesktopProtocolRegistrationInput): string {
   const scriptSources = ["'self'", "'unsafe-inline'", "'wasm-unsafe-eval'"];
@@ -97,30 +113,28 @@ function withContentSecurityPolicy(response: Response, policy: string): Response
   });
 }
 
+export const DESKTOP_PRIVILEGED_SCHEMES: ReadonlyArray<string> = [
+  DESKTOP_PRODUCTION_SCHEME,
+  DESKTOP_DEVELOPMENT_SCHEME,
+  LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME,
+  LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME,
+];
+
 /**
  * Must run synchronously during process bootstrap, before Electron emits `ready`.
  */
 export function registerDesktopSchemePrivilegesSync(): void {
-  Electron.protocol.registerSchemesAsPrivileged([
-    {
-      scheme: DESKTOP_PRODUCTION_SCHEME,
+  Electron.protocol.registerSchemesAsPrivileged(
+    DESKTOP_PRIVILEGED_SCHEMES.map((scheme) => ({
+      scheme,
       privileges: {
         standard: true,
         secure: true,
         supportFetchAPI: true,
         corsEnabled: true,
       },
-    },
-    {
-      scheme: DESKTOP_DEVELOPMENT_SCHEME,
-      privileges: {
-        standard: true,
-        secure: true,
-        supportFetchAPI: true,
-        corsEnabled: true,
-      },
-    },
-  ]);
+    })),
+  );
 }
 
 const registerDesktopSchemePrivileges = Effect.sync(registerDesktopSchemePrivilegesSync).pipe(

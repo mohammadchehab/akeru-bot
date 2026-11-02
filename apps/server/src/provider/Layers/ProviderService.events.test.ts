@@ -1,5 +1,5 @@
-import type { ProviderRuntimeEvent } from "@akeru/contracts";
-import { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderRuntimeEvent } from "@isnadi/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { it, assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

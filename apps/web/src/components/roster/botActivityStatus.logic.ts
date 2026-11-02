@@ -3,26 +3,26 @@ import { Predicate, Schema, Option } from "effect";
 import {
   derivePendingApprovals,
   derivePendingUserInputs,
-} from "@akeru/client-runtime/pending-requests";
+} from "@isnadi/client-runtime/pending-requests";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   type OrchestrationLatestTurn,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export interface BotActivity {
   /** Short present-tense update for what the bot is doing, without trailing dots. */
   readonly label: string;
 }
 
-// Keyed by the tool name the runtime reports. Names come from the Akeru tool
+// Keyed by the tool name the runtime reports. Names come from the Isnadi tool
 // catalog, the routine and feedback contracts, and the memory tool.
 const TOOL_LABELS = {
-  [AKERU_CREATE_ROUTINE_TOOL_NAME]: "Adding a routine",
-  akeru_list_routines: "Checking routines",
-  akeru_delete_routines: "Removing routines",
-  [AKERU_PRODUCT_FEEDBACK_TOOL_NAME]: "Drafting feedback",
+  [ISNADI_CREATE_ROUTINE_TOOL_NAME]: "Adding a routine",
+  isnadi_list_routines: "Checking routines",
+  isnadi_delete_routines: "Removing routines",
+  [ISNADI_PRODUCT_FEEDBACK_TOOL_NAME]: "Drafting feedback",
   Shell: "Running a command",
   ExternalShell: "Running a command",
   AwaitShell: "Waiting on a command",

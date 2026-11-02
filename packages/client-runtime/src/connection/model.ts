@@ -1,4 +1,4 @@
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 const ConnectionTargetBase = {

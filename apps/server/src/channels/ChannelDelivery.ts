@@ -5,7 +5,7 @@ import {
   ThreadId,
   type TurnId,
   type ChannelProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -436,7 +436,7 @@ export const resolveCompletedChannelReply = (
     // Only the owning bot answers the channel, from the thread the channel message landed on.
     // The decider never gives a delegated child thread a channel origin, so the parent turn is
     // the only delivery point and this branch should not see child threads. Turns answered by
-    // another bot stay inside Akeru.
+    // another bot stay inside Isnadi.
     if (
       thread.parentThreadId ||
       (latestTurn.respondingBotId && latestTurn.respondingBotId !== thread.botId)

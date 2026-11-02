@@ -1,6 +1,6 @@
 import { act, useSyncExternalStore } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import type { ReplyPlaybackSession } from "@akeru/client-runtime/reply-playback";
+import type { ReplyPlaybackSession } from "@isnadi/client-runtime/reply-playback";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 interface PlaybackMocks {
@@ -41,7 +41,7 @@ vi.mock("../components/chat/ReplyPlaybackProvider", () => ({
   useOptionalReplyPlayback: () => mocks.session,
 }));
 
-vi.mock("@akeru/client-runtime/voice", () => ({
+vi.mock("@isnadi/client-runtime/voice", () => ({
   synthesizeVoiceChunks: async () => [
     { _tag: "Success", value: { audioBase64: "", mimeType: "audio/mpeg" } },
   ],

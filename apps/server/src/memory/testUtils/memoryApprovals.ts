@@ -8,16 +8,16 @@ export const failureInjection = {
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProjectId,
   ThreadId,
   type OrchestrationCommand,
   OrchestrationShellSnapshot,
   OrchestrationThreadShell,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
@@ -41,8 +41,8 @@ const botId = BotId.make("bot-ada");
 const threadId = ThreadId.make("thread-ada");
 
 const access = {
-  tenantId: AkeruMemoryTenantId.make("tenant"),
-  userId: AkeruMemoryUserId.make("user"),
+  tenantId: IsnadiMemoryTenantId.make("tenant"),
+  userId: IsnadiMemoryUserId.make("user"),
   threadId,
   projectId: ProjectId.make("project"),
   workspaceRoot: "/workspace",
@@ -61,7 +61,7 @@ const engineLayer = Layer.succeed(OrchestrationEngineService, {
       if (
         failureInjection.failResolvedActivityOnce &&
         command.type === "thread.activity.append" &&
-        command.activity.kind === AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY
+        command.activity.kind === ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY
       ) {
         failureInjection.failResolvedActivityOnce = false;
 
@@ -183,7 +183,7 @@ const testLayer = MemoryApprovalsLive.pipe(
   Layer.provideMerge(crashInjectingRepositoryLayer),
   Layer.provideMerge(engineLayer),
   Layer.provideMerge(Layer.mock(ProjectionSnapshotQuery)(snapshotQuery)),
-  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "akeru-memory-approvals-" })),
+  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-memory-approvals-" })),
   Layer.provideMerge(SqlitePersistenceMemory),
   Layer.provide(NodeServices.layer),
 );

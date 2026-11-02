@@ -11,7 +11,7 @@ import {
   SubscriptionAuthError,
   WS_METHODS,
   WsRpcGroup,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { runImageProviderHealthTest } from "./image-generation/service.ts";
 import * as PairingGrantStore from "./auth/PairingGrantStore.ts";
 import * as SessionStore from "./auth/SessionStore.ts";

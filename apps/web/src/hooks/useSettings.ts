@@ -16,15 +16,15 @@ import {
   type EnvironmentId,
   ServerSettings,
   type ServerSettingsPatch,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   type ClientSettingsPatch,
   type ClientSettings,
   DEFAULT_CLIENT_SETTINGS,
   type EnvironmentIdentificationMode,
   type UnifiedSettings,
-} from "@akeru/contracts/settings";
-import { safeErrorLogAttributes } from "@akeru/client-runtime/errors";
+} from "@isnadi/contracts/settings";
+import { safeErrorLogAttributes } from "@isnadi/client-runtime/errors";
 import { ensureLocalApi } from "~/localApi";
 import {
   CLIENT_SETTINGS_STORAGE_KEY,

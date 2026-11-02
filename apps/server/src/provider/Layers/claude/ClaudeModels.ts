@@ -3,14 +3,14 @@ import {
   type ModelCapabilities,
   type ModelSelection,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   createModelCapabilities,
   getModelSelectionStringOptionValue,
   getProviderOptionCurrentValue,
   getProviderOptionDescriptors,
-} from "@akeru/shared/model";
-import { compareSemverVersions } from "@akeru/shared/semver";
+} from "@isnadi/shared/model";
+import { compareSemverVersions } from "@isnadi/shared/semver";
 import {
   buildBooleanOptionDescriptor,
   buildSelectOptionDescriptor,

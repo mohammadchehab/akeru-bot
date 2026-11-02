@@ -5,4 +5,4 @@ export {
   sortThreads,
   toSortableTimestamp,
   type ThreadSortInput,
-} from "@akeru/client-runtime/state/thread-sort";
+} from "@isnadi/client-runtime/state/thread-sort";

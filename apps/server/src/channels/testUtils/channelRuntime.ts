@@ -20,7 +20,7 @@ import {
   type OrchestrationMessage,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Message as ChatMessage, parseMarkdown } from "chat";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -551,14 +551,14 @@ function makeHarness(input: {
     httpClient: slackProbeClient(true),
     ...(input.publicOrigin === null
       ? {}
-      : { publicOrigin: input.publicOrigin ?? "https://akeru.example" }),
+      : { publicOrigin: input.publicOrigin ?? "https://isnadi.example" }),
     ...(input.startTransport === null
       ? {}
       : {
           startTransport:
             input.startTransport ??
             (async () => ({
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: {
                 post: input.post ?? (async () => undefined),
                 shutdown: input.shutdown ?? (async () => undefined),
@@ -630,7 +630,7 @@ function mockTelegramDelivery(responses: Array<Response | Error>) {
         if (method === "getMe")
           return Response.json({
             ok: true,
-            result: { id: 1, is_bot: true, first_name: "Akeru", username: "akeru" },
+            result: { id: 1, is_bot: true, first_name: "Isnadi", username: "isnadi" },
           });
 
         if (method === "deleteWebhook" || method === "deleteMyCommands") {
@@ -706,7 +706,7 @@ const discordConnect = (botId: BotId) => ({
 });
 
 const signedWhatsAppRequest = (body: string) =>
-  new Request(`https://akeru.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
+  new Request(`https://isnadi.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
     method: "POST",
     headers: {
       "content-type": "application/json",

@@ -1,11 +1,11 @@
-import { catalogRegistry, createTranslator } from "@akeru/client-runtime/i18n";
+import { catalogRegistry, createTranslator } from "@isnadi/client-runtime/i18n";
 import {
   ProviderDriverKind,
   ProviderInstanceId,
   type ModelCapabilities,
   type ServerProvider,
-} from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
+} from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveProviderInstanceEntries } from "../../providerInstances";

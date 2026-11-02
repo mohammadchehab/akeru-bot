@@ -19,7 +19,7 @@ import {
   type ProviderInstanceId,
   ProviderDriverKind,
   type ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { cn } from "../../lib/utils";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { normalizeProviderAccentColor } from "../../providerInstances";

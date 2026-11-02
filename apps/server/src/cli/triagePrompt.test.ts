@@ -21,7 +21,7 @@ it("stays byte-identical to .github/triage/PLAYBOOK.md", () => {
   assert.equal(TRIAGE_PLAYBOOK, NodeFS.readFileSync(canonicalPath, "utf8"));
 });
 
-it("keeps the GitHub triage flow Akeru-only and labeled via-triage", () => {
+it("keeps the GitHub triage flow Isnadi-only and labeled via-triage", () => {
   const issueTemplate = NodeFS.readFileSync(
     NodePath.join(repoRoot, ".github/ISSUE_TEMPLATE/via-triage.yml"),
     "utf8",
@@ -39,7 +39,7 @@ it("keeps the GitHub triage flow Akeru-only and labeled via-triage", () => {
 
   const githubTriage = `${issueTemplate}\n${bugTemplate}`;
 
-  assert.include(issueTemplate, "`npx akeru-bot triage`");
+  assert.include(issueTemplate, "`npx isnadibot triage`");
   assert.match(issueTemplate, /labels:\n  - via-triage\nbody:/u);
   assert.include(issueLabelWorkflow, 'name: "via-triage"');
   assert.notMatch(githubTriage, /T3 Code|npx t3|pingdotgg\/t3code|AI.generated/iu);
@@ -56,10 +56,10 @@ it("keeps the package identity and explicit approval gate", () => {
     "utf8",
   );
 
-  assert.include(packageManifest, '"name": "akeru-bot"');
-  assert.include(packageManifest, '"url": "https://github.com/opencoredev/akeru-bot"');
-  assert.include(packageManifest, '"akeru": "./dist/bin.mjs"');
-  // AKERU_HOME wins and T3CODE_HOME stays a fallback, through the shared alias reader.
+  assert.include(packageManifest, '"name": "isnadibot"');
+  assert.include(packageManifest, '"url": "https://github.com/mohammadchehab/isnadibot"');
+  assert.include(packageManifest, '"isnadi": "./dist/bin.mjs"');
+  // ISNADI_HOME wins and T3CODE_HOME stays a fallback, through the shared alias reader.
   assert.include(triageSource, 'aliasedEnv(Config.string, "HOME")');
   assert.include(TRIAGE_PLAYBOOK, "Show the user the complete final issue text");
   assert.include(TRIAGE_PLAYBOOK, "get an explicit yes before");
@@ -77,11 +77,11 @@ it("launch prompt stays a single argv-safe line naming the prompt file", () => {
   // The launch argument goes through cmd.exe on Windows (.cmd shims), which
   // cannot carry newlines; the playbook itself must stay on disk.
   const launch = buildTriageLaunchPrompt(
-    String.raw`C:\Users\a b\.akeru\userdata\triage\x\prompt.md`,
+    String.raw`C:\Users\a b\.isnadi\userdata\triage\x\prompt.md`,
   );
 
   assert.notInclude(launch, "\n");
-  assert.include(launch, String.raw`C:\Users\a b\.akeru\userdata\triage\x\prompt.md`);
+  assert.include(launch, String.raw`C:\Users\a b\.isnadi\userdata\triage\x\prompt.md`);
   assert.isBelow(launch.length, 1_000);
 });
 
@@ -92,28 +92,28 @@ it("context file carries every path the playbook depends on", () => {
     releaseTag: "v0.0.33",
     os: "linux x64 (7.0.0)",
     nodeVersion: "v24.0.0",
-    launchedAs: "npx akeru-bot triage",
+    launchedAs: "npx isnadibot triage",
     server: "running (pid 42, http://127.0.0.1:4501)",
     paths: {
-      stateDir: "/home/u/.akeru/userdata",
-      dbPath: "/home/u/.akeru/userdata/state.sqlite",
-      settingsPath: "/home/u/.akeru/userdata/settings.json",
-      logsDir: "/home/u/.akeru/userdata/logs",
-      serverLogPath: "/home/u/.akeru/userdata/logs/server.log",
-      serverTracePath: "/home/u/.akeru/userdata/logs/server.trace.ndjson",
-      providerEventLogPath: "/home/u/.akeru/userdata/logs/provider/events.log",
-      terminalLogsDir: "/home/u/.akeru/userdata/logs/terminals",
-      providerStatusCacheDir: "/home/u/.akeru/caches",
-      secretsDir: "/home/u/.akeru/userdata/secrets",
-      sourceCacheDir: "/home/u/.akeru/source",
+      stateDir: "/home/u/.isnadi/userdata",
+      dbPath: "/home/u/.isnadi/userdata/state.sqlite",
+      settingsPath: "/home/u/.isnadi/userdata/settings.json",
+      logsDir: "/home/u/.isnadi/userdata/logs",
+      serverLogPath: "/home/u/.isnadi/userdata/logs/server.log",
+      serverTracePath: "/home/u/.isnadi/userdata/logs/server.trace.ndjson",
+      providerEventLogPath: "/home/u/.isnadi/userdata/logs/provider/events.log",
+      terminalLogsDir: "/home/u/.isnadi/userdata/logs/terminals",
+      providerStatusCacheDir: "/home/u/.isnadi/caches",
+      secretsDir: "/home/u/.isnadi/userdata/secrets",
+      sourceCacheDir: "/home/u/.isnadi/source",
     },
   });
 
-  assert.include(context, "/home/u/.akeru/userdata/state.sqlite");
-  assert.include(context, "/home/u/.akeru/userdata/logs/server.trace.ndjson");
-  assert.include(context, "/home/u/.akeru/userdata/logs/provider/events.log");
-  assert.include(context, "/home/u/.akeru/userdata/secrets");
-  assert.include(context, "/home/u/.akeru/source");
-  assert.include(context, "npx akeru-bot triage");
+  assert.include(context, "/home/u/.isnadi/userdata/state.sqlite");
+  assert.include(context, "/home/u/.isnadi/userdata/logs/server.trace.ndjson");
+  assert.include(context, "/home/u/.isnadi/userdata/logs/provider/events.log");
+  assert.include(context, "/home/u/.isnadi/userdata/secrets");
+  assert.include(context, "/home/u/.isnadi/source");
+  assert.include(context, "npx isnadibot triage");
   assert.include(context, "v0.0.33");
 });

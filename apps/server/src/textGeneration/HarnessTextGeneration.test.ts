@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodePath from "node:path";
 import { NodeServices } from "@effect/platform-node";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderDriverKind, ProviderInstanceId, TextGenerationError } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId, TextGenerationError } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -12,7 +12,7 @@ import { beforeEach, vi } from "vite-plus/test";
 
 import { ServerConfig } from "../config.ts";
 import { makeHarnessTextGeneration } from "./HarnessTextGeneration.ts";
-import * as Harness from "../provider/AkeruMastraHarness.ts";
+import * as Harness from "../provider/IsnadiMastraHarness.ts";
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 
 const { generate, agents } = vi.hoisted(() => ({ generate: vi.fn(), agents: vi.fn() }));
@@ -84,13 +84,13 @@ describe("HarnessTextGeneration", () => {
           expect(yield* Fiber.join(fiber)).toMatchObject({
             _tag: "TextGenerationError",
             operation,
-            detail: "Akeru writing request timed out.",
+            detail: "Isnadi writing request timed out.",
           });
           expect(signal.aborted).toBe(true);
         }),
       ).pipe(
         Effect.provide(
-          ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-timeout-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-timeout-" }).pipe(
             Layer.provideMerge(NodeServices.layer),
           ),
         ),
@@ -143,7 +143,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-claude-context-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-claude-context-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -188,7 +188,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-missing-images-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-missing-images-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -247,7 +247,7 @@ describe("HarnessTextGeneration", () => {
           }),
         ).pipe(
           Effect.provide(
-            ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-writing-" }).pipe(
+            ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-writing-" }).pipe(
               Layer.provideMerge(NodeServices.layer),
             ),
           ),
@@ -259,7 +259,7 @@ describe("HarnessTextGeneration", () => {
     Effect.scoped(
       Effect.gen(function* () {
         const config = yield* ServerConfig;
-        const resolver = vi.spyOn(Harness, "resolveAkeruMastraModel");
+        const resolver = vi.spyOn(Harness, "resolveIsnadiMastraModel");
         const instanceId = ProviderInstanceId.make("codex");
 
         const writer = yield* makeHarnessTextGeneration({
@@ -319,7 +319,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-options-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-options-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -393,7 +393,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-images-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-images-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -434,7 +434,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-writing-error-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-writing-error-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),

@@ -1,5 +1,5 @@
-import type { PreviewAnnotationPayload } from "@akeru/contracts";
-import { redactSensitiveText } from "@akeru/shared/sensitiveDataRedaction";
+import type { PreviewAnnotationPayload } from "@isnadi/contracts";
+import { redactSensitiveText } from "@isnadi/shared/sensitiveDataRedaction";
 import { buildElementContextBlock, normalizeElementContextSelection } from "./elementContext";
 
 const TRAILING_PREVIEW_ANNOTATION_BLOCK_PATTERN =

@@ -1,4 +1,4 @@
-import type { PreviewAnnotationPayload } from "@akeru/contracts";
+import type { PreviewAnnotationPayload } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

@@ -1,4 +1,4 @@
-import type { storedReplySynthesisCapability } from "@akeru/client-runtime/reply-playback";
+import type { storedReplySynthesisCapability } from "@isnadi/client-runtime/reply-playback";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createWebReplyPlaybackSession } from "./replyPlaybackSession";
 

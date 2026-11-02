@@ -1,8 +1,8 @@
 import { Predicate } from "effect";
-import { pendingMemoryApprovals } from "@akeru/client-runtime/durable-memory";
+import { pendingMemoryApprovals } from "@isnadi/client-runtime/durable-memory";
 import { useAtomValue } from "@effect/atom-react";
-import { presentThreadError } from "@akeru/client-runtime/errors";
-import { BotId, type EnvironmentId, type TurnId } from "@akeru/contracts";
+import { presentThreadError } from "@isnadi/client-runtime/errors";
+import { BotId, type EnvironmentId, type TurnId } from "@isnadi/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { Fragment, useCallback, useEffect, useId, useMemo, useState } from "react";
 
@@ -19,7 +19,7 @@ import { openSettings } from "../../settingsDialogStore";
 import { SidebarInset } from "../ui/sidebar";
 import { Spinner } from "../ui/spinner";
 import { WorkspacePageHeader } from "../WorkspacePageHeader";
-import { threadSilentRun } from "@akeru/client-runtime/silent-run";
+import { threadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { botActivityUpdate, BotActivityStatus } from "./BotActivityStatus";
 import { deriveBotActivity } from "./botActivityStatus.logic";
 import { BotApprovalPrompt } from "./BotApprovalPrompt";
@@ -37,7 +37,7 @@ import {
   UserMessageRow,
   useMessageReactionUpdater,
 } from "./BotChatMessageRows";
-import { channelOriginForAssistantMessage } from "@akeru/client-runtime/channel-origin-presentation";
+import { channelOriginForAssistantMessage } from "@isnadi/client-runtime/channel-origin-presentation";
 import {
   buildBotConversationEntries,
   isBotConversationWorking,
@@ -51,7 +51,7 @@ import { useBotEngineAvailability } from "./useBotEngineAvailability";
 import { BotPromptComposer } from "./BotPromptComposer";
 import { useAnsweredUserInputs } from "./useAnsweredUserInputs";
 import { useBotPromptMentionScope } from "./BotPromptMentions";
-import { buildBotStepMeters } from "@akeru/client-runtime/bot-step-usage";
+import { buildBotStepMeters } from "@isnadi/client-runtime/bot-step-usage";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ComposerPendingUserInputPanel } from "../chat/ComposerPendingUserInputPanel";

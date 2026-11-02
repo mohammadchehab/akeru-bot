@@ -1,12 +1,12 @@
 import { layer, reserveInput } from "./testUtils/botUsageLedger.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   ProviderDriverKind,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { BotUsageLedger } from "./BotUsageLedger.ts";
 
@@ -228,7 +228,7 @@ it.layer(layer)("BotUsageLedger", (it) => {
       const botId = BotId.make("bot-standalone-measurement");
 
       const input = {
-        reservationId: AkeruUsageReservationId.make("standalone-measurement"),
+        reservationId: IsnadiUsageReservationId.make("standalone-measurement"),
         sourceKey: "tool:standalone-measurement",
         botId,
         threadId: ThreadId.make("thread-standalone-measurement"),

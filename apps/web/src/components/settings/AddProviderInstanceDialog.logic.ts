@@ -12,7 +12,7 @@ export function addAccountWizardSteps(options: {
   return options.choosesService ? ["Service", "Name", "Connect"] : ["Name"];
 }
 
-// `ProviderInstanceId` in `@akeru/contracts` caps ids at 64 characters.
+// `ProviderInstanceId` in `@isnadi/contracts` caps ids at 64 characters.
 const MAX_INSTANCE_ID_LENGTH = 64;
 
 // Room kept for a `_{n}` suffix when the name is already taken.

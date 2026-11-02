@@ -7,7 +7,7 @@ import * as Predicate from "effect/Predicate";
  *
  * Only the device-code flow is ported. The upstream browser flow waits for a
  * callback on the server's localhost, which cannot work when the client is a
- * phone or a remote browser — every Akeru flow must survive that split, so the
+ * phone or a remote browser — every Isnadi flow must survive that split, so the
  * headless flow is the only flow.
  */
 
@@ -52,7 +52,7 @@ const REQUEST_TIMEOUT = "30 seconds";
 
 const JWT_CLAIM_PATH = "https://api.openai.com/auth";
 
-const USER_AGENT = "akeru";
+const USER_AGENT = "isnadi";
 
 const AccountIdClaim = Schema.Struct({ chatgpt_account_id: Schema.NonEmptyString });
 

@@ -1,4 +1,4 @@
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
 import { appAtomRegistry } from "../../state/atom-registry";
 import { environmentServerConfigsAtom } from "../../state/server";
 

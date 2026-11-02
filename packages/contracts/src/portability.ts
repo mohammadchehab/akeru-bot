@@ -35,9 +35,15 @@ import {
   ServerSettings,
 } from "./settings/server.ts";
 
-export const AKERU_ARCHIVE_FORMAT = "akeru.archive" as const;
+export const ISNADI_ARCHIVE_FORMAT = "isnadi.archive" as const;
 
-export const AKERU_ARCHIVE_VERSION = 1 as const;
+/**
+ * Format written by exports made before the product was renamed. Import still
+ * accepts it; exports always write ISNADI_ARCHIVE_FORMAT.
+ */
+export const LEGACY_ARCHIVE_FORMAT = "akeru.archive" as const;
+
+export const ISNADI_ARCHIVE_VERSION = 1 as const;
 
 export const PORTABILITY_ARCHIVE_MAX_CHARS = 20 * 1024 * 1024;
 
@@ -247,9 +253,8 @@ export type PortabilityArchiveRecord = typeof PortabilityArchiveRecord.Type;
 
 export type PortabilityArchiveRecordType = PortabilityArchiveRecord["type"];
 
-export const PortabilityArchive = Schema.Struct({
-  format: Schema.Literal(AKERU_ARCHIVE_FORMAT),
-  version: Schema.Literal(AKERU_ARCHIVE_VERSION),
+const portabilityArchiveFields = {
+  version: Schema.Literal(ISNADI_ARCHIVE_VERSION),
   exportedAt: IsoDateTime,
   manifest: Schema.Struct({
     recordCounts: Schema.Record(TrimmedNonEmptyString, NonNegativeInt),
@@ -257,9 +262,26 @@ export const PortabilityArchive = Schema.Struct({
   }),
   records: Schema.Array(PortabilityArchiveRecord),
   checksum: ArchiveChecksum,
+};
+
+export const PortabilityArchive = Schema.Struct({
+  format: Schema.Literal(ISNADI_ARCHIVE_FORMAT),
+  ...portabilityArchiveFields,
 });
 
 export type PortabilityArchive = typeof PortabilityArchive.Type;
+
+/**
+ * What import accepts: current archives and ones exported before the rename.
+ * The format is part of the signed body, so verify the checksum against the
+ * archive as decoded, then rewrite the format to ISNADI_ARCHIVE_FORMAT.
+ */
+export const ImportedPortabilityArchive = Schema.Struct({
+  format: Schema.Literals([ISNADI_ARCHIVE_FORMAT, LEGACY_ARCHIVE_FORMAT]),
+  ...portabilityArchiveFields,
+});
+
+export type ImportedPortabilityArchive = typeof ImportedPortabilityArchive.Type;
 
 export const PortabilityArchiveText = Schema.String.check(
   Schema.isMaxLength(PORTABILITY_ARCHIVE_MAX_CHARS),

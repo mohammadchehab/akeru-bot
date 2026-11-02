@@ -11,7 +11,7 @@ import * as PlatformError from "effect/PlatformError";
 import * as Schema from "effect/Schema";
 import { Command, CliError } from "effect/unstable/cli";
 import * as TestConsole from "effect/testing/TestConsole";
-import { fromJsonStringPretty } from "@akeru/shared/schemaJson";
+import { fromJsonStringPretty } from "@isnadi/shared/schemaJson";
 
 import {
   ReleaseGitHubOutputConfigurationError,

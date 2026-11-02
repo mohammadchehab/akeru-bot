@@ -26,7 +26,7 @@ export type RemoteDoctorReport = typeof RemoteDoctorReport.Type;
 
 /**
  * Doctor result for Settings > Connections. `applicable` is false when the environment is not an
- * Akeru Remote install (no service launcher and no container), in which case `report` is null.
+ * Isnadi Remote install (no service launcher and no container), in which case `report` is null.
  */
 export const RemoteDoctorStatus = Schema.Struct({
   applicable: Schema.Boolean,

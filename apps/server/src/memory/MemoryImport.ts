@@ -1,13 +1,13 @@
 import * as NodeCrypto from "node:crypto";
 
 import type {
-  AkeruMemoryArchive,
-  AkeruMemoryArchiveTarget,
-  AkeruMemoryImportApplyResult,
-  AkeruMemoryImportPreview,
-  AkeruMemoryRevision,
-  AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  IsnadiMemoryArchive,
+  IsnadiMemoryArchiveTarget,
+  IsnadiMemoryImportApplyResult,
+  IsnadiMemoryImportPreview,
+  IsnadiMemoryRevision,
+  IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import { resolveMemoryArchivePartitions } from "./EntityMemoryAccess.ts";
@@ -21,9 +21,9 @@ import {
 const checksum = (value: string) => NodeCrypto.createHash("sha256").update(value).digest("hex");
 
 const prepare = Effect.fn("MemoryImport.prepare")(function* (input: {
-  readonly access: AkeruMemoryThreadAccess;
-  readonly target: AkeruMemoryArchiveTarget;
-  readonly archive: AkeruMemoryArchive;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly target: IsnadiMemoryArchiveTarget;
+  readonly archive: IsnadiMemoryArchive;
 }) {
   if (input.archive.schemaVersion !== 2) {
     return yield* new EntityMemoryImportError({
@@ -117,7 +117,7 @@ const prepare = Effect.fn("MemoryImport.prepare")(function* (input: {
     });
   }
 
-  const revisionsByRoot = new Map<string, Array<AkeruMemoryRevision>>();
+  const revisionsByRoot = new Map<string, Array<IsnadiMemoryRevision>>();
 
   for (const { revision } of input.archive.revisions) {
     const revisions = revisionsByRoot.get(revision.rootId) ?? [];
@@ -154,12 +154,12 @@ const prepare = Effect.fn("MemoryImport.prepare")(function* (input: {
   };
 });
 
-export function previewAkeruMemoryImport(input: {
+export function previewIsnadiMemoryImport(input: {
   readonly repository: Pick<EntityMemoryRepositoryShape, "previewImport">;
-  readonly access: AkeruMemoryThreadAccess;
-  readonly target: AkeruMemoryArchiveTarget;
-  readonly archive: AkeruMemoryArchive;
-}): Effect.Effect<AkeruMemoryImportPreview, Error> {
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly target: IsnadiMemoryArchiveTarget;
+  readonly archive: IsnadiMemoryArchive;
+}): Effect.Effect<IsnadiMemoryImportPreview, Error> {
   return Effect.gen(function* () {
     const prepared = yield* prepare(input);
 
@@ -167,17 +167,17 @@ export function previewAkeruMemoryImport(input: {
   });
 }
 
-export function applyAkeruMemoryImport(input: {
+export function applyIsnadiMemoryImport(input: {
   readonly repository: Pick<EntityMemoryRepositoryShape, "applyImport">;
-  readonly access: AkeruMemoryThreadAccess;
-  readonly target: AkeruMemoryArchiveTarget;
-  readonly archive: AkeruMemoryArchive;
+  readonly access: IsnadiMemoryThreadAccess;
+  readonly target: IsnadiMemoryArchiveTarget;
+  readonly archive: IsnadiMemoryArchive;
   readonly previewHash: string;
   readonly resolutions?: ReadonlyArray<{
-    readonly rootId: AkeruMemoryRevision["rootId"];
+    readonly rootId: IsnadiMemoryRevision["rootId"];
     readonly decision: "keep-local" | "use-archive";
   }>;
-}): Effect.Effect<AkeruMemoryImportApplyResult, Error> {
+}): Effect.Effect<IsnadiMemoryImportApplyResult, Error> {
   return Effect.gen(function* () {
     const prepared = yield* prepare(input);
 

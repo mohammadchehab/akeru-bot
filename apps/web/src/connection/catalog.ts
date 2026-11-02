@@ -1,4 +1,4 @@
-import { createEnvironmentCatalogAtoms } from "@akeru/client-runtime/state/connections";
+import { createEnvironmentCatalogAtoms } from "@isnadi/client-runtime/state/connections";
 
 import { connectionAtomRuntime } from "./runtime";
 

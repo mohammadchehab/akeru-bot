@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { resolveCommandPath } from "@akeru/shared/shell";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { resolveCommandPath } from "@isnadi/shared/shell";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

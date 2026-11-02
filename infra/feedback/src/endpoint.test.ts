@@ -2,7 +2,7 @@ import type * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
 import { describe, expect, it } from "@effect/vitest";
 
-import { PRODUCT_FEEDBACK_BODY_MAX_BYTES, type ProductFeedbackSubmission } from "@akeru/contracts";
+import { PRODUCT_FEEDBACK_BODY_MAX_BYTES, type ProductFeedbackSubmission } from "@isnadi/contracts";
 import {
   coarseIpAddress,
   productFeedbackEndpoint,
@@ -91,7 +91,7 @@ function makeRepository() {
 }
 
 function request(payload: Schema.Json, headers?: HeadersInit): Request {
-  return new Request("https://feedback.akeru.test/v1/feedback", {
+  return new Request("https://feedback.isnadi.test/v1/feedback", {
     method: "POST",
     headers: {
       "content-type": "application/json",

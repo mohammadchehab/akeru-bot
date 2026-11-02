@@ -1,5 +1,5 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { type ScopedThreadRef } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { type ScopedThreadRef } from "@isnadi/contracts";
 import { useMemo } from "react";
 
 import { useLatestGroupThreadId, useThreadShell } from "../../state/entities";

@@ -1,4 +1,4 @@
-import type { UsageProviderKind } from "@akeru/contracts";
+import type { UsageProviderKind } from "@isnadi/contracts";
 
 import { ClaudeAI, GrokIcon, KimiIcon, OpenCodeIcon, type Icon, OpenAI } from "../Icons";
 

@@ -1,4 +1,4 @@
-import type { ResourceTelemetryHistoryBucket } from "@akeru/contracts";
+import type { ResourceTelemetryHistoryBucket } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import { cn } from "../../lib/utils";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";

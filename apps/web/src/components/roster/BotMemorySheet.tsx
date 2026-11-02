@@ -1,10 +1,10 @@
 import { Predicate } from "effect";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import type {
-  AkeruMemoryDocument,
-  AkeruMemoryDocumentTarget,
+  IsnadiMemoryDocument,
+  IsnadiMemoryDocumentTarget,
   ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { BrainIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -36,10 +36,10 @@ function MemoryDocumentEditor({
   busy,
   onSave,
 }: {
-  readonly document: AkeruMemoryDocument;
+  readonly document: IsnadiMemoryDocument;
   readonly busy: boolean;
   readonly onSave: (
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
     expectedContent: string,
   ) => Promise<boolean>;
@@ -139,7 +139,7 @@ export function BotMemorySheet({
     : [];
 
   const save = async (
-    target: AkeruMemoryDocumentTarget,
+    target: IsnadiMemoryDocumentTarget,
     content: string,
     expectedContent: string,
   ) => {

@@ -1,5 +1,5 @@
 import { testEnvironmentRegistry, testRpcClient } from "../test-support/services.ts";
-import { BotId, EnvironmentId, ThreadId, WS_METHODS } from "@akeru/contracts";
+import { BotId, EnvironmentId, ThreadId, WS_METHODS } from "@isnadi/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

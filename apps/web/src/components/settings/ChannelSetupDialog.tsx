@@ -5,12 +5,12 @@ import {
   type ChannelProvider,
   type EnvironmentId,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   channelFailureReason,
   channelPickerProjectId,
-} from "@akeru/client-runtime/channel-presentation";
-import { defaultProjectIdForBot } from "@akeru/shared/channelProject";
+} from "@isnadi/client-runtime/channel-presentation";
+import { defaultProjectIdForBot } from "@isnadi/shared/channelProject";
 import { ExternalLinkIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useAtomValue } from "@effect/atom-react";

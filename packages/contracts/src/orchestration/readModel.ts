@@ -13,7 +13,7 @@ import {
   TrimmedNonEmptyString,
 } from "../baseSchemas.ts";
 import { McpServer, McpServerId } from "../mcpServer.ts";
-import { AkeruDelegationRecord } from "../akeruDelegation.ts";
+import { IsnadiDelegationRecord } from "../isnadiDelegation.ts";
 import {
   Routine,
   RoutineId,
@@ -49,7 +49,7 @@ export const OrchestrationReadModel = Schema.Struct({
   projects: Schema.Array(OrchestrationProject),
   bots: Schema.Array(OrchestrationBot).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
   groups: Schema.Array(OrchestrationGroup).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
-  delegations: Schema.Array(Schema.suspend(() => AkeruDelegationRecord)).pipe(
+  delegations: Schema.Array(Schema.suspend(() => IsnadiDelegationRecord)).pipe(
     Schema.withDecodingDefault(Effect.succeed([])),
   ),
   mcpServers: Schema.optional(Schema.Array(McpServer)),
@@ -148,7 +148,7 @@ export const OrchestrationShellSnapshot = Schema.Struct({
   projects: Schema.Array(OrchestrationProjectShell),
   bots: Schema.Array(OrchestrationBot).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
   groups: Schema.Array(OrchestrationGroup).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
-  delegations: Schema.Array(Schema.suspend(() => AkeruDelegationRecord)).pipe(
+  delegations: Schema.Array(Schema.suspend(() => IsnadiDelegationRecord)).pipe(
     Schema.withDecodingDefault(Effect.succeed([])),
   ),
   mcpServers: Schema.optional(Schema.Array(McpServer)),
@@ -206,7 +206,7 @@ export const OrchestrationShellStreamEvent = Schema.Union([
   Schema.Struct({
     kind: Schema.Literal("delegation-upserted"),
     sequence: NonNegativeInt,
-    delegation: Schema.suspend(() => AkeruDelegationRecord),
+    delegation: Schema.suspend(() => IsnadiDelegationRecord),
   }),
   Schema.Struct({
     kind: Schema.Literal("routine-upserted"),

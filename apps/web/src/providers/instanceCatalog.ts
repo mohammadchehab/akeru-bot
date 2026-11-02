@@ -6,7 +6,7 @@ import {
   ProviderInstanceId,
   type ServerProvider,
   type ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { formatProviderDriverKindLabel } from "../providerModels";
 import { type ProviderInstanceEntry } from "./instanceTypes";
 

@@ -1,4 +1,4 @@
-import { ServerSettings, ServerSettingsPatch } from "@akeru/contracts";
+import { ServerSettings, ServerSettingsPatch } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 

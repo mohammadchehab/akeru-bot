@@ -1,4 +1,4 @@
-import { EventId, MessageId, ProjectId } from "@akeru/contracts";
+import { EventId, MessageId, ProjectId } from "@isnadi/contracts";
 
 export const asEventId = (value: string): EventId => EventId.make(value);
 

@@ -1,4 +1,4 @@
-import { ThreadId, TurnId } from "@akeru/contracts";
+import { ThreadId, TurnId } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 

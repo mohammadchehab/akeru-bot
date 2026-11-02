@@ -10,7 +10,7 @@ import {
   type ComposioToolkit,
   type McpServer,
   McpServerId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -90,7 +90,7 @@ export interface ComposioServiceShape {
 }
 
 export class ComposioService extends Context.Service<ComposioService, ComposioServiceShape>()(
-  "akeru-bot/composio/ComposioService",
+  "isnadibot/composio/ComposioService",
 ) {}
 
 function operationError(operation: string, cause: unknown): ComposioOperationError {
@@ -118,7 +118,7 @@ const tryComposio = <A>(operation: string, run: () => Promise<A>) =>
   });
 
 function bytesToId(bytes: Uint8Array): string {
-  return `akeru_${Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
+  return `isnadi_${Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
 }
 
 function toConnection(input: {

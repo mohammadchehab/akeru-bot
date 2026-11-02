@@ -1,4 +1,4 @@
-import type { McpServer, McpServerId, ProviderAccessStatus } from "@akeru/contracts";
+import type { McpServer, McpServerId, ProviderAccessStatus } from "@isnadi/contracts";
 
 import {
   loadCatalog,

@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ProviderInstanceId } from "@akeru/contracts";
-import type { AkeruToolRuntime } from "../../AkeruToolRuntime.ts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
+import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
 import type { ProviderServiceError } from "../../Errors.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 import * as NodeCrypto from "node:crypto";
@@ -11,8 +11,8 @@ import {
   TurnId,
   type ProviderRuntimeEvent,
   ThreadId,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 
 import * as Deferred from "effect/Deferred";
 
@@ -24,10 +24,10 @@ import { ServerConfig } from "../../../config.ts";
 
 import * as McpMemoryToolSession from "../../../mcp/McpMemoryToolSession.ts";
 
-import type { AkeruControllerHarness } from "../../mastra/AkeruHarnessTypes.ts";
-import { createAkeruBotTurnInstructions } from "../../AkeruAgentInstructions.ts";
+import type { IsnadiControllerHarness } from "../../mastra/IsnadiHarnessTypes.ts";
+import { createIsnadiBotTurnInstructions } from "../../IsnadiAgentInstructions.ts";
 
-import { AkeruMemoryTurnHarness } from "../../AkeruMemoryTurnHarness.ts";
+import { IsnadiMemoryTurnHarness } from "../../IsnadiMemoryTurnHarness.ts";
 
 import { cancelActiveImageGenerations } from "../../../image-generation/ImageGenerationRuntime.ts";
 
@@ -75,11 +75,11 @@ export function createTurnRequests(deps: {
     run: (signal: AbortSignal) => Promise<A>,
   ) => Effect.Effect<A, AgentControllerRuntimeError, never>;
   readonly refreshEntityMemoryAccess: (
-    access: AkeruMemoryThreadAccess | undefined,
-  ) => Promise<AkeruMemoryThreadAccess | undefined>;
-  readonly entityMemoryContext: (access: AkeruMemoryThreadAccess | undefined) => Promise<string>;
-  readonly bundle: AkeruControllerHarness;
-  readonly memoryTurnHarness: AkeruMemoryTurnHarness;
+    access: IsnadiMemoryThreadAccess | undefined,
+  ) => Promise<IsnadiMemoryThreadAccess | undefined>;
+  readonly entityMemoryContext: (access: IsnadiMemoryThreadAccess | undefined) => Promise<string>;
+  readonly bundle: IsnadiControllerHarness;
+  readonly memoryTurnHarness: IsnadiMemoryTurnHarness;
   readonly addLegacyPending: (
     key: string,
     pending: LegacyTurnMemoryState,
@@ -89,7 +89,7 @@ export function createTurnRequests(deps: {
   readonly drainLegacyTerminals: (key: string) => Effect.Effect<void, never, never>;
   readonly restoreLegacyMemoryHandler: (key: string, pending: LegacyTurnMemoryState) => void;
   readonly removeLegacyPending: (key: string, pending: LegacyTurnMemoryState) => void;
-  readonly toolRuntime: AkeruToolRuntime;
+  readonly toolRuntime: IsnadiToolRuntime;
   readonly config: ServerConfig["Service"];
   readonly options: AgentControllerLiveOptions | undefined;
   readonly admitPendingTurn: (
@@ -235,7 +235,7 @@ export function createTurnRequests(deps: {
         deps.addLegacyPending(key, pendingMemory);
 
         const turnInstructions = resolved?.botConversation
-          ? createAkeruBotTurnInstructions({
+          ? createIsnadiBotTurnInstructions({
               ...(resolved.botName ? { name: resolved.botName } : {}),
               ...(resolved.personalityTone !== undefined
                 ? { personalityTone: resolved.personalityTone }

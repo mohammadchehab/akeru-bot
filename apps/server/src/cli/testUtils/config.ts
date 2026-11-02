@@ -2,7 +2,7 @@ import * as Schema from "effect/Schema";
 import {
   DesktopBackendBootstrap,
   type DesktopBackendBootstrap as DesktopBackendBootstrapValue,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { deriveServerPaths } from "../../config.ts";
 
 const deriveExplicitServerPaths = (baseDir: string, devUrl: URL | undefined) =>

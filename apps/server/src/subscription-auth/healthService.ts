@@ -476,7 +476,7 @@ export class SubscriptionHealthService {
             ? { "x-api-key": credential.access, "anthropic-version": "2023-06-01" }
             : { Authorization: `Bearer ${credential.access}` }),
           "User-Agent": OPENCODE_GO_USER_AGENT,
-          ...(provider === "opencode-go" ? { "x-opencode-client": "akeru-bot" } : {}),
+          ...(provider === "opencode-go" ? { "x-opencode-client": "isnadibot" } : {}),
         });
 
         if (!(await this.isCurrentHealthCredential(key, credential, version))) return;

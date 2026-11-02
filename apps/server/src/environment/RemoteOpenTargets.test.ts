@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest";
-import { HostProcessHostname } from "@akeru/shared/hostProcess";
-import * as NetService from "@akeru/shared/Net";
+import { HostProcessHostname } from "@isnadi/shared/hostProcess";
+import * as NetService from "@isnadi/shared/Net";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Sink from "effect/Sink";

@@ -1,20 +1,20 @@
 import { Match } from "effect";
 import { isTagged } from "../tagged";
 import type {
-  AkeruDelegationRecord,
-  AkeruDelegationState,
+  IsnadiDelegationRecord,
+  IsnadiDelegationState,
   OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   type DelegationAction,
   delegationActions,
   delegationElapsedMs,
   presentDelegation,
-} from "@akeru/client-runtime/delegation-presentation";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
-import { formatDuration } from "@akeru/shared/orchestrationTiming";
-import { formatTokens } from "@akeru/shared/usageFormat";
+} from "@isnadi/client-runtime/delegation-presentation";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import { formatDuration } from "@isnadi/shared/orchestrationTiming";
+import { formatTokens } from "@isnadi/shared/usageFormat";
 import { useMemo, useState, type ReactNode } from "react";
 
 import { useI18n } from "../../i18n";
@@ -30,7 +30,7 @@ import { DelegationDetail, delegationStateLabel, formatDelegationAccess } from "
 import { useDelegationClock } from "./delegationClock";
 import type { Bot } from "./types";
 
-const STATE_DOT: Record<AkeruDelegationState, string> = {
+const STATE_DOT: Record<IsnadiDelegationState, string> = {
   queued: "bg-muted-foreground/50",
   running: "bg-primary",
   blocked: "bg-warning",
@@ -40,7 +40,7 @@ const STATE_DOT: Record<AkeruDelegationState, string> = {
 };
 
 export function delegationUsageTokens(
-  delegation: AkeruDelegationRecord,
+  delegation: IsnadiDelegationRecord,
   childActivities: ReadonlyArray<OrchestrationThreadActivity>,
 ): number | null {
   const childTurnId = isTagged(delegation.phase, "Queued") ? null : delegation.phase.childTurnId;
@@ -56,7 +56,7 @@ function DelegationElapsed({
   delegation,
   live,
 }: {
-  readonly delegation: AkeruDelegationRecord;
+  readonly delegation: IsnadiDelegationRecord;
   readonly live: boolean;
 }) {
   const now = useDelegationClock(live);
@@ -83,8 +83,8 @@ function DelegationActions({
   delegations,
   childName,
 }: {
-  readonly delegation: AkeruDelegationRecord;
-  readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegation: IsnadiDelegationRecord;
+  readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
   readonly childName: string;
 }) {
   const { t } = useI18n();
@@ -189,8 +189,8 @@ export function DelegationCard({
   variant = "bot",
   actions,
 }: {
-  readonly delegation: AkeruDelegationRecord;
-  readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegation: IsnadiDelegationRecord;
+  readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
   readonly childBot: Bot | null;
   readonly parentBot: Bot | null;
   readonly variant?: "bot" | "group";

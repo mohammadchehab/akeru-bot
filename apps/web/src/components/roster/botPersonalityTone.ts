@@ -3,8 +3,8 @@ import {
   BALANCED_BOT_PERSONALITY_TONE,
   MAX_BOT_PERSONALITY_TONE,
   MIN_BOT_PERSONALITY_TONE,
-} from "@akeru/contracts";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+} from "@isnadi/contracts";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 
 import type { useI18n } from "../../i18n";
 
@@ -17,7 +17,7 @@ const translateEnglish: Translate = createTranslator("en").translate;
  * thresholds the server uses to build personality instructions, so what the
  * settings page promises is what the bot is actually told.
  *
- * @see apps/server/src/provider/AkeruAgentInstructions.ts
+ * @see apps/server/src/provider/IsnadiAgentInstructions.ts
  */
 
 export type BotPersonalityToneBandId =

@@ -1,6 +1,6 @@
 # Subscription authentication
 
-Akeru lets a user connect an existing AI subscription or supply an API key. The environment server owns both authentication methods. A custom base URL selects an API-compatible endpoint for API-key connections; it does not change subscription OAuth endpoints.
+Isnadi lets a user connect an existing AI subscription or supply an API key. The environment server owns both authentication methods. A custom base URL selects an API-compatible endpoint for API-key connections; it does not change subscription OAuth endpoints.
 
 Supported account flows:
 
@@ -73,7 +73,7 @@ The client drives every login over RPC:
 - `subscriptionAuth.cancel` removes abandoned pending state.
 - `subscriptionAuth.logout` removes the selected instance's stored credential. Without `instanceId`, it removes the historical default account.
 
-OpenAI's localhost callback flow is intentionally not used. A callback on the server machine cannot complete from a phone or remote browser. The Codex device flow works across every Akeru surface.
+OpenAI's localhost callback flow is intentionally not used. A callback on the server machine cannot complete from a phone or remote browser. The Codex device flow works across every Isnadi surface.
 
 Pending login state stays on the environment server. It is bounded and contains no completed access or refresh token. Device-code state is JSON-serializable so a later hosted implementation can persist it in the tenant database and let any replica continue polling.
 

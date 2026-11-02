@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@effect/vitest";
-import { MessageId } from "@akeru/contracts";
+import { MessageId } from "@isnadi/contracts";
 import { AtomRegistry } from "effect/unstable/reactivity";
 import type { QueuedThreadMessage } from "./thread-outbox-model";
 import { createThreadOutboxManager, ThreadOutboxManagerError } from "./thread-outbox-manager";

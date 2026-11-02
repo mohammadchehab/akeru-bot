@@ -1,5 +1,5 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { resolveThreadDetailRef } from "./entities";

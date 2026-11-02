@@ -1,13 +1,13 @@
 import * as Predicate from "effect/Predicate";
-import { createReplyPlaybackSession } from "@akeru/client-runtime/reply-playback";
-import { storedReplySynthesisCapability } from "@akeru/client-runtime/reply-playback";
+import { createReplyPlaybackSession } from "@isnadi/client-runtime/reply-playback";
+import { storedReplySynthesisCapability } from "@isnadi/client-runtime/reply-playback";
 import { useAtomValue } from "@effect/atom-react";
 import { useEffect, useMemo, useRef } from "react";
 import { useAtomCommand } from "~/state/use-atom-command";
 import { primaryServerSettingsAtom, serverEnvironment } from "~/state/server";
 import { usePrimaryEnvironmentId } from "~/state/environments";
 import { createBrowserReplyAudio } from "./replyPlaybackAudio";
-import { synthesizeVoiceChunks } from "@akeru/client-runtime/voice";
+import { synthesizeVoiceChunks } from "@isnadi/client-runtime/voice";
 
 type ReplySynthesisResult = {
   readonly _tag: string;

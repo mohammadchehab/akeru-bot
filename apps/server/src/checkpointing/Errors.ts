@@ -1,4 +1,4 @@
-import { NonNegativeInt, ThreadId, type VcsError } from "@akeru/contracts";
+import { NonNegativeInt, ThreadId, type VcsError } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import type { ProjectionRepositoryError } from "../persistence/Errors.ts";

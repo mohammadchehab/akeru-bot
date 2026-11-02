@@ -14,7 +14,7 @@ import type { Bot, BotAvatar, Group } from "./types";
 
 export type { RosterItemRef };
 
-const PERSISTED_ROSTER_KEY = "akeru:roster:v1";
+const PERSISTED_ROSTER_KEY = "isnadi:roster:v1";
 
 const persistedRosterMemory = new Map<string, PersistedRoster>();
 

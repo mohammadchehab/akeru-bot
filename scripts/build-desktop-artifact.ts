@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as Match from "effect/Match";
 import { desktopArtifactFlags } from "./lib/desktop-build/cliFlags.ts";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import rootPackageJson from "../package.json" with { type: "json" };
 
@@ -533,15 +533,15 @@ const buildDesktopArtifact = Effect.fn("buildDesktopArtifact")(function* (
   const stagePackageJson: StagePackageJson = {
     // Electron derives app.name (and therefore the macOS safe-storage
     // keychain service) from this manifest name. Keep the packaged identity
-    // in Akeru's namespace instead of reusing T3 Code's `t3code` service.
+    // in Isnadi's namespace instead of reusing T3 Code's `t3code` service.
     name: DESKTOP_PACKAGE_NAME,
     version: appVersion,
     buildVersion: appVersion,
     t3codeCommitHash: commitHash,
     private: true,
     packageManager: rootPackageJson.packageManager,
-    description: "Akeru Bot desktop build",
-    author: "Akeru Bot maintainers",
+    description: "IsnadiBot desktop build",
+    author: "IsnadiBot maintainers",
     license: "MIT",
     main: "apps/desktop/dist-electron/main.cjs",
     build: yield* createBuildConfig(
@@ -664,7 +664,7 @@ const buildDesktopArtifact = Effect.fn("buildDesktopArtifact")(function* (
   const builderArgs = [
     "exec",
     "--filter",
-    "@akeru/desktop",
+    "@isnadi/desktop",
     "--",
     "electron-builder",
     "--projectDir",
@@ -683,7 +683,7 @@ const buildDesktopArtifact = Effect.fn("buildDesktopArtifact")(function* (
       shell: builderCommand.shell,
     }),
     {
-      label: `vp exec --filter @akeru/desktop -- electron-builder --projectDir ${stageAppDir} ${platformConfig.cliFlag} --${options.arch} --publish never`,
+      label: `vp exec --filter @isnadi/desktop -- electron-builder --projectDir ${stageAppDir} ${platformConfig.cliFlag} --${options.arch} --publish never`,
       verbose: options.verbose,
     },
   );
@@ -749,7 +749,7 @@ const buildDesktopArtifact = Effect.fn("buildDesktopArtifact")(function* (
 });
 
 const buildDesktopArtifactCli = Command.make("build-desktop-artifact", desktopArtifactFlags).pipe(
-  Command.withDescription("Build a desktop artifact for Akeru Bot."),
+  Command.withDescription("Build a desktop artifact for IsnadiBot."),
   Command.withHandler((input) => Effect.flatMap(resolveBuildOptions(input), buildDesktopArtifact)),
 );
 

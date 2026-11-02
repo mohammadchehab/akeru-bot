@@ -66,7 +66,7 @@ be opened from here; open them from a client connected to that environment. Star
 
 ## Active and settled chats
 
-Akeru settles a chat only when you select **Settle chat**. Inactivity does not move chats to the
+Isnadi settles a chat only when you select **Settle chat**. Inactivity does not move chats to the
 settled list.
 
 Settling a pinned chat also removes its pin. **Un-settle chat** returns the chat to the top of the
@@ -109,7 +109,7 @@ Open a group and use its group sidebar to manage it:
 
 The boss answers every message by default. Type `@` and a bot's name, such as `@Mori`, to send that
 message to that bot instead. It answers with its own provider and model. If a message mentions
-several bots, the last mention wins. If two bots in the group share a name, Akeru cannot tell them
+several bots, the last mention wins. If two bots in the group share a name, Isnadi cannot tell them
 apart, so it holds the message and asks you to rename one of them. Mentions of people, such as
 `@Leo`, stay plain text and the boss answers. On mobile, a reply shows the bot's avatar and name
 whenever a different bot starts speaking.
@@ -128,7 +128,7 @@ On web and desktop, each card sits right after the exchange that started the wor
 there when you reload or come back later. Work started in three different replies shows up as
 three cards at three points in the chat. The card also shows how long the work has taken and the
 tokens it used. A card labelled **Scheduled** came from a routine, and **Retried** means it
-replaces an earlier attempt. In a group chat the card names both bots, such as "Akeru asked
+replaces an earlier attempt. In a group chat the card names both bots, such as "Isnadi asked
 Mori", because any bot in the group can hand off work.
 
 Open **Details** on a card to see the expected result and the access the other bot was given,
@@ -198,9 +198,9 @@ Bot replies render richer Markdown directly in the chat. There is no separate da
 - **Links** open in your browser.
 - **Settings chips** open a section of Settings for the same environment as the chat. Hover a chip
   to see which section it opens, for example **Open Settings > Providers > Voice**. A chip that points
-  somewhere Akeru does not recognize stays plain text and never opens outside the app.
+  somewhere Isnadi does not recognize stays plain text and never opens outside the app.
 
-While a reply is still streaming, Akeru waits for a table's header to finish before it shows the
+While a reply is still streaming, Isnadi waits for a table's header to finish before it shows the
 table, and it waits for a partial code fence, list marker, or heading underline to complete. The
 reply looks the same after it finishes and after you reload the chat.
 
@@ -243,7 +243,7 @@ and what you can do.
 ## Regenerate a title
 
 Open the chat menu and select **Regenerate title**. The action changes to **Regenerating…** until the
-new title is ready. Akeru hides this action when the environment server is too old to support it.
+new title is ready. Isnadi hides this action when the environment server is too old to support it.
 
 ## Read a reply aloud
 
@@ -254,4 +254,4 @@ not start a live call or generate another answer. See [Voice and spoken replies]
 
 Development environments can show **Artwork**, a **Version pill**, or **None** at the top of the
 sidebar and in the send button. Artwork follows built-in theme colors. Custom themes use the version
-pill because Akeru does not control their color palette.
+pill because Isnadi does not control their color palette.

@@ -4,9 +4,9 @@ import {
   PlatformConnectionSource,
   PrimaryEnvironmentAuth,
   SshEnvironmentGateway,
-} from "@akeru/client-runtime/platform";
-import { ConnectionBlockedError, Connectivity, Wakeups } from "@akeru/client-runtime/connection";
-import { AuthStandardClientScopes } from "@akeru/contracts";
+} from "@isnadi/client-runtime/platform";
+import { ConnectionBlockedError, Connectivity, Wakeups } from "@isnadi/client-runtime/connection";
+import { AuthStandardClientScopes } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -7,17 +7,17 @@ import {
   type ImportConflictDecision,
   memoryArchiveSchemaVersion,
   resolveImportConflicts,
-} from "@akeru/client-runtime/durable-memory";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/durable-memory";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import {
-  AkeruMarkdownMemoryArchiveV3,
-  AkeruMemoryArchiveV2,
-  type AkeruMarkdownMemoryImportPreview,
-  type AkeruMarkdownMemoryImportPreviewItem,
-  type AkeruMemoryImportPreview,
+  IsnadiMarkdownMemoryArchiveV3,
+  IsnadiMemoryArchiveV2,
+  type IsnadiMarkdownMemoryImportPreview,
+  type IsnadiMarkdownMemoryImportPreviewItem,
+  type IsnadiMemoryImportPreview,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { useMemo, useRef, useState } from "react";
 
@@ -30,9 +30,9 @@ import { useEnvironmentQuery } from "../../state/query";
 import { useAtomCommand } from "../../state/use-atom-command";
 import { Button } from "../ui/button";
 
-const decodeArchive = Schema.decodeUnknownSync(AkeruMarkdownMemoryArchiveV3);
+const decodeArchive = Schema.decodeUnknownSync(IsnadiMarkdownMemoryArchiveV3);
 
-const decodeDurableArchive = Schema.decodeUnknownSync(AkeruMemoryArchiveV2);
+const decodeDurableArchive = Schema.decodeUnknownSync(IsnadiMemoryArchiveV2);
 
 function download<T>(value: T, fileName: string) {
   const url = URL.createObjectURL(
@@ -46,14 +46,15 @@ function download<T>(value: T, fileName: string) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-const NOTES_FILE_NAMES: Readonly<Record<AkeruMarkdownMemoryImportPreviewItem["target"], string>> = {
-  user: "USER.md",
-  memory: "MEMORY.md",
-  group: "GROUP.md",
-};
+const NOTES_FILE_NAMES: Readonly<Record<IsnadiMarkdownMemoryImportPreviewItem["target"], string>> =
+  {
+    user: "USER.md",
+    memory: "MEMORY.md",
+    group: "GROUP.md",
+  };
 
 const NOTES_CLASSIFICATION_LABELS: Readonly<
-  Record<AkeruMarkdownMemoryImportPreviewItem["classification"], MessageKey>
+  Record<IsnadiMarkdownMemoryImportPreviewItem["classification"], MessageKey>
 > = {
   new: "New",
   changed: "Changed",
@@ -63,13 +64,13 @@ const NOTES_CLASSIFICATION_LABELS: Readonly<
 type PendingImport =
   | {
       readonly kind: "notes";
-      readonly archive: AkeruMarkdownMemoryArchiveV3;
-      readonly preview: AkeruMarkdownMemoryImportPreview;
+      readonly archive: IsnadiMarkdownMemoryArchiveV3;
+      readonly preview: IsnadiMarkdownMemoryImportPreview;
     }
   | {
       readonly kind: "durable";
-      readonly archive: AkeruMemoryArchiveV2;
-      readonly preview: AkeruMemoryImportPreview;
+      readonly archive: IsnadiMemoryArchiveV2;
+      readonly preview: IsnadiMemoryImportPreview;
     };
 
 export function BotMemoryTransfer({ threadRef }: { readonly threadRef: ScopedThreadRef }) {
@@ -177,7 +178,7 @@ export function BotMemoryTransfer({ threadRef }: { readonly threadRef: ScopedThr
               });
 
               if (Predicate.isTagged(result, "Failure")) throw squashAtomCommandFailure(result);
-              download(result.value, `akeru-memory-${threadRef.threadId}.json`);
+              download(result.value, `isnadi-memory-${threadRef.threadId}.json`);
             })
           }
         >

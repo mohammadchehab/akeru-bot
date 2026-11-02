@@ -1,4 +1,5 @@
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+import { findProductHomeDir } from "@isnadi/shared/productHome";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 
@@ -20,6 +21,7 @@ interface EarlyDesktopSettingsInput {
   readonly homeDirectory: string;
   readonly joinPath: JoinPath;
   readonly readFileString: (path: string) => string;
+  readonly exists: (path: string) => boolean;
 }
 
 type EarlyLinuxElectronOptionsInput = EarlyDesktopSettingsInput;
@@ -50,12 +52,12 @@ function resolveEarlyDesktopSettingsPath(input: {
   readonly env: NodeJS.ProcessEnv;
   readonly homeDirectory: string;
   readonly joinPath: JoinPath;
+  readonly exists: (path: string) => boolean;
 }): string {
-  const t3Home = Option.fromUndefinedOr(input.env.AKERU_HOME ?? input.env.T3CODE_HOME);
+  const t3Home = Option.fromUndefinedOr(input.env.ISNADI_HOME ?? input.env.T3CODE_HOME);
 
   const baseDir = resolveDesktopBaseDir({
-    homeDirectory: input.homeDirectory,
-    joinPath: input.joinPath,
+    defaultBaseDir: findProductHomeDir(input),
     t3Home,
   });
 
@@ -89,7 +91,7 @@ export function resolveEarlyLinuxElectronOptions(
   const preference = resolveEarlyLinuxPasswordStorePreference(input);
 
   return {
-    linuxWmClass: isDevelopmentEnvironment(input.env) ? "akeru-bot-dev" : "akeru-bot",
+    linuxWmClass: isDevelopmentEnvironment(input.env) ? "isnadibot-dev" : "isnadibot",
     passwordStore: resolveLinuxPasswordStoreSwitch({
       preference,
       env: input.env,

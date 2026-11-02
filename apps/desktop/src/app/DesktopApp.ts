@@ -5,7 +5,7 @@ import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
 import * as Schema from "effect/Schema";
 
-import * as NetService from "@akeru/shared/Net";
+import * as NetService from "@isnadi/shared/Net";
 import * as Crypto from "effect/Crypto";
 import * as ElectronApp from "../electron/ElectronApp.ts";
 import * as ElectronDialog from "../electron/ElectronDialog.ts";
@@ -29,6 +29,8 @@ import * as DesktopShellEnvironment from "../shell/DesktopShellEnvironment.ts";
 import * as DesktopState from "./DesktopState.ts";
 import * as DesktopUpdates from "../updates/DesktopUpdates.ts";
 import * as DesktopWslBackend from "../wsl/DesktopWslBackend.ts";
+import * as BrowserSession from "../preview/BrowserSession.ts";
+import * as LegacyRendererStorageMigration from "./LegacyRendererStorageMigration.ts";
 
 const DEFAULT_DESKTOP_BACKEND_PORT = 3773;
 
@@ -66,8 +68,35 @@ export class DesktopDevelopmentBackendPortRequiredError extends Schema.TaggedErr
 const { logInfo: logBootstrapInfo, logWarning: logBootstrapWarning } =
   DesktopObservability.componentLogger("desktop-bootstrap");
 
-const { logInfo: logStartupInfo, logError: logStartupError } =
-  DesktopObservability.componentLogger("desktop-startup");
+const {
+  logInfo: logStartupInfo,
+  logWarning: logStartupWarning,
+  logError: logStartupError,
+} = DesktopObservability.componentLogger("desktop-startup");
+
+// Pre-rename builds stored preview sessions under legacy partition names.
+// Never fails startup: on error the old partitions are simply not carried over.
+const migrateLegacyPreviewPartitions = (userDataPath: string) =>
+  BrowserSession.migrateLegacyPreviewPartitions(userDataPath).pipe(
+    Effect.tap((result) =>
+      result.renamed.length > 0 || result.skipped.length > 0
+        ? logStartupInfo("migrated legacy preview browser partitions", {
+            renamed: result.renamed.length,
+            skipped: result.skipped.length,
+          })
+        : Effect.void,
+    ),
+    Effect.catch((error) =>
+      logStartupWarning("legacy preview browser partition migration failed; continuing", {
+        error: error.message,
+      }),
+    ),
+    Effect.catchDefect((defect) =>
+      logStartupWarning("legacy preview browser partition migration crashed; continuing", {
+        error: String(defect),
+      }),
+    ),
+  );
 
 const resolveDesktopBackendPort = Effect.fn("resolveDesktopBackendPort")(function* (
   configuredPort: Option.Option<number>,
@@ -283,6 +312,10 @@ const startup = Effect.gen(function* () {
     return yield* Effect.interrupt;
   }
 
+  // Runs while we hold the single-instance lock and before any preview
+  // session can be created (the first one is created with the main window).
+  yield* migrateLegacyPreviewPartitions(userDataPath);
+
   const context = yield* Effect.context<ElectronWindow.ElectronWindow>();
   const runPromise = Effect.runPromiseWith(context);
   yield* electronApp.on("second-instance", () => {
@@ -317,6 +350,13 @@ const startup = Effect.gen(function* () {
     Effect.catchCause((cause) => fatalStartupCause("whenReady", cause)),
   );
   yield* logStartupInfo("app ready");
+
+  // Must run before bootstrap registers the renderer protocol and before the
+  // main window loads, so the renderer sees the carried-over localStorage.
+  yield* LegacyRendererStorageMigration.migrateLegacyLocalStorage({
+    userDataPath,
+    isDevelopment: environment.isDevelopment,
+  });
 
   if (environment.platform === "linux") {
     const selectedBackend = yield* safeStorage.selectedStorageBackend;

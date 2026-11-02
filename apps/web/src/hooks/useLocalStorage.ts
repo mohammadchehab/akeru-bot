@@ -105,11 +105,11 @@ export const removeLocalStorageItem = (key: string) => {
   }
 };
 
-const LOCAL_STORAGE_CHANGE_EVENT = "akeru:local_storage_change";
+const LOCAL_STORAGE_CHANGE_EVENT = "isnadi:local_storage_change";
 
 declare global {
   interface WindowEventMap {
-    "akeru:local_storage_change": CustomEvent<LocalStorageChangeDetail>;
+    "isnadi:local_storage_change": CustomEvent<LocalStorageChangeDetail>;
   }
 }
 

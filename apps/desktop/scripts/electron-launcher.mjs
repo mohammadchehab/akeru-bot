@@ -24,14 +24,14 @@ const devBundleIdSuffix = NodePath.basename(repoRoot)
 export const APP_DISPLAY_NAME = isDevelopment ? "IsnadiBot (Dev)" : "IsnadiBot";
 
 export const APP_BUNDLE_ID = isDevelopment
-  ? `dev.leodoes.akeru.dev.${devBundleIdSuffix || "local"}`
-  : "dev.leodoes.akeru";
+  ? `dev.leodoes.isnadi.dev.${devBundleIdSuffix || "local"}`
+  : "dev.leodoes.isnadi";
 
-const APP_PROTOCOL_SCHEMES = isDevelopment ? ["akeru-dev"] : ["akeru"];
+const APP_PROTOCOL_SCHEMES = isDevelopment ? ["isnadi-dev"] : ["isnadi"];
 
 const LAUNCHER_VERSION = 16;
 
-const productionMacIconPngPath = NodePath.join(repoRoot, "assets", "prod", "akeru-macos-1024.png");
+const productionMacIconPngPath = NodePath.join(repoRoot, "assets", "prod", "isnadi-macos-1024.png");
 
 const hostPlatform = NodeOS.platform();
 
@@ -181,7 +181,7 @@ export function resolveMacLauncherIconPaths(runtimeDir, development = isDevelopm
     sourceIconPath: productionMacIconPngPath,
     generatedIconPath: NodePath.join(
       runtimeDir,
-      development ? "icon-akeru-dev.icns" : "icon-prod.icns",
+      development ? "icon-isnadi-dev.icns" : "icon-prod.icns",
     ),
   };
 }

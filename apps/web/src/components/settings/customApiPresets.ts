@@ -1,4 +1,4 @@
-import type { ProviderInstanceEnvironmentVariable } from "@akeru/contracts";
+import type { ProviderInstanceEnvironmentVariable } from "@isnadi/contracts";
 
 import { CustomApiIcon, type Icon } from "../Icons";
 import {

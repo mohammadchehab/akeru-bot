@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
-import type { AkeruDelegationRecord } from "@akeru/contracts";
+import type { IsnadiDelegationRecord } from "@isnadi/contracts";
 
-export { SHELL_RECENT_TERMINAL_DELEGATIONS_PER_THREAD } from "@akeru/contracts";
+export { SHELL_RECENT_TERMINAL_DELEGATIONS_PER_THREAD } from "@isnadi/contracts";
 
 /** Longest delegation result summary or failure message the shell snapshot carries. */
 export const SHELL_DELEGATION_TEXT_MAX_CHARS = 2_000;
@@ -13,7 +13,7 @@ function truncateShellText(text: string): string {
 }
 
 /** Caps a delegation's free-form result, failure, or blocked text for shell payloads. */
-export function toShellDelegation(delegation: AkeruDelegationRecord): AkeruDelegationRecord {
+export function toShellDelegation(delegation: IsnadiDelegationRecord): IsnadiDelegationRecord {
   const phase = delegation.phase;
 
   return Match.value(phase).pipe(

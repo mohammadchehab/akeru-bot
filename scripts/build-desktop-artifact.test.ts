@@ -28,7 +28,7 @@ import {
   WINDOWS_SERVER_RESOURCE_SOURCE_DIR,
 } from "./build-desktop-artifact.ts";
 
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 const decodeMacSignConfig = Schema.decodeUnknownEffect(
   Schema.Struct({
@@ -65,8 +65,8 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
     assert.equal(resolveDesktopProductName(), "IsnadiBot");
   });
 
-  it("uses the Akeru package identity for Electron safe storage", () => {
-    assert.equal(DESKTOP_PACKAGE_NAME, "akeru-bot");
+  it("uses the Isnadi package identity for Electron safe storage", () => {
+    assert.equal(DESKTOP_PACKAGE_NAME, "isnadibot");
   });
 
   it.effect("resolves GitHub desktop publish config from Effect config", () =>

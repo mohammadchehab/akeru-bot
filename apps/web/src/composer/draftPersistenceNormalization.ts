@@ -11,13 +11,13 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   parseScopedProjectKey,
   parseScopedThreadKey,
   scopeProjectRef,
   scopeThreadRef,
-} from "@akeru/client-runtime/environment";
+} from "@isnadi/client-runtime/environment";
 import { DeepMutable } from "effect/Types";
 import { DEFAULT_INTERACTION_MODE } from "../types";
 import { ensureInlineTerminalContextPlaceholders } from "../lib/terminalContext";

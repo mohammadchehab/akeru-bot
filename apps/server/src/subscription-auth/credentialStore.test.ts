@@ -18,7 +18,7 @@ const encodeJson = Schema.encodeSync(
   Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown)),
 );
 
-/** A credential file as Akeru and Mastra's AuthStorage write it today. */
+/** A credential file as Isnadi and Mastra's AuthStorage write it today. */
 const currentFormat = {
   anthropic: {
     type: "oauth",
@@ -42,7 +42,7 @@ const currentFormat = {
 const authFile = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-credential-store-" });
+  const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-credential-store-" });
 
   return { directory, authPath: path.join(directory, "subscription-auth.json") };
 });

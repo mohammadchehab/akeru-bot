@@ -1,15 +1,18 @@
-import { buildProjectGroups } from "@akeru/client-runtime/state/project-grouping";
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import { buildProjectGroups } from "@isnadi/client-runtime/state/project-grouping";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
 import {
   getThreadSortTimestamp,
   toSortableTimestamp,
-} from "@akeru/client-runtime/state/thread-sort";
+} from "@isnadi/client-runtime/state/thread-sort";
 import type {
   EnvironmentId,
   ScopedProjectRef,
   SidebarProjectGroupingMode,
   SidebarProjectSortOrder,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Order from "effect/Order";
 

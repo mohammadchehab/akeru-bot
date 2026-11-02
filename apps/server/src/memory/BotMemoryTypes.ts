@@ -1,5 +1,5 @@
 import * as NodeFSP from "node:fs/promises";
-import { type AkeruMemoryDocumentTarget, type BotId, type GroupId } from "@akeru/contracts";
+import { type IsnadiMemoryDocumentTarget, type BotId, type GroupId } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 export const NodeFS = NodeFSP;
@@ -59,7 +59,7 @@ export interface BotMemoryAccess {
 }
 
 export interface ResolvedDocument {
-  readonly target: AkeruMemoryDocumentTarget;
+  readonly target: IsnadiMemoryDocumentTarget;
   readonly filePath: string;
   readonly charLimit: number;
   readonly memoryRoot: string;

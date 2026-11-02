@@ -3,9 +3,9 @@ import { useAtomValue } from "@effect/atom-react";
 import {
   type OperateAccess,
   resolveRemoteOperateAccess,
-} from "@akeru/client-runtime/authorization";
-import { createEnvironmentSessionAtoms } from "@akeru/client-runtime/state/session";
-import type { EnvironmentId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/authorization";
+import { createEnvironmentSessionAtoms } from "@isnadi/client-runtime/state/session";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import { AsyncResult, Atom } from "effect/unstable/reactivity";
 

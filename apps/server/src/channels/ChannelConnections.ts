@@ -7,7 +7,7 @@ import {
   type ProjectId,
   type ChannelConnectionProfile,
   type ChannelProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import { failWith, channelFailureMessage, channelFailurePresentation } from "./ChannelErrors.ts";

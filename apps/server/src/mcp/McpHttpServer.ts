@@ -75,7 +75,7 @@ const makeMcpAuthMiddleware = McpSessionRegistry.McpSessionRegistry.pipe(
 
         if (!invocation) {
           // Without this the only symptom of a dead credential is the agent
-          // quietly losing the whole `akeru` toolkit for the rest of its
+          // quietly losing the whole `isnadi` toolkit for the rest of its
           // session, with nothing on the server to explain why.
           yield* Effect.logWarning("rejected MCP request with an unusable credential", {
             reason: token.length === 0 ? "missing_bearer_token" : "unknown_or_expired_token",
@@ -113,7 +113,7 @@ export const PreviewToolkitRegistrationLive = Layer.mergeAll(
 );
 
 const McpTransportLive = McpServer.layerHttp({
-  name: "Akeru Bot",
+  name: "IsnadiBot",
   version: packageJson.version,
   path: "/mcp",
   protocols: [McpProtocol.v2025_06_18],

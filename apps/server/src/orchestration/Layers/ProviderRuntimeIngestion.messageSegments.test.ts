@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { ApprovalRequestId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { ApprovalRequestId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import { afterEach, describe, expect, it } from "vite-plus/test";

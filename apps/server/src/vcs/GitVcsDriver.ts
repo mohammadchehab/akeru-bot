@@ -24,7 +24,7 @@ import {
   type VcsRemoveWorktreeInput,
   type VcsStatusInput,
   type VcsStatusResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { gitVcsDriverCore } from "./GitVcsDriverCore.ts";
 import * as VcsDriver from "./VcsDriver.ts";
 import * as VcsProcess from "./VcsProcess.ts";
@@ -186,7 +186,7 @@ export class GitVcsDriver extends Context.Service<
     ) => Effect.Effect<VcsSwitchRefResult, GitCommandError>;
     readonly initRepo: (input: VcsInitInput) => Effect.Effect<void, GitCommandError>;
   }
->()("akeru-bot/vcs/GitVcsDriver") {}
+>()("isnadibot/vcs/GitVcsDriver") {}
 
 const WORKSPACE_FILES_MAX_OUTPUT_BYTES = 16 * 1024 * 1024;
 
@@ -569,10 +569,10 @@ export const makeVcsDriverShape = Effect.fn("makeGitVcsDriverShape")(function* (
       const commitEnv: NodeJS.ProcessEnv = {
         ...process.env,
         GIT_INDEX_FILE: tempIndexPath,
-        GIT_AUTHOR_NAME: "Akeru Bot",
-        GIT_AUTHOR_EMAIL: "akeru-bot@users.noreply.github.com",
-        GIT_COMMITTER_NAME: "Akeru Bot",
-        GIT_COMMITTER_EMAIL: "akeru-bot@users.noreply.github.com",
+        GIT_AUTHOR_NAME: "IsnadiBot",
+        GIT_AUTHOR_EMAIL: "isnadibot@users.noreply.github.com",
+        GIT_COMMITTER_NAME: "IsnadiBot",
+        GIT_COMMITTER_EMAIL: "isnadibot@users.noreply.github.com",
       };
 
       const cleanupTempIndex = fileSystem

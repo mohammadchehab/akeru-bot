@@ -2,7 +2,7 @@ import * as NodeCrypto from "node:crypto";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
-import { HostProcessExecutablePath, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessExecutablePath, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -22,7 +22,7 @@ const ARCHIVE_SHA256 = "a".repeat(64);
 const releaseKeys = NodeCrypto.generateKeyPairSync("ed25519");
 
 const releaseManifest = new TextEncoder().encode(
-  `${ARCHIVE_SHA256}  Akeru-Remote-1.1.0-win32-x64.zip\n`,
+  `${ARCHIVE_SHA256}  Isnadi-Remote-1.1.0-win32-x64.zip\n`,
 );
 
 const releaseSignature = NodeCrypto.sign(null, releaseManifest, releaseKeys.privateKey);
@@ -67,7 +67,7 @@ const makeHarness = Effect.fn("test.make_self_update_harness")(function* (
             expect(input.args[input.args.indexOf("-ExpectedSha256") + 1]).toBe(ARCHIVE_SHA256);
           }
 
-          const installRoot = input.env?.AKERU_INSTALL_ROOT;
+          const installRoot = input.env?.ISNADI_INSTALL_ROOT;
 
           if (installRoot === undefined) return yield* Effect.die("missing archive install root");
 
@@ -76,7 +76,7 @@ const makeHarness = Effect.fn("test.make_self_update_harness")(function* (
             "versions",
             "1.1.0",
             "node_modules",
-            "akeru-bot",
+            "isnadibot",
             "dist",
             "bin.mjs",
           );
@@ -107,7 +107,7 @@ const makeHarness = Effect.fn("test.make_self_update_harness")(function* (
           const prefix = input.args[input.args.indexOf("--prefix") + 1];
 
           if (prefix === undefined) return yield* Effect.die("missing npm prefix");
-          const entry = path.join(prefix, "node_modules", "akeru-bot", "dist", "bin.mjs");
+          const entry = path.join(prefix, "node_modules", "isnadibot", "dist", "bin.mjs");
           yield* fs.makeDirectory(path.dirname(entry), { recursive: true }).pipe(Effect.orDie);
           yield* fs.writeFileString(entry, "export {};\n").pipe(Effect.orDie);
 
@@ -187,7 +187,7 @@ it.layer(NodeServices.layer)("server self update", (it) => {
         const path = yield* Path.Path;
         const { selfUpdate, order, preflightCommands, baseDir } = yield* makeHarness({ platform });
         const versionDir = path.join(baseDir, "runtime", "versions", "1.1.0");
-        const entry = path.join(versionDir, "node_modules", "akeru-bot", "dist", "bin.mjs");
+        const entry = path.join(versionDir, "node_modules", "isnadibot", "dist", "bin.mjs");
         yield* fs.makeDirectory(path.dirname(entry), { recursive: true });
         yield* fs.writeFileString(entry, "unverified npm bytes\n");
         yield* fs.writeFileString(path.join(versionDir, ".install-complete"), "1.1.0\n");
@@ -238,7 +238,7 @@ it.layer(NodeServices.layer)("server self update", (it) => {
       const web = yield* makeHarness();
       expect(
         (yield* web.selfUpdate.update({ targetVersion: "latest" }).pipe(Effect.flip)).reason,
-      ).toBe("'latest' is not an exact akeru-bot version.");
+      ).toBe("'latest' is not an exact isnadibot version.");
       const desktop = yield* makeHarness({ mode: "desktop" });
       expect(
         (yield* desktop.selfUpdate.update({ targetVersion: "1.1.0" }).pipe(Effect.flip)).reason,

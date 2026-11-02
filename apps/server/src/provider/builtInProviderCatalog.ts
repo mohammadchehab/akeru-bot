@@ -1,4 +1,4 @@
-import type { ProviderDriverKind, ProviderInstanceId, ServerProvider } from "@akeru/contracts";
+import type { ProviderDriverKind, ProviderInstanceId, ServerProvider } from "@isnadi/contracts";
 import type * as Stream from "effect/Stream";
 import type { ServerProviderShape } from "./Services/ServerProvider.ts";
 

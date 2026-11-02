@@ -1,7 +1,7 @@
-import type { AssetResource } from "@akeru/contracts";
+import type { AssetResource } from "@isnadi/contracts";
 import { Data, Predicate } from "effect";
 import { useMobileI18n } from "../../lib/i18n";
-import type { EnvironmentId, ThreadId } from "@akeru/contracts";
+import type { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { SymbolView } from "../../components/AppSymbol";
 import { useEffect, useState } from "react";
 import {

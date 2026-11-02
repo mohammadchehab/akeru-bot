@@ -1,5 +1,5 @@
 import { hasTag } from "~/lib/taggedUnion";
-import type { ResourceTelemetryHistoryInput, ResourceTelemetrySnapshot } from "@akeru/contracts";
+import type { ResourceTelemetryHistoryInput, ResourceTelemetrySnapshot } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { useCallback } from "react";
 

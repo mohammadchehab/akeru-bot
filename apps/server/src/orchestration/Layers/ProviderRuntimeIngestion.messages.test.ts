@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import { it as effectIt } from "@effect/vitest";

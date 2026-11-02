@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import type { MessageId, ScopedThreadRef } from "@akeru/contracts";
+import type { MessageId, ScopedThreadRef } from "@isnadi/contracts";
 import { useCallback } from "react";
 
 import { useI18n } from "~/i18n";

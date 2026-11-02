@@ -1,4 +1,4 @@
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import * as Effect from "effect/Effect";
 
@@ -54,8 +54,8 @@ export function createPreviewManagerHarness(mocks: ReturnType<typeof makePreview
   const browserSessionLayer = Layer.succeed(
     BrowserSession.BrowserSession,
     BrowserSession.BrowserSession.of({
-      getPartition: () => Effect.succeed("persist:akeru-preview-test"),
-      isPartition: (partition) => partition.startsWith("persist:akeru-preview-"),
+      getPartition: () => Effect.succeed("persist:isnadi-preview-test"),
+      isPartition: (partition) => partition.startsWith("persist:isnadi-preview-"),
       getSession: () => Effect.die("unexpected getSession"),
       clearCookies: () => Effect.void,
       clearCache: () => Effect.void,

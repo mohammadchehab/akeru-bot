@@ -321,7 +321,7 @@ export const resolveWslStartConfig = Effect.fn("desktop.backendConfiguration.res
       }
     }
 
-    // Build an explicit copy of process.env minus AKERU_HOME/T3CODE_HOME (dev-runner
+    // Build an explicit copy of process.env minus ISNADI_HOME/T3CODE_HOME (dev-runner
     // exports the Windows-side base dir for the primary; if it leaks into
     // the WSL backend the Linux side ends up sharing C:\Users\...\.t3 via
     // /mnt/c, which means both backends read/write the same database and
@@ -329,7 +329,7 @@ export const resolveWslStartConfig = Effect.fn("desktop.backendConfiguration.res
     const parentEnvWithoutT3Home: Record<string, string | undefined> = {};
 
     for (const [key, value] of Object.entries(process.env)) {
-      if (key === "AKERU_HOME" || key === "T3CODE_HOME") continue;
+      if (key === "ISNADI_HOME" || key === "T3CODE_HOME") continue;
       parentEnvWithoutT3Home[key] = value;
     }
 

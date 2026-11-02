@@ -5,7 +5,7 @@ import {
   type ProductFeedbackReceipt,
   type ProductFeedbackRejection,
   type ProductFeedbackSubmission as ProductFeedbackSubmissionValue,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Exit from "effect/Exit";
 import * as Schema from "effect/Schema";
 
@@ -434,7 +434,7 @@ export function productFeedbackEndpoint(options: ProductFeedbackEndpointOptions)
     } catch {
       return rejection(500, {
         reason: "internal",
-        message: "Akeru could not store the feedback. The draft is still available.",
+        message: "Isnadi could not store the feedback. The draft is still available.",
       });
     }
   };

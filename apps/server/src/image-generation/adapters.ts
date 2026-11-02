@@ -10,7 +10,7 @@ import * as Predicate from "effect/Predicate";
  * logs, or forwards bytes or prompts; the runtime owns artifacts.
  *
  * - ChatGPT uses the ChatGPT sign-in through the Codex responses transport
- *   Akeru's Codex chat already uses, with the `image_generation` tool. An
+ *   Isnadi's Codex chat already uses, with the `image_generation` tool. An
  *   OpenAI API key does not qualify: the ChatGPT row is subscription-only.
  * - Grok uses the xAI Imagine endpoints (`/v1/images/generations` and
  *   `/v1/images/edits`) with the connected xAI credential.
@@ -25,7 +25,7 @@ import {
   type ImageProviderId,
   type ImageProviderOperation,
   type ImageQuality,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import type { SubscriptionAuthService } from "../subscription-auth/service.ts";
 import { ImageResponseTooLargeError, readBoundedText } from "./boundedResponse.ts";
@@ -356,7 +356,7 @@ export function chatGptImageAdapter(deps: {
               "ChatGPT-Account-ID": access.accountId,
               "Content-Type": "application/json",
               Accept: "text/event-stream",
-              originator: "akeru",
+              originator: "isnadi",
             },
             body: JSON.stringify({
               model: DEFAULT_TEXT_GENERATION_MODEL,

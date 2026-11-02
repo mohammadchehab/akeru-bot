@@ -1,4 +1,4 @@
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {

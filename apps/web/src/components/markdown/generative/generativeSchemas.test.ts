@@ -3,11 +3,17 @@ import { layoutFlow } from "./GenerativeFlow";
 import { decodeGenerativeBlock, generativeKindForLanguage } from "./generativeSchemas";
 
 describe("generative blocks", () => {
-  it("maps only akeru- fences to block kinds", () => {
-    expect(generativeKindForLanguage("akeru-chart")).toBe("chart");
-    expect(generativeKindForLanguage("AKERU-Tasks")).toBe("tasks");
-    expect(generativeKindForLanguage("akeru-unknown")).toBeNull();
+  it("maps only isnadi- fences to block kinds", () => {
+    expect(generativeKindForLanguage("isnadi-chart")).toBe("chart");
+    expect(generativeKindForLanguage("ISNADI-Tasks")).toBe("tasks");
+    expect(generativeKindForLanguage("isnadi-unknown")).toBeNull();
     expect(generativeKindForLanguage("json")).toBeNull();
+  });
+
+  it("still maps fences saved under the legacy akeru- prefix", () => {
+    expect(generativeKindForLanguage("akeru-chart")).toBe("chart");
+    expect(generativeKindForLanguage("AKERU-Timeline")).toBe("timeline");
+    expect(generativeKindForLanguage("akeru-unknown")).toBeNull();
   });
 
   it("decodes a valid spec and rejects partial or malformed JSON", () => {

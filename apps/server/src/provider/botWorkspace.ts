@@ -1,14 +1,14 @@
 import { TOOL_NAME_OVERRIDES } from "@mastra/code-sdk/tool-names";
 import { LocalFilesystem, LocalSandbox, Workspace } from "@mastra/core/workspace";
-import type { BotSandbox } from "@akeru/contracts";
+import type { BotSandbox } from "@isnadi/contracts";
 import { BotWorkspaceFilesystem } from "./botWorkspaceFilesystem.ts";
 import {
   type RemoteBotSandbox,
   REMOTE_BOT_SANDBOXES,
   type CreateBotWorkspaceInput,
-  type AkeruBotWorkspace,
+  type IsnadiBotWorkspace,
   type CreateRemoteBotWorkspaceInput,
-  type AkeruRemoteSession,
+  type IsnadiRemoteSession,
 } from "./workspace/BotWorkspaceTypes.ts";
 import {
   wrap,
@@ -33,7 +33,7 @@ export function isRemoteBotSandbox(
 
 export async function createBotWorkspace(
   input: CreateBotWorkspaceInput,
-): Promise<AkeruBotWorkspace | undefined> {
+): Promise<IsnadiBotWorkspace | undefined> {
   if (isRemoteBotSandbox(input.sandbox)) {
     const remote = await (input.makeRemoteWorkspace ?? createRemoteBotWorkspace)({
       io: input.io,
@@ -53,8 +53,8 @@ export async function createBotWorkspace(
   await input.io.mkdir(root);
 
   const workspace = new Workspace({
-    id: input.workspaceId ?? `akeru-${input.threadId}`,
-    name: `Akeru ${input.threadId}`,
+    id: input.workspaceId ?? `isnadi-${input.threadId}`,
+    name: `Isnadi ${input.threadId}`,
     filesystem: new LocalFilesystem({ basePath: root }),
     sandbox: new LocalSandbox({ workingDirectory: root }),
     tools: TOOL_NAME_OVERRIDES,
@@ -65,7 +65,7 @@ export async function createBotWorkspace(
 
 export async function createRemoteBotWorkspace(
   input: CreateRemoteBotWorkspaceInput,
-): Promise<AkeruBotWorkspace> {
+): Promise<IsnadiBotWorkspace> {
   if (!input.identityFile || !input.workspaceId)
     throw new Error(`Remote sandbox '${input.sandbox}' needs a stable workspace identity.`);
   const identityFile = input.identityFile;
@@ -75,7 +75,7 @@ export async function createRemoteBotWorkspace(
     throw new Error(
       `Workspace '${input.workspaceId}' belongs to '${persisted.provider}', not '${input.sandbox}'.`,
     );
-  let session: AkeruRemoteSession;
+  let session: IsnadiRemoteSession;
 
   try {
     session = input.openSession
@@ -105,7 +105,7 @@ export async function createRemoteBotWorkspace(
 
   const workspace = new Workspace({
     id: input.workspaceId,
-    name: `Akeru ${input.workspaceId}`,
+    name: `Isnadi ${input.workspaceId}`,
     filesystem: new BotWorkspaceFilesystem(input.workspaceId, input.sandbox, session),
     sandbox: new RemoteSandbox(input.workspaceId, input.sandbox, session),
     tools: TOOL_NAME_OVERRIDES,
@@ -136,7 +136,7 @@ async function create(
   provider: RemoteBotSandbox,
   id: string,
   environment: Readonly<Record<string, string>> = {},
-): Promise<AkeruRemoteSession> {
+): Promise<IsnadiRemoteSession> {
   if (provider === "ascii") {
     const { BoxApi, Configuration } = await import("@asciidev/box-sdk");
 
@@ -208,7 +208,7 @@ async function open(
   provider: RemoteBotSandbox,
   id: string,
   environment: Readonly<Record<string, string>> = {},
-): Promise<AkeruRemoteSession> {
+): Promise<IsnadiRemoteSession> {
   if (provider === "ascii") {
     const { BoxApi, Configuration, ResponseError } = await import("@asciidev/box-sdk");
 
@@ -281,10 +281,10 @@ async function open(
 export {
   REMOTE_BOT_SANDBOXES,
   type RemoteBotSandbox,
-  type AkeruWorkspaceState,
-  type AkeruBrowserEndpoint,
-  type AkeruBotWorkspace,
-  type AkeruRemoteSession,
+  type IsnadiWorkspaceState,
+  type IsnadiBrowserEndpoint,
+  type IsnadiBotWorkspace,
+  type IsnadiRemoteSession,
   type CreateRemoteBotWorkspaceInput,
   type CreateBotWorkspaceInput,
 } from "./workspace/BotWorkspaceTypes.ts";

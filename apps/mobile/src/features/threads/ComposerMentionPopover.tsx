@@ -1,4 +1,4 @@
-import type { EnvironmentId, ServerProvider } from "@akeru/contracts";
+import type { EnvironmentId, ServerProvider } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { memo, useMemo } from "react";
 import { View } from "react-native";

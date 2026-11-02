@@ -6,7 +6,7 @@ import {
   type EnvironmentId,
   type VoiceApiProvider,
   type VoiceSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useEffect, useState } from "react";
 import { serverEnvironment } from "../../state/server";
 import { useAtomCommand } from "../../state/use-atom-command";

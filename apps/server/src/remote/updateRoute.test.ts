@@ -27,7 +27,7 @@ it("accepts the machine token only from direct loopback callers", () => {
 });
 
 it("defers unattended updates while any bot turn is active", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-update-route-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-update-route-"));
   const dbPath = NodePath.join(root, "state.sqlite");
   const db = new NodeSqlite.DatabaseSync(dbPath);
   db.exec(`CREATE TABLE projection_thread_sessions (
@@ -60,7 +60,7 @@ it("defers unattended updates while any bot turn is active", () => {
 });
 
 it("counts an admitted turn that has not reached its provider yet", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-update-route-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-update-route-"));
   const dbPath = NodePath.join(root, "state.sqlite");
   const db = new NodeSqlite.DatabaseSync(dbPath);
   db.exec(`CREATE TABLE projection_thread_sessions (

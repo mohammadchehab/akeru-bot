@@ -12,7 +12,7 @@ import {
   ProjectId,
   ProjectScript,
   ThreadEnvMode,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -89,4 +89,4 @@ export interface ProjectionProjectRepositoryShape {
 export class ProjectionProjectRepository extends Context.Service<
   ProjectionProjectRepository,
   ProjectionProjectRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionProjects/ProjectionProjectRepository") {}
+>()("isnadibot/persistence/Services/ProjectionProjects/ProjectionProjectRepository") {}

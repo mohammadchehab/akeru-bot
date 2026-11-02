@@ -1,4 +1,4 @@
-import { BotId, ChannelConnectionId, EnvironmentId, ProjectId } from "@akeru/contracts";
+import { BotId, ChannelConnectionId, EnvironmentId, ProjectId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { act } from "react";
 import { expect } from "vite-plus/test";

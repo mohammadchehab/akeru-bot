@@ -1,5 +1,5 @@
 import * as Match from "effect/Match";
-import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@akeru/contracts";
+import { type ProviderEvent, type ProviderRuntimeEvent, ThreadId } from "@isnadi/contracts";
 import * as EffectCodexSchema from "effect-codex-app-server/schema";
 
 import {

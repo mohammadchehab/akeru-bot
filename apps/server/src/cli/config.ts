@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
-import * as NetService from "@akeru/shared/Net";
-import { parsePersistedServerObservabilitySettings } from "@akeru/shared/serverSettings";
-import { DesktopBackendBootstrap, PortSchema } from "@akeru/contracts";
+import * as NetService from "@isnadi/shared/Net";
+import { parsePersistedServerObservabilitySettings } from "@isnadi/shared/serverSettings";
+import { DesktopBackendBootstrap, PortSchema } from "@isnadi/contracts";
 import * as Config from "effect/Config";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -42,7 +42,7 @@ export const PublicOriginFromString = Schema.String.pipe(
         return Effect.fail(
           new SchemaIssue.InvalidValue({
             message:
-              "Invalid public origin. Use the http(s) origin your tunnel serves, for example https://akeru.example.com.",
+              "Invalid public origin. Use the http(s) origin your tunnel serves, for example https://isnadi.example.com.",
           }),
         );
       },
@@ -69,7 +69,7 @@ export const hostFlag = Flag.string("host").pipe(
 
 export const baseDirFlag = Flag.string("base-dir").pipe(
   Flag.withDescription(
-    "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to AKERU_HOME).",
+    "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to ISNADI_HOME).",
   ),
   Flag.optional,
 );
@@ -100,7 +100,7 @@ export const autoBootstrapProjectFromCwdFlag = Flag.boolean("auto-bootstrap-proj
 
 export const logWebSocketEventsFlag = Flag.boolean("log-websocket-events").pipe(
   Flag.withDescription(
-    "Emit server-side logs for outbound WebSocket push traffic (equivalent to AKERU_LOG_WS_EVENTS).",
+    "Emit server-side logs for outbound WebSocket push traffic (equivalent to ISNADI_LOG_WS_EVENTS).",
   ),
   Flag.withAlias("log-ws-events"),
   Flag.optional,
@@ -133,7 +133,7 @@ const optionalEnv = <A>(read: (name: string) => Config.Config<A>, suffix: string
 const envWithDefault = <A>(read: (name: string) => Config.Config<A>, suffix: string, fallback: A) =>
   aliasedEnv(read, suffix).pipe(Config.map(Option.getOrElse(() => fallback)));
 
-// Every server variable reads `AKERU_<name>` first and `T3CODE_<name>` as a
+// Every server variable reads `ISNADI_<name>` first and `T3CODE_<name>` as a
 // fallback alias; see envAliases.ts.
 const EnvServerConfig = Config.all({
   logLevel: envWithDefault(Config.logLevel, "LOG_LEVEL", "Info"),
@@ -146,7 +146,7 @@ const EnvServerConfig = Config.all({
   otlpTracesUrl: optionalEnv(Config.string, "OTLP_TRACES_URL"),
   otlpMetricsUrl: optionalEnv(Config.string, "OTLP_METRICS_URL"),
   otlpExportIntervalMs: envWithDefault(Config.int, "OTLP_EXPORT_INTERVAL_MS", 10_000),
-  otlpServiceName: envWithDefault(Config.string, "OTLP_SERVICE_NAME", "akeru-server"),
+  otlpServiceName: envWithDefault(Config.string, "OTLP_SERVICE_NAME", "isnadi-server"),
   mode: optionalEnv((name) => Config.schema(ServerConfig.RuntimeMode, name), "MODE"),
   port: optionalEnv(Config.port, "PORT"),
   host: optionalEnv(Config.string, "HOST"),

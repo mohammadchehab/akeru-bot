@@ -1,4 +1,4 @@
-import { EnvironmentId, ThreadId } from "@akeru/contracts";
+import { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import { useEffect } from "react";
 
 export type HardwareKeyboardCommand = "newTask" | "focusSearch" | "back" | "toggleSidebar";

@@ -10,7 +10,7 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as DateTime from "effect/DateTime";
 

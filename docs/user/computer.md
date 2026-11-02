@@ -55,7 +55,7 @@ has not started, send the bot a message and open the computer again. To set up D
 [Configure sandboxes](./sandboxes.md).
 
 The desktop app and the web client can watch and control the computer. The mobile app shows when a
-bot's computer is running and asks you to open Akeru Bot on a desktop or in a web browser.
+bot's computer is running and asks you to open IsnadiBot on a desktop or in a web browser.
 
 ## Privacy
 

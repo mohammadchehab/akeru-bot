@@ -1,4 +1,4 @@
-import type { AkeruRuntimeSeam } from "../../AkeruRuntimeSeam.ts";
+import type { IsnadiRuntimeSeam } from "../../IsnadiRuntimeSeam.ts";
 import type { AgentControllerLiveOptions } from "./Options.ts";
 import * as NodeCrypto from "node:crypto";
 
@@ -7,31 +7,31 @@ import {
   type BotId,
   type ProviderRuntimeEvent,
   ThreadId,
-  type AkeruDelegationAccessGrant,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationAccessGrant,
+  type IsnadiDelegationRecord,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Clock from "effect/Clock";
 
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
 
 import {
-  createAkeruDelegationRuntime,
-  type AkeruDelegationChildOutcome,
-} from "../../AkeruDelegationRuntime.ts";
+  createIsnadiDelegationRuntime,
+  type IsnadiDelegationChildOutcome,
+} from "../../IsnadiDelegationRuntime.ts";
 
-import { AKERU_CHILD_WAIT_DEFAULT_TIMEOUT, type PendingWaiters } from "../../PendingWaiters.ts";
+import { ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT, type PendingWaiters } from "../../PendingWaiters.ts";
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
 
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
 
 import { LegacyProviderBridge } from "../../Services/LegacyProviderBridge.ts";
 
@@ -40,18 +40,18 @@ import { delegatedUsageReceipt } from "./ProviderAccess.ts";
 import { nowIso } from "./EventIdentity.ts";
 
 export function createDelegation(deps: {
-  readonly runPromise: AkeruRuntimeSeam["runPromise"];
-  readonly fork: AkeruRuntimeSeam["fork"];
+  readonly runPromise: IsnadiRuntimeSeam["runPromise"];
+  readonly fork: IsnadiRuntimeSeam["fork"];
   readonly wired: () => {
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   };
   readonly sessions: Map<string, ActiveSession>;
-  readonly childWaiters: PendingWaiters<null, AkeruDelegationChildOutcome, never>;
+  readonly childWaiters: PendingWaiters<null, IsnadiDelegationChildOutcome, never>;
   readonly legacyProviderBridge: LegacyProviderBridge["Service"];
   readonly publish: (event: ProviderRuntimeEvent) => void;
   readonly failureDetail: (cause: unknown) => string;
@@ -59,10 +59,10 @@ export function createDelegation(deps: {
   const delegationFor = (input: {
     readonly threadId: ThreadId;
     readonly botId: BotId;
-    readonly parentDelegation: AkeruDelegationRecord | undefined;
-    readonly access: AkeruDelegationAccessGrant;
+    readonly parentDelegation: IsnadiDelegationRecord | undefined;
+    readonly access: IsnadiDelegationAccessGrant;
     readonly activeChildDelegations: number;
-  }): NonNullable<AkeruToolSession["delegation"]> => {
+  }): NonNullable<IsnadiToolSession["delegation"]> => {
     const delegationRuntime = deps.wired().delegationRuntime;
 
     const parent = () => {
@@ -100,9 +100,9 @@ export function createDelegation(deps: {
 
   const makeDelegationRuntime = (input: {
     readonly readSnapshot: () => Promise<OrchestrationReadModel>;
-    readonly dispatch: AkeruPluginRuntimeOptions["dispatch"];
+    readonly dispatch: IsnadiPluginRuntimeOptions["dispatch"];
   }) =>
-    createAkeruDelegationRuntime({
+    createIsnadiDelegationRuntime({
       ...input,
       dispatch: async (command) => {
         await input.dispatch(command);
@@ -117,8 +117,8 @@ export function createDelegation(deps: {
               null,
               deadline === null
                 ? {
-                    timeout: AKERU_CHILD_WAIT_DEFAULT_TIMEOUT,
-                    timeoutMessage: `The bot did not report back within ${Duration.toHours(AKERU_CHILD_WAIT_DEFAULT_TIMEOUT)} hours.`,
+                    timeout: ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT,
+                    timeoutMessage: `The bot did not report back within ${Duration.toHours(ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT)} hours.`,
                     existsMessage: `Delegation waiter already exists for '${threadId}'.`,
                   }
                 : {
@@ -153,13 +153,13 @@ export function createDelegation(deps: {
       },
       onWatchError: (delegationId, cause) =>
         deps.fork(
-          "Akeru delegated work could not record its outcome.",
+          "Isnadi delegated work could not record its outcome.",
           Effect.fail(deps.failureDetail(cause)),
           { delegationId },
         ),
       onGroupResultSkipped: (delegationId, reason) =>
         deps.fork(
-          "Akeru could not log a skipped group result.",
+          "Isnadi could not log a skipped group result.",
           Effect.logInfo("delegated result not posted to the group chat", {
             delegationId,
             reason,

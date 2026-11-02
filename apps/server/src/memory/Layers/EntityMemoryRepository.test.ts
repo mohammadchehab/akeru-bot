@@ -9,14 +9,14 @@ import {
 } from "./testUtils/entityMemoryRepository.ts";
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -24,7 +24,7 @@ import {
   EntityMemoryConflictError,
   EntityMemoryRepository,
 } from "../Services/EntityMemoryRepository.ts";
-import { deriveAkeruWorkspaceId, resolveMemoryArchivePartitions } from "../EntityMemoryAccess.ts";
+import { deriveIsnadiWorkspaceId, resolveMemoryArchivePartitions } from "../EntityMemoryAccess.ts";
 
 it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("queries only explicit authorized partitions", () =>
@@ -53,14 +53,14 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const invalid = [
         makeRevision("pending-insert", "bot:user", { approvalState: "pending" }),
         makeRevision("forged-user-insert", "bot:user", {
-          initiatingUserId: AkeruMemoryUserId.make("other-user"),
+          initiatingUserId: IsnadiMemoryUserId.make("other-user"),
         }),
         makeRevision("forged-bot-insert", "bot:user", {
           authorBotId: BotId.make("other-bot"),
         }),
         makeRevision("mismatched-entity-insert", "bot:user", {
           entityKind: "project",
-          entityId: AkeruMemoryEntityId.make("project"),
+          entityId: IsnadiMemoryEntityId.make("project"),
         }),
       ];
 
@@ -75,7 +75,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("preserves revisions and rejects stale writes", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("root");
+      const rootId = IsnadiMemoryRootId.make("root");
       const initial = makeRevision("memory-1", "bot:user", { rootId });
       yield* repository.insert({ access: botAccess, revision: initial });
 
@@ -114,7 +114,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("does not let shared access delete an older private revision", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("delete-private-history-root");
+      const rootId = IsnadiMemoryRootId.make("delete-private-history-root");
       const initial = makeRevision("delete-private-history-1", "bot-1:user", { rootId });
       yield* repository.insert({ access: privateAccess("bot-1"), revision: initial });
       yield* repository.revise({
@@ -125,12 +125,12 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           revision: 2,
           supersedesId: initial.id,
           partition: {
-            tenantId: AkeruMemoryTenantId.make("tenant"),
+            tenantId: IsnadiMemoryTenantId.make("tenant"),
             scope: "project",
-            partitionId: AkeruMemoryPartitionId.make("project"),
+            partitionId: IsnadiMemoryPartitionId.make("project"),
           },
           entityKind: "project",
-          entityId: AkeruMemoryEntityId.make("project"),
+          entityId: IsnadiMemoryEntityId.make("project"),
           visibility: "shared",
           authorBotId: BotId.make("bot-1"),
           affectedBotIds: [BotId.make("bot-1")],
@@ -151,7 +151,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("removes a tombstone from recall before cleanup", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("forget-root");
+      const rootId = IsnadiMemoryRootId.make("forget-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("active", "bot:user", {
@@ -160,13 +160,13 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         }),
       });
       const sql = yield* SqlClient.SqlClient;
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
-        VALUES (${botAccess.tenantId}, ${rootId}, ${AkeruMemoryId.make("active")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+        VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("active")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.tombstone({
         access: botAccess,
         rootId,
         expectedRevision: 1,
-        memoryId: AkeruMemoryId.make("tombstone"),
+        memoryId: IsnadiMemoryId.make("tombstone"),
         updatedAt: "2026-08-30T22:00:00.000Z",
       });
 
@@ -180,13 +180,13 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const ftsRows = yield* sql<{
         readonly memory_id: string;
-      }>`SELECT memory_id FROM akeru_memory_fts WHERE memory_id = ${"active"}`;
+      }>`SELECT memory_id FROM isnadi_memory_fts WHERE memory_id = ${"active"}`;
 
       assert.deepEqual(ftsRows, []);
 
       const derivedRows = yield* sql<{
         readonly root_id: string;
-      }>`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`;
+      }>`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`;
 
       assert.deepEqual(derivedRows, []);
       const current = yield* repository.getCurrent({ access: botAccess, rootId });
@@ -222,7 +222,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("does not read another bot's memory by root id", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("private-root");
+      const rootId = IsnadiMemoryRootId.make("private-root");
       yield* repository.insert({
         access: privateAccess("bot-1"),
         revision: makeRevision("private-memory", "bot-1:user", { rootId }),
@@ -259,17 +259,17 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const repository = yield* EntityMemoryRepository;
       const sql = yield* SqlClient.SqlClient;
       const partitions = yield* resolveMemoryArchivePartitions(botAccess, "bot");
-      const rootId = AkeruMemoryRootId.make("classified-import-root");
+      const rootId = IsnadiMemoryRootId.make("classified-import-root");
 
       const first = makeRevision("classified-import-1", "bot", {
         rootId,
         partition: {
           tenantId: botAccess.tenantId,
           scope: "bot",
-          partitionId: AkeruMemoryPartitionId.make(botAccess.botId!),
+          partitionId: IsnadiMemoryPartitionId.make(botAccess.botId!),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botAccess.botId!),
+        entityId: IsnadiMemoryEntityId.make(botAccess.botId!),
         sourceThreadId: null,
         sourceMessageId: null,
         authorBotId: botAccess.botId,
@@ -289,7 +289,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const second = makeRevision("classified-import-2", "bot", {
         ...first,
-        id: AkeruMemoryId.make("classified-import-2"),
+        id: IsnadiMemoryId.make("classified-import-2"),
         revision: 2,
         supersedesId: first.id,
         supersededById: null,
@@ -306,7 +306,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
 
       assert.equal(changed.items[0]?.classification, "changed");
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${first.id}, ${botAccess.threadId}, ${first.updatedAt})`;
       yield* repository.applyImport!({
         access: botAccess,
@@ -315,7 +315,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         previewHash: changed.previewHash,
       });
       assert.deepEqual(
-        yield* sql`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [],
       );
 
@@ -347,7 +347,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const replaced = yield* repository.getCurrent({ access: botAccess, rootId: first.rootId });
       assert.equal(replaced.fact, "A divergent history.");
 
-      const sharedRootId = AkeruMemoryRootId.make("rehome-import-root");
+      const sharedRootId = IsnadiMemoryRootId.make("rehome-import-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("rehome-local", "project", {
@@ -355,10 +355,10 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partition: {
             tenantId: botAccess.tenantId,
             scope: "project",
-            partitionId: AkeruMemoryPartitionId.make(botAccess.projectId),
+            partitionId: IsnadiMemoryPartitionId.make(botAccess.projectId),
           },
           entityKind: "project",
-          entityId: AkeruMemoryEntityId.make(botAccess.projectId),
+          entityId: IsnadiMemoryEntityId.make(botAccess.projectId),
           visibility: "shared",
         }),
       });
@@ -377,7 +377,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const workspaceAccess = privateAccess("bot-legacy-workspace");
-      const workspaceId = deriveAkeruWorkspaceId(workspaceAccess.projectId);
+      const workspaceId = deriveIsnadiWorkspaceId(workspaceAccess.projectId);
 
       const legacyWorkspaceId = (yield* resolveMemoryArchivePartitions(
         workspaceAccess,
@@ -385,7 +385,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       )).find((partition) => partition.partitionId !== workspaceId)?.partitionId;
 
       if (!legacyWorkspaceId) return assert.fail("Expected a legacy workspace partition.");
-      const rootId = AkeruMemoryRootId.make("legacy-workspace-root");
+      const rootId = IsnadiMemoryRootId.make("legacy-workspace-root");
 
       const initial = makeRevision("legacy-workspace-1", legacyWorkspaceId, {
         rootId,
@@ -395,7 +395,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           partitionId: legacyWorkspaceId,
         },
         entityKind: "workspace",
-        entityId: AkeruMemoryEntityId.make(legacyWorkspaceId),
+        entityId: IsnadiMemoryEntityId.make(legacyWorkspaceId),
         visibility: "shared",
         sourceThreadId: null,
         authorBotId: workspaceAccess.botId,
@@ -405,7 +405,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const edited = {
         ...initial,
-        id: AkeruMemoryId.make("legacy-workspace-2"),
+        id: IsnadiMemoryId.make("legacy-workspace-2"),
         revision: 2,
         supersedesId: initial.id,
         fact: "The legacy workspace fact was edited.",
@@ -413,7 +413,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const pinned = {
         ...edited,
-        id: AkeruMemoryId.make("legacy-workspace-3"),
+        id: IsnadiMemoryId.make("legacy-workspace-3"),
         revision: 3,
         supersedesId: edited.id,
         pinned: true,
@@ -432,7 +432,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("changes scope only to an owner-valid target", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("mutate-scope-root");
+      const rootId = IsnadiMemoryRootId.make("mutate-scope-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("mutate-scope-1", "bot:user", { rootId }),
@@ -446,7 +446,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 1,
           scope: "project",
         },
-        memoryId: AkeruMemoryId.make("mutate-scope-2"),
+        memoryId: IsnadiMemoryId.make("mutate-scope-2"),
         updatedAt: "2026-08-30T22:30:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -463,7 +463,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           expectedRevision: 2,
           scope: "bot",
         },
-        memoryId: AkeruMemoryId.make("mutate-scope-3"),
+        memoryId: IsnadiMemoryId.make("mutate-scope-3"),
         updatedAt: "2026-08-30T22:31:00.000Z",
         sharedProjectApproval: "approved",
       });
@@ -481,7 +481,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
             expectedRevision: 3,
             scope: "group",
           },
-          memoryId: AkeruMemoryId.make("mutate-scope-4"),
+          memoryId: IsnadiMemoryId.make("mutate-scope-4"),
           updatedAt: "2026-08-30T22:32:00.000Z",
           sharedProjectApproval: "approved",
         })

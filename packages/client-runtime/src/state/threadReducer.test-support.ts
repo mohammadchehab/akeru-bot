@@ -1,5 +1,5 @@
-import { EventId, ProjectId, ProviderInstanceId, ThreadId } from "@akeru/contracts";
-import type { OrchestrationThread } from "@akeru/contracts";
+import { EventId, ProjectId, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
+import type { OrchestrationThread } from "@isnadi/contracts";
 
 export const baseEventFields = {
   eventId: EventId.make("event-1"),

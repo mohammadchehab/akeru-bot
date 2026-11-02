@@ -1,11 +1,11 @@
 import { Predicate } from "effect";
-import type { ConnectionTarget } from "@akeru/client-runtime/connection";
+import type { ConnectionTarget } from "@isnadi/client-runtime/connection";
 import {
   PORTABILITY_ARCHIVE_MAX_CHARS,
   type PortabilityImportPreview,
   type PortabilityProjectFolderMap,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { desktopLocalBackendId } from "../../connection/desktopLocal";
 

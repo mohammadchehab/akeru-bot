@@ -1,13 +1,17 @@
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import { Predicate } from "effect";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import {
   clearAgentAwarenessRegistrationRecord,
+  loadAgentAwarenessDeviceId,
   loadPreferences,
   loadSavedConnections,
   savePreferencesPatch,
   saveConnection,
 } from "../persistence/imperative";
+import { LEGACY_PRODUCT_PREFIX } from "../persistence/legacy-product";
+
+const legacyKey = (suffix: string) => `${LEGACY_PRODUCT_PREFIX}.${suffix}`;
 
 const mocks = vi.hoisted(() => {
   const values = new Map<string, string>();
@@ -123,9 +127,9 @@ describe("mobile connection storage", () => {
     await expect(loadSavedConnections()).rejects.toMatchObject({
       _tag: "MobileSecureStorageError",
       operation: "read",
-      key: "akeru.connections",
+      key: "isnadi.connections",
       cause,
-      message: "Mobile secure storage operation read failed for key akeru.connections.",
+      message: "Mobile secure storage operation read failed for key isnadi.connections.",
     });
   });
 
@@ -141,7 +145,7 @@ describe("mobile connection storage", () => {
     };
 
     await mocks.setItemAsync(
-      "akeru.connections",
+      "isnadi.connections",
       JSON.stringify({
         connections: [good, { environmentId: "expired" }],
       }),
@@ -150,7 +154,7 @@ describe("mobile connection storage", () => {
     await expect(loadSavedConnections()).resolves.toEqual([good]);
     const next = { ...good, environmentId: EnvironmentId.make("new"), bearerToken: "new-token" };
     await saveConnection(next);
-    expect(JSON.parse(mocks.getStoredValue("akeru.connections") ?? "")).toEqual({
+    expect(JSON.parse(mocks.getStoredValue("isnadi.connections") ?? "")).toEqual({
       connections: [good, next],
     });
     await expect(loadSavedConnections()).resolves.toEqual([good, next]);
@@ -161,12 +165,88 @@ describe("mobile connection storage", () => {
 
     await clearAgentAwarenessRegistrationRecord();
 
-    expect(mocks.getStoredValue("akeru.agent-awareness.registration")).toBe("");
+    expect(mocks.getStoredValue("isnadi.agent-awareness.registration")).toBe("");
     expect(mocks.getStoredValue("t3code.agent-awareness.registration")).toBeNull();
   });
 
+  it("migrates saved connections from the previous product key", async () => {
+    const connection = {
+      environmentId: EnvironmentId.make("env"),
+      environmentLabel: "Env",
+      pairingUrl: "https://env.example/pair",
+      displayUrl: "https://env.example",
+      httpBaseUrl: "https://env.example",
+      wsBaseUrl: "wss://env.example",
+      bearerToken: "token",
+    };
+
+    const raw = JSON.stringify({ connections: [connection] });
+    await mocks.setItemAsync(legacyKey("connections"), raw);
+
+    await expect(loadSavedConnections()).resolves.toEqual([connection]);
+    expect(mocks.getStoredValue("isnadi.connections")).toBe(raw);
+    expect(mocks.getStoredValue(legacyKey("connections"))).toBeNull();
+  });
+
+  it("prefers the Isnadi key over a leftover previous-product key", async () => {
+    await mocks.setItemAsync("isnadi.connections", JSON.stringify({ connections: [] }));
+    await mocks.setItemAsync(legacyKey("connections"), "stale");
+
+    await expect(loadSavedConnections()).resolves.toEqual([]);
+    expect(mocks.getStoredValue(legacyKey("connections"))).toBe("stale");
+  });
+
+  it("prefers the previous-product key over the t3code key", async () => {
+    await mocks.setItemAsync(legacyKey("agent-awareness.device-id"), "device-newer");
+    await mocks.setItemAsync("t3code.agent-awareness.device-id", "device-older");
+
+    await expect(loadAgentAwarenessDeviceId()).resolves.toBe("device-newer");
+    expect(mocks.getStoredValue("isnadi.agent-awareness.device-id")).toBe("device-newer");
+    expect(mocks.getStoredValue(legacyKey("agent-awareness.device-id"))).toBeNull();
+  });
+
+  it("drains every legacy key on the next write", async () => {
+    await mocks.setItemAsync(legacyKey("agent-awareness.registration"), "stale");
+    await mocks.setItemAsync("t3code.agent-awareness.registration", "stale");
+
+    await clearAgentAwarenessRegistrationRecord();
+
+    expect(mocks.getStoredValue("isnadi.agent-awareness.registration")).toBe("");
+    expect(mocks.getStoredValue(legacyKey("agent-awareness.registration"))).toBeNull();
+    expect(mocks.getStoredValue("t3code.agent-awareness.registration")).toBeNull();
+  });
+
+  it("migrates previous-product preferences into SQLite and drains the old key", async () => {
+    await mocks.setItemAsync(legacyKey("preferences"), JSON.stringify({ baseFontSize: 18 }));
+
+    await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 18 });
+    expect(JSON.parse(mocks.getPreferencesJson() ?? "")).toEqual({ baseFontSize: 18 });
+    expect(mocks.getStoredValue(legacyKey("preferences"))).toBeNull();
+    expect(mocks.getStoredValue("isnadi.preferences")).toBeNull();
+  });
+
+  it("moves previous-product preferences to the Isnadi key when SQLite is unavailable", async () => {
+    mocks.setDatabaseFailures(true, true);
+    const raw = JSON.stringify({ baseFontSize: 16 });
+    await mocks.setItemAsync(legacyKey("preferences"), raw);
+
+    await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 16 });
+    expect(mocks.getStoredValue("isnadi.preferences")).toBe(raw);
+    expect(mocks.getStoredValue(legacyKey("preferences"))).toBeNull();
+  });
+
+  it("migrates a previous-product preferences fallback", async () => {
+    mocks.setDatabaseFailures(true, true);
+    const raw = JSON.stringify({ payload: JSON.stringify({ baseFontSize: 20 }), updatedAt: 5 });
+    await mocks.setItemAsync(legacyKey("preferences.fallback"), raw);
+
+    await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 20 });
+    expect(mocks.getStoredValue("isnadi.preferences.fallback")).toBe(raw);
+    expect(mocks.getStoredValue(legacyKey("preferences.fallback"))).toBeNull();
+  });
+
   it("logs structured decode failures before using the empty fallback", async () => {
-    await mocks.setItemAsync("akeru.connections", "{");
+    await mocks.setItemAsync("isnadi.connections", "{");
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
     await expect(loadSavedConnections()).resolves.toEqual([]);
@@ -174,9 +254,9 @@ describe("mobile connection storage", () => {
       "[mobile-storage] ignored invalid JSON",
       expect.objectContaining({
         _tag: "MobileStorageDecodeError",
-        key: "akeru.connections",
+        key: "isnadi.connections",
         cause: expect.any(SyntaxError),
-        message: "Failed to decode mobile storage value for key akeru.connections.",
+        message: "Failed to decode mobile storage value for key isnadi.connections.",
       }),
     );
 
@@ -185,7 +265,7 @@ describe("mobile connection storage", () => {
 
   it("loads legacy preferences when SQLite is unavailable", async () => {
     mocks.setDatabaseFailures(true, true);
-    await mocks.setItemAsync("akeru.preferences", JSON.stringify({ baseFontSize: 17 }));
+    await mocks.setItemAsync("isnadi.preferences", JSON.stringify({ baseFontSize: 17 }));
 
     await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 17 });
   });
@@ -202,10 +282,27 @@ describe("mobile connection storage", () => {
     );
 
     await expect(loadPreferences()).resolves.toEqual({
-      themeId: "akeru-classic",
-      lightThemeId: "akeru-chat",
-      darkThemeId: "akeru-classic",
+      themeId: "isnadi-classic",
+      lightThemeId: "isnadi-chat",
+      darkThemeId: "isnadi-classic",
       themeMode: "system",
+    });
+  });
+
+  it("canonicalizes previous-product theme ids on load", async () => {
+    mocks.setPreferencesJson(
+      JSON.stringify({
+        themeId: `${LEGACY_PRODUCT_PREFIX}-classic`,
+        lightThemeId: `${LEGACY_PRODUCT_PREFIX}-paper`,
+        darkThemeId: `${LEGACY_PRODUCT_PREFIX}-noir`,
+      }),
+      10,
+    );
+
+    await expect(loadPreferences()).resolves.toEqual({
+      themeId: "isnadi-classic",
+      lightThemeId: "isnadi-paper",
+      darkThemeId: "isnadi-noir",
     });
   });
 
@@ -261,7 +358,7 @@ describe("mobile connection storage", () => {
     mocks.setDatabaseFailures(true, true);
     await expect(savePreferencesPatch({ baseFontSize: 19 })).resolves.toEqual({ baseFontSize: 19 });
 
-    const fallback = JSON.parse(mocks.getStoredValue("akeru.preferences.fallback") ?? "") as {
+    const fallback = JSON.parse(mocks.getStoredValue("isnadi.preferences.fallback") ?? "") as {
       readonly payload: string;
       readonly updatedAt: number;
     };
@@ -307,7 +404,7 @@ describe("mobile connection storage", () => {
   it("reconciles fallback preferences after SQLite recovers", async () => {
     mocks.setPreferencesJson(JSON.stringify({ baseFontSize: 15 }), 10);
     await mocks.setItemAsync(
-      "akeru.preferences.fallback",
+      "isnadi.preferences.fallback",
       JSON.stringify({
         payload: JSON.stringify({ baseFontSize: 19 }),
         updatedAt: 20,
@@ -316,13 +413,13 @@ describe("mobile connection storage", () => {
 
     await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 19 });
     expect(JSON.parse(mocks.getPreferencesJson() ?? "")).toEqual({ baseFontSize: 19 });
-    expect(mocks.getStoredValue("akeru.preferences.fallback")).toBeNull();
+    expect(mocks.getStoredValue("isnadi.preferences.fallback")).toBeNull();
   });
 
   it("ignores a stale fallback when its previous deletion failed", async () => {
     mocks.setPreferencesJson(JSON.stringify({ baseFontSize: 21 }), 30);
     await mocks.setItemAsync(
-      "akeru.preferences.fallback",
+      "isnadi.preferences.fallback",
       JSON.stringify({
         payload: JSON.stringify({ baseFontSize: 19 }),
         updatedAt: 20,
@@ -331,27 +428,27 @@ describe("mobile connection storage", () => {
 
     await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 21 });
     expect(JSON.parse(mocks.getPreferencesJson() ?? "")).toEqual({ baseFontSize: 21 });
-    expect(mocks.getStoredValue("akeru.preferences.fallback")).toBeNull();
+    expect(mocks.getStoredValue("isnadi.preferences.fallback")).toBeNull();
   });
 
   it("ignores an invalid fallback even when it has a newer timestamp", async () => {
     mocks.setPreferencesJson(JSON.stringify({ baseFontSize: 21 }), 30);
     await mocks.setItemAsync(
-      "akeru.preferences.fallback",
+      "isnadi.preferences.fallback",
       JSON.stringify({ payload: "{", updatedAt: 40 }),
     );
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
     await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 21 });
     expect(JSON.parse(mocks.getPreferencesJson() ?? "")).toEqual({ baseFontSize: 21 });
-    expect(mocks.getStoredValue("akeru.preferences.fallback")).toBeNull();
+    expect(mocks.getStoredValue("isnadi.preferences.fallback")).toBeNull();
 
     warn.mockRestore();
   });
 
   it("keeps SQLite authoritative when stale legacy preferences remain", async () => {
     mocks.setPreferencesJson(JSON.stringify({ baseFontSize: 21 }), 30);
-    await mocks.setItemAsync("akeru.preferences", JSON.stringify({ baseFontSize: 19 }));
+    await mocks.setItemAsync("isnadi.preferences", JSON.stringify({ baseFontSize: 19 }));
 
     await expect(loadPreferences()).resolves.toEqual({ baseFontSize: 21 });
     expect(JSON.parse(mocks.getPreferencesJson() ?? "")).toEqual({ baseFontSize: 21 });

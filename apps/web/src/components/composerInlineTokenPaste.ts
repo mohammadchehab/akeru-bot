@@ -1,4 +1,4 @@
-import { collectComposerInlineTokens } from "@akeru/shared/composerInlineTokens";
+import { collectComposerInlineTokens } from "@isnadi/shared/composerInlineTokens";
 import {
   $createLineBreakNode,
   $createTextNode,

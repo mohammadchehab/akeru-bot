@@ -6,7 +6,7 @@ import * as Fiber from "effect/Fiber";
 import * as Schema from "effect/Schema";
 import * as TestClock from "effect/testing/TestClock";
 
-import { EnvironmentAuthInvalidError } from "@akeru/contracts";
+import { EnvironmentAuthInvalidError } from "@isnadi/contracts";
 import {
   bootstrapRemoteBearerSession,
   fetchRemoteSessionState,

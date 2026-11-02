@@ -80,7 +80,7 @@ export const remoteMachineUpdateRouteLayer = Layer.unwrap(
           Effect.orElseSucceed(() => ""),
         );
 
-        const presented = request.headers["x-akeru-machine-token"] ?? "";
+        const presented = request.headers["x-isnadi-machine-token"] ?? "";
 
         if (!expected || !sameSecret(presented, expected)) {
           return HttpServerResponse.jsonUnsafe({ error: "unauthorized" }, { status: 401 });

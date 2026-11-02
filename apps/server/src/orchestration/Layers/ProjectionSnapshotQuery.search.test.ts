@@ -1,5 +1,5 @@
 import { projectionSnapshotLayer } from "./test-support/ProjectionSnapshotHarness.ts";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";

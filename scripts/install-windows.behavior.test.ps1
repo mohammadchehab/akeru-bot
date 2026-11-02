@@ -6,7 +6,7 @@ $installerScript = Join-Path $PSScriptRoot 'install-windows.ps1'
 $header = Get-Content -LiteralPath $installerScript | Where-Object { $_ -like '#   $t = *' }
 if (@($header).Count -ne 1) { throw 'Expected one bootstrap command in the installer header.' }
 $bootstrap = $header.Substring(4)
-$scratch = Join-Path ([IO.Path]::GetTempPath()) "akeru-windows-tests-$([Guid]::NewGuid())"
+$scratch = Join-Path ([IO.Path]::GetTempPath()) "isnadi-windows-tests-$([Guid]::NewGuid())"
 $originalTemp = $env:TEMP
 $originalArchitecture = $env:PROCESSOR_ARCHITECTURE
 $null = New-Item -ItemType Directory -Path $scratch
@@ -42,19 +42,19 @@ function Invoke-WebRequest {
   Assert-True ((Split-Path -Parent $directory) -eq $env:TEMP) 'Download escaped the private TEMP directory.'
   Assert-True (Test-Path -LiteralPath $directory -PathType Container) 'Download directory does not exist.'
   $testState.requests += $Uri
-  if ($Uri -eq 'https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.exe') {
+  if ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/IsnadiBot-1.2.3-x64.exe') {
     $testState.downloadDirectories += $directory
     $testState.installerFile = $OutFile
     [IO.File]::WriteAllText($OutFile, 'Harmless installer fixture, never executed.')
     if ($testState.scenario -eq 'exe-download') { throw 'fixture exe download failed' }
     return
   }
-  Assert-True ($Uri -eq 'https://github.com/opencoredev/akeru-bot/releases/download/v1.2.3/SHA256SUMS') "Unexpected URL: $Uri"
+  Assert-True ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/SHA256SUMS') "Unexpected URL: $Uri"
   Assert-True ($directory -eq (Split-Path -Parent $testState.installerFile)) 'Downloads used different directories.'
   $hash = (Get-FileHash -LiteralPath $testState.installerFile -Algorithm SHA256).Hash.ToLowerInvariant()
-  $entry = "$hash *Akeru-Bot-1.2.3-x64.exe"
+  $entry = "$hash *IsnadiBot-1.2.3-x64.exe"
   switch ($testState.scenario) {
-    'mismatch' { $entry = "$('0' * 64)  Akeru-Bot-1.2.3-x64.exe" }
+    'mismatch' { $entry = "$('0' * 64)  IsnadiBot-1.2.3-x64.exe" }
     'missing' { $entry = "$hash  another.exe" }
     'duplicate' { $entry = "$entry`r`n$entry" }
   }
@@ -105,7 +105,7 @@ function Test-Payload {
     Assert-True ($failure.Exception.Message.Contains($ExpectedError)) "$Scenario failed for the wrong reason: $failure"
   } else {
     Assert-True ($null -eq $failure) "$Scenario failed: $failure"
-    Assert-True ($output -contains 'Installed Akeru Bot v1.2.3.') 'Success message missing.'
+    Assert-True ($output -contains 'Installed IsnadiBot v1.2.3.') 'Success message missing.'
   }
   $requestCount = 2
   if ($Scenario -eq 'exe-download') { $requestCount = 1 }
@@ -139,14 +139,14 @@ try {
   function Invoke-RestMethod {
     [CmdletBinding()]
     param([Parameter(Position = 0)][string]$Uri)
-    if ($Uri -ne 'https://api.github.com/repos/opencoredev/akeru-bot/releases/latest') { throw 'Unexpected release URL.' }
+    if ($Uri -ne 'https://api.github.com/repos/mohammadchehab/isnadibot/releases/latest') { throw 'Unexpected release URL.' }
     [pscustomobject]@{ tag_name = 'v1.2.3' }
   }
   function Invoke-WebRequest {
     [CmdletBinding()]
     param([Parameter(Position = 0)][string]$Uri, [string]$OutFile, [switch]$UseBasicParsing)
     if (-not $UseBasicParsing) { throw 'Bootstrap must avoid Internet Explorer parsing.' }
-    if ($Uri -ne 'https://raw.githubusercontent.com/opencoredev/akeru-bot/v1.2.3/scripts/install-windows.ps1') { throw 'Unexpected script URL.' }
+    if ($Uri -ne 'https://raw.githubusercontent.com/mohammadchehab/isnadibot/v1.2.3/scripts/install-windows.ps1') { throw 'Unexpected script URL.' }
     if ((Split-Path -Parent $OutFile) -ne $env:TEMP) { throw 'Bootstrap escaped private TEMP.' }
     [IO.File]::WriteAllText((Join-Path $caseDirectory 'download-path'), $OutFile)
     $fixture = [Text.Encoding]::Unicode.GetString([Convert]::FromBase64String('__FIXTURE__'))
@@ -181,7 +181,7 @@ try {
     Assert-True ($exitCode -eq 0 -and -not $failure) "Bootstrap failed: $failure"
   }
   $downloadPath = [IO.File]::ReadAllText((Join-Path $caseDirectory 'download-path'))
-  Assert-True ((Split-Path -Leaf $downloadPath) -match '^akeru-install-[0-9a-f-]{36}\.ps1$') 'Bootstrap did not use a GUID filename.'
+  Assert-True ((Split-Path -Leaf $downloadPath) -match '^isnadi-install-[0-9a-f-]{36}\.ps1$') 'Bootstrap did not use a GUID filename.'
   $executedPath = Join-Path $caseDirectory 'executed'
   if ($Scenario -eq 'download-failure') {
     Assert-True (-not (Test-Path -LiteralPath $executedPath)) 'Executed a failed script download.'
@@ -212,7 +212,7 @@ try {
   Assert-True ($testState.downloadDirectories.Count -eq 12) 'Missing payload runs.'
   Assert-True (@($testState.downloadDirectories | Select-Object -Unique).Count -eq 12) 'Payload runs reused a temporary directory.'
   foreach ($directory in $testState.downloadDirectories) {
-    Assert-True ((Split-Path -Leaf $directory) -match '^akeru-install-[0-9a-f-]{36}$') 'Payload did not use a GUID directory.'
+    Assert-True ((Split-Path -Leaf $directory) -match '^isnadi-install-[0-9a-f-]{36}$') 'Payload did not use a GUID directory.'
   }
   $bootstrapPaths = @(
     Test-Bootstrap 'success'

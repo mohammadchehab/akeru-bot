@@ -122,16 +122,16 @@ describe("resolveLatestRosterMessage", () => {
 describe("flattenMarkdownPreview", () => {
   it("strips emphasis, code, and strikethrough but keeps the words", () => {
     expect(
-      flattenMarkdownPreview("**September at Akeru** was _busy_, *very* ~~slow~~ `fast`"),
-    ).toBe("September at Akeru was busy, very slow fast");
+      flattenMarkdownPreview("**September at Isnadi** was _busy_, *very* ~~slow~~ `fast`"),
+    ).toBe("September at Isnadi was busy, very slow fast");
   });
 
   it("keeps link labels and drops images", () => {
     expect(
       flattenMarkdownPreview(
-        "See [the report](https://example.com/r) ![chart](chart.png) and <https://akeru.dev>",
+        "See [the report](https://example.com/r) ![chart](chart.png) and <https://isnadi.dev>",
       ),
-    ).toBe("See the report and https://akeru.dev");
+    ).toBe("See the report and https://isnadi.dev");
   });
 
   it("drops headings, list and quote markers, fences, and rules onto one line", () => {
@@ -298,7 +298,7 @@ describe("flattenMarkdownPreview with generative blocks", () => {
     const markdown = [
       "Here is the path.",
       "",
-      "```akeru-flow",
+      "```isnadi-flow",
       '{ "title": "Remote client → session", "nodes": [{ "id": "a", "label": "Client" }], "edges": [] }',
       "```",
     ].join("\n");
@@ -309,7 +309,7 @@ describe("flattenMarkdownPreview with generative blocks", () => {
   });
 
   it("falls back to the kind when the block does not decode", () => {
-    expect(flattenMarkdownPreview('```akeru-chart\n{ "type": \n```')).toBe("Chart");
+    expect(flattenMarkdownPreview('```isnadi-chart\n{ "type": \n```')).toBe("Chart");
   });
 
   it("keeps ordinary code blocks", () => {

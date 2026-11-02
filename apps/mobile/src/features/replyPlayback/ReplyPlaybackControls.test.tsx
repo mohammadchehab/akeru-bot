@@ -4,7 +4,7 @@ import {
   createReplyPlaybackController,
   createReplyReadoutPreference,
   type ReplyPlaybackRequest,
-} from "@akeru/client-runtime/reply-playback";
+} from "@isnadi/client-runtime/reply-playback";
 import { ReplyPlaybackControls } from "./ReplyPlaybackControls";
 import { ReplyReadoutPreference } from "./ReplyReadoutPreference";
 
@@ -21,7 +21,7 @@ vi.mock("../../components/AppText", () => ({ AppText: "AppText" }));
 vi.mock("../../components/ThemedSwitch", () => ({ ThemedSwitch: "ThemedSwitch" }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useMobileI18n: () => ({ ...translator, t: translator.translate }) };

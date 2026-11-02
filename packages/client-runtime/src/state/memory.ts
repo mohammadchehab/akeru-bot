@@ -1,9 +1,9 @@
 import {
-  type AkeruMemoryFactsListInput,
+  type IsnadiMemoryFactsListInput,
   type EnvironmentId,
   type ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { Atom, type AtomRegistry } from "effect/unstable/reactivity";
 
@@ -16,7 +16,7 @@ import {
 
 /** Targets a durable fact view can list. A mutation refreshes all of them. */
 const LISTED_FACT_TARGETS = ["thread", "bot", "project"] as const satisfies ReadonlyArray<
-  AkeruMemoryFactsListInput["target"]
+  IsnadiMemoryFactsListInput["target"]
 >;
 
 export function createMemoryEnvironmentAtoms<R, E>(

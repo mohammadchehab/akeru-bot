@@ -4,7 +4,7 @@ import {
   ProviderInstanceId,
   type ServerProvider,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   apiKeyStartInput,
   apiKeyValidationError,

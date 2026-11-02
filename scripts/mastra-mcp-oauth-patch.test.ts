@@ -48,7 +48,7 @@ function oauthFixture(options: {
 
   const clientMetadata = {
     redirect_uris: [redirectUrl],
-    client_name: "Akeru OAuth test",
+    client_name: "Isnadi OAuth test",
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     token_endpoint_auth_method: "none",

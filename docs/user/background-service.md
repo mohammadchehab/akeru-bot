@@ -1,4 +1,4 @@
-# Run Akeru in the background
+# Run Isnadi in the background
 
 Linux and macOS can run the command-line server as a service for the current user.
 
@@ -7,33 +7,33 @@ Linux and macOS can run the command-line server as a service for the current use
 Install the latest release:
 
 ```bash
-npx akeru-bot@latest service install
+npx isnadibot@latest service install
 ```
 
 Check its state:
 
 ```bash
-npx akeru-bot@latest service status
+npx isnadibot@latest service status
 ```
 
 Update or repair it:
 
 ```bash
-npx akeru-bot@latest service update
+npx isnadibot@latest service update
 ```
 
 Stop it and remove it from startup:
 
 ```bash
-npx akeru-bot@latest service uninstall
+npx isnadibot@latest service uninstall
 ```
 
-An update restarts Akeru. Let active bot work finish first. Wait when another
+An update restarts Isnadi. Let active bot work finish first. Wait when another
 local or remote update is already running.
 
 ## Updates and rollback
 
-The service uses a stable launcher and installs exact Akeru versions separately. Before a remote
+The service uses a stable launcher and installs exact Isnadi versions separately. Before a remote
 candidate starts, the launcher snapshots the database. A failed candidate can return to the previous
 server and database without rewriting the service definition.
 
@@ -41,13 +41,13 @@ An older launcher can require one local `service update` before remote rollback 
 
 ## Linux
 
-Linux installs a systemd user unit at `~/.config/systemd/user/akeru-bot.service`. Installation enables
+Linux installs a systemd user unit at `~/.config/systemd/user/isnadibot.service`. Installation enables
 lingering, so the service starts at boot and remains available after you log out.
 
 ## macOS
 
 macOS installs a launch agent at
-`~/Library/LaunchAgents/dev.leodoes.akeru.service.plist`. It starts when you log in and stops when
+`~/Library/LaunchAgents/dev.leodoes.isnadi.service.plist`. It starts when you log in and stops when
 you log out.
 
 For an unattended Mac, keep the Mac awake and configure an account to log in after restart. FileVault
@@ -62,12 +62,12 @@ Login Items** if the launch agent does not start.
 
 ## Services installed by older versions
 
-Older Akeru versions installed the service as `t3code.service` on Linux and
+Older Isnadi versions installed the service as `t3code.service` on Linux and
 `com.t3tools.t3code.service` on macOS. `service status` reports such a service as needing an update.
-Run `service install` or `service update` to move it to the new name. Akeru stops the old service,
+Run `service install` or `service update` to move it to the new name. Isnadi stops the old service,
 starts the renamed one, and removes the old unit file. `service uninstall` removes it too.
 
-Akeru only touches an old-named service that runs this Akeru installation's launcher. A T3 Code
+Isnadi only touches an old-named service that runs this Isnadi installation's launcher. A T3 Code
 service with the same name stays as it is.
 
 Windows does not support the background service yet.

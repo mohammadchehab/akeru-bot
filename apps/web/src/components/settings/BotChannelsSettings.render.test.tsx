@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { AuthAccessWriteScope, type ChannelBinding } from "@akeru/contracts";
+import { AuthAccessWriteScope, type ChannelBinding } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -385,7 +385,7 @@ describe("channel project selection", () => {
   it("does not offer a move while the running project is selected", () => {
     fixtures.bots = [boundBot("connected")];
     const html = renderPage();
-    expect(html).toContain("Assigned to Akeru");
+    expect(html).toContain("Assigned to Isnadi");
     expect(html).not.toContain("Move to this project");
     expect(html).not.toContain("Reconnect in this project");
   });
@@ -398,7 +398,7 @@ describe("channel project selection", () => {
       ),
     ];
     const html = renderPage();
-    expect(html).toContain(">Akeru<");
+    expect(html).toContain(">Isnadi<");
     expect(html).toContain(">Selected workspace<");
     expect(html).not.toContain(">project-uuid<");
     expect(html).not.toContain(">bot-uuid<");

@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { EnvironmentId, type SubscriptionProviderId } from "@akeru/contracts";
+import { EnvironmentId, type SubscriptionProviderId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { act, type ComponentProps } from "react";
@@ -235,7 +235,7 @@ afterEach(async () => {
 it("keeps a pending bot handoff through a loaded but empty roster", async () => {
   const handoff = JSON.stringify({ environmentId: "onboarding-environment", botId: "bot-deleted" });
   window.localStorage.setItem(DESKTOP_ONBOARDING_HANDOFF_STORAGE_KEY, handoff);
-  window.localStorage.setItem("akeru:desktop-onboarding-completed:v1", "1");
+  window.localStorage.setItem("isnadi:desktop-onboarding-completed:v1", "1");
   mocks.rosterLoaded = false;
   const Surface = () => null;
 
@@ -417,7 +417,7 @@ describe("onboarding API-key connections", () => {
       return null;
     };
 
-    window.location.search = "?akeru-onboarding-capture=1";
+    window.location.search = "?isnadi-onboarding-capture=1";
     await act(async () => root.render(<DesktopOnboarding Surface={CaptureSurface} />));
     expect(mocks.captureModes.at(-1)).toBe(true);
 

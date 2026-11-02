@@ -1,7 +1,7 @@
 services:
   tailscale:
     image: tailscale/tailscale:v1.88.4
-    hostname: ${AKERU_HOSTNAME:-akeru}
+    hostname: ${ISNADI_HOSTNAME:-isnadi}
     environment:
       TS_STATE_DIR: /var/lib/tailscale
       TS_SERVE_CONFIG: /config/serve.json
@@ -14,8 +14,8 @@ services:
     devices: [/dev/net/tun:/dev/net/tun]
     restart: unless-stopped
 
-  akeru:
-    image: ${AKERU_IMAGE:-akeru-remote:local}
+  isnadi:
+    image: ${ISNADI_IMAGE:-isnadi-remote:local}
     build:
       context: ../..
       dockerfile: deploy/docker/Dockerfile
@@ -25,15 +25,15 @@ services:
       T3CODE_HOST: 0.0.0.0
       T3CODE_PORT: 3773
       T3CODE_NO_BROWSER: "true"
-      AKERU_HOME: /data
+      ISNADI_HOME: /data
     volumes:
-      - akeru-data:/data
-      - ${AKERU_WORKSPACE:-$HOME}:/workspace
+      - isnadi-data:/data
+      - ${ISNADI_WORKSPACE:-$HOME}:/workspace
     restart: unless-stopped
     depends_on: [tailscale]
 
 volumes:
-  akeru-data:
-    name: ${AKERU_DATA_VOLUME:-akeru-data}
+  isnadi-data:
+    name: ${ISNADI_DATA_VOLUME:-isnadi-data}
   tailscale-state:
-    name: ${AKERU_TAILSCALE_VOLUME:-akeru-tailscale-state}
+    name: ${ISNADI_TAILSCALE_VOLUME:-isnadi-tailscale-state}

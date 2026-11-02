@@ -4,7 +4,7 @@ import * as Schema from "effect/Schema";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/unstable/http";
-import type { AkeruBrowserEndpoint } from "./botWorkspace.ts";
+import type { IsnadiBrowserEndpoint } from "./botWorkspace.ts";
 
 const Targets = Schema.Array(
   Schema.Struct({ type: Schema.String, webSocketDebuggerUrl: Schema.optional(Schema.String) }),
@@ -89,7 +89,7 @@ export class ComputerCdp {
     socket.addEventListener("error", () => this.rejectPending());
   }
 
-  static async connect(endpoint: AkeruBrowserEndpoint) {
+  static async connect(endpoint: IsnadiBrowserEndpoint) {
     const url = new URL(
       "json/list",
       endpoint.url.endsWith("/") ? endpoint.url : `${endpoint.url}/`,

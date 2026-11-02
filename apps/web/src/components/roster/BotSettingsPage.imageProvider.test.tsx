@@ -9,7 +9,7 @@ import {
   ProviderInstanceId,
   type ImageGenerationSettings,
   type ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { visitElements } from "../test-support/reactTree";
@@ -104,7 +104,7 @@ vi.mock("./useBotThreadRef", () => ({ useBotThreadRef: () => null }));
 vi.mock("../ui/toast", () => ({ toastManager: { add: vi.fn() } }));
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };

@@ -1,9 +1,9 @@
 import * as Predicate from "effect/Predicate";
-import { createTranslator, type TranslationParams } from "@akeru/client-runtime/i18n";
+import { createTranslator, type TranslationParams } from "@isnadi/client-runtime/i18n";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
 import { APP_DISPLAY_NAME } from "../branding";
-import { AkeruWordmark } from "../components/AkeruWordmark";
+import { IsnadiWordmark } from "../components/IsnadiWordmark";
 import { Button } from "../components/ui/button";
 import { useI18n } from "../i18n";
 
@@ -45,7 +45,7 @@ export function RootRouteErrorView({
       className="flex h-full min-h-0 flex-col bg-background text-foreground"
     >
       <header className="flex h-(--workspace-topbar-height) shrink-0 items-center gap-1.5 pl-(--workspace-controls-left) pr-(--workspace-controls-right)">
-        <AkeruWordmark aria-hidden className="text-2xl text-foreground" />
+        <IsnadiWordmark aria-hidden className="text-2xl text-foreground" />
         <span className="truncate text-sm font-medium tracking-tight text-muted-foreground">
           {APP_DISPLAY_NAME}
         </span>

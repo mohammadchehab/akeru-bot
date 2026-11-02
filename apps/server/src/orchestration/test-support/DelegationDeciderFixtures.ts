@@ -5,13 +5,13 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   type OrchestrationBot,
   type OrchestrationCommand,
   type OrchestrationEvent,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { decideOrchestrationCommand } from "../decider.ts";
 import { createEmptyReadModel, projectEvent } from "../projector.ts";
@@ -88,8 +88,8 @@ export function makeThread(id: ThreadId, botId: BotId): OrchestrationThread {
 }
 
 export function makeDelegation(
-  overrides: Partial<AkeruDelegationRecord> = {},
-): AkeruDelegationRecord {
+  overrides: Partial<IsnadiDelegationRecord> = {},
+): IsnadiDelegationRecord {
   return {
     delegationId: DelegationId.make("delegation-1"),
     parentDelegationId: null,
@@ -125,7 +125,7 @@ export function makeDelegation(
 }
 
 export function makeReadModel(
-  delegations: ReadonlyArray<AkeruDelegationRecord> = [],
+  delegations: ReadonlyArray<IsnadiDelegationRecord> = [],
 ): OrchestrationReadModel {
   return {
     ...createEmptyReadModel(NOW),

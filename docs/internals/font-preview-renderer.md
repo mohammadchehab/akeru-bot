@@ -1,6 +1,6 @@
 # Terminal font preview renderer
 
-Akeru no longer has a user terminal. The web terminal drawer, the mobile terminal screen, the Android
+Isnadi no longer has a user terminal. The web terminal drawer, the mobile terminal screen, the Android
 renderer, and the server's PTY sessions are gone. One piece of the old renderer remains: the web
 settings page draws its terminal font preview with the Ghostty canvas renderer in
 `apps/web/src/terminal/ghostty`.

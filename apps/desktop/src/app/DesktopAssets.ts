@@ -34,7 +34,7 @@ export class DesktopAssets extends Context.Service<
       fileName: string,
     ) => Effect.Effect<Option.Option<string>, DesktopAssetProbeError>;
   }
->()("@akeru/desktop/app/DesktopAssets") {}
+>()("@isnadi/desktop/app/DesktopAssets") {}
 
 const resolveResourcePath = Effect.fn("desktop.assets.resolveResourcePath")(function* (
   fileName: string,
@@ -67,12 +67,12 @@ const resolveResourcePath = Effect.fn("desktop.assets.resolveResourcePath")(func
 const sourceTreeIconPaths = {
   dev: {
     ico: ["apps", "web", "public", "favicon.ico"],
-    macPng: ["assets", "prod", "akeru-macos-1024.png"],
+    macPng: ["assets", "prod", "isnadi-macos-1024.png"],
     universalPng: ["assets", "prod", "app-icon.png"],
   },
   prod: {
     ico: ["apps", "web", "public", "favicon.ico"],
-    macPng: ["assets", "prod", "akeru-macos-1024.png"],
+    macPng: ["assets", "prod", "isnadi-macos-1024.png"],
     universalPng: ["assets", "prod", "app-icon.png"],
   },
 } as const;

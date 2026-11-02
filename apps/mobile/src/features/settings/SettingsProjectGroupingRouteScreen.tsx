@@ -1,7 +1,7 @@
 import { useMobileI18n } from "../../lib/i18n";
 import { useAtomSet, useAtomValue } from "@effect/atom-react";
 import { useNavigation } from "@react-navigation/native";
-import type { SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { SidebarProjectGroupingMode } from "@isnadi/contracts";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { Platform, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

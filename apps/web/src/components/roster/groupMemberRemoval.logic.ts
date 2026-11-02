@@ -1,4 +1,4 @@
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 
 type Translate = (message: string, params?: Record<string, string | number>) => string;
 

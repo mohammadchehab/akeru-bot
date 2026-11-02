@@ -1,4 +1,4 @@
-import { CommandId, MessageId, ProjectId, ThreadId } from "@akeru/contracts";
+import { CommandId, MessageId, ProjectId, ThreadId } from "@isnadi/contracts";
 import * as Encoding from "effect/Encoding";
 import { DraftId } from "../composerDraftStore";
 

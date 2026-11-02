@@ -17,7 +17,7 @@ const mocks = {
 
 import { createSmokeEnvironment, resolveSmokeElectronPath, runSmokeTest } from "./smoke-test.mjs";
 
-const root = "/tmp/akeru-desktop-smoke-owned";
+const root = "/tmp/isnadi-desktop-smoke-owned";
 
 const ready = "[desktop-window] backend ready\n[desktop-window] main window created\n";
 
@@ -93,7 +93,7 @@ describe("desktop smoke isolation", () => {
       XDG_DATA_HOME: "/live",
       XDG_CACHE_HOME: "/live",
       T3CODE_HOME: "/live",
-      AKERU_HOME: "/live",
+      ISNADI_HOME: "/live",
       T3CODE_PORT: "3773",
       T3CODE_DESKTOP_LAN_HOST: "0.0.0.0",
       T3CODE_DEV_REMOTE_T3_SERVER_ENTRY_PATH: "/live/server",
@@ -121,7 +121,7 @@ describe("desktop smoke isolation", () => {
       "XDG_CACHE_HOME",
       "XDG_STATE_HOME",
       "T3CODE_HOME",
-      "AKERU_HOME",
+      "ISNADI_HOME",
     ]) {
       expect(env[key].startsWith(`${root}/`)).toBe(true);
     }

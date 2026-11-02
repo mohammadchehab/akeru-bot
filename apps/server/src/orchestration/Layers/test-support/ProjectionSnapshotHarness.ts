@@ -1,11 +1,11 @@
 import {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   CheckpointRef,
   EventId,
   MessageId,
   ProjectId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Layer from "effect/Layer";
@@ -26,10 +26,10 @@ export const asEventId = (value: string): EventId => EventId.make(value);
 
 export const asCheckpointRef = (value: string): CheckpointRef => CheckpointRef.make(value);
 
-export const decodeDelegationRecord = Schema.decodeUnknownEffect(AkeruDelegationRecord);
+export const decodeDelegationRecord = Schema.decodeUnknownEffect(IsnadiDelegationRecord);
 
 export const encodeDelegationRecordJson = Schema.encodeEffect(
-  Schema.fromJsonString(AkeruDelegationRecord),
+  Schema.fromJsonString(IsnadiDelegationRecord),
 );
 
 export const projectionSnapshotLayer = it.layer(

@@ -1,5 +1,5 @@
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { AkeruPluginRecommendation, AkeruPluginSearchResult } from "@akeru/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { IsnadiPluginRecommendation, IsnadiPluginSearchResult } from "@isnadi/contracts";
 import { CheckCircle2Icon, WrenchIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -12,8 +12,8 @@ import { Button } from "../ui/button";
 const DIRECTORY_PLUGINS = new Map(loadDirectoryCatalog().map((plugin) => [plugin.id, plugin]));
 
 function recommendationActionLabel(
-  recommendation: AkeruPluginRecommendation,
-  composioStatus: AkeruPluginSearchResult["sources"]["composio"],
+  recommendation: IsnadiPluginRecommendation,
+  composioStatus: IsnadiPluginSearchResult["sources"]["composio"],
   t: (key: MessageKey) => string,
 ): string {
   if (recommendation.action === "install") return t("Install");
@@ -33,7 +33,7 @@ function recommendationActionLabel(
   return t("Manage");
 }
 
-function recommendationLogo(recommendation: AkeruPluginRecommendation): string | undefined {
+function recommendationLogo(recommendation: IsnadiPluginRecommendation): string | undefined {
   if (recommendation.logoUrl) return recommendation.logoUrl;
 
   if (recommendation.source === "composio") {
@@ -47,14 +47,14 @@ function recommendationLogo(recommendation: AkeruPluginRecommendation): string |
     : undefined;
 }
 
-function recommendationProviderLabel(recommendation: AkeruPluginRecommendation): string {
+function recommendationProviderLabel(recommendation: IsnadiPluginRecommendation): string {
   if (recommendation.source === "composio") return "Composio";
   const plugin = DIRECTORY_PLUGINS.get(recommendation.id);
 
   return plugin?.connection.type === "brokered" ? plugin.connection.broker.name : "IsnadiBot";
 }
 
-function recommendationUsesComposio(recommendation: AkeruPluginRecommendation): boolean {
+function recommendationUsesComposio(recommendation: IsnadiPluginRecommendation): boolean {
   return recommendationProviderLabel(recommendation) === "Composio";
 }
 
@@ -62,7 +62,7 @@ export const PluginSearchResultCard = memo(function PluginSearchResultCard({
   result,
   className,
 }: {
-  readonly result: AkeruPluginSearchResult;
+  readonly result: IsnadiPluginSearchResult;
   readonly className?: string;
 }) {
   const { t } = useI18n();

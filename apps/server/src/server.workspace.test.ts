@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import {
   CommandId,
   ExternalLauncherCommandNotFoundError,
@@ -12,7 +12,7 @@ import {
   RoutineRunId,
   WS_METHODS,
   EditorId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertFailure, assertTrue } from "@effect/vitest/utils";
 import * as Effect from "effect/Effect";
@@ -63,7 +63,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ws-close-" });
+      const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ws-close-" });
       const target = path.join(cwd, "read.txt");
 
       yield* fs.writeFileString(target, "content");

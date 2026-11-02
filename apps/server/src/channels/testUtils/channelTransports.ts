@@ -12,7 +12,7 @@ import {
   type OrchestrationMessage,
   type OrchestrationReadModel,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { Message as ChatMessage, parseMarkdown, type Adapter, type ChatInstance } from "chat";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -72,7 +72,7 @@ vi.mock("@chat-adapter/slack", async (importOriginal) => {
       }) as ReturnType<typeof actual.createSlackAdapter> & Adapter;
 
       adapter.initialize = async (chat) => {
-        Object.assign(adapter, { _botUserId: "U-AKERU" });
+        Object.assign(adapter, { _botUserId: "U-ISNADI" });
         adapters.slack = { adapter, chat };
       };
 
@@ -105,8 +105,8 @@ vi.mock("@chat-adapter/discord", async (importOriginal) => {
 
       adapter.getUser = async (userId) => ({
         userId,
-        userName: "akeru",
-        fullName: "Akeru",
+        userName: "isnadi",
+        fullName: "Isnadi",
         isBot: true,
       });
       adapter.addReaction = async () => undefined;
@@ -181,7 +181,7 @@ const PROJECT_ID = ProjectId.make("project-1");
 
 const makeBot = (): OrchestrationBot => ({
   id: BOT_ID,
-  name: "Akeru",
+  name: "Isnadi",
   title: "Agent",
   label: null,
   description: null,

@@ -2,8 +2,8 @@ import { Predicate } from "effect";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
-import type { ServerProcessSignal } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/runtime";
+import type { ServerProcessSignal } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";

@@ -1,5 +1,5 @@
-import { threadSearchMatchKey } from "@akeru/client-runtime/state/thread-search";
-import { EnvironmentId, ProjectId, ThreadId, TurnId } from "@akeru/contracts";
+import { threadSearchMatchKey } from "@isnadi/client-runtime/state/thread-search";
+import { EnvironmentId, ProjectId, ThreadId, TurnId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { buildThreadListV2Items, sortThreadsForListV2 } from "./threadListV2";
 import { NOW, environmentId, makeThread } from "./threadListV2.test-support";

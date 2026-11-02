@@ -5,8 +5,8 @@ import {
   type RoutineAdapterFrequency,
   type RoutineAdapterItem,
   type RoutineAdapterProject,
-} from "@akeru/client-runtime/routines";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+} from "@isnadi/client-runtime/routines";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 
 import { useI18n } from "../../i18n";
 import { Button } from "../ui/button";

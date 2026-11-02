@@ -1,6 +1,6 @@
 import type { SubscriptionAccountState } from "./accountState.ts";
 import { codexPlanFromToken } from "./providers/openaiCodex.ts";
-import type { BotId, ProviderInstanceId } from "@akeru/contracts";
+import type { BotId, ProviderInstanceId } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Predicate from "effect/Predicate";
 import type { CredentialStoreState } from "./credentialStore.ts";

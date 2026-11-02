@@ -1,5 +1,5 @@
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
-import { USAGE_3H_COUNTER_KEYS, USAGE_BASE_COUNTER_KEYS } from "@akeru/contracts";
+import { USAGE_3H_COUNTER_KEYS, USAGE_BASE_COUNTER_KEYS } from "@isnadi/contracts";
 import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 import * as ServerConfig from "../../config.ts";

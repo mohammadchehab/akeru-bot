@@ -6,9 +6,9 @@ import {
   type DirectoryRecord,
 } from "@electron/asar";
 
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import rootPackageJson from "../../../package.json" with { type: "json" };
 

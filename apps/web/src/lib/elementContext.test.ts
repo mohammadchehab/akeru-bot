@@ -1,4 +1,4 @@
-import type { PickedElementPayload } from "@akeru/contracts";
+import type { PickedElementPayload } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

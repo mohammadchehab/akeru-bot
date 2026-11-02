@@ -38,7 +38,7 @@ export class DesktopAppIdentity extends Context.Service<
     readonly resolveUserDataPath: Effect.Effect<string, DesktopUserDataPathResolutionError>;
     readonly configure: Effect.Effect<void>;
   }
->()("@akeru/desktop/app/DesktopAppIdentity") {}
+>()("@isnadi/desktop/app/DesktopAppIdentity") {}
 
 const normalizeCommitHash = (value: string): Option.Option<string> => {
   const trimmed = value.trim();
@@ -52,24 +52,29 @@ export const resolveUserDataPath = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;
   const fileSystem = yield* FileSystem.FileSystem;
 
-  const legacyPath = environment.path.join(
+  const currentPath = environment.path.join(
     environment.appDataDirectory,
-    environment.legacyUserDataDirName,
+    environment.userDataDirName,
   );
 
-  const legacyPathExists = yield* fileSystem.exists(legacyPath).pipe(
-    Effect.mapError(
-      (cause) =>
-        new DesktopUserDataPathResolutionError({
-          legacyPath,
-          cause,
-        }),
-    ),
-  );
+  const exists = (path: string) =>
+    fileSystem
+      .exists(path)
+      .pipe(
+        Effect.mapError(
+          (cause) => new DesktopUserDataPathResolutionError({ legacyPath: path, cause }),
+        ),
+      );
 
-  return legacyPathExists
-    ? legacyPath
-    : environment.path.join(environment.appDataDirectory, environment.userDataDirName);
+  if (yield* exists(currentPath)) return currentPath;
+
+  for (const name of environment.legacyUserDataDirNames) {
+    const legacyPath = environment.path.join(environment.appDataDirectory, name);
+
+    if (yield* exists(legacyPath)) return legacyPath;
+  }
+
+  return currentPath;
 }).pipe(Effect.withSpan("desktop.appIdentity.resolveUserDataPath"));
 
 export const make = Effect.gen(function* () {
@@ -136,7 +141,7 @@ export const make = Effect.gen(function* () {
       applicationName: environment.displayName,
       applicationVersion: environment.appVersion,
       version: Option.getOrElse(commitHash, () => "unknown"),
-      credits: "Based on Akeru Bot and T3 Code (MIT).",
+      credits: "Based on OpenCore's fork of T3 Code (MIT).",
     });
 
     if (environment.platform === "win32") {

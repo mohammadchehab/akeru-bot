@@ -1,9 +1,9 @@
-import type { ModelSelection } from "@akeru/contracts";
+import type { ModelSelection } from "@isnadi/contracts";
 import {
   buildProviderOptionSelectionsFromDescriptors,
   getProviderOptionDescriptors,
   providerOptionsForModelChange,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 
 import type { ModelOption } from "../../lib/modelOptions";
 

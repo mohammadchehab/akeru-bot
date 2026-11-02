@@ -1,7 +1,7 @@
 import * as Match from "effect/Match";
 import type { OpenCodeNativeLogRecord } from "./OpenCodeAdapterState.ts";
 
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 import {
   EventId,
   type ProviderRuntimeEvent,
@@ -9,7 +9,7 @@ import {
   RuntimeRequestId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 
 import * as Effect from "effect/Effect";

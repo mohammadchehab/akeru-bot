@@ -1,17 +1,17 @@
 import * as Data from "effect/Data";
-import type { AkeruDelegationDispatch } from "../provider/AkeruDelegationRuntime.ts";
+import type { IsnadiDelegationDispatch } from "../provider/IsnadiDelegationRuntime.ts";
 import * as Predicate from "effect/Predicate";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   type BotId,
-  isAkeruDelegationTerminal,
+  isIsnadiDelegationTerminal,
   CommandId,
   type DelegationId,
   type ThreadId,
   MessageId,
   type OrchestrationCommand,
-} from "@akeru/contracts";
-import { driverSupportsDelegation } from "@akeru/shared/delegationProviders";
+} from "@isnadi/contracts";
+import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -339,7 +339,7 @@ const make = Effect.gen(function* () {
       const delegation = (readModel.delegations ?? []).find(
         (candidate) =>
           candidate.trigger === "scheduled" &&
-          !isAkeruDelegationTerminal(candidate.phase) &&
+          !isIsnadiDelegationTerminal(candidate.phase) &&
           Predicate.hasProperty(candidate.phase, "childThreadId") &&
           candidate.phase.childThreadId === run.threadRef,
       );
@@ -494,7 +494,7 @@ const make = Effect.gen(function* () {
       if (Option.isSome(bot)) {
         yield* botUsageLedger
           .recordMeasurement({
-            reservationId: AkeruUsageReservationId.make(`routine:${run.id}`),
+            reservationId: IsnadiUsageReservationId.make(`routine:${run.id}`),
             sourceKey: `routine:${run.id}`,
             botId: routine.botId,
             threadId: threadRef,
@@ -559,4 +559,4 @@ const make = Effect.gen(function* () {
 
 export const RoutineRuntimeAdapterLive = Layer.effect(RoutineRuntimeAdapter, make);
 
-const DelegationDispatch = Data.taggedEnum<AkeruDelegationDispatch>();
+const DelegationDispatch = Data.taggedEnum<IsnadiDelegationDispatch>();

@@ -1,15 +1,15 @@
-# Akeru Bot
+# IsnadiBot
 
-Akeru Bot is a local-first app for named teammate bots. Web, desktop, and mobile clients connect to an environment that owns the bots, projects, chats, providers, and local data.
+IsnadiBot is a local-first app for named teammate bots. Web, desktop, and mobile clients connect to an environment that owns the bots, projects, chats, providers, and local data.
 
 ## Identity
 
-**Akeru Bot**:
+**IsnadiBot**:
 The product name.
-_Avoid_: T3 Code, akeru-bot, t3code-leo
+_Avoid_: T3 Code, isnadibot, t3code-leo
 
-**Akeru home**:
-The directory that stores Akeru Bot settings, secrets, logs, and durable state. The default is `~/.akeru`, and worktree development uses `.akeru`.
+**Isnadi home**:
+The directory that stores IsnadiBot settings, secrets, logs, and durable state. The default is `~/.isnadi`, and worktree development uses `.isnadi`.
 _Avoid_: T3 home, `~/.t3`
 
 ## Product language
@@ -39,11 +39,11 @@ The files and execution context assigned to bot work. A workspace can be local o
 _Avoid_: Project when the execution context is intended
 
 **Environment**:
-One running Akeru Bot server and the machine, filesystem, provider credentials, and state that it owns.
+One running IsnadiBot server and the machine, filesystem, provider credentials, and state that it owns.
 _Avoid_: Server when the user is choosing or managing the complete environment
 
 **Provider**:
-The bot runtime that Akeru Bot connects to, such as Codex, Claude, Grok, Kimi For Coding, or OpenCode.
+The bot runtime that IsnadiBot connects to, such as Codex, Claude, Grok, Kimi For Coding, or OpenCode.
 _Avoid_: Model when the runtime or account connection is intended
 
 **Routine**:
@@ -53,5 +53,5 @@ _Avoid_: Job, automation, task when the durable configured routine is intended
 ## Project rules
 
 - Keep the MIT license and credit the T3 Code team and contributors for the original codebase.
-- Use the `akeru-bot` desktop Chromium profile.
+- Use the `isnadibot` desktop Chromium profile.
 - Do not push, publish, or create a GitHub repository unless Leo asks.

@@ -20,7 +20,7 @@ import {
   ThreadId,
   TurnId,
   ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Queue from "effect/Queue";
 import * as Stream from "effect/Stream";

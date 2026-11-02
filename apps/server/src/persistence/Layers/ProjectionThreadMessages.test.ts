@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { BotId, MessageId, ThreadId, TurnId } from "@akeru/contracts";
+import { BotId, MessageId, ThreadId, TurnId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -107,7 +107,7 @@ layer("ProjectionThreadMessageRepository", (it) => {
     }),
   );
 
-  it.effect("appends streaming text without replacing Akeru message metadata", () =>
+  it.effect("appends streaming text without replacing Isnadi message metadata", () =>
     Effect.gen(function* () {
       const repository = yield* ProjectionThreadMessageRepository;
       const threadId = ThreadId.make("thread-streaming-append");

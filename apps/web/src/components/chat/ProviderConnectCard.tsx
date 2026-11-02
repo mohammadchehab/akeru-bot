@@ -2,8 +2,8 @@ import type {
   EnvironmentId,
   SubscriptionProviderId,
   SubscriptionProviderStatus,
-} from "@akeru/contracts";
-import { providerSupportsBaseUrl } from "@akeru/client-runtime/provider-auth";
+} from "@isnadi/contracts";
+import { providerSupportsBaseUrl } from "@isnadi/client-runtime/provider-auth";
 import { LoaderIcon } from "lucide-react";
 
 import { useI18n } from "../../i18n";

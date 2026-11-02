@@ -1,25 +1,30 @@
 import type { AgentControllerLiveOptions } from "./Options.ts";
 import * as NodeCrypto from "node:crypto";
 
-import { CommandId, MessageId, ThreadId, type AkeruDelegationAccessGrant } from "@akeru/contracts";
+import {
+  CommandId,
+  MessageId,
+  ThreadId,
+  type IsnadiDelegationAccessGrant,
+} from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
-import { type AkeruChannelRuntime } from "../../AkeruChannelRuntime.ts";
-import { type AkeruBotStateRuntime } from "../../AkeruBotStateRuntime.ts";
+import { type IsnadiChannelRuntime } from "../../IsnadiChannelRuntime.ts";
+import { type IsnadiBotStateRuntime } from "../../IsnadiBotStateRuntime.ts";
 
 import {
-  AkeruWorkerError,
-  makeAkeruWorkerRuntime,
+  IsnadiWorkerError,
+  makeIsnadiWorkerRuntime,
   WORKER_THREAD_ID_PREFIX,
-} from "../../AkeruWorkerRuntime.ts";
+} from "../../IsnadiWorkerRuntime.ts";
 
 import {
-  createAkeruPluginRuntime,
-  type AkeruPluginRuntimeOptions,
-} from "../../AkeruCatalogToolHandlers.ts";
+  createIsnadiPluginRuntime,
+  type IsnadiPluginRuntimeOptions,
+} from "../../IsnadiCatalogToolHandlers.ts";
 
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
 
 import { AgentControllerRuntimeError } from "../../Errors.ts";
 
@@ -33,10 +38,10 @@ export function createWorkers(deps: {
     run: (signal: AbortSignal) => Promise<A>,
   ) => Effect.Effect<A, AgentControllerRuntimeError, never>;
   readonly wired: () => {
-    readonly channelRuntime?: AkeruChannelRuntime;
-    readonly pluginRuntime?: ReturnType<typeof createAkeruPluginRuntime>;
-    readonly pluginRuntimeOptions?: AkeruPluginRuntimeOptions;
-    readonly botStateRuntime?: AkeruBotStateRuntime;
+    readonly channelRuntime?: IsnadiChannelRuntime;
+    readonly pluginRuntime?: ReturnType<typeof createIsnadiPluginRuntime>;
+    readonly pluginRuntimeOptions?: IsnadiPluginRuntimeOptions;
+    readonly botStateRuntime?: IsnadiBotStateRuntime;
     readonly delegationRuntime?: AgentControllerLiveOptions["delegationRuntime"];
     readonly workerOrchestration?: WorkerOrchestration;
   };
@@ -59,11 +64,11 @@ export function createWorkers(deps: {
         })
         .pipe(
           Effect.mapError(
-            (error) => new AkeruWorkerError({ reason: "start_failed", detail: error.detail }),
+            (error) => new IsnadiWorkerError({ reason: "start_failed", detail: error.detail }),
           ),
         );
 
-    const workerRuntime = yield* makeAkeruWorkerRuntime({
+    const workerRuntime = yield* makeIsnadiWorkerRuntime({
       createChild: (spec) =>
         workerCall(async (orchestration) => {
           const snapshot = await orchestration.readSnapshot();
@@ -153,8 +158,8 @@ export function createWorkers(deps: {
 
     const workersFor = (
       threadId: ThreadId,
-      access: AkeruDelegationAccessGrant,
-    ): NonNullable<AkeruToolSession["workers"]> => {
+      access: IsnadiDelegationAccessGrant,
+    ): NonNullable<IsnadiToolSession["workers"]> => {
       const parent = () => {
         const turnId = deps.sessions.get(String(threadId))?.activeTurn?.turnId;
 

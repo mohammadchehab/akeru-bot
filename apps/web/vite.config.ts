@@ -13,7 +13,7 @@ import "vite-plus/test/config";
 import { defineConfig, type Connect, type Plugin } from "vite-plus";
 import pkg from "./package.json" with { type: "json" };
 
-import { DEV_PROXIED_PATH_PREFIXES } from "@akeru/shared/devProxy";
+import { DEV_PROXIED_PATH_PREFIXES } from "@isnadi/shared/devProxy";
 
 import { loadRepoEnv } from "../../scripts/lib/public-config";
 import { stageReleaseLegalFiles } from "../../scripts/lib/release-legal";
@@ -24,7 +24,7 @@ const repoRoot = NodeURL.fileURLToPath(new URL("../..", import.meta.url));
 
 function releaseLegalFilesPlugin(): Plugin {
   return {
-    name: "akeru:release-legal-files",
+    name: "isnadi:release-legal-files",
     apply: "build",
     closeBundle() {
       return Effect.runPromise(

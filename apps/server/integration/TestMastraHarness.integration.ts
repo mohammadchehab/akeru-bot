@@ -1,5 +1,5 @@
-import type { AkeruControllerSession } from "../src/provider/mastra/AkeruHarnessTypes.ts";
-import type { AkeruMastraState } from "../src/provider/AkeruMastraHarness.ts";
+import type { IsnadiControllerSession } from "../src/provider/mastra/IsnadiHarnessTypes.ts";
+import type { IsnadiMastraState } from "../src/provider/IsnadiMastraHarness.ts";
 import * as Predicate from "effect/Predicate";
 /**
  * Mastra-side twin of `TestProviderAdapter.integration.ts`.
@@ -18,7 +18,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderApprovalDecision,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import type { AgentControllerLiveOptions } from "../src/provider/Layers/AgentController.ts";
@@ -44,7 +44,7 @@ export interface TestMastraHarness {
 interface SessionState {
   readonly threadId: ThreadId;
   cwd: string | undefined;
-  stateSnapshot: AkeruMastraState;
+  stateSnapshot: IsnadiMastraState;
   readonly queuedResponses: Array<TestTurnResponse>;
   readonly listeners: Set<(event: AgentControllerEvent) => void>;
   readonly interruptCalls: Array<TurnId | undefined>;
@@ -242,7 +242,7 @@ export function testMastraHarness(): TestMastraHarness {
       },
       state: {
         get: () => state.stateSnapshot,
-        set: async (next: AkeruMastraState) => {
+        set: async (next: IsnadiMastraState) => {
           state.stateSnapshot = next;
 
           if (Predicate.isString(next.projectPath)) state.cwd = next.projectPath;
@@ -308,7 +308,7 @@ export function testMastraHarness(): TestMastraHarness {
         resolve?.();
       },
       respondToToolSuspension: async () => undefined,
-    }) satisfies AkeruControllerSession;
+    }) satisfies IsnadiControllerSession;
 
   const factory: TestMastraHarness["factory"] = () =>
     Effect.succeed({

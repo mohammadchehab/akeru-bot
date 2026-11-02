@@ -2,8 +2,8 @@ import {
   type ProviderInstanceId,
   type ServerProvider,
   ServerProvider as ServerProviderSchema,
-} from "@akeru/contracts";
-import { causeErrorTag } from "@akeru/shared/observability";
+} from "@isnadi/contracts";
+import { causeErrorTag } from "@isnadi/shared/observability";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";

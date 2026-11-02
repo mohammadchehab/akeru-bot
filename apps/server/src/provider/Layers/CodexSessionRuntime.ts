@@ -8,8 +8,8 @@ import {
   type ProviderSession,
   type ProviderTurnStartResult,
   TurnId,
-} from "@akeru/contracts";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+} from "@isnadi/contracts";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";

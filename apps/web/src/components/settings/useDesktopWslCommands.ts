@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { type DesktopWslState } from "@akeru/contracts";
+import { type DesktopWslState } from "@isnadi/contracts";
 import { applyWslEnableSelection } from "./ConnectionsSettings.logic";
 import { stackedThreadToast, toastManager } from "../ui/toast";
 import { isDesktopLocalConnectionTarget } from "~/connection/desktopLocal";

@@ -6,7 +6,7 @@ import {
   type PreviewFrame,
   type PreviewListResult,
   type PreviewSessionSnapshot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { PREVIEW_RECENT_URL_LIMIT } from "../components/preview/previewConstants";
 
 export interface DesktopPreviewOverlay {

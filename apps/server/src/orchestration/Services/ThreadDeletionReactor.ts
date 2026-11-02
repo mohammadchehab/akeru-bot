@@ -43,4 +43,4 @@ export interface ThreadDeletionReactorShape {
 export class ThreadDeletionReactor extends Context.Service<
   ThreadDeletionReactor,
   ThreadDeletionReactorShape
->()("akeru-bot/orchestration/Services/ThreadDeletionReactor") {}
+>()("isnadibot/orchestration/Services/ThreadDeletionReactor") {}

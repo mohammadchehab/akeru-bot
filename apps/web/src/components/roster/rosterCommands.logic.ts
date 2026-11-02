@@ -1,4 +1,4 @@
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 
 import type { useI18n } from "../../i18n";
 

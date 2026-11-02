@@ -52,7 +52,7 @@ describe("parseClaudeLine", () => {
   });
 
   it("gives every content block of one message the same dedupe key", () => {
-    // Akeru Bot writes one record per content block, each repeating the parent
+    // IsnadiBot writes one record per content block, each repeating the parent
     // message's full usage. Summing them would overcount ~2.4x on real data.
     const text = parseClaudeLine(claudeLine({ messageId: "msg_2", contentType: "text" }));
     const toolUse = parseClaudeLine(claudeLine({ messageId: "msg_2", contentType: "tool_use" }));

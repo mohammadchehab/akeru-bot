@@ -1,4 +1,8 @@
-import { ProviderDriverKind, type ProviderInstanceId, type ServerProvider } from "@akeru/contracts";
+import {
+  ProviderDriverKind,
+  type ProviderInstanceId,
+  type ServerProvider,
+} from "@isnadi/contracts";
 import * as Equal from "effect/Equal";
 
 export const hasModelCapabilities = (model: ServerProvider["models"][number]): boolean =>

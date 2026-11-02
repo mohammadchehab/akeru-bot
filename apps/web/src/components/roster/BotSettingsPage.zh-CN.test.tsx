@@ -8,7 +8,7 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   type ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { visitElements } from "../test-support/reactTree";
@@ -98,7 +98,7 @@ vi.mock("./useBotThreadRef", () => ({ useBotThreadRef: () => null }));
 vi.mock("../ui/toast", () => ({ toastManager: { add: vi.fn() } }));
 
 vi.mock("../../i18n", async () => {
-  const { catalogRegistry, createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { catalogRegistry, createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("zh-CN", await catalogRegistry["zh-CN"]!());
 
   return { useI18n: () => translator };

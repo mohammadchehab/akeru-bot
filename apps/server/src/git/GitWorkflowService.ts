@@ -8,7 +8,7 @@ import {
   type VcsCreateWorktreeInput,
   type VcsCreateWorktreeResult,
   type GitManagerServiceError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as GitVcsDriver from "../vcs/GitVcsDriver.ts";
 import * as VcsDriverRegistry from "../vcs/VcsDriverRegistry.ts";
@@ -49,7 +49,7 @@ export class GitWorkflowService extends Context.Service<
       readonly newBranch: string;
     }) => Effect.Effect<{ readonly branch: string }, GitManagerServiceError>;
   }
->()("akeru-bot/git/GitWorkflowService") {}
+>()("isnadibot/git/GitWorkflowService") {}
 
 export const make = Effect.gen(function* () {
   const registry = yield* VcsDriverRegistry.VcsDriverRegistry;

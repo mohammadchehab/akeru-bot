@@ -1,4 +1,4 @@
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 
 import { CustomApiIcon, type Icon } from "../Icons";
 import {

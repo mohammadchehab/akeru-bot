@@ -1,15 +1,15 @@
 import { Match } from "effect";
 import { ThreadTurnFoldRow } from "./thread-turn-fold-row";
-import type { ThreadSilentRun } from "@akeru/client-runtime/silent-run";
+import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
-import type { BotId, EnvironmentId, TurnId } from "@akeru/contracts";
+import type { BotId, EnvironmentId, TurnId } from "@isnadi/contracts";
 import {
   channelDeliveryLabel,
   channelOriginLabel,
-} from "@akeru/client-runtime/channel-origin-presentation";
-import { stabilizeStreamingMarkdown } from "@akeru/client-runtime/markdown-streaming";
-import { formatElapsed } from "@akeru/shared/orchestrationTiming";
-import { formatTokens, formatUsd } from "@akeru/shared/usageFormat";
+} from "@isnadi/client-runtime/channel-origin-presentation";
+import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
+import { formatElapsed } from "@isnadi/shared/orchestrationTiming";
+import { formatTokens, formatUsd } from "@isnadi/shared/usageFormat";
 import { memo, useEffect, useState } from "react";
 import { Markdown } from "react-native-nitro-markdown";
 import { Platform, Text as NativeText, type ColorValue, View } from "react-native";
@@ -25,14 +25,14 @@ import { labelSentMessageMentions, useSentMessageMentions } from "./sentMessageM
 import { AppText as Text } from "../../components/AppText";
 import { BotAvatarView, seededBlobAvatar } from "../../components/BotAvatarView";
 import { ThreadDelegationFeedCard } from "./ThreadDelegationFeedCard";
-import type { OrchestrationBot } from "@akeru/contracts";
+import type { OrchestrationBot } from "@isnadi/contracts";
 import { CopyTextButton } from "../../components/CopyTextButton";
 import { ReplyPlaybackControls } from "../replyPlayback/ReplyPlaybackControls";
 import { replyPlaybackControlProps } from "../replyPlayback/useReplyPlaybackThread";
 import { useOptionalReplyPlayback } from "../replyPlayback/ReplyPlaybackProvider";
 import { cn } from "../../lib/cn";
 import type { ThreadFeedEntry } from "../../lib/threadActivity";
-import { formatBotStepEngine, type BotStepMeterData } from "@akeru/client-runtime/bot-step-usage";
+import { formatBotStepEngine, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
 import { ThreadWorkGroupToggle, ThreadWorkLog } from "./thread-work-log";
 import { MessageAttachmentFile, MessageAttachmentImage } from "./thread-feed-images";
 import type { MarkdownStyleSet, MarkdownStyleSets } from "./thread-feed-markdown";

@@ -2,7 +2,7 @@ import * as Match from "effect/Match";
 import type { DesktopBuildConfiguration } from "./config.ts";
 import * as NodeFSP from "node:fs/promises";
 
-import { fromYaml } from "@akeru/shared/schemaYaml";
+import { fromYaml } from "@isnadi/shared/schemaYaml";
 
 import { selectCliPackagedRuntimeDependencies } from "../cli-external-packages.ts";
 

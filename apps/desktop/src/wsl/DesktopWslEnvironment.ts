@@ -98,7 +98,7 @@ export class DesktopWslEnvironment extends Context.Service<
       options?: EnsureWslNodePtyOptions,
     ) => Effect.Effect<EnsureWslNodePtyResult>;
   }
->()("@akeru/desktop/wsl/DesktopWslEnvironment") {}
+>()("@isnadi/desktop/wsl/DesktopWslEnvironment") {}
 
 export const probeWslDistros: Effect.Effect<
   readonly WslDistro[],

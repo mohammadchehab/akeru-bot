@@ -1,5 +1,5 @@
 import { Option, Predicate } from "effect";
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -8,24 +8,27 @@ import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 
 import { type SavedRemoteConnection } from "../lib/connection";
+import { getItemMigratingLegacyKeys, legacyProductStorageKey } from "./legacy-product";
 import * as MobileSecureStorage from "./mobile-secure-storage";
 
-const CONNECTIONS_KEY = "akeru.connections";
+const CONNECTIONS_KEY = "isnadi.connections";
 
-const AGENT_AWARENESS_DEVICE_ID_KEY = "akeru.agent-awareness.device-id";
+const AGENT_AWARENESS_DEVICE_ID_KEY = "isnadi.agent-awareness.device-id";
 
-const AGENT_AWARENESS_REGISTRATION_KEY = "akeru.agent-awareness.registration";
+const AGENT_AWARENESS_REGISTRATION_KEY = "isnadi.agent-awareness.registration";
 
-const RECENT_THREAD_SHORTCUTS_KEY = "akeru.recent-thread-shortcuts";
+const RECENT_THREAD_SHORTCUTS_KEY = "isnadi.recent-thread-shortcuts";
 
-// Keys written before the rebrand; each read falls back to the legacy key
-// once and the next write lands on the Akeru key, draining the old entry.
-const LEGACY_KEYS: ReadonlyArray<readonly [string, string]> = [
-  [CONNECTIONS_KEY, "t3code.connections"],
-  [AGENT_AWARENESS_DEVICE_ID_KEY, "t3code.agent-awareness.device-id"],
-  [AGENT_AWARENESS_REGISTRATION_KEY, "t3code.agent-awareness.registration"],
-  [RECENT_THREAD_SHORTCUTS_KEY, "t3code.recent-thread-shortcuts"],
-];
+// Keys written before each rebrand, newest first; a read falls back to them
+// once, copies the value under the Isnadi key and drains the old entry.
+const LEGACY_KEYS: ReadonlyMap<string, ReadonlyArray<string>> = new Map(
+  [
+    [CONNECTIONS_KEY, "t3code.connections"],
+    [AGENT_AWARENESS_DEVICE_ID_KEY, "t3code.agent-awareness.device-id"],
+    [AGENT_AWARENESS_REGISTRATION_KEY, "t3code.agent-awareness.registration"],
+    [RECENT_THREAD_SHORTCUTS_KEY, "t3code.recent-thread-shortcuts"],
+  ].map(([key, t3codeKey]) => [key, [legacyProductStorageKey(key), t3codeKey]] as const),
+);
 
 export class MobileStorageDecodeError extends Schema.TaggedErrorClass<MobileStorageDecodeError>()(
   "MobileStorageDecodeError",
@@ -124,29 +127,13 @@ export class MobileStorage extends Context.Service<
       MobileSecureStorage.MobileSecureStorageError | MobileStorageEncodeError
     >;
   }
->()("@akeru/mobile/persistence/MobileStorage") {}
+>()("@isnadi/mobile/persistence/MobileStorage") {}
 
 export const make = Effect.fn("MobileStorage.make")(function* () {
   const secureStorage = yield* MobileSecureStorage.MobileSecureStorage;
 
-  const getItem = Effect.fn("MobileStorage.getItem")(function* (key: string) {
-    const value = yield* secureStorage.getItem(key);
-
-    if (value !== null) return value;
-    const legacyKey = LEGACY_KEYS.find(([current]) => current === key)?.[1];
-
-    if (legacyKey === undefined) return null;
-    const legacy = yield* secureStorage.getItem(legacyKey);
-
-    if (legacy !== null) {
-      // Copy the pre-rebrand value forward so the next write can drain it.
-      yield* secureStorage
-        .setItem(key, legacy)
-        .pipe(Effect.andThen(secureStorage.removeItem(legacyKey)), Effect.ignore);
-    }
-
-    return legacy;
-  });
+  const getItem = (key: string) =>
+    getItemMigratingLegacyKeys(secureStorage, key, LEGACY_KEYS.get(key) ?? []);
 
   const readJson = Effect.fn("MobileStorage.readJson")(function* <A>(
     key: string,
@@ -170,9 +157,8 @@ export const make = Effect.fn("MobileStorage.make")(function* () {
 
   const setItem = Effect.fn("MobileStorage.setItem")(function* (key: string, value: string) {
     yield* secureStorage.setItem(key, value);
-    const legacyKey = LEGACY_KEYS.find(([current]) => current === key)?.[1];
 
-    if (legacyKey !== undefined) {
+    for (const legacyKey of LEGACY_KEYS.get(key) ?? []) {
       yield* secureStorage.removeItem(legacyKey).pipe(Effect.ignore);
     }
   });

@@ -1,4 +1,4 @@
-import { CommandId } from "@akeru/contracts";
+import { CommandId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { createMigratingStorage, readMigratedLocalStorage } from "./storageKeyMigration";
 import type { StateStorage } from "./storage";
 
-const NEW_KEY = "akeru:test";
+const NEW_KEY = "isnadi:test";
 
 const LEGACY_KEY = "t3code:test";
 

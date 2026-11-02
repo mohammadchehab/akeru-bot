@@ -2,8 +2,8 @@ import {
   attachEnvironmentDescriptor,
   createKnownEnvironment,
   type KnownEnvironment,
-} from "@akeru/client-runtime/environment";
-import type { ExecutionEnvironmentDescriptor } from "@akeru/contracts";
+} from "@isnadi/client-runtime/environment";
+import type { ExecutionEnvironmentDescriptor } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
 import { PrimaryEnvironmentRequestError, retryTransientBootstrap } from "./auth";

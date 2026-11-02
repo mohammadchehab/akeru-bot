@@ -1,9 +1,9 @@
-import type { EnvironmentId, OrchestrationThread, ThreadId } from "@akeru/contracts";
+import type { EnvironmentId, OrchestrationThread, ThreadId } from "@isnadi/contracts";
 import {
   createThreadSearchResultsAtomFamily,
   makeThreadSearchKey,
   type EnvironmentThreadSearchMatch,
-} from "@akeru/client-runtime/state/thread-search";
+} from "@isnadi/client-runtime/state/thread-search";
 import { useAtomValue } from "@effect/atom-react";
 import * as Option from "effect/Option";
 import { Atom } from "effect/unstable/reactivity";

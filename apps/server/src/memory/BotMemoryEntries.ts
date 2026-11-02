@@ -1,17 +1,17 @@
 import {
-  type AkeruBotMemorySnapshot,
-  type AkeruMemoryDocument,
-  type AkeruMemoryFileOperation,
-} from "@akeru/contracts";
+  type IsnadiBotMemorySnapshot,
+  type IsnadiMemoryDocument,
+  type IsnadiMemoryFileOperation,
+} from "@isnadi/contracts";
 import { scanMemoryContent } from "./memoryContentSafety.ts";
 import { BotMemoryError } from "./BotMemoryTypes.ts";
 
 export const BOT_MEMORY_ENTRY_DELIMITER = "\n\n§\n\n";
 
-export function formatBotMemoryPrompt(snapshot: AkeruBotMemorySnapshot): string {
+export function formatBotMemoryPrompt(snapshot: IsnadiBotMemorySnapshot): string {
   const sections: string[] = [];
 
-  const append = (title: string, document: AkeruMemoryDocument | null) => {
+  const append = (title: string, document: IsnadiMemoryDocument | null) => {
     if (!document?.content) return;
     sections.push(`<${title}>\n${document.content}\n</${title}>`);
   };
@@ -76,7 +76,7 @@ export function findUniqueEntry(entries: ReadonlyArray<string>, oldText: string)
 
 export function applyOperation(
   entries: ReadonlyArray<string>,
-  operation: AkeruMemoryFileOperation,
+  operation: IsnadiMemoryFileOperation,
 ): ReadonlyArray<string> {
   const working = [...entries];
 

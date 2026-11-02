@@ -1,4 +1,4 @@
-import type { DesktopWslState } from "@akeru/contracts";
+import type { DesktopWslState } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as AsyncResult from "effect/unstable/reactivity/AsyncResult";
 import { AtomRegistry } from "effect/unstable/reactivity";

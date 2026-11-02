@@ -2,8 +2,8 @@ import {
   resolveProviderSkillSourceKind,
   resolveProviderSkillTextIcon,
   type ProviderSkillSourceKind,
-} from "@akeru/client-runtime/providerSkills";
-import type { ServerProviderSkill } from "@akeru/contracts";
+} from "@isnadi/client-runtime/providerSkills";
+import type { ServerProviderSkill } from "@isnadi/contracts";
 import {
   BlocksIcon,
   FolderIcon,

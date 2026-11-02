@@ -4,7 +4,7 @@ import {
   ThreadId,
   type OrchestrationBot,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { createEmptyReadModel } from "../../../orchestration/projector.ts";
 import type {

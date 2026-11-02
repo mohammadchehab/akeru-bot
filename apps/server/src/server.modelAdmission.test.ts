@@ -14,7 +14,7 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertTrue } from "@effect/vitest/utils";
 import * as Effect from "effect/Effect";
@@ -125,7 +125,7 @@ it.describe("ws bot engine model routing preflight", () => {
 
   it.effect("rejects bot.create when the model is not in the provider snapshot", () =>
     Effect.gen(function* () {
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
       yield* buildAppUnderTest({
         config: { baseDir },
@@ -170,7 +170,7 @@ it.describe("ws bot engine model routing preflight", () => {
 
   it.effect("rejects an HTTP bot.create when the model is not in the provider snapshot", () =>
     Effect.gen(function* () {
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-http-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-http-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
 
       const dispatch = vi.fn<OrchestrationEngine.OrchestrationEngineService["Service"]["dispatch"]>(
@@ -219,7 +219,7 @@ it.describe("ws bot engine model routing preflight", () => {
       const botId = BotId.make("bot-stale-model");
       const engine = { provider: "codex", model: "dropped-model" };
       let sequence = 0;
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
       yield* buildAppUnderTest({
         config: { baseDir },
@@ -261,7 +261,7 @@ it.describe("ws bot engine model routing preflight", () => {
     Effect.gen(function* () {
       const botId = BotId.make("bot-stale-turn");
       const threadId = ThreadId.make("thread-stale-turn");
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
       yield* buildAppUnderTest({
         config: { baseDir },
@@ -312,7 +312,7 @@ it.describe("ws bot engine model routing preflight", () => {
       const botId = BotId.make("bot-unsettled-catalog");
       const threadId = ThreadId.make("thread-unsettled-catalog");
       let sequence = 0;
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
       yield* buildAppUnderTest({
         config: { baseDir },
@@ -364,7 +364,7 @@ it.describe("ws bot engine model routing preflight", () => {
       Effect.gen(function* () {
         const threadId = ThreadId.make("thread-unsettled-command-model");
         let sequence = 0;
-        const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+        const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
         seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
         yield* buildAppUnderTest({
           config: { baseDir },
@@ -423,7 +423,7 @@ it.describe("ws bot engine model routing preflight", () => {
       ]);
 
       let sequence = 0;
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-ws-preflight-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
       yield* buildAppUnderTest({
         config: { baseDir },

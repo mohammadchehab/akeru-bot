@@ -14,7 +14,7 @@ import * as NodeFSP from "node:fs/promises";
 import * as NodePath from "node:path";
 import * as NodeReadline from "node:readline";
 
-import type { UsageProviderKind } from "@akeru/contracts";
+import type { UsageProviderKind } from "@isnadi/contracts";
 
 import {
   initialCodexScanState,

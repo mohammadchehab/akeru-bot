@@ -1,17 +1,17 @@
 import * as Schema from "effect/Schema";
 
-const decodeArchive = Schema.decodeUnknownSync(AkeruMemoryArchiveV2);
+const decodeArchive = Schema.decodeUnknownSync(IsnadiMemoryArchiveV2);
 
 import {
-  AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
-  AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
-  AkeruMemoryCandidateId,
+  ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
+  ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+  IsnadiMemoryCandidateId,
   BotId,
   ThreadId,
-  AkeruMemoryArchiveV2,
-  type AkeruMemoryImportPreview,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  IsnadiMemoryArchiveV2,
+  type IsnadiMemoryImportPreview,
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -39,7 +39,8 @@ import { createTranslator } from "./i18n/index.ts";
 import { zhCNCatalog } from "./i18n/zh-CN.ts";
 
 const revision = (
-  overrides: Partial<AkeruMemoryRevision> & Pick<AkeruMemoryRevision, "id" | "rootId" | "revision">,
+  overrides: Partial<IsnadiMemoryRevision> &
+    Pick<IsnadiMemoryRevision, "id" | "rootId" | "revision">,
 ) =>
   ({
     partition: { tenantId: "local", scope: "bot-user", partitionId: "bot-1:owner" },
@@ -65,10 +66,10 @@ const revision = (
     sensitive: false,
     affectedBotIds: ["bot-1"],
     ...overrides,
-  }) as AkeruMemoryRevision;
+  }) as IsnadiMemoryRevision;
 
-const preview = (items: AkeruMemoryImportPreview["items"]) =>
-  ({ previewHash: "a".repeat(64), items }) as AkeruMemoryImportPreview;
+const preview = (items: IsnadiMemoryImportPreview["items"]) =>
+  ({ previewHash: "a".repeat(64), items }) as IsnadiMemoryImportPreview;
 
 describe("summarizeDurableFacts", () => {
   it("keeps the newest revision per root with its superseded value and first creation time", () => {
@@ -397,7 +398,7 @@ describe("durable fact actions", () => {
   it("names revision conflicts and missing operate access plainly", () => {
     expect(
       describeDurableFactFailure({
-        _tag: "AkeruMemoryOperationError",
+        _tag: "IsnadiMemoryOperationError",
         operation: "facts.mutate",
         detail: "Memory revision conflict for root-1. Expected 3, found 4.",
       }),
@@ -411,7 +412,7 @@ describe("durable fact actions", () => {
     ).toBe("This connection can read memory but not change it.");
     expect(
       describeDurableFactFailure({
-        _tag: "AkeruMemoryOperationError",
+        _tag: "IsnadiMemoryOperationError",
         detail: "Memory is turned off.",
       }),
     ).toEqual({
@@ -424,7 +425,7 @@ describe("durable fact actions", () => {
 
 describe("shared memory approvals", () => {
   const request = (candidateId: string, fact: string) => ({
-    candidateId: AkeruMemoryCandidateId.make(candidateId),
+    candidateId: IsnadiMemoryCandidateId.make(candidateId),
     fact,
     scope: "project" as const,
     sensitive: false,
@@ -438,13 +439,13 @@ describe("shared memory approvals", () => {
     const second = request("candidate-2", "The team uses pnpm.");
 
     const activities = [
-      { kind: AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: first },
-      { kind: AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: second },
-      { kind: AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: second },
-      { kind: AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: { candidateId: 3 } },
+      { kind: ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: first },
+      { kind: ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: second },
+      { kind: ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: second },
+      { kind: ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY, payload: { candidateId: 3 } },
       { kind: "tool.completed", payload: first },
       {
-        kind: AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+        kind: ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
         payload: {
           candidateId: first.candidateId,
           status: "approved",

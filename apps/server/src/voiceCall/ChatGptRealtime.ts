@@ -6,7 +6,7 @@ import {
   CHATGPT_REALTIME_VOICE_MODEL,
   TrimmedNonEmptyString,
   type ChatGptRealtimeVoice,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { readVoiceResponse } from "./VoiceAdapters.ts";
 
@@ -68,8 +68,8 @@ export function defaultSession(): ChatGptRealtimeSession {
           Authorization: `Bearer ${accessToken}`,
           "ChatGPT-Account-ID": accountId,
           "Content-Type": "application/json",
-          originator: "akeru",
-          "User-Agent": "akeru",
+          originator: "isnadi",
+          "User-Agent": "isnadi",
         },
         body: JSON.stringify({
           sdp: offerSdp,

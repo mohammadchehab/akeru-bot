@@ -9,7 +9,7 @@ type FeedbackElement = Pick<Element, "tagName" | "getAttribute" | "hasAttribute"
 import {
   PRODUCT_FEEDBACK_ELEMENT_LABEL_MAX_CHARS,
   type ProductFeedbackElement,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 const EXCLUDED_SELECTOR = [
   "input",
@@ -17,7 +17,7 @@ const EXCLUDED_SELECTOR = [
   "select",
   "option",
   "[contenteditable]",
-  "[data-akeru-feedback-ui]",
+  "[data-isnadi-feedback-ui]",
   "[data-feedback-private]",
   "[data-sensitive]",
   "[aria-label*='password' i]",
@@ -155,9 +155,9 @@ export function startProductFeedbackElementPicker(input: {
   const previousFocus =
     document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
-  outline.dataset.akeruFeedbackUi = "picker-outline";
-  label.dataset.akeruFeedbackUi = "picker-label";
-  instructions.dataset.akeruFeedbackUi = "picker-instructions";
+  outline.dataset.isnadiFeedbackUi = "picker-outline";
+  label.dataset.isnadiFeedbackUi = "picker-label";
+  instructions.dataset.isnadiFeedbackUi = "picker-instructions";
   outline.setAttribute("aria-hidden", "true");
   label.setAttribute("aria-hidden", "true");
   Object.assign(outline.style, {
@@ -202,7 +202,7 @@ export function startProductFeedbackElementPicker(input: {
   instructions.setAttribute("aria-live", "polite");
   cancelButton.type = "button";
   cancelButton.textContent = "Exit picker";
-  cancelButton.dataset.akeruFeedbackUi = "picker-cancel";
+  cancelButton.dataset.isnadiFeedbackUi = "picker-cancel";
   Object.assign(cancelButton.style, {
     border: "1px solid var(--border)",
     borderRadius: "6px",
@@ -275,7 +275,7 @@ export function startProductFeedbackElementPicker(input: {
   };
 
   const isPickerUi = (target: EventTarget | null) =>
-    target instanceof Element && target.closest("[data-akeru-feedback-ui]") !== null;
+    target instanceof Element && target.closest("[data-isnadi-feedback-ui]") !== null;
 
   const onPointerDown = (event: PointerEvent) => {
     if (isPickerUi(event.target)) return;

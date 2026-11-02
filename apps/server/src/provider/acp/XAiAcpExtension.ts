@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { ProviderUserInputAnswers, UserInputQuestion } from "@akeru/contracts";
+import type { ProviderUserInputAnswers, UserInputQuestion } from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Ref from "effect/Ref";

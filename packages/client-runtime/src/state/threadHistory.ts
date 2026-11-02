@@ -2,7 +2,7 @@ import {
   type EnvironmentId as EnvironmentIdType,
   type OrchestrationThreadDetailPage,
   type ThreadId as ThreadIdType,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as Option from "effect/Option";
 import { threadKey } from "./entities.ts";
@@ -76,7 +76,7 @@ const defaultOlderTurnRequestRegistry = makeThreadOlderTurnRequestRegistry();
  * the apps get working wiring without providing anything.
  */
 export class ThreadOlderTurnRequests extends Context.Reference<ThreadOlderTurnRequestRegistry>(
-  "@akeru/client-runtime/state/threads/ThreadOlderTurnRequests",
+  "@isnadi/client-runtime/state/threads/ThreadOlderTurnRequests",
   { defaultValue: () => defaultOlderTurnRequestRegistry },
 ) {}
 

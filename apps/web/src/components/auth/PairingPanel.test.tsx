@@ -59,7 +59,7 @@ describe("PairingPanel", () => {
     const html = renderPanel({ kind: "rejected" });
 
     expect(html).toContain("This link no longer works");
-    expect(html).toContain("npx akeru-bot pair");
+    expect(html).toContain("npx isnadibot pair");
     expect(html).toContain('role="alert"');
     expect(html).not.toContain("Pairing lets this browser");
   });

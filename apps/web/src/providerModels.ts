@@ -7,8 +7,8 @@ import {
   type ProviderInstanceId,
   type ServerProvider,
   type ServerProviderModel,
-} from "@akeru/contracts";
-import { createModelCapabilities, normalizeModelSlug } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { createModelCapabilities, normalizeModelSlug } from "@isnadi/shared/model";
 
 const EMPTY_CAPABILITIES: ModelCapabilities = createModelCapabilities({
   optionDescriptors: [],

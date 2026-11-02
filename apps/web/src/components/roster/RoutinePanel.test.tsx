@@ -1,4 +1,4 @@
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -11,7 +11,7 @@ import {
   toRoutineSchedule,
   type RoutineAdapterItem,
   type RoutineAdapterRun,
-} from "@akeru/client-runtime/routines";
+} from "@isnadi/client-runtime/routines";
 
 import {
   focusTargetAfterRoutineDelete,
@@ -51,7 +51,7 @@ const routine: RoutineAdapterItem = {
   procedureApproved: true,
   enabled: true,
   paused: false,
-  pausedByAkeru: false,
+  pausedByIsnadi: false,
   nextRunAt: "2026-09-01T13:00:00.000Z",
   lastRunAt: "2026-08-31T12:00:00.000Z",
   latestRun: run,
@@ -62,7 +62,7 @@ const detail = (item: RoutineAdapterItem, doneBy: string | null = null) =>
   renderToStaticMarkup(
     <RoutineDetail
       routine={item}
-      projectName="Akeru"
+      projectName="Isnadi"
       doneBy={doneBy}
       busy={false}
       onBack={() => undefined}
@@ -229,7 +229,7 @@ describe("RoutinePanel", () => {
 
   it("offers a header-level New routine button once the list is non-empty", () => {
     const markup = renderToStaticMarkup(
-      <RoutinePanel botName="Akeru" status="ready" routines={[routine]} onCreate={() => {}} />,
+      <RoutinePanel botName="Isnadi" status="ready" routines={[routine]} onCreate={() => {}} />,
     );
 
     expect(markup).toContain('aria-label="New routine"');
@@ -237,7 +237,7 @@ describe("RoutinePanel", () => {
 
   it("lists routines as cards that open, without burying destructive actions in the list", () => {
     const markup = renderToStaticMarkup(
-      <RoutinePanel botName="Akeru" status="ready" routines={[routine]} />,
+      <RoutinePanel botName="Isnadi" status="ready" routines={[routine]} />,
     );
 
     expect(markup).toContain(">Routines</h3>");
@@ -262,7 +262,7 @@ describe("RoutinePanel", () => {
   it("puts the way back on a paused or disabled card, and mutes it", () => {
     const paused = renderToStaticMarkup(
       <RoutinePanel
-        botName="Akeru"
+        botName="Isnadi"
         status="ready"
         routines={[{ ...routine, enabled: false, paused: true }]}
         onSetPaused={() => undefined}
@@ -278,7 +278,7 @@ describe("RoutinePanel", () => {
 
     const off = renderToStaticMarkup(
       <RoutinePanel
-        botName="Akeru"
+        botName="Isnadi"
         status="ready"
         routines={[{ ...routine, enabled: false }]}
         onSetEnabled={() => undefined}
@@ -292,7 +292,7 @@ describe("RoutinePanel", () => {
     // A never-approved routine is approved from the detail, so the card offers no switch.
     const draft = renderToStaticMarkup(
       <RoutinePanel
-        botName="Akeru"
+        botName="Isnadi"
         status="ready"
         routines={[{ ...routine, enabled: false, procedureApproved: false }]}
         onSetEnabled={() => undefined}
@@ -350,27 +350,27 @@ describe("RoutinePanel", () => {
   it("offers creating a routine from the empty state, keeping the chat hint secondary", () => {
     const withCreate = renderToStaticMarkup(
       <RoutinePanel
-        botName="Akeru"
+        botName="Isnadi"
         status="ready"
         routines={[]}
         onCreate={() => undefined}
-        projectOptions={[{ id: "project-1", name: "Akeru" }]}
+        projectOptions={[{ id: "project-1", name: "Isnadi" }]}
       />,
     );
 
     expect(withCreate).toContain("New routine");
-    expect(withCreate).toContain("None yet. Ask Akeru to create one.");
+    expect(withCreate).toContain("None yet. Ask Isnadi to create one.");
     // One muted line and a ghost row, not a centered card with a primary button.
     expect(withCreate).not.toContain("text-center");
     expect(withCreate).not.toContain("No routines");
 
     // Nothing to create with means no button that cannot do anything.
     const withoutCreate = renderToStaticMarkup(
-      <RoutinePanel botName="Akeru" status="ready" routines={[]} />,
+      <RoutinePanel botName="Isnadi" status="ready" routines={[]} />,
     );
 
     expect(withoutCreate).not.toContain("New routine");
-    expect(withoutCreate).toContain("None yet. Ask Akeru to create one.");
+    expect(withoutCreate).toContain("None yet. Ask Isnadi to create one.");
   });
 
   it("keeps a saving routine form open, so one submit cannot become two routines", () => {
@@ -402,7 +402,7 @@ describe("RoutinePanel", () => {
 
   it("makes the Routines heading focusable, so a delete that empties the list has a target", () => {
     const markup = renderToStaticMarkup(
-      <RoutinePanel botName="Akeru" status="ready" routines={[routine]} />,
+      <RoutinePanel botName="Isnadi" status="ready" routines={[routine]} />,
     );
 
     expect(markup).toContain('tabindex="-1"');
@@ -410,17 +410,17 @@ describe("RoutinePanel", () => {
   });
 
   it("renders loading, empty, error, and unavailable states", () => {
-    expect(renderToStaticMarkup(<RoutinePanel botName="Akeru" status="loading" />)).toContain(
+    expect(renderToStaticMarkup(<RoutinePanel botName="Isnadi" status="loading" />)).toContain(
       'aria-label="Loading routines"',
     );
     expect(
-      renderToStaticMarkup(<RoutinePanel botName="Akeru" status="ready" routines={[]} />),
-    ).toContain("Ask Akeru to create one.");
+      renderToStaticMarkup(<RoutinePanel botName="Isnadi" status="ready" routines={[]} />),
+    ).toContain("Ask Isnadi to create one.");
     expect(
-      renderToStaticMarkup(<RoutinePanel botName="Akeru" status="error" error="Request failed" />),
+      renderToStaticMarkup(<RoutinePanel botName="Isnadi" status="error" error="Request failed" />),
     ).toContain("Request failed");
     // An environment that cannot run routines shows nothing to act on.
-    expect(renderToStaticMarkup(<RoutinePanel botName="Akeru" status="unavailable" />)).toBe("");
+    expect(renderToStaticMarkup(<RoutinePanel botName="Isnadi" status="unavailable" />)).toBe("");
   });
 });
 

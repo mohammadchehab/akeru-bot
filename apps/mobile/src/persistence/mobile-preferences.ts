@@ -6,27 +6,31 @@ import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
 import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
-import type { SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { SidebarProjectGroupingMode } from "@isnadi/contracts";
 import {
   normalizeMobileThemeId,
   type MobileThemeId,
   type MobileThemeMode,
 } from "../lib/mobileTheme";
+import { getItemMigratingLegacyKeys, legacyProductStorageKey } from "./legacy-product";
 import * as MobileDatabase from "./mobile-database";
 import * as MobileSecureStorage from "./mobile-secure-storage";
 import { MobileStorageDecodeError, MobileStorageEncodeError } from "./mobile-storage";
 
 type MutablePreferences = { -readonly [Key in keyof Preferences]: Preferences[Key] };
 
-const PREFERENCES_KEY = "akeru.preferences";
+const PREFERENCES_KEY = "isnadi.preferences";
 
-const PREFERENCES_FALLBACK_KEY = "akeru.preferences.fallback";
+const PREFERENCES_FALLBACK_KEY = "isnadi.preferences.fallback";
 
-// Keys written before the rebrand; reads fall back once and the next write
-// lands on the Akeru keys, draining the old entries.
-const LEGACY_PREFERENCES_KEY = "t3code.preferences";
+// Keys written before each rebrand, newest first; reads fall back once and the
+// next write lands on the Isnadi keys, draining the old entries.
+const LEGACY_PREFERENCES_KEYS = [legacyProductStorageKey(PREFERENCES_KEY), "t3code.preferences"];
 
-const LEGACY_PREFERENCES_FALLBACK_KEY = "t3code.preferences.fallback";
+const LEGACY_PREFERENCES_FALLBACK_KEYS = [
+  legacyProductStorageKey(PREFERENCES_FALLBACK_KEY),
+  "t3code.preferences.fallback",
+];
 
 export interface Preferences {
   readonly language?: string;
@@ -86,7 +90,7 @@ export class MobilePreferencesStore extends Context.Service<
       transform: (current: Preferences) => Partial<Preferences>,
     ) => Effect.Effect<Preferences, MobilePreferencesSaveError>;
   }
->()("@akeru/mobile/persistence/MobilePreferencesStore") {}
+>()("@isnadi/mobile/persistence/MobilePreferencesStore") {}
 
 const StoredPreferences = Schema.Struct({
   language: Schema.optional(Schema.Unknown),
@@ -251,7 +255,7 @@ export const make = Effect.fn("MobilePreferencesStore.make")(function* () {
   const clearFallbacks = Effect.fn("MobilePreferencesStore.clearFallbacks")(function* (
     warning: string,
   ) {
-    for (const key of [PREFERENCES_FALLBACK_KEY, LEGACY_PREFERENCES_FALLBACK_KEY]) {
+    for (const key of [PREFERENCES_FALLBACK_KEY, ...LEGACY_PREFERENCES_FALLBACK_KEYS]) {
       yield* secureStorage
         .removeItem(key)
         .pipe(
@@ -298,15 +302,11 @@ export const make = Effect.fn("MobilePreferencesStore.make")(function* () {
     }
 
     const fallbackResult = yield* Effect.result(
-      secureStorage
-        .getItem(PREFERENCES_FALLBACK_KEY)
-        .pipe(
-          Effect.flatMap((value) =>
-            value !== null
-              ? Effect.succeed(value)
-              : secureStorage.getItem(LEGACY_PREFERENCES_FALLBACK_KEY),
-          ),
-        ),
+      getItemMigratingLegacyKeys(
+        secureStorage,
+        PREFERENCES_FALLBACK_KEY,
+        LEGACY_PREFERENCES_FALLBACK_KEYS,
+      ),
     );
 
     let fallbackJson: string | null = null;
@@ -349,32 +349,28 @@ export const make = Effect.fn("MobilePreferencesStore.make")(function* () {
     }
 
     if (parsed === null) {
-      const legacyJson = yield* secureStorage
-        .getItem(PREFERENCES_KEY)
-        .pipe(
-          Effect.flatMap((value) =>
-            value !== null ? Effect.succeed(value) : secureStorage.getItem(LEGACY_PREFERENCES_KEY),
-          ),
-        );
+      const legacyJson = yield* getItemMigratingLegacyKeys(
+        secureStorage,
+        PREFERENCES_KEY,
+        LEGACY_PREFERENCES_KEYS,
+      );
 
       const legacyPreferences = parsePayload(legacyJson);
       parsed = legacyPreferences;
 
       if (legacyJson !== null && legacyPreferences !== null && databaseAvailable) {
         yield* saveJson(legacyJson);
-        yield* secureStorage
-          .removeItem(PREFERENCES_KEY)
-          .pipe(
-            Effect.andThen(secureStorage.removeItem(LEGACY_PREFERENCES_KEY)),
-            Effect.catch(() => Effect.void),
-          )
-          .pipe(
-            Effect.catch((error) =>
-              Effect.logWarning("Could not remove migrated mobile preferences.").pipe(
-                Effect.annotateLogs({ error }),
-              ),
+        yield* Effect.forEach(
+          [PREFERENCES_KEY, ...LEGACY_PREFERENCES_KEYS],
+          (key) => secureStorage.removeItem(key),
+          { discard: true },
+        ).pipe(
+          Effect.catch((error) =>
+            Effect.logWarning("Could not remove migrated mobile preferences.").pipe(
+              Effect.annotateLogs({ error }),
             ),
-          );
+          ),
+        );
       }
     }
 

@@ -8,13 +8,13 @@ import {
   selectOpenBotInboxItems,
   type BotInboxItem,
   type BotInboxRowAction,
-} from "@akeru/client-runtime/bot-inbox";
+} from "@isnadi/client-runtime/bot-inbox";
 import {
   describeDurableFactFailure,
   memoryApprovalMutation,
   type MemoryApprovalIntent,
-} from "@akeru/client-runtime/durable-memory";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/durable-memory";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import { openPlugins } from "../../pluginsDialogStore";
 import { openSettings } from "../../settingsDialogStore";
 import { useSettingsEnvironmentId } from "../../settingsDialogStore";

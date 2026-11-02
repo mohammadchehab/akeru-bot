@@ -12,17 +12,17 @@ const trimmedString = (name: string) =>
   Config.string(name).pipe(Config.option, Config.map(Option.flatMap(trimNonEmptyOption)));
 
 /**
- * Variables shared with the server read `AKERU_<suffix>` first and fall back
+ * Variables shared with the server read `ISNADI_<suffix>` first and fall back
  * to the legacy `T3CODE_<suffix>` name, matching the server's own aliases.
  */
 const aliasedTrimmedString = (suffix: string) =>
-  Config.all([trimmedString(`AKERU_${suffix}`), trimmedString(`T3CODE_${suffix}`)]).pipe(
+  Config.all([trimmedString(`ISNADI_${suffix}`), trimmedString(`T3CODE_${suffix}`)]).pipe(
     Config.map(([primary, legacy]) => Option.orElse(primary, () => legacy)),
   );
 
 const aliasedOption = <A>(read: (name: string) => Config.Config<A>, suffix: string) =>
   Config.all([
-    Config.option(read(`AKERU_${suffix}`)),
+    Config.option(read(`ISNADI_${suffix}`)),
     Config.option(read(`T3CODE_${suffix}`)),
   ]).pipe(Config.map(([primary, legacy]) => Option.orElse(primary, () => legacy)));
 

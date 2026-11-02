@@ -1,15 +1,15 @@
 import { createSessionContext } from "./SessionContext.ts";
 import { createSessionCatalogHandlers } from "./CatalogToolHandlers.ts";
 import type { SessionLifecycleDependencies } from "./SessionLifecycleDependencies.ts";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 
 import {
-  AKERU_TOOL_CATALOG,
+  ISNADI_TOOL_CATALOG,
   BALANCED_BOT_PERSONALITY_TONE,
   DEFAULT_BOT_SANDBOX_BROWSER_SHARING,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
-  type AkeruDelegationAccessGrant,
-} from "@akeru/contracts";
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
+  type IsnadiDelegationAccessGrant,
+} from "@isnadi/contracts";
 
 import * as Deferred from "effect/Deferred";
 
@@ -27,10 +27,10 @@ import {
 
 import * as McpMemoryToolSession from "../../../mcp/McpMemoryToolSession.ts";
 
-import { workerAccess } from "../../AkeruWorkerRuntime.ts";
+import { workerAccess } from "../../IsnadiWorkerRuntime.ts";
 
 import { formatMcpServerInstructions, sameMcpServerConfigurations } from "../../McpServerConfig.ts";
-import { type AkeruToolSession } from "../../AkeruToolRuntime.ts";
+import { type IsnadiToolSession } from "../../IsnadiToolRuntime.ts";
 
 import { isCodexComputerUseServer } from "../../CodexComputerUse.ts";
 import { isRemoteBotSandbox } from "../../botWorkspace.ts";
@@ -61,8 +61,8 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
 
     const isWorkerThread = deps.workerRuntime.depthForThread(threadId) > 0;
 
-    const botAccess: AkeruDelegationAccessGrant = {
-      allowedToolIds: AKERU_TOOL_CATALOG.map((tool) => tool.id),
+    const botAccess: IsnadiDelegationAccessGrant = {
+      allowedToolIds: ISNADI_TOOL_CATALOG.map((tool) => tool.id),
       memoryScopes: ["private", "bot", "project", "group", "workspace"],
       sandbox: input.botSandbox ?? null,
       runtimeMode: input.runtimeMode,
@@ -97,7 +97,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
 
     // A top-level bot's null sandbox is its local workspace, while a delegated
     // null sandbox has none, so workers receive the local workspace explicitly.
-    const workerParentAccess: AkeruDelegationAccessGrant =
+    const workerParentAccess: IsnadiDelegationAccessGrant =
       delegatedAccess || access.sandbox !== null ? access : { ...access, sandbox: "local" };
 
     const mcpServers = (input.mcpServers ?? []).filter(
@@ -254,7 +254,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
           ? deps.memoryHandlers(input.memoryAccess, access.memoryScopes)
           : undefined;
 
-      const configuredToolSession: AkeruToolSession = {
+      const configuredToolSession: IsnadiToolSession = {
         ...toolSession,
         runtimeMode: access.runtimeMode,
         ...(botId ? { botId } : {}),
@@ -469,7 +469,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
     const mcpManager = deps.sessionResources.getMcpManager(key);
     const imageGenerationSettings = yield* deps.imageToolSettings;
 
-    const toolSession: AkeruToolSession = {
+    const toolSession: IsnadiToolSession = {
       ...(botId ? { botId } : {}),
       ...(input.botName ? { botName: input.botName } : {}),
       runtimeMode: access.runtimeMode,
@@ -539,7 +539,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
       .runMastra("createSession", () =>
         deps.bundle.controller.createSession({
           id: key,
-          ownerId: "akeru-desktop",
+          ownerId: "isnadi-desktop",
           resourceId: key,
           threadId: key,
           ...(input.cwd ? { tags: { projectPath: input.cwd } } : {}),
@@ -611,7 +611,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
         new Set([
           ...deps.toolRuntime.toolsForThread(key).map((tool) => tool.id),
           ...Object.keys(deps.sessionResources.getConnectorTools(key)),
-          AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+          ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
           "RestartMcpServers",
         ]),
         (toolName) =>

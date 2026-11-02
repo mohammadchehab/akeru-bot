@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-group = 'dev.leodoes.akeru.composereditor'
+group = 'dev.leodoes.isnadi.composereditor'
 version = '0.0.0'
 
 android {

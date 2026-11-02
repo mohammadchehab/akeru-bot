@@ -1,6 +1,6 @@
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { CommandId, MessageId, ORCHESTRATION_WS_METHODS, ThreadId } from "@akeru/contracts";
+import { CommandId, MessageId, ORCHESTRATION_WS_METHODS, ThreadId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Cause from "effect/Cause";

@@ -1,5 +1,5 @@
 import { testEnvironmentRegistry, testRpcSession } from "../test-support/services.ts";
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";

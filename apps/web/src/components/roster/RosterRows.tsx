@@ -1,5 +1,5 @@
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { PLACEHOLDER_THREAD_TITLE, type ScopedThreadRef } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { PLACEHOLDER_THREAD_TITLE, type ScopedThreadRef } from "@isnadi/contracts";
 import { ArchiveIcon, ArrowDownIcon, ArrowUpIcon, PinIcon, SettingsIcon } from "lucide-react";
 import { memo, useMemo, useRef } from "react";
 

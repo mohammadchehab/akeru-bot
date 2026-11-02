@@ -6,7 +6,7 @@ import {
   CommandId,
   type ProjectId,
   type ChannelProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";

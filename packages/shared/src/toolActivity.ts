@@ -1,9 +1,9 @@
 import { flow } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { TrimmedNonEmptyString } from "@akeru/contracts";
+import { TrimmedNonEmptyString } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
-import type { ToolLifecycleItemType } from "@akeru/contracts";
+import type { ToolLifecycleItemType } from "@isnadi/contracts";
 
 // Tool data is an opaque provider object; each presentation field is decoded separately.
 const RuntimeRecord = Schema.declare(Predicate.isObject);

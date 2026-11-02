@@ -6,7 +6,7 @@ import { createMemoryState } from "@chat-adapter/state-memory";
 import { createWhatsAppAdapter } from "@chat-adapter/whatsapp";
 import { TelegramProvider } from "@mastra/telegram";
 import { createiMessageAdapter } from "@photon-ai/chat-adapter-imessage";
-import { BotId, type ChannelProvider } from "@akeru/contracts";
+import { BotId, type ChannelProvider } from "@isnadi/contracts";
 import { type Adapter, Chat, ConsoleLogger, type Message } from "chat";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -114,7 +114,7 @@ export const startTelegram = (botId: BotId, token: string, onDirectMessage: Inbo
 
     // SAFETY: The SDK adapter implements the Chat transport protocol; the assertion bridges separately packaged adapter type declarations.
     const chat = new Chat({
-      userName: installation.username ?? "Akeru Bot",
+      userName: installation.username ?? "IsnadiBot",
       adapters: { telegram: adapter as Adapter },
       state: createMemoryState(),
     });
@@ -506,7 +506,7 @@ export const startDiscord = (
     const adapter = createDiscordAdapter({
       applicationId: input.applicationId,
       botToken: input.botToken,
-      // The SDK requires a key to verify interaction webhooks. Akeru only uses the gateway,
+      // The SDK requires a key to verify interaction webhooks. Isnadi only uses the gateway,
       // but a placeholder verifier would silently reject interactions if they are ever routed.
       publicKey: input.publicKey,
       // The SDK falls back to DISCORD_* environment variables for these. Only a direct mention

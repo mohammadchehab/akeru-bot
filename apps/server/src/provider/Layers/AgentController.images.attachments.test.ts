@@ -1,7 +1,7 @@
 import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import { ProviderDriverKind } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { describe, expect } from "vite-plus/test";
@@ -22,7 +22,7 @@ describe("AgentControllerLive", () => {
   it.effect("reads persisted image attachments for Mastra turns", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-mastra-image-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-image-"));
     const attachmentsDir = NodePath.join(baseDir, "userdata", "attachments");
     NodeFS.mkdirSync(attachmentsDir, { recursive: true });
     NodeFS.writeFileSync(NodePath.join(attachmentsDir, "image-1.png"), "image");

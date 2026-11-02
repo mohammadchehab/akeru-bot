@@ -76,9 +76,9 @@ const lightEnvironment = {
 } as const;
 
 describe("AgentActivity widget layout", () => {
-  it("uses the Akeru icon in widget presentations", () => {
+  it("uses the Isnadi icon in widget presentations", () => {
     const layout = AgentActivity(props, environment as never);
-    expect(JSON.stringify(layout)).toContain('"assetName":"AkeruIcon"');
+    expect(JSON.stringify(layout)).toContain('"assetName":"IsnadiIcon"');
     expect(JSON.stringify(layout)).not.toContain("T3Mark");
   });
 
@@ -176,7 +176,7 @@ describe("AgentActivity widget layout", () => {
       environment as never,
     );
 
-    expect(JSON.stringify(layout.compactLeading)).toContain('"assetName":"AkeruIcon"');
+    expect(JSON.stringify(layout.compactLeading)).toContain('"assetName":"IsnadiIcon"');
     expect(JSON.stringify(layout.compactTrailing)).toContain("#a5b4fc"); // indigo-300
     expect(JSON.stringify(layout.compactTrailing)).toContain("Input");
     expect(JSON.stringify(layout.minimal)).toContain("#a5b4fc");
@@ -200,12 +200,16 @@ describe("AgentActivity widget layout", () => {
       environment as never,
     );
 
-    expect(JSON.stringify(layout.banner)).toContain('"widgetURL":"akeru://threads/env-1/thread-2"');
+    expect(JSON.stringify(layout.banner)).toContain(
+      '"widgetURL":"isnadi://threads/env-1/thread-2"',
+    );
   });
 
   it("deep links the banner to the first row when nothing needs attention", () => {
     const layout = AgentActivity({ ...props, activities: [makeRow({})] }, environment as never);
-    expect(JSON.stringify(layout.banner)).toContain('"widgetURL":"akeru://threads/env-1/thread-1"');
+    expect(JSON.stringify(layout.banner)).toContain(
+      '"widgetURL":"isnadi://threads/env-1/thread-1"',
+    );
   });
 
   it("omits the deep link for unsafe paths and empty aggregates", () => {

@@ -2,11 +2,12 @@ import {
   BotId,
   CommandId,
   GroupId,
+  LEGACY_CLOUD_SANDBOX,
   McpServerId,
   ProjectId,
   RoutineId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -282,9 +283,9 @@ it.layer(TestLayer)("bot persistence", (it) => {
           type: "bot.create",
           commandId: CommandId.make(`cmd-bot-default-${sandbox ?? "null"}`),
           botId: BotId.make(`bot-default-${sandbox ?? "null"}`),
-          name: "Akeru",
-          title: "Akeru",
-          avatar: { kind: "dither", seed: "akeru" },
+          name: "Isnadi",
+          title: "Isnadi",
+          avatar: { kind: "dither", seed: "isnadi" },
           engine: null,
           sandbox,
           groupId: null,
@@ -308,37 +309,39 @@ it.layer(TestLayer)("bot persistence", (it) => {
     }),
   );
 
-  it.effect("maps historical Akeru Cloud bots to local during projection rebuilds", () =>
-    Effect.gen(function* () {
-      const engine = yield* OrchestrationEngineService;
-      const projectionPipeline = yield* OrchestrationProjectionPipeline;
-      const snapshots = yield* ProjectionSnapshotQuery;
-      const sql = yield* SqlClient.SqlClient;
-      const botId = BotId.make("bot-legacy-akeru-cloud");
+  it.effect(
+    "maps bots on the retired hosted cloud sandbox to local during projection rebuilds",
+    () =>
+      Effect.gen(function* () {
+        const engine = yield* OrchestrationEngineService;
+        const projectionPipeline = yield* OrchestrationProjectionPipeline;
+        const snapshots = yield* ProjectionSnapshotQuery;
+        const sql = yield* SqlClient.SqlClient;
+        const botId = BotId.make("bot-legacy-cloud");
 
-      yield* engine.dispatch({
-        type: "bot.create",
-        commandId: CommandId.make("cmd-bot-legacy-akeru-cloud"),
-        botId,
-        name: "Legacy",
-        title: "Legacy",
-        avatar: { kind: "dither", seed: "legacy" },
-        engine: null,
-        sandbox: "local",
-        groupId: null,
-        createdAt: "2026-01-01T00:00:00.000Z",
-      });
-      yield* sql`
+        yield* engine.dispatch({
+          type: "bot.create",
+          commandId: CommandId.make("cmd-bot-legacy-cloud"),
+          botId,
+          name: "Legacy",
+          title: "Legacy",
+          avatar: { kind: "dither", seed: "legacy" },
+          engine: null,
+          sandbox: "local",
+          groupId: null,
+          createdAt: "2026-01-01T00:00:00.000Z",
+        });
+        yield* sql`
         UPDATE orchestration_events
-        SET payload_json = json_set(payload_json, '$.sandbox', 'akeru-cloud')
+        SET payload_json = json_set(payload_json, '$.sandbox', ${LEGACY_CLOUD_SANDBOX})
         WHERE event_type = 'bot.created' AND stream_id = ${botId}
       `;
-      yield* sql`DELETE FROM projection_bots`;
-      yield* sql`DELETE FROM projection_state WHERE projector = 'projection.bots'`;
-      yield* projectionPipeline.bootstrap;
+        yield* sql`DELETE FROM projection_bots`;
+        yield* sql`DELETE FROM projection_state WHERE projector = 'projection.bots'`;
+        yield* projectionPipeline.bootstrap;
 
-      const bot = (yield* snapshots.getShellSnapshot()).bots.find((item) => item.id === botId);
-      assert.equal(bot?.sandbox, null);
-    }),
+        const bot = (yield* snapshots.getShellSnapshot()).bots.find((item) => item.id === botId);
+        assert.equal(bot?.sandbox, null);
+      }),
   );
 });

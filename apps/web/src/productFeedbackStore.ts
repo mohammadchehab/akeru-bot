@@ -2,7 +2,7 @@ import {
   PRODUCT_FEEDBACK_TEXT_MAX_CHARS,
   ProductFeedbackToolDraft,
   type ProductFeedbackElement,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { create } from "zustand";

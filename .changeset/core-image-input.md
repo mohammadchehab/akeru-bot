@@ -1,5 +1,5 @@
 ---
-"akeru-bot": patch
+"isnadibot": patch
 ---
 
 Read image attachments without blocking the server or loading oversized files.

@@ -2,7 +2,7 @@ import {
   type DesktopRuntimeInfo,
   type DesktopUpdateChannel,
   type DesktopUpdateState,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import * as Schema from "effect/Schema";
 

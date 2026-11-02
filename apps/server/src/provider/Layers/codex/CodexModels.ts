@@ -3,9 +3,9 @@ import type {
   ModelCapabilities,
   ProviderOptionDescriptor,
   ServerProviderModel,
-} from "@akeru/contracts";
-import { PREFERRED_DEFAULT_CODEX_MODELS } from "@akeru/contracts";
-import { createModelCapabilities } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { PREFERRED_DEFAULT_CODEX_MODELS } from "@isnadi/contracts";
+import { createModelCapabilities } from "@isnadi/shared/model";
 
 export const REASONING_EFFORT_LABELS = {
   none: "None",

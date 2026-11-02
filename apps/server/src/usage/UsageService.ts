@@ -1,8 +1,8 @@
 /**
- * UsageService - reports usage created by Akeru's connected provider runtimes.
+ * UsageService - reports usage created by Isnadi's connected provider runtimes.
  *
  * The usage ledger is environment-local. Provider CLI transcript directories
- * are intentionally not consulted: a machine-wide CLI login is not an Akeru
+ * are intentionally not consulted: a machine-wide CLI login is not an Isnadi
  * Settings -> Providers connection and must never appear on this page.
  *
  * @module UsageService
@@ -11,7 +11,7 @@ import * as NodeOS from "node:os";
 
 import {
   USAGE_CONTRACT_VERSION,
-  type AkeruUsageEntry,
+  type IsnadiUsageEntry,
   type SubscriptionProviderId,
   type UsageProviderKind,
   type UsageSource,
@@ -20,7 +20,7 @@ import {
   type UsageSummaryInput,
   type UsageTokenTotals,
   UsageReadError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -93,11 +93,11 @@ export class UsageService extends Context.Service<
       provider?: SubscriptionProviderId,
     ) => Effect.Effect<readonly UsageProviderPlanLimits[]>;
   }
->()("akeru-bot/usage/UsageService") {}
+>()("isnadibot/usage/UsageService") {}
 
-/** Maps one ledger row only when its Akeru provider connection is active. */
+/** Maps one ledger row only when its Isnadi provider connection is active. */
 export function usageRecordFromEntry(
-  entry: AkeruUsageEntry,
+  entry: IsnadiUsageEntry,
   connectedProviders: ReadonlySet<SubscriptionProviderId>,
 ): UsageRecord | null {
   if (entry.provider === null || entry.model === null) return null;

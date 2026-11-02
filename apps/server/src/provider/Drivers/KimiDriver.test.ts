@@ -3,7 +3,7 @@ import * as NodePath from "node:path";
 
 import { NodeServices } from "@effect/platform-node";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Layer from "effect/Layer";
@@ -41,7 +41,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-driver-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-driver-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),
@@ -104,7 +104,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-refresh-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-refresh-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),
@@ -160,7 +160,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-catalog-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-catalog-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),

@@ -1,4 +1,4 @@
-import { driverSupportsDelegation } from "@akeru/shared/delegationProviders";
+import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import type {
   EnvironmentId,
   ModelSelection,
@@ -6,8 +6,8 @@ import type {
   ProviderOptionSelection,
   RuntimeMode,
   ThreadId,
-} from "@akeru/contracts";
-import { getProviderOptionDescriptors } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { getProviderOptionDescriptors } from "@isnadi/shared/model";
 import * as Haptics from "expo-haptics";
 import { createContext, use, useCallback, useMemo, useState, type ReactNode } from "react";
 import type { ModelOption, ProviderGroup } from "../../lib/modelOptions";

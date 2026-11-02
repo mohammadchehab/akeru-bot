@@ -2,19 +2,19 @@ import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
-  type AkeruMemoryRevision,
-  type AkeruMemoryThreadAccess,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
+  type IsnadiMemoryRevision,
+  type IsnadiMemoryThreadAccess,
   BotId,
   ProjectId,
   ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -41,8 +41,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const threadId = ThreadId.make("thread-facts-list");
       const botId = BotId.make("bot-facts-list");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/facts-list";
 
       const project = {
@@ -65,7 +65,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         respondingBotId: null,
       });
 
-      const access: AkeruMemoryThreadAccess = {
+      const access: IsnadiMemoryThreadAccess = {
         tenantId,
         userId,
         threadId,
@@ -78,17 +78,17 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         groupMemberBotIds: [],
       };
 
-      const revision = (id: string): AkeruMemoryRevision => ({
-        id: AkeruMemoryId.make(id),
-        rootId: AkeruMemoryRootId.make(id),
+      const revision = (id: string): IsnadiMemoryRevision => ({
+        id: IsnadiMemoryId.make(id),
+        rootId: IsnadiMemoryRootId.make(id),
         revision: 1,
         partition: {
           tenantId,
           scope: "thread",
-          partitionId: AkeruMemoryPartitionId.make(threadId),
+          partitionId: IsnadiMemoryPartitionId.make(threadId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: {},
         fact: `Listed durable fact ${id}`,
@@ -124,11 +124,11 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
                 access,
                 mutation: {
                   operation: "fact.decide",
-                  memoryId: AkeruMemoryRootId.make("list-fact-rejected"),
+                  memoryId: IsnadiMemoryRootId.make("list-fact-rejected"),
                   expectedRevision: 1,
                   decision: "reject",
                 },
-                memoryId: AkeruMemoryId.make("list-fact-rejected-2"),
+                memoryId: IsnadiMemoryId.make("list-fact-rejected-2"),
                 updatedAt: now,
                 sharedProjectApproval: "pending",
               });
@@ -136,10 +136,10 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
                 access,
                 mutation: {
                   operation: "fact.forget",
-                  memoryId: AkeruMemoryRootId.make("list-fact-forgotten"),
+                  memoryId: IsnadiMemoryRootId.make("list-fact-forgotten"),
                   expectedRevision: 1,
                 },
-                memoryId: AkeruMemoryId.make("list-fact-forgotten-2"),
+                memoryId: IsnadiMemoryId.make("list-fact-forgotten-2"),
                 updatedAt: now,
                 sharedProjectApproval: "pending",
               });
@@ -147,11 +147,11 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
                 access,
                 mutation: {
                   operation: "fact.edit",
-                  memoryId: AkeruMemoryRootId.make("list-fact-a"),
+                  memoryId: IsnadiMemoryRootId.make("list-fact-a"),
                   expectedRevision: 1,
                   fact: "Edited durable fact list-fact-a",
                 },
-                memoryId: AkeruMemoryId.make("list-fact-a-2"),
+                memoryId: IsnadiMemoryId.make("list-fact-a-2"),
                 updatedAt: now,
                 sharedProjectApproval: "pending",
               });
@@ -226,7 +226,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(foreign._tag, "AkeruMemoryOperationError");
+      assert.equal(foreign._tag, "IsnadiMemoryOperationError");
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
 
@@ -238,8 +238,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const botId = BotId.make("bot-facts-mutate");
       const foreignBotId = BotId.make("bot-facts-other");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/facts-mutate";
       let repositoryRef: EntityMemoryRepositoryShape | undefined;
 
@@ -263,7 +263,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         respondingBotId: null,
       });
 
-      const access: AkeruMemoryThreadAccess = {
+      const access: IsnadiMemoryThreadAccess = {
         tenantId,
         userId,
         threadId,
@@ -276,17 +276,17 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         groupMemberBotIds: [],
       };
 
-      const revision = (id: string): AkeruMemoryRevision => ({
-        id: AkeruMemoryId.make(id),
-        rootId: AkeruMemoryRootId.make(id),
+      const revision = (id: string): IsnadiMemoryRevision => ({
+        id: IsnadiMemoryId.make(id),
+        rootId: IsnadiMemoryRootId.make(id),
         revision: 1,
         partition: {
           tenantId,
           scope: "thread",
-          partitionId: AkeruMemoryPartitionId.make(threadId),
+          partitionId: IsnadiMemoryPartitionId.make(threadId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: {},
         fact: `Mutable durable fact ${id}`,
@@ -465,7 +465,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         ),
       );
 
-      assert.equal(wrongOwner._tag, "AkeruMemoryOperationError");
+      assert.equal(wrongOwner._tag, "IsnadiMemoryOperationError");
       assert.isDefined(foreignBotId);
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
@@ -476,8 +476,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const threadId = ThreadId.make("thread-facts-pending");
       const botId = BotId.make("bot-facts-pending");
       const now = "2026-01-01T00:00:00.000Z";
-      const tenantId = AkeruMemoryTenantId.make("local");
-      const userId = AkeruMemoryUserId.make("owner");
+      const tenantId = IsnadiMemoryTenantId.make("local");
+      const userId = IsnadiMemoryUserId.make("owner");
       const workspaceRoot = "/workspace/facts-pending";
       let repositoryRef: EntityMemoryRepositoryShape | undefined;
 
@@ -501,7 +501,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         respondingBotId: null,
       });
 
-      const access: AkeruMemoryThreadAccess = {
+      const access: IsnadiMemoryThreadAccess = {
         tenantId,
         userId,
         threadId,
@@ -514,17 +514,17 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         groupMemberBotIds: [],
       };
 
-      const seeded: AkeruMemoryRevision = {
-        id: AkeruMemoryId.make("pending-fact-1"),
-        rootId: AkeruMemoryRootId.make("pending-fact-1"),
+      const seeded: IsnadiMemoryRevision = {
+        id: IsnadiMemoryId.make("pending-fact-1"),
+        rootId: IsnadiMemoryRootId.make("pending-fact-1"),
         revision: 1,
         partition: {
           tenantId,
           scope: "bot",
-          partitionId: AkeruMemoryPartitionId.make(botId),
+          partitionId: IsnadiMemoryPartitionId.make(botId),
         },
         entityKind: "bot",
-        entityId: AkeruMemoryEntityId.make(botId),
+        entityId: IsnadiMemoryEntityId.make(botId),
         kind: "fact",
         value: {},
         fact: "A private bot fact",

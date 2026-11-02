@@ -1,5 +1,5 @@
 import { hasTag } from "~/lib/taggedUnion";
-import type { PreviewViewportSetting } from "@akeru/contracts";
+import type { PreviewViewportSetting } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import {

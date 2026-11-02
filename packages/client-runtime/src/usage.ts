@@ -3,8 +3,8 @@ import {
   type EnvironmentId,
   type UsageSummary,
   type UsageSummaryInput,
-} from "@akeru/contracts";
-import { mergeUsage, type EnvironmentUsage } from "@akeru/shared/usageMerge";
+} from "@isnadi/contracts";
+import { mergeUsage, type EnvironmentUsage } from "@isnadi/shared/usageMerge";
 
 export function usageWindowKey(input: UsageSummaryInput): string {
   return JSON.stringify({

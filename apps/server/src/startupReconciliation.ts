@@ -1,7 +1,7 @@
 import * as Data from "effect/Data";
 
 import * as Predicate from "effect/Predicate";
-import { type AkeruDelegationRecord, CommandId } from "@akeru/contracts";
+import { type IsnadiDelegationRecord, CommandId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
@@ -130,7 +130,7 @@ export const reconcileDelegations = Effect.gen(function* () {
           ? reconciledAt
           : delegation.updatedAt;
 
-      const failed: AkeruDelegationRecord = {
+      const failed: IsnadiDelegationRecord = {
         ...delegation,
         phase: DelegationPhase["Failed"]({
           childThreadId: Predicate.isTagged(phase, "Queued") ? null : phase.childThreadId,
@@ -168,4 +168,4 @@ export const reconcileDelegations = Effect.gen(function* () {
   ),
 );
 
-const DelegationPhase = Data.taggedEnum<AkeruDelegationRecord["phase"]>();
+const DelegationPhase = Data.taggedEnum<IsnadiDelegationRecord["phase"]>();

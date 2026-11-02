@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 import { PreviewFaviconIcon } from "./PreviewFaviconIcon";
 import type { PreviewableServer } from "./useDiscoveredLocalServers";

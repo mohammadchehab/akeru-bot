@@ -1,4 +1,4 @@
-import type { ResourceAttributionEntry } from "@akeru/contracts";
+import type { ResourceAttributionEntry } from "@isnadi/contracts";
 import { formatBytes } from "./resourceTelemetryPresentation";
 
 export function AttributionTable({

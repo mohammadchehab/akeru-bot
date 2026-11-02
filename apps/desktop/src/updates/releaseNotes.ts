@@ -1,7 +1,7 @@
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
-import type { DesktopUpdateReleaseNote } from "@akeru/contracts";
+import type { DesktopUpdateReleaseNote } from "@isnadi/contracts";
 
 interface ElectronReleaseNoteInfo {
   readonly version: string;

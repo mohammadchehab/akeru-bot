@@ -6,7 +6,7 @@ import {
   KimiSettings,
   OpenCodeGoSettings,
   ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type * as Schema from "effect/Schema";
 import {
   ClaudeAI,

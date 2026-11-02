@@ -3,7 +3,7 @@ import {
   DEFAULT_PROVIDER_INTERACTION_MODE,
   ThreadId,
   ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Metric from "effect/Metric";
 import { describe, expect, it } from "vite-plus/test";
 import {

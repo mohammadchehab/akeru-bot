@@ -1,11 +1,11 @@
-import { threadDelegations } from "@akeru/client-runtime/delegation-presentation";
-import { botChatTimeline } from "@akeru/client-runtime/state/bot-chat-timeline";
+import { threadDelegations } from "@isnadi/client-runtime/delegation-presentation";
+import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
 import type {
   OrchestrationShellSnapshot,
   RoutineRun,
   RoutineRunId,
   ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useI18n } from "../../i18n";

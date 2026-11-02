@@ -1,4 +1,4 @@
-import type { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import type { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import type { ProviderInstanceEntry } from "../../providerInstances";
 import type { ModelEsque } from "./providerIconUtils";
 

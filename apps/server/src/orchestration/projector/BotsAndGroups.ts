@@ -1,5 +1,5 @@
-import type { OrchestrationBot, OrchestrationGroup } from "@akeru/contracts";
-import { isGroupBotMember } from "@akeru/contracts";
+import type { OrchestrationBot, OrchestrationGroup } from "@isnadi/contracts";
+import { isGroupBotMember } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
   BotArchivedPayload,
@@ -16,7 +16,7 @@ import {
   GroupPersonUnassignedPayload,
   GroupRenamedPayload,
 } from "../Schemas.ts";
-import type { OrchestrationReadModel, OrchestrationEvent } from "@akeru/contracts";
+import type { OrchestrationReadModel, OrchestrationEvent } from "@isnadi/contracts";
 import type { OrchestrationProjectorDecodeError } from "../Errors.ts";
 import { decodeForEvent, updateBot, updateGroup } from "./Updates.ts";
 

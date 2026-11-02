@@ -9,8 +9,8 @@ import { storedField } from "./lib/persistedSchema";
  * own its durable resource state. Browser surfaces point at preview tab ids;
  * the agents list is a singleton surface.
  */
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -26,7 +26,7 @@ export type RightPanelSurface =
   | { id: "browser:new"; kind: "preview"; resourceId: null }
   | { id: "agents"; kind: "agents" };
 
-const RIGHT_PANEL_STORAGE_KEY = "akeru:right-panel-state:v2";
+const RIGHT_PANEL_STORAGE_KEY = "isnadi:right-panel-state:v2";
 
 // Pre-rebrand key; migrated through the wrapping storage on first write.
 const LEGACY_RIGHT_PANEL_STORAGE_KEY = "t3code:right-panel-state:v2";

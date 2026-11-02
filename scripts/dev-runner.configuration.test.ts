@@ -14,8 +14,8 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       Effect.sync(() => {
         assert.deepStrictEqual(getDevRunnerModeArgs("dev:desktop"), [
           "run",
-          "--filter=@akeru/desktop",
-          "--filter=@akeru/web",
+          "--filter=@isnadi/desktop",
+          "--filter=@isnadi/web",
           "dev",
         ]);
       }),
@@ -25,9 +25,9 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       Effect.sync(() => {
         assert.deepStrictEqual(getDevRunnerModeArgs("dev"), [
           "run",
-          "--filter=@akeru/contracts",
-          "--filter=@akeru/web",
-          "--filter=akeru-bot",
+          "--filter=@isnadi/contracts",
+          "--filter=@isnadi/web",
+          "--filter=isnadibot",
           "--parallel",
           "dev",
         ]);

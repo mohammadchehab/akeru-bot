@@ -1,4 +1,4 @@
-import { catalogRegistry, createTranslator } from "@akeru/client-runtime/i18n";
+import { catalogRegistry, createTranslator } from "@isnadi/client-runtime/i18n";
 import { describe, expect, it } from "vite-plus/test";
 
 import { settingsSectionLabel } from "./SettingsDialog";

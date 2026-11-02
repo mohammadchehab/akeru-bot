@@ -15,7 +15,7 @@ import {
   type ProviderRuntimeEvent,
   ThreadId,
   ProviderSendTurnInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Crypto from "effect/Crypto";
 import * as Exit from "effect/Exit";
@@ -27,7 +27,7 @@ import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 import { ChildProcessSpawner } from "effect/unstable/process";
 
-import { getModelSelectionStringOptionValue } from "@akeru/shared/model";
+import { getModelSelectionStringOptionValue } from "@isnadi/shared/model";
 import { getCodexServiceTierOptionValue } from "../../codexModelOptions.ts";
 import * as McpProviderSession from "../../mcp/McpProviderSession.ts";
 import {
@@ -153,9 +153,9 @@ export const makeCodexAdapter = Effect.fn("makeCodexAdapter")(function* (
                 },
                 appServerArgs: [
                   "-c",
-                  `mcp_servers.akeru.url=${mcpSession.endpoint}`,
+                  `mcp_servers.isnadi.url=${mcpSession.endpoint}`,
                   "-c",
-                  'mcp_servers.akeru.bearer_token_env_var="T3_MCP_BEARER_TOKEN"',
+                  'mcp_servers.isnadi.bearer_token_env_var="T3_MCP_BEARER_TOKEN"',
                 ],
               }
             : {}),

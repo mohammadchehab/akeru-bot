@@ -1,5 +1,5 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { BotId, CommandId, DelegationId, type AkeruDelegationRecord } from "@akeru/contracts";
+import { BotId, CommandId, DelegationId, type IsnadiDelegationRecord } from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { decideOrchestrationCommand } from "./decider.ts";
@@ -47,7 +47,7 @@ it.layer(NodeServices.layer)("delegation decider", (it) => {
       const states: string[] = ["queued"];
 
       const update = Effect.fn("updateDelegationState")(function* (
-        delegation: AkeruDelegationRecord,
+        delegation: IsnadiDelegationRecord,
         commandId: string,
       ) {
         const event = yield* decideOne(readModel, {

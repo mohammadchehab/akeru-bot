@@ -54,8 +54,8 @@ describe("OpenAI Codex device login", () => {
       );
 
       expect(result).toEqual({ ...pending, intervalMs: 8_000 });
-      expect(requests[0]?.headers["user-agent"]).toBe("akeru");
-      expect(requests[0]?.json).toMatchObject({ originator: "akeru" });
+      expect(requests[0]?.headers["user-agent"]).toBe("isnadi");
+      expect(requests[0]?.json).toMatchObject({ originator: "isnadi" });
     }),
   );
 

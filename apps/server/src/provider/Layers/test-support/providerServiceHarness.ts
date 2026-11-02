@@ -6,7 +6,7 @@ import type {
   ProviderTurnStartResult,
   ProviderUploadFeedbackInput,
   ProviderUploadFeedbackResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   ApprovalRequestId,
   EventId,
@@ -15,7 +15,7 @@ import {
   ProviderSessionStartInput,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it, vi } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -9,12 +9,12 @@ import {
   THREAD_SILENT_RUN_CLEARED_ACTIVITY_KIND,
   type ProviderDriverKind,
   type ThreadSilentRunActivityPayload,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import { startSilenceWatchdog, type SilenceWatchdogHandle } from "../../SilenceWatchdog.ts";
 import { resolveControllerBotId } from "../ProviderCommandReactor.ts";
 import { providerTurnKey } from "./EventFields.ts";

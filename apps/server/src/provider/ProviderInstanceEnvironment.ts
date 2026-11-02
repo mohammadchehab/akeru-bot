@@ -1,4 +1,4 @@
-import type { ProviderInstanceEnvironment } from "@akeru/contracts";
+import type { ProviderInstanceEnvironment } from "@isnadi/contracts";
 
 export function mergeProviderInstanceEnvironment(
   environment: ProviderInstanceEnvironment | undefined,

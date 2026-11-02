@@ -1,10 +1,10 @@
-# Move Akeru data
+# Move Isnadi data
 
 Open **Settings > Privacy & data** and find **Data portability**.
 
 ## Export
 
-Select **Export** to download an `akeru.archive` file. The archive can contain safe server settings,
+Select **Export** to download an `isnadi.archive` file. The archive can contain safe server settings,
 MCP recipes, bots, groups, mapped project references, chat metadata, conversation text, and
 approval history.
 
@@ -18,7 +18,7 @@ usage history, files, Git repositories, attachments, and checkpoints.
 3. Map project paths to directories on the destination environment.
 4. Select **Restore**.
 
-The archive limit is 20 MiB. Akeru validates the complete archive before it writes any restored data.
+The archive limit is 20 MiB. Isnadi validates the complete archive before it writes any restored data.
 Unsupported or unsafe entries appear in the preview and remain skipped.
 
 Desktop can use its native project-folder picker. Browser and mobile clients cannot browse the

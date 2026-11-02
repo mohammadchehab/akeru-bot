@@ -1,6 +1,6 @@
 import * as Schema from "effect/Schema";
 import { describe, expect, it } from "vite-plus/test";
-import { EventId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { EventId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { projectActivityPayload } from "./ActivityPayloadProjection.ts";
 
 function activity(payload: Record<string, Schema.Json>): OrchestrationThreadActivity {

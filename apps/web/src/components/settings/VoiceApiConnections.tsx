@@ -1,9 +1,9 @@
 import { Predicate } from "effect";
-import { VOICE_API_PROVIDERS, type EnvironmentId, type VoiceApiProvider } from "@akeru/contracts";
+import { VOICE_API_PROVIDERS, type EnvironmentId, type VoiceApiProvider } from "@isnadi/contracts";
 import {
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { requestConfirmDialog } from "../../confirmDialog";

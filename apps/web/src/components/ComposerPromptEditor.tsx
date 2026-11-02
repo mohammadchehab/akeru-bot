@@ -1,4 +1,4 @@
-import { type ServerProviderSkill } from "@akeru/contracts";
+import { type ServerProviderSkill } from "@isnadi/contracts";
 import { LexicalComposer, type InitialConfigType } from "@lexical/react/LexicalComposer";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";

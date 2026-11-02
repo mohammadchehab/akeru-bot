@@ -1,6 +1,6 @@
 import { asRecord } from "./work-log-command.ts";
 import * as Predicate from "effect/Predicate";
-import type { OrchestrationLatestTurn, OrchestrationMessage } from "@akeru/contracts";
+import type { OrchestrationLatestTurn, OrchestrationMessage } from "@isnadi/contracts";
 
 export interface VoiceAudio {
   readonly audioBase64: string;

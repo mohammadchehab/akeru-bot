@@ -1,4 +1,4 @@
-import { type ProviderInstanceId } from "@akeru/contracts";
+import { type ProviderInstanceId } from "@isnadi/contracts";
 
 import {
   providerInstancePickerBlockReason,

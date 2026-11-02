@@ -1,4 +1,4 @@
-import type { OrchestrationEvent, OrchestrationReadModel } from "@akeru/contracts";
+import type { OrchestrationEvent, OrchestrationReadModel } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { type OrchestrationProjectorDecodeError } from "./Errors.ts";
 import { projectEnvironment } from "./projector/Environment.ts";

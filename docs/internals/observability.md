@@ -119,23 +119,23 @@ It provides:
 ### Env Vars
 
 Each variable also accepts its older `T3CODE_` name, for example `T3CODE_OTLP_TRACES_URL`. The
-`AKERU_` name wins when both are set.
+`ISNADI_` name wins when both are set.
 
 Local trace file:
 
-- `AKERU_TRACE_FILE`: override trace file path
-- `AKERU_TRACE_MAX_BYTES`: per-file rotation size, default `10485760`
-- `AKERU_TRACE_MAX_FILES`: rotated file count, default `10`
-- `AKERU_TRACE_BATCH_WINDOW_MS`: flush window, default `1000`
-- `AKERU_TRACE_MIN_LEVEL`: minimum trace level, default `Info`
-- `AKERU_TRACE_TIMING_ENABLED`: enable timing metadata, default `true`
+- `ISNADI_TRACE_FILE`: override trace file path
+- `ISNADI_TRACE_MAX_BYTES`: per-file rotation size, default `10485760`
+- `ISNADI_TRACE_MAX_FILES`: rotated file count, default `10`
+- `ISNADI_TRACE_BATCH_WINDOW_MS`: flush window, default `1000`
+- `ISNADI_TRACE_MIN_LEVEL`: minimum trace level, default `Info`
+- `ISNADI_TRACE_TIMING_ENABLED`: enable timing metadata, default `true`
 
 OTLP export:
 
-- `AKERU_OTLP_TRACES_URL`: OTLP trace endpoint
-- `AKERU_OTLP_METRICS_URL`: OTLP metric endpoint
-- `AKERU_OTLP_EXPORT_INTERVAL_MS`: export interval, default `10000`
-- `AKERU_OTLP_SERVICE_NAME`: service name, default `akeru-server`
+- `ISNADI_OTLP_TRACES_URL`: OTLP trace endpoint
+- `ISNADI_OTLP_METRICS_URL`: OTLP metric endpoint
+- `ISNADI_OTLP_EXPORT_INTERVAL_MS`: export interval, default `10000`
+- `ISNADI_OTLP_SERVICE_NAME`: service name, default `isnadi-server`
 
 If the OTLP URLs are unset, local tracing still works and metrics stay in-process only.
 

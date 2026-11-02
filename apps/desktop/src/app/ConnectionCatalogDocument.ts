@@ -1,7 +1,7 @@
 import * as Predicate from "effect/Predicate";
-import { ConnectionCatalogDocument as RuntimeConnectionCatalogDocument } from "@akeru/client-runtime/platform";
+import { ConnectionCatalogDocument as RuntimeConnectionCatalogDocument } from "@isnadi/client-runtime/platform";
 
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 
 import * as Effect from "effect/Effect";
 

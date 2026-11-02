@@ -38,7 +38,7 @@ export class DesktopShellEnvironment extends Context.Service<
   {
     readonly installIntoProcess: Effect.Effect<void>;
   }
->()("@akeru/desktop/shell/DesktopShellEnvironment") {}
+>()("@isnadi/desktop/shell/DesktopShellEnvironment") {}
 
 const installWindowsEnvironment = Effect.fn("desktop.shellEnvironment.installWindowsEnvironment")(
   function* (

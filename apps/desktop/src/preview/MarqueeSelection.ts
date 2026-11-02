@@ -1,4 +1,4 @@
-import type { PreviewAnnotationRect } from "@akeru/contracts";
+import type { PreviewAnnotationRect } from "@isnadi/contracts";
 
 interface ElementBounds {
   readonly left: number;

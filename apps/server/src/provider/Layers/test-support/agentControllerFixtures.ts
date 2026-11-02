@@ -1,4 +1,4 @@
-import { ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 
 export const codexThreadId = ThreadId.make("thread-mastra-codex");
 

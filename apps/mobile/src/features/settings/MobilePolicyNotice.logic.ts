@@ -1,12 +1,12 @@
-import { AKERU_PRIVACY_POLICY_VERSION, AKERU_TERMS_VERSION } from "@akeru/contracts/settings";
+import { ISNADI_PRIVACY_POLICY_VERSION, ISNADI_TERMS_VERSION } from "@isnadi/contracts/settings";
 
 export function needsMobilePolicyAcknowledgement(preferences: {
   readonly reviewedPrivacyPolicyVersion?: string;
   readonly reviewedTermsVersion?: string;
 }): boolean {
   return (
-    preferences.reviewedPrivacyPolicyVersion !== AKERU_PRIVACY_POLICY_VERSION ||
-    preferences.reviewedTermsVersion !== AKERU_TERMS_VERSION
+    preferences.reviewedPrivacyPolicyVersion !== ISNADI_PRIVACY_POLICY_VERSION ||
+    preferences.reviewedTermsVersion !== ISNADI_TERMS_VERSION
   );
 }
 

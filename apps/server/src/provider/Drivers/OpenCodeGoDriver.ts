@@ -1,4 +1,4 @@
-import { OpenCodeGoSettings, ProviderDriverKind, type ServerProvider } from "@akeru/contracts";
+import { OpenCodeGoSettings, ProviderDriverKind, type ServerProvider } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";

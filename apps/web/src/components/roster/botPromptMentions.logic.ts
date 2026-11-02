@@ -6,9 +6,9 @@ import {
   COMPOSER_BROWSER_MENTION,
   serializeComposerBotMention,
   serializeComposerThreadMention,
-} from "@akeru/shared/composerInlineTokens";
-import { composerBotMentionDetail } from "@akeru/shared/composerBotMentions";
-import { detectComposerTrigger, serializeComposerFileLink } from "@akeru/shared/composerTrigger";
+} from "@isnadi/shared/composerInlineTokens";
+import { composerBotMentionDetail } from "@isnadi/shared/composerBotMentions";
+import { detectComposerTrigger, serializeComposerFileLink } from "@isnadi/shared/composerTrigger";
 
 const THREAD_QUERY_PREFIX = "chat:";
 

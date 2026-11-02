@@ -8,7 +8,7 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as TestClock from "effect/testing/TestClock";
-import { OpenCodeSettings, ThreadId } from "@akeru/contracts";
+import { OpenCodeSettings, ThreadId } from "@isnadi/contracts";
 import { ServerConfig } from "../../../config.ts";
 import { ServerSettingsService } from "../../../serverSettings.ts";
 import { ProviderSessionDirectory } from "../../Services/ProviderSessionDirectory.ts";
@@ -21,7 +21,7 @@ import {
 import { makeOpenCodeAdapter } from "../OpenCodeAdapter.ts";
 
 export class OpenCodeAdapter extends Context.Service<OpenCodeAdapter, OpenCodeAdapterShape>()(
-  "akeru-bot/provider/Layers/test-support/openCodeAdapterHarness/OpenCodeAdapter",
+  "isnadibot/provider/Layers/test-support/openCodeAdapterHarness/OpenCodeAdapter",
 ) {}
 
 export const asThreadId = (value: string): ThreadId => ThreadId.make(value);

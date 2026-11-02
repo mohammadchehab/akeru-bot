@@ -1,5 +1,5 @@
 /**
- * Drivers that run on Akeru's controller, which is the only runtime that can
+ * Drivers that run on Isnadi's controller, which is the only runtime that can
  * advertise SendToAgent and enforce a delegated child's access grant. Every
  * other driver runs on the legacy adapter bridge and can neither hand off work
  * nor receive it.

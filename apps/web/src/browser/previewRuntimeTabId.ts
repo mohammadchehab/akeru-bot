@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 /**
  * The server only guarantees preview tab ids are unique within one process.

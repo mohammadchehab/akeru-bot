@@ -1,4 +1,4 @@
-import { DelegationId, ThreadId } from "@akeru/contracts";
+import { DelegationId, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { toPersistenceSqlError } from "../../../persistence/Errors.ts";
 import { type ProjectionDependencies, type ProjectorDefinition } from "./Definitions.ts";

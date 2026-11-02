@@ -366,7 +366,7 @@ export const createPreviewTabListeners = ({
       );
     };
 
-    // Akeru currently denies window.open and loads the URL in the same guest.
+    // Isnadi currently denies window.open and loads the URL in the same guest.
     // If a popup is created anyway, keep its shortcuts isolated from the host.
     const windowCreated = (window: Electron.BrowserWindow): void => {
       window.webContents.setIgnoreMenuShortcuts(true);

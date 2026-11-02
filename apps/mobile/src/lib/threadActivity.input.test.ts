@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
-import { codexFeedbackMessage } from "@akeru/client-runtime/state/threads";
-import { EventId, MessageId } from "@akeru/contracts";
+import { codexFeedbackMessage } from "@isnadi/client-runtime/state/threads";
+import { EventId, MessageId } from "@isnadi/contracts";
 import {
   buildPendingUserInputAnswers,
   derivePendingApprovals,
@@ -198,12 +198,12 @@ describe("pending approvals", () => {
       payload: {
         requestId: "req-feedback",
         requestType: "dynamic_tool_call",
-        toolName: "akeru_product_feedback",
+        toolName: "isnadi_product_feedback",
       },
     });
 
     expect(derivePendingApprovals([activity])[0]).toMatchObject({
-      toolName: "akeru_product_feedback",
+      toolName: "isnadi_product_feedback",
     });
   });
 });

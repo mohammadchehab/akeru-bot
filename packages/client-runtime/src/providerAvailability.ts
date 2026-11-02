@@ -4,7 +4,7 @@ import type {
   OrchestrationThreadActivity,
   ServerProvider,
   ServerProviderUnavailability,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { createTranslator, type MessageKey, type TranslationParams } from "./i18n/index.ts";
 

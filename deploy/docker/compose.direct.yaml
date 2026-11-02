@@ -1,6 +1,6 @@
 services:
-  akeru:
-    image: ${AKERU_IMAGE:-akeru-remote:local}
+  isnadi:
+    image: ${ISNADI_IMAGE:-isnadi-remote:local}
     build:
       context: ../..
       dockerfile: deploy/docker/Dockerfile
@@ -11,11 +11,11 @@ services:
       T3CODE_HOST: 0.0.0.0
       T3CODE_PORT: 3773
       T3CODE_NO_BROWSER: "true"
-      AKERU_HOME: /data
+      ISNADI_HOME: /data
     volumes:
-      - akeru-data:/data
-      - ${AKERU_WORKSPACE:-$HOME}:/workspace
+      - isnadi-data:/data
+      - ${ISNADI_WORKSPACE:-$HOME}:/workspace
     restart: unless-stopped
 volumes:
-  akeru-data:
-    name: ${AKERU_DATA_VOLUME:-akeru-data}
+  isnadi-data:
+    name: ${ISNADI_DATA_VOLUME:-isnadi-data}

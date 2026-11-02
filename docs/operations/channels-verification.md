@@ -6,8 +6,8 @@ Run it whenever the channel runtime, a transport, or the health contract changes
 
 ## Isolation rules
 
-- Always run against an isolated Akeru home. Never point the test server at `~/.akeru/userdata` or `~/.akeru/dev`, and never symlink.
-- Use a dedicated test home, for example `AKERU_HOME=$(mktemp -d /tmp/akeru-channels.XXXXXX)`. To reuse real bots and projects, snapshot the database with `VACUUM INTO` as described in the project AGENTS.md test data section, and leave secrets behind. Enter fresh channel credentials in the test home.
+- Always run against an isolated Isnadi home. Never point the test server at `~/.isnadi/userdata` or `~/.isnadi/dev`, and never symlink.
+- Use a dedicated test home, for example `ISNADI_HOME=$(mktemp -d /tmp/isnadi-channels.XXXXXX)`. To reuse real bots and projects, snapshot the database with `VACUUM INTO` as described in the project AGENTS.md test data section, and leave secrets behind. Enter fresh channel credentials in the test home.
 - Use a throwaway workspace and test messaging accounts. Do not verify against workspaces, servers, phone numbers, or Slack workspaces that carry real conversations.
 - A standard-scope pairing token is enough to watch chats. Managing connections under Settings > Bot channels needs an administrator session, so keep the startup pairing URL.
 - Stop the test server by the PID you started, and remove the temporary home afterward.
@@ -18,17 +18,17 @@ Run it whenever the channel runtime, a transport, or the health contract changes
 Run every step for each provider unless that provider's section marks a step not applicable.
 
 1. **Connect.** Save credentials, assign a bot and a project, and connect. The binding reaches `connected` and the card reports no error.
-2. **Inbound message.** Send a message that the provider's conversation policy accepts (see the per-provider table). A new Akeru thread appears under the selected project, labeled with the channel origin.
+2. **Inbound message.** Send a message that the provider's conversation policy accepts (see the per-provider table). A new Isnadi thread appears under the selected project, labeled with the channel origin.
 3. **Reply.** The connected bot's final reply posts back to the same external conversation once the turn completes. No intermediate tool output reaches the channel.
-4. **Delivery states.** Watch the reply in the Akeru conversation. It moves from sending to sent. To see `failed`, revoke or break the credential mid-test and retry the reply. To see `unknown`, cut the network between the send and the provider response; the attempt must not repost on its own, and the channel card must show the delivery warning with a **Check the channel** action.
-5. **Thread continuation (Slack and Discord).** Reply inside the same platform thread without a new mention. The message continues the same Akeru thread.
+4. **Delivery states.** Watch the reply in the Isnadi conversation. It moves from sending to sent. To see `failed`, revoke or break the credential mid-test and retry the reply. To see `unknown`, cut the network between the send and the provider response; the attempt must not repost on its own, and the channel card must show the delivery warning with a **Check the channel** action.
+5. **Thread continuation (Slack and Discord).** Reply inside the same platform thread without a new mention. The message continues the same Isnadi thread.
 6. **Repair.** For each health state, confirm the card offers exactly one repair action: reconnect after a dropped connection, update credentials after a rejected token, choose another project after the project is removed, set a public URL for WhatsApp `not-live`.
 7. **Disconnect and reconnect.** Disconnect stops inbound delivery and clears status reactions. Reconnect resumes inbound delivery without duplicating earlier replies.
 8. **Restore after restart.** Stop the server, start it again on the same home, and send another inbound message. The channel restores without a manual reconnect. Then break a credential, restart again, and confirm the binding comes back `failed` with the `restore` category and the server still starts.
 9. **Authorization refusal.** Connect a standard-scope client and attempt each `channel.*` command. Every one is refused. The card must not offer repair actions the session cannot perform.
-10. **Reply footer.** With a public origin configured, an external reply ends with the Open in Akeru link. Without one, no link appears.
+10. **Reply footer.** With a public origin configured, an external reply ends with the Open in Isnadi link. Without one, no link appears.
 11. **Status reactions (Slack and Discord).** The request message gains an eyes reaction on accept, an hourglass while the turn waits on an approval or answer, a check on completion, and an X on failure or cancellation.
-12. **Bot-authored messages.** Messages sent by the Akeru bot itself, and by any other connected bot, never start work.
+12. **Bot-authored messages.** Messages sent by the Isnadi bot itself, and by any other connected bot, never start work.
 
 ## Provider requirements and status
 
@@ -45,9 +45,9 @@ Matrix result, 2026-09-26: **unverified: no credentials.**
 Needs: a Slack app on a test workspace.
 
 - Socket Mode enabled.
-- One app-level token with the `connections:write` scope. Akeru probes it with `apps.connections.open` before connecting; an auth failure reports invalid token, a network failure reports Slack unreachable.
+- One app-level token with the `connections:write` scope. Isnadi probes it with `apps.connections.open` before connecting; an auth failure reports invalid token, a network failure reports Slack unreachable.
 - A bot token installed to the workspace.
-- Bot event subscriptions: `message.im` for direct messages, `app_mention` for channel mentions, and `message.channels` so replies inside subscribed platform threads continue the Akeru thread.
+- Bot event subscriptions: `message.im` for direct messages, `app_mention` for channel mentions, and `message.channels` so replies inside subscribed platform threads continue the Isnadi thread.
 - Bot scopes covering `chat:write`, `reactions:write`, `im:history`, `im:read`, `im:write`, `channels:history`, `channels:read`, and `app_mentions:read`.
 
 Verify that a mention reply lands inside the Slack thread (`thread_ts`), not at the channel root. Socket Mode is outbound only, so no public URL is required.
@@ -59,7 +59,7 @@ Matrix result, 2026-09-26: **unverified: no credentials.**
 Needs: a Discord application and bot on a test server.
 
 - Privileged gateway intents: enable Message Content Intent in the developer portal. The adapter requests Guilds, Guild Messages, Message Content, Direct Messages, Guild Message Reactions, and Direct Message Reactions.
-- Copy the application ID, public key, and bot token into the connection form. The public key is required even though Akeru only uses the gateway.
+- Copy the application ID, public key, and bot token into the connection form. The public key is required even though Isnadi only uses the gateway.
 - Invite the bot with the generated link. Its permission set covers viewing channels, sending messages, reading message history, creating and using threads, and adding reactions.
 
 Verify that a first server mention creates a Discord thread on that message, that role mentions and @everyone do not start work, and that the supervised gateway renews across its hourly listener boundary.

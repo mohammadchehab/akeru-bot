@@ -2,13 +2,13 @@ import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import { storedField } from "./lib/persistedSchema";
 import * as Predicate from "effect/Predicate";
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 import { create } from "zustand";
 import { createJSONStorage, persist, type PersistOptions } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
 
-import { normalizePreviewUrl } from "@akeru/shared/preview";
+import { normalizePreviewUrl } from "@isnadi/shared/preview";
 import { readPreparedConnection } from "~/state/session";
 
 import { isLocalLoopbackHost, normalizeHostname } from "./browser/browserTargetResolver";
@@ -200,7 +200,7 @@ export const migratePersistedBrowserHistoryState = ((persistedState) => {
   PersistOptions<BrowserHistoryStoreState, PersistedBrowserHistory>["migrate"]
 >;
 
-const BROWSER_HISTORY_STORAGE_KEY = "akeru:browser-history:v1";
+const BROWSER_HISTORY_STORAGE_KEY = "isnadi:browser-history:v1";
 
 // Pre-rebrand key; migrated through the wrapping storage on first write.
 const LEGACY_BROWSER_HISTORY_STORAGE_KEY = "t3code:browser-history:v1";

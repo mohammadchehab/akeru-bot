@@ -1,13 +1,13 @@
 import { makeMobileBot } from "../../lib/mobile-fixtures.test-support";
-import { BotId, DelegationId, ThreadId, TurnId } from "@akeru/contracts";
-import type { AkeruDelegationRecord, OrchestrationBot } from "@akeru/contracts";
+import { BotId, DelegationId, ThreadId, TurnId } from "@isnadi/contracts";
+import type { IsnadiDelegationRecord, OrchestrationBot } from "@isnadi/contracts";
 import { createElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { delegationActions } from "@akeru/client-runtime/delegation-presentation";
+import { delegationActions } from "@isnadi/client-runtime/delegation-presentation";
 import { ThreadDelegationCard } from "./ThreadDelegationCard";
 
-type PhasesTable = Record<string, AkeruDelegationRecord["phase"]>;
+type PhasesTable = Record<string, IsnadiDelegationRecord["phase"]>;
 
 vi.mock("react-native", () => ({
   Text: "span",
@@ -25,13 +25,13 @@ vi.mock("../../components/BotAvatarView", () => ({
 }));
 
 vi.mock("../../lib/i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useMobileI18n: () => ({ ...translator, t: translator.translate }) };
 });
 
-const delegation = (phase: AkeruDelegationRecord["phase"]): AkeruDelegationRecord => ({
+const delegation = (phase: IsnadiDelegationRecord["phase"]): IsnadiDelegationRecord => ({
   delegationId: DelegationId.make("d-1"),
   parentDelegationId: null,
   parentBotId: BotId.make("bot-parent"),
@@ -182,7 +182,10 @@ describe("ThreadDelegationCard", () => {
 
     const labels = ["Let it finish", "Cancel", "Try again"] as const;
 
-    const rendered = (record: AkeruDelegationRecord, all: ReadonlyArray<AkeruDelegationRecord>) => {
+    const rendered = (
+      record: IsnadiDelegationRecord,
+      all: ReadonlyArray<IsnadiDelegationRecord>,
+    ) => {
       const html = markup(
         createElement(ThreadDelegationCard, {
           delegation: record,

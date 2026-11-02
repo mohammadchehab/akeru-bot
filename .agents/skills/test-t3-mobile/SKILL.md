@@ -1,9 +1,9 @@
 ---
 name: test-t3-mobile
-description: Verify Akeru Bot mobile on iOS or Android with an isolated environment, reusable development clients, deterministic pairing, semantic UI control, and focused evidence.
+description: Verify IsnadiBot mobile on iOS or Android with an isolated environment, reusable development clients, deterministic pairing, semantic UI control, and focused evidence.
 ---
 
-# Test Akeru Bot mobile
+# Test IsnadiBot mobile
 
 Read [the verification policy](../../../docs/internals/verification.md) for authorization, coverage, evidence, and environment lifetime. Use [`test-t3-app`](../test-t3-app/SKILL.md) for shared environment discovery, browser pairing, and SQLite fixtures.
 
@@ -12,14 +12,14 @@ Read [the verification policy](../../../docs/internals/verification.md) for auth
 1. On macOS with Xcode, use one representative iOS Simulator for cross-platform changes. Load [`ios-debugger-agent`](../ios-debugger-agent/SKILL.md). Load [`ios-simulator-browser`](../ios-simulator-browser/SKILL.md) when a live visual feed is needed.
 2. Use Android when the change is Android-specific or iOS tooling is unavailable. Select one emulator serial with `adb devices`.
 3. Reuse a compatible installed development client for JavaScript, TypeScript, and asset changes. Rebuild only when native source, dependencies, entitlements, config plugins, or generated projects changed.
-4. Resolve identity with `node .agents/skills/test-t3-mobile/scripts/app-identity.mjs <scheme|ios-bundle-id|android-package>`. The helper reads the development app configuration, including personal-team overrides. For the full config, run `vp run --filter @akeru/mobile config:dev`. Use the resolved values below instead of copied identifiers.
+4. Resolve identity with `node .agents/skills/test-t3-mobile/scripts/app-identity.mjs <scheme|ios-bundle-id|android-package>`. The helper reads the development app configuration, including personal-team overrides. For the full config, run `vp run --filter @isnadi/mobile config:dev`. Use the resolved values below instead of copied identifiers.
 5. Find the actual generated Xcode workspace and scheme rather than assuming a historical name. If generated native projects are absent, first check for a compatible installed client or existing artifact.
 
 `ios:dev` and `android:dev` run clean Expo prebuilds. Use them only when regeneration is required. If the user forbids a rebuild and no compatible client exists, report that blocker. Do not create or download simulator runtimes without permission.
 
 ## Start one isolated environment
 
-Run backend commands from the repository root. Use the worktree-local `.akeru` or a deliberately created temporary home. Explicit homes store runtime state under `<home>/userdata`.
+Run backend commands from the repository root. Use the worktree-local `.isnadi` or a deliberately created temporary home. Explicit homes store runtime state under `<home>/userdata`.
 
 Use `vp run dev:status` to inspect an existing environment. Reuse a healthy owned server. When testing web and mobile together, run `vp run dev --home-dir <home>` once and connect both clients to that backend.
 

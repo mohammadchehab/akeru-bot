@@ -39,7 +39,7 @@ import {
   WINDOWS_SERVER_ASAR_IGNORE_GLOBS,
 } from "./build-desktop-artifact.ts";
 
-import { HostProcessArchitecture, HostProcessPlatform } from "@akeru/shared/hostProcess";
+import { HostProcessArchitecture, HostProcessPlatform } from "@isnadi/shared/hostProcess";
 
 import { mockProcess, makeWindowsPayloadFixture } from "./test-support/desktop-build.ts";
 

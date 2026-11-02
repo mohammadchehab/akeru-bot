@@ -1,4 +1,10 @@
-import { CommandId, EventId, MessageId, type OrchestrationEvent, ThreadId } from "@akeru/contracts";
+import {
+  CommandId,
+  EventId,
+  MessageId,
+  type OrchestrationEvent,
+  ThreadId,
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { isThreadDetailEvent } from "./ws.ts";

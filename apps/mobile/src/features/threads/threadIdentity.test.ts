@@ -1,6 +1,6 @@
-import { BotId, GroupId, ThreadId } from "@akeru/contracts";
+import { BotId, GroupId, ThreadId } from "@isnadi/contracts";
 import { makeMobileBot, makeMobileGroup } from "../../lib/mobile-fixtures.test-support";
-import type { OrchestrationBot, OrchestrationGroup } from "@akeru/contracts";
+import type { OrchestrationBot, OrchestrationGroup } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { resolveThreadIdentity, groupChatBots } from "./threadIdentity";

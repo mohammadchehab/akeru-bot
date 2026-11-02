@@ -12,8 +12,8 @@ import {
   ProviderInstanceId,
   type ServerProvider,
   type ServerSettings as ContractServerSettings,
-} from "@akeru/contracts";
-import { deepMerge } from "@akeru/shared/Struct";
+} from "@isnadi/contracts";
+import { deepMerge } from "@isnadi/shared/Struct";
 import * as ModelCatalog from "../ModelCatalog.ts";
 import * as OpenCodeRuntime from "../opencodeRuntime.ts";
 import * as ProviderEventLoggers from "./ProviderEventLoggers.ts";

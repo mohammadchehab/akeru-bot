@@ -11,7 +11,7 @@ import {
   type OrchestrationShellStreamItem,
   type ProjectId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { toShellDelegation } from "./orchestration/ShellDelegations.ts";
 import { toRoutineReceiptSource } from "./orchestration/routineReceiptSources.ts";
 

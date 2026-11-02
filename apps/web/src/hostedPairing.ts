@@ -3,13 +3,13 @@ import {
   readHostedPairingRequest,
   resolveRemotePairingTarget,
   type HostedPairingRequest,
-} from "@akeru/shared/remote";
+} from "@isnadi/shared/remote";
 
 import type { PairingPanelStatus } from "./components/auth/PairingPanel";
 
 /**
  * Whether a URL is a hosted pairing link: `/pair?host=…#token=…` opened on any
- * Akeru web origin, such as a tunnel, to save the remote server named by `host`
+ * Isnadi web origin, such as a tunnel, to save the remote server named by `host`
  * in this browser. A link with a host but no token still counts, so the page
  * can say what is missing instead of pairing with the origin that served it.
  * A link whose host is the page's own origin is ordinary pairing: the browser

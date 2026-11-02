@@ -1,5 +1,5 @@
 import * as CodexSchema from "effect-codex-app-server/schema";
-import type { ServerProviderModel, ServerProviderSkill } from "@akeru/contracts";
+import type { ServerProviderModel, ServerProviderSkill } from "@isnadi/contracts";
 
 export const CODEX_PRESENTATION = {
   displayName: "Codex",

@@ -28,7 +28,7 @@ html[data-theme-id]
   }
 }
 
-html[data-theme-id="akeru-chat"] .chat-composer-glass-shell {
+html[data-theme-id="isnadi-chat"] .chat-composer-glass-shell {
   /* T3 Chat's visible composer edge is a dark plum, not the stock translucent
      white outline. Its highlight is derived from --chat-input-gradient. */
   @variant dark {
@@ -37,7 +37,7 @@ html[data-theme-id="akeru-chat"] .chat-composer-glass-shell {
   }
 }
 
-html[data-theme-id="akeru-chat"]
+html[data-theme-id="isnadi-chat"]
   :is(.chat-composer-banner-stack-cap, .chat-composer-drawer-surface, .chat-composer-top-drawer):is(
     :not([data-variant]),
     [data-variant="default"]

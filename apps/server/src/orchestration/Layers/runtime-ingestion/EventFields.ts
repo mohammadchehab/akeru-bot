@@ -1,11 +1,11 @@
 import { asRecord } from "../../ActivityPayloadBounds.ts";
-import type { TaskAgentLinkage, RuntimeTaskUsage, RuntimeTaskStatus } from "@akeru/contracts";
+import type { TaskAgentLinkage, RuntimeTaskUsage, RuntimeTaskStatus } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   ChatAttachment,
-  AkeruCreateRoutineInput,
+  IsnadiCreateRoutineInput,
   RoutineTimeZone,
   ApprovalRequestId,
   MessageId,
@@ -17,7 +17,7 @@ import {
   type OrchestrationCheckpointSummary,
   type ProviderRuntimeEvent,
   ProductFeedbackToolDraft,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Option from "effect/Option";
 import * as Exit from "effect/Exit";
@@ -114,7 +114,7 @@ export function runtimeChatAttachment(event: ProviderRuntimeEvent) {
 
 export const decodeCreateRoutineInput = Schema.decodeUnknownExit(
   Schema.Struct({
-    ...AkeruCreateRoutineInput.fields,
+    ...IsnadiCreateRoutineInput.fields,
     timezone: Schema.optional(RoutineTimeZone),
   }),
   {
@@ -128,13 +128,13 @@ export function boundedApprovalArgs(
 ) {
   if (args === undefined) return undefined;
 
-  if (toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME) {
+  if (toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME) {
     const decoded = decodeProductFeedbackToolDraft(args);
 
     return Exit.isSuccess(decoded) ? decoded.value : undefined;
   }
 
-  if (toolName === AKERU_CREATE_ROUTINE_TOOL_NAME) {
+  if (toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME) {
     const decoded = decodeCreateRoutineInput(args);
 
     return Exit.isSuccess(decoded) ? decoded.value : undefined;

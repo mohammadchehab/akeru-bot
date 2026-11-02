@@ -7,8 +7,8 @@ import type {
   RuntimeMode,
   ServerConfig,
   SubscriptionProviderStatus,
-} from "@akeru/contracts";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/contracts";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { useMobileI18n } from "../../lib/i18n";

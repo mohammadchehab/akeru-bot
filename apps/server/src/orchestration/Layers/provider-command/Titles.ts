@@ -1,8 +1,8 @@
 import * as Data from "effect/Data";
-import { CommandId, PLACEHOLDER_THREAD_TITLE, ThreadId } from "@akeru/contracts";
+import { CommandId, PLACEHOLDER_THREAD_TITLE, ThreadId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
-import { makeDrainableWorker } from "@akeru/shared/DrainableWorker";
+import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import { resolveThreadWorkspaceCwd } from "../../../checkpointing/Utils.ts";
 import { DEFAULT_THREAD_TITLE } from "../../threadTitles.ts";
 import { type ProviderIntentEvent } from "./Fields.ts";

@@ -170,7 +170,7 @@ export function appendComposerMentionContext(
 
   if (input.browser === "enabled") {
     sections.push(
-      "The user mentioned @browser. Use your Akeru preview browser tools (preview_*) for this request. Do not start a separate browser.",
+      "The user mentioned @browser. Use your Isnadi preview browser tools (preview_*) for this request. Do not start a separate browser.",
     );
   } else if (input.browser === "disabled") {
     sections.push(

@@ -8,7 +8,7 @@
  */
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
-import { AkeruMemoryApprovalRequest } from "./akeruMemory/base.ts";
+import { IsnadiMemoryApprovalRequest } from "./isnadiMemory/base.ts";
 import { BotId, IsoDateTime, NonNegativeInt, TrimmedNonEmptyString } from "./baseSchemas.ts";
 import { McpServerId } from "./mcpServer.ts";
 import { ProviderInstanceId } from "./providerInstance.ts";
@@ -196,7 +196,7 @@ export const BotInboxItem = Schema.Struct({
   resolvedAt: Schema.optional(IsoDateTime),
   occurrenceCount: Schema.Int.check(Schema.isGreaterThan(0)),
   // Present on approval requests that ask to save shared memory.
-  memoryApproval: Schema.optional(AkeruMemoryApprovalRequest),
+  memoryApproval: Schema.optional(IsnadiMemoryApprovalRequest),
 });
 
 export type BotInboxItem = typeof BotInboxItem.Type;

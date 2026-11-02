@@ -1,4 +1,4 @@
-import type { ProjectScript } from "@akeru/contracts";
+import type { ProjectScript } from "@isnadi/contracts";
 
 interface ProjectScriptRuntimeEnvInput {
   project: {

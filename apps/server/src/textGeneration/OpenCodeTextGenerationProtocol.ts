@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import * as Schema from "effect/Schema";
-import { NonNegativeInt } from "@akeru/contracts";
+import { NonNegativeInt } from "@isnadi/contracts";
 
 export const OpenCodeTextGenerationOperation = Schema.Literals([
   "generateBranchName",

@@ -43,7 +43,7 @@ import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
  */
 const EXPERIMENT = "places";
 
-const STORAGE_KEY = "akeru:sidebar-experiment";
+const STORAGE_KEY = "isnadi:sidebar-experiment";
 
 const RAIL_WIDTH = 60;
 

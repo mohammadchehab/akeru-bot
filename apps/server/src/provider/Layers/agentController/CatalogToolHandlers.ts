@@ -4,11 +4,11 @@ import {
   CommandId,
   McpServerId,
   type ThreadId,
-  decodeAkeruToolInput,
-} from "@akeru/contracts";
+  decodeIsnadiToolInput,
+} from "@isnadi/contracts";
 import { runImageGenerationTool } from "../../../image-generation/ImageGenerationRuntime.ts";
-import { createAkeruCatalogToolHandlers } from "../../AkeruCatalogToolHandlers.ts";
-import { akeruWebSearchUnavailable } from "../../AkeruWebFetch.ts";
+import { createIsnadiCatalogToolHandlers } from "../../IsnadiCatalogToolHandlers.ts";
+import { isnadiWebSearchUnavailable } from "../../IsnadiWebFetch.ts";
 import { nowIso } from "./EventIdentity.ts";
 import { mcpServerDependentBots } from "./McpConfiguration.ts";
 import type { SessionLifecycleDependencies } from "./SessionLifecycleDependencies.ts";
@@ -35,7 +35,7 @@ export function createSessionCatalogHandlers(
       ? { dependentBots: [{ id: input.botId, name: input.botName }], dependentRoutines: [] }
       : { dependentBots: [], dependentRoutines: [] };
 
-  return createAkeruCatalogToolHandlers(
+  return createIsnadiCatalogToolHandlers(
     mcpManager,
     deps.wired().pluginRuntime,
     mcpManager
@@ -76,7 +76,7 @@ export function createSessionCatalogHandlers(
         }
       : undefined,
     {
-      webSearch: akeruWebSearchUnavailable,
+      webSearch: isnadiWebSearchUnavailable,
       webFetch: deps.webFetch,
       // The router bounds each provider attempt and interruptTurn cancels
       // in-flight requests, so there is no outer deadline here.
@@ -88,7 +88,7 @@ export function createSessionCatalogHandlers(
       ...(deps.wired().pluginRuntimeOptions
         ? {
             addMcpServer: async (input) => {
-              const value = decodeAkeruToolInput("AddMcpServer", input);
+              const value = decodeIsnadiToolInput("AddMcpServer", input);
 
               const base = {
                 type: "mcp-server.create" as const,
@@ -125,7 +125,7 @@ export function createSessionCatalogHandlers(
                 "mcp-remove",
               ),
             renameMcpAccount: async (input) => {
-              const value = decodeAkeruToolInput("RenameMcpAccount", input);
+              const value = decodeIsnadiToolInput("RenameMcpAccount", input);
 
               const server = (
                 await deps.wired().pluginRuntimeOptions!.readSnapshot()

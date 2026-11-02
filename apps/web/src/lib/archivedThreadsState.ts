@@ -3,8 +3,8 @@ import {
   type ArchivedSnapshotEntry,
   createArchivedThreadSnapshotsAtomFamily,
   makeArchivedThreadsEnvironmentKey,
-} from "@akeru/client-runtime/state/threads";
-import type { EnvironmentId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/threads";
+import type { EnvironmentId } from "@isnadi/contracts";
 import { useMemo } from "react";
 
 import { orchestrationEnvironment } from "../state/orchestration";

@@ -1,4 +1,4 @@
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import {
   type CloudSandboxProvider,
   CLOUD_SANDBOX_PROVIDERS,
@@ -8,7 +8,7 @@ import {
   SANDBOX_PROVIDER_CREDENTIALS,
   ServerSettings,
   ServerSettingsError,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as ServerSecretStore from "./auth/ServerSecretStore.ts";

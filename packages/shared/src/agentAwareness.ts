@@ -3,7 +3,7 @@ import type {
   OrchestrationProjectShell,
   OrchestrationThreadShell,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export type AgentAwarenessPhase =
   | "starting"

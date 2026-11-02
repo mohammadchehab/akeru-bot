@@ -5,7 +5,7 @@ import {
   type OrchestrationReadModel,
   type OrchestrationSession,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export const NOW = "2026-01-01T00:00:00.000Z";
 

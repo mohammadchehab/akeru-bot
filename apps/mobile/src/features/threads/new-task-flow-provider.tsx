@@ -7,14 +7,14 @@ import type {
   RuntimeMode,
   ServerProviderSkill,
   SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   CommandId,
   DEFAULT_LOCAL_EXECUTION_MODE,
   DEFAULT_PROVIDER_INTERACTION_MODE,
   MessageId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import { pipe } from "effect/Function";
 
@@ -57,7 +57,7 @@ import {
   useThreadOutboxMessages,
 } from "../../state/use-thread-outbox";
 import { useSavedRemoteConnections } from "../../state/use-remote-environment-registry";
-import { EnvironmentProject } from "@akeru/client-runtime/state/shell";
+import { EnvironmentProject } from "@isnadi/client-runtime/state/shell";
 import {
   buildHomeProjectScopes,
   sortHomeProjectScopes,

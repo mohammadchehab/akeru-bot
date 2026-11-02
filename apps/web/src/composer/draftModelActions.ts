@@ -6,9 +6,9 @@ import {
   ModelSelection,
   ProviderInstanceId,
   ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Equal from "effect/Equal";
-import { createModelSelection, normalizeModelSlug } from "@akeru/shared/model";
+import { createModelSelection, normalizeModelSlug } from "@isnadi/shared/model";
 import {
   type ComposerDraftStoreState,
   createEmptyThreadDraft,

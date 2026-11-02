@@ -1,4 +1,4 @@
-import type { UsageProviderPlanLimits } from "@akeru/contracts";
+import type { UsageProviderPlanLimits } from "@isnadi/contracts";
 import {
   CLAUDE_USAGE_URL,
   CODEX_USAGE_URL,
@@ -49,7 +49,7 @@ export async function fetchCodex(accessToken: string): Promise<UsageProviderPlan
     headers: {
       Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
-      "User-Agent": "Akeru Bot",
+      "User-Agent": "IsnadiBot",
     },
   });
 

@@ -1,4 +1,4 @@
-import { KeybindingRule, KeybindingsConfig } from "@akeru/contracts";
+import { KeybindingRule, KeybindingsConfig } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 
@@ -14,7 +14,7 @@ import * as ServerConfig from "./config.ts";
 
 import * as Keybindings from "./keybindings.ts";
 
-import { KeybindingsConfigError } from "@akeru/contracts";
+import { KeybindingsConfigError } from "@isnadi/contracts";
 
 export const KeybindingsConfigJson = Schema.fromJsonString(KeybindingsConfig);
 

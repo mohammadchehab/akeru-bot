@@ -1,4 +1,4 @@
-import { CommandId, EventId, ThreadId, TurnId } from "@akeru/contracts";
+import { CommandId, EventId, ThreadId, TurnId } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as CheckpointStore from "../../../checkpointing/CheckpointStore.ts";

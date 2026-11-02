@@ -1,6 +1,6 @@
 import * as NodeFS from "node:fs";
 
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 
 import { renderToStaticMarkup } from "react-dom/server";
 

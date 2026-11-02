@@ -1,4 +1,4 @@
-import { AuthAccessWriteScope, BotId, ChannelConnectionId, ProjectId } from "@akeru/contracts";
+import { AuthAccessWriteScope, BotId, ChannelConnectionId, ProjectId } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -199,11 +199,11 @@ describe("bot channel settings", () => {
   });
 
   it("explains the real end-to-end channel test", () => {
-    expect(channelTestInstructions("imessage", "Akeru")).toContain("direct iMessage");
+    expect(channelTestInstructions("imessage", "Isnadi")).toContain("direct iMessage");
     expect(channelTestInstructions("whatsapp")).toContain("direct WhatsApp");
     expect(channelTestInstructions("telegram")).toContain("direct Telegram");
-    expect(channelTestInstructions("slack", "Akeru")).toContain("Slack channel thread");
-    expect(channelTestInstructions("discord", "Akeru")).toContain("Discord server");
+    expect(channelTestInstructions("slack", "Isnadi")).toContain("Slack channel thread");
+    expect(channelTestInstructions("discord", "Isnadi")).toContain("Discord server");
   });
 
   it("parses copied Photon environment variables", () => {

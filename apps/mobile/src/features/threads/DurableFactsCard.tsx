@@ -21,8 +21,8 @@ import {
   durableFactMoveScopes,
   durableFactReadOnlyReason,
   durableFactSourceLabel,
-} from "@akeru/client-runtime/durable-memory";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+} from "@isnadi/client-runtime/durable-memory";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import { Pressable, TextInput, View } from "react-native";
 
 import { AppText as Text } from "../../components/AppText";

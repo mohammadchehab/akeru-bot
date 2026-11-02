@@ -195,7 +195,7 @@ export function getThemeEditorColorFamily(role: ThemeColorRole): ThemeEditorColo
 
 export type ThemeEditorColorsByAppearance = Record<ThemeAppearance, ThemeColors>;
 
-// A draft with no source theme starts as the standard Akeru Bot look: the
+// A draft with no source theme starts as the standard IsnadiBot look: the
 // palette on screen when no theme is installed, so creating from the default
 // theme changes nothing until the user edits a color.
 function getThemeEditorDefaults(appearance: ThemeAppearance): ThemeColors {

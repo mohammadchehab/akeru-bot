@@ -7,10 +7,10 @@ import * as Redacted from "effect/Redacted";
 
 import { FeedbackDatabase } from "./src/database.ts";
 
-// akeru-bot.com is served by Vercel DNS, so this Worker has no custom hostname.
-// Clients post straight to the workers.dev URL recorded in the contracts default.
+// The Worker has no custom hostname. Clients post straight to its workers.dev
+// URL, which an operator sets as the feedback endpoint in Settings.
 export const FeedbackWorker = Cloudflare.Worker("FeedbackWorker", {
-  name: "akeru-feedback",
+  name: "isnadi-feedback",
   main: new URL("./src/worker.ts", import.meta.url).pathname,
   compatibility: {
     date: "2026-09-14",
@@ -19,21 +19,21 @@ export const FeedbackWorker = Cloudflare.Worker("FeedbackWorker", {
   crons: ["0 3 * * *"],
   env: {
     DB: FeedbackDatabase,
-    HMAC_SECRET: Config.redacted("AKERU_FEEDBACK_HMAC_SECRET"),
-    TURNSTILE_SITE_KEY: Config.string("AKERU_FEEDBACK_TURNSTILE_SITE_KEY").pipe(
+    HMAC_SECRET: Config.redacted("ISNADI_FEEDBACK_HMAC_SECRET"),
+    TURNSTILE_SITE_KEY: Config.string("ISNADI_FEEDBACK_TURNSTILE_SITE_KEY").pipe(
       Config.withDefault(""),
     ),
-    TURNSTILE_SECRET_KEY: Config.redacted("AKERU_FEEDBACK_TURNSTILE_SECRET_KEY").pipe(
+    TURNSTILE_SECRET_KEY: Config.redacted("ISNADI_FEEDBACK_TURNSTILE_SECRET_KEY").pipe(
       Config.withDefault(Redacted.make("")),
     ),
-    GITHUB_REPOSITORY: Config.string("AKERU_FEEDBACK_GITHUB_REPOSITORY").pipe(
-      Config.withDefault("opencoredev/akeru-bot"),
+    GITHUB_REPOSITORY: Config.string("ISNADI_FEEDBACK_GITHUB_REPOSITORY").pipe(
+      Config.withDefault("mohammadchehab/isnadibot"),
     ),
-    GITHUB_APP_ID: Config.string("AKERU_FEEDBACK_GITHUB_APP_ID").pipe(Config.withDefault("")),
-    GITHUB_APP_INSTALLATION_ID: Config.string("AKERU_FEEDBACK_GITHUB_APP_INSTALLATION_ID").pipe(
+    GITHUB_APP_ID: Config.string("ISNADI_FEEDBACK_GITHUB_APP_ID").pipe(Config.withDefault("")),
+    GITHUB_APP_INSTALLATION_ID: Config.string("ISNADI_FEEDBACK_GITHUB_APP_INSTALLATION_ID").pipe(
       Config.withDefault(""),
     ),
-    GITHUB_APP_PRIVATE_KEY: Config.redacted("AKERU_FEEDBACK_GITHUB_APP_PRIVATE_KEY").pipe(
+    GITHUB_APP_PRIVATE_KEY: Config.redacted("ISNADI_FEEDBACK_GITHUB_APP_PRIVATE_KEY").pipe(
       Config.withDefault(Redacted.make("")),
     ),
   },
@@ -50,7 +50,7 @@ export type FeedbackWorkerEnv = Cloudflare.InferEnv<typeof FeedbackWorker>;
 // Worker and D1 names are pinned so a checkout without state recovers with
 // `alchemy deploy --stage production --adopt` instead of creating duplicates.
 export default Alchemy.Stack(
-  "AkeruFeedback",
+  "IsnadiFeedback",
   {
     providers: Cloudflare.providers(),
     state: State.localState(),

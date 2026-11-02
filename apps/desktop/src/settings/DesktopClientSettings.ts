@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import { ClientSettingsSchema, type ClientSettings } from "@akeru/contracts";
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+import { ClientSettingsSchema, type ClientSettings } from "@isnadi/contracts";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
@@ -66,7 +66,7 @@ export class DesktopClientSettings extends Context.Service<
       settings: ClientSettings,
     ) => Effect.Effect<void, DesktopClientSettingsWriteError>;
   }
->()("@akeru/desktop/settings/DesktopClientSettings") {}
+>()("@isnadi/desktop/settings/DesktopClientSettings") {}
 
 const readClientSettings = (
   fileSystem: FileSystem.FileSystem,

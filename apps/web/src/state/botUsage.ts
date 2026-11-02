@@ -1,4 +1,4 @@
-import { createBotUsageEnvironmentAtoms } from "@akeru/client-runtime/state/bot-usage";
+import { createBotUsageEnvironmentAtoms } from "@isnadi/client-runtime/state/bot-usage";
 import { Atom } from "effect/unstable/reactivity";
 
 import { connectionAtomRuntime } from "../connection/runtime";

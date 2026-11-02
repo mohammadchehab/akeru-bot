@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { resolveMarkdownLinkPresentation } from "@akeru/mobile-markdown-text/links";
+import { resolveMarkdownLinkPresentation } from "@isnadi/mobile-markdown-text/links";
 
 describe("resolveMarkdownLinkPresentation", () => {
   it("extracts external link hosts", () => {

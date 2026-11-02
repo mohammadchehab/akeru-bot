@@ -61,7 +61,7 @@ function splitAround(message: string): [string, string] {
   return [before, after];
 }
 
-export const NEW_LINK_COMMAND = "npx akeru-bot pair";
+export const NEW_LINK_COMMAND = "npx isnadibot pair";
 
 function describeStatus(
   status: PairingPanelStatus,

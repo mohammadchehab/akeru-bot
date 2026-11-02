@@ -1,4 +1,4 @@
-import { runtimeValueType } from "@akeru/shared/observability";
+import { runtimeValueType } from "@isnadi/shared/observability";
 import * as Predicate from "effect/Predicate";
 import * as FileSystem from "effect/FileSystem";
 import * as NodeModule from "node:module";

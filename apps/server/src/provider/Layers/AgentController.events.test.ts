@@ -10,7 +10,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -33,7 +33,7 @@ import { mastraHarnessFixture } from "./test-support/agentControllerHarness.ts";
 
 describe("provider access health", () => {
   it("records a failed first request and recovery at the runtime event boundary", async () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-access-health-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-access-health-"));
     const authPath = NodePath.join(directory, "subscription-auth.json");
 
     try {

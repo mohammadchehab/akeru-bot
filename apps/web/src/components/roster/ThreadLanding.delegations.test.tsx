@@ -1,7 +1,7 @@
 import type { TestValue } from "../test-support/reactTree";
 import type { ReactElement } from "react";
 import {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   ApprovalRequestId,
   BotId,
   EnvironmentId,
@@ -13,7 +13,7 @@ import {
   type OrchestrationLatestTurn,
   type OrchestrationShellSnapshot,
   type OrchestrationThreadActivity,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
@@ -71,7 +71,7 @@ vi.mock("@effect/atom-react", () => ({
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => vi.fn() }));
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -253,11 +253,11 @@ import { GroupThreadLanding } from "./GroupThreadLanding";
 import { BotUserInputPrompt } from "./BotUserInputPrompt";
 import { ThreadRuntimeWarningBanner } from "./ThreadRuntimeWarningBanner";
 
-const decodeDelegation = Schema.decodeUnknownSync(AkeruDelegationRecord);
+const decodeDelegation = Schema.decodeUnknownSync(IsnadiDelegationRecord);
 
 const parentBot: Bot = {
   id: "bot-parent",
-  name: "Akeru",
+  name: "Isnadi",
   title: "Boss",
   label: null,
   description: null,

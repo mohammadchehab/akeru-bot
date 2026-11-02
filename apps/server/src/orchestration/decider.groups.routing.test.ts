@@ -6,7 +6,7 @@ import {
   MessageId,
   OrchestrationEvent,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";

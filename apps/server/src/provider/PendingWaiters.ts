@@ -10,10 +10,10 @@ import type * as Scope from "effect/Scope";
  * long when the delegation has no deadline. Coding work can run for hours, so
  * this bounds a silent child rather than a slow one.
  */
-export const AKERU_CHILD_WAIT_DEFAULT_TIMEOUT = Duration.hours(4);
+export const ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT = Duration.hours(4);
 
 /** A routine review the user never answers closes after this long. */
-export const AKERU_ROUTINE_REVIEW_TIMEOUT = Duration.hours(1);
+export const ISNADI_ROUTINE_REVIEW_TIMEOUT = Duration.hours(1);
 
 export class PendingWaiterTimeoutError extends Schema.TaggedErrorClass<PendingWaiterTimeoutError>()(
   "PendingWaiterTimeoutError",

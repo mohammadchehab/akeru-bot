@@ -3,7 +3,7 @@ import type {
   OrchestrationEvent,
   OrchestrationMessage,
   OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import type { ThreadDetailReducerResult } from "./types.ts";
 import {
   copyLatestTurnIdentities,

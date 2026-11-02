@@ -5,12 +5,12 @@ import {
   type ServerSelfUpdateInput,
   type ServerSelfUpdateProgressStage,
   type ServerSelfUpdateResult,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   HostProcessEnvironment,
   HostProcessExecutablePath,
   HostProcessPlatform,
-} from "@akeru/shared/hostProcess";
+} from "@isnadi/shared/hostProcess";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -54,7 +54,7 @@ export class ServerSelfUpdate extends Context.Service<
       reportProgress?: (stage: ServerSelfUpdateProgressStage) => Effect.Effect<void>,
     ) => Effect.Effect<ServerSelfUpdateResult, ServerSelfUpdateError>;
   }
->()("akeru-bot/cloud/selfUpdate/ServerSelfUpdate") {}
+>()("isnadibot/cloud/selfUpdate/ServerSelfUpdate") {}
 
 /** `manifestKey` replaces the pinned release key so tests can sign a stub release. */
 export const make = Effect.fn("cloud.server_self_update.make")(function* (
@@ -71,7 +71,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
   const environment = yield* HostProcessEnvironment;
 
   const artifactRoot =
-    environment.AKERU_SERVICE_RUNTIME_ROOT ??
+    environment.ISNADI_SERVICE_RUNTIME_ROOT ??
     path.resolve(path.dirname(execPath), platform === "win32" ? ".." : "../..");
 
   const inFlight = yield* Ref.make(false);
@@ -85,7 +85,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
       : new ServerSelfUpdateError({ reason, cause });
 
   const downloadReleaseAsset = (url: string) =>
-    httpClient.get(url, { headers: { "user-agent": "Akeru-Remote-Updater" } }).pipe(
+    httpClient.get(url, { headers: { "user-agent": "Isnadi-Remote-Updater" } }).pipe(
       Effect.flatMap(HttpClientResponse.filterStatusOk),
       Effect.flatMap((response) => response.arrayBuffer),
       Effect.map((bytes) => new Uint8Array(bytes)),
@@ -93,13 +93,13 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
 
   const verifiedWindowsArchiveChecksum = (version: string) =>
     Effect.gen(function* () {
-      const repository = environment.AKERU_REMOTE_REPOSITORY || "opencoredev/akeru-bot";
+      const repository = environment.ISNADI_REMOTE_REPOSITORY || "mohammadchehab/isnadibot";
       const base = `https://github.com/${repository}/releases/download/v${version}`;
 
       const [manifest, signature] = yield* Effect.all(
         [
-          downloadReleaseAsset(`${base}/AKERU-REMOTE-MANIFEST.txt`),
-          downloadReleaseAsset(`${base}/AKERU-REMOTE-MANIFEST.sig`),
+          downloadReleaseAsset(`${base}/ISNADI-REMOTE-MANIFEST.txt`),
+          downloadReleaseAsset(`${base}/ISNADI-REMOTE-MANIFEST.sig`),
         ],
         { concurrency: 2 },
       );
@@ -108,7 +108,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
         signedArchiveChecksum({
           manifest,
           signature,
-          archiveName: `Akeru-Remote-${version}-win32-x64.zip`,
+          archiveName: `Isnadi-Remote-${version}-win32-x64.zip`,
           ...(options.manifestKey === undefined ? {} : { key: options.manifestKey }),
         }),
       );
@@ -130,14 +130,14 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
 
     if (capability === null) {
       return yield* failWith(
-        "Remote updates require the IsnadiBot background service. Run `akeru service install` on the server machine.",
+        "Remote updates require the IsnadiBot background service. Run `isnadi service install` on the server machine.",
       );
     }
 
     const targetVersion = input.targetVersion.trim();
 
     if (!isExactServiceVersion(targetVersion)) {
-      return yield* failWith(`'${targetVersion}' is not an exact akeru-bot version.`);
+      return yield* failWith(`'${targetVersion}' is not an exact isnadibot version.`);
     }
 
     if (yield* Ref.getAndSet(inFlight, true)) {
@@ -194,10 +194,10 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
                         : [installer, "--prepare-only", "--tag", `v${targetVersion}`],
                       env: {
                         ...environment,
-                        AKERU_HOME: serverConfig.baseDir,
+                        ISNADI_HOME: serverConfig.baseDir,
                         T3CODE_HOME: serverConfig.baseDir,
-                        AKERU_INSTALL_ROOT: installRoot,
-                        AKERU_BIN_DIR: path.join(installRoot, "bin"),
+                        ISNADI_INSTALL_ROOT: installRoot,
+                        ISNADI_BIN_DIR: path.join(installRoot, "bin"),
                       },
                       timeout: Duration.minutes(10),
                     });
@@ -305,7 +305,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
         Effect.mapError((error) =>
           Predicate.isTagged(error, "PinnedRuntimePreflightBlockedError")
             ? failWith(error.reason, error)
-            : failWith(`Could not prepare akeru-bot@${targetVersion}.`, error),
+            : failWith(`Could not prepare isnadibot@${targetVersion}.`, error),
         ),
       );
 

@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { describe, expect, it } from "@effect/vitest";
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -56,7 +56,7 @@ const BackgroundPolicyAlwaysRunLayer = Layer.mock(BackgroundPolicy.BackgroundPol
 });
 
 const grokDriverTestLayer = Layer.mergeAll(
-  ServerConfig.layerTest(process.cwd(), { prefix: "akeru-grok-driver-test-" }).pipe(
+  ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-grok-driver-test-" }).pipe(
     Layer.provideMerge(NodeServices.layer),
   ),
   serverSettingsLayerTest(),
@@ -85,7 +85,7 @@ const writeFakeGrokCli = (input: {
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const dir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-grok-driver-cli-" });
+    const dir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-grok-driver-cli-" });
     const modelsPath = path.join(dir, "models.txt");
     const machineSkillsPath = path.join(dir, "machine-skills.json");
     const workspaceSkillsPath = path.join(dir, "workspace-skills.json");
@@ -164,7 +164,7 @@ it.layer(grokDriverTestLayer)("GrokDriver.snapshotForCwd", (it) => {
           const fs = yield* FileSystem.FileSystem;
 
           const workspaceCwd = yield* fs.makeTempDirectoryScoped({
-            prefix: "akeru-grok-disabled-workspace-",
+            prefix: "isnadi-grok-disabled-workspace-",
           });
 
           const grokPath = yield* writeFakeGrokCli({ workspaceCwd, inspect: "fail" });
@@ -186,7 +186,7 @@ it.layer(grokDriverTestLayer)("GrokDriver.snapshotForCwd", (it) => {
           const fs = yield* FileSystem.FileSystem;
 
           const workspaceCwd = yield* fs.makeTempDirectoryScoped({
-            prefix: "akeru-grok-workspace-",
+            prefix: "isnadi-grok-workspace-",
           });
 
           const grokPath = yield* writeFakeGrokCli({ workspaceCwd, inspect: "skills" });
@@ -213,7 +213,7 @@ it.layer(grokDriverTestLayer)("GrokDriver.snapshotForCwd", (it) => {
           const fs = yield* FileSystem.FileSystem;
 
           const workspaceCwd = yield* fs.makeTempDirectoryScoped({
-            prefix: "akeru-grok-failed-workspace-",
+            prefix: "isnadi-grok-failed-workspace-",
           });
 
           const grokPath = yield* writeFakeGrokCli({ workspaceCwd, inspect: "fail" });

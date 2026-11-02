@@ -1,6 +1,6 @@
 "use strict";
 
-// Ships the Akeru app icon to the Live Activity / widget extension.
+// Ships the Isnadi app icon to the Live Activity / widget extension.
 //
 // expo-widgets generates ExpoWidgetsTarget without a Resources build phase and
 // has no asset support, so this plugin (a) writes a PNG image set into
@@ -27,9 +27,9 @@ const TARGET_NAME = "ExpoWidgetsTarget";
 
 const CATALOG_NAME = "Assets.xcassets";
 
-const IMAGE_SET = "AkeruIcon.imageset";
+const IMAGE_SET = "IsnadiIcon.imageset";
 
-const ICON_NAME = "AkeruIcon.png";
+const ICON_NAME = "IsnadiIcon.png";
 
 const CATALOG_CONTENTS = JSON.stringify({ info: { author: "expo", version: 1 } }, null, 2) + "\n";
 

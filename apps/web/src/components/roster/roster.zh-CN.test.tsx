@@ -1,5 +1,5 @@
-import { catalogRegistry } from "@akeru/client-runtime/i18n";
-import { BotId, EnvironmentId, ProviderInstanceId } from "@akeru/contracts";
+import { catalogRegistry } from "@isnadi/client-runtime/i18n";
+import { BotId, EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -92,15 +92,15 @@ function makeBot(id: string, name: string): Bot {
   };
 }
 
-const akeru = makeBot("bot-akeru", "Akeru");
+const isnadi = makeBot("bot-isnadi", "Isnadi");
 
 const mori = makeBot("bot-mori", "Mori");
 
 describe("roster in Simplified Chinese", () => {
   it("translates the bot details panel", () => {
-    const markup = renderInChinese(<BotDetailsPanel bot={akeru} />);
-    expect(markup).toContain("打开 Akeru 机器人侧边栏");
-    expect(markup).toContain("收起 Akeru 机器人侧边栏");
+    const markup = renderInChinese(<BotDetailsPanel bot={isnadi} />);
+    expect(markup).toContain("打开 Isnadi 机器人侧边栏");
+    expect(markup).toContain("收起 Isnadi 机器人侧边栏");
     expect(markup).toContain("没有可用的提供商");
     expect(markup).not.toContain("No provider ready");
     expect(markup).not.toContain("Open bot settings");
@@ -110,9 +110,9 @@ describe("roster in Simplified Chinese", () => {
     const group: Group = {
       id: "group-1",
       name: "Research",
-      bossBotId: akeru.id,
+      bossBotId: isnadi.id,
       members: [
-        { kind: "bot", botId: BotId.make(akeru.id), role: "boss" },
+        { kind: "bot", botId: BotId.make(isnadi.id), role: "boss" },
         { kind: "bot", botId: BotId.make(mori.id), role: "specialist" },
       ],
       createdAt: "2026-08-27T00:00:00.000Z",
@@ -123,7 +123,7 @@ describe("roster in Simplified Chinese", () => {
       <GroupDetailsPanel
         environmentId={EnvironmentId.make("environment-1")}
         group={group}
-        bots={[akeru, mori]}
+        bots={[isnadi, mori]}
         onDeleted={() => {}}
       />,
     );
@@ -150,7 +150,7 @@ describe("roster in Simplified Chinese", () => {
   });
 
   it("translates the usage section", () => {
-    const markup = renderInChinese(<BotUsageSection environmentId={null} botId="bot-akeru" />);
+    const markup = renderInChinese(<BotUsageSection environmentId={null} botId="bot-isnadi" />);
     expect(markup).not.toContain("Bot usage");
     expect(markup).not.toContain("No usage");
     expect(markup).not.toContain("Loading");
@@ -209,7 +209,7 @@ describe("roster in Simplified Chinese", () => {
 
   it("translates the new group dialog", () => {
     const markup = renderInChinese(
-      <NewGroupDialog open bots={[akeru]} onOpenChange={() => {}} onCreate={() => {}} />,
+      <NewGroupDialog open bots={[isnadi]} onOpenChange={() => {}} onCreate={() => {}} />,
     );
 
     expect(markup).toContain("新建群组");

@@ -1,7 +1,7 @@
 import { claudeMessage } from "./test-support/claudeMessages.ts";
 import * as Predicate from "effect/Predicate";
 import type { PermissionResult } from "@anthropic-ai/claude-agent-sdk";
-import { ProviderDriverKind, ProviderItemId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderItemId } from "@isnadi/contracts";
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";

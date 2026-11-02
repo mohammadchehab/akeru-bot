@@ -1,4 +1,4 @@
-import type { EnvironmentId, SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { EnvironmentId, SidebarProjectGroupingMode } from "@isnadi/contracts";
 import {
   createContext,
   createElement,

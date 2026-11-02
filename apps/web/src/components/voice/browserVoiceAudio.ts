@@ -1,4 +1,4 @@
-import type { VoiceAudio } from "@akeru/client-runtime/voice";
+import type { VoiceAudio } from "@isnadi/client-runtime/voice";
 
 const MAX_AUDIO_BYTES = 4 * 1024 * 1024;
 

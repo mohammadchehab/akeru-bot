@@ -1,5 +1,5 @@
 import { isTagged } from "../tagged";
-import type { PreviewRenderedViewportSize, PreviewViewportSetting } from "@akeru/contracts";
+import type { PreviewRenderedViewportSize, PreviewViewportSetting } from "@isnadi/contracts";
 
 import { browserViewportSettingKey } from "~/browser/browserViewportLayout";
 

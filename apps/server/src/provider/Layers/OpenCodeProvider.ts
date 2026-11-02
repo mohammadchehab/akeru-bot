@@ -4,14 +4,14 @@ import {
   type OpenCodeSettings,
   type ServerProviderModel,
   type ServerProviderSkill,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Data from "effect/Data";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 
-import { createModelCapabilities } from "@akeru/shared/model";
-import { compareSemverVersions } from "@akeru/shared/semver";
+import { createModelCapabilities } from "@isnadi/shared/model";
+import { compareSemverVersions } from "@isnadi/shared/semver";
 import {
   buildServerProvider,
   nonEmptyTrimmed,
@@ -169,7 +169,7 @@ function openCodeCapabilitiesForModel(input: {
 }): ModelCapabilities {
   const variantValues = Object.keys(input.model.variants ?? {});
 
-  // OpenCode picks its own default variant from user config, so Akeru offers
+  // OpenCode picks its own default variant from user config, so Isnadi offers
   // that choice instead of guessing it; an explicit level is always forwarded.
   const variantOptions = [
     { id: OPENCODE_PROVIDER_DEFAULT_VARIANT, label: "Provider default", isDefault: true as const },

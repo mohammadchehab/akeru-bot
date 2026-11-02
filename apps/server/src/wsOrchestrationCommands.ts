@@ -1,6 +1,6 @@
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
-import { type OrchestrationCommand, OrchestrationDispatchCommandError } from "@akeru/contracts";
+import { type OrchestrationCommand, OrchestrationDispatchCommandError } from "@isnadi/contracts";
 import { tryAdmitTurnStart, type TurnStartAdmission } from "./remote/updateGate.ts";
 
 import type { WsServices } from "./wsServices.ts";

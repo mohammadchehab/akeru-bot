@@ -2,7 +2,7 @@ import {
   ProviderRuntimeEvent,
   RuntimeRequestId,
   THREAD_SILENT_RUN_ACTIVITY_KIND,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
   asTurnId,

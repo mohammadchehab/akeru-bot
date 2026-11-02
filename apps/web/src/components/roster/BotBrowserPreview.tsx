@@ -1,7 +1,7 @@
 "use client";
 
-import type { MessageKey } from "@akeru/client-runtime/i18n";
-import type { PreviewFrame, ScopedThreadRef } from "@akeru/contracts";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
+import type { PreviewFrame, ScopedThreadRef } from "@isnadi/contracts";
 import { Maximize2Icon, MonitorIcon, Minimize2Icon } from "lucide-react";
 import { useEffect, useRef, type ReactNode } from "react";
 
@@ -23,7 +23,7 @@ import {
 /*
  * The bot's screen. Two ideas come from the reference build: the resting card
  * reveals an "Open" affordance instead of a permanently parked button, and Esc
- * collapses the expanded viewer. Everything else stays on Akeru's transport —
+ * collapses the expanded viewer. Everything else stays on Isnadi's transport —
  * the native surface in Electron, remote frames on the web.
  *
  * The card is only dark while it is actually showing a page. An idle card that

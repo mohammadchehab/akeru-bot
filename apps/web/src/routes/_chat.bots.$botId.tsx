@@ -9,12 +9,12 @@ import {
   RoutineRunId,
   SkillAssignmentId,
   SkillId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   botRoutinesView,
   toRoutineSchedule,
   type RoutineAdapterDraft,
-} from "@akeru/client-runtime/routines";
+} from "@isnadi/client-runtime/routines";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 

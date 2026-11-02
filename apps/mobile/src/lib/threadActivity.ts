@@ -2,24 +2,24 @@ import { Predicate } from "effect";
 import {
   delegationActions,
   threadDelegations,
-} from "@akeru/client-runtime/delegation-presentation";
-import { botChatTimeline } from "@akeru/client-runtime/state/bot-chat-timeline";
+} from "@isnadi/client-runtime/delegation-presentation";
+import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
 import {
   derivePendingApprovals,
   derivePendingUserInputs,
   type PendingApproval,
   type PendingUserInput,
-} from "@akeru/client-runtime/pending-requests";
+} from "@isnadi/client-runtime/pending-requests";
 import type {
-  AkeruDelegationRecord,
+  IsnadiDelegationRecord,
   ChannelProvider,
   OrchestrationThread,
   OrchestrationThreadActivity,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Arr from "effect/Array";
-import { buildBotStepMeters, type BotStepMeterData } from "@akeru/client-runtime/bot-step-usage";
+import { buildBotStepMeters, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
 import type {
   CollapsedWorkLogEntry,
   DerivedWorkLogEntry,
@@ -112,7 +112,7 @@ function groupAdjacentActivities(entries: ReadonlyArray<RawThreadFeedEntry>): Th
 }
 
 export interface ThreadFeedDelegations {
-  readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+  readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
   readonly waitingOnChildren: boolean;
 }
 
@@ -129,7 +129,7 @@ const EMPTY_THREAD_FEED_DELEGATIONS: ThreadFeedDelegations = {
  */
 export function deriveThreadFeedDelegations(
   threadId: ThreadId | undefined,
-  snapshotDelegations: ReadonlyArray<AkeruDelegationRecord> | undefined,
+  snapshotDelegations: ReadonlyArray<IsnadiDelegationRecord> | undefined,
 ): string {
   if (!threadId) {
     return JSON.stringify(EMPTY_THREAD_FEED_DELEGATIONS);
@@ -157,7 +157,7 @@ export function sortThreadActivities(
  */
 function withoutCardedDelegationActivities(
   activities: ReadonlyArray<OrchestrationThreadActivity>,
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
 ): ReadonlyArray<OrchestrationThreadActivity> {
   if (delegations.length === 0) return activities;
   const cardIds = new Set<string>(delegations.map((delegation) => delegation.delegationId));
@@ -177,17 +177,17 @@ function withoutCardedDelegationActivities(
 const activityFeedDerivations = new WeakMap<
   ReadonlyArray<OrchestrationThreadActivity>,
   {
-    readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+    readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
     readonly botStepMeters: ReturnType<typeof buildBotStepMeters>;
     readonly workLogEntries: ReturnType<typeof deriveWorkLogEntries>;
   }
 >();
 
-const NO_FEED_DELEGATIONS: ReadonlyArray<AkeruDelegationRecord> = Object.freeze([]);
+const NO_FEED_DELEGATIONS: ReadonlyArray<IsnadiDelegationRecord> = Object.freeze([]);
 
 function deriveActivityFeed(
   activities: ReadonlyArray<OrchestrationThreadActivity>,
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
 ) {
   const cached = activityFeedDerivations.get(activities);
 
@@ -218,7 +218,7 @@ export function buildThreadFeed(
      * stay outside collapsed work, and the `delegation.<state>` work-log rows
      * for a record that has a card are dropped so it shows once.
      */
-    readonly delegations?: ReadonlyArray<AkeruDelegationRecord>;
+    readonly delegations?: ReadonlyArray<IsnadiDelegationRecord>;
   },
 ): ThreadFeedEntry[] {
   const loadedMessages = options?.loadedMessages ?? thread.messages;
@@ -294,7 +294,7 @@ export function createThreadFeedBuilder() {
         readonly activities: OrchestrationThread["activities"];
         readonly loadedMessages: ReadonlyArray<OrchestrationThread["messages"][number]> | undefined;
         readonly localMessages: ReadonlyArray<OrchestrationThread["messages"][number]> | undefined;
-        readonly delegations: ReadonlyArray<AkeruDelegationRecord>;
+        readonly delegations: ReadonlyArray<IsnadiDelegationRecord>;
         readonly feed: ThreadFeedEntry[];
       }
     | undefined;
@@ -542,7 +542,7 @@ export function threadFeedEntriesEqual(previous: ThreadFeedEntry, next: ThreadFe
 function mergeDelegationCards(
   grouped: ThreadFeedEntry[],
   messages: ReadonlyArray<OrchestrationThread["messages"][number]>,
-  delegations: ReadonlyArray<AkeruDelegationRecord>,
+  delegations: ReadonlyArray<IsnadiDelegationRecord>,
 ): ThreadFeedEntry[] {
   // Delegation cards keep the same anchor placement as web. The shared
   // timeline runs over the thread's messages; each card lands just after the

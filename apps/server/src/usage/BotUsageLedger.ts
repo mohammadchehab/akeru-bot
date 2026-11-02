@@ -1,6 +1,6 @@
 import * as Match from "effect/Match";
 import * as Predicate from "effect/Predicate";
-import { AkeruBotUsageSummary } from "@akeru/contracts";
+import { IsnadiBotUsageSummary } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -25,7 +25,7 @@ import {
 } from "./BotUsageRows.ts";
 
 export class BotUsageLedger extends Context.Service<BotUsageLedger, BotUsageLedgerShape>()(
-  "akeru-bot/usage/BotUsageLedger",
+  "isnadibot/usage/BotUsageLedger",
 ) {}
 
 const make = Effect.gen(function* () {
@@ -95,7 +95,7 @@ const make = Effect.gen(function* () {
               cacheCreationTokens !== current.cacheCreationTokens)
           ) {
             yield* sql`
-              UPDATE akeru_bot_usage_entries
+              UPDATE isnadi_bot_usage_entries
               SET cached_input_tokens = ${cachedInputTokens},
                   cache_creation_tokens = ${cacheCreationTokens},
                   settled_at = ${input.settledAt}
@@ -123,14 +123,14 @@ const make = Effect.gen(function* () {
     const nextCharged = nextReported;
     const chargedDelta = nextCharged - priorCharged;
     yield* sql`
-      UPDATE akeru_bot_usage_balances
+      UPDATE isnadi_bot_usage_balances
       SET reserved_tokens = reserved_tokens - ${releasedReservation},
           consumed_tokens = consumed_tokens + ${chargedDelta},
           updated_at = ${input.settledAt}
       WHERE bot_id = ${current.botId}
     `;
     yield* sql`
-      UPDATE akeru_bot_usage_entries SET
+      UPDATE isnadi_bot_usage_entries SET
         state = ${input.state},
         held_tokens = ${nextHeld},
         input_tokens = ${input.state === "reported" ? input.inputTokens : null},
@@ -158,18 +158,18 @@ const make = Effect.gen(function* () {
             if (prior[0]) return yield* decodeEntry(prior[0]);
 
             yield* sql`
-            INSERT INTO akeru_bot_usage_balances (bot_id, consumed_tokens, reserved_tokens, updated_at)
+            INSERT INTO isnadi_bot_usage_balances (bot_id, consumed_tokens, reserved_tokens, updated_at)
             VALUES (${input.botId}, 0, 0, ${input.createdAt})
             ON CONFLICT (bot_id) DO NOTHING
           `;
 
             yield* sql`
-            UPDATE akeru_bot_usage_balances
+            UPDATE isnadi_bot_usage_balances
             SET reserved_tokens = reserved_tokens + ${input.maximumTokens}, updated_at = ${input.createdAt}
             WHERE bot_id = ${input.botId}
           `;
             yield* sql`
-            INSERT INTO akeru_bot_usage_entries (
+            INSERT INTO isnadi_bot_usage_entries (
               reservation_id, source_key, bot_id, thread_id, turn_id, category, state,
               reserved_tokens, held_tokens, input_tokens, output_tokens, reasoning_tokens, provider,
               model, unavailable_reason, created_at, settled_at
@@ -244,7 +244,7 @@ const make = Effect.gen(function* () {
 
             if (current.turnId === null) {
               yield* sql`
-              UPDATE akeru_bot_usage_entries SET turn_id = ${input.turnId}
+              UPDATE isnadi_bot_usage_entries SET turn_id = ${input.turnId}
               WHERE reservation_id = ${input.reservationId} AND turn_id IS NULL
             `;
             }
@@ -276,7 +276,7 @@ const make = Effect.gen(function* () {
 
             if (current.turnId === null) {
               yield* sql`
-              UPDATE akeru_bot_usage_entries SET turn_id = ${input.turnId}
+              UPDATE isnadi_bot_usage_entries SET turn_id = ${input.turnId}
               WHERE reservation_id = ${current.reservationId} AND turn_id IS NULL
             `;
             }
@@ -306,7 +306,7 @@ const make = Effect.gen(function* () {
 
             if (current.turnId === null) {
               yield* sql`
-                UPDATE akeru_bot_usage_entries SET turn_id = ${input.turnId}
+                UPDATE isnadi_bot_usage_entries SET turn_id = ${input.turnId}
                 WHERE reservation_id = ${current.reservationId} AND turn_id IS NULL
               `;
             }
@@ -314,7 +314,7 @@ const make = Effect.gen(function* () {
             if (input.cancelled) {
               if (current.heldTokens > 0) {
                 yield* sql`
-                  UPDATE akeru_bot_usage_balances
+                  UPDATE isnadi_bot_usage_balances
                   SET reserved_tokens = reserved_tokens - ${current.heldTokens},
                       updated_at = ${input.settledAt}
                   WHERE bot_id = ${current.botId}
@@ -323,13 +323,13 @@ const make = Effect.gen(function* () {
 
               if (current.state === "reported") {
                 yield* sql`
-                  UPDATE akeru_bot_usage_entries
+                  UPDATE isnadi_bot_usage_entries
                   SET held_tokens = 0, settled_at = ${input.settledAt}
                   WHERE reservation_id = ${current.reservationId}
                 `;
               } else {
                 yield* sql`
-                  UPDATE akeru_bot_usage_entries
+                  UPDATE isnadi_bot_usage_entries
                   SET state = 'released', held_tokens = 0,
               input_tokens = NULL, output_tokens = NULL, reasoning_tokens = NULL,
               cached_input_tokens = 0, cache_creation_tokens = 0,
@@ -358,14 +358,14 @@ const make = Effect.gen(function* () {
 
             if (held > 0) {
               yield* sql`
-              UPDATE akeru_bot_usage_balances
+              UPDATE isnadi_bot_usage_balances
               SET reserved_tokens = reserved_tokens - ${held}, updated_at = ${input.settledAt}
               WHERE bot_id = ${current.botId}
             `;
             }
 
             yield* sql`
-            UPDATE akeru_bot_usage_entries
+            UPDATE isnadi_bot_usage_entries
             SET held_tokens = 0, settled_at = ${input.settledAt}
             WHERE reservation_id = ${current.reservationId}
           `;
@@ -414,7 +414,7 @@ const make = Effect.gen(function* () {
 
             if (!input.includedInReservation) {
               yield* sql`
-            INSERT INTO akeru_bot_usage_balances (
+            INSERT INTO isnadi_bot_usage_balances (
               bot_id, consumed_tokens, reserved_tokens, updated_at
             ) VALUES (${input.botId}, ${measuredTokens}, 0, ${input.createdAt})
             ON CONFLICT (bot_id) DO UPDATE SET
@@ -424,7 +424,7 @@ const make = Effect.gen(function* () {
             }
 
             yield* sql`
-          INSERT INTO akeru_bot_usage_entries (
+          INSERT INTO isnadi_bot_usage_entries (
             reservation_id, source_key, bot_id, thread_id, turn_id, category, state,
             reserved_tokens, held_tokens, input_tokens, cached_input_tokens, cache_creation_tokens,
             output_tokens, reasoning_tokens, provider,
@@ -461,7 +461,7 @@ const make = Effect.gen(function* () {
 
             if (prior[0]) return yield* decodeEntry(prior[0]);
             yield* sql`
-          INSERT INTO akeru_bot_usage_entries (
+          INSERT INTO isnadi_bot_usage_entries (
             reservation_id, source_key, bot_id, thread_id, turn_id, category, state,
             reserved_tokens, held_tokens, input_tokens, output_tokens, reasoning_tokens, provider,
             model, unavailable_reason, created_at, settled_at
@@ -492,12 +492,12 @@ const make = Effect.gen(function* () {
         readonly reservedTokens: number;
       }>`
         SELECT consumed_tokens AS "consumedTokens", reserved_tokens AS "reservedTokens"
-        FROM akeru_bot_usage_balances WHERE bot_id = ${botId}
+        FROM isnadi_bot_usage_balances WHERE bot_id = ${botId}
       `;
 
       const rows = yield* sql<UsageRow>`
         SELECT ${entryColumns(sql)}
-        FROM akeru_bot_usage_entries WHERE bot_id = ${botId}
+        FROM isnadi_bot_usage_entries WHERE bot_id = ${botId}
         ORDER BY created_at DESC LIMIT 200
       `;
 
@@ -532,7 +532,7 @@ const make = Effect.gen(function* () {
             AND category = 'observer' THEN 1 ELSE 0 END), 0) AS "unavailableObserverEntries",
           COALESCE(SUM(CASE WHEN state = 'unavailable' AND reserved_tokens > 0
             AND category = 'reflector' THEN 1 ELSE 0 END), 0) AS "unavailableReflectorEntries"
-        FROM akeru_bot_usage_entries WHERE bot_id = ${botId}
+        FROM isnadi_bot_usage_entries WHERE bot_id = ${botId}
       `;
 
       const entries = yield* Effect.forEach(rows, decodeEntry);
@@ -587,7 +587,7 @@ const make = Effect.gen(function* () {
           COALESCE(SUM(CASE WHEN (state = 'unavailable' AND reserved_tokens > 0) OR
             (state = 'reported' AND (input_tokens IS NULL OR output_tokens IS NULL))
             THEN 1 ELSE 0 END), 0) AS "incompleteEntries"
-        FROM akeru_bot_usage_entries WHERE bot_id = ${botId}
+        FROM isnadi_bot_usage_entries WHERE bot_id = ${botId}
         GROUP BY model
       `;
 
@@ -622,19 +622,19 @@ const make = Effect.gen(function* () {
 
           const rows = yield* sql<UsageRow>`
         SELECT ${entryColumns(sql)}
-        FROM akeru_bot_usage_entries
+        FROM isnadi_bot_usage_entries
         WHERE held_tokens > 0 OR state = 'reserved'
       `;
 
           for (const row of rows) {
             if (row.state === "reported") {
               yield* sql`
-            UPDATE akeru_bot_usage_balances
+            UPDATE isnadi_bot_usage_balances
             SET reserved_tokens = reserved_tokens - ${row.heldTokens}, updated_at = ${reconciledAt}
             WHERE bot_id = ${row.botId}
           `;
               yield* sql`
-            UPDATE akeru_bot_usage_entries
+            UPDATE isnadi_bot_usage_entries
             SET held_tokens = 0, settled_at = ${reconciledAt}
             WHERE reservation_id = ${row.reservationId}
           `;
@@ -674,11 +674,11 @@ const make = Effect.gen(function* () {
   } satisfies BotUsageLedgerShape;
 });
 
-const decodeUsageSummary = Schema.decodeUnknownEffect(AkeruBotUsageSummary);
+const decodeUsageSummary = Schema.decodeUnknownEffect(IsnadiBotUsageSummary);
 
 export const BotUsageLedgerLive = Layer.effect(BotUsageLedger, make);
 
-export { AKERU_TURN_USAGE_RESERVATION_TOKENS } from "./BotUsageLedgerTypes.ts";
+export { ISNADI_TURN_USAGE_RESERVATION_TOKENS } from "./BotUsageLedgerTypes.ts";
 
 export type { ReserveBotUsageInput } from "./BotUsageLedgerTypes.ts";
 

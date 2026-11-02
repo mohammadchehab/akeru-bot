@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ServerProviderUnavailability } from "@akeru/contracts";
+import { ServerProviderUnavailability } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import type { CheckpointServiceError } from "../checkpointing/Errors.ts";

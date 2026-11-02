@@ -1,23 +1,23 @@
 import { assert, it } from "@effect/vitest";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   ProjectId,
   ThreadId,
-  type AkeruMemoryRevision,
-} from "@akeru/contracts";
+  type IsnadiMemoryRevision,
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 
-import { exportAkeruMemory } from "./MemoryExport.ts";
+import { exportIsnadiMemory } from "./MemoryExport.ts";
 
 const access = {
-  tenantId: AkeruMemoryTenantId.make("local"),
-  userId: AkeruMemoryUserId.make("owner"),
+  tenantId: IsnadiMemoryTenantId.make("local"),
+  userId: IsnadiMemoryUserId.make("owner"),
   threadId: ThreadId.make("thread-export"),
   projectId: ProjectId.make("project-export"),
   workspaceRoot: "/workspace/export",
@@ -29,16 +29,16 @@ const access = {
 
 const revision = (number: number, deletionState: "active" | "tombstoned") =>
   ({
-    id: AkeruMemoryId.make(`revision-${number}`),
-    rootId: AkeruMemoryRootId.make("root-export"),
+    id: IsnadiMemoryId.make(`revision-${number}`),
+    rootId: IsnadiMemoryRootId.make("root-export"),
     revision: number,
     partition: {
       tenantId: access.tenantId,
       scope: "bot-user" as const,
-      partitionId: AkeruMemoryPartitionId.make("bot-export:owner"),
+      partitionId: IsnadiMemoryPartitionId.make("bot-export:owner"),
     },
     entityKind: "user" as const,
-    entityId: AkeruMemoryEntityId.make("owner"),
+    entityId: IsnadiMemoryEntityId.make("owner"),
     kind: "fact" as const,
     value: {},
     fact: number === 1 ? "The user prefers vim." : "The user removed this preference.",
@@ -51,14 +51,14 @@ const revision = (number: number, deletionState: "active" | "tombstoned") =>
     updatedAt: `2026-08-30T20:0${number}:00.000Z`,
     confidence: 1,
     approvalState: "approved" as const,
-    supersedesId: number === 1 ? null : AkeruMemoryId.make("revision-1"),
-    supersededById: number === 1 ? AkeruMemoryId.make("revision-2") : null,
+    supersedesId: number === 1 ? null : IsnadiMemoryId.make("revision-1"),
+    supersededById: number === 1 ? IsnadiMemoryId.make("revision-2") : null,
     visibility: "private" as const,
     deletionState,
     pinned: false,
     sensitive: false,
     affectedBotIds: [access.botId],
-  }) satisfies AkeruMemoryRevision;
+  }) satisfies IsnadiMemoryRevision;
 
 it.effect("exports readable complete history with checksums and tombstones", () => {
   const current = revision(2, "tombstoned");
@@ -69,7 +69,7 @@ it.effect("exports readable complete history with checksums and tombstones", () 
   };
 
   return Effect.gen(function* () {
-    const archive = yield* exportAkeruMemory({
+    const archive = yield* exportIsnadiMemory({
       repository,
       access,
       target: "bot",

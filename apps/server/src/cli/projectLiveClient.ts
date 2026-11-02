@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { AuthAdministrativeScopes, EnvironmentHttpApi } from "@akeru/contracts";
+import { AuthAdministrativeScopes, EnvironmentHttpApi } from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -24,7 +24,7 @@ export const withProjectCliSessionToken = <A, E, R>(
   Effect.acquireUseRelease(
     environmentAuth.issueSession({
       scopes: AuthAdministrativeScopes,
-      label: "akeru project cli",
+      label: "isnadi project cli",
     }),
     (issued) => run(issued.token),
     (issued) => environmentAuth.revokeSession(issued.sessionId).pipe(Effect.ignore({ log: true })),

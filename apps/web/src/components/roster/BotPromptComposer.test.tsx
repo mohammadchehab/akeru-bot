@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { visitElements } from "../../test/reactElementTree";
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -102,7 +102,7 @@ describe("bot prompt composer", () => {
 
   it("keeps a person mention as plain text so the boss answers", () => {
     const groupBots = [
-      { id: "boss", name: "Akeru" },
+      { id: "boss", name: "Isnadi" },
       { id: "mori", name: "Mori" },
     ];
 
@@ -118,18 +118,18 @@ describe("bot prompt composer", () => {
   it("refuses to route a name two group bots share, whatever their order", () => {
     const mori = { id: "mori-claude", name: "Mori" };
     const otherMori = { id: "mori-grok", name: "Mori" };
-    const akeru = { id: "boss", name: "Akeru" };
+    const isnadi = { id: "boss", name: "Isnadi" };
 
     for (const bots of [
-      [akeru, mori, otherMori],
-      [otherMori, akeru, mori],
+      [isnadi, mori, otherMori],
+      [otherMori, isnadi, mori],
     ]) {
       const mention = resolveBotMention("@Mori check the logs", bots);
       expect(mention).toEqual({ kind: "ambiguous", name: "Mori" });
       expect(botMentionHint(mention)).toBe(
         "More than one bot here is named Mori. Pick one from the @ menu to mention it.",
       );
-      expect(resolveBotMention("@Mori then @Akeru", bots)).toEqual({ kind: "bot", botId: "boss" });
+      expect(resolveBotMention("@Mori then @Isnadi", bots)).toEqual({ kind: "bot", botId: "boss" });
     }
 
     expect(botMentionHint({ kind: "bot", botId: "boss" })).toBeNull();
@@ -192,7 +192,7 @@ describe("bot prompt composer", () => {
 
   it("centers on the same 48rem reading column as the conversation", () => {
     const markup = renderToStaticMarkup(
-      <BotPromptComposer botName="Akeru" disabled={false} onSubmit={vi.fn(async () => true)} />,
+      <BotPromptComposer botName="Isnadi" disabled={false} onSubmit={vi.fn(async () => true)} />,
     );
 
     expect(markup).toContain("px-gutter-48rem");
@@ -201,7 +201,7 @@ describe("bot prompt composer", () => {
   it("attaches a pending question above the custom answer field", () => {
     const markup = renderToStaticMarkup(
       <BotPromptComposer
-        botName="Akeru"
+        botName="Isnadi"
         disabled={false}
         pendingActionSlot={<div data-testid="pending-question">Question</div>}
         placeholder="Write a custom answer…"
@@ -217,12 +217,12 @@ describe("bot prompt composer", () => {
 
   it("squares the prompt box against an approval rendered above it", () => {
     const withoutApproval = renderToStaticMarkup(
-      <BotPromptComposer botName="Akeru" disabled={false} onSubmit={vi.fn(async () => true)} />,
+      <BotPromptComposer botName="Isnadi" disabled={false} onSubmit={vi.fn(async () => true)} />,
     );
 
     const withApproval = renderToStaticMarkup(
       <BotPromptComposer
-        botName="Akeru"
+        botName="Isnadi"
         disabled={false}
         pendingActionSlot={<div data-testid="approval-slot">Run this command?</div>}
         onSubmit={vi.fn(async () => true)}
@@ -274,7 +274,7 @@ describe("bot prompt composer", () => {
 
   it("opens the file picker directly when attaching is the only prompt action", () => {
     const markup = renderToStaticMarkup(
-      <BotPromptComposer botName="Akeru" disabled={false} onSubmit={vi.fn(async () => true)} />,
+      <BotPromptComposer botName="Isnadi" disabled={false} onSubmit={vi.fn(async () => true)} />,
     );
 
     expect(markup).toContain('aria-label="Attach file"');
@@ -296,7 +296,7 @@ describe("bot prompt composer", () => {
 
   it("does not render model or reasoning controls", () => {
     const markup = renderToStaticMarkup(
-      <BotPromptComposer botName="Akeru" disabled={false} onSubmit={vi.fn(async () => true)} />,
+      <BotPromptComposer botName="Isnadi" disabled={false} onSubmit={vi.fn(async () => true)} />,
     );
 
     expect(markup).not.toContain("Reasoning");

@@ -48,7 +48,7 @@ describe("product feedback submission", () => {
 
   it("rotates malformed and future-dated installation tokens", () => {
     storage.set(
-      "akeru.product-feedback.install-token.v1",
+      "isnadi.product-feedback.install-token.v1",
       JSON.stringify({ token: "broken", createdAt: Date.now() + 60_000 }),
     );
     expect(readOrRotateProductFeedbackInstallToken()).toMatch(

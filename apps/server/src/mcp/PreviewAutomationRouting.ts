@@ -1,4 +1,4 @@
-import { type PreviewAutomationOperation } from "@akeru/contracts";
+import { type PreviewAutomationOperation } from "@isnadi/contracts";
 import * as McpInvocationContext from "./McpInvocationContext.ts";
 import {
   type ClientConnection,

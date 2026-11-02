@@ -5,7 +5,7 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -50,7 +50,7 @@ export async function createRestartSystem() {
       Layer.provide(ThreadPlanProgress.layer),
       Layer.provide(RepositoryIdentityResolver.layer),
       Layer.provideMerge(SqlitePersistenceMemory),
-      Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "akeru-restart-test-" })),
+      Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-restart-test-" })),
       Layer.provideMerge(NodeServices.layer),
     ),
   );
@@ -74,7 +74,7 @@ export async function createRestartSystem() {
     commandId: CommandId.make("restart-project-create"),
     projectId,
     title: "Restart",
-    workspaceRoot: "/tmp/akeru-restart",
+    workspaceRoot: "/tmp/isnadi-restart",
     defaultModelSelection: modelSelection,
     createdAt,
   });

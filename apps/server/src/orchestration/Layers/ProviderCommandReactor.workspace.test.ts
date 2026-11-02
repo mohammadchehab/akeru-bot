@@ -1,5 +1,5 @@
 import * as NodePath from "node:path";
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 import {
@@ -102,7 +102,7 @@ describe("ProviderCommandReactor", () => {
     expect(harness.renameBranch.mock.calls[0]?.[0]).toMatchObject({
       cwd: "/tmp/provider-project-worktree",
       oldBranch: "t3code/deadbeef",
-      newBranch: "akeru/deadbeef",
+      newBranch: "isnadi/deadbeef",
     });
   });
 

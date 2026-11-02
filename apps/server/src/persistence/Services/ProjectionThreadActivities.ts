@@ -13,7 +13,7 @@ import {
   OrchestrationThreadActivityTone,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
@@ -125,5 +125,5 @@ export class ProjectionThreadActivityRepository extends Context.Service<
   ProjectionThreadActivityRepository,
   ProjectionThreadActivityRepositoryShape
 >()(
-  "akeru-bot/persistence/Services/ProjectionThreadActivities/ProjectionThreadActivityRepository",
+  "isnadibot/persistence/Services/ProjectionThreadActivities/ProjectionThreadActivityRepository",
 ) {}

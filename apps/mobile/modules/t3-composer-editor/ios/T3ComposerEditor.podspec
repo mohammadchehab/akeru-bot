@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
   s.name           = 'T3ComposerEditor'
   s.version        = '1.0.0'
-  s.summary        = 'Native attributed composer editor for Akeru Bot mobile.'
+  s.summary        = 'Native attributed composer editor for IsnadiBot mobile.'
   s.description    = 'UIKit-backed rich text composer with atomic skill and file tokens.'
-  s.author         = 'Akeru Bot maintainers'
-  s.homepage       = 'https://github.com/opencoredev/akeru-bot'
+  s.author         = 'IsnadiBot maintainers'
+  s.homepage       = 'https://github.com/mohammadchehab/isnadibot'
   s.license        = { :type => 'MIT', :file => '../LICENSE' }
   s.platforms      = {
     :ios => '16.4',

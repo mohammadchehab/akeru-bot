@@ -1,4 +1,4 @@
-import { EnvironmentId } from "@akeru/contracts";
+import { EnvironmentId } from "@isnadi/contracts";
 
 import { describe, expect, it, vi } from "vite-plus/test";
 

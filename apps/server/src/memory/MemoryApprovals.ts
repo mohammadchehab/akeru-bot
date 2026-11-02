@@ -3,22 +3,22 @@ import * as Predicate from "effect/Predicate";
 
 import * as NodeCrypto from "node:crypto";
 import {
-  AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
-  AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
-  AkeruMemoryCandidateId,
-  AkeruMemoryId,
-  AkeruMemoryRootId,
-  AKERU_MEMORY_FACT_MAX_CHARS,
+  ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY,
+  ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+  IsnadiMemoryCandidateId,
+  IsnadiMemoryId,
+  IsnadiMemoryRootId,
+  ISNADI_MEMORY_FACT_MAX_CHARS,
   BotId,
   CommandId,
   EventId,
   ThreadId,
-  type AkeruMemoryApprovalRequest,
-  type AkeruMemoryDecisionReceipt,
-  type AkeruMemoryRevision,
-  AkeruMemoryTargetScope,
-  type AkeruMemoryThreadAccess,
-} from "@akeru/contracts";
+  type IsnadiMemoryApprovalRequest,
+  type IsnadiMemoryDecisionReceipt,
+  type IsnadiMemoryRevision,
+  IsnadiMemoryTargetScope,
+  type IsnadiMemoryThreadAccess,
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -49,10 +49,10 @@ import {
 } from "./MemoryApprovalRows.ts";
 
 export class MemoryApprovals extends Context.Service<MemoryApprovals, MemoryApprovalsShape>()(
-  "akeru-bot/memory/MemoryApprovals",
+  "isnadibot/memory/MemoryApprovals",
 ) {}
 
-const decodeTargetScope = Schema.decodeUnknownSync(AkeruMemoryTargetScope);
+const decodeTargetScope = Schema.decodeUnknownSync(IsnadiMemoryTargetScope);
 
 const make = Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
@@ -64,7 +64,7 @@ const make = Effect.gen(function* () {
   const decideLock = yield* Semaphore.make(1);
   const nowIso = DateTime.now.pipe(Effect.map(DateTime.formatIso));
 
-  const affectedBotsFor = (access: AkeruMemoryThreadAccess) => {
+  const affectedBotsFor = (access: IsnadiMemoryThreadAccess) => {
     const authorBotId = access.respondingBotId ?? access.botId;
 
     return access.groupId === null
@@ -79,7 +79,7 @@ const make = Effect.gen(function* () {
     readonly candidateId: string;
     readonly phase: "requested" | "resolved";
     readonly summary: string;
-    readonly payload: AkeruMemoryApprovalRequest | AkeruMemoryDecisionReceipt;
+    readonly payload: IsnadiMemoryApprovalRequest | IsnadiMemoryDecisionReceipt;
     readonly createdAt: string;
   }) =>
     orchestrationEngine
@@ -93,8 +93,8 @@ const make = Effect.gen(function* () {
           tone: input.phase === "requested" ? "approval" : "info",
           kind:
             input.phase === "requested"
-              ? AKERU_MEMORY_APPROVAL_REQUESTED_ACTIVITY
-              : AKERU_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
+              ? ISNADI_MEMORY_APPROVAL_REQUESTED_ACTIVITY
+              : ISNADI_MEMORY_APPROVAL_RESOLVED_ACTIVITY,
           summary: input.summary,
           payload: input.payload,
           turnId: null,
@@ -105,7 +105,7 @@ const make = Effect.gen(function* () {
       .pipe(Effect.mapError(failWith("Could not record the memory approval")));
 
   const openInboxItem = Effect.fn("MemoryApprovals.openInboxItem")(function* (
-    request: AkeruMemoryApprovalRequest,
+    request: IsnadiMemoryApprovalRequest,
   ) {
     const thread = yield* projectionSnapshotQuery
       .getThreadShellById(request.sourceThreadId)
@@ -148,14 +148,14 @@ const make = Effect.gen(function* () {
 
   const propose: MemoryApprovalsShape["propose"] = Effect.fn("MemoryApprovals.propose")(
     function* (input) {
-      if (input.fact.length > AKERU_MEMORY_FACT_MAX_CHARS) {
+      if (input.fact.length > ISNADI_MEMORY_FACT_MAX_CHARS) {
         return yield* new MemoryApprovalError({ message: "Memory text is too long." });
       }
 
       const createdAt = yield* nowIso;
 
       if (input.mode === "auto" && !input.sensitive) {
-        const memoryId = AkeruMemoryId.make(NodeCrypto.randomUUID());
+        const memoryId = IsnadiMemoryId.make(NodeCrypto.randomUUID());
 
         const revision = yield* repository
           .insertScopedFact({
@@ -184,10 +184,10 @@ const make = Effect.gen(function* () {
         });
       }
 
-      const candidateId = AkeruMemoryCandidateId.make(NodeCrypto.randomUUID());
+      const candidateId = IsnadiMemoryCandidateId.make(NodeCrypto.randomUUID());
       const authorBotId = input.access.respondingBotId ?? input.access.botId;
 
-      const request: AkeruMemoryApprovalRequest = {
+      const request: IsnadiMemoryApprovalRequest = {
         candidateId,
         fact: input.fact,
         scope: input.scope,
@@ -202,7 +202,7 @@ const make = Effect.gen(function* () {
       );
 
       yield* sql`
-        INSERT INTO akeru_memory_candidates (
+        INSERT INTO isnadi_memory_candidates (
           candidate_id, tenant_id, initiating_user_id, source_thread_id,
           source_message_id, author_bot_id, fact_text, target_scope, sensitive,
           confidence, affected_bot_ids_json, status, created_at
@@ -225,7 +225,7 @@ const make = Effect.gen(function* () {
       }).pipe(
         Effect.tapError(() =>
           sql`
-            DELETE FROM akeru_memory_candidates
+            DELETE FROM isnadi_memory_candidates
             WHERE tenant_id = ${input.access.tenantId} AND candidate_id = ${candidateId}
           `.pipe(Effect.ignore),
         ),
@@ -241,7 +241,7 @@ const make = Effect.gen(function* () {
       SELECT status, fact_text AS fact, target_scope AS scope,
         affected_bot_ids_json AS affectedBotIds, memory_root_id AS memoryRootId,
         created_at AS createdAt
-      FROM akeru_memory_decision_receipts
+      FROM isnadi_memory_decision_receipts
       WHERE tenant_id = ${tenantId} AND candidate_id = ${candidateId}
     `.pipe(
       Effect.flatMap((rows) =>
@@ -249,14 +249,14 @@ const make = Effect.gen(function* () {
           ? Effect.succeed(null)
           : decodeReceiptRow(rows[0]).pipe(
               Effect.map(
-                (row): AkeruMemoryDecisionReceipt => ({
-                  candidateId: AkeruMemoryCandidateId.make(candidateId),
+                (row): IsnadiMemoryDecisionReceipt => ({
+                  candidateId: IsnadiMemoryCandidateId.make(candidateId),
                   status: row.status === "approved" ? "approved" : "rejected",
                   fact: row.fact,
                   scope: decodeTargetScope(row.scope),
                   affectedBotIds: row.affectedBotIds,
                   memoryRootId:
-                    row.memoryRootId === null ? null : AkeruMemoryRootId.make(row.memoryRootId),
+                    row.memoryRootId === null ? null : IsnadiMemoryRootId.make(row.memoryRootId),
                   createdAt: row.createdAt,
                 }),
               ),
@@ -267,7 +267,7 @@ const make = Effect.gen(function* () {
 
   const reconcileResolved = Effect.fn("MemoryApprovals.reconcileResolved")(function* (
     candidate: typeof CandidateRow.Type,
-    receipt: AkeruMemoryDecisionReceipt,
+    receipt: IsnadiMemoryDecisionReceipt,
   ) {
     yield* appendActivity({
       threadId: ThreadId.make(candidate.sourceThreadId),
@@ -295,7 +295,7 @@ const make = Effect.gen(function* () {
             source_thread_id AS sourceThreadId, source_message_id AS sourceMessageId,
             author_bot_id AS authorBotId, fact_text AS fact, target_scope AS scope,
             sensitive, confidence, affected_bot_ids_json AS affectedBotIds, status
-          FROM akeru_memory_candidates
+          FROM isnadi_memory_candidates
           WHERE tenant_id = ${access.tenantId} AND candidate_id = ${decision.candidateId}
         `.pipe(
             Effect.flatMap(Effect.forEach((row) => decodeCandidateRow(row))),
@@ -342,7 +342,7 @@ const make = Effect.gen(function* () {
           let fact =
             decision.decision === "approve" ? (decision.fact ?? candidate.fact) : candidate.fact;
 
-          if (fact.length > AKERU_MEMORY_FACT_MAX_CHARS) {
+          if (fact.length > ISNADI_MEMORY_FACT_MAX_CHARS) {
             return yield* new MemoryApprovalError({ message: "Memory text is too long." });
           }
 
@@ -372,7 +372,7 @@ const make = Effect.gen(function* () {
               ? (decision.scope ?? decodeTargetScope(candidate.scope))
               : decodeTargetScope(candidate.scope);
 
-          let approvedRevision: AkeruMemoryRevision | null = null;
+          let approvedRevision: IsnadiMemoryRevision | null = null;
 
           if (decision.decision === "approve") {
             approvedRevision = yield* repository
@@ -383,7 +383,7 @@ const make = Effect.gen(function* () {
                 sensitive: candidate.sensitive === 1,
                 confidence: candidate.confidence,
                 sourceMessageId: null,
-                memoryId: AkeruMemoryId.make(`approval:${candidate.candidateId}`),
+                memoryId: IsnadiMemoryId.make(`approval:${candidate.candidateId}`),
                 createdAt,
               })
               .pipe(
@@ -391,7 +391,7 @@ const make = Effect.gen(function* () {
                   repository
                     .getCurrent({
                       access,
-                      rootId: AkeruMemoryRootId.make(`approval:${candidate.candidateId}`),
+                      rootId: IsnadiMemoryRootId.make(`approval:${candidate.candidateId}`),
                     })
                     .pipe(
                       Effect.flatMap((existing) =>
@@ -423,7 +423,7 @@ const make = Effect.gen(function* () {
             const orphan = yield* repository
               .getCurrent({
                 access,
-                rootId: AkeruMemoryRootId.make(`approval:${candidate.candidateId}`),
+                rootId: IsnadiMemoryRootId.make(`approval:${candidate.candidateId}`),
               })
               .pipe(Effect.catchTag("EntityMemoryNotFoundError", () => Effect.succeed(null)));
 
@@ -437,7 +437,7 @@ const make = Effect.gen(function* () {
                     memoryId: orphan.rootId,
                     expectedRevision: orphan.revision,
                   },
-                  memoryId: AkeruMemoryId.make(`approval:${candidate.candidateId}:rejected`),
+                  memoryId: IsnadiMemoryId.make(`approval:${candidate.candidateId}:rejected`),
                   updatedAt: createdAt,
                   sharedProjectApproval: "approved",
                 })
@@ -447,8 +447,8 @@ const make = Effect.gen(function* () {
 
           const memoryRootId = approvedRevision?.rootId ?? null;
 
-          const receipt: AkeruMemoryDecisionReceipt = {
-            candidateId: AkeruMemoryCandidateId.make(candidate.candidateId),
+          const receipt: IsnadiMemoryDecisionReceipt = {
+            candidateId: IsnadiMemoryCandidateId.make(candidate.candidateId),
             status: decision.decision === "approve" ? "approved" : "rejected",
             fact,
             scope,
@@ -465,13 +465,13 @@ const make = Effect.gen(function* () {
             .withTransaction(
               Effect.gen(function* () {
                 yield* sql`
-                UPDATE akeru_memory_candidates
+                UPDATE isnadi_memory_candidates
                 SET status = ${receipt.status}, decided_at = ${createdAt},
                   decided_memory_root_id = ${memoryRootId}
                 WHERE tenant_id = ${access.tenantId} AND candidate_id = ${candidate.candidateId}
               `;
                 yield* sql`
-                INSERT INTO akeru_memory_decision_receipts (
+                INSERT INTO isnadi_memory_decision_receipts (
                   receipt_id, candidate_id, tenant_id, status, fact_text, target_scope,
                   affected_bot_ids_json, memory_root_id, created_at
                 ) VALUES (

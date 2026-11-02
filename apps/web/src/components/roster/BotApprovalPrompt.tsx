@@ -1,8 +1,8 @@
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   type ProviderApprovalDecision,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { cn } from "~/lib/utils";
 
 import { useI18n } from "../../i18n";
@@ -30,8 +30,8 @@ export function BotApprovalPrompt({
   const { t } = useI18n();
 
   const isSpecialReview =
-    approval.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME ||
-    approval.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME;
+    approval.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME ||
+    approval.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME;
 
   const oneUse =
     !isSpecialReview &&
@@ -41,9 +41,9 @@ export function BotApprovalPrompt({
       false);
 
   const heading =
-    approval.toolName === AKERU_CREATE_ROUTINE_TOOL_NAME
+    approval.toolName === ISNADI_CREATE_ROUTINE_TOOL_NAME
       ? t("Review routine")
-      : approval.toolName === AKERU_PRODUCT_FEEDBACK_TOOL_NAME
+      : approval.toolName === ISNADI_PRODUCT_FEEDBACK_TOOL_NAME
         ? t("Review product feedback")
         : approval.toolName === "Computer Use"
           ? t("Use the computer?")

@@ -1,19 +1,19 @@
 import { Predicate } from "effect";
-import type { AtomCommandResult } from "@akeru/client-runtime/state/runtime";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import type { AtomCommandResult } from "@isnadi/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import {
   correlatedVoiceReply,
   runVoiceOperation,
   waitForVoiceReply,
   type ComposedVoiceAdapters,
   type VoiceAudio,
-} from "@akeru/client-runtime/voice";
+} from "@isnadi/client-runtime/voice";
 import type {
   OrchestrationLatestTurn,
   OrchestrationMessage,
   VoiceSynthesizeInput,
   VoiceTranscribeInput,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { randomUUID } from "../../lib/utils";
 

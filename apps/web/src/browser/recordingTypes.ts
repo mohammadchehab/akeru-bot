@@ -1,4 +1,4 @@
-import type { DesktopPreviewRecordingArtifact, ScopedThreadRef } from "@akeru/contracts";
+import type { DesktopPreviewRecordingArtifact, ScopedThreadRef } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 export class BrowserRecordingUnavailableError extends Schema.TaggedErrorClass<BrowserRecordingUnavailableError>()(

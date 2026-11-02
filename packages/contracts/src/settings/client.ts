@@ -184,23 +184,35 @@ export const FontFamilyPreference = Schema.String.check(Schema.isMaxLength(200))
 
 export type FontFamilyPreference = typeof FontFamilyPreference.Type;
 
-// The Worker in infra/feedback. akeru-bot.com is on Vercel DNS, so the Worker
-// cannot bind a custom hostname there and clients post to workers.dev directly.
-export const DEFAULT_PRODUCT_FEEDBACK_ENDPOINT =
-  "https://akeru-feedback.leoisadev.workers.dev/v1/feedback";
+// Empty means no feedback inbox is configured, and the feedback dialog cannot
+// send. To collect reports, deploy the Worker in infra/feedback and set its
+// `/v1/feedback` URL as the endpoint in Settings.
+export const DEFAULT_PRODUCT_FEEDBACK_ENDPOINT = "";
 
-export const AKERU_MARKETING_SITE_URL = "https://akeru.bot";
+// The project's public home. There is no marketing site, so product, license,
+// and policy links point at the repository.
+export const ISNADI_REPOSITORY_URL = "https://github.com/mohammadchehab/isnadibot";
 
-export const AKERU_PRIVACY_POLICY_VERSION = "2026-08-31";
+// There is no separate policy site: the README describes what the app sends
+// where, and the license is the terms the software is offered under.
+export const ISNADI_PRIVACY_POLICY_URL = `${ISNADI_REPOSITORY_URL}/blob/main/README.md`;
 
-export const AKERU_TERMS_VERSION = "2026-08-31";
+export const ISNADI_TERMS_URL = `${ISNADI_REPOSITORY_URL}/blob/main/LICENSE`;
 
-export const ProductFeedbackEndpoint = TrimmedNonEmptyString.check(
-  Schema.isMaxLength(2_048),
-  Schema.isPattern(
-    /^(?:https:\/\/[a-z0-9.-]+(?::\d+)?|http:\/\/(?:localhost|127(?:\.\d{1,3}){3}|\[::1\])(?::\d+)?)(?:\/[^\s]*)?$/i,
+export const ISNADI_PRIVACY_POLICY_VERSION = "2026-08-31";
+
+export const ISNADI_TERMS_VERSION = "2026-08-31";
+
+/** An HTTPS or loopback HTTP URL, or empty when no feedback inbox is configured. */
+export const ProductFeedbackEndpoint = Schema.Union([
+  Schema.Literal(""),
+  TrimmedNonEmptyString.check(
+    Schema.isMaxLength(2_048),
+    Schema.isPattern(
+      /^(?:https:\/\/[a-z0-9.-]+(?::\d+)?|http:\/\/(?:localhost|127(?:\.\d{1,3}){3}|\[::1\])(?::\d+)?)(?:\/[^\s]*)?$/i,
+    ),
   ),
-);
+]);
 
 export type ProductFeedbackEndpoint = typeof ProductFeedbackEndpoint.Type;
 

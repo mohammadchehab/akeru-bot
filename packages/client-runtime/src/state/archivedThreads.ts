@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { EnvironmentId, type OrchestrationShellSnapshot } from "@akeru/contracts";
+import { EnvironmentId, type OrchestrationShellSnapshot } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import { pipe } from "effect/Function";
 import * as Option from "effect/Option";

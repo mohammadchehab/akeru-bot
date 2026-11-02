@@ -1,4 +1,4 @@
-import type { OrchestrationBot } from "@akeru/contracts";
+import type { OrchestrationBot } from "@isnadi/contracts";
 import { View } from "react-native";
 
 import { BotAvatarView, seededBlobAvatar } from "./BotAvatarView";

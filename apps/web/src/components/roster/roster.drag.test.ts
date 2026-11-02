@@ -23,7 +23,7 @@ import {
 
 const stationary = { x: 0, y: 0, scaleX: 1, scaleY: 1 };
 
-const akeru: RosterItemRef = { kind: "bot", id: "akeru" };
+const isnadi: RosterItemRef = { kind: "bot", id: "isnadi" };
 
 const mori: RosterItemRef = { kind: "bot", id: "mori" };
 
@@ -78,13 +78,13 @@ describe("roster collision detection", () => {
   const items = buildRosterListItems({
     pinnedItems: [],
     sections: [],
-    unassignedItems: [akeru, mori],
+    unassignedItems: [isnadi, mori],
   });
 
   function collisionArgs() {
     const { rects, activeIndex, overIndex } = layout(
       items,
-      rosterEntryId(akeru),
+      rosterEntryId(isnadi),
       rosterEntryId(mori),
     );
 
@@ -92,7 +92,7 @@ describe("roster collision detection", () => {
 
     return {
       active: {
-        id: rosterEntryId(akeru),
+        id: rosterEntryId(isnadi),
         data: { current: {} },
         rect: { current: { initial: rects[activeIndex]!, translated: collisionRect } },
       },
@@ -114,7 +114,7 @@ describe("roster collision detection", () => {
     const args = collisionArgs();
     const detector = createRosterCollisionDetection((id) => id !== rosterEntryId(mori));
     expect(closestCenter(args)[0]?.id).toBe(rosterEntryId(mori));
-    expect(detector(args).map((collision) => collision.id)).toEqual([rosterEntryId(akeru)]);
+    expect(detector(args).map((collision) => collision.id)).toEqual([rosterEntryId(isnadi)]);
   });
 
   it("selects the nearest supported target", () => {
@@ -126,7 +126,7 @@ describe("roster collision detection", () => {
     const items = buildRosterListItems({
       pinnedItems: [],
       sections: [
-        { id: "alpha", name: "Alpha", items: [akeru], collapsed: false },
+        { id: "alpha", name: "Alpha", items: [isnadi], collapsed: false },
         { id: "beta", name: "Beta", items: [mori], collapsed: false },
       ],
       unassignedItems: [],
@@ -173,12 +173,12 @@ describe("roster drag projection", () => {
     const cedar: RosterItemRef = { kind: "bot", id: "cedar" };
 
     const items = buildRosterListItems({
-      pinnedItems: [akeru, mori, cedar],
+      pinnedItems: [isnadi, mori, cedar],
       sections: [],
       unassignedItems: [],
     });
 
-    const args = layout(items, rosterEntryId(akeru), rosterEntryId(mori));
+    const args = layout(items, rosterEntryId(isnadi), rosterEntryId(mori));
 
     const pinnedIndexes = items.flatMap((item, index) =>
       item.kind === "entry" && item.zone === "pinned" ? [index] : [],
@@ -206,7 +206,7 @@ describe("roster drag projection", () => {
     const items = buildRosterListItems({
       pinnedItems: [],
       sections: [],
-      unassignedItems: [akeru, mori],
+      unassignedItems: [isnadi, mori],
     });
 
     const strategy = createRosterSortingStrategy({
@@ -214,22 +214,22 @@ describe("roster drag projection", () => {
       boundaryLabelHeight: 16,
     });
 
-    const args = layout(items, rosterEntryId(akeru), rosterMarkerId("pinned-header"));
+    const args = layout(items, rosterEntryId(isnadi), rosterMarkerId("pinned-header"));
     const header = strategy({ ...args, index: 0 });
     expect(header).toEqual(stationary);
-    const akeruIndex = items.findIndex((item) => rosterListItemId(item) === rosterEntryId(akeru));
-    expect(strategy({ ...args, index: akeruIndex })).toEqual(stationary);
+    const isnadiIndex = items.findIndex((item) => rosterListItemId(item) === rosterEntryId(isnadi));
+    expect(strategy({ ...args, index: isnadiIndex })).toEqual(stationary);
   });
 
   it("keeps same-section reorder on the default vertical strategy", () => {
     const items = buildRosterListItems({
       pinnedItems: [],
       sections: [],
-      unassignedItems: [akeru, mori],
+      unassignedItems: [isnadi, mori],
     });
 
     const strategy = createRosterSortingStrategy({ items });
-    const args = layout(items, rosterEntryId(akeru), rosterEntryId(mori));
+    const args = layout(items, rosterEntryId(isnadi), rosterEntryId(mori));
 
     for (let index = 0; index < items.length; index += 1) {
       if (index === args.activeIndex) continue;

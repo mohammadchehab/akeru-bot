@@ -1,4 +1,4 @@
-import { type PendingApproval } from "@akeru/client-runtime/pending-requests";
+import { type PendingApproval } from "@isnadi/client-runtime/pending-requests";
 import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import { storedField } from "./persistedSchema";

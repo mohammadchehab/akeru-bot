@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useParams } from "@tanstack/react-router";
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 import { useComposerDraftStore } from "~/composerDraftStore";
 import { resolveThreadRouteTarget } from "~/threadRoutes";

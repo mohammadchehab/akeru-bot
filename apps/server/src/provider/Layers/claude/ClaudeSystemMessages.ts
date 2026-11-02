@@ -11,7 +11,7 @@ import * as Predicate from "effect/Predicate";
  */
 import { type SDKMessage } from "@anthropic-ai/claude-agent-sdk";
 
-import { EventId, type ProviderRuntimeEvent, RuntimeTaskId } from "@akeru/contracts";
+import { EventId, type ProviderRuntimeEvent, RuntimeTaskId } from "@isnadi/contracts";
 
 import * as DateTime from "effect/DateTime";
 

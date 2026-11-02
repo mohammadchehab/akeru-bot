@@ -1,5 +1,11 @@
 import { routine, harness } from "./testUtils/runtimeLive.ts";
-import { BotId, EventId, type OrchestrationEvent, RoutineId, RoutineRunId } from "@akeru/contracts";
+import {
+  BotId,
+  EventId,
+  type OrchestrationEvent,
+  RoutineId,
+  RoutineRunId,
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";

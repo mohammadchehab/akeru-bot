@@ -3,19 +3,19 @@ import { RegistryContext } from "@effect/atom-react";
 import {
   deriveComputerViewer,
   type ComputerViewerState,
-} from "@akeru/client-runtime/state/computer-viewer";
+} from "@isnadi/client-runtime/state/computer-viewer";
 import {
   createComputerViewerController,
   type ComputerViewerController,
   type ComputerViewerOutcome,
-} from "@akeru/client-runtime/state/computer-viewer-controller";
-import type { AtomCommandResult } from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/computer-viewer-controller";
+import type { AtomCommandResult } from "@isnadi/client-runtime/state/runtime";
 import {
   COMPUTER_SESSION_TTL_MS,
   ComputerError,
   type ComputerState,
   type ScopedThreadRef,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Schema from "effect/Schema";
 import { useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore } from "react";

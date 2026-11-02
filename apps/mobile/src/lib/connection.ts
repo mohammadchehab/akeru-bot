@@ -1,6 +1,6 @@
-import { EnvironmentId } from "@akeru/contracts";
-import { stripPairingTokenFromUrl } from "@akeru/shared/remote";
-import { type EnvironmentConnectionPhase } from "@akeru/client-runtime/connection";
+import { EnvironmentId } from "@isnadi/contracts";
+import { stripPairingTokenFromUrl } from "@isnadi/shared/remote";
+import { type EnvironmentConnectionPhase } from "@isnadi/client-runtime/connection";
 
 export interface SavedRemoteConnection {
   readonly environmentId: EnvironmentId;

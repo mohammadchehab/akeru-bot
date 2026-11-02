@@ -1,8 +1,8 @@
 import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
-import { scopeThreadRef } from "@akeru/client-runtime/environment";
-import { BotId, EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@akeru/contracts";
+import { scopeThreadRef } from "@isnadi/client-runtime/environment";
+import { BotId, EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";

@@ -1,11 +1,11 @@
 import * as Schema from "effect/Schema";
 import * as Exit from "effect/Exit";
 import { flow } from "effect/Function";
-import { type BotId } from "@akeru/contracts";
+import { type BotId } from "@isnadi/contracts";
 import {
-  AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS,
-  AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS,
-  AKERU_MEMORY_REVIEW_PROMPT_INTERVAL,
+  ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS,
+  ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL,
 } from "./BotMemoryReview.ts";
 
 export interface BotMemoryReviewCadence {
@@ -55,7 +55,7 @@ export const EMPTY_REVIEW_CADENCE: BotMemoryReviewCadenceState = {
 };
 
 export const CONSERVATIVE_REVIEW_CADENCE: BotMemoryReviewCadenceState = {
-  acceptedPromptCount: AKERU_MEMORY_REVIEW_PROMPT_INTERVAL,
+  acceptedPromptCount: ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL,
   reviewedThroughPromptCount: 0,
   reviewInputs: [],
 };
@@ -66,11 +66,11 @@ export function boundReviewInputs(
   const kept: BotMemoryReviewInput[] = [];
 
   for (const input of inputs.toReversed()) {
-    const bounded = { ...input, text: input.text.slice(0, AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS) };
+    const bounded = { ...input, text: input.text.slice(0, ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS) };
 
     if (
-      kept.length >= AKERU_MEMORY_REVIEW_PROMPT_INTERVAL ||
-      JSON.stringify([bounded, ...kept]).length > AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS
+      kept.length >= ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL ||
+      JSON.stringify([bounded, ...kept]).length > ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS
     )
       continue;
     kept.unshift(bounded);

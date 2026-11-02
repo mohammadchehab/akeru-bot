@@ -1,4 +1,4 @@
-import { MessageId, ProviderInstanceId } from "@akeru/contracts";
+import { MessageId, ProviderInstanceId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import {

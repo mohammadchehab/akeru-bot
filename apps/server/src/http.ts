@@ -5,9 +5,9 @@ import {
   AuthOrchestrationOperateScope,
   AuthOrchestrationReadScope,
   EnvironmentHttpApi,
-} from "@akeru/contracts";
-import { isDevProxiedPath } from "@akeru/shared/devProxy";
-import { decodeOtlpTraceRecords } from "@akeru/shared/observability";
+} from "@isnadi/contracts";
+import { isDevProxiedPath } from "@isnadi/shared/devProxy";
+import { decodeOtlpTraceRecords } from "@isnadi/shared/observability";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -52,7 +52,7 @@ const OTLP_TRACES_PROXY_PATH = "/api/observability/v1/traces";
 
 const LOOPBACK_HOSTNAMES = new Set(["127.0.0.1", "::1", "localhost"]);
 
-const DESKTOP_RENDERER_ORIGINS = ["akeru://app", "akeru-dev://app"];
+const DESKTOP_RENDERER_ORIGINS = ["isnadi://app", "isnadi-dev://app"];
 
 const SVG_CONTENT_SECURITY_POLICY = "default-src 'none'; style-src 'unsafe-inline'; sandbox";
 

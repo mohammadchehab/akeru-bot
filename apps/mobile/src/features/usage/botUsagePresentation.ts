@@ -11,9 +11,9 @@
  *
  * @module features/usage/botUsagePresentation
  */
-import type { AkeruBotUsageSnapshot } from "@akeru/contracts";
+import type { IsnadiBotUsageSnapshot } from "@isnadi/contracts";
 
-export type UsageMeasurement = AkeruBotUsageSnapshot["measurements"]["input"];
+export type UsageMeasurement = IsnadiBotUsageSnapshot["measurements"]["input"];
 
 /** A label/value pair. `unavailable` drives the muted treatment on screen. */
 export interface BotUsageRow {
@@ -59,7 +59,7 @@ function measurementRow(key: string, label: string, measurement: UsageMeasuremen
   };
 }
 
-export function formatEstimatedCost(cost: AkeruBotUsageSnapshot["estimatedCost"]): string {
+export function formatEstimatedCost(cost: IsnadiBotUsageSnapshot["estimatedCost"]): string {
   return cost.status === "available"
     ? `$${cost.usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     : "Unavailable";
@@ -70,7 +70,7 @@ export function formatEstimatedCost(cost: AkeruBotUsageSnapshot["estimatedCost"]
  * meter reads "34% of pool" rather than "34 / 100 percent", which invites the
  * number to be read as tokens.
  */
-export function formatSubscriptionPool(pool: AkeruBotUsageSnapshot["subscriptionPool"]): string {
+export function formatSubscriptionPool(pool: IsnadiBotUsageSnapshot["subscriptionPool"]): string {
   if (pool.status === "unavailable") return "Unavailable";
 
   if (pool.unit === "percent") return `${pool.used.toLocaleString()}% of pool`;
@@ -83,7 +83,7 @@ export const BOT_USAGE_COST_CAPTION =
 
 export const BOT_USAGE_PARTIAL_NOTICE = "Some provider usage is unavailable.";
 
-export function buildBotUsageRows(snapshot: AkeruBotUsageSnapshot): ReadonlyArray<BotUsageRow> {
+export function buildBotUsageRows(snapshot: IsnadiBotUsageSnapshot): ReadonlyArray<BotUsageRow> {
   const rows: Array<BotUsageRow> = [
     measurementRow("input", "Input", snapshot.measurements.input),
     measurementRow("output", "Output", snapshot.measurements.output),
@@ -123,7 +123,7 @@ export function buildBotUsageRows(snapshot: AkeruBotUsageSnapshot): ReadonlyArra
  * "still loading" from "nothing recorded yet".
  */
 export function botUsageView(query: {
-  readonly data: AkeruBotUsageSnapshot | null;
+  readonly data: IsnadiBotUsageSnapshot | null;
   readonly error: string | null;
   readonly isPending: boolean;
 }): BotUsageView {

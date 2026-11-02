@@ -1,4 +1,4 @@
-import { createComputerEnvironmentAtoms } from "@akeru/client-runtime/state/computer";
+import { createComputerEnvironmentAtoms } from "@isnadi/client-runtime/state/computer";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

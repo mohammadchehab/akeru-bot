@@ -3,15 +3,15 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
   DEFAULT_SERVER_SETTINGS,
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   GroupId,
   ProviderDriverKind,
   ProjectId,
   TurnId,
   type ServerSettings,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -77,8 +77,8 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: codexThreadId,
       projectId: ProjectId.make("project-memory-tools"),
       workspaceRoot: "/workspace/memory-tools",
@@ -148,7 +148,11 @@ describe("AgentControllerLive", () => {
   it.effect("keeps group memory tools bound to the admitted responding bot", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-group-tool-scope-"));
+
+    const memoryDir = NodeFS.mkdtempSync(
+      NodePath.join(NodeOS.tmpdir(), "isnadi-group-tool-scope-"),
+    );
+
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botA = BotId.make("bot-group-active-a");
     const botB = BotId.make("bot-group-queued-b");
@@ -156,8 +160,8 @@ describe("AgentControllerLive", () => {
 
     const accessFor = (botId: BotId) =>
       ({
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: codexThreadId,
         projectId: ProjectId.make("project-group-tool-scope"),
         workspaceRoot: "/workspace/group-tool-scope",
@@ -267,15 +271,15 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const memoryDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-memory-toggle-mastra-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-memory-toggle-mastra-"),
     );
 
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-memory-toggle-mastra");
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: codexThreadId,
       projectId: ProjectId.make("project-memory-toggle-mastra"),
       workspaceRoot: "/workspace/memory-toggle-mastra",
@@ -371,8 +375,8 @@ describe("AgentControllerLive", () => {
     const botId = BotId.make("bot-entity-memory-stale-group");
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: claudeThreadId,
       projectId: ProjectId.make("project-entity-memory-stale-group"),
       workspaceRoot: "/workspace/entity-memory-stale-group",
@@ -429,15 +433,15 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const memoryDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-mastra-admit-gate-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-admit-gate-"),
     );
 
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-mastra-admit-gate");
 
     const access = {
-      tenantId: AkeruMemoryTenantId.make("local"),
-      userId: AkeruMemoryUserId.make("owner"),
+      tenantId: IsnadiMemoryTenantId.make("local"),
+      userId: IsnadiMemoryUserId.make("owner"),
       threadId: codexThreadId,
       projectId: ProjectId.make("project-mastra-admit-gate"),
       workspaceRoot: "/workspace/mastra-admit-gate",

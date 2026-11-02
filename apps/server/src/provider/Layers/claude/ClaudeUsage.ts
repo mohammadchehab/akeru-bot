@@ -11,7 +11,7 @@ import {
   type ModelSelection,
   type ProviderRuntimeTurnStatus,
   type ThreadTokenUsageSnapshot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { resolveClaudeContextWindow } from "./ClaudeModels.ts";
 import { ProviderAdapterProcessError } from "../../Errors.ts";

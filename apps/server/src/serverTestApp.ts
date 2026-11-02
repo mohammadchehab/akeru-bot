@@ -1,7 +1,7 @@
 import { ProviderInstanceRegistryMutator } from "./provider/Services/ProviderInstanceRegistryMutator.ts";
-import { HostProcessEnvironment } from "@akeru/shared/hostProcess";
+import { HostProcessEnvironment } from "@isnadi/shared/hostProcess";
 
-import { DEFAULT_SERVER_SETTINGS, type PreviewEvent } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, type PreviewEvent } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 
@@ -197,7 +197,7 @@ export const buildAppUnderTest = (options?: {
       otlpTracesUrl: undefined,
       otlpMetricsUrl: undefined,
       otlpExportIntervalMs: 10_000,
-      otlpServiceName: "akeru-server",
+      otlpServiceName: "isnadi-server",
       mode: "desktop",
       port: 0,
       host: "127.0.0.1",

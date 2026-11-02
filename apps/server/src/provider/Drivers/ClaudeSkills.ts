@@ -14,7 +14,7 @@ import * as Predicate from "effect/Predicate";
  */
 import * as NodeOS from "node:os";
 
-import type { ClaudeSettings, ServerProviderSkill } from "@akeru/contracts";
+import type { ClaudeSettings, ServerProviderSkill } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";

@@ -1,6 +1,13 @@
 import { assert, describe, expect, it } from "vite-plus/test";
-import { AuthSessionId, BotId, CheckpointRef, MessageId, ThreadId, TurnId } from "@akeru/contracts";
-import type { OrchestrationThread } from "@akeru/contracts";
+import {
+  AuthSessionId,
+  BotId,
+  CheckpointRef,
+  MessageId,
+  ThreadId,
+  TurnId,
+} from "@isnadi/contracts";
+import type { OrchestrationThread } from "@isnadi/contracts";
 import { applyThreadDetailEvent } from "./threadReducer.ts";
 import { baseEventFields, baseThread } from "./threadReducer.test-support.ts";
 

@@ -130,13 +130,13 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
         ...WINDOWS_SERVER_EXTRA_RESOURCES,
       ]);
       assert.deepStrictEqual(win.nsis, { differentialPackage: true });
-      // Windows registers akeru:// through the installer so the OS routes
+      // Windows registers isnadi:// through the installer so the OS routes
       // activations here instead of an older T3 Code install. Production
       // packages never claim the development scheme.
       assert.deepStrictEqual(win.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru"],
+          schemes: ["isnadi"],
         },
       ]);
       // Native binaries and helper executables cannot load from inside an
@@ -164,11 +164,11 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
         iconTextSize: 12,
       });
       // Linux must register the renderer schemes so the generated .desktop
-      // entry advertises MimeType=x-scheme-handler/akeru; for OAuth deep links.
+      // entry advertises MimeType=x-scheme-handler/isnadi; for OAuth deep links.
       assert.deepStrictEqual(linux.linux?.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ]);
       assert.deepStrictEqual(mac.files, [...DESKTOP_FILE_EXCLUSIONS, ...MAC_FILE_EXCLUSIONS]);
@@ -298,7 +298,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       const mac = config.mac;
 
       if (mac === undefined) assert.fail("Expected macOS build configuration");
-      assert.equal(config.appId, "dev.leodoes.akeru");
+      assert.equal(config.appId, "dev.leodoes.isnadi");
       assert.equal(mac.entitlements, "/tmp/entitlements.mac.plist");
       assert.equal(mac.notarize, true);
       assert.notProperty(mac, "identity");
@@ -306,7 +306,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       assert.deepStrictEqual(mac.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ]);
     }).pipe(Effect.provide(ConfigProvider.layer(ConfigProvider.fromEnv({ env: {} })))),
@@ -321,7 +321,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       const mac = config.mac;
 
       if (mac === undefined) assert.fail("Expected macOS build configuration");
-      assert.equal(config.appId, "dev.leodoes.akeru");
+      assert.equal(config.appId, "dev.leodoes.isnadi");
       assert.equal(mac.entitlements, "/tmp/entitlements.mac.plist");
       assert.notProperty(mac, "provisioningProfile");
       assert.notProperty(mac, "identity");

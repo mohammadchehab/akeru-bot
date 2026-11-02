@@ -1,4 +1,4 @@
-import { ProviderInstanceId } from "@akeru/contracts";
+import { ProviderInstanceId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { modelPickerEmptyMessage } from "./modelPickerEmptyState";

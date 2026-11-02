@@ -3,7 +3,7 @@ import * as NodeFS from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 
-import type { RoutineAdapterItem } from "@akeru/client-runtime/routines";
+import type { RoutineAdapterItem } from "@isnadi/client-runtime/routines";
 
 import { RoutineDetail, RoutinePanel } from "./RoutinePanel";
 
@@ -28,7 +28,7 @@ const routine: RoutineAdapterItem = {
   procedureApproved: true,
   enabled: true,
   paused: false,
-  pausedByAkeru: false,
+  pausedByIsnadi: false,
   nextRunAt: null,
   lastRunAt: null,
   latestRun: null,
@@ -38,7 +38,7 @@ const routine: RoutineAdapterItem = {
 describe("RoutinePanel focus targets", () => {
   it("marks each row so the one you came from can be restored", () => {
     const markup = renderToStaticMarkup(
-      <RoutinePanel botName="Akeru" status="ready" routines={[routine]} />,
+      <RoutinePanel botName="Isnadi" status="ready" routines={[routine]} />,
     );
 
     expect(markup).toContain('data-routine-row="routine-1"');
@@ -48,7 +48,7 @@ describe("RoutinePanel focus targets", () => {
     const markup = renderToStaticMarkup(
       <RoutineDetail
         routine={routine}
-        projectName="Akeru"
+        projectName="Isnadi"
         busy={false}
         onBack={() => undefined}
         onEdit={() => undefined}

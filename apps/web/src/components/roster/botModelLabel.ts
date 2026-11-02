@@ -1,6 +1,6 @@
-import { createTranslator } from "@akeru/client-runtime/i18n";
-import type { ServerProvider } from "@akeru/contracts";
-import type { UnifiedSettings } from "@akeru/contracts/settings";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
+import type { ServerProvider } from "@isnadi/contracts";
+import type { UnifiedSettings } from "@isnadi/contracts/settings";
 
 import { resolveAppModelSelectionState } from "../../modelSelection";
 import {

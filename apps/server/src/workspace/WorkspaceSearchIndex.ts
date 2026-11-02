@@ -19,8 +19,8 @@ import type {
   ProjectEntryKind,
   ProjectListEntriesResult,
   ProjectSearchEntriesResult,
-} from "@akeru/contracts";
-import { isWorkspaceImagePreviewPath } from "@akeru/shared/filePreview";
+} from "@isnadi/contracts";
+import { isWorkspaceImagePreviewPath } from "@isnadi/shared/filePreview";
 
 const WORKSPACE_INDEX_MAX_ENTRIES = 25_000;
 
@@ -118,7 +118,7 @@ export class WorkspaceSearchIndex extends Context.Service<
       WorkspaceSearchIndexRefreshFailed | WorkspaceSearchIndexScanTimedOut
     >;
   }
->()("akeru-bot/workspace/WorkspaceSearchIndex") {}
+>()("isnadibot/workspace/WorkspaceSearchIndex") {}
 
 function toPosixPath(input: string): string {
   return input.replaceAll("\\", "/");
@@ -453,7 +453,7 @@ export const make = Effect.fn("WorkspaceSearchIndex.make")(function* (
 export const layer = (cwd: string) => Layer.effect(WorkspaceSearchIndex, make(cwd));
 
 export class WorkspaceSearchIndexMap extends LayerMap.Service<WorkspaceSearchIndexMap>()(
-  "akeru-bot/workspace/WorkspaceSearchIndexMap",
+  "isnadibot/workspace/WorkspaceSearchIndexMap",
   {
     lookup: layer,
     idleTimeToLive: WORKSPACE_INDEX_IDLE_TTL,

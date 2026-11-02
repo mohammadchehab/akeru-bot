@@ -54,7 +54,7 @@ export class DesktopConnectionCatalogStore extends Context.Service<
     >;
     readonly clear: Effect.Effect<void>;
   }
->()("@akeru/desktop/app/DesktopConnectionCatalogStore") {}
+>()("@isnadi/desktop/app/DesktopConnectionCatalogStore") {}
 
 function decodeSecretBytes(
   catalogPath: string,

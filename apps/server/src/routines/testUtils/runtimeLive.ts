@@ -1,5 +1,5 @@
 import {
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   BotId,
   DelegationId,
   EventId,
@@ -8,7 +8,7 @@ import {
   RoutineId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Queue from "effect/Queue";
@@ -67,7 +67,7 @@ const harness = (
   options: {
     readonly dispatched?: RoutineDispatchResult;
     readonly signals?: Queue.Queue<string>;
-    readonly delegation?: AkeruDelegationRecord;
+    readonly delegation?: IsnadiDelegationRecord;
   } = {},
 ) => {
   const claims = new Map<string, RoutineClaim>();
@@ -204,7 +204,7 @@ const harness = (
 
 const helperThreadId = ThreadId.make("thread-helper");
 
-const scheduledDelegation = (phase: AkeruDelegationRecord["phase"]): AkeruDelegationRecord => ({
+const scheduledDelegation = (phase: IsnadiDelegationRecord["phase"]): IsnadiDelegationRecord => ({
   delegationId: DelegationId.make("delegation-scheduled"),
   parentDelegationId: null,
   parentBotId: BotId.make("bot-1"),
@@ -248,7 +248,7 @@ const eventBase = (id: string, aggregateKind: "delegation" | "routine", aggregat
   metadata: {},
 });
 
-const delegationUpdated = (phase: AkeruDelegationRecord["phase"]) =>
+const delegationUpdated = (phase: IsnadiDelegationRecord["phase"]) =>
   ({
     ...eventBase("event-delegation-updated", "delegation", "delegation-scheduled"),
     type: "delegation.updated",

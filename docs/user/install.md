@@ -1,14 +1,14 @@
-# Install Akeru Bot
+# Install IsnadiBot
 
-Akeru Bot runs on your machine. The desktop app includes the server. The command-line package runs
+IsnadiBot runs on your machine. The desktop app includes the server. The command-line package runs
 the same server for web and remote clients.
 
 ## Desktop app
 
 Download the current installer from
-[GitHub Releases](https://github.com/opencoredev/akeru-bot/releases).
+[GitHub Releases](https://github.com/mohammadchehab/isnadibot/releases).
 
-- macOS: Apple silicon DMG, signed and notarized. Open the DMG and drag **Akeru Bot** into
+- macOS: Apple silicon DMG, signed and notarized. Open the DMG and drag **IsnadiBot** into
   **Applications**. The app opens without a Gatekeeper warning.
 - Windows: Windows 10 or 11 x64 installer
 - Linux: x86_64 AppImage
@@ -23,13 +23,13 @@ The command-line server requires Node.js `^22.16 || ^23.11 || >=24.10`.
 Run the latest release without installing it globally:
 
 ```bash
-npx akeru-bot@latest
+npx isnadibot@latest
 ```
 
 The command starts the server and opens the local web app. Run this for the complete command list:
 
 ```bash
-npx akeru-bot@latest --help
+npx isnadibot@latest --help
 ```
 
 Use the [background service](./background-service.md) when the server must stay available after you
@@ -48,7 +48,7 @@ Open **Settings > Providers**. Mobile lists these options under **Provider conne
 | OpenCode Go     | OpenCode Go API key                     |
 
 Select **Connect** and finish the provider's sign-in flow. ChatGPT, Grok, and Kimi use a device code.
-Claude asks you to paste the returned authorization code into Akeru. OpenCode Go asks you to paste an API key.
+Claude asks you to paste the returned authorization code into Isnadi. OpenCode Go asks you to paste an API key.
 
 The environment server owns the connection. It currently saves one subscription account or API
 key per provider per environment. Reconnecting replaces that credential. Separate provider instances
@@ -57,7 +57,7 @@ credentials outside the workspace. Clients receive connection status, sign-in pr
 account identifier when the provider supplies one; they never receive the credential.
 
 After sign-in, select **Check** to test an OAuth login or **Check key** to test an API key.
-Use **Reconnect** after a revoked or expired login. Akeru cannot verify whether an xAI login includes
+Use **Reconnect** after a revoked or expired login. Isnadi cannot verify whether an xAI login includes
 SuperGrok or X Premium+.
 
 ### Connect an API key
@@ -82,14 +82,14 @@ The form shows the saved endpoint but never shows the saved key. Enter the key a
 the endpoint. Use **Use OAuth** to return to subscription login where supported. **Disconnect** removes
 the saved connection from the environment.
 
-## What Akeru runs
+## What Isnadi runs
 
-Codex, Claude, Grok, Kimi For Coding, OpenCode Go, and Custom API use Akeru's custom Mastra-based runtime.
-Akeru supplies the workspace, memory, plugins, approval rules, and subscription access for each
+Codex, Claude, Grok, Kimi For Coding, OpenCode Go, and Custom API use Isnadi's custom Mastra-based runtime.
+Isnadi supplies the workspace, memory, plugins, approval rules, and subscription access for each
 chat.
 
-Claude and Grok use their provider adapters. OpenCode Go uses Akeru's Mastra-based runtime.
-Both paths keep provider-specific session and permission behavior behind the same Akeru chat interface.
+Claude and Grok use their provider adapters. OpenCode Go uses Isnadi's Mastra-based runtime.
+Both paths keep provider-specific session and permission behavior behind the same Isnadi chat interface.
 
 ## Next steps
 

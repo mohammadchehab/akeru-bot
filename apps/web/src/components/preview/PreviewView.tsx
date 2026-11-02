@@ -6,15 +6,15 @@ import { Predicate } from "effect";
 
 import { usePreviewCapture } from "./usePreviewCapture";
 
-import { scopedThreadKey } from "@akeru/client-runtime/environment";
-import { squashAtomCommandFailure } from "@akeru/client-runtime/state/runtime";
+import { scopedThreadKey } from "@isnadi/client-runtime/environment";
+import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
 import {
   FILL_PREVIEW_VIEWPORT,
   type PreviewAnnotationPayload,
   type PreviewViewportSetting,
   type ScopedThreadRef,
-} from "@akeru/contracts";
-import { normalizePreviewUrl } from "@akeru/shared/preview";
+} from "@isnadi/contracts";
+import { normalizePreviewUrl } from "@isnadi/shared/preview";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { resolveDiscoveredServerUrl } from "~/browser/browserTargetResolver";

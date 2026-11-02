@@ -4,8 +4,8 @@ import {
   DesktopUpdateChannelSchema,
   type DesktopServerExposureMode,
   type DesktopUpdateChannel,
-} from "@akeru/contracts";
-import { fromLenientJson } from "@akeru/shared/schemaJson";
+} from "@isnadi/contracts";
+import { fromLenientJson } from "@isnadi/shared/schemaJson";
 
 import * as Option from "effect/Option";
 

@@ -7,7 +7,7 @@ import {
   ProviderInstanceId,
   ProviderDriverKind,
   type SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import {
   runWithNodeServices,
@@ -34,7 +34,7 @@ const subscriptionStatus = (
 const directories: string[] = [];
 
 async function fixture() {
-  const secretsDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-runtime-auth-"));
+  const secretsDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-runtime-auth-"));
   directories.push(secretsDir);
 
   return { secretsDir, auth: await testSubscriptionAuthServiceForSecretsDir(secretsDir) };
@@ -49,7 +49,7 @@ afterEach(() => {
 });
 
 describe("subscription runtime credentials", () => {
-  it("aligns default provider enablement with Akeru subscription connections", () => {
+  it("aligns default provider enablement with Isnadi subscription connections", () => {
     expect(
       subscriptionProviderSettingsPatch(DEFAULT_SERVER_SETTINGS, [
         subscriptionStatus("openai-codex", false),

@@ -3,9 +3,9 @@ import {
   MODEL_SLUG_ALIASES_BY_PROVIDER,
   ProviderDriverKind,
   type ProviderInstanceId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { getAvailableThinkingLevelsForModel } from "@mastra/code-sdk/thinking";
-import { createModelCapabilities, formatModelSlug } from "@akeru/shared/model";
+import { createModelCapabilities, formatModelSlug } from "@isnadi/shared/model";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 
@@ -148,12 +148,12 @@ export function harnessCredentialIssue(
     return `Connect ${name} in Settings.`;
   }
 
-  if (driver === "codex") return "This Codex instance needs OPENAI_API_KEY for the Akeru harness.";
+  if (driver === "codex") return "This Codex instance needs OPENAI_API_KEY for the Isnadi harness.";
 
   if (driver === "claudeAgent")
-    return "This Claude instance needs an API key or auth token for the Akeru harness.";
+    return "This Claude instance needs an API key or auth token for the Isnadi harness.";
 
-  return "This Grok instance needs XAI_API_KEY for the Akeru harness.";
+  return "This Grok instance needs XAI_API_KEY for the Isnadi harness.";
 }
 
 export const makeHarnessProviderStatus = Effect.fn("makeHarnessProviderStatus")(function* (input: {
@@ -247,7 +247,7 @@ export const makeHarnessProviderStatus = Effect.fn("makeHarnessProviderStatus")(
       input.driver,
     );
 
-    // `grok-build` is Akeru's alias for the Grok model the harness runs by
+    // `grok-build` is Isnadi's alias for the Grok model the harness runs by
     // default. models.dev does not list the alias, so keep it current.
     return input.driver === "grok"
       ? {

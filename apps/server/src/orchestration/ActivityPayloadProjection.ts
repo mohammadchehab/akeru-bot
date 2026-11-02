@@ -4,8 +4,8 @@ import type {
   OrchestrationEvent,
   OrchestrationThreadActivity,
   OrchestrationThreadDetailSnapshot,
-} from "@akeru/contracts";
-import { AkeruPluginSearchResult } from "@akeru/contracts";
+} from "@isnadi/contracts";
+import { IsnadiPluginSearchResult } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { asRecord, asTrimmedString, projectBoundedValue } from "./ActivityPayloadBounds.ts";
@@ -21,10 +21,10 @@ import {
   dropStaleContextWindowActivities,
 } from "./ActivityRetention.ts";
 
-const decodePluginSearchResult = Schema.decodeUnknownOption(AkeruPluginSearchResult);
+const decodePluginSearchResult = Schema.decodeUnknownOption(IsnadiPluginSearchResult);
 
 /**
- * Task-list tools (Akeru's `task_write`, Claude's `TodoWrite`) carry the whole
+ * Task-list tools (Isnadi's `task_write`, Claude's `TodoWrite`) carry the whole
  * list in their args. Clients only show the step in progress, as a short status.
  */
 function projectMemoryOperationCount(data: ActivityRecord): number | undefined {
@@ -104,7 +104,7 @@ function projectAcpContent(value: ActivityValue): ActivityRecord | undefined {
   return summary ? { content: summary } : undefined;
 }
 
-function projectPluginSearchResult(value: ActivityValue): AkeruPluginSearchResult | undefined {
+function projectPluginSearchResult(value: ActivityValue): IsnadiPluginSearchResult | undefined {
   const decoded = decodePluginSearchResult(value);
 
   if (Option.isNone(decoded)) return undefined;

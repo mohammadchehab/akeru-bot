@@ -1,10 +1,10 @@
-export const AKERU_MEMORY_REVIEW_PROMPT_INTERVAL = 10;
+export const ISNADI_MEMORY_REVIEW_PROMPT_INTERVAL = 10;
 
-export const AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS = 1_000;
+export const ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS = 1_000;
 
-export const AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS = 8_000;
+export const ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS = 8_000;
 
-export const AKERU_MEMORY_REVIEW_PROMPT_MAX_CHARS = 12_000;
+export const ISNADI_MEMORY_REVIEW_PROMPT_MAX_CHARS = 12_000;
 
 export function formatAutomaticBotMemoryReview(
   groupAvailable: boolean,
@@ -24,10 +24,10 @@ export function formatAutomaticBotMemoryReview(
   for (const input of inputs) {
     const rendered = JSON.stringify({
       ...input,
-      text: input.text.slice(0, AKERU_MEMORY_REVIEW_INPUT_MAX_CHARS),
+      text: input.text.slice(0, ISNADI_MEMORY_REVIEW_INPUT_MAX_CHARS),
     });
 
-    if (inputChars + rendered.length > AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS) break;
+    if (inputChars + rendered.length > ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS) break;
     boundedInputs.push(rendered);
     inputChars += rendered.length;
   }
@@ -57,5 +57,5 @@ export function formatAutomaticBotMemoryReview(
     "</automatic-memory-review>",
   ].join("\n");
 
-  return prompt.slice(0, AKERU_MEMORY_REVIEW_PROMPT_MAX_CHARS);
+  return prompt.slice(0, ISNADI_MEMORY_REVIEW_PROMPT_MAX_CHARS);
 }

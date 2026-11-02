@@ -187,20 +187,20 @@ describe("buildEnvironmentOwnerNames", () => {
   const ownerName = buildEnvironmentOwnerNames([
     {
       environmentId: "env-a",
-      bots: [{ id: "bot-1", name: "Akeru" }],
+      bots: [{ id: "bot-1", name: "Isnadi" }],
       groups: [{ id: "group-1", name: "Launch" }],
     },
     {
       environmentId: "env-b",
-      bots: [{ id: "bot-1", name: "Home Akeru" }],
+      bots: [{ id: "bot-1", name: "Home Isnadi" }],
       groups: [{ id: "group-2", name: "Family" }],
     },
   ]);
 
   it("names a chat's bot or group from the chat's own environment", () => {
-    expect(ownerName("env-b", { botId: "bot-1" })).toBe("Home Akeru");
+    expect(ownerName("env-b", { botId: "bot-1" })).toBe("Home Isnadi");
     expect(ownerName("env-b", { groupId: "group-2" })).toBe("Family");
-    expect(ownerName("env-a", { botId: "bot-1" })).toBe("Akeru");
+    expect(ownerName("env-a", { botId: "bot-1" })).toBe("Isnadi");
   });
 
   it("returns null when that environment has no such owner", () => {
@@ -221,7 +221,7 @@ describe("buildChatSearchCommandPaletteItems", () => {
     threadId,
     title,
     updatedAt,
-    ownerName: "Akeru",
+    ownerName: "Isnadi",
     unavailableIn: null,
     ...extra,
   });
@@ -233,7 +233,7 @@ describe("buildChatSearchCommandPaletteItems", () => {
     chat("draft", "New chat", "2026-08-04T00:00:00.000Z"),
     chat("remote", "Trip receipts", "2026-08-05T00:00:00.000Z", {
       environmentId: "env-b",
-      ownerName: "Home Akeru",
+      ownerName: "Home Isnadi",
       unavailableIn: "Home server",
     }),
   ];
@@ -280,7 +280,7 @@ describe("buildChatSearchCommandPaletteItems", () => {
       "chat-search:env-a:budget",
       "chat-search:env-b:remote",
     ]);
-    expect(items[2]?.description).toBe("Akeru · the trip costs");
+    expect(items[2]?.description).toBe("Isnadi · the trip costs");
   });
 
   it("matches a placeholder-titled chat only by message and shows it as untitled", () => {
@@ -296,7 +296,7 @@ describe("buildChatSearchCommandPaletteItems", () => {
   it("disables chats in another environment and names it", () => {
     const remote = build("receipts")[0];
     expect(remote?.disabled).toBe(true);
-    expect(remote?.description).toBe("Home Akeru · In Home server");
+    expect(remote?.description).toBe("Home Isnadi · In Home server");
   });
 
   it("opens the chosen chat", async () => {

@@ -1,4 +1,4 @@
-import { ComputerError } from "@akeru/contracts";
+import { ComputerError } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -14,8 +14,8 @@ vi.mock("~/state/use-atom-query-runner", () => ({ useAtomQueryRunner: () => vi.f
 import {
   initialComputerViewerState,
   type ComputerViewerState,
-} from "@akeru/client-runtime/state/computer-viewer";
-import type { ComputerState } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/computer-viewer";
+import type { ComputerState } from "@isnadi/contracts";
 
 import { applyUnavailableRecheck, computerViewerOutcome } from "./useComputerViewer";
 

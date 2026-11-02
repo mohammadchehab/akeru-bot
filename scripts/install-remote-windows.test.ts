@@ -12,7 +12,7 @@ describe("Windows remote installer", () => {
     );
   });
 
-  it("installs Tailscale unattended and starts Akeru through Task Scheduler", () => {
+  it("installs Tailscale unattended and starts Isnadi through Task Scheduler", () => {
     expect(script).toContain("TS_UNATTENDEDMODE=always");
     expect(script).toContain("up --unattended=true");
     expect(script).not.toContain("service install");
@@ -24,12 +24,12 @@ describe("Windows remote installer", () => {
     expect(script).toContain('"versions\\$Version"');
     expect(script).toContain('".install-complete"');
     expect(script).toContain("protocol = 2; activeVersion = $Version");
-    expect(script).toContain("`$env:AKERU_HOME = $(Quote-PowerShellLiteral $RuntimeHome)");
-    expect(script).toContain("`$env:AKERU_INSTALL_ROOT = $(Quote-PowerShellLiteral $InstallRoot)");
+    expect(script).toContain("`$env:ISNADI_HOME = $(Quote-PowerShellLiteral $RuntimeHome)");
+    expect(script).toContain("`$env:ISNADI_INSTALL_ROOT = $(Quote-PowerShellLiteral $InstallRoot)");
     expect(script).toContain(
       '$TaskEnvironment + "& $(Quote-PowerShellLiteral $Launcher) remote update"',
     );
-    expect(script).toContain('Register-ScheduledTask -TaskName "Akeru Remote Update"');
+    expect(script).toContain('Register-ScheduledTask -TaskName "Isnadi Remote Update"');
     expect(script).not.toContain("Heartbeat");
     expect(script).toContain("-LogonType S4U");
   });
@@ -69,9 +69,9 @@ describe("Windows remote installer", () => {
     expect(script).not.toContain("Remove-Item -LiteralPath $Pinned");
   });
 
-  it("derives the server home from AKERU_HOME, never an ambient T3CODE_HOME", () => {
+  it("derives the server home from ISNADI_HOME, never an ambient T3CODE_HOME", () => {
     expect(script).toContain(
-      '$RuntimeHome = if ($env:AKERU_HOME) { $env:AKERU_HOME } else { Join-Path $HOME ".akeru" }',
+      '$RuntimeHome = if ($env:ISNADI_HOME) { $env:ISNADI_HOME } else { Join-Path $HOME ".isnadi" }',
     );
     expect(script).not.toContain("$env:T3CODE_HOME)");
     expect(script).not.toContain("$env:T3CODE_HOME }");

@@ -1,4 +1,4 @@
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { type TerminalContextDraft, normalizeTerminalContextText } from "../lib/terminalContext";
 import { type ComposerImageAttachment, type ComposerThreadDraftState } from "./draftTypes";
 

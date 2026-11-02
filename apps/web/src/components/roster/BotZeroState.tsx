@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { BotIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 

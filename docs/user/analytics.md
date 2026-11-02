@@ -26,7 +26,7 @@ does not count a download that never runs.
 Reports do not contain prompts, replies, model output, files, paths, URLs, recipients, memory,
 screenshots, stack traces, error text, tokens, credentials, or provider account identifiers.
 
-Akeru uses a random analytics UUID. It disables PostHog person profiles and geolocation for these
+Isnadi uses a random analytics UUID. It disables PostHog person profiles and geolocation for these
 events. It also supplies a fixed empty IP value instead of the client address.
 
 ## Turn analytics off

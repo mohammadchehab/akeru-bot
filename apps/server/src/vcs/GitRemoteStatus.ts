@@ -4,8 +4,8 @@ import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Path from "effect/Path";
-import { GitCommandError } from "@akeru/contracts";
-import { normalizeGitRemoteUrl } from "@akeru/shared/git";
+import { GitCommandError } from "@isnadi/contracts";
+import { normalizeGitRemoteUrl } from "@isnadi/shared/git";
 import type * as GitVcsDriver from "./GitVcsDriver.ts";
 import { parseRemoteNamesInGitOrder } from "../git/remoteRefs.ts";
 import {

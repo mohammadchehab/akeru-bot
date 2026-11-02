@@ -1,4 +1,4 @@
-import { createMemoryEnvironmentAtoms } from "@akeru/client-runtime/state/memory";
+import { createMemoryEnvironmentAtoms } from "@isnadi/client-runtime/state/memory";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

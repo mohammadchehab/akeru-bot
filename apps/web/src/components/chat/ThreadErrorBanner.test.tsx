@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { presentThreadError } from "@akeru/client-runtime/errors";
+import { presentThreadError } from "@isnadi/client-runtime/errors";
 import { describe, expect, it } from "vite-plus/test";
 import { providerCatalogEntry } from "../settings/providerCatalog";
 

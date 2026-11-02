@@ -1,8 +1,8 @@
 import * as Schema from "effect/Schema";
-import { AkeruPluginSearchResult, isToolLifecycleItemType } from "@akeru/contracts";
+import { IsnadiPluginSearchResult, isToolLifecycleItemType } from "@isnadi/contracts";
 import { type WorkLogEntry } from "./workLogTypes";
 
-export const isPluginSearchResult = Schema.is(AkeruPluginSearchResult);
+export const isPluginSearchResult = Schema.is(IsnadiPluginSearchResult);
 
 export function workLogEntryIsToolLike(entry: WorkLogEntry): boolean {
   if (entry.tone === "tool" || entry.tone === "thinking" || entry.tone === "error") {
@@ -22,7 +22,7 @@ export function workLogEntryIsToolLike(entry: WorkLogEntry): boolean {
 
 export function pluginSearchResultForWorkEntry(
   entry: WorkLogEntry,
-): AkeruPluginSearchResult | null {
+): IsnadiPluginSearchResult | null {
   return isPluginSearchResult(entry.toolData) ? entry.toolData : null;
 }
 

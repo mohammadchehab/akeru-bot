@@ -1,4 +1,4 @@
-import { type OrchestrationEvent } from "@akeru/contracts";
+import { type OrchestrationEvent } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

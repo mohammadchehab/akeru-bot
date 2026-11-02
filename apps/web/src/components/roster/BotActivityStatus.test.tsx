@@ -1,4 +1,4 @@
-import { ProviderDriverKind, TurnId, type OrchestrationThreadActivity } from "@akeru/contracts";
+import { ProviderDriverKind, TurnId, type OrchestrationThreadActivity } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
@@ -18,7 +18,7 @@ describe("bot activity status", () => {
 
   it("shows only the pixel glyph and a shimmering short update", () => {
     const markup = renderToStaticMarkup(
-      <BotActivityStatus name="Akeru" activity={{ label: "Running a command" }} />,
+      <BotActivityStatus name="Isnadi" activity={{ label: "Running a command" }} />,
     );
 
     expect(markup).toContain("Running a command...");
@@ -30,17 +30,17 @@ describe("bot activity status", () => {
 
   it("falls back to the summary update, then to plain working", () => {
     expect(
-      renderToStaticMarkup(<BotActivityStatus name="Akeru" update="Searching the web" />),
+      renderToStaticMarkup(<BotActivityStatus name="Isnadi" update="Searching the web" />),
     ).toContain("Searching the web...");
-    expect(renderToStaticMarkup(<BotActivityStatus name="Akeru" />)).toContain(
-      "Akeru is working...",
+    expect(renderToStaticMarkup(<BotActivityStatus name="Isnadi" />)).toContain(
+      "Isnadi is working...",
     );
   });
 
   it("replaces the working shimmer with a silent-run notice", () => {
     const markup = renderToStaticMarkup(
       <BotActivityStatus
-        name="Akeru"
+        name="Isnadi"
         activity={{ label: "Running a command" }}
         silentRun={{
           provider: ProviderDriverKind.make("kimi"),
@@ -80,7 +80,7 @@ describe("bot activity status", () => {
     ] as OrchestrationThreadActivity[];
 
     const answered = [
-      { turnId, kind: "item.completed", tone: "tool", summary: "Akeru ask user completed" },
+      { turnId, kind: "item.completed", tone: "tool", summary: "Isnadi ask user completed" },
     ] as OrchestrationThreadActivity[];
 
     expect(botActivityUpdate(settled, turnId)).toBeNull();

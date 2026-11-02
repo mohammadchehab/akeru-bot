@@ -1,4 +1,4 @@
-import { DesktopUpdateChannelSchema } from "@akeru/contracts";
+import { DesktopUpdateChannelSchema } from "@isnadi/contracts";
 
 import * as Schema from "effect/Schema";
 

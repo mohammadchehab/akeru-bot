@@ -2,8 +2,8 @@ import {
   DEFAULT_PROVIDER_HEALTH_REFRESH_INTERVAL,
   type ServerProvider,
   ServerSettingsError,
-} from "@akeru/contracts";
-import { resolveServerBackgroundActivitySettings } from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/contracts";
+import { resolveServerBackgroundActivitySettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Equal from "effect/Equal";

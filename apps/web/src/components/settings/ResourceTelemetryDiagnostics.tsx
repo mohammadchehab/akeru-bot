@@ -2,8 +2,8 @@ import { Predicate } from "effect";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
-import type { ResourceTelemetryProcess, ServerProcessSignal } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/runtime";
+import type { ResourceTelemetryProcess, ServerProcessSignal } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import {
   ActivityIcon,

@@ -3,7 +3,7 @@ import {
   THEME_COLOR_ROLES,
   type ThemeColorRole,
   type ThemeColors,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 import { isThemeColor } from "./colorMath";
 import { type ThemePreference } from "./themeTypes";
 import { getThemeDefinition, getThemeColorsForMode } from "./themeDefinitions";

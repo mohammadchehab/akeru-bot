@@ -1,5 +1,5 @@
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS } from "@akeru/contracts/settings";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS } from "@isnadi/contracts/settings";
 import { describe, expect, it } from "vite-plus/test";
 
 import { deriveProviderInstanceEntries } from "../../providerInstances";

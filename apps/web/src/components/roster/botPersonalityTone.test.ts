@@ -1,6 +1,6 @@
 import * as NodeFS from "node:fs";
 
-import { BALANCED_BOT_PERSONALITY_TONE } from "@akeru/contracts";
+import { BALANCED_BOT_PERSONALITY_TONE } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -71,7 +71,10 @@ describe("botPersonalityTone", () => {
 
   it("keeps its band thresholds aligned with the server instructions", () => {
     const serverSource = NodeFS.readFileSync(
-      new URL("../../../../../apps/server/src/provider/AkeruAgentInstructions.ts", import.meta.url),
+      new URL(
+        "../../../../../apps/server/src/provider/IsnadiAgentInstructions.ts",
+        import.meta.url,
+      ),
       "utf8",
     );
 

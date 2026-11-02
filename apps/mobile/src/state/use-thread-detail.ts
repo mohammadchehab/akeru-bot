@@ -1,4 +1,4 @@
-import type { EnvironmentId, ThreadId } from "@akeru/contracts";
+import type { EnvironmentId, ThreadId } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 
 import { useEnvironmentThread } from "./threads";

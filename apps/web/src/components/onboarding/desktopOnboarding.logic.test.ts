@@ -141,7 +141,7 @@ describe("desktop onboarding", () => {
   });
 
   it("marks skipped onboarding complete and removes its draft", () => {
-    const values = new Map<string, string>([["akeru:desktop-onboarding:v1", "draft"]]);
+    const values = new Map<string, string>([["isnadi:desktop-onboarding:v1", "draft"]]);
 
     const storage = {
       removeItem: (key: string) => values.delete(key),
@@ -150,12 +150,12 @@ describe("desktop onboarding", () => {
 
     markDesktopOnboardingCompleted(storage);
 
-    expect(values.get("akeru:desktop-onboarding:v1")).toBeUndefined();
-    expect(values.get("akeru:desktop-onboarding-completed:v1")).toBe("1");
+    expect(values.get("isnadi:desktop-onboarding:v1")).toBeUndefined();
+    expect(values.get("isnadi:desktop-onboarding-completed:v1")).toBe("1");
   });
 
   it("records the handoff destination with completion and routes to it once", () => {
-    const values = new Map<string, string>([["akeru:desktop-onboarding:v1", "draft"]]);
+    const values = new Map<string, string>([["isnadi:desktop-onboarding:v1", "draft"]]);
 
     const storage = {
       getItem: (key: string) => values.get(key) ?? null,
@@ -165,8 +165,8 @@ describe("desktop onboarding", () => {
 
     markDesktopOnboardingHandoffStarted(storage, "environment-1", "bot-ada");
 
-    expect(values.get("akeru:desktop-onboarding:v1")).toBeUndefined();
-    expect(values.get("akeru:desktop-onboarding-completed:v1")).toBe("1");
+    expect(values.get("isnadi:desktop-onboarding:v1")).toBeUndefined();
+    expect(values.get("isnadi:desktop-onboarding-completed:v1")).toBe("1");
     expect(readDesktopOnboardingHandoff(storage)).toEqual({
       environmentId: "environment-1",
       botId: "bot-ada",

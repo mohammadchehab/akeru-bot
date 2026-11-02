@@ -1,4 +1,4 @@
-import { selectOpenBotInboxItems, type BotInboxItem } from "@akeru/client-runtime/bot-inbox";
+import { selectOpenBotInboxItems, type BotInboxItem } from "@isnadi/client-runtime/bot-inbox";
 
 export type SettingsInboxQuery = {
   readonly error: string | null;

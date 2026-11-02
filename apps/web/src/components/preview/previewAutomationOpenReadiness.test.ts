@@ -1,4 +1,4 @@
-import type { PreviewAutomationOpenInput, PreviewSessionSnapshot } from "@akeru/contracts";
+import type { PreviewAutomationOpenInput, PreviewSessionSnapshot } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

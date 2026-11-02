@@ -3,8 +3,8 @@ import {
   type ProviderDriverKind,
   type ProviderInstanceId,
   type ResolvedKeybindingsConfig,
-} from "@akeru/contracts";
-import { resolveSelectableModel } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { resolveSelectableModel } from "@isnadi/shared/model";
 import { LegendList } from "@legendapp/list/react";
 import { ChevronRightIcon, SearchIcon } from "lucide-react";
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";

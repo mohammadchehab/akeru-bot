@@ -8,19 +8,19 @@ import type {
   SubscriptionAuthStartResult,
   SubscriptionProviderId,
   SubscriptionProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import {
   anyProviderHealthChecking,
   apiKeyStartInput,
   apiKeyValidationError,
   HEALTH_CHECK_REFRESH_MS,
   providerSupportsBaseUrl,
-} from "@akeru/client-runtime/provider-auth";
+} from "@isnadi/client-runtime/provider-auth";
 import { useI18n } from "../../i18n";
 import { serverEnvironment } from "../../state/server";
 import { useEnvironmentQuery } from "../../state/query";

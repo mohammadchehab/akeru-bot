@@ -8,7 +8,7 @@ import {
 } from "./testUtils/imageService.ts";
 import * as NodeFS from "node:fs";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { type ImageGenerationSettings } from "@akeru/contracts";
+import { type ImageGenerationSettings } from "@isnadi/contracts";
 import { makeTestSubscriptionAuthService } from "../subscription-auth/testUtils/subscriptionAuthService.ts";
 import { normalizeImageGenerationPatch, runImageProviderHealthTest } from "./service.ts";
 

@@ -3,13 +3,13 @@ import {
   BearerConnectionProfile,
   BearerConnectionRegistration,
   BearerConnectionTarget,
-} from "@akeru/client-runtime/connection";
+} from "@isnadi/client-runtime/connection";
 import {
   type ConnectionCatalogDocument,
   EMPTY_CONNECTION_CATALOG_DOCUMENT,
   registerConnectionInCatalog,
-} from "@akeru/client-runtime/platform";
-import { EnvironmentId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/platform";
+import { EnvironmentId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 

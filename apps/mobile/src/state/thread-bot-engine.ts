@@ -4,8 +4,8 @@ import {
   type ModelSelection,
   type OrchestrationBot,
   type ServerConfig,
-} from "@akeru/contracts";
-import { botEngineFromModelSelection, botEngineModelSelection } from "@akeru/shared/model";
+} from "@isnadi/contracts";
+import { botEngineFromModelSelection, botEngineModelSelection } from "@isnadi/shared/model";
 
 export type ThreadBotRef = {
   readonly botId?: string | null | undefined;

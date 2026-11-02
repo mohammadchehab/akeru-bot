@@ -17,9 +17,9 @@ import {
 } from "../../../scripts/lib/brand-assets.ts";
 import { resolveCatalogDependencies } from "../../../scripts/lib/resolve-catalog.ts";
 import { stageReleaseLegalFiles } from "../../../scripts/lib/release-legal.ts";
-import { fromJsonStringPretty } from "@akeru/shared/schemaJson";
-import { fromYaml } from "@akeru/shared/schemaYaml";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { fromJsonStringPretty } from "@isnadi/shared/schemaJson";
+import { fromYaml } from "@isnadi/shared/schemaYaml";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 import serverPackageJson from "../package.json" with { type: "json" };
 import {
   ServerCliBuildAssetMissingError,
@@ -205,7 +205,7 @@ const createVpPmPublishArgs = (config: PublishCommandConfig): ReadonlyArray<stri
   const args = [
     "publish",
     "--filter",
-    "akeru-bot",
+    "isnadibot",
     "--access",
     config.access,
     "--tag",
@@ -331,7 +331,7 @@ const publishCmd = Command.make(
 // ---------------------------------------------------------------------------
 
 const cli = Command.make("cli").pipe(
-  Command.withDescription("Akeru Bot server build and publish CLI."),
+  Command.withDescription("IsnadiBot server build and publish CLI."),
   Command.withSubcommands([buildCmd, publishCmd]),
 );
 

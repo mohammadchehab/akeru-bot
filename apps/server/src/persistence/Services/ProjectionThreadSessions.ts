@@ -14,7 +14,7 @@ import {
   ProviderInstanceId,
   ThreadId,
   TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import * as Context from "effect/Context";
@@ -80,4 +80,4 @@ export interface ProjectionThreadSessionRepositoryShape {
 export class ProjectionThreadSessionRepository extends Context.Service<
   ProjectionThreadSessionRepository,
   ProjectionThreadSessionRepositoryShape
->()("akeru-bot/persistence/Services/ProjectionThreadSessions/ProjectionThreadSessionRepository") {}
+>()("isnadibot/persistence/Services/ProjectionThreadSessions/ProjectionThreadSessionRepository") {}

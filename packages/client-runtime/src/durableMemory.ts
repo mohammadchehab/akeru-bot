@@ -1,4 +1,4 @@
-import { type SharedProjectMemorySaveMode } from "@akeru/contracts";
+import { type SharedProjectMemorySaveMode } from "@isnadi/contracts";
 import { type MessageKey } from "./i18n/index.ts";
 
 /**

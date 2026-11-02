@@ -5,7 +5,7 @@ import { memo } from "react";
 
 import { isElectron } from "../../env";
 import { useI18n } from "../../i18n";
-import { AkeruWordmark } from "../AkeruWordmark";
+import { IsnadiWordmark } from "../IsnadiWordmark";
 import { AppIcon } from "../ui/app-icon";
 import { Button } from "../ui/button";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../ui/menu";
@@ -41,7 +41,7 @@ export const RosterSidebarHeader = memo(function RosterSidebarHeader({
           to="/"
           className="flex items-center justify-center rounded-md text-sidebar-foreground outline-none ring-ring focus-visible:ring-2"
         >
-          <AkeruWordmark />
+          <IsnadiWordmark />
         </Link>
         <div className="flex items-center justify-end">
           <Menu>
@@ -99,7 +99,7 @@ export function RosterPanelHeader({
         to="/"
         className="min-w-0 flex-1 rounded-md text-sidebar-foreground outline-none ring-ring focus-visible:ring-2"
       >
-        <AkeruWordmark className="text-26px" />
+        <IsnadiWordmark className="text-26px" />
       </Link>
       <Tooltip>
         <TooltipTrigger

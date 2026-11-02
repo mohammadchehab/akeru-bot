@@ -1,7 +1,7 @@
 import { RefreshCwIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import type { DailyTotals, HourlyTotals } from "@akeru/shared/usageMerge";
+import type { DailyTotals, HourlyTotals } from "@isnadi/shared/usageMerge";
 
 import { isElectron } from "../../env";
 import { useClientSettings } from "../../hooks/useSettings";
@@ -17,7 +17,7 @@ import {
   formatTokens,
   formatUsd,
   makeWindow,
-} from "@akeru/shared/usageFormat";
+} from "@isnadi/shared/usageFormat";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";

@@ -1,4 +1,4 @@
-import { readHostedPairingRequest } from "@akeru/shared/remote";
+import { readHostedPairingRequest } from "@isnadi/shared/remote";
 import * as Schema from "effect/Schema";
 
 type PairingUrlParts = { host: string; code: string };
@@ -90,7 +90,7 @@ export function extractPairingUrlFromQrPayload(payload: string): string {
   try {
     const url = new URL(trimmed);
 
-    if (url.protocol === "akeru:" || url.protocol === "akeru-dev:") {
+    if (url.protocol === "isnadi:" || url.protocol === "isnadi-dev:") {
       const pairingUrl = url.searchParams.get(MOBILE_PAIRING_URL_PARAM)?.trim() ?? "";
 
       if (pairingUrl.length > 0) {

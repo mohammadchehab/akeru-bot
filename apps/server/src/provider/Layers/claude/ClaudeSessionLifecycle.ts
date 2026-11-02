@@ -12,7 +12,7 @@ import {
   type PermissionMode,
   type SDKUserMessage,
 } from "@anthropic-ai/claude-agent-sdk";
-import { parseCliArgs } from "@akeru/shared/cliArgs";
+import { parseCliArgs } from "@isnadi/shared/cliArgs";
 import {
   ApprovalRequestId,
   type ClaudeSettings,
@@ -21,12 +21,12 @@ import {
   type ProviderRuntimeEvent,
   type ProviderSession,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   getModelSelectionBooleanOptionValue,
   getModelSelectionStringOptionValue,
   getProviderOptionDescriptors,
-} from "@akeru/shared/model";
+} from "@isnadi/shared/model";
 import * as Cause from "effect/Cause";
 
 import * as Effect from "effect/Effect";
@@ -40,9 +40,9 @@ import * as Stream from "effect/Stream";
 import { ServerConfig } from "../../../config.ts";
 import { subscriptionRuntimeEnvironment } from "../../../subscription-auth/runtime.ts";
 import {
-  createAkeruAgentInstructions,
-  createAkeruBotInstructions,
-} from "../../AkeruAgentInstructions.ts";
+  createIsnadiAgentInstructions,
+  createIsnadiBotInstructions,
+} from "../../IsnadiAgentInstructions.ts";
 import * as McpProviderSession from "../../../mcp/McpProviderSession.ts";
 import { toClaudeMcpServers } from "../../McpServerConfig.ts";
 
@@ -258,7 +258,7 @@ export function createClaudeSessionLifecycle(deps: {
         ...toClaudeMcpServers(input.mcpServers ?? []),
         ...(mcpSession
           ? {
-              akeru: {
+              isnadi: {
                 type: "http" as const,
                 url: mcpSession.endpoint,
                 headers: { Authorization: mcpSession.authorizationHeader },
@@ -284,13 +284,13 @@ export function createClaudeSessionLifecycle(deps: {
           type: "preset",
           preset: "claude_code",
           append: input.botId
-            ? createAkeruBotInstructions({
+            ? createIsnadiBotInstructions({
                 ...(input.botName ? { name: input.botName } : {}),
                 ...(input.personalityTone !== undefined
                   ? { personalityTone: input.personalityTone }
                   : {}),
               })
-            : createAkeruAgentInstructions(),
+            : createIsnadiAgentInstructions(),
         },
         settingSources: [...CLAUDE_SETTING_SOURCES],
         // `ultracode` is a Claude Code setting, not an API effort level. It is

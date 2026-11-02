@@ -8,7 +8,7 @@ import {
   rows,
 } from "./testUtils/imageService.ts";
 import { describe, expect, it } from "vite-plus/test";
-import { DEFAULT_SERVER_SETTINGS, type ImageGenerationSettings } from "@akeru/contracts";
+import { DEFAULT_SERVER_SETTINGS, type ImageGenerationSettings } from "@isnadi/contracts";
 import { makeTestSubscriptionAuthService } from "../subscription-auth/testUtils/subscriptionAuthService.ts";
 import { imageProviderStatuses, normalizeImageGenerationPatch } from "./service.ts";
 

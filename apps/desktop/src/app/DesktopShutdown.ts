@@ -15,7 +15,7 @@ export class DesktopShutdown extends Context.Service<
     readonly awaitComplete: Effect.Effect<void>;
     readonly isComplete: Effect.Effect<boolean>;
   }
->()("@akeru/desktop/app/DesktopShutdown") {}
+>()("@isnadi/desktop/app/DesktopShutdown") {}
 
 const make = Effect.gen(function* () {
   const requested = yield* Deferred.make<void>();

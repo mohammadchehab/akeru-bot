@@ -2,7 +2,7 @@ import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { McpSchema, McpServer, Tool } from "effect/unstable/ai";
-import { ImageGenerationRequest, type ImageGenerationResult } from "@akeru/contracts";
+import { ImageGenerationRequest, type ImageGenerationResult } from "@isnadi/contracts";
 import { runImageGenerationTool } from "../image-generation/ImageGenerationRuntime.ts";
 import * as McpInvocationContext from "./McpInvocationContext.ts";
 import { normalizeProviderToolInputSchema, toolErrorResult } from "./McpToolSchema.ts";

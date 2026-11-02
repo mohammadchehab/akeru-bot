@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@akeru/contracts";
+import type { ScopedThreadRef } from "@isnadi/contracts";
 
 import { previewRuntimeTabId } from "../../browser/previewRuntimeTabId";
 

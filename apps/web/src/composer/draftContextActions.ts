@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import type { StoreApi } from "zustand";
-import { type PreviewAnnotationPayload } from "@akeru/contracts";
+import { type PreviewAnnotationPayload } from "@isnadi/contracts";
 import { ensureInlineTerminalContextPlaceholders } from "../lib/terminalContext";
 import {
   type ElementContextDraft,

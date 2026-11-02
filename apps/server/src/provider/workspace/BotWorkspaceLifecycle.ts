@@ -5,14 +5,14 @@ import type { BotWorkspaceIO } from "./BotWorkspaceIO.ts";
 import { Workspace } from "@mastra/core/workspace";
 import {
   type RemoteBotSandbox,
-  type AkeruBotWorkspace,
+  type IsnadiBotWorkspace,
   REMOTE_BOT_SANDBOXES,
 } from "./BotWorkspaceTypes.ts";
 
 export function wrap(
   workspace: Workspace,
   provider: "local" | RemoteBotSandbox,
-): AkeruBotWorkspace {
+): IsnadiBotWorkspace {
   return {
     id: workspace.id,
     provider,

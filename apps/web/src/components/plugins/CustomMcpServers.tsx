@@ -4,7 +4,7 @@ import {
   PlusSignIcon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
-import type { McpServer } from "@akeru/contracts";
+import type { McpServer } from "@isnadi/contracts";
 import { useI18n } from "../../i18n";
 import { AppIcon } from "../ui/app-icon";
 import { Button } from "../ui/button";

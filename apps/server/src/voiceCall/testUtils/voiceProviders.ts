@@ -1,4 +1,4 @@
-import { BotId, type VoiceSettings } from "@akeru/contracts";
+import { BotId, type VoiceSettings } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -22,7 +22,7 @@ const repository = {
     Effect.succeed(
       Option.some({
         botId,
-        name: "Akeru",
+        name: "Isnadi",
         title: "Generalist",
         label: null,
         description: null,

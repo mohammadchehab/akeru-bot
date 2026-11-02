@@ -1,4 +1,4 @@
-import type { AppearanceContrast } from "@akeru/contracts/settings";
+import type { AppearanceContrast } from "@isnadi/contracts/settings";
 
 export function applyAppearanceContrast(
   root: { readonly style: Pick<CSSStyleDeclaration, "setProperty"> },

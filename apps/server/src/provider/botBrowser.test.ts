@@ -58,7 +58,7 @@ describe("sandbox bot browser", () => {
     ).toBe("Browser failed for [REDACTED] [REDACTED]");
   });
 
-  it("exposes only the Akeru navigate, snapshot, click, and type tools", () => {
+  it("exposes only the Isnadi navigate, snapshot, click, and type tools", () => {
     expect(Object.keys(createBotBrowserTools(rpc()))).toEqual([
       "browser_navigate",
       "browser_snapshot",
@@ -134,7 +134,7 @@ describe("sandbox bot browser", () => {
     const browser = createBotBrowser({
       threadId: "thread-1",
       workspace,
-      cacheDir: "/tmp/akeru-browser-test",
+      cacheDir: "/tmp/isnadi-browser-test",
       makeRpc,
     });
 
@@ -281,7 +281,7 @@ describe("sandbox bot browser", () => {
       cacheDir: "/tmp/unused-remote-browser-cache",
     });
 
-    await expect(browser.attachment()).rejects.toThrow("has no Akeru browser adapter");
+    await expect(browser.attachment()).rejects.toThrow("has no Isnadi browser adapter");
     await browser.close();
   });
 

@@ -1,4 +1,4 @@
-import { EnvironmentId, MessageId, ThreadId, type OrchestrationMessage } from "@akeru/contracts";
+import { EnvironmentId, MessageId, ThreadId, type OrchestrationMessage } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import { assistantRowPropsEqual } from "./BotChatMessageRows";
@@ -24,7 +24,7 @@ const result = { kind: "plugin-search-results" } as NonNullable<
 function props(overrides: Partial<RowProps> = {}): RowProps {
   return {
     message,
-    author: { name: "Akeru", avatar: { kind: "dither", seed: "a" } },
+    author: { name: "Isnadi", avatar: { kind: "dither", seed: "a" } },
     testId: "row",
     cwd: "/work",
     threadRef: { environmentId: EnvironmentId.make("env"), threadId: ThreadId.make("thread") },

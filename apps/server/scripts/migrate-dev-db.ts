@@ -1,9 +1,9 @@
 /**
  * Rebuild an isolated dev database from a pruned snapshot of the real
- * ~/.akeru database, then run this checkout's migrations against it.
+ * ~/.isnadi database, then run this checkout's migrations against it.
  *
  * `vp run migrate-dev-db` from a worktree:
- *   1. Nukes `<worktree>/.akeru/userdata/state.sqlite`.
+ *   1. Nukes `<worktree>/.isnadi/userdata/state.sqlite`.
  *   2. Snapshots the real db (read-only VACUUM INTO) and prunes it to the
  *      most recently updated projects and, per project, the most recent
  *      threads that have fully stopped. Working, settled, and monitored
@@ -23,8 +23,11 @@
  */
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
+import * as NodeFS from "node:fs";
+import * as NodePath from "node:path";
 import * as NodeOS from "node:os";
-import { PRODUCT_HOME_DIRNAME, resolveWorktreeT3Home } from "@akeru/shared/devHome";
+import { resolveWorktreeT3Home } from "@isnadi/shared/devHome";
+import { findProductHomeDir } from "@isnadi/shared/productHome";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -69,7 +72,12 @@ export const runMigrateDevDb = Effect.fn("runMigrateDevDb")(function* (
   const path = yield* Path.Path;
 
   const sharedHome = path.resolve(
-    options.sharedHome ?? path.join(NodeOS.homedir(), PRODUCT_HOME_DIRNAME),
+    options.sharedHome ??
+      findProductHomeDir({
+        homeDirectory: NodeOS.homedir(),
+        joinPath: NodePath.join,
+        exists: NodeFS.existsSync,
+      }),
   );
 
   const sourcePath = path.resolve(
@@ -241,11 +249,13 @@ export const migrateDevDbCommand = Command.make(
     ),
     baseDir: Flag.string("base-dir").pipe(
       Flag.optional,
-      Flag.withDescription("Isolated .akeru directory. Defaults to the current worktree's .akeru."),
+      Flag.withDescription(
+        "Isolated .isnadi directory. Defaults to the current worktree's .isnadi.",
+      ),
     ),
     source: Flag.string("source").pipe(
       Flag.optional,
-      Flag.withDescription("Source database. Defaults to ~/.akeru/userdata/state.sqlite."),
+      Flag.withDescription("Source database. Defaults to ~/.isnadi/userdata/state.sqlite."),
     ),
   },
   ({ projects, threadsPerProject, baseDir, source }) =>
@@ -275,7 +285,7 @@ export const migrateDevDbCommand = Command.make(
     }),
 ).pipe(
   Command.withDescription(
-    "Rebuild the worktree dev database from a pruned snapshot of the real ~/.akeru data, then run migrations.",
+    "Rebuild the worktree dev database from a pruned snapshot of the real ~/.isnadi data, then run migrations.",
   ),
 );
 

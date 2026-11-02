@@ -1,4 +1,4 @@
-import { ProviderDriverKind, RuntimeRequestId, TurnId } from "@akeru/contracts";
+import { ProviderDriverKind, RuntimeRequestId, TurnId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

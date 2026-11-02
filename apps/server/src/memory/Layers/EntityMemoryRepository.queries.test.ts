@@ -11,13 +11,13 @@ import * as NodePath from "node:path";
 import { assert, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import {
-  AkeruMemoryEntityId,
-  AkeruMemoryId,
-  AkeruMemoryPartitionId,
-  AkeruMemoryRootId,
-  AkeruMemoryUserId,
+  IsnadiMemoryEntityId,
+  IsnadiMemoryId,
+  IsnadiMemoryPartitionId,
+  IsnadiMemoryRootId,
+  IsnadiMemoryUserId,
   BotId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -32,7 +32,7 @@ import { resolveMemoryArchivePartitions } from "../EntityMemoryAccess.ts";
 
 it("preserves revision history and FTS recall after repository restart", () =>
   Effect.gen(function* () {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-memory-restart-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-restart-"));
     const dbPath = NodePath.join(directory, "state.sqlite");
 
     const restartedLayer = EntityMemoryRepositoryLive.pipe(
@@ -40,7 +40,7 @@ it("preserves revision history and FTS recall after repository restart", () =>
       Layer.provideMerge(sqlitePersistenceLayer(dbPath).pipe(Layer.provide(NodeServices.layer))),
     );
 
-    const rootId = AkeruMemoryRootId.make("restart-memory-root");
+    const rootId = IsnadiMemoryRootId.make("restart-memory-root");
 
     const first = makeRevision("restart-memory-1", "bot:user", {
       rootId,
@@ -85,7 +85,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("rejects unapproved, forged, and mismatched direct revisions", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("validated-revise-root");
+      const rootId = IsnadiMemoryRootId.make("validated-revise-root");
       const first = makeRevision("validated-revise-1", "bot:user", { rootId });
       yield* repository.insert({ access: botAccess, revision: first });
 
@@ -97,12 +97,12 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const invalid = [
         { ...baseRevision, approvalState: "rejected" as const },
-        { ...baseRevision, initiatingUserId: AkeruMemoryUserId.make("other-user") },
+        { ...baseRevision, initiatingUserId: IsnadiMemoryUserId.make("other-user") },
         { ...baseRevision, authorBotId: BotId.make("other-bot") },
         {
           ...baseRevision,
           entityKind: "project" as const,
-          entityId: AkeruMemoryEntityId.make("project"),
+          entityId: IsnadiMemoryEntityId.make("project"),
         },
       ];
 
@@ -133,7 +133,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("rejects a second current head for the same tenant and root", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("single-head-root");
+      const rootId = IsnadiMemoryRootId.make("single-head-root");
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("head-1", "bot:user", { rootId }),
@@ -157,7 +157,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
   it.effect("does not let a revision move to another partition", () =>
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
-      const rootId = AkeruMemoryRootId.make("fixed-partition-root");
+      const rootId = IsnadiMemoryRootId.make("fixed-partition-root");
       const initial = makeRevision("fixed-1", "bot:user", { rootId });
       yield* repository.insert({ access: botAccess, revision: initial });
 
@@ -181,7 +181,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
     Effect.gen(function* () {
       const repository = yield* EntityMemoryRepository;
       const partitions = yield* resolveMemoryArchivePartitions(botAccess, "project");
-      const rootId = AkeruMemoryRootId.make("redacted-invalid-chain-root");
+      const rootId = IsnadiMemoryRootId.make("redacted-invalid-chain-root");
 
       const first = makeRevision("redacted-invalid-chain-3", "project", {
         rootId,
@@ -189,18 +189,18 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         partition: {
           tenantId: botAccess.tenantId,
           scope: "project",
-          partitionId: AkeruMemoryPartitionId.make(botAccess.projectId),
+          partitionId: IsnadiMemoryPartitionId.make(botAccess.projectId),
         },
         entityKind: "project",
-        entityId: AkeruMemoryEntityId.make(botAccess.projectId),
+        entityId: IsnadiMemoryEntityId.make(botAccess.projectId),
         visibility: "shared",
-        supersedesId: AkeruMemoryId.make("redacted-private-2"),
-        supersededById: AkeruMemoryId.make("redacted-invalid-chain-4"),
+        supersedesId: IsnadiMemoryId.make("redacted-private-2"),
+        supersededById: IsnadiMemoryId.make("redacted-invalid-chain-4"),
       });
 
       const second = {
         ...first,
-        id: AkeruMemoryId.make("redacted-invalid-chain-4"),
+        id: IsnadiMemoryId.make("redacted-invalid-chain-4"),
         revision: 4,
         supersedesId: first.id,
         supersededById: null,
@@ -208,7 +208,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const invalidHistories = [
         [first, { ...second, revision: 5 }],
-        [first, { ...second, supersedesId: AkeruMemoryId.make("missing-project-revision") }],
+        [first, { ...second, supersedesId: IsnadiMemoryId.make("missing-project-revision") }],
         [first],
       ];
 

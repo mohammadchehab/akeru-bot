@@ -1,4 +1,4 @@
-import { type ProviderInstanceId, type ProviderSession, ThreadId } from "@akeru/contracts";
+import { type ProviderInstanceId, type ProviderSession, ThreadId } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 

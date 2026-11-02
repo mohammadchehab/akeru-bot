@@ -1,5 +1,5 @@
 import { useMobileI18n } from "../../lib/i18n";
-import { presentThreadError, type ThreadErrorContext } from "@akeru/client-runtime/errors";
+import { presentThreadError, type ThreadErrorContext } from "@isnadi/client-runtime/errors";
 import { Text, View } from "react-native";
 
 export function ResumeErrorSummary(props: {

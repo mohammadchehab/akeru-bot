@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { AuthAccessWriteScope, type ChannelBinding } from "@akeru/contracts";
+import { AuthAccessWriteScope, type ChannelBinding } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

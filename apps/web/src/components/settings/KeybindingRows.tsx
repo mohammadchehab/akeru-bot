@@ -1,4 +1,4 @@
-import { type ServerUpsertKeybindingInput } from "@akeru/contracts";
+import { type ServerUpsertKeybindingInput } from "@isnadi/contracts";
 import { ChevronRightIcon, EllipsisIcon, XIcon } from "lucide-react";
 import { type ReactNode, useId, useReducer } from "react";
 import { useI18n } from "../../i18n";

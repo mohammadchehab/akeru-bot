@@ -1,11 +1,11 @@
 import { recordLookup } from "../recordLookup";
 import { Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { safeErrorLogAttributes } from "@akeru/client-runtime/errors";
+import { safeErrorLogAttributes } from "@isnadi/client-runtime/errors";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import {
   defaultInstanceIdForDriver,
   type EnvironmentId,
@@ -15,8 +15,8 @@ import {
   ProviderInstanceId,
   resolveProviderInstanceEnabled,
   type ServerProvider,
-} from "@akeru/contracts";
-import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@akeru/contracts/settings";
+} from "@isnadi/contracts";
+import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@isnadi/contracts/settings";
 import * as Arr from "effect/Array";
 import * as Equal from "effect/Equal";
 import * as Result from "effect/Result";

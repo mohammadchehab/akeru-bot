@@ -28,7 +28,7 @@ export default mergeConfig(
       tasks: {
         build: {
           command: "node scripts/cli.ts build",
-          dependsOn: ["@akeru/web#build"],
+          dependsOn: ["@isnadi/web#build"],
           cache: false,
         },
       },

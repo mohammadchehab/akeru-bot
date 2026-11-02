@@ -1,6 +1,6 @@
-import type { ProviderRuntimeEvent } from "@akeru/contracts";
-import { ProviderDriverKind, ProviderInstanceId, ThreadId } from "@akeru/contracts";
-import { DEFAULT_SERVER_SETTINGS } from "@akeru/contracts/settings";
+import type { ProviderRuntimeEvent } from "@isnadi/contracts";
+import { ProviderDriverKind, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
+import { DEFAULT_SERVER_SETTINGS } from "@isnadi/contracts/settings";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it, assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";

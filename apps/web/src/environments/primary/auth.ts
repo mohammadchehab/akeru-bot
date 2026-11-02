@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
-import type { AuthSessionState } from "@akeru/contracts";
-import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@akeru/contracts";
+import type { AuthSessionState } from "@isnadi/contracts";
+import { PRIMARY_LOCAL_ENVIRONMENT_ID } from "@isnadi/contracts";
 import {
   getPairingTokenFromUrl,
   stripPairingTokenFromUrl as stripPairingTokenUrl,

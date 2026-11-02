@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { BotId, EnvironmentId, type OrchestrationBot } from "@akeru/contracts";
+import { BotId, EnvironmentId, type OrchestrationBot } from "@isnadi/contracts";
 import { Children, isValidElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";

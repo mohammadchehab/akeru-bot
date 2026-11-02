@@ -5,7 +5,7 @@ import {
   type OrchestrationThreadStreamItem,
   ORCHESTRATION_WS_METHODS,
   ProviderDriverKind,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";

@@ -6,8 +6,8 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
   BotId,
   EventId,
   GroupId,
@@ -16,7 +16,7 @@ import {
   ThreadId,
   TurnId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -52,7 +52,11 @@ describe("AgentControllerLive", () => {
     vi.useFakeTimers();
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-interrupt-"));
+
+    const memoryDir = NodeFS.mkdtempSync(
+      NodePath.join(NodeOS.tmpdir(), "isnadi-review-interrupt-"),
+    );
+
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-review-interrupt");
     const renew = vi.spyOn(botMemoryStore, "renewReviewClaim");
@@ -84,8 +88,8 @@ describe("AgentControllerLive", () => {
           modelSelection: codexSelection,
           runtimeMode: "full-access",
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-review-interrupt"),
             workspaceRoot: "/workspace/review-interrupt",
@@ -128,13 +132,13 @@ describe("AgentControllerLive", () => {
     (successfulMemoryCalls) => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-mastra-review-"));
+      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-review-"));
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-mastra-review");
 
       const access = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: codexThreadId,
         projectId: ProjectId.make("project-mastra-review"),
         workspaceRoot: "/workspace/mastra-review",
@@ -231,7 +235,7 @@ describe("AgentControllerLive", () => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-renewal-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-review-renewal-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-review-renewal");
     const renew = vi.spyOn(botMemoryStore, "renewReviewClaim");
@@ -263,8 +267,8 @@ describe("AgentControllerLive", () => {
           modelSelection: codexSelection,
           runtimeMode: "full-access",
           memoryAccess: {
-            tenantId: AkeruMemoryTenantId.make("local"),
-            userId: AkeruMemoryUserId.make("owner"),
+            tenantId: IsnadiMemoryTenantId.make("local"),
+            userId: IsnadiMemoryUserId.make("owner"),
             threadId: codexThreadId,
             projectId: ProjectId.make("project-review-renewal"),
             workspaceRoot: "/workspace/review-renewal",
@@ -473,14 +477,18 @@ describe("AgentControllerLive", () => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
       const credentials = makeMemoryOnlyCredentialOptions();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-cadence-"));
+
+      const memoryDir = NodeFS.mkdtempSync(
+        NodePath.join(NodeOS.tmpdir(), "isnadi-review-cadence-"),
+      );
+
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-legacy-review");
       const groupId = GroupId.make("group-legacy-review");
 
       const memoryAccess = {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId: claudeThreadId,
         projectId: ProjectId.make("project-legacy-review"),
         workspaceRoot: "/workspace/legacy-review",

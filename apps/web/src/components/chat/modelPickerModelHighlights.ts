@@ -1,4 +1,4 @@
-import type { ProviderDriverKind } from "@akeru/contracts";
+import type { ProviderDriverKind } from "@isnadi/contracts";
 
 /**
  * Model slugs that show a gold "NEW" chip in the model picker list.

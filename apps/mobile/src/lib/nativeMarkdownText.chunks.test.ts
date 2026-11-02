@@ -4,7 +4,7 @@ import {
   nativeMarkdownChunkSpacing,
   nativeMarkdownDocumentChunks,
   nativeMarkdownDocumentRuns,
-} from "@akeru/mobile-markdown-text/markdown";
+} from "@isnadi/mobile-markdown-text/markdown";
 
 describe("nativeMarkdownDocumentChunks", () => {
   it("renders plain blockquotes as rich blocks so their marker spans wrapped lines", () => {

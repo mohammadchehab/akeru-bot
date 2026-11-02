@@ -1,25 +1,25 @@
 import {
-  AkeruBotUsageSummary,
-  AkeruUsageEntry,
-  type AkeruUsageCategory,
-  type AkeruUsageReservationId,
+  IsnadiBotUsageSummary,
+  IsnadiUsageEntry,
+  type IsnadiUsageCategory,
+  type IsnadiUsageReservationId,
   type BotId,
   type ProviderDriverKind,
   type ThreadId,
   type TurnId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import { type PersistenceDecodeError, PersistenceSqlError } from "../persistence/Errors.ts";
 
-export const AKERU_TURN_USAGE_RESERVATION_TOKENS = 32_000;
+export const ISNADI_TURN_USAGE_RESERVATION_TOKENS = 32_000;
 
 export interface ReserveBotUsageInput {
-  readonly reservationId: AkeruUsageReservationId;
+  readonly reservationId: IsnadiUsageReservationId;
   readonly sourceKey: string;
   readonly botId: BotId;
   readonly threadId: ThreadId | null;
   readonly turnId: TurnId | null;
-  readonly category: AkeruUsageCategory;
+  readonly category: IsnadiUsageCategory;
   readonly maximumTokens: number;
   readonly provider: ProviderDriverKind | null;
   readonly model: string | null;
@@ -39,7 +39,7 @@ export type SettleBotUsageDetails =
   | { readonly state: "released" };
 
 export type SettleBotUsageInput = SettleBotUsageDetails & {
-  readonly reservationId: AkeruUsageReservationId;
+  readonly reservationId: IsnadiUsageReservationId;
   readonly settledAt: string;
 };
 
@@ -69,31 +69,31 @@ export interface BotUsageLedgerShape {
   >;
   readonly reserve: (
     input: ReserveBotUsageInput,
-  ) => Effect.Effect<AkeruUsageEntry, BotUsageLedgerError>;
+  ) => Effect.Effect<IsnadiUsageEntry, BotUsageLedgerError>;
   readonly settle: (
     input: SettleBotUsageInput,
-  ) => Effect.Effect<AkeruUsageEntry, BotUsageLedgerError>;
+  ) => Effect.Effect<IsnadiUsageEntry, BotUsageLedgerError>;
   readonly bindTurn: (input: {
-    readonly reservationId: AkeruUsageReservationId;
+    readonly reservationId: IsnadiUsageReservationId;
     readonly turnId: TurnId;
-  }) => Effect.Effect<AkeruUsageEntry, BotUsageLedgerError>;
+  }) => Effect.Effect<IsnadiUsageEntry, BotUsageLedgerError>;
   readonly settleForTurn: (
     input: SettleBotUsageForTurnInput,
-  ) => Effect.Effect<ReadonlyArray<AkeruUsageEntry>, BotUsageLedgerError>;
+  ) => Effect.Effect<ReadonlyArray<IsnadiUsageEntry>, BotUsageLedgerError>;
   readonly finalizeForTurn: (input: {
     readonly botId: BotId;
     readonly threadId: ThreadId;
     readonly turnId: TurnId;
     readonly settledAt: string;
     readonly cancelled?: boolean;
-  }) => Effect.Effect<ReadonlyArray<AkeruUsageEntry>, BotUsageLedgerError>;
+  }) => Effect.Effect<ReadonlyArray<IsnadiUsageEntry>, BotUsageLedgerError>;
   readonly recordMeasurement: (input: {
-    readonly reservationId: AkeruUsageReservationId;
+    readonly reservationId: IsnadiUsageReservationId;
     readonly sourceKey: string;
     readonly botId: BotId;
     readonly threadId: ThreadId | null;
     readonly turnId: TurnId | null;
-    readonly category: AkeruUsageCategory;
+    readonly category: IsnadiUsageCategory;
     readonly inputTokens: number;
     readonly cachedInputTokens?: number;
     readonly cacheCreationTokens?: number;
@@ -103,10 +103,10 @@ export interface BotUsageLedgerShape {
     readonly model: string | null;
     readonly includedInReservation?: boolean;
     readonly createdAt: string;
-  }) => Effect.Effect<AkeruUsageEntry, BotUsageLedgerError>;
+  }) => Effect.Effect<IsnadiUsageEntry, BotUsageLedgerError>;
   /** Records work that charges no tokens so a restart before it settles marks it interrupted. */
   readonly recordStart: (
     input: Omit<ReserveBotUsageInput, "maximumTokens">,
-  ) => Effect.Effect<AkeruUsageEntry, BotUsageLedgerError>;
-  readonly summarize: (botId: BotId) => Effect.Effect<AkeruBotUsageSummary, BotUsageLedgerError>;
+  ) => Effect.Effect<IsnadiUsageEntry, BotUsageLedgerError>;
+  readonly summarize: (botId: BotId) => Effect.Effect<IsnadiBotUsageSummary, BotUsageLedgerError>;
 }

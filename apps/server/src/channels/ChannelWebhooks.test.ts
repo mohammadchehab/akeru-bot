@@ -19,14 +19,14 @@ describe("channel runtime", () => {
       const accepted = yield* handleWhatsAppWebhook(
         BOT_ID,
         new Request(
-          `https://akeru.example/api/channels/whatsapp/${BOT_ID}/webhook?hub.mode=subscribe&hub.verify_token=verify-token&hub.challenge=challenge-123`,
+          `https://isnadi.example/api/channels/whatsapp/${BOT_ID}/webhook?hub.mode=subscribe&hub.verify_token=verify-token&hub.challenge=challenge-123`,
         ),
       );
 
       const rejected = yield* handleWhatsAppWebhook(
         BOT_ID,
         new Request(
-          `https://akeru.example/api/channels/whatsapp/${BOT_ID}/webhook?hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=challenge-123`,
+          `https://isnadi.example/api/channels/whatsapp/${BOT_ID}/webhook?hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=challenge-123`,
         ),
       );
 

@@ -16,7 +16,7 @@ import type {
   OrchestrationCommand,
   OrchestrationEvent,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as Scope from "effect/Scope";
@@ -129,4 +129,4 @@ export interface OrchestrationEngineShape {
 export class OrchestrationEngineService extends Context.Service<
   OrchestrationEngineService,
   OrchestrationEngineShape
->()("akeru-bot/orchestration/Services/OrchestrationEngine/OrchestrationEngineService") {}
+>()("isnadibot/orchestration/Services/OrchestrationEngine/OrchestrationEngineService") {}

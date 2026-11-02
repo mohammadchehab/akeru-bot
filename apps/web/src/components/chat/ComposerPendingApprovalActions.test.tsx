@@ -1,8 +1,8 @@
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   ApprovalRequestId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -128,7 +128,7 @@ describe("ComposerPendingApprovalActions", () => {
       <ComposerPendingApprovalActions
         requestId={ApprovalRequestId.make("approval-routine")}
         requestKind="command"
-        toolName={AKERU_CREATE_ROUTINE_TOOL_NAME}
+        toolName={ISNADI_CREATE_ROUTINE_TOOL_NAME}
         isResponding={false}
         options={[
           { decision: "accept", label: "Create routine" },
@@ -151,7 +151,7 @@ describe("ComposerPendingApprovalActions", () => {
       <ComposerPendingApprovalActions
         requestId={ApprovalRequestId.make("approval-routine-fallback")}
         requestKind="command"
-        toolName={AKERU_CREATE_ROUTINE_TOOL_NAME}
+        toolName={ISNADI_CREATE_ROUTINE_TOOL_NAME}
         isResponding={false}
         onRespondToApproval={async () => undefined}
       />,
@@ -167,7 +167,7 @@ describe("ComposerPendingApprovalActions", () => {
       <ComposerPendingApprovalActions
         requestId={ApprovalRequestId.make("approval-feedback")}
         requestKind="command"
-        toolName={AKERU_PRODUCT_FEEDBACK_TOOL_NAME}
+        toolName={ISNADI_PRODUCT_FEEDBACK_TOOL_NAME}
         isResponding={false}
         options={[
           { decision: "accept", label: "Add to feedback draft" },

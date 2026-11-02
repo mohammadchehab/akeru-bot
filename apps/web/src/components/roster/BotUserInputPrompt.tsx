@@ -1,4 +1,4 @@
-import { type ApprovalRequestId } from "@akeru/contracts";
+import { type ApprovalRequestId } from "@isnadi/contracts";
 
 import { useI18n } from "../../i18n";
 import type { PendingUserInputDraftAnswer } from "../../pendingUserInput";

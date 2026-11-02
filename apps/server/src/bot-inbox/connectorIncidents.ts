@@ -1,4 +1,4 @@
-import type { ProviderAccessStatus } from "@akeru/contracts";
+import type { ProviderAccessStatus } from "@isnadi/contracts";
 
 import type { ProviderStatus } from "../subscription-auth/service.ts";
 import { BotInboxService } from "./service.ts";

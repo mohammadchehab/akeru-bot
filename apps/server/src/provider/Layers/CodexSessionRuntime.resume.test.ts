@@ -2,7 +2,7 @@ import * as NodeAssert from "node:assert/strict";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { describe } from "vite-plus/test";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import * as CodexErrors from "effect-codex-app-server/errors";
 import * as CodexRpc from "effect-codex-app-server/rpc";
 import { codexSessionAppServerArgs } from "./codexLaunchArgs.ts";
@@ -16,7 +16,7 @@ describe("codexSessionAppServerArgs", () => {
   it("keeps launch args when explicit app-server args are provided", () => {
     NodeAssert.deepStrictEqual(
       codexSessionAppServerArgs(
-        ["-c", "mcp_servers.akeru.url=http://127.0.0.1/mcp"],
+        ["-c", "mcp_servers.isnadi.url=http://127.0.0.1/mcp"],
         "--strict-config --enable foo",
       ),
       [
@@ -25,7 +25,7 @@ describe("codexSessionAppServerArgs", () => {
         "--enable",
         "foo",
         "-c",
-        "mcp_servers.akeru.url=http://127.0.0.1/mcp",
+        "mcp_servers.isnadi.url=http://127.0.0.1/mcp",
       ],
     );
   });

@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import type { AuthClientMetadata, AuthClientSession, AuthPairingLink } from "@akeru/contracts";
+import type { AuthClientMetadata, AuthClientSession, AuthPairingLink } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 
 import type { IssuedBearerSession, IssuedPairingLink } from "./auth/EnvironmentAuth.ts";

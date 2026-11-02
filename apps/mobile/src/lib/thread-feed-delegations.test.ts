@@ -5,8 +5,8 @@ import {
   EnvironmentId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
-} from "@akeru/contracts";
+  type IsnadiDelegationRecord,
+} from "@isnadi/contracts";
 
 import { scopedThreadKey } from "./scopedEntities";
 import { deriveThreadFeedDelegations, type ThreadFeedDelegations } from "./threadActivity";
@@ -15,7 +15,7 @@ const environmentId = EnvironmentId.make("env-1");
 
 const threadId = ThreadId.make("thread-1");
 
-const delegation = (id: string, parentThreadId: string): AkeruDelegationRecord => ({
+const delegation = (id: string, parentThreadId: string): IsnadiDelegationRecord => ({
   delegationId: DelegationId.make(id),
   parentDelegationId: null,
   parentBotId: BotId.make("bot-parent"),

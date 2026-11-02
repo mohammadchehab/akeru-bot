@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ThreadId } from "@akeru/contracts";
+import { ThreadId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
@@ -482,7 +482,7 @@ projectionSnapshotLayer("ProjectionSnapshotQuery windowed thread detail", (it) =
           )
       `;
       yield* sql`
-        INSERT INTO akeru_memory_candidates (
+        INSERT INTO isnadi_memory_candidates (
           candidate_id, tenant_id, initiating_user_id, source_thread_id, fact_text,
           target_scope, sensitive, confidence, affected_bot_ids_json, status, created_at
         )

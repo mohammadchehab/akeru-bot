@@ -3,7 +3,7 @@ import {
   type DesktopHostTelemetrySnapshot,
   type DesktopTelemetryControlMessage,
   type HostPowerSnapshot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -73,7 +73,7 @@ export class DesktopTelemetryPublisher extends Context.Service<
     ) => Effect.Effect<void>;
     readonly removeControlSource: (sourceId: string) => Effect.Effect<void>;
   }
->()("@akeru/desktop/telemetry/DesktopTelemetryPublisher") {}
+>()("@isnadi/desktop/telemetry/DesktopTelemetryPublisher") {}
 
 function booleanState(value: boolean): HostPowerSnapshot["onBattery"] {
   return value ? "true" : "false";

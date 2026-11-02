@@ -10,7 +10,7 @@ import {
   type ProviderRuntimeEvent,
   ProviderInstanceId,
   type ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";

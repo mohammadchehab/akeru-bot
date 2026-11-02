@@ -1,7 +1,7 @@
-import { type AkeruRemoteSession, type AkeruWorkspaceState } from "../BotWorkspaceTypes.ts";
+import { type IsnadiRemoteSession, type IsnadiWorkspaceState } from "../BotWorkspaceTypes.ts";
 import { commandLine, quote } from "../BotWorkspaceLifecycle.ts";
 
-export function upstash(box: import("@upstash/box").Box): AkeruRemoteSession {
+export function upstash(box: import("@upstash/box").Box): IsnadiRemoteSession {
   const inspect = async () => {
     const status = (await box.getStatus()).status;
 
@@ -60,7 +60,7 @@ export function upstash(box: import("@upstash/box").Box): AkeruRemoteSession {
   };
 }
 
-export function upstashWorkspaceState(status: string): AkeruWorkspaceState {
+export function upstashWorkspaceState(status: string): IsnadiWorkspaceState {
   if (status === "running" || status === "idle") return "running";
 
   if (status === "error" || status === "deleted") return "missing";

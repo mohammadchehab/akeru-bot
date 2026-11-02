@@ -3,7 +3,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { BotId } from "@akeru/contracts";
+import { BotId } from "@isnadi/contracts";
 import { BotInboxService } from "./service.ts";
 import {
   browserIncidentKey,
@@ -20,13 +20,13 @@ afterEach(() => {
 
 describe("browser inbox producer", () => {
   it("opens once, resolves on attach, and reopens with an incremented occurrence", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-browser-inbox-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-browser-inbox-"));
     directories.push(directory);
     const service = new BotInboxService(NodePath.join(directory, "inbox.json"));
 
     const input = {
       botId: BotId.make("bot-one"),
-      botName: "Akeru",
+      botName: "Isnadi",
       taskOrRoutine: "Research task",
       detail: "The managed browser endpoint refused the MCP session.",
       resourceKey: "workspace-one",
@@ -49,14 +49,14 @@ describe("browser inbox producer", () => {
   });
 
   it("keeps another workspace's failure open when one browser recovers", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-browser-inbox-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-browser-inbox-"));
     directories.push(directory);
     const service = new BotInboxService(NodePath.join(directory, "inbox.json"));
     const botId = BotId.make("bot-multi-workspace");
 
     const input = {
       botId,
-      botName: "Akeru",
+      botName: "Isnadi",
       taskOrRoutine: "Research task",
       detail: "Browser unavailable.",
     };

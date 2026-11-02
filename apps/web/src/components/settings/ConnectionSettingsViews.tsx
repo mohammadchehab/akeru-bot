@@ -546,7 +546,7 @@ export function connectionSettingsViews(settings: ReturnType<typeof useDesktopBa
         ) : (
           <>
             This server listens only on localhost. Other devices can reach it through Tailscale
-            Serve (<code className="font-mono text-foreground/85">akeru pair --tailscale</code>) or
+            Serve (<code className="font-mono text-foreground/85">isnadi pair --tailscale</code>) or
             after a restart with a reachable{" "}
             <code className="font-mono text-foreground/85">--host</code>.
           </>

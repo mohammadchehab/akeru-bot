@@ -21,7 +21,7 @@ import {
 describe("createBotWorkspace", () => {
   it("creates and reattaches Railway identities with explicit credentials and cleans up", async () => {
     const { Sandbox } = await import("railway");
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-railway-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-railway-"));
     const identityFile = NodePath.join(baseDir, "identity.json");
     const destroy = vi.fn(async () => undefined);
 
@@ -38,7 +38,7 @@ describe("createBotWorkspace", () => {
     const input = {
       io: workspaceIO,
       threadId: "railway-thread",
-      workspaceId: "akeru-railway",
+      workspaceId: "isnadi-railway",
       identityFile,
       sandbox: "railway" as const,
       environment: { RAILWAY_API_TOKEN: " token ", RAILWAY_ENVIRONMENT_ID: " env " },

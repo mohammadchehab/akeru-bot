@@ -10,7 +10,7 @@ import {
   ChannelDeliveryState,
   ChatAttachment,
   OrchestrationMessageReaction,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 import { toPersistenceSqlError } from "../Errors.ts";
 import {

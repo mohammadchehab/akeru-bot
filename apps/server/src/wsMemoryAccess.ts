@@ -2,12 +2,12 @@ import * as Match from "effect/Match";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import {
-  AkeruMemoryTenantId,
-  AkeruMemoryUserId,
-  type AkeruMemoryThreadAccess,
+  IsnadiMemoryTenantId,
+  IsnadiMemoryUserId,
+  type IsnadiMemoryThreadAccess,
   isGroupBotMember,
   ThreadId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as ProjectionSnapshotQuery from "./orchestration/Services/ProjectionSnapshotQuery.ts";
 import * as ProjectionGroups from "./persistence/Services/ProjectionGroups.ts";
 import { type BotMemoryAccess } from "./memory/BotMemory.ts";
@@ -61,8 +61,8 @@ export const createWsMemoryAccess = (
             );
 
       return {
-        tenantId: AkeruMemoryTenantId.make("local"),
-        userId: AkeruMemoryUserId.make("owner"),
+        tenantId: IsnadiMemoryTenantId.make("local"),
+        userId: IsnadiMemoryUserId.make("owner"),
         threadId,
         projectId: thread.value.projectId,
         workspaceRoot: project.value.workspaceRoot,
@@ -74,7 +74,7 @@ export const createWsMemoryAccess = (
         groupId,
         respondingBotId: thread.value.respondingBotId ?? thread.value.botId ?? null,
         groupMemberBotIds,
-      } satisfies AkeruMemoryThreadAccess;
+      } satisfies IsnadiMemoryThreadAccess;
     });
 
   const resolveBotMemoryAccess = (operation: string, threadId: ThreadId) =>
@@ -93,7 +93,7 @@ export const createWsMemoryAccess = (
     );
 
   const readArchiveConversations = (
-    anchor: AkeruMemoryThreadAccess,
+    anchor: IsnadiMemoryThreadAccess,
     target: "thread" | "bot" | "project" | "workspace" | "all",
   ) =>
     projectionSnapshotQuery.getShellSnapshot().pipe(

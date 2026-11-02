@@ -7,7 +7,7 @@ import {
   type ChannelBinding,
   type ChannelProvider,
   type OrchestrationEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import { failWith, channelDeliveryUnknownError } from "./ChannelErrors.ts";

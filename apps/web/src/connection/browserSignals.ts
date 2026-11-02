@@ -1,4 +1,4 @@
-import { Connectivity, Wakeups } from "@akeru/client-runtime/connection";
+import { Connectivity, Wakeups } from "@isnadi/client-runtime/connection";
 import * as Effect from "effect/Effect";
 import * as Queue from "effect/Queue";
 import * as Stream from "effect/Stream";

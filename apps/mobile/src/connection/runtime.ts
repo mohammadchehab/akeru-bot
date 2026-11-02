@@ -1,6 +1,6 @@
-import { Connection } from "@akeru/client-runtime/connection";
-import { shellSnapshotLoaderLayer } from "@akeru/client-runtime/state/shell";
-import { threadSnapshotLoaderLayer } from "@akeru/client-runtime/state/threads";
+import { Connection } from "@isnadi/client-runtime/connection";
+import { shellSnapshotLoaderLayer } from "@isnadi/client-runtime/state/shell";
+import { threadSnapshotLoaderLayer } from "@isnadi/client-runtime/state/threads";
 import * as Layer from "effect/Layer";
 import { Atom } from "effect/unstable/reactivity";
 

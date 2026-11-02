@@ -1,8 +1,8 @@
 import { NodeFS, fixture, privateAccess, groupAccess } from "./testUtils/botMemory.ts";
 import * as NodePath from "node:path";
 import { assert, describe, expect, it } from "@effect/vitest";
-import { BotId } from "@akeru/contracts";
-import { AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS, BOT_MEMORY_ENTRY_DELIMITER } from "./BotMemory.ts";
+import { BotId } from "@isnadi/contracts";
+import { ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS, BOT_MEMORY_ENTRY_DELIMITER } from "./BotMemory.ts";
 
 describe("BotMemoryStore", () => {
   it("stores USER.md and MEMORY.md under the owning bot", async () => {
@@ -80,7 +80,7 @@ describe("BotMemoryStore", () => {
     assert.lengthOf(persisted.reviewInputs, 7);
     assert.isAtMost(
       JSON.stringify(persisted.reviewInputs).length,
-      AKERU_MEMORY_REVIEW_BATCH_MAX_CHARS,
+      ISNADI_MEMORY_REVIEW_BATCH_MAX_CHARS,
     );
   });
 

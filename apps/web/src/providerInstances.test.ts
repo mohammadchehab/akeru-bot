@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderDriverKind, ProviderInstanceId } from "@akeru/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   deriveProviderInstanceEntries,

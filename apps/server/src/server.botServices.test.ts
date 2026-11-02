@@ -7,7 +7,7 @@ import {
   type RoutineRun,
   ThreadId,
   WS_METHODS,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -166,7 +166,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
         limit: null,
         unit: null,
       });
-      assert.equal(result.missing._tag, "AkeruBotUsageReadError");
+      assert.equal(result.missing._tag, "IsnadiBotUsageReadError");
       assert.deepEqual(summarize.mock.calls, [[botId]]);
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
@@ -174,13 +174,13 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
   it.effect("syncs connector incidents through botInbox.list", () =>
     Effect.gen(function* () {
       const bot = {
-        botId: BotId.make("bot-akeru"),
-        name: "Akeru",
+        botId: BotId.make("bot-isnadi"),
+        name: "Isnadi",
         title: "Research bot",
         label: null,
         description: null,
         disabledMcpServerIds: [],
-        avatar: { kind: "dither" as const, seed: "akeru" },
+        avatar: { kind: "dither" as const, seed: "isnadi" },
         engine: { provider: "grok", model: "grok-4.6" },
         sandbox: null,
         runtimeMode: "approval-required" as const,

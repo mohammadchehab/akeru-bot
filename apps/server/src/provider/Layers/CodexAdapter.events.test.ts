@@ -1,6 +1,6 @@
 import * as Predicate from "effect/Predicate";
 import * as NodeAssert from "node:assert/strict";
-import { ProviderDriverKind, type ProviderEvent } from "@akeru/contracts";
+import { ProviderDriverKind, type ProviderEvent } from "@isnadi/contracts";
 
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -89,7 +89,7 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
           item: {
             type: "mcpToolCall",
             id: "mcp_1",
-            server: "akeru",
+            server: "isnadi",
             tool: "preview_status",
             arguments: {},
             durationMs: 12,
@@ -108,7 +108,7 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
       }
 
       NodeAssert.equal(firstEvent.value.payload.itemType, "mcp_tool_call");
-      NodeAssert.equal(firstEvent.value.payload.title, "akeru · preview_status");
+      NodeAssert.equal(firstEvent.value.payload.title, "isnadi · preview_status");
       NodeAssert.deepStrictEqual(firstEvent.value.payload.data, {
         completedAtMs: 1_778_000_000_000,
         threadId: "thread-1",
@@ -116,7 +116,7 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
         item: {
           type: "mcpToolCall",
           id: "mcp_1",
-          server: "akeru",
+          server: "isnadi",
           tool: "preview_status",
           arguments: {},
           durationMs: 12,

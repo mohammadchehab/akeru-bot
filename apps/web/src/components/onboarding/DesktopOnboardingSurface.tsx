@@ -1,7 +1,7 @@
 import { Match, Predicate } from "effect";
 import { useAtomValue } from "@effect/atom-react";
-import { isAtomCommandInterrupted } from "@akeru/client-runtime/state/runtime";
-import { BotId, type EnvironmentId } from "@akeru/contracts";
+import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
+import { BotId, type EnvironmentId } from "@isnadi/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { LoaderIcon } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";

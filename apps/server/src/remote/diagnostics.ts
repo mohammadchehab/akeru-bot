@@ -10,7 +10,7 @@ import {
   RemoteDoctorReport,
   type RemoteDiagnosticCheck,
   type RemoteDoctorReport as RemoteDoctorReportValue,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
@@ -89,7 +89,7 @@ function redact(value: string): string {
 }
 
 /**
- * `repair: true` applies every available repair (the `akeru remote doctor --repair` CLI). A set of
+ * `repair: true` applies every available repair (the `isnadi remote doctor --repair` CLI). A set of
  * check ids limits repairs to those checks, which is how Settings repairs one check on request.
  */
 export async function runRemoteDoctor(input: {
@@ -111,7 +111,7 @@ export async function runRemoteDoctor(input: {
   const updateDeferredPath = NodePath.join(stateDir, "remote-update-deferred-at");
   const checks: Array<RemoteDiagnosticCheck> = [];
   const repairsApplied: Array<string> = [];
-  const container = process.env.AKERU_REMOTE_CONTAINER === "1";
+  const container = process.env.ISNADI_REMOTE_CONTAINER === "1";
 
   // Background setup only installs systemd and launchd services. Other hosts, such as Windows,
   // run the server directly, so the doctor asks that server over HTTP instead.
@@ -437,7 +437,7 @@ export async function runRemoteDoctor(input: {
     checks.push(check("update-deferral", "pass", "No update is deferred by active work."));
   }
 
-  const releaseRoot = process.env.AKERU_REMOTE_RELEASE_ROOT;
+  const releaseRoot = process.env.ISNADI_REMOTE_RELEASE_ROOT;
 
   if (releaseRoot) {
     const previous = NodePath.join(releaseRoot, "previous");

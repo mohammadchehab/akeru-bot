@@ -1,19 +1,19 @@
 import * as Duration from "effect/Duration";
 
-export const BOOT_SERVICE_NAME = "akeru-bot";
+export const BOOT_SERVICE_NAME = "isnadibot";
 
 export const BOOT_SERVICE_UNIT_FILE = `${BOOT_SERVICE_NAME}.service`;
 
 // `.service` suffix keeps the label distinct from the desktop app's bundle id
-// (dev.leodoes.akeru), so launchd and TCC records never collide.
-export const BOOT_SERVICE_LAUNCHD_LABEL = "dev.leodoes.akeru.service";
+// (dev.leodoes.isnadi), so launchd and TCC records never collide.
+export const BOOT_SERVICE_LAUNCHD_LABEL = "dev.leodoes.isnadi.service";
 
 export const BOOT_SERVICE_PLIST_FILE = `${BOOT_SERVICE_LAUNCHD_LABEL}.plist`;
 
-export const BOOT_SERVICE_UNIT_ENV = "AKERU_BOOT_SERVICE_UNIT";
+export const BOOT_SERVICE_UNIT_ENV = "ISNADI_BOOT_SERVICE_UNIT";
 
 /**
- * Names Akeru installs used before the rename. T3 Code uses the same names, so
+ * Names Isnadi installs used before the rename. T3 Code uses the same names, so
  * install only retires a legacy unit that runs this base dir's launcher; see
  * {@link isOwnedLegacyBootServiceUnit}.
  */

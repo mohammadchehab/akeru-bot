@@ -1,5 +1,5 @@
 import { Option, Schema } from "effect";
-import type { ProviderInstanceConfig } from "@akeru/contracts";
+import type { ProviderInstanceConfig } from "@isnadi/contracts";
 
 export type ProviderConfig = Schema.JsonObject;
 

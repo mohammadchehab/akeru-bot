@@ -245,9 +245,9 @@ it.effect("defaults omitted bot channel bindings", () =>
   Effect.gen(function* () {
     const bot = yield* decodeOrchestrationBot({
       id: "bot-1",
-      name: "Akeru",
+      name: "Isnadi",
       title: "Agent",
-      avatar: { kind: "dither", seed: "akeru" },
+      avatar: { kind: "dither", seed: "isnadi" },
       engine: null,
       sandbox: "local",
       groupId: null,
@@ -264,9 +264,9 @@ it.effect("defaults an omitted bot image provider to the global default", () =>
   Effect.gen(function* () {
     const bot = yield* decodeOrchestrationBot({
       id: "bot-1",
-      name: "Akeru",
+      name: "Isnadi",
       title: "Agent",
-      avatar: { kind: "dither", seed: "akeru" },
+      avatar: { kind: "dither", seed: "isnadi" },
       engine: null,
       sandbox: "local",
       groupId: null,
@@ -283,9 +283,9 @@ it.effect("keeps an explicit bot image provider independent of the chat engine",
   Effect.gen(function* () {
     const bot = yield* decodeOrchestrationBot({
       id: "bot-1",
-      name: "Akeru",
+      name: "Isnadi",
       title: "Agent",
-      avatar: { kind: "dither", seed: "akeru" },
+      avatar: { kind: "dither", seed: "isnadi" },
       engine: { provider: "claudeAgent", model: "claude-opus-5.5" },
       imageProvider: "chatgpt",
       sandbox: "local",
@@ -306,9 +306,9 @@ it.effect("leaves an omitted bot.create runtime mode for the server", () =>
       type: "bot.create",
       commandId: "cmd-bot-default-runtime",
       botId: "bot-default-runtime",
-      name: "Akeru",
-      title: "Akeru",
-      avatar: { kind: "dither", seed: "akeru" },
+      name: "Isnadi",
+      title: "Isnadi",
+      avatar: { kind: "dither", seed: "isnadi" },
       engine: null,
       sandbox: null,
       groupId: null,

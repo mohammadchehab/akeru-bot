@@ -178,7 +178,7 @@ export function printUsage(config: ShowcaseConfig): void {
   NodeProcess.stdout.write(`App screenshot showcase
 
 Usage:
-  pnpm --filter @akeru/mobile screenshots [options]
+  pnpm --filter @isnadi/mobile screenshots [options]
 
 Options:
   --platform ios|android|all  Capture one platform (repeatable)

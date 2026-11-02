@@ -1,4 +1,4 @@
-import { EnvironmentId, ProjectId } from "@akeru/contracts";
+import { EnvironmentId, ProjectId } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 export class ProjectThreadTaskRequiredError extends Schema.TaggedErrorClass<ProjectThreadTaskRequiredError>()(

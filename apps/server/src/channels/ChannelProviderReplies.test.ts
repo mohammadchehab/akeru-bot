@@ -123,7 +123,7 @@ describe("channel runtime", () => {
               date: 1,
               chat: { id: 123, type: "private" },
               text: "Reply",
-              from: { id: 1, is_bot: true, first_name: "Akeru" },
+              from: { id: 1, is_bot: true, first_name: "Isnadi" },
             },
           }),
         ]);

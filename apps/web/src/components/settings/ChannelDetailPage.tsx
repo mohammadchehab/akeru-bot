@@ -4,13 +4,13 @@ import {
   channelBindingNeedsProject,
   channelPickerProjectId,
   channelRepairAction,
-} from "@akeru/client-runtime/channel-presentation";
+} from "@isnadi/client-runtime/channel-presentation";
 import {
   BotId,
   type ChannelConnectionProfile,
   type ChannelProvider,
   type ProjectId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { EllipsisIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 

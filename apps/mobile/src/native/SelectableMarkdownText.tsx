@@ -1,4 +1,4 @@
-import type { SelectableMarkdownTextProps } from "@akeru/mobile-markdown-text/renderer";
+import type { SelectableMarkdownTextProps } from "@isnadi/mobile-markdown-text/renderer";
 
 type MobileSelectableMarkdownTextProps = Omit<SelectableMarkdownTextProps, "highlightCode">;
 
@@ -7,7 +7,7 @@ export type {
   MarkdownImageRequest,
   NativeMarkdownTextStyle,
   SelectableMarkdownSkill,
-} from "@akeru/mobile-markdown-text/types";
+} from "@isnadi/mobile-markdown-text/types";
 
 export function hasNativeSelectableMarkdownText(): boolean {
   return false;

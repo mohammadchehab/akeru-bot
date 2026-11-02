@@ -1,4 +1,4 @@
-import { PreviewAutomationSnapshot } from "@akeru/contracts";
+import { PreviewAutomationSnapshot } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";

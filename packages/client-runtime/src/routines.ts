@@ -14,8 +14,8 @@ import type {
   RoutineSandbox,
   RoutineSchedule,
   RoutineSkillAssignment,
-} from "@akeru/contracts";
-import { withoutErrorStack } from "@akeru/shared/errorText";
+} from "@isnadi/contracts";
+import { withoutErrorStack } from "@isnadi/shared/errorText";
 
 import { createTranslator, type MessageKey } from "./i18n/index.ts";
 
@@ -73,8 +73,8 @@ export interface RoutineAdapterItem {
   readonly procedureApproved: boolean;
   readonly enabled: boolean;
   readonly paused: boolean;
-  /** Akeru paused it after a blocked or failed run, not the user. */
-  readonly pausedByAkeru: boolean;
+  /** Isnadi paused it after a blocked or failed run, not the user. */
+  readonly pausedByIsnadi: boolean;
   readonly nextRunAt: string | null;
   readonly lastRunAt: string | null;
   readonly latestRun: RoutineAdapterRun | null;
@@ -192,7 +192,7 @@ export function toRoutinePanelItem(
       routine.lifecycle === "paused" ||
       routine.lifecycle === "blocked" ||
       routine.lifecycle === "failed",
-    pausedByAkeru: routine.lifecycle === "blocked" || routine.lifecycle === "failed",
+    pausedByIsnadi: routine.lifecycle === "blocked" || routine.lifecycle === "failed",
     nextRunAt: routine.nextRunAt,
     lastRunAt: routine.lastRunAt,
     latestRun: history[0] ?? null,
@@ -287,11 +287,11 @@ export function routineStatus(routine: RoutineAdapterItem): RoutineStatusResult 
 }
 
 /**
- * Why a routine is not running on schedule, or null when it is. A routine Akeru paused
+ * Why a routine is not running on schedule, or null when it is. A routine Isnadi paused
  * points to the Bot inbox, where its cause is waiting.
  */
 export function routineStateNote(routine: RoutineAdapterItem): (MessageKey & string) | null {
-  if (routine.pausedByAkeru) return "Paused. Fix the cause in Bot inbox, then resume it.";
+  if (routine.pausedByIsnadi) return "Paused. Fix the cause in Bot inbox, then resume it.";
 
   if (routine.paused) return "Paused until you resume it.";
 
@@ -410,7 +410,7 @@ export interface RoutineApprovalSummary {
 }
 
 /**
- * What a bot's `akeru_create_routine` request proposes, read defensively from the raw
+ * What a bot's `isnadi_create_routine` request proposes, read defensively from the raw
  * tool arguments so a malformed request still renders as a reviewable approval.
  */
 export function routineApprovalSummary(

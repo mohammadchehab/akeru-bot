@@ -35,7 +35,7 @@ function gesture() {
   const onFinish = vi.fn();
 
   const props = {
-    active: "bot:akeru",
+    active: "bot:isnadi",
     event: pointer("pointerdown"),
     options: { distance: 6, onAttach: vi.fn(), onFinish },
     ...callbacks,

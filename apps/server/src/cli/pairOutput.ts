@@ -4,10 +4,10 @@ import { renderTerminalQrCode } from "../startupAccess.ts";
 
 /**
  * Whether stdout is a terminal. A QR code piped into a file or another program is only noise, so
- * `akeru pair` prints it only when this is true. Tests override it.
+ * `isnadi pair` prints it only when this is true. Tests override it.
  */
 export const PairStdoutIsTerminal = Context.Reference<boolean>(
-  "akeru-bot/cli/pair/StdoutIsTerminal",
+  "isnadibot/cli/pair/StdoutIsTerminal",
   { defaultValue: () => process.stdout.isTTY === true },
 );
 

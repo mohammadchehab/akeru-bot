@@ -1,5 +1,5 @@
 import * as Predicate from "effect/Predicate";
-import { ProviderInstanceId, ThreadId } from "@akeru/contracts";
+import { ProviderInstanceId, ThreadId } from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
@@ -41,7 +41,7 @@ export interface McpSessionRegistryShape {
 export class McpSessionRegistry extends Context.Service<
   McpSessionRegistry,
   McpSessionRegistryShape
->()("akeru-bot/mcp/McpSessionRegistry") {}
+>()("isnadibot/mcp/McpSessionRegistry") {}
 
 interface CredentialRecord {
   readonly tokenHash: string;

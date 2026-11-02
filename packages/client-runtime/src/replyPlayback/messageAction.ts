@@ -1,4 +1,4 @@
-import type { OrchestrationMessage } from "@akeru/contracts";
+import type { OrchestrationMessage } from "@isnadi/contracts";
 import { replyMarkdownToSpokenText } from "./spokenText.ts";
 
 /** Uses only the stored assistant text, never attachments, tool events, or a new turn. */

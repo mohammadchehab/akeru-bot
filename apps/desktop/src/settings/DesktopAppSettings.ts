@@ -1,4 +1,4 @@
-import { type DesktopServerExposureMode, type DesktopUpdateChannel } from "@akeru/contracts";
+import { type DesktopServerExposureMode, type DesktopUpdateChannel } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
@@ -86,7 +86,7 @@ export class DesktopAppSettings extends Context.Service<
     >;
     readonly applyWslWindowsFallbackInMemory: Effect.Effect<DesktopSettingsChange>;
   }
->()("@akeru/desktop/settings/DesktopAppSettings") {}
+>()("@isnadi/desktop/settings/DesktopAppSettings") {}
 
 export const make = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;

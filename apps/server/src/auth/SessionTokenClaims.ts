@@ -3,7 +3,7 @@ import {
   AuthEnvironmentScopes,
   type AuthClientMetadata,
   type AuthClientSession,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Duration from "effect/Duration";
 import * as Schema from "effect/Schema";
 

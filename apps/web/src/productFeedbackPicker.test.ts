@@ -69,7 +69,7 @@ class TestElement {
   private matchesSelector(selector: string): boolean {
     if (selector === "[data-component]" && this.dataset.component) return true;
 
-    if (selector === "[data-akeru-feedback-ui]" && this.dataset.akeruFeedbackUi !== undefined) {
+    if (selector === "[data-isnadi-feedback-ui]" && this.dataset.isnadiFeedbackUi !== undefined) {
       return true;
     }
 
@@ -88,7 +88,7 @@ class TestElement {
       selector.includes(",") &&
       (["INPUT", "TEXTAREA", "SELECT", "OPTION"].includes(this.tagName) ||
         this.attributes.has("contenteditable") ||
-        this.dataset.akeruFeedbackUi !== undefined ||
+        this.dataset.isnadiFeedbackUi !== undefined ||
         this.dataset.feedbackPrivate !== undefined ||
         this.dataset.sensitive !== undefined)
     ) {
@@ -144,7 +144,7 @@ class TestDocument {
   }
 
   querySelector() {
-    return this.body.children.find((child) => child.dataset.akeruFeedbackUi !== undefined) ?? null;
+    return this.body.children.find((child) => child.dataset.isnadiFeedbackUi !== undefined) ?? null;
   }
 }
 

@@ -1,10 +1,10 @@
-import { createVoiceCallScope, runComposedVoiceCall } from "@akeru/client-runtime/voice";
+import { createVoiceCallScope, runComposedVoiceCall } from "@isnadi/client-runtime/voice";
 import {
   MessageId,
   TurnId,
   type OrchestrationLatestTurn,
   type OrchestrationMessage,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";
 import { describe, expect, it, vi } from "vite-plus/test";

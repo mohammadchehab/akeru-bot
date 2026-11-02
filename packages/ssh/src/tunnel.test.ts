@@ -7,15 +7,15 @@ describe("ssh tunnel scripts", () => {
     const script = buildRemoteT3RunnerScript({ nodeEngineRange: TEST_NODE_ENGINE_RANGE });
 
     assert.include(script, "T3_NODE_SCRIPT_PATH=''");
-    assert.include(script, 'exec akeru "$@"');
+    assert.include(script, 'exec isnadi "$@"');
     assert.include(script, 'exec "$T3_CLI_PATH" "$@"');
-    assert.include(script, "could not install 'akeru-bot@latest'");
-    assert.include(script, "require_installed_akeru_cli npx --yes --package 'akeru-bot@latest'");
+    assert.include(script, "could not install 'isnadibot@latest'");
+    assert.include(script, "require_installed_isnadi_cli npx --yes --package 'isnadibot@latest'");
     assert.include(
       script,
-      "require_installed_akeru_cli npm exec --yes --package 'akeru-bot@latest'",
+      "require_installed_isnadi_cli npm exec --yes --package 'isnadibot@latest'",
     );
-    assert.include(script, "npm produced no akeru executable");
+    assert.include(script, "npm produced no isnadi executable");
     assert.include(script, 'prepend_path_if_dir "$HOME/.local/bin"');
     assert.include(script, `T3_NODE_ENGINE_RANGE='${TEST_NODE_ENGINE_RANGE}'`);
     assert.include(script, "remote_node_satisfies_engine()");
@@ -48,7 +48,7 @@ describe("ssh tunnel scripts", () => {
 
     assert.include(
       script,
-      "require_installed_akeru_cli npx --yes --package 't3@nightly; touch /tmp/t3-owned'",
+      "require_installed_isnadi_cli npx --yes --package 't3@nightly; touch /tmp/t3-owned'",
     );
     assert.notInclude(script, "exec npx --yes t3@nightly; touch /tmp/t3-owned");
   });

@@ -68,7 +68,7 @@ export function makeFakeBrowserWindow() {
 
   const webContents = {
     copyImageAt: vi.fn(),
-    getURL: vi.fn(() => "akeru-dev://app/"),
+    getURL: vi.fn(() => "isnadi-dev://app/"),
     getZoomLevel: vi.fn(() => zoomLevel),
     setZoomLevel: vi.fn((level: number) => {
       zoomLevel = level;
@@ -307,8 +307,8 @@ export function makeTestLayer(input: {
         Layer.mock(PreviewManager.PreviewManager)({
           getBrowserSession: () => Effect.succeed({} as Electron.Session),
           setMainWindow: () => Effect.void,
-          isBrowserPartition: (partition) => partition.startsWith("persist:akeru-preview-"),
-          getBrowserPartition: () => Effect.succeed("persist:akeru-preview-test"),
+          isBrowserPartition: (partition) => partition.startsWith("persist:isnadi-preview-"),
+          getBrowserPartition: () => Effect.succeed("persist:isnadi-preview-test"),
           reapplyZoom: () =>
             Effect.sync(() => {
               input.previewZoomReapplies?.push(input.window.webContents.getZoomLevel());
@@ -414,8 +414,8 @@ export const makeSplashScenario = (createOutcomes: readonly (Electron.BrowserWin
           Layer.mock(PreviewManager.PreviewManager)({
             getBrowserSession: () => Effect.succeed({} as Electron.Session),
             setMainWindow: () => Effect.void,
-            isBrowserPartition: (partition) => partition.startsWith("persist:akeru-preview-"),
-            getBrowserPartition: () => Effect.succeed("persist:akeru-preview-test"),
+            isBrowserPartition: (partition) => partition.startsWith("persist:isnadi-preview-"),
+            getBrowserPartition: () => Effect.succeed("persist:isnadi-preview-test"),
           }),
         ),
       ),

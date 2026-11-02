@@ -2,7 +2,7 @@ import {
   IMAGE_PROVIDER_IDS,
   type ImageGenerationSettings,
   type ImageProviderStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   IMAGE_PROVIDER_LABELS,
   effectiveDefaultProvider,
@@ -13,7 +13,7 @@ import {
   imageProviderHealthTestLabel,
   imageProviderOperationsLabel,
   isImageProviderEnabled,
-} from "@akeru/client-runtime/image-generation";
+} from "@isnadi/client-runtime/image-generation";
 import { Pressable, View } from "react-native";
 
 import { AppText as Text } from "../../components/AppText";

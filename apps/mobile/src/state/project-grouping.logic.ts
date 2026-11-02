@@ -1,5 +1,5 @@
-import type { ProjectGroupingSettings } from "@akeru/client-runtime/state/project-grouping";
-import type { SidebarProjectGroupingMode } from "@akeru/contracts";
+import type { ProjectGroupingSettings } from "@isnadi/client-runtime/state/project-grouping";
+import type { SidebarProjectGroupingMode } from "@isnadi/contracts";
 
 import type { Preferences } from "../persistence/mobile-preferences";
 

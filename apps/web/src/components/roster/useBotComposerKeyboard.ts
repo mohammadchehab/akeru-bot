@@ -2,7 +2,7 @@ import { type RefObject, useEffect, useRef } from "react";
 
 import { isCommandPaletteOpen } from "../../commandPaletteBus";
 import { resolveShortcutCommand } from "../../keybindings";
-import type { ResolvedKeybindingsConfig } from "@akeru/contracts";
+import type { ResolvedKeybindingsConfig } from "@isnadi/contracts";
 import { shouldFocusBotPromptForKey } from "./botPromptComposer.logic";
 
 /**

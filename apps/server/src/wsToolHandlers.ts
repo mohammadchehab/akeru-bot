@@ -1,7 +1,7 @@
 import type * as RpcGroup from "effect/unstable/rpc/RpcGroup";
 import { computerRegistry } from "./provider/computerRegistry.ts";
 import * as Effect from "effect/Effect";
-import { WS_METHODS, WsRpcGroup } from "@akeru/contracts";
+import { WS_METHODS, WsRpcGroup } from "@isnadi/contracts";
 
 import type { WsConnection } from "./wsConnection.ts";
 

@@ -1,11 +1,11 @@
 import type { AgentControllerEvent } from "@mastra/core/agent-controller";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
-  AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
   ApprovalRequestId,
   ProviderDriverKind,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -48,11 +48,11 @@ describe("AgentControllerLive", () => {
           expect.objectContaining({ yolo: false }),
         );
         expect(mastra.session.permissions.setForTool).toHaveBeenCalledWith({
-          toolName: AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+          toolName: ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
           policy: "ask",
         });
         expect(mastra.session.permissions.setForTool).not.toHaveBeenCalledWith({
-          toolName: AKERU_CREATE_ROUTINE_TOOL_NAME,
+          toolName: ISNADI_CREATE_ROUTINE_TOOL_NAME,
           policy: expect.anything(),
         });
         expect(mastra.session.permissions.setForTool).toHaveBeenCalledWith({
@@ -64,7 +64,7 @@ describe("AgentControllerLive", () => {
         mastra.emit({
           type: "tool_approval_required",
           toolCallId: "feedback-tool-1",
-          toolName: AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+          toolName: ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
           args: { feedback: "The button failed." },
         } as AgentControllerEvent);
         yield* Effect.yieldNow;
@@ -75,7 +75,7 @@ describe("AgentControllerLive", () => {
         });
 
         expect(mastra.session.permissions.setForTool).not.toHaveBeenCalledWith({
-          toolName: AKERU_PRODUCT_FEEDBACK_TOOL_NAME,
+          toolName: ISNADI_PRODUCT_FEEDBACK_TOOL_NAME,
           policy: "allow",
         });
         mastra.finishSend();

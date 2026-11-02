@@ -3,7 +3,7 @@ import {
   ProviderDriverKind,
   type ServerProvider,
   type ServerProviderModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -313,7 +313,7 @@ export const CustomOpenaiDriver: ProviderDriver<CustomOpenaiSettings, CustomOpen
           instanceEnvironment: explicitEnvironment,
           // No subscription credential exists for this driver; `true` selects
           // the merged `environment` (which carries the instance key and base
-          // URL) in `resolveAkeruMastraModel`.
+          // URL) in `resolveIsnadiMastraModel`.
           useSavedCredential: true,
         },
         adapter: undefined,

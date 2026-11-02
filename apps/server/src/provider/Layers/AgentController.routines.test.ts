@@ -1,11 +1,11 @@
 import type { AgentControllerEvent } from "@mastra/core/agent-controller";
 import {
-  AKERU_CREATE_ROUTINE_TOOL_NAME,
+  ISNADI_CREATE_ROUTINE_TOOL_NAME,
   ApprovalRequestId,
   ProviderDriverKind,
   RoutineId,
   type ProviderRuntimeEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as TestClock from "effect/testing/TestClock";
@@ -201,7 +201,7 @@ describe("AgentControllerLive", () => {
                 requestType: "dynamic_tool_call",
                 decision: "cancel",
                 actor: "system",
-                target: AKERU_CREATE_ROUTINE_TOOL_NAME,
+                target: ISNADI_CREATE_ROUTINE_TOOL_NAME,
                 outcome: "cancelled",
               },
             ],

@@ -6,14 +6,14 @@ import type {
   VcsStatusRemoteResult,
   VcsStatusResult,
   VcsStatusStreamEvent,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Result from "effect/Result";
 import { detectSourceControlProviderFromRemoteUrl } from "./sourceControl.ts";
 
-export const WORKTREE_BRANCH_PREFIX = "akeru";
+export const WORKTREE_BRANCH_PREFIX = "isnadi";
 
-// Canonical form is `akeru/<8 hex>`. Older builds generated `t3code/<8 hex>` and `t3code/<uuid>`
+// Canonical form is `isnadi/<8 hex>`. Older builds generated `t3code/<8 hex>` and `t3code/<uuid>`
 // via Crypto.randomUUID() (always RFC 4122 v4), so the matcher also accepts exactly
 // that shape — version nibble `4`, variant nibble `[89ab]` — to keep those threads
 // eligible for branch regeneration without loosening beyond what was ever generated.
@@ -119,10 +119,10 @@ export function isTemporaryWorktreeBranch(refName: string): boolean {
 }
 
 /**
- * Strip one app-managed worktree branch prefix (`akeru/` or the legacy
+ * Strip one app-managed worktree branch prefix (`isnadi/` or the legacy
  * `t3code/`) from a refName. Returns the branch unchanged when it carries no
  * recognized prefix, so generated names never end up nested as
- * `akeru/t3code/...`.
+ * `isnadi/t3code/...`.
  */
 export function stripWorktreeBranchPrefix(refName: string): string {
   for (const prefix of [WORKTREE_BRANCH_PREFIX, "t3code"]) {
@@ -137,7 +137,7 @@ export function stripWorktreeBranchPrefix(refName: string): string {
 }
 
 /**
- * Local branch name for a pull request worktree, e.g. `akeru/pr-42/feature`.
+ * Local branch name for a pull request worktree, e.g. `isnadi/pr-42/feature`.
  * Pre-rebrand builds generated `t3code/pr-42/feature`; pass `legacy: true` to
  * get that form so existing branches and worktrees can be found and reused.
  */

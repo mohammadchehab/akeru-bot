@@ -11,7 +11,7 @@ export const runtimePaths = (baseDir: string, version: string) => {
 
   return {
     versionDir,
-    entryPath: NodePath.join(versionDir, "node_modules", "akeru-bot", "dist", "bin.mjs"),
+    entryPath: NodePath.join(versionDir, "node_modules", "isnadibot", "dist", "bin.mjs"),
     sentinelPath: NodePath.join(versionDir, ".install-complete"),
   };
 };

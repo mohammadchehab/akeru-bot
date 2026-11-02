@@ -1,4 +1,4 @@
-import { type ClaudeSettings, type ServerProviderSlashCommand } from "@akeru/contracts";
+import { type ClaudeSettings, type ServerProviderSlashCommand } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Result from "effect/Result";

@@ -1,12 +1,12 @@
 #!/bin/sh
 set -eu
-base_dir="${AKERU_HOME:-$HOME/.akeru}"
+base_dir="${ISNADI_HOME:-$HOME/.isnadi}"
 userdata="$base_dir/userdata"
-node_bin="${AKERU_IDENTITY_NODE:-node}"
+node_bin="${ISNADI_IDENTITY_NODE:-node}"
 mkdir -p "$userdata"
 umask 077
-USERDATA="$userdata" ALLOW_MIGRATION="${AKERU_REMOTE_ALLOW_IDENTITY_MIGRATION:-0}" \
-  INTERRUPT_AFTER_IDENTITY="${AKERU_IDENTITY_TEST_INTERRUPT_AFTER_IDENTITY:-0}" \
+USERDATA="$userdata" ALLOW_MIGRATION="${ISNADI_REMOTE_ALLOW_IDENTITY_MIGRATION:-0}" \
+  INTERRUPT_AFTER_IDENTITY="${ISNADI_IDENTITY_TEST_INTERRUPT_AFTER_IDENTITY:-0}" \
   "$node_bin" - <<'NODE'
 const fs = require("node:fs");
 const crypto = require("node:crypto");
@@ -42,7 +42,7 @@ if (
   readId() &&
   process.env.ALLOW_MIGRATION !== "1"
 ) {
-  process.stderr.write("This Akeru home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.\n");
+  process.stderr.write("This Isnadi home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.\n");
   process.exit(1);
 }
 if (!fs.existsSync(tokenPath) || fs.statSync(tokenPath).size === 0) {
@@ -73,7 +73,7 @@ if (fs.existsSync(identityPath) && fs.statSync(identityPath).size > 0) {
 }
 const oldEnvironmentId = readId();
 if (oldEnvironmentId && process.env.ALLOW_MIGRATION !== "1") {
-  process.stderr.write("This Akeru home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.\n");
+  process.stderr.write("This Isnadi home already has an environment ID. Re-run with --migrate-environment-id only if you accept re-pairing existing clients. No identity was changed.\n");
   process.exit(1);
 }
 const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");

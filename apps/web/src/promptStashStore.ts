@@ -5,7 +5,7 @@ import { create } from "zustand";
 import { PersistedComposerImageAttachment } from "./composerDraftStore";
 import { createMemoryStorage } from "./lib/storage";
 
-export const PROMPT_STASH_STORAGE_KEY = "akeru:prompt-stash:v2";
+export const PROMPT_STASH_STORAGE_KEY = "isnadi:prompt-stash:v2";
 
 // The v2 payload lived under the `t3code:` prefix before the rebrand.
 const LEGACY_PROMPT_STASH_STORAGE_KEY_V2 = "t3code:prompt-stash:v2";

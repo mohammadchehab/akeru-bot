@@ -1,5 +1,5 @@
 name: Plugin proposal
-description: Propose an MCP plugin for the curated Akeru Bot directory.
+description: Propose an MCP plugin for the curated IsnadiBot directory.
 title: "[Plugin]: "
 labels:
   - "type:plugin"
@@ -38,10 +38,10 @@ body:
       required: true
 
   - type: textarea
-    id: akeru_job
+    id: isnadi_job
     attributes:
-      label: Akeru Bot job
-      description: Describe one specific job this plugin completes in Akeru Bot.
+      label: IsnadiBot job
+      description: Describe one specific job this plugin completes in IsnadiBot.
     validations:
       required: true
 
@@ -112,5 +112,5 @@ body:
     attributes:
       label: Credential safety
       options:
-        - label: The manifest contains no token or secret, and the MCP server does not require Akeru Bot to export a provider token or secret.
+        - label: The manifest contains no token or secret, and the MCP server does not require IsnadiBot to export a provider token or secret.
           required: true

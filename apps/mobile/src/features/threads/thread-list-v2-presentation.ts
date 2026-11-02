@@ -1,4 +1,4 @@
-import type { EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
 import { Platform } from "react-native";
 import { relativeTime } from "../../lib/time";
 

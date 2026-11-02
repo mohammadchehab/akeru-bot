@@ -1,4 +1,4 @@
-import type { EnvironmentId, ServerProviderSkill } from "@akeru/contracts";
+import type { EnvironmentId, ServerProviderSkill } from "@isnadi/contracts";
 import { shouldOpenMarkdownFileLinkInBrowserByDefault } from "../../markdown-links";
 
 export function canUseMarkdownFileShellActions(

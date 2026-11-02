@@ -1,8 +1,8 @@
 # Privacy and outbound data
 
-Akeru stores environment data under `~/.akeru` by default. This includes projects, chats, bot
+Isnadi stores environment data under `~/.isnadi` by default. This includes projects, chats, bot
 profiles, settings, secrets, logs, local memory, and cached provider data. A worktree development
-server uses that worktree's `.akeru` directory instead.
+server uses that worktree's `.isnadi` directory instead.
 
 Named-bot memory is stored as private Markdown files on the environment server. It is sent only as
 context to the provider running that bot. Group memory is separate for every bot, not a shared group
@@ -13,19 +13,19 @@ document. See [Bot memory](memory.md).
 - Provider requests send the prompt, selected files, tool results, and conversation context to the
   provider that you select. That provider controls its processing and retention.
 - Product feedback sends the text and an optional safe interface descriptor to
-  the Akeru feedback service. The service can retain accepted feedback for up to 90 days and post
-  it publicly to the Akeru Bot GitHub Issues tab, where it remains until a maintainer removes it.
+  the Isnadi feedback service. The service can retain accepted feedback for up to 90 days and post
+  it publicly to the IsnadiBot GitHub Issues tab, where it remains until a maintainer removes it.
 - Voice calls send microphone audio and call state to the ChatGPT Realtime service while a call is
   active.
 - Dictation records microphone audio on the device you dictate from and sends it through the
-  environment server to the transcription provider selected in **Settings > Providers > Voice**. Akeru does not
+  environment server to the transcription provider selected in **Settings > Providers > Voice**. Isnadi does not
   keep the recording after transcription finishes or is canceled. The text stays in your draft until
   you send it.
 - Reading a stored reply aloud will send the spoken form of that reply to the selected speech
   service when stored-reply speech is connected. Temporary audio stays on this device for the
   current playback only. See [Voice and spoken replies](voice.md).
 - Provider update checks contact the release source for configured providers. Signed desktop builds
-  contact the configured Akeru release host.
+  contact the configured Isnadi release host.
 - The environment server downloads the public model list from models.dev about once an hour, so new
   provider models appear without an app update. The request sends no account or chat data. Turning
   off provider update checks also stops this download.

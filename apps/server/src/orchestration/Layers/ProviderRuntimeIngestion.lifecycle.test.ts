@@ -1,5 +1,5 @@
-import { ProviderDriverKind } from "@akeru/contracts";
-import { BotId, CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@akeru/contracts";
+import { ProviderDriverKind } from "@isnadi/contracts";
+import { BotId, CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ThreadId } from "@isnadi/contracts";
 import * as ChannelRuntime from "../../channels/ChannelRuntime.ts";
 import * as Effect from "effect/Effect";
 import * as Scope from "effect/Scope";
@@ -44,7 +44,7 @@ describe("ProviderRuntimeIngestion", () => {
       });
 
       const threadId = ChannelRuntime.channelThreadId(
-        BotId.make("bot-akeru"),
+        BotId.make("bot-isnadi"),
         asProjectId("project-1"),
         provider,
         `${provider}:race`,
@@ -149,7 +149,7 @@ describe("ProviderRuntimeIngestion", () => {
       expect([...signals]).toEqual(provider === "telegram" ? [] : ["eyes"]);
 
       const threadId = ChannelRuntime.channelThreadId(
-        BotId.make("bot-akeru"),
+        BotId.make("bot-isnadi"),
         asProjectId("project-1"),
         provider,
         message.externalThreadId,
@@ -214,7 +214,7 @@ describe("ProviderRuntimeIngestion", () => {
       await harness.drain();
       await channel.inbound(message);
       expect(calls).toEqual(completedCalls);
-      await harness.disconnectChannel(BotId.make("bot-akeru"), provider);
+      await harness.disconnectChannel(BotId.make("bot-isnadi"), provider);
       expect([...signals]).toEqual([]);
 
       if (provider === "telegram") expect(calls).toEqual([]);

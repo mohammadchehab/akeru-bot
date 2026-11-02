@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
 import * as Updates from "expo-updates";
-import { settlePromise } from "@akeru/client-runtime/state/runtime";
+import { settlePromise } from "@isnadi/client-runtime/state/runtime";
 import {
   type AppUpdateCheckOptions,
   type AppUpdateCheckState,

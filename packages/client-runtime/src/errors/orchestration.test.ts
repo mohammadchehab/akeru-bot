@@ -1,4 +1,4 @@
-import { OrchestrationDispatchCommandError } from "@akeru/contracts";
+import { OrchestrationDispatchCommandError } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { wasBootstrapThreadDeleted } from "./orchestration.ts";

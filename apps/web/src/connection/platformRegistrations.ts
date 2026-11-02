@@ -1,6 +1,6 @@
 import * as Data from "effect/Data";
 import { hasTag } from "~/lib/taggedUnion";
-import { PlatformConnectionSource } from "@akeru/client-runtime/platform";
+import { PlatformConnectionSource } from "@isnadi/client-runtime/platform";
 import {
   BearerConnectionCredential,
   BearerConnectionProfile,
@@ -11,14 +11,14 @@ import {
   type PlatformConnectionRegistration,
   PrimaryConnectionRegistration,
   PrimaryConnectionTarget,
-} from "@akeru/client-runtime/connection";
-import { bootstrapRemoteBearerSession } from "@akeru/client-runtime/authorization";
-import { fetchRemoteEnvironmentDescriptor } from "@akeru/client-runtime/environment";
+} from "@isnadi/client-runtime/connection";
+import { bootstrapRemoteBearerSession } from "@isnadi/client-runtime/authorization";
+import { fetchRemoteEnvironmentDescriptor } from "@isnadi/client-runtime/environment";
 import {
   AuthStandardClientScopes,
   type DesktopEnvironmentBootstrap,
   PRIMARY_LOCAL_ENVIRONMENT_ID,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

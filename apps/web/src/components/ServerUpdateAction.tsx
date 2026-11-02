@@ -1,10 +1,10 @@
 import { Predicate } from "effect";
-import type { EnvironmentId, ServerSelfUpdateCapability } from "@akeru/contracts";
-import type { ServerUpdateStage, ServerUpdateState } from "@akeru/client-runtime/state/server";
+import type { EnvironmentId, ServerSelfUpdateCapability } from "@isnadi/contracts";
+import type { ServerUpdateStage, ServerUpdateState } from "@isnadi/client-runtime/state/server";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 
 import { useCopyToClipboard } from "~/hooks/useCopyToClipboard";
 import { serverEnvironment } from "~/state/server";

@@ -1,5 +1,5 @@
 ---
-"akeru-bot": patch
+"isnadibot": patch
 ---
 
 Recognize existing thread summary columns regardless of their SQLite identifier casing.

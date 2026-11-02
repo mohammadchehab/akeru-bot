@@ -110,7 +110,7 @@ const withIdentity = <A, E, R>(
   input: {
     readonly calls?: ElectronAppCalls;
     readonly environment?: TestEnvironmentInput;
-    readonly legacyPathExists?: boolean;
+    readonly existingUserDataDirs?: ReadonlyArray<string>;
     readonly legacyPathProbeError?: PlatformError.PlatformError;
     readonly packageJson?: string;
     readonly pngIconPath?: Option.Option<string>;
@@ -131,7 +131,9 @@ const withIdentity = <A, E, R>(
               input.legacyPathProbeError
                 ? Effect.fail(input.legacyPathProbeError)
                 : Effect.succeed(
-                    input.legacyPathExists === true && path.includes("Akeru Bot (Alpha)"),
+                    (input.existingUserDataDirs ?? []).some((name) =>
+                      String(path).endsWith(`/${name}`),
+                    ),
                   ),
             readFileString: () =>
               Effect.succeed(input.packageJson ?? '{"t3codeCommitHash":"abcdef1234567890"}'),
@@ -146,31 +148,36 @@ const withIdentity = <A, E, R>(
 };
 
 describe("DesktopAppIdentity", () => {
-  it.effect("keeps the akeru-bot userData directory under the IsnadiBot name", () =>
+  const appSupport = "/Users/alice/Library/Application Support";
+
+  const resolvesTo = (existingUserDataDirs: ReadonlyArray<string>, expected: string) =>
     withIdentity(
       Effect.gen(function* () {
         const identity = yield* DesktopAppIdentity.DesktopAppIdentity;
-        const userDataPath = yield* identity.resolveUserDataPath;
 
-        assert.equal(userDataPath, "/Users/alice/Library/Application Support/akeru-bot");
+        assert.equal(yield* identity.resolveUserDataPath, `${appSupport}/${expected}`);
       }),
-    ),
+      { existingUserDataDirs },
+    );
+
+  it.effect("starts a fresh install in the isnadibot userData directory", () =>
+    resolvesTo([], "isnadibot"),
   );
 
-  it.effect("keeps using the legacy userData path when it already exists", () =>
-    withIdentity(
-      Effect.gen(function* () {
-        const identity = yield* DesktopAppIdentity.DesktopAppIdentity;
-        const userDataPath = yield* identity.resolveUserDataPath;
+  it.effect("keeps an Akeru Bot install's akeru-bot userData directory in place", () =>
+    resolvesTo(["akeru-bot"], "akeru-bot"),
+  );
 
-        assert.equal(userDataPath, "/Users/alice/Library/Application Support/Akeru Bot (Alpha)");
-      }),
-      { legacyPathExists: true },
-    ),
+  it.effect("prefers the oldest Akeru Bot userData directory, as before the rename", () =>
+    resolvesTo(["Akeru Bot (Alpha)", "akeru-bot"], "Akeru Bot (Alpha)"),
+  );
+
+  it.effect("uses the isnadibot userData directory once it exists", () =>
+    resolvesTo(["isnadibot", "akeru-bot"], "isnadibot"),
   );
 
   it.effect("preserves failures while inspecting the legacy userData path", () => {
-    const legacyPath = "/Users/alice/Library/Application Support/Akeru Bot (Alpha)";
+    const legacyPath = "/Users/alice/Library/Application Support/isnadibot";
 
     const cause = PlatformError.systemError({
       _tag: "PermissionDenied",
@@ -213,7 +220,7 @@ describe("DesktopAppIdentity", () => {
         assert.equal(calls.setAboutPanelOptions[0]?.applicationName, "IsnadiBot");
         assert.equal(
           calls.setAboutPanelOptions[0]?.credits,
-          "Based on Akeru Bot and T3 Code (MIT).",
+          "Based on OpenCore's fork of T3 Code (MIT).",
         );
         assert.equal(calls.setAboutPanelOptions[0]?.applicationVersion, "1.2.3");
         assert.equal(calls.setAboutPanelOptions[0]?.version, "0123456789ab");

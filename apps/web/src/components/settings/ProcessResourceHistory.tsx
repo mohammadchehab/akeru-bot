@@ -1,4 +1,4 @@
-import type { ServerProcessResourceHistorySummary } from "@akeru/contracts";
+import type { ServerProcessResourceHistorySummary } from "@isnadi/contracts";
 import * as DateTime from "effect/DateTime";
 import { cn } from "../../lib/utils";
 import { ScrollArea } from "../ui/scroll-area";

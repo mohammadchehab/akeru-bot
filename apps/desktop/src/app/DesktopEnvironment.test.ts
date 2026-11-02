@@ -68,8 +68,8 @@ describe("DesktopEnvironment", () => {
       assert.equal(environment.serverRoot, "/repo");
       assert.equal(environment.backendEntryPath, "/repo/apps/server/dist/bin.mjs");
       assert.equal(environment.backendCwd, "/repo");
-      assert.equal(environment.appUserModelId, "dev.leodoes.akeru.dev");
-      assert.equal(environment.linuxWmClass, "akeru-bot-dev");
+      assert.equal(environment.appUserModelId, "dev.leodoes.isnadi.dev");
+      assert.equal(environment.linuxWmClass, "isnadibot-dev");
       assert.deepEqual(
         Option.map(environment.devServerUrl, (url) => url.href),
         Option.some("http://localhost:5173/"),
@@ -96,7 +96,7 @@ describe("DesktopEnvironment", () => {
       assert.equal(environment.logDir, "/tmp/t3/userdata/logs");
       assert.equal(environment.browserArtifactsDir, "/tmp/t3/userdata/browser-artifacts");
       assert.equal(environment.serverSettingsPath, "/tmp/t3/userdata/settings.json");
-      assert.equal(environment.appUserModelId, "dev.leodoes.akeru");
+      assert.equal(environment.appUserModelId, "dev.leodoes.isnadi");
     }),
   );
 
@@ -141,8 +141,8 @@ describe("DesktopEnvironment", () => {
 
       const production = yield* makeEnvironment();
 
-      assert.equal(development.stateDir, "/Users/alice/.akeru/dev");
-      assert.equal(production.stateDir, "/Users/alice/.akeru/userdata");
+      assert.equal(development.stateDir, "/Users/alice/.isnadi/dev");
+      assert.equal(production.stateDir, "/Users/alice/.isnadi/userdata");
     }),
   );
 
@@ -165,11 +165,11 @@ describe("DesktopEnvironment", () => {
           displayName: "IsnadiBot",
           isPackaged: false,
         });
-        assert.equal(alpha.userDataDirName, "akeru-bot");
-        assert.equal(development.userDataDirName, "akeru-bot-dev");
+        assert.equal(alpha.userDataDirName, "isnadibot");
+        assert.equal(development.userDataDirName, "isnadibot-dev");
         // The rename must not move user data: both directory names predate IsnadiBot.
-        assert.equal(alpha.legacyUserDataDirName, "Akeru Bot (Alpha)");
-        assert.equal(development.legacyUserDataDirName, "Akeru Bot (Dev)");
+        assert.deepEqual(alpha.legacyUserDataDirNames, ["Akeru Bot (Alpha)", "akeru-bot"]);
+        assert.deepEqual(development.legacyUserDataDirNames, ["Akeru Bot (Dev)", "akeru-bot-dev"]);
       }),
   );
 
@@ -178,12 +178,12 @@ describe("DesktopEnvironment", () => {
       const environment = yield* makeEnvironment(
         {},
         {
-          T3CODE_DESKTOP_APP_USER_MODEL_ID: " dev.leodoes.akeru.dev.local ",
+          T3CODE_DESKTOP_APP_USER_MODEL_ID: " dev.leodoes.isnadi.dev.local ",
           VITE_DEV_SERVER_URL: "http://localhost:5173",
         },
       );
 
-      assert.equal(environment.appUserModelId, "dev.leodoes.akeru.dev.local");
+      assert.equal(environment.appUserModelId, "dev.leodoes.isnadi.dev.local");
     }),
   );
 

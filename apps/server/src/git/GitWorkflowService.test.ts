@@ -2,7 +2,7 @@ import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 
-import { VcsRepositoryDetectionError } from "@akeru/contracts";
+import { VcsRepositoryDetectionError } from "@isnadi/contracts";
 
 import * as GitWorkflowService from "./GitWorkflowService.ts";
 import * as GitVcsDriver from "../vcs/GitVcsDriver.ts";
@@ -52,7 +52,7 @@ describe("GitWorkflowService", () => {
       const workflow = yield* GitWorkflowService.GitWorkflowService;
 
       const error = yield* workflow
-        .renameBranch({ cwd: "/repo", oldBranch: "akeru/tmp", newBranch: "akeru/named" })
+        .renameBranch({ cwd: "/repo", oldBranch: "isnadi/tmp", newBranch: "isnadi/named" })
         .pipe(Effect.flip);
 
       expect(error).toMatchObject({

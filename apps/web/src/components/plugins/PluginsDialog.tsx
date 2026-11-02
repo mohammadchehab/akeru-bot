@@ -3,13 +3,13 @@ import { useAtomValue } from "@effect/atom-react";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@akeru/client-runtime/state/runtime";
+} from "@isnadi/client-runtime/state/runtime";
 import {
   McpServerId,
   type EnvironmentId,
   type McpServer,
   type ProviderAccessStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { useChangedSinceMount } from "../../hooks/useChangedSinceMount";
 import { useEffect, useState } from "react";
 import {
@@ -18,7 +18,7 @@ import {
   type PluginDirectoryDefinition,
   type PluginSkill,
 } from "../../../../../plugins";
-import { createTranslator } from "@akeru/client-runtime/i18n";
+import { createTranslator } from "@isnadi/client-runtime/i18n";
 import { useI18n } from "../../i18n";
 import { ensureLocalApi } from "../../localApi";
 import { randomUUID } from "../../lib/utils";

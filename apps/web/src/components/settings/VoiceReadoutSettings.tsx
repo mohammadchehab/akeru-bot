@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { Switch } from "../ui/switch";
-import type { ReplyReadoutPreference } from "@akeru/client-runtime/reply-playback";
+import type { ReplyReadoutPreference } from "@isnadi/client-runtime/reply-playback";
 import { SettingsRow } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { useI18n } from "../../i18n";

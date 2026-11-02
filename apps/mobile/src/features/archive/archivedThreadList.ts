@@ -1,11 +1,11 @@
-import type { ArchivedSnapshotEntry } from "@akeru/client-runtime/state/threads";
+import type { ArchivedSnapshotEntry } from "@isnadi/client-runtime/state/threads";
 import {
   scopeProject,
   scopeThreadShell,
   type EnvironmentProject,
   type EnvironmentThreadShell,
-} from "@akeru/client-runtime/state/shell";
-import type { EnvironmentId } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/shell";
+import type { EnvironmentId } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Order from "effect/Order";
 

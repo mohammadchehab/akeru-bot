@@ -6,7 +6,7 @@ const status = {
   supported: true,
   installed: true,
   current: true,
-  unitPath: "/home/me/.config/systemd/user/akeru-bot.service",
+  unitPath: "/home/me/.config/systemd/user/isnadibot.service",
   logPath: "/home/me/.t3/userdata/logs/boot-service.log",
 } as const;
 
@@ -15,8 +15,8 @@ it("reports the installed service version and host paths", () => {
     formatServiceStatus(status, "0.0.29"),
     [
       "IsnadiBot service",
-      "  Status: installed · akeru-bot@0.0.29",
-      "  Unit: /home/me/.config/systemd/user/akeru-bot.service",
+      "  Status: installed · isnadibot@0.0.29",
+      "  Unit: /home/me/.config/systemd/user/isnadibot.service",
       "  Logs: /home/me/.t3/userdata/logs/boot-service.log",
     ].join("\n"),
   );
@@ -25,7 +25,7 @@ it("reports the installed service version and host paths", () => {
 it("gives a direct repair command for a stale service", () => {
   assert.include(
     formatServiceStatus({ ...status, current: false }, "0.0.29"),
-    "Next: Run `npx akeru-bot@latest service update`.",
+    "Next: Run `npx isnadibot@latest service update`.",
   );
 });
 

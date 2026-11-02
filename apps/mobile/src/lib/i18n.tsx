@@ -4,7 +4,7 @@ import {
   createCatalogLoader,
   createTranslator,
   type PluralForms,
-} from "@akeru/client-runtime/i18n";
+} from "@isnadi/client-runtime/i18n";
 import { AsyncResult } from "effect/unstable/reactivity";
 import {
   createContext,

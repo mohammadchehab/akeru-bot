@@ -1,4 +1,4 @@
-import { BotId, EnvironmentId, type OrchestrationBot } from "@akeru/contracts";
+import { BotId, EnvironmentId, type OrchestrationBot } from "@isnadi/contracts";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { makeMobileBot } from "../lib/mobile-fixtures.test-support";
 import { environmentBotsAtom } from "./bots";

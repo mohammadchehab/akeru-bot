@@ -5,7 +5,7 @@ import type {
   ResourceTelemetryProcessCategory,
   ResourceTelemetryProcessSummary,
   ResourceTelemetrySourceStatus,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 
 export function formatBytes(value: number): string {
   if (value < 1_024) return `${Math.round(value)} B`;

@@ -1,5 +1,5 @@
 import { Predicate } from "effect";
-import { AuthAccessWriteScope, type ChannelBinding } from "@akeru/contracts";
+import { AuthAccessWriteScope, type ChannelBinding } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -93,7 +93,7 @@ vi.mock("../ui/button", () => ({
 
 import { BotChannelsSheet } from "./BotChannelsSheet";
 
-const bot = { id: "bot-1", name: "Akeru" } as Parameters<typeof BotChannelsSheet>[0]["bot"];
+const bot = { id: "bot-1", name: "Isnadi" } as Parameters<typeof BotChannelsSheet>[0]["bot"];
 
 function binding(
   status: ChannelBinding["status"],
@@ -158,7 +158,7 @@ describe("BotChannelsSheet project selection", () => {
   });
 
   it("repairs a blocked channel in the picked project through change-project", () => {
-    fixtures.bots = [{ id: "bot-1", name: "Akeru", channelBindings: [binding("blocked")] }];
+    fixtures.bots = [{ id: "bot-1", name: "Isnadi", channelBindings: [binding("blocked")] }];
     const html = render();
     expect(html).toContain("Choose another project");
     expect(html).toContain(
@@ -175,7 +175,7 @@ describe("BotChannelsSheet project selection", () => {
   });
 
   it("keeps Disconnect for a healthy channel running in its own project", () => {
-    fixtures.bots = [{ id: "bot-1", name: "Akeru", channelBindings: [binding("connected")] }];
+    fixtures.bots = [{ id: "bot-1", name: "Isnadi", channelBindings: [binding("connected")] }];
     const html = render();
     expect(html).toContain(">First<");
     expect(html).not.toContain("Move to this project");
@@ -203,7 +203,7 @@ describe("BotChannelsSheet health and repair", () => {
   });
 
   const own = (status: ChannelBinding["status"], category?: ChannelBinding["failureCategory"]) => {
-    fixtures.bots = [{ id: "bot-1", name: "Akeru", channelBindings: [binding(status, category)] }];
+    fixtures.bots = [{ id: "bot-1", name: "Isnadi", channelBindings: [binding(status, category)] }];
   };
 
   it("waits on a connecting channel", () => {
@@ -218,7 +218,7 @@ describe("BotChannelsSheet health and repair", () => {
   it("sends a connected channel with rejected credentials to Settings", () => {
     own("connected", "credentials");
     const html = render();
-    expect(html).toContain("Needs attention · Akeru");
+    expect(html).toContain("Needs attention · Isnadi");
     expect(html).toContain("Telegram rejected the bot token.");
     expect(html).not.toContain("Fixed server copy.");
     expect(fixtures.buttons.has("Disconnect")).toBe(true);

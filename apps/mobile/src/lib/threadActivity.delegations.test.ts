@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
 import { describe, expect, it } from "vite-plus/test";
-import { botChatTimeline } from "@akeru/client-runtime/state/bot-chat-timeline";
+import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
 import {
   BotId,
   DelegationId,
@@ -9,9 +9,9 @@ import {
   ProjectId,
   ThreadId,
   TurnId,
-  type AkeruDelegationRecord,
+  type IsnadiDelegationRecord,
   type OrchestrationThread,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import {
   buildThreadFeed,
   createThreadFeedBuilder,
@@ -29,7 +29,7 @@ describe("delegation cards in the feed", () => {
     second: number,
     parentTurnId: string,
     anchorMessageId: string | null,
-  ): AkeruDelegationRecord => ({
+  ): IsnadiDelegationRecord => ({
     delegationId: DelegationId.make(id),
     parentDelegationId: null,
     parentBotId: BotId.make("bot-parent"),

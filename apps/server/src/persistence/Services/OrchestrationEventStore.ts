@@ -9,7 +9,7 @@
  *
  * @module OrchestrationEventStore
  */
-import { OrchestrationEvent } from "@akeru/contracts";
+import { OrchestrationEvent } from "@isnadi/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as Stream from "effect/Stream";
@@ -110,4 +110,4 @@ export interface OrchestrationEventStoreShape {
 export class OrchestrationEventStore extends Context.Service<
   OrchestrationEventStore,
   OrchestrationEventStoreShape
->()("akeru-bot/persistence/Services/OrchestrationEventStore") {}
+>()("isnadibot/persistence/Services/OrchestrationEventStore") {}

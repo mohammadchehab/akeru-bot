@@ -14,7 +14,7 @@ import {
   type McpServer,
   type OrchestrationCommand,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as TestClock from "effect/testing/TestClock";
@@ -25,7 +25,7 @@ import * as Schema from "effect/Schema";
 import { assert, describe, expect, vi } from "vite-plus/test";
 import { ServerSettingsService } from "../../serverSettings.ts";
 import { AgentController } from "../Services/AgentController.ts";
-import type { AkeruRuntimeToolId } from "../AkeruToolRuntime.ts";
+import type { IsnadiRuntimeToolId } from "../IsnadiToolRuntime.ts";
 import { ImageGenerationRuntime } from "../../image-generation/ImageGenerationRuntime.ts";
 import {
   GROK_IMAGE_CAPABILITIES,
@@ -54,7 +54,7 @@ describe("AgentControllerLive", () => {
   it.effect("exposes and runs the web, image, and MCP catalog tools in a live session", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-catalog-tools-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-catalog-tools-"));
     const page = NodeHttp.createServer((_request, response) => response.end("catalog page"));
 
     const imageResult = {
@@ -162,7 +162,7 @@ describe("AgentControllerLive", () => {
           ]),
         );
 
-        const run = (toolId: AkeruRuntimeToolId, toolCallId: string, input: Schema.Json) =>
+        const run = (toolId: IsnadiRuntimeToolId, toolCallId: string, input: Schema.Json) =>
           Effect.promise(() => {
             const execution = { threadId: String(codexThreadId), toolId, toolCallId, input };
             runtime.grantApproval(execution);
@@ -170,9 +170,9 @@ describe("AgentControllerLive", () => {
             return runtime.execute({ ...execution, approvalMode: "require-grant" });
           });
 
-        expect(yield* run("WebSearch", "search", { query: "akeru bot" })).toMatchObject({
+        expect(yield* run("WebSearch", "search", { query: "isnadi bot" })).toMatchObject({
           status: "unavailable",
-          query: "akeru bot",
+          query: "isnadi bot",
           results: [],
         });
         expect(
@@ -345,7 +345,7 @@ describe("AgentControllerLive", () => {
   it.effect("routes the Mastra GenerateImage catalog tool through the image runtime", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-catalog-image-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-catalog-image-"));
     const grokCalls: Array<unknown> = [];
     let grokGate: (() => void) | undefined;
 
@@ -460,7 +460,7 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const baseDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-catalog-image-timeout-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-catalog-image-timeout-"),
     );
 
     const requestTimeout = Duration.millis(50);
@@ -562,7 +562,7 @@ describe("AgentControllerLive", () => {
 
 describe("AgentControllerLive", () => {
   it.effect("refuses an api-key openai-codex credential for ChatGPT images", () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-image-apikey-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-image-apikey-"));
     const secretsDir = NodePath.join(baseDir, "userdata", "secrets");
     NodeFS.mkdirSync(secretsDir, { recursive: true });
     NodeFS.writeFileSync(

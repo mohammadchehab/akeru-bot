@@ -43,10 +43,10 @@ it("preserves an explicitly configured HOME", () => {
   assert.equal(env.HOME, "/custom/home");
 });
 
-it.effect("defaults the product home to ~/.akeru instead of T3 Code's ~/.t3", () =>
+it.effect("defaults the product home to ~/.isnadi instead of T3 Code's ~/.t3", () =>
   Effect.gen(function* () {
     const path = yield* Path.Path;
     const baseDir = yield* resolveBaseDir(undefined);
-    assert.equal(baseDir, path.join(NodeOS.homedir(), ".akeru"));
+    assert.equal(baseDir, path.join(NodeOS.homedir(), ".isnadi"));
   }).pipe(Effect.provide(NodeServices.layer)),
 );

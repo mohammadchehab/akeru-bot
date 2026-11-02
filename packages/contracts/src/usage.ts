@@ -1,9 +1,9 @@
 /**
  * Usage reporting contract.
  *
- * Each environment reports usage recorded by Akeru Bot's provider runtime.
+ * Each environment reports usage recorded by IsnadiBot's provider runtime.
  * Machine-wide CLI transcripts are deliberately excluded: a local Claude or
- * Codex login is not an Akeru provider connection.
+ * Codex login is not an Isnadi provider connection.
  *
  * Environments return pre-aggregated `(day, hourStart?, provider, model)`
  * buckets. Raw ledger records never cross the wire.
@@ -100,7 +100,7 @@ export const UsageBucket = Schema.Struct({
   /** Distinct assistant responses, after de-duplication. */
   records: NonNegativeInt,
   unpricedRecords: NonNegativeInt,
-  /** Distinct Akeru chats that contributed to this cell. */
+  /** Distinct Isnadi chats that contributed to this cell. */
   sessions: NonNegativeInt,
 });
 
@@ -140,7 +140,7 @@ export const UsageSource = Schema.Struct({
   /** Records that parsed but carried no recognisable usage payload. */
   malformedRecords: NonNegativeInt,
   /**
-   * Distinct Akeru chats seen in this store. Buckets also carry
+   * Distinct Isnadi chats seen in this store. Buckets also carry
    * per-bucket session counts, but a session spans days and models, so summing
    * those overcounts; this is the figure clients should total.
    */

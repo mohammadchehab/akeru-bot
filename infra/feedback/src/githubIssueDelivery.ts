@@ -1,6 +1,6 @@
 import type * as Schema from "effect/Schema";
 import * as Predicate from "effect/Predicate";
-import type { StoredProductFeedbackSubmission } from "@akeru/contracts";
+import type { StoredProductFeedbackSubmission } from "@isnadi/contracts";
 import * as NodeBuffer from "node:buffer";
 import * as NodeCrypto from "node:crypto";
 
@@ -108,7 +108,7 @@ export function formatGitHubIssue(record: FeedbackDeliveryRecord) {
   ].join("\n");
 
   return {
-    title: `[Akeru feedback] ${summary || record.feedbackId}`,
+    title: `[Isnadi feedback] ${summary || record.feedbackId}`,
     body,
   };
 }
@@ -118,7 +118,7 @@ function githubHeaders(token: string): HeadersInit {
     Accept: "application/vnd.github+json",
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
-    "User-Agent": "akeru-feedback",
+    "User-Agent": "isnadi-feedback",
     "X-GitHub-Api-Version": GITHUB_API_VERSION,
   };
 }

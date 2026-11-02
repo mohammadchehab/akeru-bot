@@ -16,12 +16,12 @@ import * as Predicate from "effect/Predicate";
  *
  * @module provider/Drivers/GrokSkills
  */
-import type { GrokSettings, ServerProviderSkill } from "@akeru/contracts";
+import type { GrokSettings, ServerProviderSkill } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { ChildProcess } from "effect/unstable/process";
-import { resolveSpawnCommand } from "@akeru/shared/shell";
+import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import { spawnAndCollect } from "../providerSnapshot.ts";
 

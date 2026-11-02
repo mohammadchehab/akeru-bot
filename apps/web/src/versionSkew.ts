@@ -1,5 +1,5 @@
-import type { EnvironmentId, ServerConfig, ServerSelfUpdateCapability } from "@akeru/contracts";
-import { compareSemverVersions, parseSemver } from "@akeru/shared/semver";
+import type { EnvironmentId, ServerConfig, ServerSelfUpdateCapability } from "@isnadi/contracts";
+import { compareSemverVersions, parseSemver } from "@isnadi/shared/semver";
 import * as Schema from "effect/Schema";
 
 import { APP_VERSION } from "./branding";
@@ -11,7 +11,7 @@ export interface VersionMismatch {
   readonly hint: string;
 }
 
-export const VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "akeru:version-mismatch-dismissals:v1";
+export const VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "isnadi:version-mismatch-dismissals:v1";
 
 // Pre-rebrand key, read as a fallback so dismissed banners stay dismissed.
 const LEGACY_VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "t3code:version-mismatch-dismissals:v1";
@@ -34,7 +34,7 @@ function versionCore(version: string): string {
 }
 
 /**
- * The skew a user can act on: the connected server runs an older Akeru Bot than
+ * The skew a user can act on: the connected server runs an older IsnadiBot than
  * this client, so the server is the side that needs updating.
  *
  * Versions compare their core `major.minor.patch` only.
@@ -86,7 +86,7 @@ export function resolveServerSelfUpdateCapability(
 
 /** The command to hand users whose server cannot update itself. */
 export function manualServerUpdateCommand(targetVersion: string): string {
-  return `npx akeru-bot@${targetVersion}`;
+  return `npx isnadibot@${targetVersion}`;
 }
 
 /** One sentence telling the user how to resolve version skew for a server,

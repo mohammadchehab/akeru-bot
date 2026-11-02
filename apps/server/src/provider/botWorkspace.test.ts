@@ -339,7 +339,7 @@ describe("Ascii Box", () => {
 
   it("creates once with the configured credential and reattaches by saved VM identity", async () => {
     const { BoxApi } = await import("@asciidev/box-sdk");
-    const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-ascii-"));
+    const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-ascii-"));
 
     const box = {
       id: "ascii-id",
@@ -424,7 +424,7 @@ describe("Ascii Box", () => {
     "reconciles saved VM identity only for a confirmed 404, not %s errors",
     async (status) => {
       const { BoxApi, ResponseError } = await import("@asciidev/box-sdk");
-      const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-ascii-"));
+      const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-ascii-"));
       const identityFile = NodePath.join(root, "identity.json");
       const previous = { provider: "ascii", providerId: "deleted-id" };
 
@@ -491,7 +491,7 @@ describe("Ascii Box", () => {
   it("rejects a missing credential before creating a VM", async () => {
     const { BoxApi } = await import("@asciidev/box-sdk");
     const create = vi.spyOn(BoxApi.prototype, "create");
-    const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-ascii-"));
+    const root = await NodeFS.promises.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-ascii-"));
 
     try {
       await expect(
@@ -522,9 +522,9 @@ describe("createBotWorkspace", () => {
   });
 
   it("keeps durable local bot files outside the user project", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-workspace-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-workspace-"));
     const projectDir = NodePath.join(baseDir, "project");
-    const botRoot = NodePath.join(baseDir, "state", "akeru-bot-one");
+    const botRoot = NodePath.join(baseDir, "state", "isnadibot-one");
     NodeFS.mkdirSync(projectDir, { recursive: true });
 
     const workspace = await createBotWorkspace({
@@ -532,7 +532,7 @@ describe("createBotWorkspace", () => {
       threadId: "bot-one",
       cwd: projectDir,
       localRoot: botRoot,
-      workspaceId: "akeru-bot-one",
+      workspaceId: "isnadibot-one",
       sandbox: "local",
     });
 
@@ -557,7 +557,7 @@ describe("createBotWorkspace", () => {
       io: workspaceIO,
       threadId: "thread-vercel",
       sandbox: "vercel",
-      workspaceId: "akeru-vercel",
+      workspaceId: "isnadi-vercel",
       environment: {
         VERCEL_TOKEN: "token",
         VERCEL_TEAM_ID: "team",
@@ -569,7 +569,7 @@ describe("createBotWorkspace", () => {
       io: workspaceIO,
       threadId: "thread-vercel",
       sandbox: "vercel",
-      workspaceId: "akeru-vercel",
+      workspaceId: "isnadi-vercel",
       environment: {
         VERCEL_TOKEN: "token",
         VERCEL_TEAM_ID: "team",
@@ -586,7 +586,7 @@ describe("createBotWorkspace", () => {
   });
 
   it("persists the provider identity and uses it to reattach", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-identity-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-identity-"));
     const identityFile = NodePath.join(baseDir, "provider.json");
 
     const openSession = vi.fn(async (providerId?: string) =>
@@ -597,7 +597,7 @@ describe("createBotWorkspace", () => {
       io: workspaceIO,
       threadId: "thread-remote",
       sandbox: "e2b" as const,
-      workspaceId: "akeru-stable-id",
+      workspaceId: "isnadi-stable-id",
       identityFile,
       openSession,
     };
@@ -605,8 +605,8 @@ describe("createBotWorkspace", () => {
     const created = await createRemoteBotWorkspace(input);
     const reattached = await createRemoteBotWorkspace(input);
 
-    expect(created.id).toBe("akeru-stable-id");
-    expect(reattached.id).toBe("akeru-stable-id");
+    expect(created.id).toBe("isnadi-stable-id");
+    expect(reattached.id).toBe("isnadi-stable-id");
     expect(reattached.providerId).toBe("native-workspace-id");
     expect(openSession).toHaveBeenNthCalledWith(1, undefined);
     expect(openSession).toHaveBeenNthCalledWith(2, "native-workspace-id");
@@ -620,7 +620,7 @@ describe("createBotWorkspace", () => {
   });
 
   it("fails closed when a persisted remote workspace is missing", async () => {
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-missing-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-missing-"));
     const identityFile = NodePath.join(baseDir, "provider.json");
     NodeFS.writeFileSync(
       identityFile,
@@ -632,7 +632,7 @@ describe("createBotWorkspace", () => {
         io: workspaceIO,
         threadId: "thread-remote",
         sandbox: "vercel",
-        workspaceId: "akeru-stable-id",
+        workspaceId: "isnadi-stable-id",
         identityFile,
         openSession: async () => Promise.reject(new Error("not found")),
       }),

@@ -1,5 +1,5 @@
 import * as Encoding from "effect/Encoding";
-import { CheckpointRef, ProjectId, type ThreadId } from "@akeru/contracts";
+import { CheckpointRef, ProjectId, type ThreadId } from "@isnadi/contracts";
 
 export const CHECKPOINT_REFS_PREFIX = "refs/t3/checkpoints";
 

@@ -18,7 +18,7 @@ import {
   stageWindowsIcons,
 } from "./assets.ts";
 
-const DESKTOP_APP_ID = "dev.leodoes.akeru";
+const DESKTOP_APP_ID = "dev.leodoes.isnadi";
 
 export interface DesktopBuildConfiguration {
   appId: string;
@@ -276,7 +276,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       // The .icon bundle is preferred by electron-builder: it compiles an
       // asset catalog for macOS 26 theming and derives the legacy icns from
       // the same source for older systems.
-      icon: "akeru.icon",
+      icon: "isnadi.icon",
       category: "public.app-category.developer-tools",
       extendInfo: {
         NSMicrophoneUsageDescription:
@@ -285,7 +285,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       protocols: [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ],
       // Unsigned builds opt into identity "-" so electron-builder replaces
@@ -334,21 +334,21 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
   if (platform === "linux") {
     buildConfig.linux = {
       target: [target],
-      executableName: "akeru-bot",
+      executableName: "isnadibot",
       icon: "icons",
       category: "Development",
       // electron-builder turns these into MimeType=x-scheme-handler/<scheme>;
       // in the .desktop entry (Exec already gets %U), so browsers can hand
-      // akeru:// OAuth callbacks to the app.
+      // isnadi:// OAuth callbacks to the app.
       protocols: [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ],
       desktop: {
         entry: {
-          StartupWMClass: "akeru-bot",
+          StartupWMClass: "isnadibot",
         },
       },
     };
@@ -361,14 +361,14 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     // in trading update bandwidth for install speed.
     buildConfig.nsis = { differentialPackage: true };
     // electron-builder writes HKCU URL-protocol registry entries from this
-    // list, so the OS hands akeru:// activations to this install instead of
+    // list, so the OS hands isnadi:// activations to this install instead of
     // whatever app (for example an old T3 build) registered a scheme earlier.
     // Only the production scheme: packaged builds never run as development,
-    // and claiming akeru-dev would steal it from a developer's local build.
+    // and claiming isnadi-dev would steal it from a developer's local build.
     buildConfig.protocols = [
       {
         name: "IsnadiBot",
-        schemes: ["akeru"],
+        schemes: ["isnadi"],
       },
     ];
 

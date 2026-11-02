@@ -16,7 +16,7 @@ import {
   TurnId,
 } from "../baseSchemas.ts";
 import { McpServer, McpServerId } from "../mcpServer.ts";
-import { AkeruDelegationRecord } from "../akeruDelegation.ts";
+import { IsnadiDelegationRecord } from "../isnadiDelegation.ts";
 import { ImageProviderId } from "../imageGeneration.ts";
 import { DelegationIdSchema } from "./identities.ts";
 import {
@@ -558,7 +558,7 @@ export const ThreadActivityAppendedPayload = Schema.Struct({
 });
 
 export const DelegationCreatedPayload = Schema.Struct({
-  delegation: Schema.suspend(() => AkeruDelegationRecord),
+  delegation: Schema.suspend(() => IsnadiDelegationRecord),
 });
 
 export const DelegationUpdatedPayload = DelegationCreatedPayload;

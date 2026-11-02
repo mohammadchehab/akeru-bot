@@ -9,7 +9,7 @@ import {
   ThreadId,
   type OrchestrationMessage,
   type OrchestrationShellSnapshot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { Bot, Group } from "./types";
 
@@ -271,7 +271,7 @@ const group: Group = {
 
 const bot: Bot = {
   id: "bot-1",
-  name: "Akeru",
+  name: "Isnadi",
   title: "Teammate",
   label: null,
   description: null,

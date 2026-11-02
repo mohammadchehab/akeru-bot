@@ -1,12 +1,12 @@
 import type { TestProps } from "../test-support/reactTree";
-import type { DictationDraft } from "@akeru/client-runtime/dictation";
+import type { DictationDraft } from "@isnadi/client-runtime/dictation";
 import { isValidElement, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { visitElements } from "../test-support/reactTree";
 import { reactHookHarness as hooks } from "../../test/reactHookHarness";
 
-type Session = ReturnType<typeof import("@akeru/client-runtime/dictation").createDictationSession>;
+type Session = ReturnType<typeof import("@isnadi/client-runtime/dictation").createDictationSession>;
 
 type DictationInput = {
   readonly getDraft: () => Omit<DictationDraft, "identity">;
@@ -20,7 +20,7 @@ const fake = vi.hoisted(() => ({
 }));
 
 vi.mock("../../i18n", async () => {
-  const { createTranslator } = await import("@akeru/client-runtime/i18n");
+  const { createTranslator } = await import("@isnadi/client-runtime/i18n");
   const translator = createTranslator("en");
 
   return { useI18n: () => ({ ...translator, t: translator.translate }) };
@@ -99,7 +99,7 @@ vi.mock("../ui/toast", () => ({ toastManager: { add: vi.fn() } }));
 // The real session runs behind the environment binding: capture succeeds, transcription fails.
 vi.mock("../../lib/useEnvironmentComposerDictation", async () => {
   const { createDictationSession, dictationControlStatus } =
-    await import("@akeru/client-runtime/dictation");
+    await import("@isnadi/client-runtime/dictation");
 
   const identity = { environmentId: "environment", threadId: "Scout", draftId: "Scout" };
 

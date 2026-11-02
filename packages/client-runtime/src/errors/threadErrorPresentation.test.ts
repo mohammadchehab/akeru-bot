@@ -69,7 +69,7 @@ describe("presentThreadError", () => {
       ),
     ).toMatchObject({ title: "Custom API needs a base URL", action: "providers" });
     expect(
-      presentThreadError("Custom Kimi credentials are not supported by the Akeru harness."),
+      presentThreadError("Custom Kimi credentials are not supported by the Isnadi harness."),
     ).toMatchObject({
       title: "The provider can't use custom credentials",
       action: "providers",

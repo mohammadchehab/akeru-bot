@@ -1,4 +1,4 @@
-import { ORCHESTRATION_WS_METHODS } from "@akeru/contracts";
+import { ORCHESTRATION_WS_METHODS } from "@isnadi/contracts";
 import * as Crypto from "effect/Crypto";
 import { Atom } from "effect/unstable/reactivity";
 

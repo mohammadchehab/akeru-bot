@@ -11,8 +11,8 @@ import {
   EnvironmentOrchestrationHttpApi,
   ProviderInstanceId,
   ThreadId,
-} from "@akeru/contracts";
-import * as NetService from "@akeru/shared/Net";
+} from "@isnadi/contracts";
+import * as NetService from "@isnadi/shared/Net";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as DateTime from "effect/DateTime";
@@ -75,7 +75,7 @@ const makeCliTestServerConfig = (baseDir: string) =>
       otlpTracesUrl: undefined,
       otlpMetricsUrl: undefined,
       otlpExportIntervalMs: 10_000,
-      otlpServiceName: "akeru-server",
+      otlpServiceName: "isnadi-server",
       mode: "web",
       port: 0,
       host: "127.0.0.1",
@@ -300,7 +300,7 @@ it.layer(NodeServices.layer)("bin cli parsing", (it) => {
         assert.fail(`Expected ShowHelp, got ${error._tag}`);
       }
 
-      assert.deepEqual(error.commandPath, ["akeru", "auth", "pairing", "create"]);
+      assert.deepEqual(error.commandPath, ["isnadi", "auth", "pairing", "create"]);
       const ttlError = error.errors[0] as CliError.CliError | undefined;
 
       if (!ttlError || !Predicate.isTagged(ttlError, "InvalidValue")) {
@@ -486,7 +486,7 @@ it.layer(NodeServices.layer)("bin cli parsing", (it) => {
         assert.fail(`Expected ShowHelp, got ${error._tag}`);
       }
 
-      assert.deepEqual(error.commandPath, ["akeru", "project", "add"]);
+      assert.deepEqual(error.commandPath, ["isnadi", "project", "add"]);
       const optionError = error.errors[0] as CliError.CliError | undefined;
 
       if (!optionError || !Predicate.isTagged(optionError, "UnrecognizedOption")) {

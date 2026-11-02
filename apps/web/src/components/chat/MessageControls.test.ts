@@ -40,22 +40,22 @@ describe("message controls", () => {
     ).toBe("😂");
     expect(
       buildReplyPrompt(
-        { messageId: "message-1", label: "Akeru", text: "First line\nSecond line" },
+        { messageId: "message-1", label: "Isnadi", text: "First line\nSecond line" },
         "My reply",
       ),
-    ).toBe("> Replying to Akeru\n> First line\n> Second line\n\nMy reply");
+    ).toBe("> Replying to Isnadi\n> First line\n> Second line\n\nMy reply");
   });
 
   it("parses back the reply shape that buildReplyPrompt serializes", () => {
-    const reply = { messageId: "message-1", label: "Akeru", text: "First line\n\nThird line" };
+    const reply = { messageId: "message-1", label: "Isnadi", text: "First line\n\nThird line" };
 
     expect(parseReplyPrompt(buildReplyPrompt(reply, "My reply\nwith two lines"))).toEqual({
-      label: "Akeru",
+      label: "Isnadi",
       quotedText: "First line\n\nThird line",
       body: "My reply\nwith two lines",
     });
     expect(parseReplyPrompt(buildReplyPrompt(reply, ""))).toEqual({
-      label: "Akeru",
+      label: "Isnadi",
       quotedText: "First line\n\nThird line",
       body: "",
     });
@@ -70,10 +70,10 @@ describe("message controls", () => {
     expect(parseReplyPrompt("what am i replying to")).toBeNull();
     expect(parseReplyPrompt("> just a quote\n\nmy thoughts")).toBeNull();
     expect(parseReplyPrompt("> Replying to \n> text\n\nbody")).toBeNull();
-    expect(parseReplyPrompt("> Replying to Akeru\nno quoted lines\n\nbody")).toBeNull();
-    expect(parseReplyPrompt("> Replying to Akeru\n> quoted\nbody with no blank line")).toBeNull();
-    expect(parseReplyPrompt(">Replying to Akeru\n> quoted\n\nbody")).toBeNull();
-    expect(parseReplyPrompt("intro\n> Replying to Akeru\n> quoted\n\nbody")).toBeNull();
+    expect(parseReplyPrompt("> Replying to Isnadi\nno quoted lines\n\nbody")).toBeNull();
+    expect(parseReplyPrompt("> Replying to Isnadi\n> quoted\nbody with no blank line")).toBeNull();
+    expect(parseReplyPrompt(">Replying to Isnadi\n> quoted\n\nbody")).toBeNull();
+    expect(parseReplyPrompt("intro\n> Replying to Isnadi\n> quoted\n\nbody")).toBeNull();
   });
 
   it("only accepts an emoji the picker actually offers", () => {
@@ -83,12 +83,12 @@ describe("message controls", () => {
 
   it("recovers the referenced message and reply body without treating ordinary quotes as replies", () => {
     const sent = buildReplyPrompt(
-      { messageId: "message-1", label: "Akeru", text: "First line\n\nThird line" },
+      { messageId: "message-1", label: "Isnadi", text: "First line\n\nThird line" },
       "My reply\nwith another line",
     );
 
     expect(parseReplyPrompt(sent)).toEqual({
-      label: "Akeru",
+      label: "Isnadi",
       quotedText: "First line\n\nThird line",
       body: "My reply\nwith another line",
     });

@@ -1,4 +1,4 @@
-import { CommandId, McpServerId } from "@akeru/contracts";
+import { CommandId, McpServerId } from "@isnadi/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
@@ -29,7 +29,7 @@ const registryLayer = it.layer(
     Layer.provideMerge(SqlitePersistenceMemory),
     Layer.provideMerge(
       ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-mcp-server-registry-test-",
+        prefix: "isnadi-mcp-server-registry-test-",
       }),
     ),
     Layer.provideMerge(NodeServices.layer),

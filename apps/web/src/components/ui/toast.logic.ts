@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Predicate } from "effect";
-import type { ScopedThreadRef, ThreadId } from "@akeru/contracts";
+import type { ScopedThreadRef, ThreadId } from "@isnadi/contracts";
 
 /**
  * Base UI toast updates omit `undefined` fields, so callers that need to remove

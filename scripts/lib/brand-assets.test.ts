@@ -74,8 +74,8 @@ describe("brand-assets", () => {
     expect(resolveWebAssetBrandForPackageVersion("0.0.29")).toBe("production");
   });
 
-  it("uses the Akeru favicon artwork for production desktop and web icons", () => {
-    expect(BRAND_ASSET_PATHS.productionMacIconPng).toBe("assets/prod/akeru-macos-1024.png");
+  it("uses the Isnadi favicon artwork for production desktop and web icons", () => {
+    expect(BRAND_ASSET_PATHS.productionMacIconPng).toBe("assets/prod/isnadi-macos-1024.png");
     expect(BRAND_ASSET_PATHS.productionLinuxIconPng).toBe("assets/prod/app-icon.png");
     expect(BRAND_ASSET_PATHS.productionWindowsIconIco).toBe("apps/web/public/favicon.ico");
   });

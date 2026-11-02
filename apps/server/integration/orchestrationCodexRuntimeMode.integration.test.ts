@@ -1,4 +1,8 @@
-import { CommandId, DEFAULT_PROVIDER_INTERACTION_MODE, ProviderInstanceId } from "@akeru/contracts";
+import {
+  CommandId,
+  DEFAULT_PROVIDER_INTERACTION_MODE,
+  ProviderInstanceId,
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import {

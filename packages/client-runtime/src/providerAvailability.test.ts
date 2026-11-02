@@ -4,7 +4,7 @@ import {
   ProviderInstanceId,
   type OrchestrationThreadActivity,
   type ServerProvider,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

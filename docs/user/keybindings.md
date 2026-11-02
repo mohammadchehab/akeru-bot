@@ -9,8 +9,8 @@ The page warns when two commands share the same keys and only one of them can ru
 for a narrower context, such as while the model picker is open, overrides the broader one there and
 is not a conflict.
 
-The same configuration lives in `~/.akeru/userdata/keybindings.json` on the machine running the
-server. Akeru merges your rules with the built-in defaults. It keeps a default when no custom rule
+The same configuration lives in `~/.isnadi/userdata/keybindings.json` on the machine running the
+server. Isnadi merges your rules with the built-in defaults. It keeps a default when no custom rule
 claims that command. An absent or empty file therefore still resolves to the built-in shortcuts.
 
 The file is a JSON array of rules.

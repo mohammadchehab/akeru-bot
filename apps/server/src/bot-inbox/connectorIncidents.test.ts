@@ -2,7 +2,7 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-import { BotId, type ProviderAccessStatus } from "@akeru/contracts";
+import { BotId, type ProviderAccessStatus } from "@isnadi/contracts";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import type { ProviderStatus } from "../subscription-auth/service.ts";
@@ -18,7 +18,7 @@ afterEach(() => {
 });
 
 function fixture() {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-incidents-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-incidents-"));
   directories.push(directory);
 
   return new BotInboxService(NodePath.join(directory, "bot-inbox.json"));
@@ -36,7 +36,7 @@ function status(
     health,
     reconnectAction: "Reconnect account",
     healthTest: { status: "not-run" },
-    dependentBots: [{ id: BotId.make("bot-akeru"), name: "Akeru" }],
+    dependentBots: [{ id: BotId.make("bot-isnadi"), name: "Isnadi" }],
     dependentRoutines: [],
     ...(message
       ? {
@@ -152,14 +152,14 @@ describe("connector inbox incidents", () => {
         at: "2026-08-30T20:00:00.000Z",
         message: "The MCP tool request failed.",
       },
-      dependentBots: [{ id: BotId.make("bot-akeru"), name: "Akeru" }],
+      dependentBots: [{ id: BotId.make("bot-isnadi"), name: "Isnadi" }],
       dependentRoutines: [],
     };
 
     syncAccessIncidents(inbox, [access]);
     expect(inbox.list()[0]).toEqual(
       expect.objectContaining({
-        incidentKey: "access:mcp-builtin-exa:bot-akeru",
+        incidentKey: "access:mcp-builtin-exa:bot-isnadi",
         lastFailure: "The MCP tool request failed.",
         nextAction: "Reconnect Exa, then retry its failed request.",
         status: "open",

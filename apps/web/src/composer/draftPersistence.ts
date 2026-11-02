@@ -2,8 +2,8 @@ import * as Schema from "effect/Schema";
 import * as Option from "effect/Option";
 import { StoredComposerMigration } from "./draftMigrationSchemas";
 import * as Predicate from "effect/Predicate";
-import { EnvironmentId, ModelSelection, ProviderInstanceId, ThreadId } from "@akeru/contracts";
-import { scopeProjectRef, scopeThreadRef } from "@akeru/client-runtime/environment";
+import { EnvironmentId, ModelSelection, ProviderInstanceId, ThreadId } from "@isnadi/contracts";
+import { scopeProjectRef, scopeThreadRef } from "@isnadi/client-runtime/environment";
 import { DeepMutable } from "effect/Types";
 import { getLocalStorageItem } from "../hooks/useLocalStorage";
 import { createDebouncedStorage, createMemoryStorage } from "../lib/storage";
@@ -39,7 +39,7 @@ import {
 import { isDraftThreadPromoting, projectDraftKey } from "./draftIdentity";
 import { shouldRemoveDraft } from "./draftContent";
 
-export const COMPOSER_DRAFT_STORAGE_KEY = "akeru:composer-drafts:v1";
+export const COMPOSER_DRAFT_STORAGE_KEY = "isnadi:composer-drafts:v1";
 
 // Drafts persisted under the `t3code:` prefix before the rebrand.
 export const LEGACY_COMPOSER_DRAFT_STORAGE_KEY = "t3code:composer-drafts:v1";

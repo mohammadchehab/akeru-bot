@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeSocket from "@effect/platform-node/NodeSocket";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { AuthAccessTokenType, WS_METHODS } from "@akeru/contracts";
+import { AuthAccessTokenType, WS_METHODS } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import { assertInclude } from "@effect/vitest/utils";
 import * as Effect from "effect/Effect";

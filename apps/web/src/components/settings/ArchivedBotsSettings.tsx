@@ -4,7 +4,7 @@ import {
   archivedBotDeletesAtMs,
   type EnvironmentId,
   type OrchestrationBot,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import { ArchiveRestoreIcon, Trash2Icon } from "lucide-react";
 import { useMemo, useState } from "react";
 

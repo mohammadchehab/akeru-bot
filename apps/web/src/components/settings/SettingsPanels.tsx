@@ -10,8 +10,8 @@ import {
   MAX_GLASS_OPACITY,
   MIN_APPEARANCE_CONTRAST,
   MIN_GLASS_OPACITY,
-} from "@akeru/contracts/settings";
-import { resolveServerBackgroundActivitySettings } from "@akeru/shared/backgroundActivitySettings";
+} from "@isnadi/contracts/settings";
+import { resolveServerBackgroundActivitySettings } from "@isnadi/shared/backgroundActivitySettings";
 import * as Equal from "effect/Equal";
 import * as Exit from "effect/Exit";
 import {
@@ -42,7 +42,7 @@ import {
 } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { useI18n } from "../../i18n";
-import type { MessageKey } from "@akeru/client-runtime/i18n";
+import type { MessageKey } from "@isnadi/client-runtime/i18n";
 import {
   decodeProductFeedbackEndpoint,
   resetBackgroundActivitySettings,
@@ -414,15 +414,18 @@ export function AdvancedSettingsSections() {
         />
         <SettingsRow
           title={t("Feedback endpoint")}
-          description={t("Where submitted product feedback is sent. Use HTTPS or loopback HTTP.")}
+          description={t(
+            "Where submitted product feedback is sent. Use HTTPS or loopback HTTP. Leave empty to turn off sending.",
+          )}
           control={
             <Input
               aria-label={t("Feedback endpoint")}
               className="w-full sm:w-80"
               defaultValue={settings.productFeedbackEndpoint}
               key={settings.productFeedbackEndpoint}
+              placeholder={t("Not set")}
               onBlur={(event) => {
-                const decoded = decodeProductFeedbackEndpoint(event.currentTarget.value);
+                const decoded = decodeProductFeedbackEndpoint(event.currentTarget.value.trim());
 
                 if (Exit.isFailure(decoded)) {
                   event.currentTarget.value = settings.productFeedbackEndpoint;
@@ -436,10 +439,7 @@ export function AdvancedSettingsSections() {
 
                 const productFeedbackEndpoint = decoded.value;
 
-                if (
-                  productFeedbackEndpoint &&
-                  productFeedbackEndpoint !== settings.productFeedbackEndpoint
-                ) {
+                if (productFeedbackEndpoint !== settings.productFeedbackEndpoint) {
                   updateSettings({ productFeedbackEndpoint });
                 }
               }}

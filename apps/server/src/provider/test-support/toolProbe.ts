@@ -3,7 +3,7 @@ import { type ToolsInput, Agent } from "@mastra/core/agent";
 import { type Tool, noopObserve } from "@mastra/core/tools";
 import { RequestContext } from "@mastra/core/request-context";
 import * as Predicate from "effect/Predicate";
-import type { AkeruMastraHarness } from "../AkeruMastraHarness.ts";
+import type { IsnadiMastraHarness } from "../IsnadiMastraHarness.ts";
 
 type ExecutableTool = Pick<Tool, "execute" | "requireApproval" | "needsApprovalFn">;
 
@@ -57,7 +57,7 @@ export function probeTool(input: ToolsInput[string] | undefined) {
   };
 }
 
-export function harnessAgent(harness: AkeruMastraHarness) {
+export function harnessAgent(harness: IsnadiMastraHarness) {
   const controller = harness.controller;
 
   if (

@@ -1,10 +1,10 @@
 import type { MutableProviderConfig } from "./providerConfig";
 import { providerConfig, type ProviderConfig } from "./providerConfig";
-import type { ProviderInstanceConfig } from "@akeru/contracts";
+import type { ProviderInstanceConfig } from "@isnadi/contracts";
 import { Predicate } from "effect";
 import * as Arr from "effect/Array";
 import * as Result from "effect/Result";
-import { type ServerProviderModel } from "@akeru/contracts";
+import { type ServerProviderModel } from "@isnadi/contracts";
 
 /**
  * Read a string[] at `key` from the opaque config blob, filtering out

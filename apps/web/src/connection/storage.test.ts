@@ -1,5 +1,5 @@
-import { ConnectionTransientError } from "@akeru/client-runtime/connection";
-import { ConnectionCatalogDocument } from "@akeru/client-runtime/platform";
+import { ConnectionTransientError } from "@isnadi/client-runtime/connection";
+import { ConnectionCatalogDocument } from "@isnadi/client-runtime/platform";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
@@ -10,6 +10,7 @@ import {
   cachedCatalogStore,
   migrateLegacyConnectionDatabase,
 } from "./storage";
+import { LEGACY_DATABASE_NAMES } from "./legacyDatabaseMigration";
 
 const emptyCatalog = {
   schemaVersion: 1,
@@ -83,113 +84,121 @@ describe("catalogBackendForDatabase", () => {
 });
 
 describe("migrateLegacyConnectionDatabase", () => {
-  it.effect("fills missing records without replacing numeric-keyed current data", () =>
-    Effect.gen(function* () {
-      const fakeIndexedDB = yield* Effect.promise(() =>
-        import("fake-indexeddb").then((module) => new module.IDBFactory()),
-      );
+  for (const legacyName of LEGACY_DATABASE_NAMES) {
+    it.effect(
+      `fills missing records from ${legacyName} without replacing numeric-keyed current data`,
+      () =>
+        Effect.gen(function* () {
+          const fakeIndexedDB = yield* Effect.promise(() =>
+            import("fake-indexeddb").then((module) => new module.IDBFactory()),
+          );
 
-      vi.stubGlobal("indexedDB", fakeIndexedDB);
-      vi.stubGlobal(
-        "IDBKeyRange",
-        yield* Effect.promise(() => import("fake-indexeddb").then((m) => m.IDBKeyRange)),
-      );
+          vi.stubGlobal("indexedDB", fakeIndexedDB);
+          vi.stubGlobal(
+            "IDBKeyRange",
+            yield* Effect.promise(() => import("fake-indexeddb").then((m) => m.IDBKeyRange)),
+          );
 
-      // Seed the legacy database exactly the way the pre-rebrand client did.
-      const legacyOpen = indexedDB.open("t3code:connection-runtime", 4);
+          // Seed the legacy database exactly the way the pre-rebrand client did.
+          const legacyOpen = indexedDB.open(legacyName, 4);
 
-      const legacy = yield* Effect.promise(
-        () =>
-          new Promise<IDBDatabase>((resolve, reject) => {
-            legacyOpen.addEventListener("upgradeneeded", () => {
-              for (const name of ["catalog", "shell", "thread", "server-config", "vcs-refs"]) {
-                legacyOpen.result.createObjectStore(name);
-              }
-            });
-            legacyOpen.addEventListener("success", () => resolve(legacyOpen.result));
-            legacyOpen.addEventListener("error", () => reject(legacyOpen.error));
-          }),
-      );
+          const legacy = yield* Effect.promise(
+            () =>
+              new Promise<IDBDatabase>((resolve, reject) => {
+                legacyOpen.addEventListener("upgradeneeded", () => {
+                  for (const name of ["catalog", "shell", "thread", "server-config", "vcs-refs"]) {
+                    legacyOpen.result.createObjectStore(name);
+                  }
+                });
+                legacyOpen.addEventListener("success", () => resolve(legacyOpen.result));
+                legacyOpen.addEventListener("error", () => reject(legacyOpen.error));
+              }),
+          );
 
-      yield* Effect.promise(
-        () =>
-          new Promise<void>((resolve, reject) => {
-            const tx = legacy.transaction(["catalog", "shell"], "readwrite");
-            tx.addEventListener("complete", () => resolve());
-            tx.addEventListener("error", () => reject(tx.error));
-            tx.objectStore("catalog").put("legacy-catalog-doc", "document");
-            tx.objectStore("shell").put("legacy-shell", "env-1");
-            tx.objectStore("shell").put("legacy-numeric", 1);
-            tx.objectStore("shell").put("legacy-second", 2);
-          }),
-      );
-      legacy.close();
+          yield* Effect.promise(
+            () =>
+              new Promise<void>((resolve, reject) => {
+                const tx = legacy.transaction(["catalog", "shell"], "readwrite");
+                tx.addEventListener("complete", () => resolve());
+                tx.addEventListener("error", () => reject(tx.error));
+                tx.objectStore("catalog").put("legacy-catalog-doc", "document");
+                tx.objectStore("shell").put("legacy-shell", "env-1");
+                tx.objectStore("shell").put("legacy-numeric", 1);
+                tx.objectStore("shell").put("legacy-second", 2);
+              }),
+          );
+          legacy.close();
 
-      // Open the new database (empty) the same way the layer does.
-      const migratedOpen = indexedDB.open("akeru:connection-runtime", 4);
+          // Open the new database (empty) the same way the layer does.
+          const migratedOpen = indexedDB.open("isnadi:connection-runtime", 4);
 
-      const migrated = yield* Effect.promise(
-        () =>
-          new Promise<IDBDatabase>((resolve, reject) => {
-            migratedOpen.addEventListener("upgradeneeded", () => {
-              for (const name of ["catalog", "shell", "thread", "server-config", "vcs-refs"]) {
-                migratedOpen.result.createObjectStore(name);
-              }
-            });
-            migratedOpen.addEventListener("success", () => resolve(migratedOpen.result));
-            migratedOpen.addEventListener("error", () => reject(migratedOpen.error));
-          }),
-      );
+          const migrated = yield* Effect.promise(
+            () =>
+              new Promise<IDBDatabase>((resolve, reject) => {
+                migratedOpen.addEventListener("upgradeneeded", () => {
+                  for (const name of ["catalog", "shell", "thread", "server-config", "vcs-refs"]) {
+                    migratedOpen.result.createObjectStore(name);
+                  }
+                });
+                migratedOpen.addEventListener("success", () => resolve(migratedOpen.result));
+                migratedOpen.addEventListener("error", () => reject(migratedOpen.error));
+              }),
+          );
 
-      yield* Effect.promise(
-        () =>
-          new Promise<void>((resolve, reject) => {
-            const tx = migrated.transaction("shell", "readwrite");
-            tx.addEventListener("complete", () => resolve());
-            tx.addEventListener("error", () => reject(tx.error));
-            tx.objectStore("shell").put("current-numeric", 1);
-          }),
-      );
+          yield* Effect.promise(
+            () =>
+              new Promise<void>((resolve, reject) => {
+                const tx = migrated.transaction("shell", "readwrite");
+                tx.addEventListener("complete", () => resolve());
+                tx.addEventListener("error", () => reject(tx.error));
+                tx.objectStore("shell").put("current-numeric", 1);
+              }),
+          );
 
-      yield* migrateLegacyConnectionDatabase(migrated);
+          yield* migrateLegacyConnectionDatabase(migrated);
 
-      const read = (store: string, key: IDBValidKey) =>
-        Effect.promise(
-          () =>
-            new Promise<unknown>((resolve, reject) => {
-              const request = migrated.transaction(store, "readonly").objectStore(store).get(key);
-              request.addEventListener("success", () => resolve(request.result));
-              request.addEventListener("error", () => reject(request.error));
-            }),
-        );
+          const read = (store: string, key: IDBValidKey) =>
+            Effect.promise(
+              () =>
+                new Promise<unknown>((resolve, reject) => {
+                  const request = migrated
+                    .transaction(store, "readonly")
+                    .objectStore(store)
+                    .get(key);
 
-      expect(yield* read("catalog", "document")).toBe("legacy-catalog-doc");
-      expect(yield* read("shell", "env-1")).toBe("legacy-shell");
-      expect(yield* read("shell", 1)).toBe("current-numeric");
-      expect(yield* read("shell", 2)).toBe("legacy-second");
-      migrated.close();
+                  request.addEventListener("success", () => resolve(request.result));
+                  request.addEventListener("error", () => reject(request.error));
+                }),
+            );
 
-      // Legacy database is retired; reopening it yields a fresh empty DB.
-      const deletedCheck = indexedDB.open("t3code:connection-runtime", 4);
-      let created = false;
+          expect(yield* read("catalog", "document")).toBe("legacy-catalog-doc");
+          expect(yield* read("shell", "env-1")).toBe("legacy-shell");
+          expect(yield* read("shell", 1)).toBe("current-numeric");
+          expect(yield* read("shell", 2)).toBe("legacy-second");
+          migrated.close();
 
-      const legacyAfter = yield* Effect.promise(
-        () =>
-          new Promise<IDBDatabase>((resolve, reject) => {
-            deletedCheck.addEventListener("upgradeneeded", () => {
-              created = true;
-            });
-            deletedCheck.addEventListener("success", () => resolve(deletedCheck.result));
-            deletedCheck.addEventListener("error", () => reject(deletedCheck.error));
-          }),
-      );
+          // Legacy database is retired; reopening it yields a fresh empty DB.
+          const deletedCheck = indexedDB.open(legacyName, 4);
+          let created = false;
 
-      expect(created).toBe(true);
-      expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
-      legacyAfter.close();
-      indexedDB.deleteDatabase("t3code:connection-runtime");
-    }),
-  );
+          const legacyAfter = yield* Effect.promise(
+            () =>
+              new Promise<IDBDatabase>((resolve, reject) => {
+                deletedCheck.addEventListener("upgradeneeded", () => {
+                  created = true;
+                });
+                deletedCheck.addEventListener("success", () => resolve(deletedCheck.result));
+                deletedCheck.addEventListener("error", () => reject(deletedCheck.error));
+              }),
+          );
+
+          expect(created).toBe(true);
+          expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
+          legacyAfter.close();
+          indexedDB.deleteDatabase(legacyName);
+        }),
+    );
+  }
 
   it.effect("does not restore records removed after an earlier migration", () =>
     Effect.gen(function* () {
@@ -231,7 +240,7 @@ describe("migrateLegacyConnectionDatabase", () => {
       });
 
       yield* seedLegacy;
-      const migrated = yield* open("akeru:connection-runtime");
+      const migrated = yield* open("isnadi:connection-runtime");
       yield* migrateLegacyConnectionDatabase(migrated);
       yield* change(migrated, (store) => store.delete("env-1"));
 

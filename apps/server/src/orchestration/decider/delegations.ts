@@ -1,15 +1,15 @@
-import { AkeruDelegationPhase } from "@akeru/contracts";
+import { IsnadiDelegationPhase } from "@isnadi/contracts";
 import * as Predicate from "effect/Predicate";
 import {
-  AKERU_DELEGATION_MAX_CONCURRENCY,
-  AKERU_DELEGATION_MAX_DEPTH,
-  acknowledgeAkeruDelegation,
-  isAkeruDelegationResultPending,
-  releaseAkeruDelegationAcknowledgement,
-  type AkeruDelegationRecord,
+  ISNADI_DELEGATION_MAX_CONCURRENCY,
+  ISNADI_DELEGATION_MAX_DEPTH,
+  acknowledgeIsnadiDelegation,
+  isIsnadiDelegationResultPending,
+  releaseIsnadiDelegationAcknowledgement,
+  type IsnadiDelegationRecord,
   type OrchestrationCommand,
   type OrchestrationReadModel,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as NodeUtil from "node:util";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
@@ -97,7 +97,7 @@ export const decideDelegations = Effect.fn("decideDelegations")(function* ({
           : [...parentDelegation.ancestorBotIds, delegation.parentBotId];
 
       if (
-        expectedDepth > AKERU_DELEGATION_MAX_DEPTH ||
+        expectedDepth > ISNADI_DELEGATION_MAX_DEPTH ||
         delegation.depth !== expectedDepth ||
         !NodeUtil.isDeepStrictEqual(delegation.ancestorBotIds, expectedAncestorBotIds)
       ) {
@@ -120,7 +120,7 @@ export const decideDelegations = Effect.fn("decideDelegations")(function* ({
           !TERMINAL_DELEGATION_PHASES.has(candidate.phase._tag),
       ).length;
 
-      if (activeDelegationCount >= AKERU_DELEGATION_MAX_CONCURRENCY) {
+      if (activeDelegationCount >= ISNADI_DELEGATION_MAX_CONCURRENCY) {
         return yield* new OrchestrationCommandInvariantError({
           commandType: command.type,
           detail: `Bot '${delegation.parentBotId}' already has ${activeDelegationCount} active delegations.`,
@@ -219,18 +219,18 @@ export const decideDelegations = Effect.fn("decideDelegations")(function* ({
         // CheckAgent delivers a finished result by stamping acknowledgedAt.
         // That stamp is the only other same-phase change allowed.
         const acknowledgesOnly =
-          isAkeruDelegationResultPending(current) &&
+          isIsnadiDelegationResultPending(current) &&
           (Predicate.isTagged(next.phase, "Completed") ||
             Predicate.isTagged(next.phase, "Failed")) &&
           next.phase.acknowledgedAt !== null &&
           NodeUtil.isDeepStrictEqual(
-            acknowledgeAkeruDelegation(current, next.phase.acknowledgedAt),
+            acknowledgeIsnadiDelegation(current, next.phase.acknowledgedAt),
             next,
           );
 
         // A turn start that fails before its provider reads the results
         // hands them back, clearing only the stamp.
-        const released = releaseAkeruDelegationAcknowledgement(current);
+        const released = releaseIsnadiDelegationAcknowledgement(current);
         const releasesOnly = released !== current && NodeUtil.isDeepStrictEqual(released, next);
 
         if (
@@ -275,13 +275,13 @@ export const decideDelegations = Effect.fn("decideDelegations")(function* ({
           ? command.createdAt
           : current.updatedAt;
 
-      const delegation: AkeruDelegationRecord = command.keep
+      const delegation: IsnadiDelegationRecord = command.keep
         ? { ...current, keep: true, updatedAt: canceledAt }
         : TERMINAL_DELEGATION_PHASES.has(current.phase._tag)
           ? current
           : {
               ...current,
-              phase: AkeruDelegationPhase.cases.Canceled.make({
+              phase: IsnadiDelegationPhase.cases.Canceled.make({
                 childThreadId: delegationChildThreadId(current.phase),
                 childTurnId: delegationChildTurnId(current.phase),
                 startedAt: "startedAt" in current.phase ? current.phase.startedAt : null,
@@ -341,7 +341,7 @@ export const decideDelegations = Effect.fn("decideDelegations")(function* ({
           !TERMINAL_DELEGATION_PHASES.has(candidate.phase._tag),
       ).length;
 
-      if (activeDelegationCount >= AKERU_DELEGATION_MAX_CONCURRENCY) {
+      if (activeDelegationCount >= ISNADI_DELEGATION_MAX_CONCURRENCY) {
         return yield* new OrchestrationCommandInvariantError({
           commandType: command.type,
           detail: `This bot already has ${activeDelegationCount} bot work items running. Wait for one to finish, then retry.`,

@@ -1,5 +1,5 @@
 import * as Match from "effect/Match";
-import type { EnvironmentId } from "@akeru/contracts";
+import type { EnvironmentId } from "@isnadi/contracts";
 import type { RemoteEnvironmentAuthError } from "../authorization/remote.ts";
 import {
   ConnectionBlockedError,

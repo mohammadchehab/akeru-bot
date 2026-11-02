@@ -1,6 +1,6 @@
 import { Predicate } from "effect";
-import { isAppDeepLink } from "@akeru/client-runtime/settings-deep-link";
-import type { EnvironmentId, ScopedThreadRef, ServerProviderSkill } from "@akeru/contracts";
+import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
+import type { EnvironmentId, ScopedThreadRef, ServerProviderSkill } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/unstable/reactivity";

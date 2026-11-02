@@ -1,4 +1,4 @@
-import type { VoiceCallSnapshot } from "@akeru/contracts";
+import type { VoiceCallSnapshot } from "@isnadi/contracts";
 import { createContext, useContext } from "react";
 
 import type { Bot } from "../roster/types";

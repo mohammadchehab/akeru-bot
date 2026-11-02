@@ -20,7 +20,7 @@ chat** navigates to the child bot's route rather than the child thread.
 
 ## Record fields for placement, retry, and triggers
 
-Three fields on `AkeruDelegationRecord` support work cards in the chat and
+Three fields on `IsnadiDelegationRecord` support work cards in the chat and
 scheduled delegation. Each has a decoding default, so records written before
 the fields existed decode unchanged. Records are stored as JSON, so no
 migration was needed.
@@ -34,7 +34,7 @@ migration was needed.
 - `trigger` is `"bot"` for work a bot started with `SendToAgent` and
   `"scheduled"` for work a routine started. Defaults to `"bot"`.
 
-`botChatTimeline` in `@akeru/client-runtime/state/bot-chat-timeline` merges a
+`botChatTimeline` in `@isnadi/client-runtime/state/bot-chat-timeline` merges a
 chat's messages, receipts, and delegations into one ordered list for web and
 mobile. A card goes after its turn: after the anchor message and any later
 message in the same `parentTurnId`. Without a known anchor it goes after the
@@ -53,7 +53,7 @@ are dispatched. The handle carries `delegationId`, `childThreadId`,
 `childBotId`, the bot name, and `phase: "running"`. The parent turn keeps going
 and usually replies before the child finishes.
 
-`AkeruDelegationRuntime` watches each child in the background. When the child
+`IsnadiDelegationRuntime` watches each child in the background. When the child
 turn ends it records the outcome as a `delegation.updated` event with a
 `Completed` or `Failed` phase and `acknowledgedAt: null`, then appends an
 activity to the parent chat. Mastra child turns report through the controller's
@@ -102,7 +102,7 @@ is unbounded:
   "The delegation deadline expired." A deadline already in the past fails at
   once.
 - A delegation with no deadline times out after
-  `AKERU_CHILD_WAIT_DEFAULT_TIMEOUT` (4 hours). Coding work can run for hours,
+  `ISNADI_CHILD_WAIT_DEFAULT_TIMEOUT` (4 hours). Coding work can run for hours,
   so the bound catches a child that never reports back rather than a slow one.
 
 Both cases reject `awaitChild` with `PendingWaiterTimeoutError`. The runtime
@@ -114,7 +114,7 @@ its finalizer fails every outstanding waiter with `PendingWaiterClosedError`
 ("The agent controller stopped.").
 
 Routine reviews use the same registry type. `createRoutine` opens a
-`dynamic_tool_call` request and waits up to `AKERU_ROUTINE_REVIEW_TIMEOUT`
+`dynamic_tool_call` request and waits up to `ISNADI_ROUTINE_REVIEW_TIMEOUT`
 (1 hour) for the user's answer. An answer claims the review before the routine
 is created, which stops the timeout, so an answer that arrives in time decides
 the outcome even when creation finishes after the limit. The tool call then
@@ -128,10 +128,10 @@ path (Codex, Claude, Grok, Kimi For Coding, OpenCode Go).
 
 ## Waiting on children
 
-`isThreadWaitingOnChildren` in `@akeru/contracts` is true while any
+`isThreadWaitingOnChildren` in `@isnadi/contracts` is true while any
 delegation for the thread is queued, running, or blocked. The flag is derived
 from the read model and never persisted. Web and mobile read it through
-`@akeru/client-runtime/delegation-presentation`, which also derives each
+`@isnadi/client-runtime/delegation-presentation`, which also derives each
 card's delivery state.
 
 ## Result delivery
@@ -174,9 +174,9 @@ Canceled delegations have no result to deliver.
 | OpenCode Go     | Mastra        | Per-turn `persistentMemoryContext` |
 | OpenCode        | Legacy bridge | Cannot delegate                    |
 
-`driverSupportsDelegation` in `@akeru/shared/delegationProviders` names the
+`driverSupportsDelegation` in `@isnadi/shared/delegationProviders` names the
 drivers in the Mastra rows. `AgentController` uses the same predicate to route
-a turn to the controller, so a driver that gets the Akeru tool catalog is
+a turn to the controller, so a driver that gets the Isnadi tool catalog is
 exactly a driver that can delegate. `delegationProviderMatrix.test.ts` runs
 send, access grant, result, usage, cancel, and the depth cap against each of
 the five.
@@ -188,7 +188,7 @@ Its bots never see `SendToAgent` or the other delegation tools. A bot on
 another provider that sends work to an OpenCode bot is refused before any child
 thread exists: `send` resolves the target's driver through the
 `providerDriverKind` option and throws
-`AkeruDelegationProviderUnsupportedError`, which the tool runtime reports with
+`IsnadiDelegationProviderUnsupportedError`, which the tool runtime reports with
 failure code `denied`. The message names the target bot and tells the sender
 to do the work itself or pick a bot on another provider. When
 `providerDriverKind` returns `null` because the target's provider instance no
@@ -235,23 +235,23 @@ delivery error goes to `onWatchError`.
 When the parent turn started from an external channel message, the turn start
 message carries a `channelOrigin`. `ProviderCommandReactor` then formats
 pending results with `delegationResultsContext(..., { channel: true })`, which
-uses `delegationSummaryText` from `@akeru/shared` to write plain-text lines
-without Markdown. Akeru never starts a follow-up turn when delegated work
+uses `delegationSummaryText` from `@isnadi/shared` to write plain-text lines
+without Markdown. Isnadi never starts a follow-up turn when delegated work
 finishes, so the external sender sees the result in the reply to their next
 message.
 
 ## Request limits
 
 - `context` is optional free text the parent passes to the child. It is capped
-  at `AKERU_DELEGATION_CONTEXT_MAX_CHARS` (8,000). The runtime rejects longer
-  context with `AkeruDelegationContextTooLongError`, which the tool runtime
+  at `ISNADI_DELEGATION_CONTEXT_MAX_CHARS` (8,000). The runtime rejects longer
+  context with `IsnadiDelegationContextTooLongError`, which the tool runtime
   reports with failure code `validation`.
 - `memoryScopes` is an allowlist. Each requested scope must be one the parent
   turn holds, or the request fails. An omitted list grants the child no memory
   scopes.
-- A parent thread can have at most `AKERU_DELEGATION_MAX_CONCURRENCY` (3)
+- A parent thread can have at most `ISNADI_DELEGATION_MAX_CONCURRENCY` (3)
   active delegations, and delegation nests at most
-  `AKERU_DELEGATION_MAX_DEPTH` (2) levels.
+  `ISNADI_DELEGATION_MAX_DEPTH` (2) levels.
 
 ## Sending to the same bot again
 
@@ -282,7 +282,7 @@ Every way into a delegation state has a way back out.
 - **Retry.** `delegation.retry` starts new work from a `Failed` or `Canceled`
   record. The decider refuses any other phase, a record that another record
   already retries (its `retryOfDelegationId` points at it), and a retry when
-  the parent chat already has `AKERU_DELEGATION_MAX_CONCURRENCY` active
+  the parent chat already has `ISNADI_DELEGATION_MAX_CONCURRENCY` active
   delegations. The refusals are `OrchestrationCommandInvariantError`s whose
   detail is readable text. Once a retry exists, the original is superseded: a
   later retry has to start from the newest record. An accepted retry emits
@@ -298,9 +298,9 @@ Every way into a delegation state has a way back out.
   the parent chat with the reason.
 
 `delegationActions(record, delegations)` in
-`@akeru/client-runtime/delegationPresentation` lists the actions a work card
+`@isnadi/client-runtime/delegationPresentation` lists the actions a work card
 offers, given the chat's delegations. Live work offers `keep`, unless it is
-already kept, and `cancel` when `AKERU_DELEGATION_TRANSITIONS` allows it.
+already kept, and `cancel` when `ISNADI_DELEGATION_TRANSITIONS` allows it.
 Failed and canceled work offers `retry` unless `isDelegationSuperseded` finds a
 record that already retries it, which matches the decider's rule. Completed
 work offers nothing. Clients send the actions with the `cancelDelegation` and

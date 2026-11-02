@@ -21,7 +21,7 @@ function writeManifest(root: string, relativePath: string, dependency: string): 
 }
 
 it("accepts registry, workspace, and repository-owned file dependencies", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-public-deps-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-public-deps-"));
 
   const manifests = [
     writeManifest(root, "apps/server/package.json", "0.2.0"),
@@ -33,7 +33,7 @@ it("accepts registry, workspace, and repository-owned file dependencies", () => 
 });
 
 it("rejects file dependencies that escape the repository", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-public-deps-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-public-deps-"));
 
   const manifestPath = writeManifest(
     root,
@@ -51,7 +51,7 @@ it("rejects file dependencies that escape the repository", () => {
 });
 
 it("rejects external local paths left in the lockfile", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-public-deps-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-public-deps-"));
   NodeFS.writeFileSync(NodePath.join(root, "package.json"), "{}\n");
   NodeFS.writeFileSync(
     NodePath.join(root, "pnpm-lock.yaml"),
@@ -85,7 +85,7 @@ it("imports only Node built-ins because CI runs it before installing dependencie
 });
 
 it("rejects manifests with non-string dependency specifiers", () => {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-public-deps-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-public-deps-"));
   const manifestPath = NodePath.join(root, "package.json");
   NodeFS.writeFileSync(manifestPath, JSON.stringify({ dependencies: { example: 1 } }));
 

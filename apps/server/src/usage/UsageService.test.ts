@@ -1,13 +1,13 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
 import {
-  AkeruUsageReservationId,
+  IsnadiUsageReservationId,
   BotId,
   ProviderDriverKind,
   ThreadId,
-  type AkeruUsageEntry,
+  type IsnadiUsageEntry,
   type SubscriptionProviderId,
-} from "@akeru/contracts";
+} from "@isnadi/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -75,7 +75,7 @@ const pricedStep = {
 
 const makeFixture = Effect.fnUntraced(function* (response: Effect.Effect<Response>) {
   const fs = yield* FileSystem.FileSystem;
-  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-usage-test-" });
+  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-usage-test-" });
 
   const config = yield* ServerConfig.ServerConfig.pipe(
     Effect.provide(ServerConfig.layerTest("/tmp", baseDir)),
@@ -103,9 +103,9 @@ const makeFixture = Effect.fnUntraced(function* (response: Effect.Effect<Respons
   return { service, fetches: () => fetches };
 });
 
-function entry(provider: string): AkeruUsageEntry {
+function entry(provider: string): IsnadiUsageEntry {
   return {
-    reservationId: AkeruUsageReservationId.make(`usage-${provider}`),
+    reservationId: IsnadiUsageReservationId.make(`usage-${provider}`),
     sourceKey: `turn:${provider}`,
     botId: BotId.make("bot-1"),
     threadId: ThreadId.make("thread-1"),
@@ -125,7 +125,7 @@ function entry(provider: string): AkeruUsageEntry {
 }
 
 describe("usageRecordFromEntry", () => {
-  it("drops ledger usage when its provider is not connected in Akeru", () => {
+  it("drops ledger usage when its provider is not connected in Isnadi", () => {
     expect(UsageService.usageRecordFromEntry(entry("codex"), new Set())).toBeNull();
   });
 
@@ -151,7 +151,7 @@ it.layer(NodeServices.layer)("UsageService pricing", (it) => {
   it.effect("reads the usage ledger's filesystem identity", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-usage-volume-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-usage-volume-" });
       const databasePath = `${directory}/state.sqlite`;
       yield* fs.writeFileString(databasePath, "fixture");
 

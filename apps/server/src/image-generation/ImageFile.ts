@@ -1,4 +1,4 @@
-import { PROVIDER_SEND_TURN_MAX_IMAGE_BYTES } from "@akeru/contracts";
+import { PROVIDER_SEND_TURN_MAX_IMAGE_BYTES } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 

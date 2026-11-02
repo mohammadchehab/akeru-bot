@@ -1,4 +1,4 @@
-import { DEFAULT_CLIENT_SETTINGS } from "@akeru/contracts";
+import { DEFAULT_CLIENT_SETTINGS } from "@isnadi/contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 function createLocalStorageStub(): Storage {
@@ -62,7 +62,7 @@ describe("clientPersistenceStorage", () => {
 
   it("reports structured decode failures while preserving the fallback", async () => {
     const testWindow = getTestWindow();
-    testWindow.localStorage.setItem("akeru:client-settings:v1", "not-json");
+    testWindow.localStorage.setItem("isnadi:client-settings:v1", "not-json");
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
     const { readBrowserClientSettings } = await import("./clientPersistenceStorage");
 
@@ -72,7 +72,7 @@ describe("clientPersistenceStorage", () => {
       expect.objectContaining({
         _tag: "LocalStorageOperationError",
         operation: "decode",
-        storageKey: "akeru:client-settings:v1",
+        storageKey: "isnadi:client-settings:v1",
         cause: expect.anything(),
       }),
     );
@@ -81,7 +81,7 @@ describe("clientPersistenceStorage", () => {
   it("falls back to legacy settings when the current key is corrupt", async () => {
     const testWindow = getTestWindow();
     const legacy = { ...DEFAULT_CLIENT_SETTINGS, timestampFormat: "24-hour" as const };
-    testWindow.localStorage.setItem("akeru:client-settings:v1", "{");
+    testWindow.localStorage.setItem("isnadi:client-settings:v1", "{");
     testWindow.localStorage.setItem("t3code:client-settings:v1", JSON.stringify(legacy));
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
     const { readBrowserClientSettings } = await import("./clientPersistenceStorage");
@@ -89,14 +89,14 @@ describe("clientPersistenceStorage", () => {
     expect(readBrowserClientSettings()).toEqual(legacy);
     expect(consoleError).toHaveBeenCalledWith(
       "Could not read persisted client settings.",
-      expect.objectContaining({ operation: "decode", storageKey: "akeru:client-settings:v1" }),
+      expect.objectContaining({ operation: "decode", storageKey: "isnadi:client-settings:v1" }),
     );
   });
 
   it("defaults word wrap on and discards obsolete wrapping preferences", async () => {
     const testWindow = getTestWindow();
     testWindow.localStorage.setItem(
-      "akeru:client-settings:v1",
+      "isnadi:client-settings:v1",
       JSON.stringify({
         chatWordWrap: false,
         diffWordWrap: false,

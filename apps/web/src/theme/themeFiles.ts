@@ -5,7 +5,7 @@ import {
   type ThemeColorRole,
   type ThemeColors,
   type ThemeDefinition,
-} from "@akeru/shared/themePalettes";
+} from "@isnadi/shared/themePalettes";
 import { toCanonicalThemeColor } from "./colorMath";
 import {
   type ThemeColorOverrides,

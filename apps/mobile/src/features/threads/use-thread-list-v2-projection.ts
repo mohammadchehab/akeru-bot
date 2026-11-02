@@ -1,10 +1,13 @@
-import type { EnvironmentProject, EnvironmentThreadShell } from "@akeru/client-runtime/state/shell";
+import type {
+  EnvironmentProject,
+  EnvironmentThreadShell,
+} from "@isnadi/client-runtime/state/shell";
 import {
   threadSearchMatchKey,
   type EnvironmentThreadSearchMatch,
-} from "@akeru/client-runtime/state/thread-search";
-import { sortPinnedThreadsByOrderKey } from "@akeru/client-runtime/state/thread-sort";
-import type { EnvironmentId, ServerConfig, SidebarProjectGroupingMode } from "@akeru/contracts";
+} from "@isnadi/client-runtime/state/thread-search";
+import { sortPinnedThreadsByOrderKey } from "@isnadi/client-runtime/state/thread-sort";
+import type { EnvironmentId, ServerConfig, SidebarProjectGroupingMode } from "@isnadi/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
