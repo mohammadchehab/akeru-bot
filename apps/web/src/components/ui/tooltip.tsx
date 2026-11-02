@@ -60,7 +60,7 @@ function TooltipPopup({
             variant === "diagnostics-mono" && "font-mono text-[11px]",
             variant === "diagnostics-process" && "font-mono text-[11px] leading-relaxed text-wrap",
             variant === "keybinding-warning" && "leading-relaxed",
-            variant === "telemetry-history" && "space-y-0.5 text-left",
+            variant === "telemetry-history" && "space-y-0.5 text-start",
             variant === "connection-error" && "max-w-80 whitespace-pre-wrap leading-tight",
             variant === "tight" && "leading-tight",
             variant === "hint" && "font-normal leading-snug",

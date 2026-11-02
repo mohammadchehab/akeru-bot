@@ -87,9 +87,9 @@ function AnchoredToasts() {
                       </div>
                       <Toast.Content
                         className={cn(
-                          "pointer-events-auto min-h-0 overflow-y-visible pl-3.5 text-sm [overflow-x:clip]",
+                          "pointer-events-auto min-h-0 overflow-y-visible ps-3.5 text-sm [overflow-x:clip]",
                           stackedActionLayout
-                            ? "flex flex-col gap-2 py-2.5 pr-3.5"
+                            ? "flex flex-col gap-2 py-2.5 pe-3.5"
                             : cn(
                                 "py-3",
                                 "flex items-center justify-between gap-1.5",
