@@ -15,6 +15,8 @@ type Step = {
 
 type Job = {
   readonly if?: string;
+  readonly needs?: string | ReadonlyArray<string>;
+  readonly name?: string;
   readonly "runs-on": string;
   readonly steps: ReadonlyArray<Step>;
 };
@@ -24,7 +26,7 @@ type Workflow = {
   readonly permissions?: Readonly<Record<string, string>>;
   readonly concurrency?: {
     readonly group?: string;
-    readonly "cancel-in-progress"?: boolean;
+    readonly "cancel-in-progress"?: boolean | string;
   };
   readonly jobs: Record<string, Job>;
 };
@@ -34,12 +36,20 @@ function workflow(path: string): Workflow {
 }
 
 describe("CI workflow budget", () => {
-  it("validates ready pull requests in one 4-vCPU job", () => {
+  it("validates ready pull requests in parallel jobs behind one required check", () => {
     const ci = workflow(".github/workflows/ci.yml");
 
-    const commands = Object.values(ci.jobs).flatMap((job) =>
-      job.steps.flatMap((step) => (step.run ? [step.run] : [])),
+    const install = NodeFS.readFileSync(
+      new URL("../.github/actions/install/action.yml", import.meta.url),
+      "utf8",
     );
+
+    const commands = [
+      ...Object.values(ci.jobs).flatMap(
+        (job) => job.steps?.flatMap((step) => (step.run ? [step.run] : [])) ?? [],
+      ),
+      install,
+    ];
 
     expect(Object.keys(ci.on)).toEqual(["push", "pull_request", "workflow_dispatch"]);
     // Main runs after each merge so the README build badge has a status.
@@ -63,17 +73,61 @@ describe("CI workflow budget", () => {
     });
     expect(ci.on).not.toHaveProperty("merge_group");
     expect(ci.concurrency?.group).toBe("ci-${{ github.event.pull_request.number || github.ref }}");
-    expect(ci.concurrency?.["cancel-in-progress"]).toBe(true);
-    expect(Object.keys(ci.jobs)).toEqual(["check"]);
-    expect(ci.jobs.check?.if).toBe(
-      "${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}",
+    // Pull request revisions supersede each other; runs on main always finish.
+    expect(ci.concurrency?.["cancel-in-progress"]).toBe(
+      "${{ github.event_name == 'pull_request' }}",
     );
-    expect(ci.jobs.check?.["runs-on"]).toBe("ubuntu-24.04");
-    expect(ci.jobs.check?.steps.find((step) => step.name === "Checkout")?.with?.ref).toBe(
-      "${{ inputs.expected_sha || github.sha }}",
-    );
+    expect(Object.keys(ci.jobs)).toEqual([
+      "changes",
+      "static",
+      "desktop",
+      "server",
+      "native",
+      "check",
+    ]);
 
-    const dispatchAuthorization = ci.jobs.check?.steps.find(
+    const draftGuard =
+      "${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}";
+
+    expect(ci.jobs.changes?.if).toBe(draftGuard);
+
+    for (const name of ["static", "desktop", "server", "native"]) {
+      expect(ci.jobs[name]?.needs).toBe("changes");
+      expect(ci.jobs[name]?.["runs-on"]).toBe("ubuntu-24.04");
+    }
+    // Docs-only pull requests skip the heavy jobs, never the required check.
+
+    for (const name of ["desktop", "server", "native"]) {
+      expect(ci.jobs[name]?.if).toBe("${{ needs.changes.outputs.code == 'true' }}");
+    }
+
+    // The aggregator is the only required status: it must run when others fail or skip, but not on drafts.
+    const check = ci.jobs.check;
+    expect(check?.name).toBe("Repository checks");
+    expect(check?.needs).toEqual(["changes", "static", "desktop", "server", "native"]);
+    expect(check?.if).toBe(`\${{ always() && (${draftGuard.slice(4, -3)}) }}`);
+
+    const gate =
+      check?.steps?.find((step) => step.name === "Require every job to have run as expected")
+        ?.run ?? "";
+
+    expect(gate).toContain("check changes success");
+    expect(gate).toContain("check static success");
+    expect(gate).toContain('check desktop "$expected_heavy"');
+    expect(gate).toContain('check server "$expected_heavy"');
+    expect(gate).toContain('check native "$expected_heavy"');
+    expect(gate).toContain("expected_heavy=skipped");
+    expect(gate).toContain("expected_heavy=success");
+    expect(
+      Object.entries(ci.jobs).filter(([, job]) => job.name === "Repository checks"),
+    ).toHaveLength(1);
+
+    const checkout = ci.jobs.static?.steps?.find((step) => step.name === "Checkout");
+    expect(checkout?.with?.ref).toBe("${{ inputs.expected_sha || github.sha }}");
+
+    const staticSteps = ci.jobs.static?.steps ?? [];
+
+    const dispatchAuthorization = staticSteps.find(
       (step) => step.name === "Authorize version-branch dispatch",
     );
 
@@ -85,20 +139,20 @@ describe("CI workflow budget", () => {
     expect(dispatchAuthorization?.run).toContain("github-actions[bot]");
     expect(dispatchAuthorization?.run).toContain('test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"');
 
-    const stableVersionGuard = ci.jobs.check?.steps.find(
+    const stableVersionGuard = staticSteps.find(
       (step) => step.name === "Protect stable release versions",
     );
 
-    const changesetGuard = ci.jobs.check?.steps.find(
-      (step) => step.name === "Require a changeset decision",
-    );
+    const changesetGuard = staticSteps.find((step) => step.name === "Require a changeset decision");
 
+    // The guards run on every pull request, docs-only included.
     for (const guard of [stableVersionGuard, changesetGuard]) {
       expect(guard?.if).toContain("github.head_ref == 'changeset-release/main'");
       expect(guard?.if).toContain(
         "github.event.pull_request.head.repo.full_name == github.repository",
       );
       expect(guard?.if).toContain("github.event.pull_request.user.login == 'github-actions[bot]'");
+      expect(guard?.if).not.toContain("needs.changes");
     }
 
     expect(stableVersionGuard?.run).toContain(
@@ -131,8 +185,6 @@ describe("CI workflow budget", () => {
     ]) {
       expect(commands.some((candidate) => candidate.includes(command))).toBe(true);
     }
-
-    expect(ci.jobs.check).not.toHaveProperty("strategy");
 
     const serverCommand =
       commands.find((command) => command.includes("vp run --filter isnadibot test")) ?? "";

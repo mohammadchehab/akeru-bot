@@ -2,20 +2,33 @@
 
 > For IsnadiBot maintainers.
 
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs on each ready pull request revision.
-Draft pull requests do not use a runner. A new revision cancels the older run for that pull request.
-Maintainers can also dispatch the workflow manually for diagnostics. The workflow uses one 4-vCPU
-`tenki-standard-medium-4c-8g` Linux runner.
-Issue-label and PR-size jobs also use Tenki Linux runners through GitHub Actions.
+[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs on each ready pull request revision and
+on every push to `main`. Draft pull requests do not use a runner. A new revision cancels the older run
+for that pull request. Runs on `main` are never cancelled, so every merge gets its own verdict and a
+broken `main` points at the merge that broke it. Maintainers can also dispatch the workflow manually
+for diagnostics. Every CI job uses a GitHub-hosted `ubuntu-24.04` runner. The issue-label and PR-size
+jobs use Tenki Linux runners.
 
-- **Repository checks.** The job rejects external local dependencies, installs the committed
-  lockfile once, checks lint and formatting, runs workspace type checks,
-  validates the plugin directory and contribution policy, builds the desktop pipeline, checks the
-  preload output, tests shipped packages and the resource monitor, and
-  checks release-only configuration. Relay and mobile-production packages are excluded. The same
-  job runs the complete server suite. It excludes
-  `orchestrationEngine.integration.test.ts` until the executor stack
-  restores its test adapter and stops the fixture from calling OpenAI with a test credential.
+CI runs as parallel jobs, so a run takes as long as its slowest job instead of the sum of all steps:
+
+- **Changed files.** Decides whether a pull request changes anything besides `docs/`, `.changeset/`,
+  `.github/assets/`, and root Markdown files. Pushes to `main` and dispatches always count as code.
+- **Static checks.** Runs the guards on every pull request, docs-only ones included: it rejects
+  committed PR assets, external local dependencies, stable-version changes, and a missing changeset
+  decision. For code changes it also validates the plugin directory and contribution policy and runs
+  lint, formatting, and type checks. It installs the committed lockfile once for the job.
+- **Desktop build and package tests.** Builds the desktop pipeline, checks the preload output, tests
+  shipped desktop and shared packages, and checks release-only configuration. Relay and
+  mobile-production packages are excluded.
+- **Server tests.** Runs the complete server suite. It excludes
+  `orchestrationEngine.integration.test.ts` until the executor stack restores its test adapter and
+  stops the fixture from calling OpenAI with a test credential.
+- **Resource monitor.** Checks formatting and tests the Rust crate.
+- **Repository checks.** A small final job that depends on all the others. It fails when any job fails or
+  is cancelled, or when a code change skipped a job it should have run. For a docs-only pull request it
+  passes when the heavy jobs were skipped. Branch protection requires only this one status, so adding
+  or splitting jobs never changes the ruleset. The three heavy jobs share the setup in
+  [`.github/actions/install`](../../.github/actions/install/action.yml).
 
 The repository ruleset requires the `Repository checks` result before a pull request can
 merge. Direct pushes to `main` cannot bypass this gate. Release workflows start after the validated
