@@ -43,6 +43,7 @@ const make = Effect.gen(function* () {
   const queued = new Set<ThreadId>();
 
   // Each thread's last finished reply that mentions someone (see observe), until its turn ends.
+  // Memory only: a restart between the reply and the session ending drops that hand-over.
   const lastReply = new Map<
     ThreadId,
     { readonly turnId: TurnId; readonly botId: BotId; readonly text: string }

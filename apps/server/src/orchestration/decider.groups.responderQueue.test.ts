@@ -503,4 +503,34 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
       expect(yield* mention(direct, `@${OTHER_SPECIALIST_ID} hi`)).toEqual([]);
     }),
   );
+  it.effect("does not chain on mentions in code, quotes or @everyone, but reads the rest", () =>
+    Effect.gen(function* () {
+      const model = readModel({ queue: [] });
+      const other = `@${OTHER_SPECIALIST_ID}`;
+
+      // The user's own words echoed back, or code that merely contains a name, address nobody.
+      expect(yield* mention(model, `> ${other} please look\nNoted.`)).toEqual([]);
+      expect(yield* mention(model, `Run \`${other}\` to see it.`)).toEqual([]);
+      expect(yield* mention(model, `\`\`\`\n${other}\n\`\`\`\nDone.`)).toEqual([]);
+      // A bot cannot address everyone.
+      expect(yield* mention(model, "@everyone status?")).toEqual([]);
+
+      const events = yield* mention(model, `@everyone, ${other} check`);
+
+      expect(
+        queueOf(events[0]).entries.map((item: { readonly botId: string }) => item.botId),
+      ).toEqual([OTHER_SPECIALIST_ID]);
+    }),
+  );
+
+  it.effect("writes nothing when a dropped mention changes nothing", () =>
+    Effect.gen(function* () {
+      const events = yield* mention(
+        readModel({ queue: [entry(BOSS_ID)], hopsLeft: 0, hopsUsed: 6, budgetExhausted: true }),
+        `@${OTHER_SPECIALIST_ID} one more`,
+      );
+
+      expect(events).toEqual([]);
+    }),
+  );
 });
