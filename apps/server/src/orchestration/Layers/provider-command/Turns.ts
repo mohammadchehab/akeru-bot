@@ -307,7 +307,9 @@ export function createTurns({
               })
           ).pipe(Effect.andThen(recoverTurnStartFailure(cause))),
         ),
-        Effect.forkScoped,
+        // sendTurn captures the turn's admission generation on its first step. A Stop handled
+        // before that step would bump the generation first and the turn would run anyway.
+        Effect.forkScoped({ startImmediately: true }),
       );
   });
 
