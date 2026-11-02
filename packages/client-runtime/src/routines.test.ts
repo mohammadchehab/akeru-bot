@@ -17,6 +17,7 @@ import {
   absoluteRunTime,
   relativeRunTime,
   botRoutinesView,
+  enabledSkillNames,
   routineApprovalSummary,
   routineLifecycleAction,
   routineStateNote,
@@ -279,5 +280,18 @@ describe("routine run timestamps", () => {
 
     expect(absoluteRunTime(value)).toBe(absoluteRunTime(zoned));
     expect(relativeRunTime(value, now)).toBe(relativeRunTime(zoned, now));
+  });
+});
+
+describe("enabledSkillNames", () => {
+  it("lists each enabled engine skill once, sorted, and drops disabled ones", () => {
+    expect(
+      enabledSkillNames([
+        { name: "review", enabled: true },
+        { name: "deploy", enabled: false },
+        { name: "alpha", enabled: true },
+        { name: "review", enabled: true },
+      ]),
+    ).toEqual(["alpha", "review"]);
   });
 });
