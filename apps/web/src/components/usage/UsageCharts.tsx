@@ -19,6 +19,7 @@ import { XAxis } from "../dither-kit/x-axis";
 import { YAxis } from "../dither-kit/y-axis";
 import { ClaudeAI, GrokIcon, OpenCodeIcon, type Icon, OpenAI } from "../Icons";
 import { PROVIDER_ORDER, PROVIDER_PRESENTATION, providersWithUsage } from "./usageProviders";
+import { useI18n } from "../../i18n";
 
 type LiveSubscriptionProviderId = Exclude<SubscriptionProviderId, "cursor">;
 
@@ -154,6 +155,7 @@ export function UsageActivityChart(props: {
     readonly totalTokens: number;
   }[];
 }) {
+  const { direction } = useI18n();
   const active = providersWithUsage(props.providers);
   const days = enumerateDays(props.sinceDay, props.untilDay);
   const byDay = new Map(props.daily.map((entry) => [entry.day, entry]));
@@ -187,22 +189,25 @@ export function UsageActivityChart(props: {
 
   return (
     <div className="flex min-w-0 flex-col gap-3">
-      <LineChart
-        data={data}
-        config={config}
-        animate={false}
-        bloom="off"
-        className="h-52 w-full"
-        margins={{ top: 8, right: 8, bottom: 22, left: 44 }}
-      >
-        <Grid vertical={false} />
-        <XAxis dataKey="label" maxTicks={6} />
-        <YAxis tickFormatter={formatTokens} tickCount={4} />
-        <Tooltip valueFormatter={(value) => formatTokens(value)} />
-        {active.map((provider) => (
-          <Line key={provider} dataKey={provider} />
-        ))}
-      </LineChart>
+      {/* The plot is an LTR island: time runs left to right whatever the interface direction. */}
+      <div dir="ltr">
+        <LineChart
+          data={data}
+          config={config}
+          animate={false}
+          bloom="off"
+          className="h-52 w-full"
+          margins={{ top: 8, right: 8, bottom: 22, left: 44 }}
+        >
+          <Grid vertical={false} />
+          <XAxis dataKey="label" maxTicks={6} />
+          <YAxis tickFormatter={formatTokens} tickCount={4} />
+          <Tooltip dir={direction} valueFormatter={(value) => formatTokens(value)} />
+          {active.map((provider) => (
+            <Line key={provider} dataKey={provider} />
+          ))}
+        </LineChart>
+      </div>
       <BlockLegend config={config} align="start" />
     </div>
   );
