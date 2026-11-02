@@ -105,7 +105,7 @@ describe("checkCursorProviderStatus", () => {
       );
 
       expect(snapshot).toMatchObject({ enabled: false, installed: false });
-    }),
+    }).pipe(Effect.provide(NodeServices.layer)),
   );
 
   it.effect("reports the binary as missing when the path does not resolve", () =>
