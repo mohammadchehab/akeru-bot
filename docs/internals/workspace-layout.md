@@ -43,7 +43,6 @@ the task commands.
 - `patches/`: pnpm patches for pinned upstream dependencies.
 - `oxlint-plugin-isnadi/`: repo-specific lint rules.
 - `oxlint-plugin-anti-slop/`: vendored anti-slop lint rules. See [Lint rules](./lint.md).
-- `experiments/`: throwaway prototypes. Not part of the shipped build.
 - `docs/`: this documentation tree.
 
 ## Import conventions
