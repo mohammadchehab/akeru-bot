@@ -10,7 +10,7 @@ import {
   cachedCatalogStore,
   migrateLegacyConnectionDatabase,
 } from "./storage";
-import { LEGACY_DATABASE_NAMES, RETIRED_DATABASE_NAMES } from "./legacyDatabaseMigration";
+import { LEGACY_DATABASE_NAMES } from "./legacyDatabaseMigration";
 
 const emptyCatalog = {
   schemaVersion: 1,
@@ -192,29 +192,8 @@ describe("migrateLegacyConnectionDatabase", () => {
               }),
           );
 
-          if (RETIRED_DATABASE_NAMES.includes(legacyName)) {
-            expect(created).toBe(true);
-            expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
-          } else {
-            // T3 Code shares this origin: its database must come through the migration intact.
-            expect(created).toBe(false);
-            expect(Array.from(legacyAfter.objectStoreNames)).toContain("shell");
-            expect(
-              yield* Effect.promise(
-                () =>
-                  new Promise<unknown>((resolve, reject) => {
-                    const request = legacyAfter
-                      .transaction("shell", "readonly")
-                      .objectStore("shell")
-                      .get("env-1");
-
-                    request.addEventListener("success", () => resolve(request.result));
-                    request.addEventListener("error", () => reject(request.error));
-                  }),
-              ),
-            ).toBe("legacy-shell");
-          }
-
+          expect(created).toBe(true);
+          expect(Array.from(legacyAfter.objectStoreNames)).toHaveLength(0);
           legacyAfter.close();
           indexedDB.deleteDatabase(legacyName);
         }),
@@ -252,6 +231,90 @@ describe("migrateLegacyConnectionDatabase", () => {
     }),
   );
 
+  it.effect("never opens, copies or deletes T3 Code's database on the same origin", () =>
+    Effect.gen(function* () {
+      const fakeIndexedDB = yield* Effect.promise(() =>
+        import("fake-indexeddb").then((module) => new module.IDBFactory()),
+      );
+
+      vi.stubGlobal("indexedDB", fakeIndexedDB);
+      const stores = ["catalog", "shell", "thread", "server-config", "vcs-refs"];
+
+      const open = (name: string) =>
+        Effect.promise(
+          () =>
+            new Promise<IDBDatabase>((resolve, reject) => {
+              const request = indexedDB.open(name, 4);
+              request.addEventListener("upgradeneeded", () => {
+                for (const store of stores) request.result.createObjectStore(store);
+              });
+              request.addEventListener("success", () => resolve(request.result));
+              request.addEventListener("error", () => reject(request.error));
+            }),
+        );
+
+      const t3 = yield* open("t3code:connection-runtime");
+
+      yield* Effect.promise(
+        () =>
+          new Promise<void>((resolve, reject) => {
+            const tx = t3.transaction("shell", "readwrite");
+            tx.addEventListener("complete", () => resolve());
+            tx.addEventListener("error", () => reject(tx.error));
+            tx.objectStore("shell").put("t3-shell", "env-1");
+          }),
+      );
+      t3.close();
+
+      const opened: string[] = [];
+      const realOpen = fakeIndexedDB.open.bind(fakeIndexedDB);
+      fakeIndexedDB.open = (name: string, version?: number) => {
+        opened.push(name);
+
+        return realOpen(name, version);
+      };
+
+      const migrated = yield* open("isnadi:connection-runtime");
+      yield* migrateLegacyConnectionDatabase(migrated);
+
+      expect(opened).not.toContain("t3code:connection-runtime");
+
+      const copied = yield* Effect.promise(
+        () =>
+          new Promise<unknown>((resolve, reject) => {
+            const request = migrated
+              .transaction("shell", "readonly")
+              .objectStore("shell")
+              .get("env-1");
+
+            request.addEventListener("success", () => resolve(request.result));
+            request.addEventListener("error", () => reject(request.error));
+          }),
+      );
+
+      expect(copied).toBeUndefined();
+      migrated.close();
+
+      const after = yield* open("t3code:connection-runtime");
+
+      const survivor = yield* Effect.promise(
+        () =>
+          new Promise<unknown>((resolve, reject) => {
+            const request = after
+              .transaction("shell", "readonly")
+              .objectStore("shell")
+              .get("env-1");
+
+            request.addEventListener("success", () => resolve(request.result));
+            request.addEventListener("error", () => reject(request.error));
+          }),
+      );
+
+      expect(survivor).toBe("t3-shell");
+      after.close();
+    }),
+  );
+
   it.effect("does not restore records removed after an earlier migration", () =>
     Effect.gen(function* () {
       const fakeIndexedDB = yield* Effect.promise(() =>
@@ -286,7 +349,7 @@ describe("migrateLegacyConnectionDatabase", () => {
         );
 
       const seedLegacy = Effect.gen(function* () {
-        const legacy = yield* open("t3code:connection-runtime");
+        const legacy = yield* open("akeru:connection-runtime");
         yield* change(legacy, (store) => store.put("legacy-shell", "env-1"));
         legacy.close();
       });

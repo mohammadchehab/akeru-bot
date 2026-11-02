@@ -9,14 +9,11 @@ import {
   writeDatabaseValue,
 } from "./indexedDbStorage";
 
-// Databases used under earlier product names, newest first so its records win.
-// Their stores are copied forward once.
-export const LEGACY_DATABASE_NAMES = ["akeru:connection-runtime", "t3code:connection-runtime"];
-
-// The only legacy database IsnadiBot deletes, and only after its copy succeeds. T3 Code is a
-// separate product that serves the same origin (both default to port 3773), so its
-// `t3code:` database is read and never modified or deleted.
-export const RETIRED_DATABASE_NAMES: ReadonlyArray<string> = ["akeru:connection-runtime"];
+// The database used under the earlier IsnadiBot name. Its stores are copied forward once and it
+// is retired only after its copy succeeds. T3 Code serves the same origin (both default to port
+// 3773), but its `t3code:` database is a different product's data: it is never opened, copied
+// or deleted.
+export const LEGACY_DATABASE_NAMES = ["akeru:connection-runtime"];
 
 // Written with the copied records so a legacy database that survives a blocked
 // deletion is never copied again over later removals.
@@ -131,9 +128,8 @@ const deleteLegacyDatabase = Effect.fn("web.connectionStorage.deleteLegacyDataba
   });
 });
 
-/** Fill missing records from each old database. Only IsnadiBot's own earlier database is
- * retired, and only after its copy commits; T3 Code's database is left untouched. A failed
- * migration leaves the sources for retry. */
+/** Fill missing records from each old database, then retire it only after its copy commits. A
+ * failed migration leaves the source for retry. */
 export const migrateLegacyConnectionDatabase = Effect.fn(
   "web.connectionStorage.migrateLegacyConnectionDatabase",
 )(function* (database: IDBDatabase) {
@@ -167,9 +163,9 @@ export const migrateLegacyConnectionDatabase = Effect.fn(
       }),
     );
 
-    if (RETIRED_DATABASE_NAMES.includes(name)) yield* deleteLegacyDatabase(name);
+    yield* deleteLegacyDatabase(name);
   }
 
-  // Nothing is deleted for T3 Code, so the marker is what stops a later start from copying it again.
+  // Records the migration as done even when no legacy database existed, so later starts skip it.
   yield* writeDatabaseValue(database, CATALOG_STORE_NAME, LEGACY_MIGRATED_KEY, true);
 });
