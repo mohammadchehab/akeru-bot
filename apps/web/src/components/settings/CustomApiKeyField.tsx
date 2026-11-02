@@ -25,6 +25,7 @@ export function CustomApiKeyDraftField(props: {
     <label htmlFor={props.id} className="grid gap-1.5">
       <KeyLabel required={props.required} />
       <Input
+        dir="ltr"
         id={props.id}
         surface="background"
         type="password"
@@ -68,6 +69,7 @@ export function CustomApiKeyField(props: {
         ) : null}
       </div>
       <DraftInput
+        dir="ltr"
         id={props.id}
         className="mt-1.5"
         type="password"

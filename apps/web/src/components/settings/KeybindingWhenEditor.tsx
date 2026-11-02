@@ -483,6 +483,7 @@ export function WhenExpressionBuilder({
       <div className="space-y-1.5">
         <div className="relative">
           <Input
+            dir="ltr"
             value={expressionDraft}
             onChange={(event) => updateExpressionDraft(event.currentTarget.value)}
             placeholder={t("Always")}
