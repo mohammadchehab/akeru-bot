@@ -84,3 +84,58 @@ export function resolveComposerBotMention(
 
   return namesakes.length > 1 ? { kind: "ambiguous", name } : { kind: "bot", botId: latest.bot.id };
 }
+
+export type ComposerAddressing =
+  | { readonly kind: "none" }
+  | { readonly kind: "everyone" }
+  | { readonly kind: "bots"; readonly botIds: readonly [string, ...string[]] }
+  | { readonly kind: "ambiguous"; readonly name: string };
+
+const EVERYONE_TOKEN = /(^|\s)@everyone(?=\s|$)/;
+
+/**
+ * Who a group prompt is for (docs/internals/group-chats.md, "Addressing"): `@everyone`, or every
+ * whole-word `@Name` / `@bot:<id>` mention in the order written, duplicates removed. A bare name
+ * shared by two bots cannot be routed honestly, so it resolves as ambiguous. A prompt that
+ * mentions nobody is `none`: the caller sends no addressing and the server routes it.
+ */
+export function resolveComposerAddressing(
+  prompt: string,
+  bots: ReadonlyArray<ComposerMentionBot>,
+): ComposerAddressing {
+  if (EVERYONE_TOKEN.test(prompt)) return { kind: "everyone" };
+
+  const found: Array<{ readonly index: number; readonly botId: string }> = [];
+
+  for (const bot of bots) {
+    const token = `@${bot.name}`;
+    const namesakes = bots.filter((other) => other.name === bot.name);
+
+    for (let from = prompt.indexOf(token); from >= 0; from = prompt.indexOf(token, from + 1)) {
+      const before = prompt[from - 1];
+      const after = prompt[from + token.length];
+
+      if (
+        (before === undefined || /\s/.test(before)) &&
+        (after === undefined || /\s/.test(after))
+      ) {
+        if (namesakes.length > 1) return { kind: "ambiguous", name: bot.name };
+        found.push({ index: from, botId: bot.id });
+      }
+    }
+  }
+
+  for (const token of collectComposerInlineTokens(`${prompt}\n`)) {
+    if (token.type !== "bot-mention") continue;
+
+    if (bots.some((bot) => bot.id === token.value)) {
+      found.push({ index: token.start, botId: token.value });
+    }
+  }
+
+  found.sort((a, b) => a.index - b.index);
+  const botIds = [...new Set(found.map((mention) => mention.botId))];
+  const [first, ...rest] = botIds;
+
+  return first === undefined ? { kind: "none" } : { kind: "bots", botIds: [first, ...rest] };
+}

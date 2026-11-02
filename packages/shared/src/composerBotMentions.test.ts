@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { composerBotMentionDetail, resolveComposerBotMention } from "./composerBotMentions.ts";
+import {
+  composerBotMentionDetail,
+  resolveComposerAddressing,
+  resolveComposerBotMention,
+} from "./composerBotMentions.ts";
 
 const namesakes = [
   { id: "bot-1", name: "Mika" },
@@ -63,5 +67,41 @@ describe("composerBotMentionDetail", () => {
       "#grok-2",
       null,
     ]);
+  });
+});
+
+describe("resolveComposerAddressing", () => {
+  const bots = [
+    { id: "bot-1", name: "Becky" },
+    { id: "bot-2", name: "Omar" },
+    { id: "bot-3", name: "Mika" },
+    { id: "bot-4", name: "Mika" },
+  ];
+
+  it("keeps every mention in written order without duplicates", () => {
+    expect(resolveComposerAddressing("@Omar and @Becky then @Omar again", bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-2", "bot-1"],
+    });
+  });
+
+  it("reads @everyone as the whole group", () => {
+    expect(resolveComposerAddressing("@everyone status?", bots)).toEqual({ kind: "everyone" });
+    expect(resolveComposerAddressing("mail@everyone.com", bots)).toEqual({ kind: "none" });
+  });
+
+  it("routes an id token to an exact bot and flags a bare shared name", () => {
+    expect(resolveComposerAddressing("@bot:bot-4 hi", bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-4"],
+    });
+    expect(resolveComposerAddressing("@Mika hi", bots)).toEqual({
+      kind: "ambiguous",
+      name: "Mika",
+    });
+  });
+
+  it("is none when nobody is mentioned", () => {
+    expect(resolveComposerAddressing("hello team", bots)).toEqual({ kind: "none" });
   });
 });
