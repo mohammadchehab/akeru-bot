@@ -1,4 +1,4 @@
-import type { BotEngine, ModelSelection } from "@isnadi/contracts";
+import type { BotEngine, ModelSelection, ResponderQueue } from "@isnadi/contracts";
 
 import {
   isProviderInstancePickerSelectable,
@@ -33,4 +33,16 @@ export function groupModelSelectionReady(
         entry.instanceId === selection.instanceId && isProviderInstancePickerSelectable(entry),
     )
   );
+}
+
+/** Names of the bots still waiting to answer, in order, for "Becky is next". */
+export function responderQueueNames(
+  queue: ResponderQueue | null | undefined,
+  members: ReadonlyArray<{ readonly id: string; readonly name: string }>,
+): string[] {
+  return (queue?.entries ?? []).flatMap((entry) => {
+    const member = members.find((candidate) => candidate.id === entry.botId);
+
+    return member ? [member.name] : [];
+  });
 }

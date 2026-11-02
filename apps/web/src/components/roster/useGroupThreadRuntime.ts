@@ -163,6 +163,11 @@ export function useGroupThreadRuntime(groupId: string) {
   });
 
   const startTurn = useAtomCommand(threadEnvironment.startTurn, { reportFailure: false });
+
+  const interruptTurnCommand = useAtomCommand(threadEnvironment.interruptTurn, {
+    reportFailure: false,
+  });
+
   const resumeTurnCommand = useAtomCommand(threadEnvironment.resumeTurn, { reportFailure: false });
   const groupReady = serverGroups.some((candidate) => candidate.id === groupId);
   const sendQueueRef = useRef(createBotTurnSubmissionQueue());
@@ -213,11 +218,37 @@ export function useGroupThreadRuntime(groupId: string) {
     return true;
   }, [canResume, linkedThreadRef, resumeTurnCommand, resuming]);
 
+  // Ends the running turn; the server clears the responder queue with it.
+  const stop = useCallback(async (): Promise<boolean> => {
+    const session = rememberedThread?.session;
+
+    if (!linkedThreadRef || (session?.status !== "running" && session?.status !== "starting")) {
+      return false;
+    }
+
+    const result = await interruptTurnCommand({
+      environmentId: linkedThreadRef.environmentId,
+      input: {
+        threadId: linkedThreadRef.threadId,
+        ...(session.activeTurnId ? { turnId: session.activeTurnId } : {}),
+      },
+    });
+
+    if (Predicate.isTagged(result, "Failure")) {
+      setError(commandFailure(result));
+
+      return false;
+    }
+
+    return true;
+  }, [interruptTurnCommand, linkedThreadRef, rememberedThread?.session]);
+
   const send = useCallback(
     async (
       prompt: string,
       files: readonly File[],
       requestedAddressing?: ComposerAddressing,
+      replyToMessageId?: string,
     ): Promise<boolean> => {
       const pendingUserInput = pendingUserInputs[0];
 
@@ -254,7 +285,7 @@ export function useGroupThreadRuntime(groupId: string) {
         return false;
       }
 
-      const addressing = groupAddressing(requestedAddressing);
+      const addressing = groupAddressing(requestedAddressing, replyToMessageId);
       // The first addressed bot picks the model for the send; the server resolves who answers.
       const respondingBotId = addressing?.kind === "bots" ? addressing.botIds[0] : group.bossBotId;
 
@@ -441,6 +472,8 @@ export function useGroupThreadRuntime(groupId: string) {
     setPendingUserInputStep,
     respondingRequestIds,
     respondingBotId: rememberedThread?.respondingBotId ?? group?.bossBotId ?? null,
+    responderQueue: rememberedThread?.responderQueue ?? null,
+    stop,
     resume,
     resuming,
     answerPendingUserInputWithText,

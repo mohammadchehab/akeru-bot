@@ -422,3 +422,23 @@ describe("groupAddressing", () => {
     });
   });
 });
+
+describe("groupAddressing replies", () => {
+  it("sends a reply when nobody is mentioned", () => {
+    expect(groupAddressing(undefined, "message-1")).toEqual({
+      kind: "reply",
+      messageId: "message-1",
+    });
+    expect(groupAddressing({ kind: "none" }, "message-1")).toEqual({
+      kind: "reply",
+      messageId: "message-1",
+    });
+  });
+
+  it("lets a mention in the reply win", () => {
+    expect(groupAddressing({ kind: "bots", botIds: ["bot-1"] }, "message-1")).toEqual({
+      kind: "bots",
+      botIds: ["bot-1"],
+    });
+  });
+});
