@@ -138,8 +138,9 @@ describe.skipIf(!arabicShips)("Arabic interface", () => {
     await composer.pressSequentially(ENGLISH_PARAGRAPH);
     await composer.press("Enter");
 
-    const arabic = conversation().getByText(ARABIC_PARAGRAPH, { exact: true });
-    const english = conversation().getByText(ENGLISH_PARAGRAPH, { exact: true });
+    // The paragraph itself, not whatever inline element wraps its text.
+    const arabic = conversation().locator('p[dir="auto"]', { hasText: ARABIC_PARAGRAPH });
+    const english = conversation().locator('p[dir="auto"]', { hasText: ENGLISH_PARAGRAPH });
 
     await arabic.waitFor();
     await english.waitFor();
