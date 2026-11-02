@@ -21,6 +21,7 @@ import {
 } from "./IsnadiRoutineSchemas.ts";
 
 import type { IsnadiModelOptions } from "../ReasoningOptions.ts";
+import type { GroupConversationState } from "./IsnadiGroupConversation.ts";
 
 export interface IsnadiMastraState {
   readonly providerInstanceId?: string;
@@ -32,6 +33,8 @@ export interface IsnadiMastraState {
   readonly personalityTone?: BotPersonalityTone;
   readonly persistentMemoryContext?: string;
   readonly mcpInstructions?: string;
+  /** Set for group chats; rebuilt every turn. */
+  readonly group?: GroupConversationState;
   readonly modelOptions?: IsnadiModelOptions;
 }
 
@@ -155,6 +158,8 @@ export interface IsnadiMastraHarness<SessionType = IsnadiMastraSession> {
     readonly userMessages: ReadonlyArray<{ readonly id: string; readonly text: string }>;
     readonly assistant: string;
     readonly createdAt: string;
+    /** Set in a group chat: the bot that wrote `assistant`. */
+    readonly respondingBotId?: string;
   }) => Promise<void>;
   readonly drainObservationQueue?: () => Promise<void>;
 }

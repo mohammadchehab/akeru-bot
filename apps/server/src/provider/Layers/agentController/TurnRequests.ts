@@ -1,4 +1,5 @@
 import * as Predicate from "effect/Predicate";
+import type { GroupConversationState } from "../../mastra/IsnadiGroupConversation.ts";
 import { ProviderDriverKind } from "@isnadi/contracts";
 import { ProviderInstanceId } from "@isnadi/contracts";
 import type { IsnadiToolRuntime } from "../../IsnadiToolRuntime.ts";
@@ -10,6 +11,7 @@ import * as FileSystem from "effect/FileSystem";
 import {
   TurnId,
   type ProviderRuntimeEvent,
+  type BotId,
   ThreadId,
   type IsnadiMemoryThreadAccess,
 } from "@isnadi/contracts";
@@ -44,6 +46,10 @@ import {
 } from "./State.ts";
 
 export function createTurnRequests(deps: {
+  readonly readGroupConversation: (
+    threadId: ThreadId,
+    fallbackBotId: BotId | null,
+  ) => Effect.Effect<GroupConversationState | undefined, never, never>;
   readonly fileSystem: FileSystem.FileSystem;
   readonly resolvedByThread: Map<string, ResolvedEngine>;
   readonly sessions: Map<string, ActiveSession>;
@@ -402,7 +408,14 @@ export function createTurnRequests(deps: {
 
           const files = attachmentFiles.map(({ file }) => file);
           const turnId = TurnId.make(`mastra-turn-${NodeCrypto.randomUUID()}`);
+
+          const group = yield* deps.readGroupConversation(
+            input.threadId,
+            active.configuredToolSession.botId ?? null,
+          );
+
           active.pendingTurns.push({
+            ...(group ? { group } : {}),
             threadId: input.threadId,
             turnId,
             message: { content, ...(files.length > 0 ? { files } : {}) },

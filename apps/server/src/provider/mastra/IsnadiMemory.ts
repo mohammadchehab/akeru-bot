@@ -17,6 +17,11 @@ import {
   type ObserveHooks,
 } from "@mastra/memory/processors";
 import { selectRecentConversation } from "../RecentConversation.ts";
+import {
+  GroupConversationState,
+  recallForResponder,
+  tagRespondingBot,
+} from "./IsnadiGroupConversation.ts";
 import { type IsnadiMastraHarnessOptions, type IsnadiMastraState } from "./IsnadiHarnessTypes.ts";
 import { DEFAULT_MODEL_ID, resolveIsnadiMastraModel } from "./IsnadiModels.ts";
 
@@ -67,6 +72,19 @@ const decodeControllerContext = Schema.decodeUnknownOption(
 );
 
 const decodeModelOptions = Schema.decodeUnknownOption(IsnadiModelOptions);
+
+const decodeGroupState = Schema.decodeUnknownOption(
+  Schema.Struct({ group: GroupConversationState }),
+);
+
+/** The group this turn runs in, or undefined for a direct chat. */
+export function controllerGroup(
+  requestContext: RequestContext | undefined,
+): GroupConversationState | undefined {
+  const state = requestContext ? controllerContext(requestContext)?.state : undefined;
+
+  return Option.getOrUndefined(Option.map(decodeGroupState(state), (decoded) => decoded.group));
+}
 
 export function controllerContext(requestContext: RequestContext) {
   return Option.getOrUndefined(decodeControllerContext(requestContext.getRaw("controller")));
@@ -147,7 +165,14 @@ export class IsnadiPassiveObservationalMemoryProcessor implements Processor<"obs
 
     const requiredMessageIds = new Set(unobserved.map((message) => message.id));
 
-    for (const message of selectRecentConversation(history.messages, { requiredMessageIds })) {
+    const recent = selectRecentConversation(history.messages, { requiredMessageIds });
+
+    const group = groupStateOf(
+      args.requestContext ? controllerContext(args.requestContext)?.state : undefined,
+    );
+
+    // A group shares one history; each responder reads the other bots' turns as quoted speech.
+    for (const message of group ? recallForResponder(recent, group) : recent) {
       if (message.role !== "system") args.messageList.add(message, "memory");
     }
 
@@ -174,7 +199,15 @@ export class IsnadiPassiveObservationalMemoryProcessor implements Processor<"obs
       ...args.messageList.get.response.db(),
     ].filter((message) => args.messageList.isNewMessage(message));
 
-    if (messages.length > 0) await this.memory.persistMessages(messages);
+    const group = groupStateOf(
+      args.requestContext ? controllerContext(args.requestContext)?.state : undefined,
+    );
+
+    const saved = group
+      ? messages.map((message) => tagRespondingBot(message, group.respondingBotId))
+      : messages;
+
+    if (saved.length > 0) await this.memory.persistMessages(saved);
 
     return args.messageList;
   }

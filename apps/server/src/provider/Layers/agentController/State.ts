@@ -1,3 +1,4 @@
+import type { GroupConversationState } from "../../mastra/IsnadiGroupConversation.ts";
 import type { IsnadiPluginRuntimeOptions } from "../../IsnadiCatalogToolHandlers.ts";
 import { ProviderDriverKind } from "@isnadi/contracts";
 import { ProviderInstanceId } from "@isnadi/contracts";
@@ -61,6 +62,8 @@ export interface ActiveTurn {
 }
 
 export interface PendingTurn {
+  /** The group this turn runs in, read when the turn was queued. */
+  readonly group?: GroupConversationState;
   readonly threadId: ThreadId;
   readonly turnId: TurnId;
   readonly message: Parameters<MastraSession["sendMessage"]>[0];
@@ -137,6 +140,8 @@ export interface LegacyResourceIdentity {
   memoryAccess: BotMemoryAccess | undefined;
   entityMemoryAccess: IsnadiMemoryThreadAccess | undefined;
   readonly botName: string | undefined;
+  /** The bot answering on this session; a group restarts the session when the responder changes. */
+  readonly botId?: string | undefined;
   readonly personalityTone: BotPersonalityTone;
   readonly memoryAccessKey: string | undefined;
   privateBotMemory: boolean;

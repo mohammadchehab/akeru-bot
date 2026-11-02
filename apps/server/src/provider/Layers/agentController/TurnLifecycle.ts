@@ -298,15 +298,23 @@ export function createTurnLifecycle(deps: {
         if (pending.memoryAccess) delete toolSession.memoryHandlers;
         active.toolSession = toolSession;
         deps.toolRuntime.registerSession(String(threadId), active.toolSession);
-        const { persistentMemoryContext, ...stateWithoutMemory } = active.session.state.get();
+
+        const {
+          persistentMemoryContext,
+          group: _priorGroup,
+          ...stateWithoutMemory
+        } = active.session.state.get();
+
+        const groupState = pending.group ? { group: pending.group } : {};
 
         if (pending.delegationResults) {
           await active.session.state.set({
             ...stateWithoutMemory,
+            ...groupState,
             persistentMemoryContext: pending.delegationResults,
           });
-        } else if (persistentMemoryContext) {
-          await active.session.state.set(stateWithoutMemory);
+        } else if (persistentMemoryContext || pending.group) {
+          await active.session.state.set({ ...stateWithoutMemory, ...groupState });
         }
 
         if (active.admittingTurn?.turnId !== turnId) return;
@@ -351,8 +359,11 @@ export function createTurnLifecycle(deps: {
           deps.toolRuntime.registerSession(String(threadId), active.toolSession);
           const currentState = active.session.state.get();
 
-          const { persistentMemoryContext: _priorMemoryContext, ...stateWithoutMemory } =
-            currentState;
+          const {
+            persistentMemoryContext: _priorMemoryContext,
+            group: _priorGroup,
+            ...stateWithoutMemory
+          } = currentState;
 
           const entityPacket = await deps.entityMemoryContext(entityMemoryAccess);
 
@@ -366,6 +377,7 @@ export function createTurnLifecycle(deps: {
 
           await active.session.state.set({
             ...stateWithoutMemory,
+            ...(pending.group ? { group: pending.group } : {}),
             ...(persistentMemoryContext ? { persistentMemoryContext } : {}),
           });
 
