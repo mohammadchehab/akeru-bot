@@ -13,8 +13,6 @@ import * as Effect from "effect/Effect";
 import type * as PlatformError from "effect/PlatformError";
 import { resolveGroupAddressing, resolveGroupResponderBotId } from "../groupResponder.ts";
 
-// Bot turns allowed per user message once chains exist (b2); recorded on the queue from the start.
-const GROUP_HOP_BUDGET = 6;
 import { OrchestrationCommandInvariantError } from "../Errors.ts";
 import type { OrchestrationDispatchActor } from "../Services/OrchestrationEngine.ts";
 import {
@@ -31,6 +29,9 @@ import {
   userInputAnswerText,
   type DecideOrchestrationCommandResult,
 } from "./eventBase.ts";
+
+// Bot turns allowed per user message once chains exist (b2); recorded on the queue from the start.
+const GROUP_HOP_BUDGET = 6;
 
 export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
   command,
@@ -137,6 +138,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
 
         if (command.addressing !== undefined) {
           addressedGroup = true;
+
           const resolution = resolveGroupAddressing({
             group,
             messages: targetThread.messages,

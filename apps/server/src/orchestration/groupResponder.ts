@@ -114,6 +114,7 @@ export function resolveGroupAddressing(input: {
             detail: `Bot '${stranger}' is not an active member of group '${input.group.id}'.`,
           };
     }
+
     case "reply": {
       const { messageId } = input.addressing;
       const target = input.messages.find((message) => message.id === messageId);
