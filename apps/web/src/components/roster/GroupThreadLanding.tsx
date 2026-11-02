@@ -26,6 +26,8 @@ import { ConversationSeparator } from "../chat/ConversationSeparator";
 import { useOptionalReplyPlayback } from "../chat/ReplyPlaybackProvider";
 import { useReplyPlaybackThread } from "~/lib/replyPlaybackThread";
 import { useI18n } from "~/i18n";
+import { GroupResponderQueue } from "./GroupResponderQueue";
+import { responderQueueNames } from "./groupThreadModel.logic";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
 import { useOptionalVoiceCall } from "../voice/VoiceCall";
@@ -494,12 +496,18 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
             busy={working && pendingApproval === null}
             activitySlot={
               working && activeBot && !waitingForUserInput && pendingApproval === null ? (
-                <BotActivityStatus
-                  name={activeBot.name}
-                  activity={botActivity}
-                  update={workingUpdate}
-                  silentRun={silentRun}
-                />
+                <>
+                  <BotActivityStatus
+                    name={activeBot.name}
+                    activity={botActivity}
+                    update={workingUpdate}
+                    silentRun={silentRun}
+                  />
+                  <GroupResponderQueue
+                    names={responderQueueNames(runtime.responderQueue, members)}
+                    onStop={() => void runtime.stop()}
+                  />
+                </>
               ) : null
             }
             pendingActionSlot={
@@ -574,6 +582,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
                 buildReplyPrompt(replyTarget, prompt),
                 files,
                 addressing,
+                replyTarget?.messageId,
               );
 
               if (sent) setReplyTarget(null);

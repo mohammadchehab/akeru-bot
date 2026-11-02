@@ -305,4 +305,7 @@ export const rosterCatalog = {
   "No channels set up yet": "尚未设置频道",
   "Deleted group": "已删除的群组",
   "Removed bot": "已移除的机器人",
+  "{names} is next": "下一个回复：{names}",
+  "{names} are next": "接下来回复：{names}",
+  "Stop replies": "停止回复",
 } as const;
