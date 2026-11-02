@@ -93,6 +93,7 @@ export const startSshTunnel = Effect.fn("ssh/tunnel.startSshTunnel")(function* (
     "-N",
     "-L",
     `${input.localPort}:127.0.0.1:${input.remotePort}`,
+    "--",
     hostSpec,
   ];
 

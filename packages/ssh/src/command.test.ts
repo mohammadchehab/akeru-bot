@@ -12,6 +12,7 @@ import { ChildProcessSpawner } from "effect/unstable/process";
 
 import {
   baseSshArgs,
+  buildSshHostSpec,
   getLastNonEmptyOutputLine,
   parseSshResolveOutput,
   resolveRemoteT3CliPackageSpec,
@@ -101,6 +102,48 @@ describe("ssh command", () => {
       );
     }),
   );
+
+  it.effect("builds a host spec and rejects option-like or whitespace targets", () =>
+    Effect.sync(() => {
+      const target = {
+        alias: "devbox",
+        hostname: "devbox.example.com",
+        username: "julius",
+        port: null,
+      };
+
+      assert.equal(buildSshHostSpec(target), "julius@devbox");
+      assert.throws(() => buildSshHostSpec({ ...target, alias: "-oProxyCommand=x" }));
+      assert.throws(() => buildSshHostSpec({ ...target, alias: "", hostname: "-oProxyCommand=x" }));
+      assert.throws(() => buildSshHostSpec({ ...target, username: "-oProxyCommand=x" }));
+      assert.throws(() => buildSshHostSpec({ ...target, alias: "a b" }));
+    }),
+  );
+
+  it.effect("ends ssh options with -- before the host", () => {
+    let captured: ReadonlyArray<string> = [];
+
+    const spawner = ChildProcessSpawner.make((command) => {
+      captured = "args" in command ? command.args : [];
+
+      return Effect.succeed(makeFailedProcess({ stdout: "" }));
+    });
+
+    const layer = Layer.mergeAll(
+      NodeServices.layer,
+      Layer.succeed(ChildProcessSpawner.ChildProcessSpawner, spawner),
+    );
+
+    return Effect.gen(function* () {
+      yield* Effect.result(
+        runSshCommand(
+          { alias: "devbox", hostname: "devbox.example.com", username: null, port: null },
+          { remoteCommandArgs: ["true"] },
+        ),
+      );
+      assert.equal(captured[captured.indexOf("devbox") - 1], "--");
+    }).pipe(Effect.provide(layer));
+  });
 
   it.effect("resolves the stable remote t3 package spec", () =>
     Effect.sync(() => {

@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import { describe, expect, it } from "vite-plus/test";
 
-import { DesktopEnvironmentBootstrapSchema } from "./ipc.ts";
+import { DesktopEnvironmentBootstrapSchema, DesktopSshEnvironmentTargetSchema } from "./ipc.ts";
 
 describe("DesktopEnvironmentBootstrapSchema", () => {
   const decode = Schema.decodeUnknownSync(DesktopEnvironmentBootstrapSchema);
@@ -35,4 +35,23 @@ describe("DesktopEnvironmentBootstrapSchema", () => {
       }).runningDistro,
     ).toBeNull();
   });
+});
+
+describe("DesktopSshEnvironmentTargetSchema", () => {
+  const decode = Schema.decodeUnknownSync(DesktopSshEnvironmentTargetSchema);
+  const target = { alias: "devbox", hostname: "devbox.example.com", username: "julius", port: 22 };
+
+  it("accepts ordinary targets", () => {
+    expect(decode(target)).toEqual(target);
+    expect(decode({ ...target, username: null })).toEqual({ ...target, username: null });
+  });
+
+  it.each(["-oProxyCommand=x", "-J host", "dev box", "dev\tbox", "dev\nbox", "dev\u001b[0mbox"])(
+    "rejects %j in alias, hostname and username",
+    (value) => {
+      expect(() => decode({ ...target, alias: value })).toThrow();
+      expect(() => decode({ ...target, hostname: value })).toThrow();
+      expect(() => decode({ ...target, username: value })).toThrow();
+    },
+  );
 });

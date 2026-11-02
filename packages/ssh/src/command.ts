@@ -1,6 +1,10 @@
 import * as NodeCrypto from "node:crypto";
 
-import type { DesktopSshEnvironmentTarget, DesktopUpdateChannel } from "@isnadi/contracts";
+import {
+  SSH_TARGET_TOKEN_PATTERN,
+  type DesktopSshEnvironmentTarget,
+  type DesktopUpdateChannel,
+} from "@isnadi/contracts";
 import { HostProcessPlatform } from "@isnadi/shared/hostProcess";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -89,12 +93,22 @@ export function remoteStateKey(target: DesktopSshEnvironmentTarget): string {
 
 export function buildSshHostSpec(target: DesktopSshEnvironmentTarget): string {
   const destination = target.alias.trim() || target.hostname.trim();
+  const username = target.username;
 
   if (destination.length === 0) {
     throw new Error("SSH target is missing its alias/hostname.");
   }
 
-  return target.username ? `${target.username}@${destination}` : destination;
+  if (
+    !SSH_TARGET_TOKEN_PATTERN.test(destination) ||
+    (username && !SSH_TARGET_TOKEN_PATTERN.test(username))
+  ) {
+    throw new Error(
+      "SSH target must not start with '-' or contain whitespace or control characters.",
+    );
+  }
+
+  return username ? `${username}@${destination}` : destination;
 }
 
 export const buildSshHostSpecEffect = (
@@ -210,6 +224,7 @@ const runSshCommandInScope = Effect.fn("ssh/command.runSshCommand.inScope")(func
       batchMode: input.batchMode ?? (input.interactiveAuth ? "no" : "yes"),
     }),
     ...(input.preHostArgs ?? []),
+    "--",
     hostSpec,
     ...(input.remoteCommandArgs ?? []),
   ];
