@@ -60,8 +60,13 @@ through the shared history. The provider session runs as the current responder; 
 changes, the provider command reactor restarts the session as the new bot
 (`apps/server/src/orchestration/Layers/provider-command/Session.ts`) after the active turn ends.
 
-The decider records `respondingBotId` and the turn's trigger on each turn and assistant message:
-`{ kind: "user", messageId }`, or `{ kind: "bot-mention", sourceTurnId, sourceBotId }`.
+The next queued bot starts only once the turn the queue last started has ended, including a turn
+whose session failed to start. A duplicate advance is then a no-op. A queued bot that left the group
+or was archived is skipped, and the first active bot behind it starts.
+
+The decider records `respondingBotId` and the turn's trigger on each turn:
+`{ kind: "user", messageId }`, or `{ kind: "bot-mention", sourceTurnId, sourceBotId }`. Clients join
+an assistant message to its turn by `turnId`, so the message does not repeat it.
 
 ### Mentions and chains
 
@@ -74,9 +79,23 @@ Rules:
 - A bot never queues itself.
 - Mentions inside code spans, code blocks and quotes don't count.
 - A bot already waiting in the queue is not added twice.
+- A mention runs to the first character that cannot be part of a member name, so `@Becky,` counts.
+  A typed `@bot:<id>` ends the same way: an id may contain `.` `:` `-` `_` inside but starts and ends
+  with a letter or digit. The composer, channel text and chains share one parser.
 - **Hop budget:** each user message allows at most 6 bot turns in total, including the first ones.
-  When the budget runs out, the queue clears and the chat shows "Stopped after 6 replies". The
-  budget is a setting, because every bot reply counts toward the user's usage.
+  The budget is a setting, because every bot reply counts toward the user's usage.
+  - Every turn the queue starts for that message counts, whether addressing or a mention added it.
+    Delegation `send` and the auto routing call do not count.
+  - The bots a user names, or `@everyone`, always run, even past the budget. The budget only limits
+    what mentions add: a mentioned bot is queued only while `hopsLeft` is above 0.
+  - Every user message, a Reply included, starts a fresh budget, read from the setting at that
+    moment. Stop clears the queue and keeps `hopsLeft` as it was.
+  - `hopsLeft` is the budget minus the turns already started. The decider lowers it at each turn
+    start, so the queue on the wire is always true.
+  - When a finished reply would queue a bot with `hopsLeft` at 0, the decider writes an empty queue
+    with reason `budget-exhausted` and starts no turn. While the queue holds that reason, the chat
+    shows "Stopped after N replies" under the last reply. Clients render it from the queue and
+    never count on their own, so it survives a reconnect. The next queue event replaces it.
 - A chain ends when a reply mentions nobody new.
 
 Delegation stays separate: `send` hands background work to a member's own chat and posts the result
