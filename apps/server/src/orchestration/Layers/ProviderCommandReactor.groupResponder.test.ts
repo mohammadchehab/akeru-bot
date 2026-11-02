@@ -178,4 +178,90 @@ describe("ProviderCommandReactor group responder", () => {
       modelSelection: { model: specialistEngine.model },
     });
   });
+
+  it("starts the mentioned bot on the chain's user message once its mention is queued", async () => {
+    const { harness, sendTurn } = await createGroupHarness();
+    const later = "2026-01-01T00:05:00.000Z";
+    const turnId = asTurnId("turn-boss");
+    const replyId = asMessageId("reply-boss");
+
+    await sendTurn("group-1", "hello");
+    await harness.waitFor(() => harness.sendTurn.mock.calls.length === 1);
+
+    const dispatch = (command: Parameters<typeof harness.engine.dispatch>[0]) =>
+      harness.run(harness.engine.dispatch(command));
+
+    await dispatch({
+      type: "thread.session.set",
+      commandId: CommandId.make("cmd-boss-running"),
+      threadId: GROUP_THREAD,
+      session: {
+        threadId: GROUP_THREAD,
+        status: "running",
+        providerName: "codex",
+        providerInstanceId: ProviderInstanceId.make("codex"),
+        runtimeMode: "approval-required",
+        mcpServerIds: [],
+        activeTurnId: turnId,
+        lastError: null,
+        updatedAt: later,
+      },
+      createdAt: later,
+    });
+    await dispatch({
+      type: "thread.message.assistant.delta",
+      commandId: CommandId.make("cmd-boss-reply-delta"),
+      threadId: GROUP_THREAD,
+      messageId: replyId,
+      delta: "@Second bot your turn",
+      turnId,
+      respondingBotId: BOSS,
+      createdAt: later,
+    });
+    await dispatch({
+      type: "thread.message.assistant.complete",
+      commandId: CommandId.make("cmd-boss-reply-complete"),
+      threadId: GROUP_THREAD,
+      messageId: replyId,
+      turnId,
+      respondingBotId: BOSS,
+      createdAt: later,
+    });
+    await dispatch({
+      type: "thread.session.set",
+      commandId: CommandId.make("cmd-boss-ready"),
+      threadId: GROUP_THREAD,
+      session: {
+        threadId: GROUP_THREAD,
+        status: "ready",
+        providerName: "codex",
+        providerInstanceId: ProviderInstanceId.make("codex"),
+        runtimeMode: "approval-required",
+        mcpServerIds: [],
+        activeTurnId: null,
+        lastError: null,
+        updatedAt: later,
+      },
+      createdAt: later,
+    });
+    await dispatch({
+      type: "thread.responder.mention",
+      commandId: CommandId.make("cmd-boss-mention"),
+      threadId: GROUP_THREAD,
+      turnId,
+      botId: BOSS,
+      messageId: replyId,
+      createdAt: later,
+    });
+    await dispatch({
+      type: "thread.responder.advance",
+      commandId: CommandId.make("cmd-boss-advance"),
+      threadId: GROUP_THREAD,
+      createdAt: later,
+    });
+
+    await harness.waitFor(() => harness.sendTurn.mock.calls.length === 2);
+
+    expect(harness.startSession.mock.calls[1]?.[1]).toMatchObject({ botId: SPECIALIST });
+  });
 });

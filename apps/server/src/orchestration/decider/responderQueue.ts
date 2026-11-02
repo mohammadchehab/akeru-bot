@@ -1,6 +1,5 @@
 import {
   GROUP_HOP_BUDGET_DEFAULT,
-  MessageId,
   ProviderInstanceId,
   type CommandId,
   type OrchestrationCommand,
@@ -159,8 +158,16 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
       reason,
     });
 
-  // Everyone waiting has left the group or been archived: nobody is woken, the queue just ends.
-  if (next === undefined || nextBot === undefined) {
+  // A bot-mention turn answers the chain's user message and reads the rest through shared history.
+  // No newer user message can exist while the chain lives: it would have rewritten the queue.
+  const startMessageId =
+    next?.trigger.kind === "user"
+      ? next.trigger.messageId
+      : thread.messages.findLast((message) => message.role === "user")?.id;
+
+  // Everyone waiting has left the group or been archived, or there is no stored message to answer:
+  // nobody is woken, the queue just ends.
+  if (next === undefined || nextBot === undefined || startMessageId === undefined) {
     return [yield* setQueue([], budgetOf(queue), "superseded")];
   }
 
@@ -181,11 +188,7 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
     type: "thread.turn-start-requested",
     payload: {
       threadId: command.threadId,
-      // The turn answers the message that addressed it; it reads the rest through shared history.
-      messageId:
-        next.trigger.kind === "user"
-          ? next.trigger.messageId
-          : MessageId.make(`${command.commandId}:responder`),
+      messageId: startMessageId,
       ...(nextBot.engine !== null
         ? {
             modelSelection: {
