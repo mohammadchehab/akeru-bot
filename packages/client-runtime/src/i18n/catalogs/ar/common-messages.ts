@@ -18,7 +18,8 @@ export const commonMessagesCatalog = {
   "Sidebar (legacy)": "الشريط الجانبي (قديم)",
   "Version {version}": "الإصدار {version}",
   "Reset {label} to default": "إعادة {label} إلى الافتراضي",
-  "English and Simplified Chinese are available.": "تتوفر الإنجليزية والصينية المبسطة.",
+  "English, Simplified Chinese, and Arabic are available.":
+    "تتوفر الإنجليزية والصينية المبسطة والعربية.",
   "Menu, filters active": "القائمة، المرشحات مفعّلة",
   "Menu, no filters": "القائمة، بلا مرشحات",
   "Trace ID:": "معرّف التتبع:",
