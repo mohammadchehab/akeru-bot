@@ -46,7 +46,6 @@ function summary(
   const connectionByProvider = {
     claude: "anthropic",
     codex: "openai-codex",
-    cursor: "cursor",
     grok: "xai",
     kimi: "kimi-for-coding",
     opencode: "opencode-go",
@@ -75,8 +74,13 @@ function summary(
     })),
     pricing: { status: "fresh", source: "litellm", fetchedAt: null, knownModels: 10 },
     scanDurationMs: 1,
+    // Cursor signs in through its own CLI, so it has no Isnadi connection to list.
     connectedProviders: [
-      ...new Set(sources.map((source) => connectionByProvider[source.provider])),
+      ...new Set(
+        sources.flatMap((source) =>
+          source.provider === "cursor" ? [] : [connectionByProvider[source.provider]],
+        ),
+      ),
     ],
   };
 }
@@ -86,6 +90,23 @@ function environment(id: string, usageSummary: UsageSummary): EnvironmentUsage {
 }
 
 describe("mergeUsage", () => {
+  it("keeps Cursor usage, which has no Isnadi connection to be gated on", () => {
+    const merged = mergeUsage(
+      [
+        environment(
+          "env-a",
+          summary(
+            [{ ...bucket(), provider: "cursor" }],
+            [{ provider: "cursor", hostId: "mac", homePath: "/a/state.sqlite" }],
+          ),
+        ),
+      ],
+      USAGE_CONTRACT_VERSION,
+    );
+
+    expect(merged.buckets.map((entry) => entry.provider)).toEqual(["cursor"]);
+  });
+
   it("sums environments that read different transcript directories", () => {
     const merged = mergeUsage(
       [

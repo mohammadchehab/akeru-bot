@@ -180,7 +180,9 @@ function ownedContribution(
   return {
     buckets: environment.summary.buckets.filter(
       (bucket) =>
-        ownedProviders.has(bucket.provider) && connectedUsageProviders.has(bucket.provider),
+        ownedProviders.has(bucket.provider) &&
+        (connectedUsageProviders.has(bucket.provider) ||
+          CONNECTIONLESS_USAGE_PROVIDERS.has(bucket.provider)),
     ),
     sessionsByProvider,
   };
@@ -193,6 +195,9 @@ const USAGE_PROVIDER_BY_CONNECTION: Partial<Record<SubscriptionProviderId, Usage
   "kimi-for-coding": "kimi",
   "opencode-go": "opencode",
 };
+
+/** Providers that sign in outside Isnadi, so no connection can gate their usage. */
+const CONNECTIONLESS_USAGE_PROVIDERS: ReadonlySet<UsageProviderKind> = new Set(["cursor"]);
 
 function bucketTokens(bucket: UsageBucket): number {
   // reasoningTokens is a subset of outputTokens and must not be added again.
