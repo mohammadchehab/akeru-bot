@@ -89,7 +89,7 @@ describe("group chat routing", () => {
     await dialog.waitFor({ state: "hidden" });
   });
 
-  journeyReport(() => ({ stack, page: page, seen }));
+  journeyReport(() => ({ stack, page, seen }));
 
   afterAll(async () => {
     await browser?.close();

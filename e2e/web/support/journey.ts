@@ -35,8 +35,14 @@ export function journeyReport(
       `isnadi-e2e-${task.name.replace(/\W+/g, "-")}.png`,
     );
 
-    await page.screenshot({ path });
-    console.error(`Screenshot: ${path}`);
+    // A crashed or closed page cannot be photographed; the report below is still the most useful part.
+    try {
+      await page.screenshot({ path });
+      console.error(`Screenshot: ${path}`);
+    } catch (error) {
+      console.error(`No screenshot: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     await reportFailure(page, stack, seen());
   });
 }

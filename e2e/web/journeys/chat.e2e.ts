@@ -23,7 +23,7 @@ describe("web chat", () => {
     seen = watchPage(page);
   });
 
-  journeyReport(() => ({ stack, page: page, seen }));
+  journeyReport(() => ({ stack, page, seen }));
 
   afterAll(async () => {
     await browser?.close();
