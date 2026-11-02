@@ -1,5 +1,6 @@
 import type { GroupHopBudget } from "@isnadi/contracts";
 import { stepHopBudget } from "@isnadi/shared/groupHopBudget";
+import { useState } from "react";
 import { MinusIcon, PlusIcon, RepeatIcon } from "lucide-react";
 
 import { useI18n } from "../../i18n";
@@ -12,11 +13,21 @@ import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
  */
 export function GroupHopBudgetControl(props: {
   readonly hopBudget: number;
-  readonly onChange: (hopBudget: GroupHopBudget) => void;
+  readonly onChange: (hopBudget: GroupHopBudget) => Promise<boolean>;
 }) {
   const { t } = useI18n();
-  const less = stepHopBudget(props.hopBudget, -1);
-  const more = stepHopBudget(props.hopBudget, 1);
+  // The server value lags a press, so fast presses step from what was just chosen, not from props.
+  const [chosen, setChosen] = useState<{ base: number; value: number } | null>(null);
+  const hopBudget = chosen?.base === props.hopBudget ? chosen.value : props.hopBudget;
+  const less = stepHopBudget(hopBudget, -1);
+  const more = stepHopBudget(hopBudget, 1);
+
+  const change = (next: GroupHopBudget) => {
+    setChosen({ base: props.hopBudget, value: next });
+    void props.onChange(next).then((ok) => {
+      if (!ok) setChosen(null);
+    });
+  };
 
   return (
     <Popover>
@@ -46,19 +57,19 @@ export function GroupHopBudgetControl(props: {
               variant="outline"
               aria-label={t("Fewer replies")}
               disabled={less === null}
-              onClick={() => less !== null && props.onChange(less)}
+              onClick={() => less !== null && change(less)}
             >
               <MinusIcon aria-hidden />
             </Button>
             <span aria-live="polite" data-testid="group-hop-budget-value">
-              {props.hopBudget}
+              {hopBudget}
             </span>
             <Button
               size="icon-sm"
               variant="outline"
               aria-label={t("More replies")}
               disabled={more === null}
-              onClick={() => more !== null && props.onChange(more)}
+              onClick={() => more !== null && change(more)}
             >
               <PlusIcon aria-hidden />
             </Button>

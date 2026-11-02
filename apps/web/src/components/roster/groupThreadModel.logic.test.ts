@@ -5,11 +5,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { resolveAppModelSelectionState } from "../../modelSelection";
 import { deriveProviderInstanceEntries } from "../../providerInstances";
 import { makeComposerTestProvider } from "../../test/composerTestProvider";
-import {
-  groupModelSelection,
-  groupModelSelectionReady,
-  responderQueueNames,
-} from "./groupThreadModel.logic";
+import { groupModelSelection, groupModelSelectionReady } from "./groupThreadModel.logic";
 
 const signedOutCodex: ServerProvider = {
   ...makeComposerTestProvider(),
@@ -65,28 +61,5 @@ describe("groupModelSelection", () => {
     const selection = groupModelSelection(null, context);
 
     expect(groupModelSelectionReady(selection, context.instanceEntries)).toBe(false);
-  });
-});
-
-describe("responderQueueNames", () => {
-  const members = [
-    { id: "bot-1", name: "Becky" },
-    { id: "bot-2", name: "Omar" },
-  ];
-
-  it("lists the waiting members in queue order and skips unknown bots", () => {
-    const queue = {
-      entries: [
-        { botId: "bot-2", trigger: { kind: "user", messageId: "m" } },
-        { botId: "bot-9", trigger: { kind: "user", messageId: "m" } },
-        { botId: "bot-1", trigger: { kind: "user", messageId: "m" } },
-      ],
-      hopsLeft: 6,
-      reason: "addressed",
-      updatedAt: "2026-11-02T00:00:00.000Z",
-    } as never;
-
-    expect(responderQueueNames(queue, members)).toEqual(["Omar", "Becky"]);
-    expect(responderQueueNames(null, members)).toEqual([]);
   });
 });

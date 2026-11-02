@@ -1,3 +1,4 @@
+import { responderQueueLine, responderQueueNames } from "@isnadi/client-runtime/responder-queue";
 import { useMobileI18n } from "../../lib/i18n";
 import type {
   EnvironmentId,
@@ -53,7 +54,6 @@ import { serverEnvironment } from "../../state/server";
 import { useEnvironmentQuery } from "../../state/query";
 import { ComposerCommandPopover, type ComposerCommandItem } from "./ComposerCommandPopover";
 import { buildComposerCommandItems } from "./composer-command-items";
-import { responderQueueLine } from "./responderQueueLine";
 import { composerMentionItemToken, isThreadMentionQuery } from "./composerMentionItems";
 import { ComposerMentionPopover } from "./ComposerMentionPopover";
 import { useExistingThreadSettingsRoutePresentation } from "./ThreadSettingsSheet";
@@ -169,7 +169,10 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
     ? composerIdentity.title
     : (bot?.name ?? providerBotName(composerProviderDriver));
 
-  const responderLine = responderQueueLine(props.selectedThread.responderQueue, bots);
+  const responderLine = responderQueueLine(
+    responderQueueNames(props.selectedThread.responderQueue, bots),
+    t,
+  );
 
   const wasExpandedBeforePreviewRef = useRef(false);
   const inFlightThreadIdsRef = useRef(new Set<string>());

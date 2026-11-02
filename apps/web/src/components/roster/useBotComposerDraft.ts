@@ -1,6 +1,6 @@
 import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@isnadi/contracts";
 import {
-  type ComposerAddressing,
+  type SendableComposerAddressing,
   resolveComposerAddressing,
 } from "@isnadi/shared/composerBotMentions";
 import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
@@ -398,7 +398,7 @@ export function useBotComposerDraft(input: {
     readonly onSubmit: (
       prompt: string,
       files: readonly File[],
-      addressing?: ComposerAddressing,
+      addressing?: SendableComposerAddressing,
     ) => Promise<boolean>;
   }) => {
     const prompt = draft.trim();

@@ -1,3 +1,4 @@
+import { responderQueueLine } from "@isnadi/client-runtime/responder-queue";
 import { SquareIcon } from "lucide-react";
 
 import { useI18n } from "../../i18n";
@@ -12,15 +13,13 @@ export function GroupResponderQueue(props: {
   readonly onStop: () => void;
 }) {
   const { t } = useI18n();
-  const names = props.names.join(", ");
+  const line = responderQueueLine(props.names, t);
 
   return (
     <div className="flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-muted-foreground">
-      {props.names.length > 0 ? (
+      {line !== null ? (
         <span aria-live="polite" data-testid="responder-queue">
-          {props.names.length === 1
-            ? t("{names} is next", { names })
-            : t("{names} are next", { names })}
+          {line}
         </span>
       ) : (
         <span />

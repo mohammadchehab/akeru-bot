@@ -141,11 +141,14 @@ export function useThreadComposerSettings(input: {
         ? {
             hopBudget: {
               value: effectiveHopBudget(selectedThread.hopBudget),
-              onChange: (hopBudget: GroupHopBudget) =>
-                void setHopBudget({
-                  environmentId,
-                  input: { threadId: selectedThread.id, hopBudget },
-                }),
+              onChange: async (hopBudget: GroupHopBudget) =>
+                !Predicate.isTagged(
+                  await setHopBudget({
+                    environmentId,
+                    input: { threadId: selectedThread.id, hopBudget },
+                  }),
+                  "Failure",
+                ),
             },
           }
         : {}),
