@@ -307,5 +307,5 @@ export const rosterCatalog = {
   "Removed bot": "已移除的机器人",
   "{names} is next": "下一个回复：{names}",
   "{names} are next": "接下来回复：{names}",
-  "Stop replies": "停止回复",
+  "Every member": "所有成员",
 } as const;

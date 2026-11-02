@@ -92,6 +92,7 @@ export function BotPromptMentionMenu({
   trigger,
   scope,
   bots,
+  everyoneAvailable = false,
   onSelect,
   onClose,
   onActiveOptionChange,
@@ -101,6 +102,7 @@ export function BotPromptMentionMenu({
   trigger: BotPromptMentionTrigger;
   scope: BotPromptMentionScope | null;
   bots: ReadonlyArray<BotPromptMentionBot>;
+  everyoneAvailable?: boolean;
   onSelect: (item: BotPromptMentionItem) => void;
   onClose: () => void;
   onActiveOptionChange: (optionId: string | null) => void;
@@ -110,6 +112,7 @@ export function BotPromptMentionMenu({
   const mentionKindDescription: Record<Exclude<BotPromptMentionItem["kind"], "path">, string> = {
     browser: t("Preview browser"),
     bot: t("Bot"),
+    everyone: t("Every member"),
     thread: t("Chat"),
   };
 
@@ -155,6 +158,7 @@ export function BotPromptMentionMenu({
     query: trigger.query,
     browserAvailable: scope !== null && browserAccess,
     browserLabel: t("Browser"),
+    everyoneAvailable,
     bots,
     threads,
     paths: pathSearch.entries,
@@ -224,6 +228,7 @@ export function BotPromptMentionMenu({
         const Icon = Match.value(item).pipe(
           Match.when({ kind: "browser" }, () => GlobeIcon),
           Match.when({ kind: "bot" }, () => AtSignIcon),
+          Match.when({ kind: "everyone" }, () => AtSignIcon),
           Match.when({ kind: "path" }, () => FileIcon),
           Match.orElse(() => MessageSquareIcon),
         );
@@ -311,7 +316,11 @@ export function BotPromptMentionChips({
         );
 
         return (
-          <li key={chip.key} className={COMPOSER_INLINE_CHIP_CLASS_NAME}>
+          <li
+            key={chip.key}
+            data-testid="composer-mention"
+            className={COMPOSER_INLINE_CHIP_CLASS_NAME}
+          >
             <Icon aria-hidden="true" className={COMPOSER_INLINE_CHIP_ICON_CLASS_NAME} />
             <span className={CHAT_INLINE_CHIP_LABEL_CLASS_NAME}>{chip.label}</span>
             <button

@@ -323,5 +323,5 @@ export const rosterCatalog = {
   "Removed bot": "Removed bot",
   "{names} is next": "{names} is next",
   "{names} are next": "{names} are next",
-  "Stop replies": "Stop replies",
+  "Every member": "Every member",
 } as const;

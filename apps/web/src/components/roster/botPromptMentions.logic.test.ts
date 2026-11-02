@@ -4,6 +4,7 @@ import {
   applyBotPromptMention,
   botPromptMentionChips,
   botPromptMentionTrigger,
+  type BotPromptMentionItem,
   botPromptThreadQuery,
   buildBotPromptMentionItems,
   removeBotPromptMention,
@@ -294,5 +295,24 @@ describe("botPromptMentionChips", () => {
     const draft = "look @chat:thread-2 and @chat:thread-2 now";
     const [chip] = botPromptMentionChips(draft, title);
     expect(removeBotPromptMention(draft, chip!)).toBe("look and now");
+  });
+});
+
+describe("@everyone in the picker", () => {
+  const base = { browserAvailable: false, bots: [], threads: [] };
+
+  it("is offered only when the chat allows it, and inserts @everyone", () => {
+    expect(buildBotPromptMentionItems({ ...base, query: "ev" })).toEqual([]);
+
+    const [item] = buildBotPromptMentionItems({ ...base, query: "ev", everyoneAvailable: true });
+
+    expect(item).toEqual({ kind: "everyone", key: "everyone", label: "@everyone" });
+    expect(
+      applyBotPromptMention(
+        "hi @ev",
+        { query: "ev", rangeStart: 3, rangeEnd: 6 },
+        item as BotPromptMentionItem,
+      ).text,
+    ).toBe("hi @everyone ");
   });
 });
