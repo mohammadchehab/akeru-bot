@@ -33,6 +33,7 @@ import { OrchestrationEventStore } from "../../persistence/Services/Orchestratio
 import { OrchestrationCommandReceiptRepository } from "../../persistence/Services/OrchestrationCommandReceipts.ts";
 import {
   OrchestrationCommandIdConflictError,
+  COMMAND_PRODUCED_NO_EVENTS,
   OrchestrationCommandInvariantError,
   OrchestrationCommandPreviouslyRejectedError,
   type OrchestrationDispatchError,
@@ -330,7 +331,7 @@ const makeOrchestrationEngine = Effect.gen(function* () {
               if (lastSavedEvent === null) {
                 return yield* new OrchestrationCommandInvariantError({
                   commandType: envelope.command.type,
-                  detail: "Command produced no events.",
+                  detail: COMMAND_PRODUCED_NO_EVENTS,
                 });
               }
 
