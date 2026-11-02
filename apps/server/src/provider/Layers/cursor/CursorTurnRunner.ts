@@ -25,6 +25,8 @@ export interface CursorTurnStartInput {
   readonly args: ReadonlyArray<string>;
   readonly cwd: string;
   readonly env: NodeJS.ProcessEnv;
+  /** Written to the child's stdin, which is then closed: `agent -p` reads its prompt from there. */
+  readonly prompt: string;
 }
 
 export interface CursorTurnResult {
@@ -47,6 +49,7 @@ export const startCursorTurn = Effect.fn("startCursorTurn")(function* (
       cwd: input.cwd,
       env: input.env,
       extendEnv: true,
+      stdin: Stream.make(new TextEncoder().encode(input.prompt)),
     }),
   );
 

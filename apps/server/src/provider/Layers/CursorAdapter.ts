@@ -215,7 +215,6 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
 
       const args = buildCursorTurnArgs({
         cwd: context.cwd,
-        prompt,
         runtimeMode: context.runtimeMode,
         model,
         resumeSessionId: resume?.sessionId,
@@ -229,6 +228,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         args: spawnCommand.args,
         cwd: context.cwd,
         env: environment,
+        prompt,
       }).pipe(Effect.provideService(ChildProcessSpawner.ChildProcessSpawner, spawner));
 
       context.active = { turnId, interrupt: turn.interrupt };

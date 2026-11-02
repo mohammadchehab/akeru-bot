@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { buildCursorTurnArgs, cursorAccessFor } from "./CursorTurnArgs.ts";
 
-const base = { cwd: "/work/project", prompt: "hello" } as const;
+const base = { cwd: "/work/project" } as const;
 
 describe("cursorAccessFor", () => {
   it("grants full access only to the explicit full-access runtime mode", () => {
@@ -33,8 +33,6 @@ describe("buildCursorTurnArgs", () => {
       "/work/project",
       "--mode",
       "ask",
-      "--",
-      "hello",
     ]);
   });
 
@@ -67,12 +65,5 @@ describe("buildCursorTurnArgs", () => {
       "--resume",
       "sess-1",
     ]);
-  });
-
-  it("puts the prompt last so a dash-leading prompt is not read as a flag", () => {
-    const args = buildCursorTurnArgs({ ...base, prompt: "--force please" });
-
-    expect(args.at(-1)).toBe("--force please");
-    expect(args.at(-2)).toBe("--");
   });
 });
