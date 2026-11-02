@@ -139,6 +139,9 @@ export async function startStack(): Promise<Stack> {
 
   let output = "";
 
+  // The server runs under `node --watch`, so a touched dependency restarts it mid-journey. Keep those lines.
+  const watchLines: Array<string> = [];
+
   const pairingUrl = await new Promise<string>((resolve, reject) => {
     const timer = setTimeout(
       () => reject(new Error(`No pairing URL within ${String(STARTUP_TIMEOUT_MS)}ms.\n${output}`)),
@@ -146,7 +149,13 @@ export async function startStack(): Promise<Stack> {
     );
 
     const onData = (data: Buffer) => {
-      output = (output + data.toString("utf8")).slice(-20_000);
+      const text = data.toString("utf8");
+
+      output = (output + text).slice(-20_000);
+
+      for (const line of text.split("\n")) {
+        if (/Restarting '|Change detected in/.test(line)) watchLines.push(line.trim());
+      }
 
       const match = PAIRING_URL_PATTERN.exec(output);
 
@@ -189,6 +198,12 @@ export async function startStack(): Promise<Stack> {
         });
       });
     }
+
+    console.error(
+      `[e2e] server watch restarts: ${String(watchLines.filter((line) => line.startsWith("Restarting")).length)}`,
+    );
+
+    for (const line of watchLines) console.error(`[e2e]   ${line}`);
 
     await stub.close();
     NodeFS.rmSync(home, { recursive: true, force: true });
