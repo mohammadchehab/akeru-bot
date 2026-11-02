@@ -41,6 +41,7 @@ import {
   OrchestrationLatestTurn,
   ThreadTitleRegeneration,
   ThreadLinkedPullRequest,
+  ResponderQueue,
   OrchestrationThread,
 } from "./thread.ts";
 
@@ -95,6 +96,7 @@ export const OrchestrationThreadShell = Schema.Struct({
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
   linkedPullRequest: Schema.optional(Schema.NullOr(ThreadLinkedPullRequest)),
+  responderQueue: Schema.optional(ResponderQueue),
   latestTurn: Schema.NullOr(OrchestrationLatestTurn),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,

@@ -1,4 +1,4 @@
-import { ProjectId, ThreadId, ProviderInstanceId } from "@isnadi/contracts";
+import { BotId, MessageId, ProjectId, ThreadId, ProviderInstanceId } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -266,6 +266,65 @@ projectionRepositoriesLayer("Projection repositories", (it) => {
 
       const cleared = yield* threads.getById({ threadId: ThreadId.make("thread-linked-pr") });
       assert.strictEqual(Option.getOrNull(cleared)?.linkedPullRequest, null);
+    }),
+  );
+
+  it.effect("round-trips the group responder queue through the thread row", () =>
+    Effect.gen(function* () {
+      const threads = yield* ProjectionThreadRepository;
+
+      const responderQueue = {
+        entries: [
+          {
+            botId: BotId.make("bot-specialist"),
+            trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
+          },
+        ],
+        hopsLeft: 6,
+        reason: "addressed" as const,
+        updatedAt: "2026-03-24T00:00:00.000Z",
+      };
+
+      const threadId = ThreadId.make("thread-responder-queue");
+
+      yield* threads.upsert({
+        threadId,
+        projectId: ProjectId.make("project-responder-queue"),
+        title: "Responder queue",
+        modelSelection: {
+          instanceId: ProviderInstanceId.make("codex"),
+          model: "gpt-5.4",
+        },
+        runtimeMode: "full-access",
+        interactionMode: "default",
+        branch: null,
+        worktreePath: null,
+        responderQueue,
+        latestTurnId: null,
+        createdAt: "2026-03-24T00:00:00.000Z",
+        updatedAt: "2026-03-24T00:00:00.000Z",
+        archivedAt: null,
+        settledOverride: null,
+        settledAt: null,
+        unsettledAt: null,
+        snoozedUntil: null,
+        snoozedAt: null,
+        pinnedAt: null,
+        latestUserMessageAt: null,
+        pendingApprovalCount: 0,
+        pendingUserInputCount: 0,
+        hasActionableProposedPlan: 0,
+        deletedAt: null,
+      });
+
+      const persisted = Option.getOrNull(yield* threads.getById({ threadId }));
+      assert.deepStrictEqual(persisted?.responderQueue, responderQueue);
+
+      if (persisted === null) return yield* Effect.die("Expected the thread row to exist.");
+      yield* threads.upsert({ ...persisted, responderQueue: null });
+
+      const cleared = Option.getOrNull(yield* threads.getById({ threadId }));
+      assert.strictEqual(cleared?.responderQueue, null);
     }),
   );
 });

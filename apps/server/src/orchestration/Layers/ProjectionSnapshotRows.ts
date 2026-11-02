@@ -36,6 +36,7 @@ import {
   ModelSelection,
   ProjectId,
   ThreadLinkedPullRequest,
+  ResponderQueue,
   ThreadId,
 } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
@@ -125,6 +126,7 @@ export const ProjectionThreadDbRowSchema = ProjectionThread.mapFields(
   Struct.assign({
     modelSelection: Schema.fromJsonString(ModelSelection),
     linkedPullRequest: Schema.NullOr(Schema.fromJsonString(ThreadLinkedPullRequest)),
+    responderQueue: Schema.NullOr(Schema.fromJsonString(ResponderQueue)),
   }),
 );
 

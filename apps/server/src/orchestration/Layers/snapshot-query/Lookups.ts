@@ -361,6 +361,9 @@ export function createLookups({
         ...(threadRow.value.linkedPullRequest === null
           ? {}
           : { linkedPullRequest: threadRow.value.linkedPullRequest }),
+        ...(threadRow.value.responderQueue === null
+          ? {}
+          : { responderQueue: threadRow.value.responderQueue }),
         latestTurn: Option.isSome(latestTurnRow) ? mapLatestTurn(latestTurnRow.value) : null,
         createdAt: threadRow.value.createdAt,
         updatedAt: threadRow.value.updatedAt,
