@@ -211,7 +211,7 @@ function parseBearerToken(
 export function selectRequestCredential(
   request: Pick<HttpServerRequest.HttpServerRequest, "cookies" | "headers">,
   cookieName: string,
-  legacyCookieName: string | undefined,
+  legacyCookieNames: ReadonlyArray<string>,
 ) {
   const cookieToken = request.cookies[cookieName];
 
@@ -225,10 +225,12 @@ export function selectRequestCredential(
     return { token: bearerToken, source: "bearer" } as const;
   }
 
-  const legacyToken = legacyCookieName ? request.cookies[legacyCookieName] : undefined;
+  for (const legacyCookieName of legacyCookieNames) {
+    const legacyToken = request.cookies[legacyCookieName];
 
-  if (legacyToken !== undefined) {
-    return { token: legacyToken, source: "legacy-cookie" } as const;
+    if (legacyToken !== undefined) {
+      return { token: legacyToken, source: "legacy-cookie" } as const;
+    }
   }
 
   return undefined;
@@ -296,7 +298,7 @@ export const make = Effect.gen(function* () {
     const credential = selectRequestCredential(
       request,
       sessions.cookieName,
-      sessions.legacyCookieName,
+      sessions.legacyCookieNames,
     );
 
     if (!credential?.token) {

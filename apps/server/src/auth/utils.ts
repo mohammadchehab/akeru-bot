@@ -9,7 +9,11 @@ import * as NodeCrypto from "node:crypto";
 import * as Encoding from "effect/Encoding";
 import * as Result from "effect/Result";
 
-const SESSION_COOKIE_NAME = "t3_session";
+const SESSION_COOKIE_NAME = "isnadi_session";
+
+// Sessions issued before the rename were stored under `t3_session` names. They are still read,
+// so an upgrade keeps everyone signed in, and re-issued under the new name.
+const LEGACY_SESSION_COOKIE_NAME = "t3_session";
 
 /**
  * Cookies are scoped by host but *not* by port, so any two servers that can be
@@ -23,16 +27,22 @@ const SESSION_COOKIE_NAME = "t3_session";
  * Desktop scans upward from 3773 for a free port and binds
  *   127.0.0.1, so a second instance lands on a different port and the same host.
  */
-export function resolveSessionCookieName(input: {
+export function resolveSessionCookieName(input: SessionCookieInput): string {
+  return sessionCookieNameWithPrefix(SESSION_COOKIE_NAME, input);
+}
+
+interface SessionCookieInput {
   readonly mode: "web" | "desktop";
   readonly port: number;
   readonly host: string | undefined;
   readonly instanceKey: string;
   readonly environmentId: string;
   readonly development: boolean;
-}): string {
+}
+
+function sessionCookieNameWithPrefix(prefix: string, input: SessionCookieInput): string {
   if (input.mode === "desktop") {
-    return `${SESSION_COOKIE_NAME}_${input.port}`;
+    return `${prefix}_${input.port}`;
   }
 
   const instanceHash = NodeCrypto.createHash("sha256")
@@ -45,23 +55,26 @@ export function resolveSessionCookieName(input: {
     .slice(0, 12);
 
   if (!input.development && isRemoteReachableHost(input.host)) {
-    return `${SESSION_COOKIE_NAME}_${instanceHash}`;
+    return `${prefix}_${instanceHash}`;
   }
 
   // Cookies are scoped by host, not port. Loopback development servers need an
   // instance-specific name or parallel agents overwrite each other's session,
   // and a server that later reuses the port receives a token signed elsewhere.
-  return `${SESSION_COOKIE_NAME}_${input.port}_${instanceHash}`;
+  return `${prefix}_${input.port}_${instanceHash}`;
 }
 
-export function resolveLegacySessionCookieName(input: {
-  readonly mode: "web" | "desktop";
-  readonly host: string | undefined;
-  readonly development: boolean;
-}): string | undefined {
+/**
+ * Older cookie names a request may still carry, newest first: the `t3_session` spelling of the
+ * current name, then the bare `t3_session` that remote web servers used before names were
+ * per-instance.
+ */
+export function resolveLegacySessionCookieNames(input: SessionCookieInput): string[] {
+  const renamed = sessionCookieNameWithPrefix(LEGACY_SESSION_COOKIE_NAME, input);
+
   return input.mode === "web" && !input.development && isRemoteReachableHost(input.host)
-    ? SESSION_COOKIE_NAME
-    : undefined;
+    ? [renamed, LEGACY_SESSION_COOKIE_NAME]
+    : [renamed];
 }
 
 export function isRemoteReachableHost(host: string | undefined): boolean {

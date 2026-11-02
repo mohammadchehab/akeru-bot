@@ -118,7 +118,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       assert.deepEqual(body.auth.sessionMethods, ["browser-session-cookie", "bearer-access-token"]);
       // Desktop, so port-scoped: instances scan for a free port and share
       // 127.0.0.1, and cookies are not scoped by port.
-      assert.isTrue(body.auth.sessionCookieName.startsWith("t3_session_"));
+      assert.isTrue(body.auth.sessionCookieName.startsWith("isnadi_session_"));
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
 
@@ -163,7 +163,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
 
       const { cookie } = yield* bootstrapBrowserSession();
       const currentCookie = cookie?.split(";")[0] ?? "";
-      const legacyCookie = currentCookie.replace(/^t3_session_[^=]+=/, "t3_session=");
+      const legacyCookie = currentCookie.replace(/^isnadi_session_[^=]+=/, "t3_session=");
       const sessionUrl = yield* getHttpServerUrl("/api/auth/session");
 
       const response = yield* fetchEffect(sessionUrl, {
@@ -175,6 +175,23 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       assert.equal(body.authenticated, true);
       assert.equal(response.headers["set-cookie"], cookie);
       assert.equal(response.headers["cache-control"], "no-store");
+    }).pipe(Effect.provide(NodeHttpServer.layerTest)),
+  );
+
+  it.effect("keeps a session issued under the old t3_session_<id> cookie name after upgrade", () =>
+    Effect.gen(function* () {
+      yield* buildAppUnderTest({ config: { mode: "web", host: "192.168.1.50" } });
+
+      const { cookie } = yield* bootstrapBrowserSession();
+      const currentCookie = cookie?.split(";")[0] ?? "";
+      const oldNamedCookie = currentCookie.replace(/^isnadi_session_/, "t3_session_");
+      const sessionUrl = yield* getHttpServerUrl("/api/auth/session");
+
+      const response = yield* fetchEffect(sessionUrl, { headers: { cookie: oldNamedCookie } });
+      const body = yield* responseJsonEffect<{ readonly authenticated: boolean }>(response);
+
+      assert.equal(body.authenticated, true);
+      assert.equal(response.headers["set-cookie"], cookie);
     }).pipe(Effect.provide(NodeHttpServer.layerTest)),
   );
 
