@@ -709,6 +709,9 @@ describe("group runtime stop", () => {
       ...shell,
       session: { status: "ready", activeTurnId: null },
       responderQueue: {
+        hopsLeft: 6,
+        reason: "addressed",
+        updatedAt: "2026-11-02T00:00:00.000Z",
         entries: [{ botId: "bot-2", trigger: { kind: "user", messageId: "message-1" } }],
       },
     };
