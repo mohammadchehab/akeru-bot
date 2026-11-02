@@ -114,3 +114,15 @@ case "$1" in -s) echo Linux;; -m) echo x86_64;; *) /usr/bin/uname "$@";; esac
   expect(result.stderr).not.toContain("--migrate-environment-id");
   NodeFS.rmSync(root, { recursive: true, force: true });
 });
+
+it("sets ISNADI_HOME for the Windows installer only after the elevated relaunch", () => {
+  const installer = NodeFS.readFileSync(new URL("./install-remote.ps1", import.meta.url), "utf8");
+  const relaunch = installer.indexOf("Start-Process powershell.exe -Verb RunAs");
+  const assignment = installer.indexOf("$env:ISNADI_HOME = $RuntimeHome");
+
+  // The elevated child inherits the parent's environment. If the parent had already set
+  // ISNADI_HOME, the child would treat the home as user-chosen and never move ~/.akeru.
+  expect(relaunch).toBeGreaterThan(-1);
+  expect(assignment).toBeGreaterThan(relaunch);
+  expect(installer.split("$env:ISNADI_HOME = $RuntimeHome").length - 1).toBe(1);
+});
