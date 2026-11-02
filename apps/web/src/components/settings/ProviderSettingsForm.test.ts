@@ -52,7 +52,13 @@ describe("ProviderSettingsForm helpers", () => {
 
     expect(kimi).toMatchObject({ label: "Kimi For Coding" });
     expect(deriveProviderSettingsFields(kimi!)).toEqual([]);
-    expect(DRIVER_OPTION_BY_VALUE[ProviderDriverKind.make("cursor")]).toBeUndefined();
+  });
+
+  it("registers Cursor in the provider picker with only its binary path configurable", () => {
+    const cursor = DRIVER_OPTION_BY_VALUE[ProviderDriverKind.make("cursor")];
+
+    expect(cursor).toMatchObject({ label: "Cursor" });
+    expect(deriveProviderSettingsFields(cursor!).map((field) => field.key)).toEqual(["binaryPath"]);
   });
 
   it("registers OpenCode Go in the provider picker", () => {
