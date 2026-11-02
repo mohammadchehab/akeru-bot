@@ -11,6 +11,7 @@ packages/*/dist
 .env
 .env.local
 build/
+!/dev-tasks/scripts/build/
 .logs/
 release/
 release-mock/

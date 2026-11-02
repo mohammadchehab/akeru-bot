@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+  default:
+    desc: "Start the server and web app (vp run dev)"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/dev.sh {{.CLI_ARGS}}"
+
+  server:
+    desc: "Start only the server"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/server.sh {{.CLI_ARGS}}"
+
+  web:
+    desc: "Start only the web app"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/web.sh {{.CLI_ARGS}}"
+
+  desktop:
+    desc: "Start the Electron desktop app in dev mode"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/desktop.sh {{.CLI_ARGS}}"
+
+  status:
+    desc: "Show this worktree's dev home, ports, and running servers"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/status.sh {{.CLI_ARGS}}"
+
+  fixture:
+    desc: "Seed a UI fixture (empty, populated, edge)"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/fixture.sh {{.CLI_ARGS}}"
+
+  migrate-db:
+    desc: "Rebuild the worktree dev DB from a pruned snapshot and migrate it"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/dev/migrate-db.sh {{.CLI_ARGS}}"

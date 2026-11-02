@@ -1,0 +1,62 @@
+version: "3"
+
+tasks:
+  dev:
+    desc: "Start Metro for the development client (LAN)"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/dev.sh {{.CLI_ARGS}}"
+
+  start:
+    desc: "Start Expo"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/start.sh {{.CLI_ARGS}}"
+
+  ios:
+    desc: "Prebuild and run the iOS app"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/ios.sh {{.CLI_ARGS}}"
+
+  ios-dev:
+    desc: "Prebuild and run the iOS development variant"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/ios-dev.sh {{.CLI_ARGS}}"
+
+  android:
+    desc: "Prebuild and run the Android app"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/android.sh {{.CLI_ARGS}}"
+
+  android-dev:
+    desc: "Prebuild and run the Android development variant"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/android-dev.sh {{.CLI_ARGS}}"
+
+  test:
+    desc: "Run the mobile unit tests"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/test.sh {{.CLI_ARGS}}"
+
+  typecheck:
+    desc: "Typecheck the mobile app"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/typecheck.sh {{.CLI_ARGS}}"
+
+  lint:
+    desc: "Run the mobile native static checks"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/lint.sh {{.CLI_ARGS}}"
+
+  screenshots:
+    desc: "Capture the mobile showcase screenshots"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/screenshots.sh {{.CLI_ARGS}}"
+
+  eas-dev:
+    desc: "Start an EAS development build"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/eas-dev.sh {{.CLI_ARGS}}"
+
+  eas-prod:
+    desc: "Start an EAS production build"
+    cmds:
+      - "{{.ROOT_DIR}}/dev-tasks/scripts/mobile/eas-prod.sh {{.CLI_ARGS}}"
