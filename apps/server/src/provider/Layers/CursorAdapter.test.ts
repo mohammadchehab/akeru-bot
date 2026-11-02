@@ -51,7 +51,7 @@ const withAdapter = <A, E>(
       const log = path.join(dir, "args.log");
       yield* fs.writeFileString(
         agent,
-        `#!/bin/sh\nfor a in "$@"; do printf '%s\\n' "$a" >> ${JSON.stringify(log)}; done\nprintf -- '--END--\\n' >> ${JSON.stringify(log)}\n${body}\n`,
+        `#!/bin/sh\nfor a in "$@"; do printf '%s\\n' "$a" >> ${JSON.stringify(log)}; done\nprintf -- '--END--\\n' >> ${JSON.stringify(log)}\ncat >> ${JSON.stringify(path.join(dir, "stdin.log"))}\nprintf -- '\\n--END--\\n' >> ${JSON.stringify(path.join(dir, "stdin.log"))}\n${body}\n`,
       );
       yield* fs.chmod(agent, 0o755);
 
@@ -174,8 +174,9 @@ describe("CursorAdapter", () => {
         });
         yield* Deferred.await(terminal);
 
-        const prompt = (yield* argvOfTurn(0)).join("\n");
+        const prompt = yield* fs.readFileString(path.join(dir, "stdin.log"));
 
+        expect((yield* argvOfTurn(0)).join(" ")).not.toContain("tea");
         expect(prompt).toContain("You are Sam. Remember: tea.");
         expect(prompt.indexOf("You are Sam")).toBeLessThan(prompt.indexOf("what now?"));
         expect(yield* fs.exists(path.join(dir, ".cursor"))).toBe(false);

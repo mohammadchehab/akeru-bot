@@ -28,10 +28,16 @@ const run = (body: string, interruptOn?: CursorTurnEvent["type"]) =>
       const path = yield* Path.Path;
       const dir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-cursor-turn-" });
       const agent = path.join(dir, "agent");
-      yield* fs.writeFileString(agent, `#!/bin/sh\n${body}\n`);
+      yield* fs.writeFileString(agent, `#!/bin/sh\ncat > /dev/null\n${body}\n`);
       yield* fs.chmod(agent, 0o755);
 
-      const turn = yield* startCursorTurn({ command: agent, args: ["-p"], cwd: dir, env: {} });
+      const turn = yield* startCursorTurn({
+        command: agent,
+        args: ["-p"],
+        cwd: dir,
+        env: {},
+        prompt: "the prompt text",
+      });
 
       const events: CursorTurnEvent[] = [];
       yield* turn.events.pipe(
@@ -52,6 +58,33 @@ const run = (body: string, interruptOn?: CursorTurnEvent["type"]) =>
   ).pipe(Effect.provide(NodeServices.layer));
 
 describe("startCursorTurn", () => {
+  it.effect("sends the prompt on stdin, whatever its size", () =>
+    Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
+      const path = yield* Path.Path;
+      const dir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-cursor-stdin-" });
+      const received = path.join(dir, "stdin.txt");
+      const agent = path.join(dir, "agent");
+      const big = "x".repeat(300_000);
+
+      yield* fs.writeFileString(agent, `#!/bin/sh\ncat > ${JSON.stringify(received)}\n`);
+      yield* fs.chmod(agent, 0o755);
+
+      const turn = yield* startCursorTurn({
+        command: agent,
+        args: [],
+        cwd: dir,
+        env: {},
+        prompt: big,
+      });
+
+      yield* Stream.runDrain(turn.events);
+      yield* turn.result;
+
+      expect(yield* fs.readFileString(received)).toBe(big);
+    }).pipe(Effect.scoped, Effect.provide(NodeServices.layer)),
+  );
+
   it.effect("streams a recorded turn and completes", () =>
     Effect.gen(function* () {
       const { events, result } = yield* run(`cat ${JSON.stringify(fixturePath)}`);

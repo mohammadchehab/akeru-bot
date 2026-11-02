@@ -15,7 +15,6 @@ export function cursorAccessFor(runtimeMode: RuntimeMode | undefined): CursorAcc
 
 export interface CursorTurnArgsInput {
   readonly cwd: string;
-  readonly prompt: string;
   readonly runtimeMode?: RuntimeMode | undefined;
   /** Omit for the provider default. Parameterised ids (`id[effort=high]`) pass through unchanged. */
   readonly model?: string | undefined;
@@ -34,8 +33,5 @@ export function buildCursorTurnArgs(input: CursorTurnArgsInput): ReadonlyArray<s
     ...(input.model ? ["--model", input.model] : []),
     ...(input.resumeSessionId ? ["--resume", input.resumeSessionId] : []),
     ...(cursorAccessFor(input.runtimeMode) === "full" ? ["--force"] : ["--mode", "ask"]),
-    // After `--` so a prompt that starts with a dash is not read as a flag.
-    "--",
-    input.prompt,
   ];
 }
