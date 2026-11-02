@@ -224,6 +224,19 @@ If IsnadiBot is useful to you, a ⭐ helps other people find it.
 
 ---
 
+## 👥 Contributors
+
+Thanks to everyone whose work is in IsnadiBot, including the Akeru Bot and T3 Code contributors
+whose commits this project is built on.
+
+<p align="center">
+  <a href="https://github.com/mohammadchehab/isnadibot/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=mohammadchehab/isnadibot&max=200&columns=12" alt="IsnadiBot contributors">
+  </a>
+</p>
+
+---
+
 ## 🙏 Credits
 
 IsnadiBot is a fork of [Akeru Bot](https://github.com/opencoredev/akeru-bot), which is itself a fork
