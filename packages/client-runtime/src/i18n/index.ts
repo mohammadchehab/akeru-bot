@@ -8,11 +8,18 @@ export {
   type MessageKey,
 } from "./types.ts";
 
-export { availableLanguages, catalogIdForLocale, resolveLocale } from "./locale.ts";
+export {
+  availableLanguages,
+  catalogIdForLocale,
+  directionForLocale,
+  resolveLocale,
+  type CatalogId,
+  type TextDirection,
+} from "./locale.ts";
 
 export { translate, plural, createTranslator } from "./translator.ts";
 
-export { formatNumber, formatDate } from "./formatters.ts";
+export { formatNumber, formatDate, formattingLocale } from "./formatters.ts";
 
 export { type CatalogRegistry, catalogRegistry, createCatalogLoader } from "./catalogLoader.ts";
 

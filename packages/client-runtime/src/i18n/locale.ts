@@ -30,18 +30,51 @@ function isSimplifiedChinese(locale: string): boolean {
   );
 }
 
-/** Catalog id for a canonical locale, or undefined when the locale is unsupported. */
-export function catalogIdForLocale(locale: string): "en" | "zh-CN" | undefined {
+export type CatalogId = (typeof availableLanguages)[number]["id"];
+
+/**
+ * Catalog id for a canonical locale, or undefined when the locale is unsupported. Every listed
+ * language answers to its base language (`ar-EG` → `ar`); Simplified Chinese needs its script rules.
+ */
+export function catalogIdForLocale(locale: string): CatalogId | undefined {
   const canonical = canonicalLocale(locale);
 
   if (!canonical) return undefined;
   const base = canonical.split("-")[0] ?? canonical;
 
-  if (base === "en") return "en";
-
   if (isSimplifiedChinese(canonical)) return "zh-CN";
 
-  return undefined;
+  return availableLanguages.find(
+    (language) => language.id !== "zh-CN" && language.id.split("-")[0] === base,
+  )?.id;
+}
+
+const RIGHT_TO_LEFT_LANGUAGES: ReadonlySet<string> = new Set([
+  "ar",
+  "fa",
+  "he",
+  "ur",
+  "ps",
+  "sd",
+  "ug",
+  "yi",
+  "dv",
+  "ckb",
+]);
+
+export type TextDirection = "ltr" | "rtl";
+
+/**
+ * Writing direction of a locale, from its base language. Not `Intl.Locale#getTextInfo`: Hermes
+ * lacks it and browsers disagree. An invalid tag reads as left-to-right.
+ */
+export function directionForLocale(locale: string): TextDirection {
+  const canonical = canonicalLocale(locale);
+
+  if (!canonical) return "ltr";
+  const base = canonical.split("-")[0] ?? canonical;
+
+  return RIGHT_TO_LEFT_LANGUAGES.has(base) ? "rtl" : "ltr";
 }
 
 export function resolveLocale(
