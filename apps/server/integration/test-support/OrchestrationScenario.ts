@@ -144,16 +144,6 @@ export function withHarness<A, E>(
   ).pipe(Effect.provide(NodeServices.layer));
 }
 
-export function withRealCodexHarness<A, E>(
-  use: (harness: OrchestrationIntegrationHarness) => Effect.Effect<A, E>,
-) {
-  return Effect.acquireUseRelease(
-    orchestrationIntegrationHarness({ provider: CODEX_PROVIDER, realCodex: true }),
-    use,
-    (harness) => harness.dispose,
-  ).pipe(Effect.provide(NodeServices.layer));
-}
-
 export function assertNoRevertFailure(thread: OrchestrationThread) {
   assert.equal(
     thread.activities.some((activity) => activity.kind === "checkpoint.revert.failed"),

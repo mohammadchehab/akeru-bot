@@ -1,6 +1,4 @@
-import * as Schema from "effect/Schema";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { CodexSettings, ProviderDriverKind } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as CheckpointStore from "../../src/checkpointing/CheckpointStore.ts";
@@ -26,7 +24,6 @@ import { EntityMemoryRepositoryLive } from "../../src/memory/Layers/EntityMemory
 import { MemoryRevisionWriteLockLive } from "../../src/memory/Services/MemoryRevisionWriteLock.ts";
 import { LegacyProviderBridgeLive } from "../../src/provider/Layers/LegacyProviderBridge.ts";
 import { ProviderServiceLive } from "../../src/provider/Layers/ProviderService.ts";
-import { makeCodexAdapter } from "../../src/provider/Layers/CodexAdapter.ts";
 import {
   NoOpProviderEventLoggers,
   ProviderEventLoggers,
@@ -54,29 +51,23 @@ import { GitWorkflowService } from "../../src/git/GitWorkflowService.ts";
 import * as VcsProcess from "../../src/vcs/VcsProcess.ts";
 import { BotUsageLedgerLive } from "../../src/usage/BotUsageLedger.ts";
 
-const decodeCodexSettings = Schema.decodeEffect(CodexSettings);
-
 export function createIntegrationLayers({
   adapterHarness,
   mastraHarness,
-  useRealCodex,
   dbPath,
   rootDir,
   workspaceDir,
 }: {
-  adapterHarness: TestProviderAdapterHarness | null;
+  adapterHarness: TestProviderAdapterHarness;
   mastraHarness: TestMastraHarness | null;
-  useRealCodex: boolean;
   dbPath: string;
   rootDir: string;
   workspaceDir: string;
 }) {
-  const fakeRegistry = adapterHarness
-    ? Layer.succeed(
-        ProviderAdapterRegistry,
-        adapterRegistryMock({ [adapterHarness.provider]: adapterHarness.adapter }),
-      )
-    : null;
+  const fakeRegistry = Layer.succeed(
+    ProviderAdapterRegistry,
+    adapterRegistryMock({ [adapterHarness.provider]: adapterHarness.adapter }),
+  );
 
   const persistenceLayer = sqlitePersistenceLayer(dbPath);
 
@@ -95,37 +86,14 @@ export function createIntegrationLayers({
     Layer.provide(ProviderSessionRuntimeRepositoryLive),
   );
 
-  const realCodexRegistry = Layer.effect(
-    ProviderAdapterRegistry,
-    Effect.gen(function* () {
-      const codexSettings = yield* decodeCodexSettings({});
-      const codexAdapter = yield* makeCodexAdapter(codexSettings);
-
-      return adapterRegistryMock({
-        [ProviderDriverKind.make("codex")]: codexAdapter,
-      });
-    }),
-  ).pipe(
-    Layer.provideMerge(ServerConfig.layerTest(workspaceDir, rootDir)),
-    Layer.provideMerge(NodeServices.layer),
-    Layer.provideMerge(providerSessionDirectoryLayer),
-  );
-
   const providerEventLoggersLayer = Layer.succeed(ProviderEventLoggers, NoOpProviderEventLoggers);
 
-  const providerLayer = useRealCodex
-    ? ProviderServiceLive.pipe(
-        Layer.provide(providerSessionDirectoryLayer),
-        Layer.provide(realCodexRegistry),
-        Layer.provide(AnalyticsService.layerTest),
-        Layer.provide(providerEventLoggersLayer),
-      )
-    : ProviderServiceLive.pipe(
-        Layer.provide(providerSessionDirectoryLayer),
-        Layer.provide(fakeRegistry!),
-        Layer.provide(AnalyticsService.layerTest),
-        Layer.provide(providerEventLoggersLayer),
-      );
+  const providerLayer = ProviderServiceLive.pipe(
+    Layer.provide(providerSessionDirectoryLayer),
+    Layer.provide(fakeRegistry),
+    Layer.provide(AnalyticsService.layerTest),
+    Layer.provide(providerEventLoggersLayer),
+  );
 
   const legacyProviderLayer = LegacyProviderBridgeLive.pipe(Layer.provide(providerLayer));
 
