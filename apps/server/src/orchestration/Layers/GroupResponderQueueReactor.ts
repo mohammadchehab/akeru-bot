@@ -1,6 +1,7 @@
 import {
   CommandId,
   type BotId,
+  type MessageId,
   type OrchestrationCommand,
   type OrchestrationEvent,
   type ThreadId,
@@ -46,8 +47,16 @@ const make = Effect.gen(function* () {
   // Memory only: a restart between the reply and the session ending drops that hand-over.
   const lastReply = new Map<
     ThreadId,
-    { readonly turnId: TurnId; readonly botId: BotId; readonly text: string }
+    { readonly turnId: TurnId; readonly botId: BotId; readonly messageId: MessageId }
   >();
+
+  // Threads whose last seen session status is not running. `turn.completed` sets the session ready
+  // before it flushes the turn's last message, so a reply can finish after the session has ended.
+  const idle = new Set<ThreadId>();
+
+  // Messages still streaming whose deltas so far contain an "@". A provider streams the text and
+  // then finishes the message with no text, so the finished event cannot say who was mentioned.
+  const streamingMentions = new Map<MessageId, ThreadId>();
 
   const dispatchCommand = (
     threadId: ThreadId,
@@ -95,7 +104,7 @@ const make = Effect.gen(function* () {
           threadId,
           turnId: reply.turnId,
           botId: reply.botId,
-          text: reply.text,
+          messageId: reply.messageId,
           ...input,
         }));
       }
@@ -128,6 +137,11 @@ const make = Effect.gen(function* () {
     if (event.type === "thread.deleted") {
       queued.delete(event.payload.threadId);
       lastReply.delete(event.payload.threadId);
+      idle.delete(event.payload.threadId);
+
+      for (const [messageId, threadId] of streamingMentions) {
+        if (threadId === event.payload.threadId) streamingMentions.delete(messageId);
+      }
 
       return Effect.void;
     }
@@ -137,22 +151,33 @@ const make = Effect.gen(function* () {
     if (event.type === "thread.message-sent") {
       const message = event.payload;
 
+      if (message.role !== "assistant") return Effect.void;
+
+      if (message.streaming) {
+        if (message.text.includes("@")) streamingMentions.set(message.messageId, message.threadId);
+
+        return Effect.void;
+      }
+
+      const streamedMention = streamingMentions.delete(message.messageId);
+
       if (
-        message.role === "assistant" &&
-        !message.streaming &&
+        (streamedMention || message.text.includes("@")) &&
         message.turnId !== null &&
         message.respondingBotId !== undefined &&
-        message.respondingBotId !== null &&
-        message.text.includes("@")
+        message.respondingBotId !== null
       ) {
         lastReply.set(message.threadId, {
           turnId: message.turnId,
           botId: message.respondingBotId,
-          text: message.text,
+          messageId: message.messageId,
         });
-      } else if (message.role === "assistant" && !message.streaming) {
-        lastReply.delete(message.threadId);
+
+        // No session event will follow a reply that finished after the session ended.
+        return idle.has(message.threadId) ? worker.enqueue(message.threadId) : Effect.void;
       }
+
+      lastReply.delete(message.threadId);
 
       return Effect.void;
     }
@@ -163,6 +188,9 @@ const make = Effect.gen(function* () {
     // provider that fails to start goes starting -> error). The decider ignores the request
     // while the started turn is still in flight, so asking early is harmless.
     const threadId = event.payload.threadId;
+
+    if (event.payload.session.status === "running") idle.delete(threadId);
+    else idle.add(threadId);
 
     return event.payload.session.status !== "running" &&
       (queued.has(threadId) || lastReply.has(threadId))

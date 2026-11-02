@@ -217,7 +217,8 @@ const ThreadResponderAdvanceCommand = Schema.Struct({
 
 /**
  * A group bot's finished reply, handed to the decider so the bots it mentions can be queued. The
- * reply text travels only on this internal command; the persisted event carries the resolved bots.
+ * decider reads the reply's text from the thread's messages, where the projector has joined the
+ * streamed deltas; the persisted event carries the resolved bots.
  */
 const ThreadResponderMentionCommand = Schema.Struct({
   type: Schema.Literal("thread.responder.mention"),
@@ -225,7 +226,7 @@ const ThreadResponderMentionCommand = Schema.Struct({
   threadId: ThreadId,
   turnId: TurnId,
   botId: BotId,
-  text: Schema.String,
+  messageId: MessageId,
   createdAt: IsoDateTime,
 });
 
