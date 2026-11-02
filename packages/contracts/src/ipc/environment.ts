@@ -53,10 +53,16 @@ export const DesktopEnvironmentBootstrapSchema = Schema.Struct({
   bootstrapToken: Schema.optionalKey(Schema.String),
 });
 
+// ssh parses a destination that starts with "-" as an option (`-oProxyCommand=...`), and
+// whitespace or control characters can smuggle in extra arguments or terminal escapes.
+export const SSH_TARGET_TOKEN_PATTERN = /^(?!-)[^\s\p{Cc}]*$/u;
+
+const SshTargetToken = Schema.String.check(Schema.isPattern(SSH_TARGET_TOKEN_PATTERN));
+
 export const DesktopSshEnvironmentTargetSchema = Schema.Struct({
-  alias: Schema.String,
-  hostname: Schema.String,
-  username: Schema.NullOr(Schema.String),
+  alias: SshTargetToken,
+  hostname: SshTargetToken,
+  username: Schema.NullOr(SshTargetToken),
   port: Schema.NullOr(Schema.Number),
 });
 

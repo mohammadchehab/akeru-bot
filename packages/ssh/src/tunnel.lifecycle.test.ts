@@ -41,7 +41,7 @@ describe("ssh tunnel scripts", () => {
             });
           }
 
-          if (args.includes("sh") && args.includes("--")) {
+          if (args.includes("sh") && args.includes("-l")) {
             return makeSuccessfulProcess('{"remotePort":3773}\n');
           }
 
@@ -174,7 +174,7 @@ describe("ssh tunnel scripts", () => {
               return tunnel;
             }
 
-            if (args.includes("--")) {
+            if (args.includes("-l")) {
               if (isTarget) {
                 launches += 1;
                 remoteRunning = true;

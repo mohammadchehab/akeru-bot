@@ -285,6 +285,7 @@ export {
   type DesktopEnvironmentBootstrap,
   DesktopEnvironmentBootstrapSchema,
   DesktopSshEnvironmentTargetSchema,
+  SSH_TARGET_TOKEN_PATTERN,
   type DesktopSshEnvironmentTarget,
   type DesktopSshHostSource,
   DesktopSshHostSourceSchema,
