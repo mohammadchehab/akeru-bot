@@ -38,7 +38,7 @@ export function SettingsRow(props: {
       <View className="min-w-0 flex-1 items-end">
         {props.value ? (
           <Text
-            className="max-w-[180px] text-right text-base text-foreground-muted"
+            className="max-w-[180px] text-end text-base text-foreground-muted"
             ellipsizeMode="middle"
             numberOfLines={1}
           >

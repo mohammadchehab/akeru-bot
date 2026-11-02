@@ -82,7 +82,8 @@ import {
   IconX,
   type Icon,
 } from "@tabler/icons-react-native";
-import { Platform } from "react-native";
+import { I18nManager, Platform } from "react-native";
+import { mirroredInRtl } from "./symbolDirection";
 import { SymbolView as ExpoSymbolView, type SFSymbol, type SymbolViewProps } from "expo-symbols";
 
 const ANDROID_ICON_BY_SF_SYMBOL: Partial<Record<SFSymbol, Icon>> = {
@@ -221,7 +222,10 @@ export function SymbolView(props: SymbolViewProps) {
       color={props.tintColor}
       size={props.size}
       strokeWidth={2}
-      style={props.style}
+      style={[
+        props.style,
+        mirroredInRtl(sfSymbol, I18nManager.isRTL) && { transform: [{ scaleX: -1 }] },
+      ]}
       testID={props.testID}
     />
   );

@@ -102,7 +102,7 @@ export function ArchivedThreadRow(props: {
               >
                 {props.thread.title}
               </Text>
-              <Text className="min-w-[30px] text-right text-xs tabular-nums text-foreground-tertiary">
+              <Text className="min-w-[30px] text-end text-xs tabular-nums text-foreground-tertiary">
                 {timestamp}
               </Text>
             </View>
