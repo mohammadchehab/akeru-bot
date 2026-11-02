@@ -11,6 +11,7 @@ import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
+import type * as PlatformError from "effect/PlatformError";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { makeCursorAdapter } from "./CursorAdapter.ts";
@@ -43,7 +44,7 @@ const withAdapter = <A, E>(
     readonly dir: string;
     readonly argvOfTurn: (
       index: number,
-    ) => Effect.Effect<ReadonlyArray<string>, unknown, FileSystem.FileSystem>;
+    ) => Effect.Effect<ReadonlyArray<string>, PlatformError.PlatformError, FileSystem.FileSystem>;
     readonly events: ProviderRuntimeEvent[];
     readonly terminal: Deferred.Deferred<void>;
     readonly sessionSeen: Deferred.Deferred<void>;
