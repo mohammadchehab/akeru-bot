@@ -14,7 +14,7 @@ The installers download a release manifest, verify its detached signature and SH
 install the runtime below `~/.local/share/isnadi` (or the configured install root), and register a
 per-user service. Use `--no-tailscale` when Tailscale is managed separately. Isnadi state lives in
 `ISNADI_HOME`, or `~/.isnadi` when it is unset. The installers, the `isnadi` launcher, and the admin
-helpers derive the server's `T3CODE_HOME` from that value, so an ambient T3 Code home is never used.
+helpers pass that value to the server as `ISNADI_HOME`. The server ignores `T3CODE_HOME`, so an ambient T3 Code home is never used.
 Pass `--base-dir PATH` to an `isnadi` server command to choose another directory explicitly.
 
 ```sh

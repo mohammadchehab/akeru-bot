@@ -460,16 +460,19 @@ export function runDevRunnerWithInput(input: DevRunnerCliInput) {
     const hostEnvironment = yield* HostProcessEnvironment;
     // A dev server started inside a worktree defaults to that worktree's own
     // (gitignored) `.isnadi` — see @isnadi/shared/devHome for why this must
-    // outrank an ambient T3CODE_HOME. `--home-dir` still wins.
+    // outrank an inherited ISNADI_HOME. `--home-dir` still wins.
     const worktreeHome = yield* resolveWorktreeT3Home(yield* HostProcessWorkingDirectory);
 
     // Trim before choosing: `--home-dir ""` is not a selection, and treating it
     // as one would skip the worktree default and land on the shared home —
     // exactly the outcome this precedence exists to prevent.
-    const resolvedT3Home =
-      (input.t3Home?.trim() || undefined) ??
-      worktreeHome ??
-      (hostEnvironment.T3CODE_HOME?.trim() || undefined);
+    const resolvedT3Home = (input.t3Home?.trim() || undefined) ?? worktreeHome;
+
+    if (hostEnvironment.T3CODE_HOME?.trim()) {
+      yield* Effect.logWarning(
+        "T3CODE_HOME is set but the dev runner ignores it; pass --home-dir to choose the data directory.",
+      );
+    }
 
     const env = yield* createDevRunnerEnv({
       mode: input.mode,
@@ -490,7 +493,7 @@ export function runDevRunnerWithInput(input: DevRunnerCliInput) {
         ? ` selectedOffset(server=${serverOffset},web=${webOffset})`
         : "";
 
-    const baseDir = env.T3CODE_HOME ?? (yield* DEFAULT_T3_HOME);
+    const baseDir = env.ISNADI_HOME ?? (yield* DEFAULT_T3_HOME);
 
     yield* Effect.logInfo(
       `[dev-runner] mode=${input.mode} source=${source}${selectionSuffix} serverPort=${String(env.T3CODE_PORT)} webPort=${String(env.PORT)} baseDir=${baseDir}`,
@@ -654,7 +657,7 @@ const devRunnerCli = Command.make("dev-runner", {
   ),
   t3Home: Flag.string("home-dir").pipe(
     Flag.withDescription(
-      "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to T3CODE_HOME). Inside a git worktree this defaults to that worktree's own .isnadi so dev state stays off the shared home.",
+      "Explicit IsnadiBot data directory; runtime state is stored under userdata (equivalent to ISNADI_HOME). Inside a git worktree this defaults to that worktree's own .isnadi so dev state stays off the shared home.",
     ),
     Flag.optional,
     Flag.map(Option.getOrUndefined),

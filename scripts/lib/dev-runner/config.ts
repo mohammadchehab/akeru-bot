@@ -210,7 +210,7 @@ export function createDevRunnerEnv({
   return Effect.gen(function* () {
     const serverPort = port ?? BASE_SERVER_PORT + serverOffset;
     const webPort = BASE_WEB_PORT + webOffset;
-    // Precedence (--home-dir > worktree .isnadi > ambient T3CODE_HOME) is resolved
+    // Precedence (--home-dir > worktree .isnadi) is resolved
     // by the caller; an unset t3Home here genuinely means "use the default".
     const configuredBaseDir = t3Home?.trim() || undefined;
     const resolvedBaseDir = yield* resolveBaseDir(configuredBaseDir);
@@ -224,16 +224,15 @@ export function createDevRunnerEnv({
         `http://${isDesktopMode ? DESKTOP_DEV_LOOPBACK_HOST : "localhost"}:${webPort}`,
     };
 
-    // The server reads ISNADI_HOME (and the AKERU_HOME it was migrated from) ahead of
-    // T3CODE_HOME, so an inherited one would outrank the worktree or --home-dir choice
-    // and point the dev server at the live install.
+    // An inherited ISNADI_HOME (or the AKERU_HOME it was migrated from) would outrank the
+    // worktree or --home-dir choice and point the dev server at the live install. T3CODE_HOME
+    // is T3 Code's own variable: the server ignores it, and it is not passed on.
     delete output.ISNADI_HOME;
     delete output.AKERU_HOME;
+    delete output.T3CODE_HOME;
 
     if (configuredBaseDir !== undefined) {
-      output.T3CODE_HOME = resolvedBaseDir;
-    } else {
-      delete output.T3CODE_HOME;
+      output.ISNADI_HOME = resolvedBaseDir;
     }
 
     // A dev-runner server is never launcher-managed. When the shell that runs

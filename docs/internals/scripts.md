@@ -40,7 +40,7 @@ authenticated.
 ### Dev state directories
 
 - Dev commands run from a linked **git worktree** default to that worktree's gitignored `.isnadi`, even
-  when `T3CODE_HOME` is set, storing state in `<worktree>/.isnadi/userdata`. Pass `--home-dir <path>` to
+  when `ISNADI_HOME` is set, storing state in `<worktree>/.isnadi/userdata`. Pass `--home-dir <path>` to
   choose another isolated directory explicitly. Submodules are not worktrees and keep the normal
   precedence.
 - From the **main checkout**, dev commands implicitly use `~/.isnadi/dev`, keeping development state
@@ -57,8 +57,8 @@ The command uses the existing `server-runtime.json`; it does not scan ports or c
 - Reports the checkout root, linked worktree, Isnadi home, data directory, recorded server and web
   origins, trace path, and missing local prerequisites.
 - Uses the same worktree home helper as the dev runner. An explicit `--home-dir` wins, then the
-  worktree home, then `T3CODE_HOME`. The implicit main-checkout fallback is `~/.isnadi/dev`.
-  Explicit and worktree homes use `userdata`. `ISNADI_HOME` is not a dev-runner override.
+  worktree home. The implicit main-checkout fallback is `~/.isnadi/dev`.
+  Explicit and worktree homes use `userdata`. Neither `ISNADI_HOME` nor `T3CODE_HOME` is a dev-runner override: the server and the dev tools never read `T3CODE_HOME`, which is T3 Code's own variable.
 - Checks the recorded PID without sending a signal. Missing or stale runtime files remain unchanged.
   Recorded origins from stale files are historical, not proof that a server is running.
 - Makes credential-free HTTP HEAD checks only on loopback. It does not follow redirects or contact

@@ -75,7 +75,7 @@ describe("desktop atomic writes", () => {
               Layer.provide(
                 Layer.mergeAll(
                   NodeServices.layer,
-                  DesktopConfig.layerTest({ T3CODE_HOME: baseDir }),
+                  DesktopConfig.layerTest({ ISNADI_HOME: baseDir }),
                 ),
               ),
             );

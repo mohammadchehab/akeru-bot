@@ -91,6 +91,13 @@ chat.
 Claude and Grok use their provider adapters. OpenCode Go uses Isnadi's Mastra-based runtime.
 Both paths keep provider-specific session and permission behavior behind the same Isnadi chat interface.
 
+## Where Isnadi keeps your data
+
+Isnadi keeps chats, bots, settings and logs in `~/.isnadi`. To use another folder, set `ISNADI_HOME`
+before you start Isnadi. Isnadi ignores `T3CODE_HOME`, which belongs to T3 Code, so a T3 Code
+setup on the same machine never makes Isnadi open its data. If `T3CODE_HOME` is set and
+`ISNADI_HOME` is not, Isnadi logs one warning and still uses `~/.isnadi`.
+
 ## Next steps
 
 - [Configure bots](./bots.md)

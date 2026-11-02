@@ -54,7 +54,7 @@ function resolveEarlyDesktopSettingsPath(input: {
   readonly joinPath: JoinPath;
   readonly exists: (path: string) => boolean;
 }): string {
-  const t3Home = Option.fromUndefinedOr(input.env.ISNADI_HOME ?? input.env.T3CODE_HOME);
+  const t3Home = Option.fromUndefinedOr(input.env.ISNADI_HOME);
 
   const baseDir = resolveDesktopBaseDir({
     defaultBaseDir: findProductHomeDir(input),

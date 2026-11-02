@@ -195,7 +195,6 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
                       env: {
                         ...environment,
                         ISNADI_HOME: serverConfig.baseDir,
-                        T3CODE_HOME: serverConfig.baseDir,
                         ISNADI_INSTALL_ROOT: installRoot,
                         ISNADI_BIN_DIR: path.join(installRoot, "bin"),
                       },
