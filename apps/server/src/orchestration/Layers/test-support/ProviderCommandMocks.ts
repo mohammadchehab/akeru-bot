@@ -64,6 +64,7 @@ export type ProviderCommandHarnessOptions = {
   readonly disabledEngine?: boolean;
   readonly composioResolveRuntimeMcpServer?: ComposioServiceShape["resolveRuntimeMcpServer"];
   readonly enableAgentBrowserAccess?: boolean;
+  readonly botSandboxBrowserSharing?: "shared" | "separate";
   readonly startReactor?: boolean;
   readonly dispatchDelegation?: AgentControllerShape["dispatchDelegation"];
 };

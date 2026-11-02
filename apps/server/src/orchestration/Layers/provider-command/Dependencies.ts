@@ -1,4 +1,10 @@
-import { CommandId, EventId, type ModelSelection, type McpServer } from "@isnadi/contracts";
+import {
+  CommandId,
+  EventId,
+  type BotId,
+  type ModelSelection,
+  type McpServer,
+} from "@isnadi/contracts";
 import * as Cache from "effect/Cache";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
@@ -110,6 +116,8 @@ export const createDependencies = Effect.fn("makeprovider-command-Dependencies")
 
   const threadBotWorkspaceKeys = new Map<string, string>();
 
+  const threadSessionBotIds = new Map<string, BotId | null>();
+
   const threadMcpServers = new Map<string, readonly McpServer[]>();
 
   const threadsAwaitingRestrictiveSessionCleanup = new Set<string>();
@@ -136,6 +144,7 @@ export const createDependencies = Effect.fn("makeprovider-command-Dependencies")
     hasHandledTurnRequestRecently,
     threadModelSelections,
     threadBotWorkspaceKeys,
+    threadSessionBotIds,
     threadMcpServers,
     threadsAwaitingRestrictiveSessionCleanup,
   };
