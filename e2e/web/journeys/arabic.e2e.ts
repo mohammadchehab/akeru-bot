@@ -145,6 +145,10 @@ describe.skipIf(!arabicShips)("Arabic interface", () => {
     const direction = (locator: typeof arabic) =>
       locator.evaluate((element) => getComputedStyle(element).direction);
 
+    // A sent message resolves direction per paragraph, like the composer it was typed in.
+    expect(await arabic.getAttribute("dir")).toBe("auto");
+    expect(await english.getAttribute("dir")).toBe("auto");
+
     expect(await direction(arabic)).toBe("rtl");
     expect(await direction(english)).toBe("ltr");
 
