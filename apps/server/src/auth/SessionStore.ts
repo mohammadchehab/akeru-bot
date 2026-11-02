@@ -25,7 +25,7 @@ import * as ServerSecretStore from "./ServerSecretStore.ts";
 import {
   base64UrlDecodeUtf8,
   base64UrlEncode,
-  resolveLegacySessionCookieName,
+  resolveLegacySessionCookieNames,
   resolveSessionCookieName,
   signPayload,
   timingSafeEqualBase64Url,
@@ -76,7 +76,7 @@ export class SessionStore extends Context.Service<
   SessionStore,
   {
     readonly cookieName: string;
-    readonly legacyCookieName: string | undefined;
+    readonly legacyCookieNames: ReadonlyArray<string>;
     readonly issue: (input?: {
       readonly ttl?: Duration.Duration;
       readonly subject?: string;
@@ -143,7 +143,7 @@ export const make = Effect.gen(function* () {
   } as const;
 
   const cookieName = resolveSessionCookieName(cookieInput);
-  const legacyCookieName = resolveLegacySessionCookieName(cookieInput);
+  const legacyCookieNames = resolveLegacySessionCookieNames(cookieInput);
 
   const emitUpsert = (clientSession: AuthClientSession) =>
     PubSub.publish(changesPubSub, {
@@ -627,7 +627,7 @@ export const make = Effect.gen(function* () {
 
   return SessionStore.of({
     cookieName,
-    legacyCookieName,
+    legacyCookieNames,
     issue,
     verify,
     issueWebSocketToken,

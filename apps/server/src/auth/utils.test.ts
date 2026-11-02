@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   deriveAuthClientMetadata,
   isRemoteReachableHost,
-  resolveLegacySessionCookieName,
+  resolveLegacySessionCookieNames,
   resolveSessionCookieName,
 } from "./utils.ts";
 
@@ -78,8 +78,8 @@ describe("session cookie isolation", () => {
       development: true,
     });
 
-    expect(first).toMatch(/^t3_session_5775_[a-f0-9]{12}$/);
-    expect(second).toMatch(/^t3_session_5775_[a-f0-9]{12}$/);
+    expect(first).toMatch(/^isnadi_session_5775_[a-f0-9]{12}$/);
+    expect(second).toMatch(/^isnadi_session_5775_[a-f0-9]{12}$/);
     expect(first).not.toBe(second);
   });
 
@@ -102,8 +102,8 @@ describe("session cookie isolation", () => {
       development: false,
     });
 
-    expect(first).toMatch(/^t3_session_[a-f0-9]{12}$/);
-    expect(second).toMatch(/^t3_session_[a-f0-9]{12}$/);
+    expect(first).toMatch(/^isnadi_session_[a-f0-9]{12}$/);
+    expect(second).toMatch(/^isnadi_session_[a-f0-9]{12}$/);
     expect(first).not.toBe(second);
   });
 
@@ -139,7 +139,7 @@ describe("session cookie isolation", () => {
         environmentId: "environment-one",
         development: true,
       }),
-    ).toBe("t3_session_3773");
+    ).toBe("isnadi_session_3773");
   });
 
   it("isolates development servers even when they bind a wildcard host", () => {
@@ -152,24 +152,36 @@ describe("session cookie isolation", () => {
         environmentId: "environment-one",
         development: true,
       }),
-    ).toMatch(/^t3_session_5775_[a-f0-9]{12}$/);
+    ).toMatch(/^isnadi_session_5775_[a-f0-9]{12}$/);
   });
 
-  it("exposes the legacy remote web cookie name for migration", () => {
+  it("lists every cookie name an upgrade must still accept, newest first", () => {
+    const remote = {
+      mode: "web",
+      port: 3773,
+      host: "192.168.1.50",
+      instanceKey: "/tmp/state",
+      environmentId: "environment-one",
+      development: false,
+    } as const;
+
+    const [renamed, bare] = resolveLegacySessionCookieNames(remote);
+    expect(renamed).toBe(resolveSessionCookieName(remote).replace(/^isnadi_session/, "t3_session"));
+    expect(renamed).toMatch(/^t3_session_[a-f0-9]{12}$/);
+    expect(bare).toBe("t3_session");
+
     expect(
-      resolveLegacySessionCookieName({
-        mode: "web",
-        host: "192.168.1.50",
-        development: false,
-      }),
-    ).toBe("t3_session");
-    expect(
-      resolveLegacySessionCookieName({
+      resolveLegacySessionCookieNames({
+        ...remote,
         mode: "desktop",
         host: "127.0.0.1",
         development: true,
       }),
-    ).toBeUndefined();
+    ).toEqual(["t3_session_3773"]);
+
+    expect(
+      resolveLegacySessionCookieNames({ ...remote, host: "127.0.0.1", development: true })[0],
+    ).toMatch(/^t3_session_3773_[a-f0-9]{12}$/);
   });
 
   it("classifies loopback aliases separately from remotely reachable hosts", () => {

@@ -253,7 +253,7 @@ export const authHttpApiLayer = HttpApiBuilder.group(
             const credential = EnvironmentAuth.selectRequestCredential(
               request,
               sessions.cookieName,
-              sessions.legacyCookieName,
+              sessions.legacyCookieNames,
             );
 
             if (

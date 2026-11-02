@@ -142,7 +142,7 @@ it.layer(NodeServices.layer)("EnvironmentAuth.layer", (it) => {
       const bearer = yield* serverAuth.issueSession();
 
       const verified = yield* serverAuth.authenticateHttpRequest({
-        cookies: { [sessions.legacyCookieName ?? "t3_session"]: "stale" },
+        cookies: { [sessions.legacyCookieNames[0] ?? "t3_session"]: "stale" },
         headers: { authorization: `Bearer ${bearer.token}` },
       } as never);
 
