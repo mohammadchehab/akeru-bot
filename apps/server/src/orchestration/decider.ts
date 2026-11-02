@@ -90,6 +90,7 @@ export const decideOrchestrationCommand = Effect.fn("decideOrchestrationCommand"
     case "thread.meta.update":
     case "thread.runtime-mode.set":
     case "thread.interaction-mode.set":
+    case "thread.hop-budget.set":
     case "thread.voice-transcript.append":
     case "thread.message.reaction.set":
     case "thread.turn.interrupt":
@@ -180,6 +181,7 @@ export const decideOrchestrationCommand = Effect.fn("decideOrchestrationCommand"
     case "thread.title.regeneration.complete":
     case "thread.runtime-mode.set":
     case "thread.interaction-mode.set":
+    case "thread.hop-budget.set":
     case "thread.channel-delivery.set":
     case "thread.history.restore":
       return yield* decideThreadLifecycle({
@@ -198,6 +200,7 @@ export const decideOrchestrationCommand = Effect.fn("decideOrchestrationCommand"
       });
     case "thread.turn.start":
     case "thread.responder.advance":
+    case "thread.responder.mention":
     case "thread.turn.resume":
     case "thread.turn.interrupt":
     case "thread.approval.respond":

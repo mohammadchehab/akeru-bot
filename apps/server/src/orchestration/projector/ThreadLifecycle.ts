@@ -9,6 +9,7 @@ import {
   ThreadCreatedPayload,
   ThreadOwnershipUpdatedPayload,
   ThreadDeletedPayload,
+  ThreadHopBudgetSetPayload,
   ThreadInteractionModeSetPayload,
   ThreadMetaUpdatedPayload,
   ThreadRuntimeModeSetPayload,
@@ -253,6 +254,16 @@ export function projectThreadLifecycle(
           }),
         })),
       );
+    case "thread.hop-budget-set":
+      return decodeForEvent(ThreadHopBudgetSetPayload, event.payload, event.type, "payload").pipe(
+        Effect.map((payload) => ({
+          ...nextBase,
+          threads: updateThread(nextBase.threads, payload.threadId, {
+            hopBudget: payload.hopBudget,
+            updatedAt: payload.updatedAt,
+          }),
+        })),
+      );
     case "thread.interaction-mode-set":
       return decodeForEvent(
         ThreadInteractionModeSetPayload,
@@ -282,6 +293,7 @@ export function projectThreadLifecycle(
               entries: payload.entries,
               hopsLeft: payload.hopsLeft,
               hopsUsed: payload.hopsUsed,
+              ...(payload.budgetExhausted ? { budgetExhausted: true } : {}),
               reason: payload.reason,
               updatedAt: payload.updatedAt,
             },

@@ -267,6 +267,7 @@ const makeOrchestrationProjectionPipeline = Effect.fn("makeOrchestrationProjecti
           "thread.runtime-mode-set",
           "thread.interaction-mode-set",
           "thread.responder-queue.set",
+          "thread.hop-budget-set",
           "thread.deleted",
           "thread.turn-start-requested",
           "thread.message-sent",

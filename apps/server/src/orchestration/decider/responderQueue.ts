@@ -1,5 +1,5 @@
 import {
-  MessageId,
+  GROUP_HOP_BUDGET_DEFAULT,
   ProviderInstanceId,
   type CommandId,
   type OrchestrationCommand,
@@ -17,10 +17,8 @@ import type * as PlatformError from "effect/PlatformError";
 
 import { requireThread } from "../commandInvariants.ts";
 import type { OrchestrationCommandInvariantError } from "../Errors.ts";
+import { botReplyMentionText, resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { activeGroupBotIds, withEventBase } from "./eventBase.ts";
-
-// Bot turns allowed per user message; every user message starts a fresh budget.
-export const GROUP_HOP_BUDGET = 6;
 
 /** What a queue event says about the budget; the decider keeps both numbers true at each turn start. */
 export interface ResponderBudget {
@@ -28,11 +26,20 @@ export interface ResponderBudget {
   readonly hopsUsed: number;
 }
 
-/** The budget after a user message has started its first bot turn. */
-export const BUDGET_AFTER_FIRST_TURN: ResponderBudget = {
-  hopsLeft: GROUP_HOP_BUDGET - 1,
+/**
+ * The budget after a user message has started its first bot turn. The chat's setting is read when
+ * the message is decided, so changing it mid-chain applies from the next user message.
+ */
+export const budgetAfterFirstTurn = (thread: OrchestrationThread): ResponderBudget => ({
+  hopsLeft: (thread.hopBudget ?? GROUP_HOP_BUDGET_DEFAULT) - 1,
   hopsUsed: 1,
-};
+});
+
+/** The budget a queue carries; a queue written before hopsUsed existed counts as none used. */
+export const budgetOf = (queue: ResponderQueue): ResponderBudget => ({
+  hopsLeft: queue.hopsLeft,
+  hopsUsed: queue.hopsUsed ?? 0,
+});
 
 /** The budget after the queue starts one more turn. Addressed bots always run, so it floors at 0. */
 export const budgetAfterTurnStarted = (queue: ResponderBudget): ResponderBudget => ({
@@ -48,6 +55,8 @@ export const responderQueueSetEvent = Effect.fn("responderQueueSetEvent")(functi
   readonly causationEventId?: OrchestrationEvent["eventId"];
   readonly entries: ReadonlyArray<ResponderQueueEntry>;
   readonly budget: ResponderBudget;
+  /** Copied from the queue being replaced; a user message starts without it. */
+  readonly budgetExhausted?: boolean | undefined;
   readonly reason: ResponderQueueReason;
 }) {
   return {
@@ -64,6 +73,7 @@ export const responderQueueSetEvent = Effect.fn("responderQueueSetEvent")(functi
       entries: input.entries,
       hopsLeft: input.budget.hopsLeft,
       hopsUsed: input.budget.hopsUsed,
+      ...(input.budgetExhausted ? { budgetExhausted: true } : {}),
       reason: input.reason,
       updatedAt: input.createdAt,
     },
@@ -144,17 +154,26 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
       createdAt: command.createdAt,
       entries,
       budget,
+      budgetExhausted: queue.budgetExhausted,
       reason,
     });
 
-  // Everyone waiting has left the group or been archived: nobody is woken, the queue just ends.
-  if (next === undefined || nextBot === undefined) {
-    return [yield* setQueue([], queue, "superseded")];
+  // A bot-mention turn answers the chain's user message and reads the rest through shared history.
+  // No newer user message can exist while the chain lives: it would have rewritten the queue.
+  const startMessageId =
+    next?.trigger.kind === "user"
+      ? next.trigger.messageId
+      : thread.messages.findLast((message) => message.role === "user")?.id;
+
+  // Everyone waiting has left the group or been archived, or there is no stored message to answer:
+  // nobody is woken, the queue just ends.
+  if (next === undefined || nextBot === undefined || startMessageId === undefined) {
+    return [yield* setQueue([], budgetOf(queue), "superseded")];
   }
 
   const poppedEvent = yield* setQueue(
     queue.entries.slice(nextIndex + 1),
-    budgetAfterTurnStarted(queue),
+    budgetAfterTurnStarted(budgetOf(queue)),
     "turn-started",
   );
 
@@ -169,11 +188,7 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
     type: "thread.turn-start-requested",
     payload: {
       threadId: command.threadId,
-      // The turn answers the message that addressed it; it reads the rest through shared history.
-      messageId:
-        next.trigger.kind === "user"
-          ? next.trigger.messageId
-          : MessageId.make(`${command.commandId}:responder`),
+      messageId: startMessageId,
       ...(nextBot.engine !== null
         ? {
             modelSelection: {
@@ -192,4 +207,118 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
   };
 
   return [poppedEvent, turnStartEvent];
+});
+
+// A queue rewritten by one of these after the reply's turn began belongs to a newer message or a
+// Stop, so that reply no longer chains.
+const REWRITES_THE_CHAIN: ReadonlySet<ResponderQueueReason> = new Set([
+  "addressed",
+  "superseded",
+  "stopped",
+]);
+
+/**
+ * Queues the bots a finished reply mentions. The hop budget gates only these mention-triggered
+ * entries: bots the user addressed always run, so a mention dropped for budget never removes
+ * them. Dropping one sets the sticky `budgetExhausted` flag so clients can say the chain was cut.
+ */
+export const decideResponderMention = Effect.fn("decideResponderMention")(function* ({
+  command,
+  readModel,
+}: {
+  readonly command: Extract<OrchestrationCommand, { type: "thread.responder.mention" }>;
+  readonly readModel: OrchestrationReadModel;
+}): Effect.fn.Return<
+  ReadonlyArray<Omit<OrchestrationEvent, "sequence">>,
+  OrchestrationCommandInvariantError | PlatformError.PlatformError,
+  Crypto.Crypto
+> {
+  const thread = yield* requireThread({ readModel, command, threadId: command.threadId });
+  const queue = thread.responderQueue;
+  const latestTurn = thread.latestTurn;
+
+  const group = thread.groupId
+    ? readModel.groups.find((entry) => entry.id === thread.groupId)
+    : undefined;
+
+  // Only the chat's latest turn chains, and not after a Stop or a newer message rewrote the queue.
+  if (group === undefined || latestTurn === null || latestTurn.turnId !== command.turnId) return [];
+
+  if (
+    queue !== undefined &&
+    queue.updatedAt > latestTurn.requestedAt &&
+    REWRITES_THE_CHAIN.has(queue.reason)
+  ) {
+    return [];
+  }
+
+  // The finished reply is read from the thread: its text arrived as streamed deltas, so the
+  // finished event carries none.
+  const reply = thread.messages.findLast((message) => message.id === command.messageId);
+
+  if (
+    reply === undefined ||
+    reply.role !== "assistant" ||
+    reply.turnId !== command.turnId ||
+    reply.respondingBotId !== command.botId
+  ) {
+    return [];
+  }
+
+  const activeIds = activeGroupBotIds(readModel, group);
+
+  const members = readModel.bots.flatMap((bot) =>
+    bot.archivedAt === null && activeIds.has(bot.id) ? [{ id: bot.id, name: bot.name }] : [],
+  );
+
+  const addressing = resolveComposerAddressing(botReplyMentionText(reply.text), members);
+
+  if (addressing.kind !== "bots") return [];
+
+  const entries = queue?.entries ?? [];
+  const waiting = new Set(entries.map((entry) => entry.botId));
+
+  // In the order the reply wrote them, so a spent budget keeps the first mention.
+  const fresh = addressing.botIds.flatMap((id) => {
+    const member = members.find((candidate) => candidate.id === id);
+
+    return member !== undefined && member.id !== command.botId && !waiting.has(member.id)
+      ? [member.id]
+      : [];
+  });
+
+  if (fresh.length === 0) return [];
+
+  // Pending entries will spend the budget when they start, so only what is left beyond them can
+  // be added by a mention.
+  const budget = queue === undefined ? budgetAfterFirstTurn(thread) : budgetOf(queue);
+  const added = fresh.slice(0, Math.max(0, budget.hopsLeft - entries.length));
+  const dropped = added.length < fresh.length;
+
+  // Everything was dropped and the chain is already marked as cut: nothing would change.
+  if (added.length === 0 && queue?.budgetExhausted === true) return [];
+
+  return [
+    yield* responderQueueSetEvent({
+      threadId: command.threadId,
+      commandId: command.commandId,
+      createdAt: command.createdAt,
+      entries: [
+        ...entries,
+        ...added.map((botId) => ({
+          botId,
+          trigger: {
+            kind: "bot-mention" as const,
+            sourceTurnId: command.turnId,
+            sourceBotId: command.botId,
+          },
+        })),
+      ],
+      budget,
+      budgetExhausted: queue?.budgetExhausted === true || dropped,
+      // The reason names why the queue last changed; "budget-exhausted" only when the budget
+      // is what left it empty.
+      reason: entries.length === 0 && added.length === 0 ? "budget-exhausted" : "mention",
+    }),
+  ];
 });

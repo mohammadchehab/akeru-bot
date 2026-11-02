@@ -72,6 +72,7 @@ import {
   ThreadMetaUpdateCommand,
   ThreadRuntimeModeSetCommand,
   ThreadInteractionModeSetCommand,
+  ThreadHopBudgetSetCommand,
   ThreadTurnStartCommand,
   ThreadTurnResumeCommand,
   ClientThreadTurnStartCommand,
@@ -125,6 +126,7 @@ const DispatchableClientOrchestrationCommand = Schema.Union([
   ThreadMetaUpdateCommand,
   ThreadRuntimeModeSetCommand,
   ThreadInteractionModeSetCommand,
+  ThreadHopBudgetSetCommand,
   ThreadTurnStartCommand,
   ThreadTurnResumeCommand,
   ThreadVoiceTranscriptAppendCommand,
@@ -189,6 +191,7 @@ export const ClientOrchestrationCommand = Schema.Union([
   ThreadMetaUpdateCommand,
   ThreadRuntimeModeSetCommand,
   ThreadInteractionModeSetCommand,
+  ThreadHopBudgetSetCommand,
   ClientThreadTurnStartCommand,
   ThreadTurnResumeCommand,
   ThreadVoiceTranscriptAppendCommand,
@@ -209,6 +212,21 @@ const ThreadResponderAdvanceCommand = Schema.Struct({
   type: Schema.Literal("thread.responder.advance"),
   commandId: CommandId,
   threadId: ThreadId,
+  createdAt: IsoDateTime,
+});
+
+/**
+ * A group bot's finished reply, handed to the decider so the bots it mentions can be queued. The
+ * decider reads the reply's text from the thread's messages, where the projector has joined the
+ * streamed deltas; the persisted event carries the resolved bots.
+ */
+const ThreadResponderMentionCommand = Schema.Struct({
+  type: Schema.Literal("thread.responder.mention"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  turnId: TurnId,
+  botId: BotId,
+  messageId: MessageId,
   createdAt: IsoDateTime,
 });
 
@@ -330,6 +348,7 @@ export const DelegationStateSetCommand = Schema.Struct({
 const InternalOrchestrationCommand = Schema.Union([
   InternalRoutineCommand,
   ThreadResponderAdvanceCommand,
+  ThreadResponderMentionCommand,
   ThreadSessionSetCommand,
   ThreadMessageAssistantDeltaCommand,
   ThreadMessageAssistantCompleteCommand,
