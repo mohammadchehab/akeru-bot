@@ -1,0 +1,53 @@
+# Bundles the mobile app's JavaScript for iOS so a missing import or asset fails a pull request.
+# The main CI job excludes @isnadi/mobile from tests, so nothing else resolves its Metro graph.
+
+name: Mobile bundle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/mobile/**
+      - packages/**
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - patches/**
+      - package.json
+      - .github/workflows/mobile-bundle.yml
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - apps/mobile/**
+      - packages/**
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - patches/**
+      - package.json
+      - .github/workflows/mobile-bundle.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-bundle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  bundle:
+    name: Mobile bundle (iOS)
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install workspace
+        uses: ./.github/actions/install
+
+      - name: Export the iOS bundle
+        working-directory: apps/mobile
+        env:
+          APP_VARIANT: production
+          CI: "1"
+        run: vp exec expo export --platform ios --output-dir "$RUNNER_TEMP/mobile-export"
