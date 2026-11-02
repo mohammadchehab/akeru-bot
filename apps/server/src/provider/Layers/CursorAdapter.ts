@@ -64,7 +64,7 @@ interface ActiveTurn {
   readonly turnId: TurnId;
   stopRequested: boolean;
   interrupt: Effect.Effect<void>;
-  fiber: Fiber.Fiber<void> | undefined;
+  fiber: Fiber.Fiber<void, unknown> | undefined;
 }
 
 interface CursorSessionContext {
