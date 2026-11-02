@@ -67,6 +67,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const target = path.join(cwd, "read.txt");
 
       yield* fs.writeFileString(target, "content");
+      const resolvedTarget = yield* fs.realPath(target);
 
       const closeError = PlatformError.systemError({
         _tag: "Unknown",
@@ -82,7 +83,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
             Effect.gen(function* () {
               const handle = yield* fs.open(filePath, options);
 
-              if (filePath === target) {
+              if (filePath === resolvedTarget) {
                 yield* Effect.addFinalizer(() => Effect.die(closeError));
               }
 
@@ -115,8 +116,8 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
           assert.equal(error.cwd, cwd);
           assert.equal(error.relativePath, "read.txt");
           assert.equal(error.operation, "close");
-          assert.equal(error.operationPath, target);
-          assert.equal(error.resolvedPath, target);
+          assert.equal(error.operationPath, resolvedTarget);
+          assert.equal(error.resolvedPath, resolvedTarget);
         }
       }
     }).pipe(Effect.provide(NodeHttpServer.layerTest), TestClock.withLive),

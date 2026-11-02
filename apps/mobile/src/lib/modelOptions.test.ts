@@ -362,7 +362,7 @@ describe("resolveModelSendBlock", () => {
       ...selection,
     });
 
-    expect(block?.title).toBe("claude-opus is not available on Claude");
+    expect(block?.title).toBe("Claude Opus is not available on Claude");
   });
 
   it("lets a temporary failure or an offline environment through", () => {

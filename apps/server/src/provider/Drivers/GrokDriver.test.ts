@@ -163,9 +163,9 @@ it.layer(grokDriverTestLayer)("GrokDriver.snapshotForCwd", (it) => {
         Effect.gen(function* () {
           const fs = yield* FileSystem.FileSystem;
 
-          const workspaceCwd = yield* fs.makeTempDirectoryScoped({
-            prefix: "isnadi-grok-disabled-workspace-",
-          });
+          const workspaceCwd = yield* fs.realPath(
+            yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-grok-disabled-workspace-" }),
+          );
 
           const grokPath = yield* writeFakeGrokCli({ workspaceCwd, inspect: "fail" });
           const instance = yield* createGrokInstance({ enabled: false, binaryPath: grokPath });
@@ -185,9 +185,9 @@ it.layer(grokDriverTestLayer)("GrokDriver.snapshotForCwd", (it) => {
         Effect.gen(function* () {
           const fs = yield* FileSystem.FileSystem;
 
-          const workspaceCwd = yield* fs.makeTempDirectoryScoped({
-            prefix: "isnadi-grok-workspace-",
-          });
+          const workspaceCwd = yield* fs.realPath(
+            yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-grok-workspace-" }),
+          );
 
           const grokPath = yield* writeFakeGrokCli({ workspaceCwd, inspect: "skills" });
           const instance = yield* createGrokInstance({ enabled: true, binaryPath: grokPath });

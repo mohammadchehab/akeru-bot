@@ -47,6 +47,14 @@ it("reads ISNADI_HOME over an ambient T3CODE_HOME and refuses an incompatible id
     `${hash}  ${NodePath.basename(archive)}\n`,
   );
   NodeFS.writeFileSync(NodePath.join(releases, "ISNADI-REMOTE-MANIFEST.sig"), "test");
+  // install-remote.sh derives the archive name from uname; pin it to the linux-x64 fixture.
+  NodeFS.writeFileSync(
+    NodePath.join(tools, "uname"),
+    `#!/bin/sh
+case "$1" in -s) echo Linux;; -m) echo x86_64;; *) /usr/bin/uname "$@";; esac
+`,
+    { mode: 0o755 },
+  );
   NodeFS.writeFileSync(
     NodePath.join(tools, "curl"),
     `#!/bin/sh
