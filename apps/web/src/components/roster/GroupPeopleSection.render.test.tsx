@@ -2,9 +2,7 @@ import { AuthSessionId, EnvironmentId } from "@isnadi/contracts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
-const fixtures = vi.hoisted(() => ({
-  addable: [] as ReadonlyArray<{ personId: string; displayName: string; current: boolean }>,
-}));
+const fixtures = vi.hoisted(() => ({ canAdd: false }));
 
 vi.mock("@effect/atom-react", () => ({ useAtomValue: () => ({ current: { id: "me" } }) }));
 
@@ -15,7 +13,9 @@ vi.mock("../../state/bots", () => ({
 
 vi.mock("../../state/use-atom-command", () => ({ useAtomCommand: () => vi.fn() }));
 
-vi.mock("./useAddableGroupPeople", () => ({ useAddableGroupPeople: () => fixtures.addable }));
+vi.mock("./useAddableGroupPeople", () => ({
+  useAddableGroupPeople: () => ({ canAdd: fixtures.canAdd, people: [], refresh: vi.fn() }),
+}));
 
 import { GroupPeopleSection } from "./GroupPeopleSection";
 import type { Group } from "./types";
@@ -40,22 +40,22 @@ const render = (target: Group) =>
 
 describe("GroupPeopleSection", () => {
   beforeEach(() => {
-    fixtures.addable = [];
+    fixtures.canAdd = false;
   });
 
-  it("renders nothing when the group has no people and nobody can be added", () => {
+  it("renders nothing when the group has no people and this client cannot add any", () => {
     expect(render(group([]))).toBe("");
   });
 
-  it("lists members with a remove action and no add control when nobody is addable", () => {
+  it("lists members with a remove action and no add control without the access scope", () => {
     const html = render(group([{ id: "b", name: "Bea" }]));
 
     expect(html).toContain('aria-label="Remove Bea from Ops"');
     expect(html).not.toContain('aria-label="Add person"');
   });
 
-  it("offers an add control for paired people outside the group", () => {
-    fixtures.addable = [{ personId: "b", displayName: "Bea", current: false }];
+  it("offers an add control to a client that may add people", () => {
+    fixtures.canAdd = true;
 
     const html = render(group([{ id: "me", name: "Me" }]));
 
@@ -65,7 +65,7 @@ describe("GroupPeopleSection", () => {
   });
 
   it("shows the add control even when the group has no people left", () => {
-    fixtures.addable = [{ personId: "b", displayName: "Bea", current: false }];
+    fixtures.canAdd = true;
 
     expect(render(group([]))).toContain('aria-label="Add person"');
   });

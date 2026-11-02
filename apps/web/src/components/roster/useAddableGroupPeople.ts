@@ -1,5 +1,5 @@
 import { AuthAccessWriteScope, type EnvironmentId } from "@isnadi/contracts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { listServerClientSessions } from "../../environments/primary/authAdministration";
 import { usePrimaryEnvironmentId } from "../../state/environments";
@@ -9,14 +9,22 @@ import type { Group } from "./types";
 
 const NONE: ReadonlyArray<AddableGroupPerson> = [];
 
+export interface AddableGroupPeople {
+  /** Whether this client may add people at all: primary environment and the access scope. */
+  readonly canAdd: boolean;
+  readonly people: ReadonlyArray<AddableGroupPerson>;
+  /** Reloads the paired-client list; devices can pair while the editor stays mounted. */
+  readonly refresh: () => void;
+}
+
 /**
  * People who can be added to the group. Adding a person needs the access scope and the
- * paired-client list, which only the primary environment serves; anywhere else this is empty.
+ * paired-client list, which only the primary environment serves; anywhere else `canAdd` is false.
  */
 export function useAddableGroupPeople(
   environmentId: EnvironmentId,
   group: Group,
-): ReadonlyArray<AddableGroupPerson> {
+): AddableGroupPeople {
   const primaryEnvironmentId = usePrimaryEnvironmentId();
   const session = useEnvironmentSessionState(environmentId);
 
@@ -26,6 +34,17 @@ export function useAddableGroupPeople(
     session.data.scopes?.includes(AuthAccessWriteScope) === true;
 
   const [people, setPeople] = useState(NONE);
+  const [reloads, setReloads] = useState(0);
+  const refresh = useCallback(() => setReloads((count) => count + 1), []);
+
+  // The editor stays mounted while its panel is collapsed, so reload when the window returns.
+  useEffect(() => {
+    if (!canAdd) return;
+
+    window.addEventListener("focus", refresh);
+
+    return () => window.removeEventListener("focus", refresh);
+  }, [canAdd, refresh]);
 
   useEffect(() => {
     if (!canAdd) {
@@ -36,7 +55,7 @@ export function useAddableGroupPeople(
 
     let cancelled = false;
 
-    // Reload when membership changes so a removed person shows up here and an added one leaves.
+    // Reload when membership changes too, so a removed person shows up here and an added one leaves.
     void listServerClientSessions()
       .then((sessions) => {
         if (!cancelled) setPeople(addableGroupPeople(group, sessions));
@@ -48,7 +67,7 @@ export function useAddableGroupPeople(
     return () => {
       cancelled = true;
     };
-  }, [canAdd, group]);
+  }, [canAdd, group, reloads]);
 
-  return people;
+  return { canAdd, people, refresh };
 }

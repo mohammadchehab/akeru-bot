@@ -47,7 +47,7 @@ export function GroupPeopleSection({
 
   const leaveGroup = useAtomCommand(botEnvironment.groups.leave, { reportFailure: false });
   const currentPersonId = useAtomValue(environmentPeopleAtom(environmentId)).current?.id;
-  const addable = useAddableGroupPeople(environmentId, group);
+  const { canAdd, people: addable, refresh } = useAddableGroupPeople(environmentId, group);
   const people = groupPersonMembers(group);
   const [newPersonId, setNewPersonId] = useState("");
   const [pendingRemoval, setPendingRemoval] = useState<PendingRemoval | null>(null);
@@ -57,7 +57,7 @@ export function GroupPeopleSection({
     if (!addable.some((person) => person.personId === newPersonId)) setNewPersonId("");
   }, [addable, newPersonId]);
 
-  if (people.length === 0 && addable.length === 0) return null;
+  if (people.length === 0 && !canAdd) return null;
 
   const run = async (action: () => Promise<{ readonly _tag: string }>, failure: string) => {
     setBusy(true);
@@ -130,9 +130,13 @@ export function GroupPeopleSection({
           })}
         </div>
       ) : null}
-      {addable.length > 0 ? (
+      {canAdd ? (
         <div className="flex gap-2">
-          <Select value={newPersonId} onValueChange={(value) => value && setNewPersonId(value)}>
+          <Select
+            value={newPersonId}
+            onOpenChange={(open) => open && refresh()}
+            onValueChange={(value) => value && setNewPersonId(value)}
+          >
             <SelectTrigger aria-label="Add person" className="min-w-0 flex-1">
               <SelectValue placeholder="Choose person">
                 {selected ? (selected.current ? "You" : selected.displayName) : undefined}
@@ -144,6 +148,11 @@ export function GroupPeopleSection({
                   {person.current ? "You" : person.displayName}
                 </SelectItem>
               ))}
+              {addable.length === 0 ? (
+                <p className="px-3 py-2 text-xs text-muted-foreground">
+                  Everyone who is paired is already in this group.
+                </p>
+              ) : null}
             </SelectPopup>
           </Select>
           <Button
