@@ -89,7 +89,7 @@ interface HomeScreenProps {
 /* ─── Main screen ────────────────────────────────────────────────────── */
 
 export function HomeScreen(props: HomeScreenProps) {
-  const { t } = useMobileI18n();
+  const { t, plural } = useMobileI18n();
   const openSwipeableRef = useRef<SwipeableMethods | null>(null);
   const insets = useSafeAreaInsets();
   const accentColor = useThemeColor("--color-icon-muted");
@@ -272,7 +272,7 @@ export function HomeScreen(props: HomeScreenProps) {
           variant={item.item.variant}
           snoozed={item.item.snoozed}
           pinned={item.item.pinned}
-          timeLabel={threadListV2TimeLabel(thread)}
+          timeLabel={threadListV2TimeLabel(thread, { t, plural })}
           snoozePresetMinute={
             !item.item.snoozed && snoozeEnvironmentIds.has(thread.environmentId) ? nowMinute : null
           }
@@ -369,6 +369,8 @@ export function HomeScreen(props: HomeScreenProps) {
       v2ProjectTitleByProjectKey,
       props.searchQuery,
       nowMinute,
+      t,
+      plural,
     ],
   );
 

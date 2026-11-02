@@ -1,6 +1,6 @@
 import type { EnvironmentThreadShell } from "@isnadi/client-runtime/state/shell";
 import { Platform } from "react-native";
-import { relativeTime } from "../../lib/time";
+import { relativeTime, type RelativeTimeTranslator } from "../../lib/time";
 
 /**
  * Thread List v2 renders one flat native list: rich edge-to-edge rows for
@@ -40,8 +40,14 @@ export const MONO_FONT = Platform.select({
 });
 
 /** Relative time shown on a v2 row. Parents compute it on their minute tick. */
-export function threadListV2TimeLabel(thread: EnvironmentThreadShell): string {
-  return relativeTime(thread.latestUserMessageAt ?? thread.updatedAt ?? thread.createdAt);
+export function threadListV2TimeLabel(
+  thread: EnvironmentThreadShell,
+  translator: RelativeTimeTranslator,
+): string {
+  return relativeTime(
+    thread.latestUserMessageAt ?? thread.updatedAt ?? thread.createdAt,
+    translator,
+  );
 }
 
 /** Rounded-row radius shared with the v1 sidebar rows. */

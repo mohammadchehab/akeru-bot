@@ -2,7 +2,7 @@
 
 exports[`discovered interface message coverage > covers static calls and finite label sources without translating identifiers 1`] = `
 {
-  "directMessageCount": 1787,
+  "directMessageCount": 1792,
   "expressions": {
     "apps/mobile/src/components/DictationControls.tsx": [
       "announcements[status]);",
@@ -384,6 +384,7 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/mobile/src/features/threads/use-new-task-share-import.ts",
     "apps/mobile/src/features/threads/use-thread-composer-settings.ts",
     "apps/mobile/src/features/updates/app-updates.ts",
+    "apps/mobile/src/lib/time.ts",
     "apps/mobile/src/lib/useEnvironmentComposerDictation.ts",
     "apps/mobile/src/settings-stack.tsx",
     "apps/mobile/src/state/use-remote-environment-registry.ts",

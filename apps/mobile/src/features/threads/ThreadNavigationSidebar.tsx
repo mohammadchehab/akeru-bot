@@ -101,7 +101,7 @@ function NativeSidebarContainer(props: ThreadNavigationSidebarProps) {
 function ThreadNavigationSidebarPane(
   props: ThreadNavigationSidebarProps & { readonly nativeChrome: boolean },
 ) {
-  const { t } = useMobileI18n();
+  const { t, plural } = useMobileI18n();
   const insets = useSafeAreaInsets();
   const projects = useProjects();
   const threads = useThreadShells();
@@ -386,7 +386,7 @@ function ThreadNavigationSidebarPane(
               variant={item.item.variant}
               snoozed={item.item.snoozed}
               pinned={item.item.pinned}
-              timeLabel={threadListV2TimeLabel(thread)}
+              timeLabel={threadListV2TimeLabel(thread, { t, plural })}
               snoozePresetMinute={
                 !item.item.snoozed && snoozeEnvironmentIds.has(thread.environmentId)
                   ? nowMinute
@@ -526,6 +526,8 @@ function ThreadNavigationSidebarPane(
       unpinThread,
       unsettleThread,
       unsnoozeThread,
+      t,
+      plural,
     ],
   );
 

@@ -5,7 +5,7 @@ import type {
   UsageProviderKind,
   UsageProviderPlanLimits,
 } from "@isnadi/contracts";
-import { enumerateDays, formatDayShort, formatTokens } from "@isnadi/shared/usageFormat";
+import { enumerateDays } from "@isnadi/shared/usageFormat";
 import type { DailyTotals } from "@isnadi/shared/usageMerge";
 
 import { Line } from "../dither-kit/area";
@@ -19,6 +19,7 @@ import { XAxis } from "../dither-kit/x-axis";
 import { YAxis } from "../dither-kit/y-axis";
 import { ClaudeAI, GrokIcon, OpenCodeIcon, type Icon, OpenAI } from "../Icons";
 import { PROVIDER_ORDER, PROVIDER_PRESENTATION, providersWithUsage } from "./usageProviders";
+import { useUsageFormat } from "./useUsageFormat";
 
 type LiveSubscriptionProviderId = Exclude<SubscriptionProviderId, "cursor">;
 
@@ -154,6 +155,7 @@ export function UsageActivityChart(props: {
     readonly totalTokens: number;
   }[];
 }) {
+  const fmt = useUsageFormat();
   const active = providersWithUsage(props.providers);
   const days = enumerateDays(props.sinceDay, props.untilDay);
   const byDay = new Map(props.daily.map((entry) => [entry.day, entry]));
@@ -162,7 +164,7 @@ export function UsageActivityChart(props: {
     const totals = byDay.get(day);
 
     const row = {
-      label: formatDayShort(day),
+      label: fmt.dayShort(day),
       ...Object.fromEntries(
         PROVIDER_ORDER.map((provider) => [
           provider,
@@ -197,8 +199,8 @@ export function UsageActivityChart(props: {
       >
         <Grid vertical={false} />
         <XAxis dataKey="label" maxTicks={6} />
-        <YAxis tickFormatter={formatTokens} tickCount={4} />
-        <Tooltip valueFormatter={(value) => formatTokens(value)} />
+        <YAxis tickFormatter={fmt.tokens} tickCount={4} />
+        <Tooltip valueFormatter={(value) => fmt.tokens(value)} />
         {active.map((provider) => (
           <Line key={provider} dataKey={provider} />
         ))}

@@ -6,18 +6,7 @@ import type { DailyTotals, HourlyTotals } from "@isnadi/shared/usageMerge";
 import { isElectron } from "../../env";
 import { useClientSettings } from "../../hooks/useSettings";
 import { useUsage } from "../../state/usage";
-import {
-  enumerateDays,
-  enumerateHourStarts,
-  formatCount,
-  formatDateTimeShort,
-  formatDayShort,
-  formatHourShort,
-  formatPercent,
-  formatTokens,
-  formatUsd,
-  makeWindow,
-} from "@isnadi/shared/usageFormat";
+import { enumerateDays, enumerateHourStarts, makeWindow } from "@isnadi/shared/usageFormat";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
@@ -50,8 +39,10 @@ import {
   UsageLimitsOverview,
   UsageSkeleton,
 } from "./UsagePageSections";
+import { useUsageFormat } from "./useUsageFormat";
 
 export function UsagePage() {
+  const fmt = useUsageFormat();
   const [preferences, setPreferences] = useState(readUsagePagePreferences);
 
   const [windowSelection, setWindowSelection] = useState(() => ({
@@ -154,8 +145,8 @@ export function UsagePage() {
 
   const windowLabel =
     isPast24Hours && window.sinceTime !== undefined && window.untilTime !== undefined
-      ? `${formatDateTimeShort(window.sinceTime, window.timeZone)} to ${formatDateTimeShort(window.untilTime, window.timeZone)}`
-      : `${formatDayShort(window.sinceDay)} to ${formatDayShort(window.untilDay)}`;
+      ? `${fmt.dateTimeShort(window.sinceTime, window.timeZone)} to ${fmt.dateTimeShort(window.untilTime, window.timeZone)}`
+      : `${fmt.dayShort(window.sinceDay)} to ${fmt.dayShort(window.untilDay)}`;
 
   const topbarContent = (
     <div className="flex w-full min-w-0 items-center gap-3">
@@ -282,15 +273,15 @@ export function UsagePage() {
                     <div className="flex flex-col gap-1">
                       <span className="text-4xl font-semibold text-foreground tabular-nums">
                         {metric === "cost"
-                          ? formatUsd(merged.costUsd)
-                          : formatTokens(merged.totalTokens)}
+                          ? fmt.usd(merged.costUsd)
+                          : fmt.tokens(merged.totalTokens)}
                       </span>
                       <span className="text-xs text-muted-foreground">
                         {metric === "cost"
                           ? merged.costQuality.unpricedShare > 0
-                            ? `${formatCount(merged.sessions)} sessions · estimate excludes ${formatPercent(merged.costQuality.unpricedShare)} unpriced records`
-                            : `${formatCount(merged.sessions)} sessions · API estimate`
-                          : `${formatCount(merged.sessions)} sessions`}
+                            ? `${fmt.count(merged.sessions)} sessions · estimate excludes ${fmt.percent(merged.costQuality.unpricedShare)} unpriced records`
+                            : `${fmt.count(merged.sessions)} sessions · API estimate`
+                          : `${fmt.count(merged.sessions)} sessions`}
                       </span>
                     </div>
 
@@ -302,7 +293,7 @@ export function UsagePage() {
 
                       const providerSessions = totals?.sessions ?? 0;
 
-                      const sessionLabel = `${formatCount(providerSessions)} ${
+                      const sessionLabel = `${fmt.count(providerSessions)} ${
                         providerSessions === 1 ? "session" : "sessions"
                       }`;
 
@@ -329,14 +320,14 @@ export function UsagePage() {
                             </span>
                             <span className="shrink-0 text-sm font-medium text-foreground tabular-nums">
                               {metric === "cost"
-                                ? formatUsd(totals?.costUsd ?? 0)
-                                : formatTokens(totals?.totalTokens ?? 0)}
+                                ? fmt.usd(totals?.costUsd ?? 0)
+                                : fmt.tokens(totals?.totalTokens ?? 0)}
                             </span>
                           </div>
                           <span className="text-xs text-muted-foreground">
                             {metric === "cost"
-                              ? `${formatPercent(share)} of cost · ${formatTokens(totals?.totalTokens ?? 0)} tokens`
-                              : `${formatPercent(share)} of tokens · ${formatUsd(totals?.costUsd ?? 0)}`}
+                              ? `${fmt.percent(share)} of cost · ${fmt.tokens(totals?.totalTokens ?? 0)} tokens`
+                              : `${fmt.percent(share)} of tokens · ${fmt.usd(totals?.costUsd ?? 0)}`}
                           </span>
                         </div>
                       );
@@ -386,16 +377,13 @@ export function UsagePage() {
                 <section className="flex flex-col gap-2">
                   <h2 className="text-sm font-medium text-foreground">Totals</h2>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4 py-1 md:grid-cols-5">
-                    <Metric label="Processed tokens" value={formatTokens(merged.totalTokens)} />
-                    <Metric label="Cached input" value={formatTokens(merged.cachedInputTokens)} />
-                    <Metric
-                      label="Uncached input"
-                      value={formatTokens(merged.uncachedInputTokens)}
-                    />
-                    <Metric label="Output" value={formatTokens(merged.outputTokens)} />
+                    <Metric label="Processed tokens" value={fmt.tokens(merged.totalTokens)} />
+                    <Metric label="Cached input" value={fmt.tokens(merged.cachedInputTokens)} />
+                    <Metric label="Uncached input" value={fmt.tokens(merged.uncachedInputTokens)} />
+                    <Metric label="Output" value={fmt.tokens(merged.outputTokens)} />
                     <Metric
                       label="Cache savings"
-                      value={formatUsd(merged.costQuality.cacheSavingsUsd)}
+                      value={fmt.usd(merged.costQuality.cacheSavingsUsd)}
                     />
                   </div>
                 </section>
@@ -466,13 +454,13 @@ export function UsagePage() {
                                   </span>
                                 </td>
                                 <td className="py-2 text-right text-foreground tabular-nums">
-                                  {formatUsd(model.costUsd)}
+                                  {fmt.usd(model.costUsd)}
                                 </td>
                                 <td className="py-2 text-right text-muted-foreground tabular-nums">
-                                  {formatPercent(model.costShare)}
+                                  {fmt.percent(model.costShare)}
                                 </td>
                                 <td className="py-2 text-right text-muted-foreground tabular-nums">
-                                  {formatTokens(model.totalTokens)}
+                                  {fmt.tokens(model.totalTokens)}
                                 </td>
                               </tr>
                             ))
@@ -531,22 +519,22 @@ export function UsagePage() {
                               >
                                 <td className="py-2 text-foreground">
                                   {"hourStart" in period
-                                    ? formatHourShort(period.hourStart, window.timeZone)
-                                    : formatDayShort(period.day)}
+                                    ? fmt.hourShort(period.hourStart, window.timeZone)
+                                    : fmt.dayShort(period.day)}
                                 </td>
                                 {activeProviders.map((provider) => (
                                   <td
                                     key={provider}
                                     className="py-2 text-right text-muted-foreground tabular-nums"
                                   >
-                                    {formatUsd(period.byProvider.get(provider)?.costUsd ?? 0)}
+                                    {fmt.usd(period.byProvider.get(provider)?.costUsd ?? 0)}
                                   </td>
                                 ))}
                                 <td className="py-2 text-right text-foreground tabular-nums">
-                                  {formatUsd(period.costUsd)}
+                                  {fmt.usd(period.costUsd)}
                                 </td>
                                 <td className="py-2 text-right text-muted-foreground tabular-nums">
-                                  {formatTokens(period.totalTokens)}
+                                  {fmt.tokens(period.totalTokens)}
                                 </td>
                               </tr>
                             ))
