@@ -9,6 +9,7 @@ import type {
 } from "@isnadi/contracts";
 import { Atom } from "effect/unstable/reactivity";
 
+import { decisionsEqual, selectDecisions, type Decision } from "../decisions.ts";
 import type { EnvironmentThreadShell } from "./models.ts";
 import { scopeThreadShell } from "./models.ts";
 import type { EnvironmentCatalogState } from "./connections.ts";
@@ -271,6 +272,28 @@ export function createEnvironmentThreadShellAtoms(input: {
     }).pipe(Atom.withLabel(`environment-bot-chat-completions:${environmentId}:${botId}`));
   });
 
+  const environmentDecisionsAtom = Atom.family((environmentId: EnvironmentId) => {
+    let previous: ReadonlyArray<Decision> = [];
+
+    return Atom.make((get) => {
+      const threads = get(environmentThreadsAtom(environmentId));
+
+      const next =
+        threads.length === 0
+          ? []
+          : selectDecisions(
+              threads.map((thread) => scopeThreadShell(environmentId, thread)),
+              environmentId,
+            );
+
+      if (decisionsEqual(previous, next)) return previous;
+
+      previous = next;
+
+      return previous;
+    }).pipe(Atom.withLabel(`environment-decisions:${environmentId}`));
+  });
+
   const threadShellAtomFamily = Atom.family((key: string) => {
     const ref = parseThreadKey(key);
     let previousSource: OrchestrationThreadShell | null = null;
@@ -377,6 +400,11 @@ export function createEnvironmentThreadShellAtoms(input: {
       threadShellsForProjectRefsAtomFamily(projectRefCollectionKey(refs)),
     threadShellAtom: (ref: ScopedThreadRef) => threadShellAtomFamily(threadKey(ref)),
     environmentLatestOwnerThreadIdsAtom,
+    /**
+     * Chats waiting on the user in one environment. Emits only when the rows change, so streaming
+     * progress on a pending chat does not re-render the sidebar.
+     */
+    environmentDecisionsAtom,
     /** Latest live thread id for one bot. Changes only when that bot's latest thread changes. */
     latestBotThreadIdAtom: (environmentId: EnvironmentId, botId: string) =>
       latestOwnerThreadIdAtomFamily(["bot", environmentId, botId].join(OWNER_KEY_SEPARATOR)),

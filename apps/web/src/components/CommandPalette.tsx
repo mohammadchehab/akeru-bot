@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAtomValue } from "@effect/atom-react";
-import { useNavigate } from "@tanstack/react-router";
 
 import { useTheme } from "../hooks/useTheme";
 import { isPreviewFocused } from "../lib/previewFocus";
@@ -49,11 +48,8 @@ import { allEnvironmentRostersAtom } from "../state/bots";
 import { useThreadShells } from "../state/entities";
 import { useEnvironments, usePrimaryEnvironmentId } from "../state/environments";
 import { useThreadSearch } from "../state/queries";
-import {
-  findLatestBotThreadTarget,
-  findLatestGroupThreadIds,
-  latestGroupThreadKey,
-} from "./roster/botThreadRuntime.logic";
+import { findLatestGroupThreadIds, latestGroupThreadKey } from "./roster/botThreadRuntime.logic";
+import { useOpenChat } from "./chat/useOpenChat";
 import { useRosterStore } from "./roster/rosterStore";
 import { resolveShortcutCommand } from "../keybindings";
 import { CommandDialog, CommandDialogPopup } from "./ui/command";
@@ -336,7 +332,7 @@ function OpenCommandPaletteDialog(props: { readonly setOpen: (open: boolean) => 
  */
 function useChatSearchItems(query: string) {
   const { t } = useI18n();
-  const navigate = useNavigate();
+  const openChat = useOpenChat();
   const { environments } = useEnvironments();
   const primaryEnvironmentId = usePrimaryEnvironmentId();
   const shells = useThreadShells();
@@ -422,27 +418,7 @@ function useChatSearchItems(query: string) {
     untitledLabel: t("Untitled chat"),
     unavailableLabel: (environment) => t("In {environment}", { environment }),
     icon: <MessagesSquareIcon className={ITEM_ICON_CLASS} />,
-    openChat: async (chat) => {
-      const shell = shells.find(
-        (candidate) =>
-          candidate.environmentId === chat.environmentId && candidate.id === chat.threadId,
-      );
-
-      if (shell?.botId) {
-        const botId = shell.botId;
-        const newest = findLatestBotThreadTarget(botId, chat.environmentId, shells);
-        const roster = useRosterStore.getState();
-        roster.selectBot(botId);
-        roster.openBotChat(
-          botId,
-          newest?.threadId === chat.threadId ? null : chat.threadId,
-          `/${chat.environmentId}/${chat.threadId}`,
-        );
-        await navigate({ to: "/bots/$botId", params: { botId } });
-      } else if (shell?.groupId) {
-        await navigate({ to: "/groups/$groupId", params: { groupId: shell.groupId } });
-      }
-    },
+    openChat,
   });
 
   return { items, isPending: search.isPending };

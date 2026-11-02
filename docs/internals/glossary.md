@@ -58,6 +58,10 @@ A short-lived helper a bot starts with the Task tool during its own turn. It run
 
 The live sidebar is `BotRosterSidebar`. Pins and the main Bots list are a client layout over bots and groups. They must not assign or remove group members, and they must not settle chats. Drag planning lives in `roster.logic.ts`; pointer cleanup, insertion-gap projection, and list motion live beside it in `roster.pointer.ts`, `roster.drag.ts`, and `roster.motion.ts`.
 
+#### Decisions
+
+The top group of the web roster sidebar: live chats in the primary environment where a bot waits on the user. `selectDecisions` in `packages/client-runtime/src/decisions.ts` derives it from `hasPendingApprovals` and `hasPendingUserInput` on thread shells, and a delegated sub-chat stands for its root chat. `environmentDecisionsAtom` emits only when the rows change, so streaming progress does not re-render the sidebar. `DecisionsGroup` renders it and `useOpenChat` jumps to a row.
+
 #### Activity
 
 A user-visible log item attached to a thread. In [the contracts][1], activities cover important non-message events like approvals, tool actions, and failures. They are projected into thread state in [projector.ts][4].
