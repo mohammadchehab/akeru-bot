@@ -44,7 +44,7 @@ CI against the exact pull request head SHA; empty-only changesets do not dispatc
 [`.github/workflows/mobile-bundle.yml`](../../.github/workflows/mobile-bundle.yml) runs
 `expo export --platform ios` when mobile code, shared packages, or the lockfile change, on pull requests and
 on `main`. Repository checks exclude `@isnadi/mobile`, so this is the only job that resolves the Metro
-graph; a missing import or asset fails it. It is a separate status and is not part of the required
+graph; a missing import or asset fails it. It is a separate status and is not part of the
 `Repository checks` result.
 
 [`.github/workflows/installer-tests.yml`](../../.github/workflows/installer-tests.yml) runs focused
