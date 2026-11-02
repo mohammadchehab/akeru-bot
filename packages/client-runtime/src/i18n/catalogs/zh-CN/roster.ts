@@ -306,6 +306,11 @@ export const rosterCatalog = {
   "Deleted group": "已删除的群组",
   "Removed bot": "已移除的机器人",
   "{names} is next": "下一个回复：{names}",
+  "Reply budget": "回复上限",
+  "Bot replies one message can chain before the group stops. Applies from your next message.":
+    "一条消息最多能引发多少次机器人连续回复，之后群聊会停止。从你的下一条消息起生效。",
+  "Fewer replies": "减少回复",
+  "More replies": "增加回复",
   "{names} are next": "接下来回复：{names}",
   "Every member": "所有成员",
 } as const;

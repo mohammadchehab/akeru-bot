@@ -27,6 +27,7 @@ import { useOptionalReplyPlayback } from "../chat/ReplyPlaybackProvider";
 import { useReplyPlaybackThread } from "~/lib/replyPlaybackThread";
 import { useI18n } from "~/i18n";
 import { GroupResponderQueue } from "./GroupResponderQueue";
+import { GroupHopBudgetControl } from "./GroupHopBudgetControl";
 import { responderQueueNames } from "./groupThreadModel.logic";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
@@ -343,6 +344,12 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               </span>
             </div>
             <div data-chat-header-actions className="ml-auto flex items-center">
+              {runtime.linkedThreadRef ? (
+                <GroupHopBudgetControl
+                  hopBudget={runtime.hopBudget}
+                  onChange={(hopBudget) => void runtime.setHopBudget(hopBudget)}
+                />
+              ) : null}
               <ChatActionsMenu threadRef={runtime.linkedThreadRef} />
             </div>
           </WorkspacePageHeader>
