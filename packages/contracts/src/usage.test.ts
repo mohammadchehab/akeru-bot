@@ -37,7 +37,31 @@ const source = (provider: string) => ({
 });
 
 describe("UsageSummary", () => {
-  it("keeps other providers when a version-5 server still reports Cursor usage", () => {
+  it("keeps other providers when a version-5 server reports a provider this client does not know", () => {
+    const summary = decodeSummary({
+      contractVersion: 5,
+      readAt: "2026-09-20T12:00:00.000Z",
+      timeZone: "UTC",
+      sinceDay: "2026-09-14",
+      untilDay: "2026-09-20",
+      buckets: [bucket("mystery"), bucket("claude")],
+      sources: [source("mystery"), source("claude")],
+      pricing: { status: "fresh", source: "litellm", fetchedAt: null, knownModels: 1 },
+      scanDurationMs: 3,
+      planLimits: [
+        { provider: "mystery", status: "ok", plan: null, message: null, windows: [] },
+        { provider: "anthropic", status: "ok", plan: null, message: null, windows: [] },
+      ],
+      connectedProviders: ["mystery", "anthropic"],
+    });
+
+    expect(summary.buckets.map((entry) => entry.provider)).toEqual(["claude"]);
+    expect(summary.sources.map((entry) => entry.fingerprint.provider)).toEqual(["claude"]);
+    expect(summary.planLimits?.map((entry) => entry.provider)).toEqual(["anthropic"]);
+    expect(summary.connectedProviders).toEqual(["anthropic"]);
+  });
+
+  it("keeps Cursor usage, but not a Cursor plan meter or connection", () => {
     const summary = decodeSummary({
       contractVersion: 5,
       readAt: "2026-09-20T12:00:00.000Z",
@@ -55,8 +79,11 @@ describe("UsageSummary", () => {
       connectedProviders: ["cursor", "anthropic"],
     });
 
-    expect(summary.buckets.map((entry) => entry.provider)).toEqual(["claude"]);
-    expect(summary.sources.map((entry) => entry.fingerprint.provider)).toEqual(["claude"]);
+    expect(summary.buckets.map((entry) => entry.provider)).toEqual(["cursor", "claude"]);
+    expect(summary.sources.map((entry) => entry.fingerprint.provider)).toEqual([
+      "cursor",
+      "claude",
+    ]);
     expect(summary.planLimits?.map((entry) => entry.provider)).toEqual(["anthropic"]);
     expect(summary.connectedProviders).toEqual(["anthropic"]);
   });
