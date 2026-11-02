@@ -28,6 +28,7 @@ export const createWsServerHandlers = ({
   agentController,
   providerRegistry,
   providerMaintenanceRunner,
+  cursorLogin,
   serverSelfUpdate,
   subscriptionAuth,
   serverSettings,
@@ -46,6 +47,7 @@ export const createWsServerHandlers = ({
   | "agentController"
   | "providerRegistry"
   | "providerMaintenanceRunner"
+  | "cursorLogin"
   | "serverSelfUpdate"
   | "subscriptionAuth"
   | "serverSettings"
@@ -75,6 +77,21 @@ export const createWsServerHandlers = ({
           ? providerRegistry.refreshInstance(input.instanceId)
           : providerRegistry.refresh()
         ).pipe(Effect.map((providers) => ({ providers }))),
+        { "rpc.aggregate": "server" },
+      ),
+
+    [WS_METHODS.serverCursorLogin]: (input) =>
+      observeRpcEffect(WS_METHODS.serverCursorLogin, cursorLogin.start(input.instanceId), {
+        "rpc.aggregate": "server",
+      }),
+
+    [WS_METHODS.serverCursorLogout]: (input) =>
+      observeRpcEffect(
+        WS_METHODS.serverCursorLogout,
+        cursorLogin.logout(input.instanceId).pipe(
+          Effect.andThen(providerRegistry.refreshInstance(input.instanceId)),
+          Effect.map((providers) => ({ providers })),
+        ),
         { "rpc.aggregate": "server" },
       ),
 
@@ -329,6 +346,8 @@ export const createWsServerHandlers = ({
     | typeof WS_METHODS.serverProbe
     | typeof WS_METHODS.serverGetConfig
     | typeof WS_METHODS.serverRefreshProviders
+    | typeof WS_METHODS.serverCursorLogin
+    | typeof WS_METHODS.serverCursorLogout
     | typeof WS_METHODS.providerUploadFeedback
     | typeof WS_METHODS.serverUpdateProvider
     | typeof WS_METHODS.serverUpdateServer

@@ -33,6 +33,7 @@ import { ProviderCommandReactorLive } from "./orchestration/Layers/ProviderComma
 import { CheckpointReactorLive } from "./orchestration/Layers/CheckpointReactor.ts";
 import { GroupResponderQueueReactorLive } from "./orchestration/Layers/GroupResponderQueueReactor.ts";
 import { ThreadDeletionReactorLive } from "./orchestration/Layers/ThreadDeletionReactor.ts";
+import * as CursorLogin from "./provider/Layers/cursor/CursorLoginControl.ts";
 import { ProviderRegistryLive } from "./provider/Layers/ProviderRegistry.ts";
 import * as ServerSettings from "./serverSettings.ts";
 import * as RepositoryIdentityResolver from "./project/RepositoryIdentityResolver.ts";
@@ -248,6 +249,7 @@ export const RuntimeCoreDependenciesLive = ReactorLayerLive.pipe(
   Layer.provideMerge(PreviewLayerLive),
   Layer.provideMerge(RuntimeMemoryRepositoriesWithPersistenceLive),
   Layer.provideMerge(Keybindings.layer),
+  Layer.provideMerge(CursorLogin.layer),
   Layer.provideMerge(ProviderRegistryLive),
   // The instance registry is the new routing keystone — text generation,
   // adapter lookup, and runtime ingestion all resolve `ProviderInstanceId`

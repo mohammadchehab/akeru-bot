@@ -56,6 +56,7 @@ import {
   AttachmentRevealInput,
   AttachmentUploadSigningKeyError,
 } from "../assets.ts";
+import { CursorLoginError, CursorLoginInput, CursorLoginStarted } from "../cursorLogin.ts";
 import { KeybindingsConfigError } from "../keybindings.ts";
 import {
   ProviderUploadFeedbackError,
@@ -208,6 +209,18 @@ export const WsServerRefreshProvidersRpc = Rpc.make(WS_METHODS.serverRefreshProv
   }),
   success: ServerProviderUpdatedPayload,
   error: EnvironmentAuthorizationError,
+});
+
+export const WsServerCursorLoginRpc = Rpc.make(WS_METHODS.serverCursorLogin, {
+  payload: CursorLoginInput,
+  success: CursorLoginStarted,
+  error: Schema.Union([CursorLoginError, EnvironmentAuthorizationError]),
+});
+
+export const WsServerCursorLogoutRpc = Rpc.make(WS_METHODS.serverCursorLogout, {
+  payload: CursorLoginInput,
+  success: ServerProviderUpdatedPayload,
+  error: Schema.Union([CursorLoginError, EnvironmentAuthorizationError]),
 });
 
 export const WsServerUpdateProviderRpc = Rpc.make(WS_METHODS.serverUpdateProvider, {

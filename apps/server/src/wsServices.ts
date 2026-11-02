@@ -58,6 +58,7 @@ import {
 } from "./observability/RpcInstrumentation.ts";
 import * as AgentController from "./provider/Services/AgentController.ts";
 import * as ProviderRegistry from "./provider/Services/ProviderRegistry.ts";
+import * as CursorLogin from "./provider/Layers/cursor/CursorLoginControl.ts";
 import * as ProviderMaintenanceRunner from "./provider/providerMaintenanceRunner.ts";
 import * as ServerSelfUpdate from "./cloud/selfUpdate.ts";
 import * as ServiceLauncherClient from "./cloud/serviceLauncherClient.ts";
@@ -242,6 +243,8 @@ export const createWsServices = (
     const providerRegistry = yield* ProviderRegistry.ProviderRegistry;
 
     const providerMaintenanceRunner = yield* ProviderMaintenanceRunner.ProviderMaintenanceRunner;
+
+    const cursorLogin = yield* CursorLogin.CursorLogin;
 
     const serverSelfUpdate = yield* ServerSelfUpdate.ServerSelfUpdate;
 
@@ -706,6 +709,7 @@ export const createWsServices = (
       memoryApprovals,
       providerRegistry,
       providerMaintenanceRunner,
+      cursorLogin,
       serverSelfUpdate,
       config,
       remoteDoctorTarget,
