@@ -34,6 +34,12 @@ export const BUDGET_AFTER_FIRST_TURN: ResponderBudget = {
   hopsUsed: 1,
 };
 
+/** The budget a queue carries; a queue written before hopsUsed existed counts as none used. */
+export const budgetOf = (queue: ResponderQueue): ResponderBudget => ({
+  hopsLeft: queue.hopsLeft,
+  hopsUsed: queue.hopsUsed ?? 0,
+});
+
 /** The budget after the queue starts one more turn. Addressed bots always run, so it floors at 0. */
 export const budgetAfterTurnStarted = (queue: ResponderBudget): ResponderBudget => ({
   hopsLeft: Math.max(0, queue.hopsLeft - 1),
@@ -149,12 +155,12 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
 
   // Everyone waiting has left the group or been archived: nobody is woken, the queue just ends.
   if (next === undefined || nextBot === undefined) {
-    return [yield* setQueue([], queue, "superseded")];
+    return [yield* setQueue([], budgetOf(queue), "superseded")];
   }
 
   const poppedEvent = yield* setQueue(
     queue.entries.slice(nextIndex + 1),
-    budgetAfterTurnStarted(queue),
+    budgetAfterTurnStarted(budgetOf(queue)),
     "turn-started",
   );
 
