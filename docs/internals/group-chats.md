@@ -82,8 +82,11 @@ Rules:
 - A mention runs to the first character that cannot be part of a member name, so `@Becky,` counts.
   A typed `@bot:<id>` ends the same way: an id may contain `.` `:` `-` `_` inside but starts and ends
   with a letter or digit. The composer, channel text and chains share one parser.
-- **Hop budget:** each user message allows at most 6 bot turns in total, including the first ones.
-  The budget is a setting, because every bot reply counts toward the user's usage.
+- **Hop budget:** each user message allows at most N bot turns in total, including the first ones.
+  N is a per-chat setting, default 6, because every bot reply counts toward the user's usage. The
+  group thread carries it as `hopBudget` (an integer from 1 to 20). A thread command changes it,
+  with the same authorization as other group-thread changes. It is in the read model, so every
+  client shows it in the chat's settings. A chat with no value uses 6.
   - Every turn the queue starts for that message counts, whether addressing or a mention added it.
     Delegation `send` and the auto routing call do not count.
   - The bots a user names, or `@everyone`, always run, even past the budget. The budget only limits
@@ -198,7 +201,8 @@ Each slice is one PR. Explicit addressing (b1, c, d) ships in 0.0.3.
 - **b1.** The `addressing` contract, the decider and the queue for `bots`, `everyone` and `reply`,
   `thread.responder-queue.set`, and `trigger` on turns. Stop and a new user message clear the queue.
   `auto` still means the boss.
-- **b2.** Chains: mentions in bot replies, the hop budget setting, and `budget-exhausted`.
+- **b2.** Chains: mentions in bot replies, the per-chat `hopBudget` setting, and `budget-exhausted`.
+  b1 uses a fixed budget of 6.
 - **b3.** The auto routing call and its fallback.
 - **c.** The web composer (mention chips, `@everyone`, the reply action), "X is next", and Stop. Then
   mobile.
