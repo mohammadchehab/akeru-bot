@@ -17,7 +17,7 @@ export const commonMessagesCatalog = {
   "Sidebar (legacy)": "侧边栏（旧版）",
   "Version {version}": "版本 {version}",
   "Reset {label} to default": "将 {label} 重置为默认",
-  "English and Simplified Chinese are available.": "目前提供英语和简体中文。",
+  "English, Simplified Chinese, and Arabic are available.": "目前提供英语、简体中文和阿拉伯语。",
   "Menu, filters active": "菜单，筛选已启用",
   "Menu, no filters": "菜单，无筛选",
   "Trace ID:": "跟踪 ID：",

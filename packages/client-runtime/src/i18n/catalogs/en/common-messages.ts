@@ -18,7 +18,8 @@ export const commonMessagesCatalog = {
   "Sidebar (legacy)": "Sidebar (legacy)",
   "Version {version}": "Version {version}",
   "Reset {label} to default": "Reset {label} to default",
-  "English and Simplified Chinese are available.": "English and Simplified Chinese are available.",
+  "English, Simplified Chinese, and Arabic are available.":
+    "English, Simplified Chinese, and Arabic are available.",
   "Menu, filters active": "Menu, filters active",
   "Menu, no filters": "Menu, no filters",
   "Trace ID:": "Trace ID:",
