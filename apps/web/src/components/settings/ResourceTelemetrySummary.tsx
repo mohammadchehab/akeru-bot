@@ -119,7 +119,7 @@ export function AggregateCard({
   aggregate: ResourceTelemetryAggregate;
 }) {
   return (
-    <div className="relative overflow-hidden border-t border-border/60 px-4 py-4 first:border-t-0 md:border-t-0 md:border-l md:first:border-l-0 sm:px-5">
+    <div className="relative overflow-hidden border-t border-border/60 px-4 py-4 first:border-t-0 md:border-t-0 md:border-s md:first:border-s-0 sm:px-5">
       <span className={cn("absolute inset-x-5 top-0 h-0.5 rounded-full opacity-75", accentClass)} />
       <div className="flex items-center justify-between gap-3">
         <div className="text-10px font-semibold uppercase tracking-caps-wide text-muted-foreground/75">
@@ -206,7 +206,7 @@ export function DetailRow({
       <span className="text-11px text-muted-foreground/75">{label}</span>
       <span
         className={cn(
-          "min-w-0 truncate text-right font-mono text-11px tabular-nums text-foreground/85",
+          "min-w-0 truncate text-end font-mono text-11px tabular-nums text-foreground/85",
           valueClassName,
         )}
       >

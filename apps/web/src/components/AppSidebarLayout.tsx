@@ -115,11 +115,11 @@ function SidebarControl({ stageArtworkVisible }: { stageArtworkVisible: boolean 
   }
 
   return (
-    // The right-side layout controls carry mr-px (border compensation inside
+    // The right-side layout controls carry me-px (border compensation inside
     // the panel), so the trigger mirrors it: both clusters sit one extra pixel
     // off their edge and the titlebar reads symmetric.
     <div
-      className="pointer-events-none fixed left-(--workspace-controls-left) top-(--workspace-controls-top) z-50 ml-px flex h-(--workspace-topbar-height) items-center"
+      className="pointer-events-none fixed start-(--workspace-controls-left) top-(--workspace-controls-top) z-50 ms-px flex h-(--workspace-topbar-height) items-center"
       data-sidebar-control=""
     >
       <Tooltip>

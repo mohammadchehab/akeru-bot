@@ -194,7 +194,7 @@ export function ExperimentalSidebar() {
         {/* Fixed width so collapsing clips the panel instead of squeezing its rows. */}
         <div
           className={cn(
-            "flex w-(--panel-width) shrink-0 py-2 pr-2 in-data-[macos-traffic-lights]:pt-0",
+            "flex w-(--panel-width) shrink-0 py-2 pe-2 in-data-[macos-traffic-lights]:pt-0",
             railOnly && !isMobile && "hidden",
           )}
           style={{ "--panel-width": `${PANEL_WIDTH}px` }}
@@ -289,7 +289,7 @@ function PanelRow({
       <button
         type="button"
         onClick={onClick}
-        className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-2 py-2 text-left outline-none hover:bg-sidebar-row-hover focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-2 py-2 text-start outline-none hover:bg-sidebar-row-hover focus-visible:ring-2 focus-visible:ring-ring"
       >
         {leading}
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">

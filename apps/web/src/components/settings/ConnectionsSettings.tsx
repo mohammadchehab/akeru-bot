@@ -116,7 +116,7 @@ export function ConnectionsSettings() {
                     <Tooltip>
                       <TooltipTrigger
                         render={
-                          <button type="button" className="w-fit cursor-help rounded-sm text-left">
+                          <button type="button" className="w-fit cursor-help rounded-sm text-start">
                             Update to match this client.
                           </button>
                         }

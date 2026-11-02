@@ -133,7 +133,7 @@ export function SavedBackendListRow({
                 render={
                   <button
                     type="button"
-                    className="w-fit cursor-help rounded-sm text-left text-muted-foreground text-xs"
+                    className="w-fit cursor-help rounded-sm text-start text-muted-foreground text-xs"
                   >
                     Server update available
                   </button>

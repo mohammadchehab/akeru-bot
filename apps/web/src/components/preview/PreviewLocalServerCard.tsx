@@ -16,7 +16,7 @@ export function PreviewLocalServerCard({ threadRef, server, onOpen }: Props) {
     <button
       type="button"
       onClick={onOpen}
-      className="group flex w-full items-center gap-3 px-3 py-3 text-left hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+      className="group flex w-full items-center gap-3 px-3 py-3 text-start hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
     >
       <PreviewFaviconIcon threadRef={threadRef} url={server.requestedUrl} />
       <div className="flex min-w-0 flex-1 flex-col">

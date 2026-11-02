@@ -121,7 +121,7 @@ export function PreviewChromeRow({
                 />
               }
             >
-              <ArrowLeft />
+              <ArrowLeft className="rtl:-scale-x-100" />
             </TooltipTrigger>
             <TooltipPopup>Back</TooltipPopup>
           </Tooltip>
@@ -138,7 +138,7 @@ export function PreviewChromeRow({
                 />
               }
             >
-              <ArrowRight />
+              <ArrowRight className="rtl:-scale-x-100" />
             </TooltipTrigger>
             <TooltipPopup>Forward</TooltipPopup>
           </Tooltip>
@@ -200,7 +200,7 @@ export function PreviewChromeRow({
             <InputGroupAddon
               align="inline-end"
               reveal="address"
-              className="pointer-events-none absolute inset-y-0 right-0 group-hover/address:pointer-events-auto"
+              className="pointer-events-none absolute inset-y-0 end-0 group-hover/address:pointer-events-auto"
             >
               <Tooltip>
                 <TooltipTrigger
@@ -265,7 +265,7 @@ export function PreviewChromeRow({
             >
               <Camera className={cn(recording && "text-destructive")} />
               {recording ? (
-                <span className="absolute right-0.5 top-0.5 size-1.5 animate-status-pulse rounded-full bg-destructive" />
+                <span className="absolute end-0.5 top-0.5 size-1.5 animate-status-pulse rounded-full bg-destructive" />
               ) : null}
             </TooltipTrigger>
             <TooltipPopup>
@@ -278,7 +278,7 @@ export function PreviewChromeRow({
       <div
         aria-hidden
         data-loading={loading}
-        className="preview-loading-progress pointer-events-none absolute bottom-0 left-0 z-10 h-0.5 w-full origin-left rounded-r-full bg-primary shadow-progress-glow"
+        className="preview-loading-progress pointer-events-none absolute bottom-0 start-0 z-10 h-0.5 w-full origin-left rounded-e-full bg-primary shadow-progress-glow"
       />
     </div>
   );

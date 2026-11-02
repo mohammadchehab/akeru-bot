@@ -53,7 +53,7 @@ describe("ComposerCommandMenu", () => {
     expect(markup).not.toContain("font-mono");
     expect(markup).not.toContain("grid-cols-");
     expect(markup).toContain("max-w-9/20");
-    expect(markup).toContain("text-left");
+    expect(markup).toContain("text-start");
   });
 
   it("falls back to the skill source icon ahead of the row when the skill has none", () => {

@@ -81,7 +81,7 @@ export function StatBlock({
             <TooltipPopup
               side="top"
               variant="diagnostics-prose"
-              className="max-w-(--spacing-min-300px-vw-2rem) whitespace-normal text-left"
+              className="max-w-(--spacing-min-300px-vw-2rem) whitespace-normal text-start"
             >
               {tooltip}
             </TooltipPopup>
@@ -105,7 +105,7 @@ export function StatsGrid({ children }: { children: ReactNode }) {
   return (
     <div className="relative grid grid-cols-2 sm:grid-cols-4">
       <span
-        className="pointer-events-none absolute inset-y-0 left-1/2 w-px bg-border/60"
+        className="pointer-events-none absolute inset-y-0 start-1/2 w-px bg-border/60"
         aria-hidden
       />
       <span
@@ -113,11 +113,11 @@ export function StatsGrid({ children }: { children: ReactNode }) {
         aria-hidden
       />
       <span
-        className="pointer-events-none absolute inset-y-0 left-1/4 hidden w-px bg-border/60 sm:block"
+        className="pointer-events-none absolute inset-y-0 start-1/4 hidden w-px bg-border/60 sm:block"
         aria-hidden
       />
       <span
-        className="pointer-events-none absolute inset-y-0 left-3/4 hidden w-px bg-border/60 sm:block"
+        className="pointer-events-none absolute inset-y-0 start-3/4 hidden w-px bg-border/60 sm:block"
         aria-hidden
       />
       {children}
@@ -186,7 +186,7 @@ export function DiagnosticsTable({
       className="w-full max-w-full"
     >
       <table
-        className={cn("w-full text-left text-xs", minTableWidth, columnWidths && "table-fixed")}
+        className={cn("w-full text-start text-xs", minTableWidth, columnWidths && "table-fixed")}
       >
         {columnWidths ? (
           <colgroup>
@@ -201,7 +201,7 @@ export function DiagnosticsTable({
               <th
                 key={header}
                 className={cn(
-                  "whitespace-nowrap px-4 py-2.5 font-semibold first:sm:pl-5 last:sm:pr-5",
+                  "whitespace-nowrap px-4 py-2.5 font-semibold first:sm:ps-5 last:sm:pe-5",
                   !columnWidths && index === headers.length - 1 && "w-px",
                 )}
               >

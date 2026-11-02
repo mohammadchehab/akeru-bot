@@ -176,7 +176,7 @@ export function BrowserDeviceToolbar({
 
   return (
     <div
-      className="sticky left-0 top-0 z-50 flex h-(--toolbar-height) w-(--toolbar-width) items-center gap-0.5 overflow-x-auto border-b border-border/70 bg-background/95 px-1.5 shadow-xs backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className="sticky start-0 top-0 z-50 flex h-(--toolbar-height) w-(--toolbar-width) items-center gap-0.5 overflow-x-auto border-b border-border/70 bg-background/95 px-1.5 shadow-xs backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden"
       style={{
         "--toolbar-width": `${width}px`,
         "--toolbar-height": `${BROWSER_DEVICE_TOOLBAR_HEIGHT}px`,
@@ -203,7 +203,7 @@ export function BrowserDeviceToolbar({
       }}
     >
       {width >= 560 ? (
-        <span className="mr-0.5 shrink-0 text-11px font-medium text-muted-foreground">
+        <span className="me-0.5 shrink-0 text-11px font-medium text-muted-foreground">
           Dimensions
         </span>
       ) : null}
@@ -344,7 +344,7 @@ export function BrowserDeviceToolbar({
         type="button"
         aria-label="Close device toolbar"
         presentation="toolbar-sticky"
-        className="sticky right-0 ml-auto"
+        className="sticky end-0 ms-auto"
         disabled={pending}
         onClick={() => {
           apply(ViewportSetting.fill(), null);

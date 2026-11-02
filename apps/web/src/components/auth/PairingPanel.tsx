@@ -203,13 +203,13 @@ export function PairingPanel({
             {environment.name ? (
               <>
                 <dt className="text-muted-foreground">{t("Environment")}</dt>
-                <dd className="truncate text-right font-medium">{environment.name}</dd>
+                <dd className="truncate text-end font-medium">{environment.name}</dd>
               </>
             ) : null}
             {environment.address ? (
               <>
                 <dt className="text-muted-foreground">{t("Address")}</dt>
-                <dd className="truncate text-right font-mono text-13px text-foreground/80">
+                <dd className="truncate text-end font-mono text-13px text-foreground/80">
                   {environment.address}
                 </dd>
               </>

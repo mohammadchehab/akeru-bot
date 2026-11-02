@@ -11,7 +11,7 @@ export function GenerativeTimeline({ spec }: { readonly spec: TimelineSpec }) {
             className="m-0 flex gap-3 p-0"
             data-tone={event.tone ?? "neutral"}
           >
-            <span className="w-12 shrink-0 pt-px text-right font-mono text-xs text-muted-foreground tabular-nums">
+            <span className="w-12 shrink-0 pt-px text-end font-mono text-xs text-muted-foreground tabular-nums">
               {event.time}
             </span>
             <span className="relative flex w-2.5 shrink-0 justify-center">

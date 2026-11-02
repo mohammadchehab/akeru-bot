@@ -287,7 +287,7 @@ export function HostedBrowserWebview(props: {
     <div
       ref={wrapperRef}
       className={cn(
-        "fixed top-(--wrapper-top) left-(--wrapper-left) z-(--wrapper-z) h-(--wrapper-height) w-(--wrapper-width) rounded-(--wrapper-radius) overflow-hidden overscroll-contain bg-muted/35",
+        "fixed top-(--wrapper-top) start-(--wrapper-left) z-(--wrapper-z) h-(--wrapper-height) w-(--wrapper-width) rounded-(--wrapper-radius) overflow-hidden overscroll-contain bg-muted/35",
         wrapperStyle.pointerEvents === "none" ? "pointer-events-none" : "pointer-events-auto",
         wrapperStyle.visibility === "hidden" && "invisible",
         wrapperStyle.visibility === "visible" && "visible",
@@ -349,7 +349,7 @@ export function HostedBrowserWebview(props: {
           aria-hidden={active ? undefined : true}
           tabIndex={active && presentation.interactive ? undefined : -1}
           className={cn(
-            "absolute top-(--viewport-top) left-(--viewport-left) flex h-(--viewport-height) w-(--viewport-width) origin-top-left transform-(--viewport-transform) overflow-hidden bg-background",
+            "absolute top-(--viewport-top) start-(--viewport-left) flex h-(--viewport-height) w-(--viewport-width) origin-top-left transform-(--viewport-transform) overflow-hidden bg-background",
             active && !layout.fillsPanel && "ring-1 ring-border/70 shadow-sm",
           )}
           style={{

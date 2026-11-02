@@ -170,7 +170,7 @@ export function SidebarProviderUpdatePill() {
         <div
           key={displayedView.key}
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-y-0 left-0 w-full origin-left animate-provider-update-pill-countdown border-r border-current/15 shadow-inset-highlight ${
+          className={`pointer-events-none absolute inset-y-0 start-0 w-full origin-left animate-provider-update-pill-countdown border-e border-current/15 shadow-inset-highlight ${
             PROVIDER_UPDATE_PILL_PROGRESS_STYLES[displayedView.tone]
           }`}
           style={
@@ -187,7 +187,7 @@ export function SidebarProviderUpdatePill() {
             <button
               type="button"
               aria-label={displayedView.description}
-              className="provider-update-main relative z-1 flex h-full flex-1 items-center gap-2 px-2 text-left"
+              className="provider-update-main relative z-1 flex h-full flex-1 items-center gap-2 px-2 text-start"
               onClick={openProviderSettings}
             >
               {Match.value(displayedView).pipe(
@@ -213,7 +213,7 @@ export function SidebarProviderUpdatePill() {
                 variant="ghost"
                 aria-label={t("Dismiss provider update notice")}
                 presentation="update-pill-dismiss"
-                className="relative z-1 mr-1"
+                className="relative z-1 me-1"
                 onClick={() => startExit(displayedView.key, null, displayedView.key)}
               >
                 <XIcon className="size-3.5" />

@@ -52,7 +52,7 @@ export function LegacyFeaturesSection() {
           <h2 className="text-lg font-semibold tracking-tight text-muted-foreground transition-colors group-hover:text-foreground">
             {t("Legacy features")}
           </h2>
-          <ChevronRightIcon className="size-4 text-muted-foreground transition-transform duration-200 group-data-panel-open:rotate-90" />
+          <ChevronRightIcon className="size-4 rtl:-scale-x-100 text-muted-foreground transition-transform duration-200 group-data-panel-open:rotate-90" />
         </CollapsibleTrigger>
         <CollapsiblePanel>
           <div className="relative space-y-1 overflow-visible pt-3 text-foreground">

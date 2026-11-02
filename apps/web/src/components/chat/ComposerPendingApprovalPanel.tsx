@@ -208,7 +208,7 @@ function RoutineProposal({
         <div className="flex min-w-0 items-center gap-2">
           <span className="text-xs font-medium text-foreground">{t("Review routine")}</span>
           {pendingCount > 1 ? (
-            <span className="ml-auto text-10px text-muted-foreground tabular-nums">
+            <span className="ms-auto text-10px text-muted-foreground tabular-nums">
               1/{pendingCount}
             </span>
           ) : null}
@@ -344,7 +344,7 @@ export const ComposerPendingApprovalPanel = memo(function ComposerPendingApprova
             </span>
           ) : null}
           {pendingCount > 1 ? (
-            <span className="ml-auto shrink-0 text-10px font-medium text-muted-foreground tabular-nums">
+            <span className="ms-auto shrink-0 text-10px font-medium text-muted-foreground tabular-nums">
               1/{pendingCount}
             </span>
           ) : null}
