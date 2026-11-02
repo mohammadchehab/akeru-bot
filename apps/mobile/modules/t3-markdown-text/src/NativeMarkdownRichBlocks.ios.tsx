@@ -1,3 +1,4 @@
+import { useMarkdownSelectable } from "./markdownSelectable";
 import { useContext } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import type { MarkdownNode } from "react-native-nitro-markdown/headless";
@@ -16,8 +17,11 @@ export function SelectableNode(props: {
   readonly textStyle: NativeMarkdownTextStyle;
   readonly onLinkPress?: (href: string) => void;
 }) {
+  const selectable = useMarkdownSelectable();
+
   return (
     <NativeMarkdownSelectableText
+      selectable={selectable}
       runs={nativeMarkdownDocumentRuns(documentFor(props.node), props.skills)}
       textStyle={props.textStyle}
       onLinkPress={props.onLinkPress}
@@ -51,6 +55,8 @@ export function NativeTable(props: {
   readonly textStyle: NativeMarkdownTextStyle;
   readonly onLinkPress?: (href: string) => void;
 }) {
+  const selectable = useMarkdownSelectable();
+
   const rows = collectTableRows(props.node);
 
   return (
@@ -86,6 +92,7 @@ export function NativeTable(props: {
                 }}
               >
                 <NativeMarkdownSelectableText
+                  selectable={selectable}
                   runs={nativeMarkdownDocumentRuns(documentFor(cell), props.skills).map((run) =>
                     rowIndex === 0 || cell.isHeader ? { ...run, bold: true } : run,
                   )}
@@ -107,6 +114,7 @@ export function NativeMarkdownImage(props: {
   readonly textStyle: NativeMarkdownTextStyle;
   readonly onLinkPress?: (href: string) => void;
 }) {
+  const selectable = useMarkdownSelectable();
   const renderImage = useContext(MarkdownImageRendererContext);
   const href = props.node.href;
 
@@ -148,7 +156,7 @@ export function NativeMarkdownImage(props: {
       />
       {props.node.alt ? (
         <Text
-          selectable
+          selectable={selectable}
           style={{
             color: props.textStyle.mutedColor,
             fontFamily: props.textStyle.fontFamily,

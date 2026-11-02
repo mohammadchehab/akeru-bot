@@ -30,3 +30,15 @@ export function setGroupReplyTarget(threadKey: string, target: GroupReplyTarget 
 export function useGroupReplyTarget(threadKey: string): GroupReplyTarget | null {
   return useAtomValue(groupReplyTargetsAtom)[threadKey] ?? null;
 }
+
+/**
+ * Puts the reply chip back after a send failed to save: the draft returns to the composer, so the
+ * chip that went with it must too. Does nothing when the send carried no reply.
+ */
+export function restoreGroupReplyTargetAfterFailedSend(
+  threadKey: string,
+  chipTarget: GroupReplyTarget | null,
+  sentAsReply: boolean,
+): void {
+  if (chipTarget && sentAsReply) setGroupReplyTarget(threadKey, chipTarget);
+}

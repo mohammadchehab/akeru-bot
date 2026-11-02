@@ -41,7 +41,13 @@ import { useOptionalReplyPlayback } from "../replyPlayback/ReplyPlaybackProvider
 import { cn } from "../../lib/cn";
 import type { ThreadFeedEntry } from "../../lib/threadActivity";
 import { formatBotStepEngine, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
-import { groupReplyTarget, type GroupReplyTarget } from "./groupReply";
+import {
+  extractMessageLinks,
+  groupMessageActions,
+  groupReplyTarget,
+  type GroupReplyTarget,
+} from "./groupReply";
+import { copyTextWithHaptic } from "../../lib/copyTextWithHaptic";
 import { ThreadWorkGroupToggle, ThreadWorkLog } from "./thread-work-log";
 import { MessageAttachmentFile, MessageAttachmentImage } from "./thread-feed-images";
 import type { MarkdownStyleSet, MarkdownStyleSets } from "./thread-feed-markdown";
@@ -72,30 +78,25 @@ function formatMessageTime(
 const FRESH_ENTRY_WINDOW_MS = 3_000;
 
 /**
- * A long-press on a bot's message in a group opens the Reply sheet. The Pressable stays mounted
- * for every group message (so the body does not remount when `respondingBotId` arrives) and only
- * reacts, and offers the Reply accessibility action, when the message can be replied to.
+ * A long-press anywhere on a group bot message opens the sheet. The message stays one
+ * accessibility element and carries its actions (Reply, Copy, Open <host>) as custom actions.
  */
-function ReplyLongPress(props: {
+function MessageActionsPress(props: {
   readonly groupChat: boolean;
-  readonly enabled: boolean;
-  readonly label: string;
-  readonly onReply: () => void;
+  readonly actions: ReadonlyArray<{ readonly name: string; readonly label: string }>;
+  readonly onLongPress: () => void;
+  readonly onAction: (name: string) => void;
   readonly children: ReactNode;
 }) {
   if (!props.groupChat) return <>{props.children}</>;
 
   return (
     <Pressable
-      {...(props.enabled
-        ? {
-            onLongPress: props.onReply,
-            accessibilityActions: [{ name: "reply", label: props.label }],
-            onAccessibilityAction: (event: AccessibilityActionEvent) => {
-              if (event.nativeEvent.actionName === "reply") props.onReply();
-            },
-          }
-        : {})}
+      onLongPress={props.onLongPress}
+      accessibilityActions={[...props.actions]}
+      onAccessibilityAction={(event: AccessibilityActionEvent) =>
+        props.onAction(event.nativeEvent.actionName)
+      }
     >
       {props.children}
     </Pressable>
@@ -134,9 +135,22 @@ type ThreadFeedRenderContext = {
   readonly replyPlayback: ReturnType<typeof useOptionalReplyPlayback>;
   readonly formatDate: (value: number, options: Intl.DateTimeFormatOptions) => string;
   readonly unknownBotLabel: string;
-  /** Group chats only: set when a long-press on a bot's message may start a reply. */
-  readonly onReplyToMessage?: ((target: GroupReplyTarget) => void) | undefined;
-  readonly replyLabel: string;
+  /** Group chats only: set when a long-press on a bot's message opens the Reply / Copy sheet. */
+  readonly groupMessageActions?:
+    | {
+        readonly labels: {
+          readonly reply: string;
+          readonly copy: string;
+          readonly openLink: (host: string) => string;
+        };
+        readonly onLongPress: (input: {
+          readonly target: GroupReplyTarget | null;
+          readonly text: string;
+          readonly title: string;
+        }) => void;
+        readonly onReply: (target: GroupReplyTarget) => void;
+      }
+    | undefined;
 };
 
 export function renderFeedEntry(
@@ -296,6 +310,8 @@ export function renderFeedEntry(
       ? stabilizeStreamingMarkdown(message.text)
       : message.text;
 
+    const group = props.groupMessageActions;
+
     // Built at press time: a streaming row re-renders on every token.
     const buildReplyTarget = () =>
       groupReplyTarget({
@@ -312,14 +328,37 @@ export function renderFeedEntry(
         className={cn(showAssistantMeta ? "mb-5 px-1" : "mb-2 px-1")}
         {...(enterAnimated ? { entering: FadeIn.duration(220) } : {})}
       >
-        <ReplyLongPress
-          groupChat={props.onReplyToMessage !== undefined}
-          enabled={Boolean(message.respondingBotId)}
-          label={props.replyLabel}
-          onReply={() => {
-            const target = buildReplyTarget();
+        <MessageActionsPress
+          groupChat={group !== undefined}
+          actions={
+            group
+              ? groupMessageActions({
+                  canReply: Boolean(message.respondingBotId),
+                  // Links are read once the message settles; a streaming row re-renders per token.
+                  text: message.streaming ? "" : message.text,
+                  labels: group.labels,
+                })
+              : []
+          }
+          onLongPress={() =>
+            group?.onLongPress({
+              target: buildReplyTarget(),
+              text: message.text,
+              title: speakerBot?.name ?? props.unknownBotLabel,
+            })
+          }
+          onAction={(name) => {
+            if (name === "reply") {
+              const target = buildReplyTarget();
 
-            if (target) props.onReplyToMessage?.(target);
+              if (target) group?.onReply(target);
+            } else if (name === "copy") {
+              copyTextWithHaptic(message.text, { target: "group message" });
+            } else if (name.startsWith("open-link:")) {
+              const link = extractMessageLinks(message.text)[Number(name.slice(10))];
+
+              if (link) props.onMarkdownLinkPress(link.href);
+            }
           }}
         >
           {speakerBotId ? (
@@ -342,6 +381,7 @@ export function renderFeedEntry(
                 textStyle={styles.nativeTextStyle}
                 onLinkPress={props.onMarkdownLinkPress}
                 renderImage={props.renderMarkdownImage}
+                selectable={group === undefined}
               />
             ) : (
               <Markdown
@@ -354,7 +394,7 @@ export function renderFeedEntry(
               </Markdown>
             )
           ) : null}
-        </ReplyLongPress>
+        </MessageActionsPress>
         {attachments.map((attachment) => {
           return attachment.type === "file" ? (
             <MessageAttachmentFile

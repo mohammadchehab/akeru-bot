@@ -64,6 +64,8 @@ export interface SelectableMarkdownTextProps {
   readonly skills?: ReadonlyArray<SelectableMarkdownSkill>;
   readonly preserveSoftBreaks?: boolean;
   readonly onLinkPress?: (href: string) => void;
+  /** Defaults to true. Off, a long-press on the text selects nothing and reaches a parent gesture. */
+  readonly selectable?: boolean;
   readonly renderImage?: MarkdownImageRenderer;
   readonly marginTop?: number;
   readonly marginBottom?: number;

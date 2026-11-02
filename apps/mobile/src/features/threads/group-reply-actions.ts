@@ -1,33 +1,53 @@
 import * as Haptics from "expo-haptics";
 import { ActionSheetIOS, Alert, Platform } from "react-native";
 
-import type { GroupReplyTarget } from "./groupReply";
+import { copyTextWithHaptic } from "../../lib/copyTextWithHaptic";
+import { runGroupMessageAction, type GroupReplyTarget } from "./groupReply";
 
 /**
- * The native sheet a long-press on a bot message opens: Reply or Cancel. Android has no action
- * sheet, so the same two choices show as an alert.
+ * The one native sheet a long-press on a group bot message opens: Reply (when the message can be
+ * replied to), Copy and Cancel. Android has no action sheet, so the same choices show as an alert.
  */
-export function presentGroupReplyActions(input: {
-  readonly target: GroupReplyTarget;
-  readonly replyLabel: string;
-  readonly cancelLabel: string;
+export function presentGroupMessageActions(input: {
+  readonly target: GroupReplyTarget | null;
+  readonly text: string;
+  readonly title: string;
+  readonly labels: { readonly reply: string; readonly copy: string; readonly cancel: string };
   readonly onReply: (target: GroupReplyTarget) => void;
 }): void {
   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
+  const run = (action: "reply" | "copy") =>
+    runGroupMessageAction(action, {
+      target: input.target,
+      text: input.text,
+      onReply: input.onReply,
+      copy: (text) => copyTextWithHaptic(text, { target: "group message" }),
+    });
+
+  const choices: Array<{ readonly action: "reply" | "copy"; readonly label: string }> = [
+    ...(input.target ? [{ action: "reply" as const, label: input.labels.reply }] : []),
+    { action: "copy", label: input.labels.copy },
+  ];
+
   if (Platform.OS === "ios") {
     ActionSheetIOS.showActionSheetWithOptions(
-      { options: [input.replyLabel, input.cancelLabel], cancelButtonIndex: 1 },
+      {
+        options: [...choices.map((choice) => choice.label), input.labels.cancel],
+        cancelButtonIndex: choices.length,
+      },
       (index) => {
-        if (index === 0) input.onReply(input.target);
+        const choice = choices[index];
+
+        if (choice) run(choice.action);
       },
     );
 
     return;
   }
 
-  Alert.alert(input.target.botName, undefined, [
-    { text: input.replyLabel, onPress: () => input.onReply(input.target) },
-    { text: input.cancelLabel, style: "cancel" },
+  Alert.alert(input.title, undefined, [
+    ...choices.map((choice) => ({ text: choice.label, onPress: () => run(choice.action) })),
+    { text: input.labels.cancel, style: "cancel" as const },
   ]);
 }

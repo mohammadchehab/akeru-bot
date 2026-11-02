@@ -44,3 +44,91 @@ export function groupReplyTarget(input: {
     snippet: replySnippet(message.text),
   };
 }
+
+export interface MessageLink {
+  readonly href: string;
+  readonly host: string;
+}
+
+const MAX_LINK_ACTIONS = 3;
+
+const MARKDOWN_LINK = /\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g;
+
+const BARE_URL = /https?:\/\/[^\s)<>\]]+/g;
+
+/** The first few distinct http(s) links in a message's markdown, in reading order. */
+export function extractMessageLinks(markdown: string): MessageLink[] {
+  const found: Array<{ index: number; href: string }> = [];
+
+  for (const match of markdown.matchAll(MARKDOWN_LINK)) {
+    found.push({ index: match.index, href: match[1] ?? "" });
+  }
+
+  // A bare URL already inside a `[text](url)` match must not count twice.
+  const taken = Array.from(markdown.matchAll(MARKDOWN_LINK), (m) => [
+    m.index,
+    m.index + m[0].length,
+  ]);
+
+  for (const match of markdown.matchAll(BARE_URL)) {
+    if (!taken.some(([start, end]) => match.index >= (start ?? 0) && match.index < (end ?? 0))) {
+      found.push({ index: match.index, href: match[0].replace(/[.,;:!?]+$/, "") });
+    }
+  }
+
+  const links: MessageLink[] = [];
+
+  for (const { href } of found.toSorted((a, b) => a.index - b.index)) {
+    if (links.some((link) => link.href === href)) continue;
+    const host = URL.canParse(href) ? new URL(href).host : href;
+    links.push({ href, host });
+
+    if (links.length === MAX_LINK_ACTIONS) break;
+  }
+
+  return links;
+}
+
+export interface MessageAction {
+  readonly name: string;
+  readonly label: string;
+}
+
+/**
+ * The accessibility actions of one group bot message: Reply when it can be replied to, Copy, and
+ * one "Open <host>" per link (at most three). The message stays a single accessibility element.
+ */
+export function groupMessageActions(input: {
+  readonly canReply: boolean;
+  readonly text: string;
+  readonly labels: {
+    readonly reply: string;
+    readonly copy: string;
+    readonly openLink: (host: string) => string;
+  };
+}): MessageAction[] {
+  const links = extractMessageLinks(input.text);
+
+  return [
+    ...(input.canReply ? [{ name: "reply", label: input.labels.reply }] : []),
+    { name: "copy", label: input.labels.copy },
+    ...links.map((link, index) => ({
+      name: `open-link:${index}`,
+      label: input.labels.openLink(link.host),
+    })),
+  ];
+}
+
+/** Runs a sheet choice. Copy puts the message's markdown source on the clipboard. */
+export function runGroupMessageAction(
+  action: "reply" | "copy",
+  input: {
+    readonly target: GroupReplyTarget | null;
+    readonly text: string;
+    readonly onReply: (target: GroupReplyTarget) => void;
+    readonly copy: (text: string) => void;
+  },
+): void {
+  if (action === "copy") input.copy(input.text);
+  else if (input.target) input.onReply(input.target);
+}

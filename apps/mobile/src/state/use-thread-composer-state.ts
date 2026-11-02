@@ -23,7 +23,11 @@ import {
 import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
 import { groupAddressing, resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { deriveActiveWorkStartedAt } from "@isnadi/shared/orchestrationTiming";
-import { getGroupReplyTarget, setGroupReplyTarget } from "./group-reply-target";
+import {
+  getGroupReplyTarget,
+  restoreGroupReplyTargetAfterFailedSend,
+  setGroupReplyTarget,
+} from "./group-reply-target";
 import { groupMentionBots } from "../features/threads/composerMentionItems";
 import { createQueuedMessageMetadata } from "../lib/commandMetadata";
 import {
@@ -422,7 +426,7 @@ export function useThreadComposerState() {
     setGroupReplyTarget(threadKey, null);
     enqueuePromise.catch((error) => {
       // The reply chip goes back with the draft, so a failed send does not lose who it was for.
-      if (chipTarget && replyTo) setGroupReplyTarget(threadKey, chipTarget);
+      restoreGroupReplyTargetAfterFailedSend(threadKey, chipTarget, replyTo !== undefined);
 
       // Restore text via merge (idempotent) but attachments via the uncapped
       // append: the merge path slots existing attachments first and truncates

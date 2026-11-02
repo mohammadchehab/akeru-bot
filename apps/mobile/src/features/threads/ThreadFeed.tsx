@@ -65,7 +65,7 @@ import {
 } from "./thread-feed-images";
 import { useMarkdownStyles } from "./thread-feed-markdown";
 import { ThreadFeedPlaceholder, renderFeedEntry } from "./thread-feed-rows";
-import { presentGroupReplyActions } from "./group-reply-actions";
+import { presentGroupMessageActions } from "./group-reply-actions";
 import type { GroupReplyTarget } from "./groupReply";
 import { setGroupReplyTarget } from "../../state/group-reply-target";
 import { useThreadFeedDisclosure } from "./use-thread-feed-disclosure";
@@ -426,19 +426,30 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
 
   // LegendList repaints visible rows only when their item or extraData changes, never for a
   // new renderItem closure. Everything rows read lives here and doubles as extraData.
-  // Group chats only: a long-press on a bot's message offers Reply, which fills the composer chip.
+  // Group chats only: a long-press on a bot's message opens one sheet (Reply, Copy, Cancel).
   const isGroupChat = props.speakerGroup != null;
 
-  const onReplyToMessage = useMemo(
+  const groupMessageActions = useMemo(
     () =>
       isGroupChat
-        ? (target: GroupReplyTarget) =>
-            presentGroupReplyActions({
-              target,
-              replyLabel: t("Reply"),
-              cancelLabel: t("Cancel"),
-              onReply: (chosen) => setGroupReplyTarget(feedThreadKey, chosen),
-            })
+        ? {
+            labels: {
+              reply: t("Reply"),
+              copy: t("Copy"),
+              openLink: (host: string) => t("Open {host}", { host }),
+            },
+            onLongPress: (input: {
+              readonly target: GroupReplyTarget | null;
+              readonly text: string;
+              readonly title: string;
+            }) =>
+              presentGroupMessageActions({
+                ...input,
+                labels: { reply: t("Reply"), copy: t("Copy"), cancel: t("Cancel") },
+                onReply: (chosen) => setGroupReplyTarget(feedThreadKey, chosen),
+              }),
+            onReply: (chosen: GroupReplyTarget) => setGroupReplyTarget(feedThreadKey, chosen),
+          }
         : undefined,
     [feedThreadKey, isGroupChat, t],
   );
@@ -469,8 +480,7 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
       replySynthesis,
       formatDate,
       unknownBotLabel: t("Unknown bot"),
-      onReplyToMessage,
-      replyLabel: t("Reply"),
+      groupMessageActions,
     }),
     [
       formatDate,
@@ -494,7 +504,7 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
       props.environmentId,
       props.skills,
       props.silentRun,
-      onReplyToMessage,
+      groupMessageActions,
       renderMarkdownImage,
       replyPlayback,
       replySynthesis,

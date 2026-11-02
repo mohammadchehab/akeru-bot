@@ -1,3 +1,4 @@
+import { useMarkdownSelectable } from "./markdownSelectable";
 import { useEffect, useState } from "react";
 import { ScrollView, Text, useColorScheme, View } from "react-native";
 import type { MarkdownNode } from "react-native-nitro-markdown/headless";
@@ -140,11 +141,13 @@ function HighlightedCodeText(props: {
   readonly highlighted: HighlightedCode | null;
   readonly textStyle: NativeMarkdownTextStyle;
 }) {
+  const selectable = useMarkdownSelectable();
+
   if (!props.highlighted) {
     return (
       <MarkdownTextPrimitive
         uiTextView
-        selectable
+        selectable={selectable}
         style={{
           color: props.textStyle.codeColor,
           fontFamily: "ui-monospace",
@@ -185,7 +188,7 @@ function HighlightedCodeText(props: {
   return (
     <MarkdownTextPrimitive
       uiTextView
-      selectable
+      selectable={selectable}
       style={{
         color: props.textStyle.codeColor,
         fontFamily: "ui-monospace",
@@ -222,6 +225,7 @@ export function NativeCodeBlock(props: {
   readonly highlightCode: MarkdownCodeHighlighter;
   readonly compact?: boolean;
 }) {
+  const selectable = useMarkdownSelectable();
   const content = nodeText(props.node).replace(/\n$/, "");
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? "dark" : "light";
@@ -253,7 +257,7 @@ export function NativeCodeBlock(props: {
         }}
       >
         <Text
-          selectable
+          selectable={selectable}
           style={{
             flex: 1,
             color: props.textStyle.mutedColor,
