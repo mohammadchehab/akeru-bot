@@ -8,6 +8,7 @@
  */
 import {
   EventId,
+  ProviderDriverKind,
   ProviderInstanceId,
   RuntimeItemId,
   ThreadId,
@@ -40,7 +41,7 @@ import {
 } from "./cursor/CursorRuntimeMapping.ts";
 import { startCursorTurn } from "./cursor/CursorTurnRunner.ts";
 
-const PROVIDER = "cursor" as const;
+const PROVIDER = ProviderDriverKind.make("cursor");
 
 /** What we keep to resume a Cursor chat: the `session_id` its `system.init` event reports. */
 const ResumeCursor = Schema.Struct({ sessionId: Schema.String });
@@ -234,8 +235,23 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
 
       yield* turn.events.pipe(
         Stream.runForEach((event) =>
-          Effect.forEach(mapper.map(event), (draft) => emitDraft(threadId, turnId, draft), {
-            discard: true,
+          Effect.gen(function* () {
+            // Cursor's session id is the provider thread id, reported once by system.init.
+            if (event.type === "session") {
+              yield* emit({
+                ...(yield* eventBase({ threadId, turnId })),
+                type: "thread.started",
+                payload: { providerThreadId: event.sessionId },
+              });
+            }
+
+            yield* Effect.forEach(
+              mapper.map(event),
+              (draft) => emitDraft(threadId, turnId, draft),
+              {
+                discard: true,
+              },
+            );
           }),
         ),
       );
@@ -428,15 +444,23 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
     readThread: (threadId) =>
       requireContext(threadId).pipe(Effect.map(() => ({ threadId, turns: [] }))),
     // Cursor has no native revert; Isnadi's own checkpoint refs are unaffected.
-    rollbackThread: (threadId) =>
-      requireContext(threadId).pipe(
-        Effect.andThen(
-          rejectUnsupported(
-            "thread/rollback",
-            "Cursor sessions do not support provider-side rollback.",
-          ),
-        ),
-      ),
+    rollbackThread: (threadId, numTurns) =>
+      Effect.gen(function* () {
+        yield* requireContext(threadId);
+
+        if (!Number.isInteger(numTurns) || numTurns < 1) {
+          return yield* new ProviderAdapterValidationError({
+            provider: PROVIDER,
+            operation: "rollbackThread",
+            issue: "numTurns must be an integer >= 1.",
+          });
+        }
+
+        return yield* rejectUnsupported(
+          "thread/rollback",
+          "Cursor sessions do not support provider-side rollback.",
+        );
+      }),
     stopAll: () =>
       Effect.gen(function* () {
         const contexts = [...sessions.values()];
