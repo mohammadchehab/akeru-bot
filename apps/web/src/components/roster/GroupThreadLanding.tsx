@@ -286,6 +286,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
   }
 
   const currentPersonId = peopleIdentity.current?.id;
+  const queuedNames = responderQueueNames(runtime.responderQueue, members);
   const activeBot = members.find((bot) => bot.id === runtime.respondingBotId) ?? boss;
 
   const inboxItems = selectOpenBotInboxItems(
@@ -497,18 +498,19 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
             draftKey={`group:${group.id}`}
             busy={working && pendingApproval === null}
             activitySlot={
-              working && activeBot && !waitingForUserInput && pendingApproval === null ? (
+              !waitingForUserInput &&
+              pendingApproval === null &&
+              (working || queuedNames.length > 0) ? (
                 <>
-                  <BotActivityStatus
-                    name={activeBot.name}
-                    activity={botActivity}
-                    update={workingUpdate}
-                    silentRun={silentRun}
-                  />
-                  <GroupResponderQueue
-                    names={responderQueueNames(runtime.responderQueue, members)}
-                    onStop={() => void runtime.stop()}
-                  />
+                  {working && activeBot ? (
+                    <BotActivityStatus
+                      name={activeBot.name}
+                      activity={botActivity}
+                      update={workingUpdate}
+                      silentRun={silentRun}
+                    />
+                  ) : null}
+                  <GroupResponderQueue names={queuedNames} onStop={() => void runtime.stop()} />
                 </>
               ) : null
             }
@@ -565,6 +567,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               runtime.defaultProject === null ||
               (!waitingForUserInput && !runtime.providerAvailable)
             }
+            everyoneMention
             mentionBots={members.map((bot) => ({
               id: bot.id,
               name: bot.name,

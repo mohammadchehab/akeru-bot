@@ -32,6 +32,7 @@ export type BotPromptMentionItem =
       /** False when the bot's provider cannot take handed-off work. */
       readonly canTakeWork: boolean;
     }
+  | { readonly kind: "everyone"; readonly key: "everyone"; readonly label: string }
   | {
       readonly kind: "thread";
       readonly key: string;
@@ -113,6 +114,8 @@ export function buildBotPromptMentionItems(input: {
   readonly browserAvailable: boolean;
   /** The browser row's displayed name, so a translated name is searchable too. */
   readonly browserLabel?: string;
+  /** Group chats only: offers `@everyone`, which addresses every active member. */
+  readonly everyoneAvailable?: boolean;
   readonly bots: ReadonlyArray<BotPromptMentionBot>;
   readonly threads: ReadonlyArray<{ readonly id: string; readonly title: string }>;
   readonly paths?: ReadonlyArray<{ readonly path: string }>;
@@ -128,6 +131,10 @@ export function buildBotPromptMentionItems(input: {
     ("browser".startsWith(query) || input.browserLabel?.toLowerCase().startsWith(query))
   ) {
     items.push({ kind: "browser", key: "browser", label: BROWSER_MENTION_LABEL });
+  }
+
+  if (input.everyoneAvailable && !threadOnly && "everyone".startsWith(query)) {
+    items.push({ kind: "everyone", key: "everyone", label: "@everyone" });
   }
 
   if (!threadOnly) {
@@ -176,6 +183,8 @@ function mentionSource(item: BotPromptMentionItem): string | null {
       return COMPOSER_BROWSER_MENTION;
     case "bot":
       return item.source;
+    case "everyone":
+      return "@everyone";
     case "thread":
       return serializeComposerThreadMention(item.threadId);
     case "path":
