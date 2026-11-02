@@ -76,6 +76,21 @@ function wantsStream(body: string): boolean {
   return /"stream"\s*:\s*true/.test(body);
 }
 
+/** A user message with this marker makes the stub ask for a Shell call, which waits on an approval. */
+export const STUB_APPROVAL_MARKER = "[needs approval]";
+
+/** The follow-up request after a tool ran or was declined carries a tool message. */
+function wantsApproval(body: string): boolean {
+  return lastUserTextFrom(body).includes(STUB_APPROVAL_MARKER) && !/"role":"tool"/.test(body);
+}
+
+const SHELL_TOOL_CALL = {
+  index: 0,
+  id: "call_e2e_shell",
+  type: "function",
+  function: { name: "Shell", arguments: JSON.stringify({ command: "echo decisions" }) },
+};
+
 function chunk(delta: { role?: string; content?: string }, finishReason: string | null) {
   return `data: ${JSON.stringify({
     id: "chatcmpl-e2e",
@@ -114,6 +129,50 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
         const text = replyFor(bot, lastHumanTextFrom(body));
 
         completions.push({ bot, user: lastUserTextFrom(body), body });
+
+        if (wantsApproval(body)) {
+          if (wantsStream(body)) {
+            response.writeHead(200, { "content-type": "text/event-stream" });
+            response.write(chunk({ role: "assistant", content: "" }, null));
+            response.write(
+              `data: ${JSON.stringify({
+                id: "chatcmpl-e2e",
+                object: "chat.completion.chunk",
+                created: 0,
+                model: STUB_MODEL,
+                choices: [
+                  { index: 0, delta: { tool_calls: [SHELL_TOOL_CALL] }, finish_reason: null },
+                ],
+              })}\n\n`,
+            );
+            response.write(chunk({}, "tool_calls"));
+            response.end("data: [DONE]\n\n");
+          } else {
+            response.writeHead(200, { "content-type": "application/json" });
+            response.end(
+              JSON.stringify({
+                id: "chatcmpl-e2e",
+                object: "chat.completion",
+                created: 0,
+                model: STUB_MODEL,
+                choices: [
+                  {
+                    index: 0,
+                    message: {
+                      role: "assistant",
+                      content: null,
+                      tool_calls: [{ ...SHELL_TOOL_CALL, index: undefined }],
+                    },
+                    finish_reason: "tool_calls",
+                  },
+                ],
+                usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+              }),
+            );
+          }
+
+          return;
+        }
 
         if (wantsStream(body)) {
           response.writeHead(200, {
