@@ -197,8 +197,8 @@ export function UsageSkeleton() {
         <div className="flex flex-col gap-3">
           <Skeleton className="h-5 w-24" />
           <div className="flex flex-col gap-1">
-            <Skeleton tone="faint" className="ml-16 h-56" />
-            <Skeleton tone="faint" className="ml-16 h-4" />
+            <Skeleton tone="faint" className="ms-16 h-56" />
+            <Skeleton tone="faint" className="ms-16 h-4" />
           </div>
         </div>
       </section>

@@ -18,7 +18,7 @@ function ColorThumb({ color, left, top }: { color: string; left: string; top: st
     <span
       aria-hidden
       // The dark ring keeps the thumb visible over any picked color.
-      className="pointer-events-none absolute top-(--thumb-top) left-(--thumb-left) size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-on-solid swatch-fill ring-1 ring-shade/60"
+      className="pointer-events-none absolute top-(--thumb-top) start-(--thumb-left) size-3 -translate-x-1/2 rtl:-translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-on-solid swatch-fill ring-1 ring-shade/60"
       style={{ "--swatch": color, "--thumb-left": left, "--thumb-top": top }}
     />
   );
@@ -106,7 +106,7 @@ function ColorPickerPanel({
   const hueColor = hsvToHex({ h: hsv.h, s: 1, v: 1 });
 
   return (
-    <div className="w-60 p-3">
+    <div dir="ltr" className="w-60 p-3">
       <div
         role="slider"
         tabIndex={0}

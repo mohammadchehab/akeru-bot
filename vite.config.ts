@@ -290,7 +290,12 @@ export default defineConfig({
         // The interface mirrors for right-to-left languages, so the primitives say start and end.
         // The rest of apps/web/src is converted in follow-up changes; widen this glob as each
         // directory is done.
-        files: ["apps/web/src/components/ui/**/*.{ts,tsx}"],
+        files: [
+          "apps/web/src/components/ui/**/*.{ts,tsx}",
+          "apps/web/src/components/roster/**/*.{ts,tsx}",
+          "apps/web/src/components/usage/**/*.{ts,tsx}",
+          "apps/web/src/components/onboarding/**/*.{ts,tsx}",
+        ],
         rules: {
           "isnadi/no-physical-direction-utilities": "error",
         },

@@ -392,7 +392,7 @@ export function BotThreadLanding({
                   <bdi>{bot.name}</bdi>
                 </span>
               </div>
-              <div data-chat-header-actions className="ml-auto flex items-center">
+              <div data-chat-header-actions className="ms-auto flex items-center">
                 <BotVoiceCallButton
                   bot={bot}
                   disabled={runtime.sending || runtime.latestTurn?.state === "running"}
@@ -555,7 +555,7 @@ export function BotThreadLanding({
                 />
               ) : null}
               {waitingOnChildren && !working ? (
-                <p className="ml-10 text-xs text-muted-foreground" aria-live="polite">
+                <p className="ms-10 text-xs text-muted-foreground" aria-live="polite">
                   {t("Waiting on delegated work")}
                 </p>
               ) : null}

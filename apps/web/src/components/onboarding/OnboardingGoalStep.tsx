@@ -341,7 +341,7 @@ export function OnboardingGoalStep({
           disabled={thinking}
           onClick={goBack}
         >
-          <ArrowLeftIcon className="size-4" />
+          <ArrowLeftIcon className="size-4 rtl:-scale-x-100" />
         </Button>
         <Button
           size="onboarding"
@@ -350,7 +350,7 @@ export function OnboardingGoalStep({
           onClick={phase === "plan" ? onContinue : workOutPlan}
         >
           {phase === "plan" ? t("Looks right") : t("Continue")}
-          <ArrowRightIcon className="size-4" />
+          <ArrowRightIcon className="size-4 rtl:-scale-x-100" />
         </Button>
       </div>
     </div>

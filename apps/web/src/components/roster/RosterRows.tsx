@@ -51,7 +51,7 @@ function RosterAvatar({
           data-testid="bot-presence-dot"
           data-status={indicator}
           className={cn(
-            "absolute -bottom-px -right-px rounded-full ring-1 ring-sidebar",
+            "absolute -bottom-px -end-px rounded-full ring-1 ring-sidebar",
             indicator === "working" ? "bg-primary" : "bg-warning",
             dotClassName ?? "size-2",
           )}
@@ -208,7 +208,7 @@ export const BotRosterRow = memo(function BotRosterRow({
             "flex min-w-0 flex-1 cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing",
             pinned
               ? "min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-center"
-              : "items-center gap-2.5 rounded-lg px-2 py-1.5 text-left",
+              : "items-center gap-2.5 rounded-lg px-2 py-1.5 text-start",
           )}
         >
           <RosterAvatar bot={bot} presence={presence} className={pinned ? "size-12" : "size-10"} />
@@ -267,7 +267,7 @@ export const BotRosterRow = memo(function BotRosterRow({
                 ref={menuTriggerRef}
                 type="button"
                 aria-label={t("Actions for {name}", { name: bot.name })}
-                className="absolute right-2 top-1/2 size-px -translate-y-1/2 overflow-hidden opacity-0 outline-none focus-visible:size-7 focus-visible:overflow-visible focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute end-2 top-1/2 size-px -translate-y-1/2 overflow-hidden opacity-0 outline-none focus-visible:size-7 focus-visible:overflow-visible focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
               />
             }
           />
@@ -338,7 +338,7 @@ function RailBotButton({
               dotClassName="size-1.5"
             />
             {unread ? (
-              <span className="absolute top-0.5 right-0.5 flex">
+              <span className="absolute top-0.5 end-0.5 flex">
                 <UnreadDot />
               </span>
             ) : null}
@@ -379,7 +379,7 @@ function RailGroupButton({
           >
             <GroupMemberStack group={group} bots={bots} sizeClassName="size-5" />
             {unread ? (
-              <span className="absolute top-0.5 right-0.5 flex">
+              <span className="absolute top-0.5 end-0.5 flex">
                 <UnreadDot />
               </span>
             ) : null}
@@ -448,7 +448,7 @@ export const GroupRosterRow = memo(function GroupRosterRow({
           "flex min-w-0 flex-1 cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing",
           pinned
             ? "min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-center"
-            : "items-center gap-2.5 rounded-lg px-2 py-1.5 text-left hover:bg-sidebar-row-hover",
+            : "items-center gap-2.5 rounded-lg px-2 py-1.5 text-start hover:bg-sidebar-row-hover",
         )}
       >
         <GroupMemberStack
@@ -473,7 +473,7 @@ export const GroupRosterRow = memo(function GroupRosterRow({
               ref={menuTriggerRef}
               type="button"
               aria-label={t("Actions for {name}", { name: group.name })}
-              className="absolute right-2 top-1/2 size-px -translate-y-1/2 overflow-hidden opacity-0 outline-none focus-visible:size-7 focus-visible:overflow-visible focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
+              className="absolute end-2 top-1/2 size-px -translate-y-1/2 overflow-hidden opacity-0 outline-none focus-visible:size-7 focus-visible:overflow-visible focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
             />
           }
         />

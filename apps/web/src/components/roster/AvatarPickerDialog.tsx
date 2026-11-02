@@ -212,7 +212,7 @@ export function AvatarPickerDialog({
         </DialogPanel>
         <DialogFooter>
           {failure !== null ? (
-            <p role="alert" className="mr-auto self-center text-sm text-destructive">
+            <p role="alert" className="me-auto self-center text-sm text-destructive">
               {Match.value(failure).pipe(
                 Match.when("save", () => t("Could not save")),
                 Match.when("too-large", () => t("Image too large")),

@@ -70,7 +70,7 @@ export function BotApprovalPrompt({
         ) : null}
         {oneUse ? <span className="text-xs text-muted-foreground">{t("Runs once")}</span> : null}
         {pendingCount > 1 ? (
-          <span className="ml-auto text-xs text-muted-foreground tabular-nums">
+          <span className="ms-auto text-xs text-muted-foreground tabular-nums">
             {t("1 of {count}", { count: pendingCount })}
           </span>
         ) : null}

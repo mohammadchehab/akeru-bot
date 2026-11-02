@@ -439,11 +439,11 @@ export function UsagePage() {
                           <col className="w-1/5" />
                         </colgroup>
                         <thead>
-                          <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                          <tr className="border-b border-border text-start text-xs text-muted-foreground">
                             <th className="py-2 font-normal">Model</th>
-                            <th className="py-2 text-right font-normal">Cost</th>
-                            <th className="py-2 text-right font-normal">Share</th>
-                            <th className="py-2 text-right font-normal">Tokens</th>
+                            <th className="py-2 text-end font-normal">Cost</th>
+                            <th className="py-2 text-end font-normal">Share</th>
+                            <th className="py-2 text-end font-normal">Tokens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -465,13 +465,13 @@ export function UsagePage() {
                                     {PROVIDER_PRESENTATION[model.provider].label} · {model.model}
                                   </span>
                                 </td>
-                                <td className="py-2 text-right text-foreground tabular-nums">
+                                <td className="py-2 text-end text-foreground tabular-nums">
                                   {formatUsd(model.costUsd)}
                                 </td>
-                                <td className="py-2 text-right text-muted-foreground tabular-nums">
+                                <td className="py-2 text-end text-muted-foreground tabular-nums">
                                   {formatPercent(model.costShare)}
                                 </td>
-                                <td className="py-2 text-right text-muted-foreground tabular-nums">
+                                <td className="py-2 text-end text-muted-foreground tabular-nums">
                                   {formatTokens(model.totalTokens)}
                                 </td>
                               </tr>
@@ -502,15 +502,15 @@ export function UsagePage() {
                           />
                         </colgroup>
                         <thead>
-                          <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                          <tr className="border-b border-border text-start text-xs text-muted-foreground">
                             <th className="py-2 font-normal">{isPast24Hours ? "Hour" : "Day"}</th>
                             {activeProviders.map((provider) => (
-                              <th key={provider} className="py-2 text-right font-normal">
+                              <th key={provider} className="py-2 text-end font-normal">
                                 {PROVIDER_PRESENTATION[provider].label}
                               </th>
                             ))}
-                            <th className="py-2 text-right font-normal">Total</th>
-                            <th className="py-2 text-right font-normal">Tokens</th>
+                            <th className="py-2 text-end font-normal">Total</th>
+                            <th className="py-2 text-end font-normal">Tokens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -537,15 +537,15 @@ export function UsagePage() {
                                 {activeProviders.map((provider) => (
                                   <td
                                     key={provider}
-                                    className="py-2 text-right text-muted-foreground tabular-nums"
+                                    className="py-2 text-end text-muted-foreground tabular-nums"
                                   >
                                     {formatUsd(period.byProvider.get(provider)?.costUsd ?? 0)}
                                   </td>
                                 ))}
-                                <td className="py-2 text-right text-foreground tabular-nums">
+                                <td className="py-2 text-end text-foreground tabular-nums">
                                   {formatUsd(period.costUsd)}
                                 </td>
-                                <td className="py-2 text-right text-muted-foreground tabular-nums">
+                                <td className="py-2 text-end text-muted-foreground tabular-nums">
                                   {formatTokens(period.totalTokens)}
                                 </td>
                               </tr>

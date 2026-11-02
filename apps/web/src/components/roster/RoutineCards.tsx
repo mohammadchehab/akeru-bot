@@ -59,7 +59,7 @@ export function RoutineCard({
         aria-label={t("Open {name}", { name: routine.name })}
         data-routine-row={routine.id}
         onClick={onOpen}
-        className="flex w-full items-center gap-3 rounded-md px-1 py-1 text-left outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex w-full items-center gap-3 rounded-md px-1 py-1 text-start outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Clock3Icon
           aria-hidden
@@ -78,10 +78,13 @@ export function RoutineCard({
         <Badge size="sm" variant={status.variant}>
           {t(status.label)}
         </Badge>
-        <ChevronRightIcon aria-hidden className="size-4 shrink-0 text-muted-foreground/60" />
+        <ChevronRightIcon
+          aria-hidden
+          className="size-4 shrink-0 text-muted-foreground/60 rtl:-scale-x-100"
+        />
       </button>
 
-      <div className="mt-1 space-y-1.5 pl-8">
+      <div className="mt-1 space-y-1.5 ps-8">
         <NextRunLine routine={routine} />
         {latest ? (
           <div className="flex min-w-0 items-center gap-1.5">
@@ -173,7 +176,7 @@ export function RoutineDetail({
           variant="ghost"
           onClick={onBack}
         >
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="rtl:-scale-x-100" />
         </Button>
         <h4 className="min-w-0 flex-1 truncate text-sm font-medium">{routine.name}</h4>
         <Badge size="sm" variant={status.variant}>

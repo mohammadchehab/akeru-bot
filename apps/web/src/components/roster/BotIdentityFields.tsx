@@ -36,7 +36,7 @@ export function BotIdentityFields({
             className="group"
           >
             <BotAvatarView avatar={bot.avatar} name={draft.name || bot.name} className="size-14" />
-            <span className="absolute -bottom-1 -right-1 flex size-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors group-hover:text-foreground">
+            <span className="absolute -bottom-1 -end-1 flex size-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors group-hover:text-foreground">
               <AppIcon className="size-3" icon={Edit02Icon} />
             </span>
           </Button>

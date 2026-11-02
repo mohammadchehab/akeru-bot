@@ -339,7 +339,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
                 <bdi>{group.name}</bdi>
               </span>
             </div>
-            <div data-chat-header-actions className="ml-auto flex items-center">
+            <div data-chat-header-actions className="ms-auto flex items-center">
               <ChatActionsMenu threadRef={runtime.linkedThreadRef} />
             </div>
           </WorkspacePageHeader>
@@ -450,7 +450,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               />
             ) : null}
             {waitingOnChildren && !working ? (
-              <p className="ml-10 text-xs text-muted-foreground" aria-live="polite">
+              <p className="ms-10 text-xs text-muted-foreground" aria-live="polite">
                 {t("Waiting on delegated work")}
               </p>
             ) : null}

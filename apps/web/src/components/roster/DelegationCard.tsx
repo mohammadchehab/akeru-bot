@@ -229,7 +229,7 @@ export function DelegationCard({
   return (
     <article
       aria-label={t("Delegation to {name}", { name: childName })}
-      className="mt-2 ml-10 max-w-min-42rem-pct-2.5rem border-l-2 border-border py-1.5 pl-3"
+      className="mt-2 ms-10 max-w-min-42rem-pct-2.5rem border-s-2 border-border py-1.5 ps-3"
       data-testid="delegation-card"
       data-delegation-id={delegation.delegationId}
     >
@@ -250,7 +250,7 @@ export function DelegationCard({
         {presentation.retried ? (
           <span className="shrink-0 text-xs text-muted-foreground">{t("Retried")}</span>
         ) : null}
-        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
+        <span className="ms-auto inline-flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
           <span aria-hidden className={`size-1.5 rounded-full ${STATE_DOT[state]}`} />
           <span aria-live="polite">{delegationStateLabel(state, t)}</span>
         </span>
