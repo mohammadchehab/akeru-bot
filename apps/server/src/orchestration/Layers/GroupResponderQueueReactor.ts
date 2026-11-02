@@ -50,10 +50,6 @@ const make = Effect.gen(function* () {
     { readonly turnId: TurnId; readonly botId: BotId; readonly messageId: MessageId }
   >();
 
-  // Threads whose last seen session status is not running. `turn.completed` sets the session ready
-  // before it flushes the turn's last message, so a reply can finish after the session has ended.
-  const idle = new Set<ThreadId>();
-
   // Messages still streaming whose deltas so far contain an "@". A provider streams the text and
   // then finishes the message with no text, so the finished event cannot say who was mentioned.
   const streamingMentions = new Map<MessageId, ThreadId>();
@@ -137,7 +133,6 @@ const make = Effect.gen(function* () {
     if (event.type === "thread.deleted") {
       queued.delete(event.payload.threadId);
       lastReply.delete(event.payload.threadId);
-      idle.delete(event.payload.threadId);
 
       for (const [messageId, threadId] of streamingMentions) {
         if (threadId === event.payload.threadId) streamingMentions.delete(messageId);
@@ -173,8 +168,7 @@ const make = Effect.gen(function* () {
           messageId: message.messageId,
         });
 
-        // No session event will follow a reply that finished after the session ended.
-        return idle.has(message.threadId) ? worker.enqueue(message.threadId) : Effect.void;
+        return Effect.void;
       }
 
       lastReply.delete(message.threadId);
@@ -189,8 +183,14 @@ const make = Effect.gen(function* () {
     // while the started turn is still in flight, so asking early is harmless.
     const threadId = event.payload.threadId;
 
-    if (event.payload.session.status === "running") idle.delete(threadId);
-    else idle.add(threadId);
+    // Ingestion finalizes a completed turn's replies before it sets the session ready, so every
+    // message of a finished turn has been seen by now. What is still streaming belongs to a turn
+    // that was stopped or failed, and hands over to nobody.
+    if (event.payload.session.status !== "running") {
+      for (const [messageId, streamingThreadId] of streamingMentions) {
+        if (streamingThreadId === threadId) streamingMentions.delete(messageId);
+      }
+    }
 
     return event.payload.session.status !== "running" &&
       (queued.has(threadId) || lastReply.has(threadId))

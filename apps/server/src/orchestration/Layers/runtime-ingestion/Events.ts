@@ -118,6 +118,7 @@ export function createEvents({
         conflictsWithActiveTurn,
         pendingTurnStart,
         shouldApplyThreadLifecycle,
+        deferredLifecycle,
       } = context;
 
       const assistantDelta =
@@ -418,6 +419,8 @@ export function createEvents({
           }
         }
       }
+
+      if (deferredLifecycle) yield* deferredLifecycle;
 
       if (event.type === "session.exited") {
         yield* clearTurnStateForSession(thread.id);

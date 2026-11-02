@@ -158,6 +158,7 @@ const mention = (
     readonly turnId?: string;
     readonly replyTurnId?: string;
     readonly replyRole?: "assistant" | "user";
+    readonly replyBotId?: typeof SPECIALIST_ID | typeof OTHER_SPECIALIST_ID;
     readonly omitReply?: boolean;
   } = {},
 ) =>
@@ -185,6 +186,7 @@ const mention = (
                   role: overrides.replyRole ?? ("assistant" as const),
                   text,
                   turnId: TurnId.make(overrides.replyTurnId ?? overrides.turnId ?? "turn-latest"),
+                  respondingBotId: overrides.replyBotId ?? SPECIALIST_ID,
                   streaming: false,
                   createdAt: NOW,
                   updatedAt: NOW,
@@ -571,6 +573,7 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
         expect(yield* mention(model, text, { omitReply: true })).toEqual([]);
         expect(yield* mention(model, text, { replyRole: "user" })).toEqual([]);
         expect(yield* mention(model, text, { replyTurnId: "turn-older" })).toEqual([]);
+        expect(yield* mention(model, text, { replyBotId: OTHER_SPECIALIST_ID })).toEqual([]);
         expect((yield* mention(model, text)).map((event) => event.type)).toEqual([
           "thread.responder-queue.set",
         ]);
