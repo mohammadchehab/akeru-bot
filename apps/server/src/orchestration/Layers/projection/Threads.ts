@@ -360,6 +360,24 @@ export function createThreads({
           return;
         }
 
+        case "thread.hop-budget-set": {
+          const existingRow = yield* projectionThreadRepository.getById({
+            threadId: event.payload.threadId,
+          });
+
+          if (Option.isNone(existingRow)) {
+            return;
+          }
+
+          yield* projectionThreadRepository.upsert({
+            ...existingRow.value,
+            hopBudget: event.payload.hopBudget,
+            updatedAt: event.payload.updatedAt,
+          });
+
+          return;
+        }
+
         case "thread.responder-queue.set": {
           const existingRow = yield* projectionThreadRepository.getById({
             threadId: event.payload.threadId,

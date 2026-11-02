@@ -53,3 +53,27 @@ describe("thread.responder-queue.set", () => {
     expect(emptied.thread.responderQueue).toBeUndefined();
   });
 });
+
+describe("thread.hop-budget-set", () => {
+  it("records the chat's own budget", () => {
+    const result = applyThreadDetailEvent(baseThread, {
+      ...baseEventFields,
+      sequence: 8,
+      occurredAt: "2026-04-01T03:00:00.000Z",
+      aggregateKind: "thread",
+      aggregateId: ThreadId.make("thread-1"),
+      type: "thread.hop-budget-set",
+      payload: {
+        threadId: ThreadId.make("thread-1"),
+        hopBudget: 3,
+        updatedAt: "2026-04-01T03:00:00.000Z",
+      },
+    });
+
+    expect(result.kind).toBe("updated");
+
+    if (result.kind !== "updated") return;
+
+    expect(result.thread.hopBudget).toBe(3);
+  });
+});

@@ -9,6 +9,7 @@ import {
   ThreadCreatedPayload,
   ThreadOwnershipUpdatedPayload,
   ThreadDeletedPayload,
+  ThreadHopBudgetSetPayload,
   ThreadInteractionModeSetPayload,
   ThreadMetaUpdatedPayload,
   ThreadRuntimeModeSetPayload,
@@ -249,6 +250,16 @@ export function projectThreadLifecycle(
           ...nextBase,
           threads: updateThread(nextBase.threads, payload.threadId, {
             runtimeMode: payload.runtimeMode,
+            updatedAt: payload.updatedAt,
+          }),
+        })),
+      );
+    case "thread.hop-budget-set":
+      return decodeForEvent(ThreadHopBudgetSetPayload, event.payload, event.type, "payload").pipe(
+        Effect.map((payload) => ({
+          ...nextBase,
+          threads: updateThread(nextBase.threads, payload.threadId, {
+            hopBudget: payload.hopBudget,
             updatedAt: payload.updatedAt,
           }),
         })),

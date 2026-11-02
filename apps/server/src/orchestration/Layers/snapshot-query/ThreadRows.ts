@@ -244,6 +244,7 @@ export function createThreadRows({ sql }: Pick<ProjectionSnapshotDependencies, "
           worktree_path AS "worktreePath",
           linked_pull_request_json AS "linkedPullRequest",
           responder_queue_json AS "responderQueue",
+          hop_budget AS "hopBudget",
           latest_turn_id AS "latestTurnId",
           created_at AS "createdAt",
           updated_at AS "updatedAt",

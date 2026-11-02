@@ -28,6 +28,7 @@ import {
   mapGroupRow,
   decodeReadModel,
   mapProposedPlanRow,
+  shellHopBudget,
 } from "../ProjectionSnapshotRows.ts";
 import type { createEnvironmentRows } from "./EnvironmentRows.ts";
 import type { createProjectIdentity } from "./ProjectIdentity.ts";
@@ -362,6 +363,7 @@ export function createReadModels({
                   ? {}
                   : { linkedPullRequest: row.linkedPullRequest }),
                 ...(row.responderQueue === null ? {} : { responderQueue: row.responderQueue }),
+                ...shellHopBudget(row.hopBudget),
                 latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                 createdAt: row.createdAt,
                 updatedAt: row.updatedAt,
@@ -674,6 +676,7 @@ export function createReadModels({
                     ? {}
                     : { linkedPullRequest: row.linkedPullRequest }),
                   ...(row.responderQueue === null ? {} : { responderQueue: row.responderQueue }),
+                  ...shellHopBudget(row.hopBudget),
                   latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                   createdAt: row.createdAt,
                   updatedAt: row.updatedAt,
