@@ -2,7 +2,7 @@ import { PrimaryConnectionTarget } from "@isnadi/client-runtime/connection";
 import { EnvironmentId } from "@isnadi/contracts";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 const fixtures = vi.hoisted(() => ({ primaryUrl: "http://127.0.0.1:8000" }));
 
@@ -68,6 +68,10 @@ describe("DiagnosticsSettingsPanel", () => {
     // A plain browser: no desktop bridge.
     vi.stubGlobal("window", {});
     fixtures.primaryUrl = "http://127.0.0.1:8000";
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it("offers Open logs folder when the browser is on the server machine", () => {
