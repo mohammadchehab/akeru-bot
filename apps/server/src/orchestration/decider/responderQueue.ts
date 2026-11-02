@@ -1,4 +1,5 @@
 import {
+  GROUP_HOP_BUDGET_DEFAULT,
   MessageId,
   ProviderInstanceId,
   type CommandId,
@@ -19,20 +20,20 @@ import { requireThread } from "../commandInvariants.ts";
 import type { OrchestrationCommandInvariantError } from "../Errors.ts";
 import { activeGroupBotIds, withEventBase } from "./eventBase.ts";
 
-// Bot turns allowed per user message; every user message starts a fresh budget.
-export const GROUP_HOP_BUDGET = 6;
-
 /** What a queue event says about the budget; the decider keeps both numbers true at each turn start. */
 export interface ResponderBudget {
   readonly hopsLeft: number;
   readonly hopsUsed: number;
 }
 
-/** The budget after a user message has started its first bot turn. */
-export const BUDGET_AFTER_FIRST_TURN: ResponderBudget = {
-  hopsLeft: GROUP_HOP_BUDGET - 1,
+/**
+ * The budget after a user message has started its first bot turn. The chat's setting is read when
+ * the message is decided, so changing it mid-chain applies from the next user message.
+ */
+export const budgetAfterFirstTurn = (thread: OrchestrationThread): ResponderBudget => ({
+  hopsLeft: (thread.hopBudget ?? GROUP_HOP_BUDGET_DEFAULT) - 1,
   hopsUsed: 1,
-};
+});
 
 /** The budget a queue carries; a queue written before hopsUsed existed counts as none used. */
 export const budgetOf = (queue: ResponderQueue): ResponderBudget => ({
