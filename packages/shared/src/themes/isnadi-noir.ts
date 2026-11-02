@@ -5,7 +5,7 @@ import { type ThemeDefinition } from "./types.ts";
  * pill-shaped controls and the text color reserved for actions and focus.
  */
 export const ISNADI_NOIR_THEME: ThemeDefinition = {
-  id: "akeru-noir",
+  id: "isnadi-noir",
   label: "Isnadi Noir",
   appearance: "light",
   colors: {

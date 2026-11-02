@@ -17,7 +17,7 @@ export function makeIsnadiCatalogToolHandlersTestSupport() {
       recordSuccess: vi.fn(),
       recordFailure: vi.fn(),
       getDependencies: async () => ({
-        dependentBots: [{ id: BotId.make("bot-akeru"), name: "Isnadi" }],
+        dependentBots: [{ id: BotId.make("bot-isnadi"), name: "Isnadi" }],
         dependentRoutines: [],
       }),
       now: () => "2026-09-01T02:00:00.000Z",

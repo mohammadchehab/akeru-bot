@@ -178,7 +178,7 @@ export function BotMemoryTransfer({ threadRef }: { readonly threadRef: ScopedThr
               });
 
               if (Predicate.isTagged(result, "Failure")) throw squashAtomCommandFailure(result);
-              download(result.value, `akeru-memory-${threadRef.threadId}.json`);
+              download(result.value, `isnadi-memory-${threadRef.threadId}.json`);
             })
           }
         >

@@ -23,20 +23,20 @@ describe("index.html boot script", () => {
     {
       name: "Isnadi Paper follows a dark OS",
       storage: {
-        [THEME_STORAGE_KEY]: "akeru-paper",
+        [THEME_STORAGE_KEY]: "isnadi-paper",
         [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true",
       },
       prefersDark: true,
     },
     {
       name: "T3 Chat follows a dark OS",
-      storage: { [THEME_STORAGE_KEY]: "akeru-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
+      storage: { [THEME_STORAGE_KEY]: "isnadi-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
       prefersDark: true,
     },
     {
       name: "an explicit global dark mode applies to T3 Chat",
       storage: {
-        [THEME_STORAGE_KEY]: "akeru-chat",
+        [THEME_STORAGE_KEY]: "isnadi-chat",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "dark",
         [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "false",
       },
@@ -138,7 +138,7 @@ describe("index.html boot script", () => {
   it("boots a fresh profile into Isnadi Paper", () => {
     const boot = runBootScript({ storage: {}, prefersDark: true });
 
-    expect(boot.themeId).toBe("akeru-paper");
+    expect(boot.themeId).toBe("isnadi-paper");
     expect(boot.themeSelected).toBe("true");
     expect(boot.isDark).toBe(true);
     expect(boot.backgroundColor).toBe(ISNADI_PAPER_THEME.variants!.dark!.chrome);
@@ -150,7 +150,7 @@ describe("index.html boot script", () => {
       prefersDark: true,
     });
 
-    expect(boot.themeId).toBe("akeru-paper");
+    expect(boot.themeId).toBe("isnadi-paper");
     expect(boot.isDark).toBe(true);
     expect(boot.backgroundColor).toBe(ISNADI_PAPER_THEME.variants!.dark!.chrome);
   });

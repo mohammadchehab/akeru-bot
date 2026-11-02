@@ -186,7 +186,7 @@ describe("routineStateNote", () => {
 
     const blocked = toRoutinePanelItem({ ...routine, lifecycle: "blocked" }, [], [], []);
 
-    expect(blocked.pausedByAkeru).toBe(true);
+    expect(blocked.pausedByIsnadi).toBe(true);
     expect(routineStateNote(blocked)).toBe("Paused. Fix the cause in Bot inbox, then resume it.");
   });
 

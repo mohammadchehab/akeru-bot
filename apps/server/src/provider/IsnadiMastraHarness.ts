@@ -152,7 +152,7 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
   const droppedCauses = new Map<string, unknown>();
 
   const enqueueObservation = observationQueueDb.prepare(
-    `INSERT OR IGNORE INTO akeru_observation_queue
+    `INSERT OR IGNORE INTO isnadi_observation_queue
       (id, thread_id, resource_id, model_id, turn_id, attempts, claimed_at, next_attempt_at, created_at,
        provider_instance_id)
       VALUES (?, ?, ?, ?, ?, 0, NULL, ?, ?, ?)`,
@@ -162,10 +162,10 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
   // drains (in-process or across processes sharing the store) cannot both
   // observe the same row.
   const claimQueuedObservation = observationQueueDb.prepare(
-    `UPDATE akeru_observation_queue
+    `UPDATE isnadi_observation_queue
         SET claimed_at = ?
       WHERE id = (
-        SELECT id FROM akeru_observation_queue
+        SELECT id FROM isnadi_observation_queue
          WHERE next_attempt_at <= ?
            AND (claimed_at IS NULL OR claimed_at <= ?)
          ORDER BY created_at, id
@@ -179,27 +179,27 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
   // Release and remove only act on a row this drain still holds. If its lease
   // expired and another drain reclaimed the row, that drain owns the outcome.
   const releaseQueuedObservation = observationQueueDb.prepare(
-    `UPDATE akeru_observation_queue
+    `UPDATE isnadi_observation_queue
         SET claimed_at = NULL, attempts = ?, next_attempt_at = ?
       WHERE id = ? AND claimed_at = ?`,
   );
 
   const removeQueuedObservation = observationQueueDb.prepare(
-    `DELETE FROM akeru_observation_queue WHERE id = ? AND claimed_at = ?`,
+    `DELETE FROM isnadi_observation_queue WHERE id = ? AND claimed_at = ?`,
   );
 
   // A running observation renews its lease, so a slow observe is never reclaimed
   // and run a second time by another drain.
   const renewQueuedObservationClaim = observationQueueDb.prepare(
-    `UPDATE akeru_observation_queue SET claimed_at = ? WHERE id = ? AND claimed_at = ?`,
+    `UPDATE isnadi_observation_queue SET claimed_at = ? WHERE id = ? AND claimed_at = ?`,
   );
 
   const isQueuedObservationClaimed = observationQueueDb.prepare(
-    `SELECT 1 AS claimed FROM akeru_observation_queue WHERE id = ? AND claimed_at = ?`,
+    `SELECT 1 AS claimed FROM isnadi_observation_queue WHERE id = ? AND claimed_at = ?`,
   );
 
   const discardQueuedObservations = observationQueueDb.prepare(
-    `DELETE FROM akeru_observation_queue WHERE thread_id = ? AND resource_id = ?`,
+    `DELETE FROM isnadi_observation_queue WHERE thread_id = ? AND resource_id = ?`,
   );
 
   // A claimed row becomes eligible again when its lease expires, which covers a
@@ -209,7 +209,7 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
                      ELSE MAX(next_attempt_at,
                               strftime('%Y-%m-%dT%H:%M:%fZ', claimed_at, ?)) END)
               AS nextAttemptAt
-       FROM akeru_observation_queue`,
+       FROM isnadi_observation_queue`,
   );
 
   let observationDrain: Promise<void> | undefined;
@@ -219,8 +219,8 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
   let drainActive = false;
 
   const agent = new Agent({
-    id: "akeru-agent",
-    name: "Akeru",
+    id: "isnadi-agent",
+    name: "Isnadi",
     instructions: ({ requestContext }) => resolveIsnadiInstructions(requestContext),
     model: ({ requestContext }) =>
       resolveIsnadiMastraModel(
@@ -243,7 +243,7 @@ export const makeIsnadiMastraHarness = Effect.fnUntraced(function* (
   });
 
   const controller = new MastraAgentController<IsnadiMastraState>({
-    id: "akeru-codex",
+    id: "isnadi-codex",
     agent,
     storage: observationalMemory.storage,
     memory: observationalMemory.memory,

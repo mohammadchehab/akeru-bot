@@ -53,7 +53,7 @@ export async function createBotWorkspace(
   await input.io.mkdir(root);
 
   const workspace = new Workspace({
-    id: input.workspaceId ?? `akeru-${input.threadId}`,
+    id: input.workspaceId ?? `isnadi-${input.threadId}`,
     name: `Isnadi ${input.threadId}`,
     filesystem: new LocalFilesystem({ basePath: root }),
     sandbox: new LocalSandbox({ workingDirectory: root }),

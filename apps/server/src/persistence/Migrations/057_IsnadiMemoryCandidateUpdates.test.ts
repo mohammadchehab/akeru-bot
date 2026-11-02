@@ -7,14 +7,14 @@ import { runMigrations } from "../Migrations.ts";
 import * as NodeSqliteClient from "../NodeSqliteClient.ts";
 
 it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))(
-  "057_AkeruMemoryCandidateUpdates",
+  "057_IsnadiMemoryCandidateUpdates",
   (it) => {
     it.effect("stores a pending update target and expected revision", () =>
       Effect.gen(function* () {
         const sql = yield* SqlClient.SqlClient;
         yield* runMigrations({ toMigrationInclusive: 55 });
         yield* sql`
-          INSERT INTO akeru_memory_candidates (
+          INSERT INTO isnadi_memory_candidates (
             candidate_id, tenant_id, initiating_user_id, source_thread_id,
             fact_text, target_scope, sensitive, confidence, affected_bot_ids_json,
             status, created_at
@@ -27,14 +27,14 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))(
 
         const existing = yield* sql<{ readonly pendingUpdate: string | null }>`
           SELECT pending_update_json AS pendingUpdate
-          FROM akeru_memory_candidates
+          FROM isnadi_memory_candidates
           WHERE candidate_id = 'candidate-existing'
         `;
 
         assert.deepEqual(existing, [{ pendingUpdate: null }]);
 
         yield* sql`
-          INSERT INTO akeru_memory_candidates (
+          INSERT INTO isnadi_memory_candidates (
             candidate_id, tenant_id, initiating_user_id, source_thread_id,
             fact_text, target_scope, sensitive, confidence, affected_bot_ids_json,
             pending_update_json, status, created_at
@@ -50,7 +50,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))(
           readonly pendingUpdate: string;
         }>`
           SELECT pending_update_json AS pendingUpdate
-          FROM akeru_memory_candidates
+          FROM isnadi_memory_candidates
           WHERE candidate_id = 'candidate-update'
         `;
 

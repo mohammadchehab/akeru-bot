@@ -12,7 +12,7 @@ const version = "1.2.3";
 const assets = expectedReleaseAssetNames(version);
 
 function fixture(): string {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-release-verify-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-release-verify-"));
 
   for (const asset of assets) NodeFS.writeFileSync(NodePath.join(directory, asset), asset);
   writeReleaseChecksums(directory, version);

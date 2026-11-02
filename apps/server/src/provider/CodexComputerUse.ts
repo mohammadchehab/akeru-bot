@@ -294,7 +294,7 @@ export async function resolveCodexComputerUseServer(options: {
     env: {
       HOME: NodeOS.homedir(),
       ...(process.env.CODEX_HOME ? { CODEX_HOME: process.env.CODEX_HOME } : {}),
-      TMPDIR: NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-computer-use-")),
+      TMPDIR: NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-computer-use-")),
     },
   } satisfies McpServerConfig;
 }

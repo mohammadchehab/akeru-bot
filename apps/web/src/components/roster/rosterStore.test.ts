@@ -66,7 +66,7 @@ afterEach(() => {
 
   if (typeof window !== "undefined") {
     for (const key of Object.keys(window.localStorage)) {
-      if (key.startsWith("akeru:roster:v1")) window.localStorage.removeItem(key);
+      if (key.startsWith("isnadi:roster:v1")) window.localStorage.removeItem(key);
     }
   }
 });
@@ -76,54 +76,54 @@ describe("bot selection", () => {
     useRosterStore.setState({ selectedBotId: "missing" });
     useRosterStore.getState().replaceRoster({
       environmentId: "env-one",
-      bots: [bot("archived", "2026-08-20T00:00:00.000Z"), bot("akeru")],
+      bots: [bot("archived", "2026-08-20T00:00:00.000Z"), bot("isnadi")],
       groups: [],
     });
 
-    expect(useRosterStore.getState().selectedBotId).toBe("akeru");
+    expect(useRosterStore.getState().selectedBotId).toBe("isnadi");
   });
 
   it("updates a bot's roster preview after a local message", () => {
     const message = { text: "Ship it", at: "2026-08-20T00:00:00.000Z" };
 
-    useRosterStore.getState().recordLastMessage("akeru", message);
+    useRosterStore.getState().recordLastMessage("isnadi", message);
 
-    expect(useRosterStore.getState().lastMessageByBotId.akeru).toEqual(message);
+    expect(useRosterStore.getState().lastMessageByBotId.isnadi).toEqual(message);
   });
 
   it("keeps each bot's remembered thread path", () => {
-    useRosterStore.getState().recordChatPath("akeru", "/env-1/thread-1");
+    useRosterStore.getState().recordChatPath("isnadi", "/env-1/thread-1");
     useRosterStore.getState().recordChatPath("mori", "/draft/draft-2");
 
     expect(useRosterStore.getState().chatPathByBotId).toEqual({
-      akeru: "/env-1/thread-1",
+      isnadi: "/env-1/thread-1",
       mori: "/draft/draft-2",
     });
 
-    useRosterStore.getState().forgetChatPath("akeru");
+    useRosterStore.getState().forgetChatPath("isnadi");
     expect(useRosterStore.getState().chatPathByBotId).toEqual({
       mori: "/draft/draft-2",
     });
   });
 
   it("opens an older chat and returns to the newest one", () => {
-    useRosterStore.getState().openBotChat("akeru", "thread-old");
-    expect(useRosterStore.getState().openChatByBotId).toEqual({ akeru: "thread-old" });
+    useRosterStore.getState().openBotChat("isnadi", "thread-old");
+    expect(useRosterStore.getState().openChatByBotId).toEqual({ isnadi: "thread-old" });
 
-    useRosterStore.getState().openBotChat("akeru", null);
+    useRosterStore.getState().openBotChat("isnadi", null);
     expect(useRosterStore.getState().openChatByBotId).toEqual({});
   });
 
   it("remembers the opened chat so an older remembered chat cannot replace the newest", () => {
-    useRosterStore.getState().recordChatPath("akeru", "/env-one/thread-old");
-    useRosterStore.getState().openBotChat("akeru", null, "/env-one/thread-new");
+    useRosterStore.getState().recordChatPath("isnadi", "/env-one/thread-old");
+    useRosterStore.getState().openBotChat("isnadi", null, "/env-one/thread-new");
     expect(useRosterStore.getState().openChatByBotId).toEqual({});
-    expect(useRosterStore.getState().chatPathByBotId.akeru).toBe("/env-one/thread-new");
+    expect(useRosterStore.getState().chatPathByBotId.isnadi).toBe("/env-one/thread-new");
   });
 
   it("drops opened chats when the roster switches environment", () => {
     useRosterStore.getState().replaceRoster({ environmentId: "env-one", bots: [], groups: [] });
-    useRosterStore.getState().openBotChat("akeru", "thread-old");
+    useRosterStore.getState().openBotChat("isnadi", "thread-old");
     useRosterStore.getState().replaceRoster({ environmentId: "env-two", bots: [], groups: [] });
     expect(useRosterStore.getState().openChatByBotId).toEqual({});
   });
@@ -167,10 +167,10 @@ describe("roster pins", () => {
   it("unpins a bot into the main list without changing group membership", () => {
     const crew = group("crew");
     useRosterStore.setState({
-      bots: [bot("akeru"), bot("mori")],
+      bots: [bot("isnadi"), bot("mori")],
       groups: [crew],
       pinnedItems: [{ kind: "bot", id: "mori" }],
-      unassignedItems: [{ kind: "bot", id: "akeru" }],
+      unassignedItems: [{ kind: "bot", id: "isnadi" }],
     });
 
     useRosterStore.getState().applyRosterDrop({
@@ -179,7 +179,7 @@ describe("roster pins", () => {
       zone: "unassigned",
       order: [
         { kind: "bot", id: "mori" },
-        { kind: "bot", id: "akeru" },
+        { kind: "bot", id: "isnadi" },
       ],
       unpin: true,
     });
@@ -187,17 +187,17 @@ describe("roster pins", () => {
     expect(useRosterStore.getState().pinnedItems).toEqual([]);
     expect(useRosterStore.getState().unassignedItems.map((item) => item.id)).toEqual([
       "mori",
-      "akeru",
+      "isnadi",
     ]);
     expect(useRosterStore.getState().groups).toEqual([crew]);
   });
 
   it("nudges bots in the main list without changing group membership", () => {
     useRosterStore.setState({
-      bots: [bot("akeru"), bot("mori"), bot("scout")],
+      bots: [bot("isnadi"), bot("mori"), bot("scout")],
       groups: [group("crew")],
       unassignedItems: [
-        { kind: "bot", id: "akeru" },
+        { kind: "bot", id: "isnadi" },
         { kind: "bot", id: "mori" },
         { kind: "bot", id: "scout" },
       ],
@@ -207,7 +207,7 @@ describe("roster pins", () => {
 
     expect(useRosterStore.getState().unassignedItems.map((item) => item.id)).toEqual([
       "mori",
-      "akeru",
+      "isnadi",
       "scout",
       "crew",
     ]);
@@ -216,15 +216,15 @@ describe("roster pins", () => {
 
   it("nudges newly live unassigned items omitted from the saved order", () => {
     useRosterStore.setState({
-      bots: [bot("akeru"), bot("mori")],
+      bots: [bot("isnadi"), bot("mori")],
       groups: [group("crew")],
-      unassignedItems: [{ kind: "bot", id: "akeru" }],
+      unassignedItems: [{ kind: "bot", id: "isnadi" }],
     });
 
     useRosterStore.getState().nudgeRosterItem({ kind: "group", id: "crew" }, -1);
     expect(useRosterStore.getState().unassignedItems).toEqual([
       { kind: "group", id: "crew" },
-      { kind: "bot", id: "akeru" },
+      { kind: "bot", id: "isnadi" },
       { kind: "bot", id: "mori" },
     ]);
 
@@ -232,7 +232,7 @@ describe("roster pins", () => {
     expect(useRosterStore.getState().unassignedItems).toEqual([
       { kind: "group", id: "crew" },
       { kind: "bot", id: "mori" },
-      { kind: "bot", id: "akeru" },
+      { kind: "bot", id: "isnadi" },
     ]);
   });
 
@@ -253,7 +253,7 @@ describe("roster pins", () => {
       ],
       unassignedItems: [
         { kind: "bot", id: "mori" },
-        { kind: "bot", id: "akeru" },
+        { kind: "bot", id: "isnadi" },
       ],
     });
 
@@ -261,7 +261,7 @@ describe("roster pins", () => {
     expect(migrated?.unassignedItems).toEqual([
       { kind: "group", id: "crew" },
       { kind: "bot", id: "mori" },
-      { kind: "bot", id: "akeru" },
+      { kind: "bot", id: "isnadi" },
     ]);
   });
 });

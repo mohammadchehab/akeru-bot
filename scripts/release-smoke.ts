@@ -307,7 +307,7 @@ if (dependencyProblems.length > 0) {
   );
 }
 
-const tempRoot = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-release-smoke-"));
+const tempRoot = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-release-smoke-"));
 
 try {
   for (const relativePath of [

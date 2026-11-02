@@ -31,7 +31,7 @@ describe("AgentControllerLive", () => {
   it.effect("keeps the memory tool for a delegated turn granted memory scopes", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-delegated-grant-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-delegated-grant-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
 
     const access: IsnadiDelegationAccessGrant = {

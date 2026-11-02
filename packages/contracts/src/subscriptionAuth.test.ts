@@ -174,7 +174,7 @@ describe("subscription auth contracts", () => {
               incidentKey: `connector:xai:${health}`,
               kind: "connector-failure",
               status: "open",
-              botId: "bot-akeru",
+              botId: "bot-isnadi",
               botName: "Isnadi",
               taskOrRoutine: "Morning research",
               lastFailure: "The provider request failed.",

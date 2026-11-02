@@ -14,7 +14,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 const directories: string[] = [];
 
 const tempDirectory = async () => {
-  const directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-usage-reader-"));
+  const directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-usage-reader-"));
   directories.push(directory);
 
   return directory;

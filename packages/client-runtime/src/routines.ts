@@ -74,7 +74,7 @@ export interface RoutineAdapterItem {
   readonly enabled: boolean;
   readonly paused: boolean;
   /** Isnadi paused it after a blocked or failed run, not the user. */
-  readonly pausedByAkeru: boolean;
+  readonly pausedByIsnadi: boolean;
   readonly nextRunAt: string | null;
   readonly lastRunAt: string | null;
   readonly latestRun: RoutineAdapterRun | null;
@@ -192,7 +192,7 @@ export function toRoutinePanelItem(
       routine.lifecycle === "paused" ||
       routine.lifecycle === "blocked" ||
       routine.lifecycle === "failed",
-    pausedByAkeru: routine.lifecycle === "blocked" || routine.lifecycle === "failed",
+    pausedByIsnadi: routine.lifecycle === "blocked" || routine.lifecycle === "failed",
     nextRunAt: routine.nextRunAt,
     lastRunAt: routine.lastRunAt,
     latestRun: history[0] ?? null,
@@ -291,7 +291,7 @@ export function routineStatus(routine: RoutineAdapterItem): RoutineStatusResult 
  * points to the Bot inbox, where its cause is waiting.
  */
 export function routineStateNote(routine: RoutineAdapterItem): (MessageKey & string) | null {
-  if (routine.pausedByAkeru) return "Paused. Fix the cause in Bot inbox, then resume it.";
+  if (routine.pausedByIsnadi) return "Paused. Fix the cause in Bot inbox, then resume it.";
 
   if (routine.paused) return "Paused until you resume it.";
 

@@ -393,7 +393,7 @@ describe("plugin catalog loader", () => {
   });
 
   it("states blockers and setup as vendor or lifecycle facts, not as host work", () => {
-    const hostActor = /\bAkeru\b/;
+    const hostActor = /\bIsnadi\b/;
 
     for (const plugin of loadDirectoryCatalog()) {
       if (plugin.connection.type === "approval-pending") {
@@ -401,7 +401,7 @@ describe("plugin catalog loader", () => {
       }
 
       for (const step of plugin.setup) {
-        expect(step).not.toMatch(/\bAkeru (?:has|must|needs|completes|to)\b/);
+        expect(step).not.toMatch(/\bIsnadi (?:has|must|needs|completes|to)\b/);
       }
     }
   });

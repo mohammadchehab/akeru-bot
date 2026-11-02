@@ -11,16 +11,20 @@ import * as Ref from "effect/Ref";
 import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
 
+import { legacyProductStorageKey } from "../persistence/legacy-product";
 import * as MobileSecureStorage from "../persistence/mobile-secure-storage";
 import { migrateLegacyConnectionCatalog } from "./migration";
 
-export const CONNECTION_CATALOG_KEY = "akeru.connection-catalog.v1";
+export const CONNECTION_CATALOG_KEY = "isnadi.connection-catalog.v1";
 
 export const LEGACY_CONNECTIONS_KEY = "t3code.connections";
 
-// The catalog itself shipped under the `t3code` prefix; checked once before
-// the legacy flat-connections migration runs.
-const LEGACY_CATALOG_KEY = "t3code.connection-catalog.v1";
+// The catalog itself shipped under earlier product prefixes (newest first);
+// checked once before the legacy flat-connections migration runs.
+const LEGACY_CATALOG_KEYS = [
+  legacyProductStorageKey(CONNECTION_CATALOG_KEY),
+  "t3code.connection-catalog.v1",
+];
 
 function catalogError(operation: string, cause: unknown) {
   return new ConnectionTransientError({
@@ -73,20 +77,21 @@ export const make = Effect.fn("mobile.connectionStorage.makeCatalogStore")(funct
 
   const loadLegacyCatalog = Effect.fn("mobile.connectionStorage.loadLegacyCatalog")(function* () {
     // Pre-rebrand catalogs migrate as-is: the document shape did not change.
-    const rebrandedRaw = yield* getItem(LEGACY_CATALOG_KEY);
+    for (const legacyCatalogKey of LEGACY_CATALOG_KEYS) {
+      const rebrandedRaw = yield* getItem(legacyCatalogKey);
 
-    if (rebrandedRaw !== null && rebrandedRaw.trim() !== "") {
+      if (rebrandedRaw === null || rebrandedRaw.trim() === "") continue;
       const decoded = yield* Effect.result(decodeCatalog(rebrandedRaw));
 
       if (Predicate.isTagged(decoded, "Success")) {
         yield* setItem(CONNECTION_CATALOG_KEY, rebrandedRaw);
-        yield* deleteItem(LEGACY_CATALOG_KEY).pipe(Effect.ignore);
+        yield* deleteItem(legacyCatalogKey).pipe(Effect.ignore);
 
         return decoded.success;
       }
 
       yield* Effect.logWarning("Discarding corrupt legacy mobile connection catalog");
-      yield* deleteItem(LEGACY_CATALOG_KEY);
+      yield* deleteItem(legacyCatalogKey);
     }
 
     const legacyRaw = yield* getItem(LEGACY_CONNECTIONS_KEY);

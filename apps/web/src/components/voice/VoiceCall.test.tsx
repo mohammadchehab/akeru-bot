@@ -20,7 +20,7 @@ import {
 } from "./VoiceCall";
 
 const bot: Bot = {
-  id: "bot-akeru",
+  id: "bot-isnadi",
   name: "Isnadi",
   title: "Generalist",
   label: null,
@@ -322,7 +322,7 @@ describe("voice call UI", () => {
     const active: VoiceCallUiState = {
       callId: "call-1",
       status: "live",
-      botId: BotId.make("bot-akeru"),
+      botId: BotId.make("bot-isnadi"),
       botName: "Isnadi",
       startedAt: "2026-08-27T00:00:00.000Z",
     };
@@ -338,7 +338,7 @@ describe("voice call UI", () => {
         activeCall={{
           callId: "call-1",
           status: "live",
-          botId: BotId.make("bot-akeru"),
+          botId: BotId.make("bot-isnadi"),
           botName: "Isnadi",
           startedAt,
         }}

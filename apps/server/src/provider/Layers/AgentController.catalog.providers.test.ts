@@ -112,7 +112,7 @@ describe("AgentControllerLive", () => {
       const mastra = mastraHarnessFixture();
 
       const memoryDir = NodeFS.mkdtempSync(
-        NodePath.join(NodeOS.tmpdir(), "akeru-mcp-gate-legacy-"),
+        NodePath.join(NodeOS.tmpdir(), "isnadi-mcp-gate-legacy-"),
       );
 
       const botMemoryStore = new BotMemoryStore(memoryDir);
@@ -331,12 +331,12 @@ describe("AgentControllerLive", () => {
   it.effect("attaches the globally installed MCP servers selected for the bot", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-mastra-mcp-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-mcp-"));
 
     const mcpManager = {
       init: vi.fn(async () => undefined),
       disconnect: vi.fn(async () => undefined),
-      getTools: vi.fn(() => ({ "builtin-exa_search": {}, akeru_preview_status: {} })),
+      getTools: vi.fn(() => ({ "builtin-exa_search": {}, isnadi_preview_status: {} })),
       getServerStatuses: vi.fn(() => [{ name: "builtin-exa", connected: true }]),
     };
 
@@ -374,7 +374,7 @@ describe("AgentControllerLive", () => {
         expect(makeMcpManagerMock).toHaveBeenCalledOnce();
         expect(makeMcpManagerMock.mock.calls[0]?.[2]).toEqual({
           "builtin-exa": { url: "https://mcp.exa.ai/mcp" },
-          akeru: {
+          isnadi: {
             url: "http://127.0.0.1:15070/mcp",
             headers: { Authorization: "Bearer preview-test" },
           },

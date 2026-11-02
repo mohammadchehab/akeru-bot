@@ -183,7 +183,7 @@ const testLayer = MemoryApprovalsLive.pipe(
   Layer.provideMerge(crashInjectingRepositoryLayer),
   Layer.provideMerge(engineLayer),
   Layer.provideMerge(Layer.mock(ProjectionSnapshotQuery)(snapshotQuery)),
-  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "akeru-memory-approvals-" })),
+  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-memory-approvals-" })),
   Layer.provideMerge(SqlitePersistenceMemory),
   Layer.provide(NodeServices.layer),
 );

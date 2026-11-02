@@ -27,7 +27,7 @@ export const entityMemoryStorage = () =>
     const insertRow = SqlSchema.void({
       Request: IsnadiMemoryRevision,
       execute: (row) => sql`
-      INSERT INTO akeru_memory_revisions (
+      INSERT INTO isnadi_memory_revisions (
         memory_id, root_id, revision, tenant_id, scope, partition_id,
         entity_kind, entity_id, kind, value_json, fact_text,
         source_thread_id, source_message_id, author_bot_id, initiating_user_id,
@@ -60,7 +60,7 @@ export const entityMemoryStorage = () =>
       execute: ({ rootId, tenantId, scope, partitionId, visibility }) =>
         sql.unsafe(
           `SELECT ${selectColumns}
-       FROM akeru_memory_revisions
+       FROM isnadi_memory_revisions
        WHERE root_id = ?
          AND tenant_id = ?
          AND scope = ?
@@ -182,7 +182,7 @@ export const entityMemoryStorage = () =>
       // cache. Removing the rows here therefore makes both consumers rebuild
       // from the new durable revision instead of serving stale content.
       sql`
-      DELETE FROM akeru_memory_derived_copies
+      DELETE FROM isnadi_memory_derived_copies
       WHERE tenant_id = ${tenantId} AND root_id = ${rootId}
     `.pipe(
         Effect.mapError(toPersistenceSqlError("EntityMemoryRepository.invalidateDerivedCopies")),
@@ -191,7 +191,7 @@ export const entityMemoryStorage = () =>
     const invalidateObservations = (tenantId: string, rootId: string) =>
       Effect.gen(function* () {
         const rows = yield* sql<{ readonly thread_id: string }>`
-        SELECT thread_id FROM akeru_memory_derived_copies
+        SELECT thread_id FROM isnadi_memory_derived_copies
         WHERE tenant_id = ${tenantId} AND root_id = ${rootId}
       `;
 
@@ -216,7 +216,7 @@ export const entityMemoryStorage = () =>
           Effect.forEach(
             input.revisions,
             (revision) => sql`
-          INSERT INTO akeru_memory_derived_copies
+          INSERT INTO isnadi_memory_derived_copies
             (tenant_id, root_id, revision_id, thread_id, created_at)
           VALUES (${input.tenantId}, ${revision.rootId}, ${revision.id}, ${input.threadId}, datetime('now'))
           ON CONFLICT (tenant_id, root_id, thread_id) DO UPDATE SET

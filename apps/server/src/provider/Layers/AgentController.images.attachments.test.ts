@@ -22,7 +22,7 @@ describe("AgentControllerLive", () => {
   it.effect("reads persisted image attachments for Mastra turns", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-mastra-image-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-image-"));
     const attachmentsDir = NodePath.join(baseDir, "userdata", "attachments");
     NodeFS.mkdirSync(attachmentsDir, { recursive: true });
     NodeFS.writeFileSync(NodePath.join(attachmentsDir, "image-1.png"), "image");

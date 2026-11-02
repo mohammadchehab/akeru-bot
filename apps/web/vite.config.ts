@@ -24,7 +24,7 @@ const repoRoot = NodeURL.fileURLToPath(new URL("../..", import.meta.url));
 
 function releaseLegalFilesPlugin(): Plugin {
   return {
-    name: "akeru:release-legal-files",
+    name: "isnadi:release-legal-files",
     apply: "build",
     closeBundle() {
       return Effect.runPromise(

@@ -4,12 +4,26 @@ import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
 import * as Encoding from "effect/Encoding";
+import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
+import * as Path from "effect/Path";
 import * as PlatformError from "effect/PlatformError";
 import * as Schema from "effect/Schema";
 import * as SynchronizedRef from "effect/SynchronizedRef";
 
-const PREVIEW_PARTITION_PREFIX = "persist:akeru-preview-";
+const PREVIEW_PARTITION_NAME_PREFIX = "isnadi-preview-";
+
+const PREVIEW_PARTITION_PREFIX = `persist:${PREVIEW_PARTITION_NAME_PREFIX}`;
+
+/**
+ * Compatibility only: builds released before the Isnadi rename stored preview
+ * sessions under `persist:akeru-preview-<hash>`. Electron keeps persistent
+ * partitions in `<userData>/Partitions/<name>`, so renaming the directory
+ * carries cookies and storage over to the new partition name.
+ */
+export const LEGACY_AKERU_PREVIEW_PARTITION_NAME_PREFIX = "akeru-preview-";
+
+const ELECTRON_PARTITIONS_DIR = "Partitions";
 
 // Permissions granted to preview web content. `clipboard-sanitized-write` is the
 // Electron permission behind `navigator.clipboard.writeText()` — note it is NOT
@@ -78,6 +92,74 @@ export class BrowserSessionCacheClearError extends Schema.TaggedErrorClass<Brows
   }
 }
 
+export class BrowserSessionLegacyPartitionMigrationError extends Schema.TaggedErrorClass<BrowserSessionLegacyPartitionMigrationError>()(
+  "BrowserSessionLegacyPartitionMigrationError",
+  {
+    path: Schema.String,
+    cause: Schema.instanceOf(PlatformError.PlatformError),
+  },
+) {
+  override get message(): string {
+    return `Failed to migrate legacy desktop preview browser partitions at ${this.path}.`;
+  }
+}
+
+export interface LegacyPreviewPartitionMigrationResult {
+  readonly renamed: ReadonlyArray<string>;
+  readonly skipped: ReadonlyArray<string>;
+}
+
+/**
+ * Renames `<userData>/Partitions/akeru-preview-*` to `isnadi-preview-*`,
+ * leaving a legacy directory in place when its target already exists. Must
+ * run before any preview session is created (`session.fromPartition`).
+ */
+export const migrateLegacyPreviewPartitions = Effect.fn(
+  "BrowserSession.migrateLegacyPreviewPartitions",
+)(function* (
+  userDataPath: string,
+): Effect.fn.Return<
+  LegacyPreviewPartitionMigrationResult,
+  BrowserSessionLegacyPartitionMigrationError,
+  FileSystem.FileSystem | Path.Path
+> {
+  const fileSystem = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
+  const partitionsDir = path.join(userDataPath, ELECTRON_PARTITIONS_DIR);
+
+  const wrap = (target: string) =>
+    Effect.mapError(
+      (cause: PlatformError.PlatformError) =>
+        new BrowserSessionLegacyPartitionMigrationError({ path: target, cause }),
+    );
+
+  if (!(yield* fileSystem.exists(partitionsDir).pipe(wrap(partitionsDir)))) {
+    return { renamed: [], skipped: [] };
+  }
+
+  const entries = yield* fileSystem.readDirectory(partitionsDir).pipe(wrap(partitionsDir));
+  const renamed: string[] = [];
+  const skipped: string[] = [];
+
+  for (const entry of entries) {
+    if (!entry.startsWith(LEGACY_AKERU_PREVIEW_PARTITION_NAME_PREFIX)) continue;
+
+    const suffix = entry.slice(LEGACY_AKERU_PREVIEW_PARTITION_NAME_PREFIX.length);
+    const source = path.join(partitionsDir, entry);
+    const target = path.join(partitionsDir, `${PREVIEW_PARTITION_NAME_PREFIX}${suffix}`);
+
+    if (yield* fileSystem.exists(target).pipe(wrap(target))) {
+      skipped.push(entry);
+      continue;
+    }
+
+    yield* fileSystem.rename(source, target).pipe(wrap(source));
+    renamed.push(entry);
+  }
+
+  return { renamed, skipped };
+});
+
 export const BrowserSessionGetSessionError = Schema.Union([
   BrowserSessionPartitionDerivationError,
   BrowserSessionCreationError,
@@ -144,7 +226,7 @@ export const make = Effect.gen(function* BrowserSessionMake() {
           const userAgent = browserSession
             .getUserAgent()
             .replace(/Electron\/[\d.]+ /, "")
-            .replace(/\s*akeru\/[\d.]+/, "")
+            .replace(/\s*isnadi\/[\d.]+/, "")
             // Pre-rebrand builds shipped a `t3code/` UA token.
             .replace(/\s*t3code\/[\d.]+/, "");
 

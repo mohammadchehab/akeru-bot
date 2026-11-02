@@ -19,7 +19,7 @@ const scripts = import.meta.dirname;
 
 const read = (name: string) => NodeFS.readFileSync(NodePath.join(scripts, name), "utf8");
 
-const temporary = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-package-test-"));
+const temporary = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-package-test-"));
 
 describe("package-remote", () => {
   it("publishes exactly the archives the installers download", () => {
@@ -84,7 +84,7 @@ describe("package-remote", () => {
     ]);
 
     for (const file of [
-      "akeru",
+      "isnadi",
       "node/bin/node",
       "remote-admin",
       "initialize-remote-identity.sh",
@@ -99,8 +99,8 @@ describe("package-remote", () => {
     expect(NodeFS.readFileSync(NodePath.join(installed, "VERSION"), "utf8")).toBe("1.2.3\n");
 
     // The installer links the launcher into the user's bin directory.
-    const link = NodePath.join(root, "akeru-link");
-    NodeFS.symlinkSync(NodePath.join(installed, "akeru"), link);
+    const link = NodePath.join(root, "isnadi-link");
+    NodeFS.symlinkSync(NodePath.join(installed, "isnadi"), link);
     const home = NodePath.join(root, "home");
     const env = { PATH: process.env.PATH, HOME: home, T3CODE_HOME: "/legacy/.t3" };
     const serve = NodeChildProcess.execFileSync(link, ["serve"], { env, encoding: "utf8" });
@@ -109,11 +109,11 @@ describe("package-remote", () => {
     );
 
     const custom = NodeChildProcess.execFileSync(link, ["serve"], {
-      env: { ...env, ISNADI_HOME: "/srv/akeru" },
+      env: { ...env, ISNADI_HOME: "/srv/isnadi" },
       encoding: "utf8",
     });
 
-    expect(custom.split("|")[0]).toBe("/srv/akeru");
+    expect(custom.split("|")[0]).toBe("/srv/isnadi");
 
     const doctor = NodeChildProcess.spawnSync(link, ["remote", "doctor"], {
       env,

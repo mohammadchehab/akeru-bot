@@ -36,7 +36,7 @@ export const CodexSettings = providerSettingsSchema(
         description:
           "Account-specific Codex home. Keeps auth.json separate while sharing state from CODEX_HOME.",
         providerSettingsForm: {
-          placeholder: "~/.codex-akeru/personal",
+          placeholder: "~/.codex-isnadi/personal",
           clearWhenEmpty: "omit",
         },
       }),

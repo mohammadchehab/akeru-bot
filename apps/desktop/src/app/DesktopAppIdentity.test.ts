@@ -220,7 +220,7 @@ describe("DesktopAppIdentity", () => {
         assert.equal(calls.setAboutPanelOptions[0]?.applicationName, "IsnadiBot");
         assert.equal(
           calls.setAboutPanelOptions[0]?.credits,
-          "Based on Akeru Bot and T3 Code (MIT).",
+          "Based on OpenCore's fork of T3 Code (MIT).",
         );
         assert.equal(calls.setAboutPanelOptions[0]?.applicationVersion, "1.2.3");
         assert.equal(calls.setAboutPanelOptions[0]?.version, "0123456789ab");

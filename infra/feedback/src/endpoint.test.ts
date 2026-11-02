@@ -91,7 +91,7 @@ function makeRepository() {
 }
 
 function request(payload: Schema.Json, headers?: HeadersInit): Request {
-  return new Request("https://feedback.akeru.test/v1/feedback", {
+  return new Request("https://feedback.isnadi.test/v1/feedback", {
     method: "POST",
     headers: {
       "content-type": "application/json",

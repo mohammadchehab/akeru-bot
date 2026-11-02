@@ -92,7 +92,7 @@
    so the classic geometry stays untouched for every other theme. Lives
    outside @layer so it wins over the unlayered :root defaults. */
 
-html[data-theme-id="akeru-noir"] {
+html[data-theme-id="isnadi-noir"] {
   --control-radius: 999px;
   --radius: 0.875rem;
 }
@@ -105,7 +105,7 @@ html[data-theme-id="akeru-noir"] {
 }
 
 @layer components {
-  html[data-theme-id="akeru-chat"] {
+  html[data-theme-id="isnadi-chat"] {
     --stage-art-top: oklch(0.760675 0.141361 348.019);
     --stage-art-mid: oklch(0.588093 0.188832 353.138);
     --stage-art-bottom: oklch(0.383959 0.135096 348.656);
@@ -243,7 +243,7 @@ html[data-theme-id="akeru-noir"] {
 }
 
 @layer components {
-  :is(html[data-theme-id="akeru-chat"], html[data-theme-id="ocean"], html[data-theme-id="iris"]) {
+  :is(html[data-theme-id="isnadi-chat"], html[data-theme-id="ocean"], html[data-theme-id="iris"]) {
     --stage-night-top: color-mix(in oklch, var(--stage-art-top) 38%, var(--stage-night-base-top));
     --stage-night-mid: color-mix(in oklch, var(--stage-art-mid) 38%, var(--stage-night-base-mid));
     --stage-night-bottom: color-mix(
@@ -268,7 +268,7 @@ html[data-theme-id="akeru-noir"] {
 
 @layer components {
   :is(
-    html[data-theme-id="akeru-chat"],
+    html[data-theme-id="isnadi-chat"],
     html[data-theme-id="grove"],
     html[data-theme-id="ocean"],
     html[data-theme-id="ember"],

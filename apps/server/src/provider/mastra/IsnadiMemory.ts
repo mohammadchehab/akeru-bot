@@ -194,7 +194,7 @@ export async function createIsnadiMastraMemory(
   >,
 ) {
   const storage = new LibSQLStore({
-    id: "akeru-observational-memory",
+    id: "isnadi-observational-memory",
     url: NodeURL.pathToFileURL(options.memoryDbPath).toString(),
     connectionTimeoutMs: 5_000,
   });

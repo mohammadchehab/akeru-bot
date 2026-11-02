@@ -1,4 +1,4 @@
-export const AUTOMATIC_READOUT_STORAGE_KEY = "akeru.replyPlayback.automaticReadout";
+export const AUTOMATIC_READOUT_STORAGE_KEY = "isnadi.replyPlayback.automaticReadout";
 
 export function decodeAutomaticReadoutPreference(value: string | null | undefined) {
   return value === "true";

@@ -89,7 +89,7 @@ const revision = (
 });
 
 async function fixture() {
-  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-migration-"));
+  const directory = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-migration-"));
   directories.push(directory);
 
   return new BotMemoryStore(NodePath.join(directory, "userdata"));

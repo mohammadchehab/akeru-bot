@@ -35,7 +35,7 @@ describe("AgentControllerLive", () => {
       const mastra = mastraHarnessFixture();
       const nativeEvents = yield* PubSub.unbounded<ProviderRuntimeEvent>();
       const service = { ...bridge.service, streamEvents: Stream.fromPubSub(nativeEvents) };
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-late-terminal-"));
+      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-late-terminal-"));
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-late-terminal");
       const turnA = TurnId.make("legacy-turn-a");
@@ -200,7 +200,7 @@ describe("AgentControllerLive", () => {
       );
 
       const memoryDir = NodeFS.mkdtempSync(
-        NodePath.join(NodeOS.tmpdir(), "akeru-racing-terminal-"),
+        NodePath.join(NodeOS.tmpdir(), "isnadi-racing-terminal-"),
       );
 
       const botMemoryStore = new BotMemoryStore(memoryDir);

@@ -13,6 +13,7 @@ vi.mock("expo-secure-store", () => ({
 }));
 
 import { CONNECTION_CATALOG_KEY, LEGACY_CONNECTIONS_KEY, make } from "./catalog-store";
+import { LEGACY_PRODUCT_PREFIX } from "../persistence/legacy-product";
 import {
   MobileSecureStorage,
   MobileSecureStorageError,
@@ -67,6 +68,26 @@ describe("mobile connection catalog storage", () => {
       expect((yield* catalog.read).targets).toEqual([]);
       expect(memory.deleted).toEqual([LEGACY_CONNECTIONS_KEY]);
       expect(memory.values.has(CONNECTION_CATALOG_KEY)).toBe(true);
+    }),
+  );
+
+  it.effect("migrates the catalog from the previous product key before the t3code key", () =>
+    Effect.gen(function* () {
+      const raw = JSON.stringify({ schemaVersion: 1, targets: [], profiles: [], credentials: [] });
+      const previousKey = `${LEGACY_PRODUCT_PREFIX}.connection-catalog.v1`;
+
+      const memory = makeStorage({
+        [previousKey]: raw,
+        "t3code.connection-catalog.v1": "{not-json",
+      });
+
+      const catalog = yield* make().pipe(
+        Effect.provideService(MobileSecureStorage, memory.storage),
+      );
+
+      expect((yield* catalog.read).targets).toEqual([]);
+      expect(memory.values.get(CONNECTION_CATALOG_KEY)).toBe(raw);
+      expect(memory.deleted).toEqual([previousKey]);
     }),
   );
 

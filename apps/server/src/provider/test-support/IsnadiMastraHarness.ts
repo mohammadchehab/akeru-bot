@@ -83,7 +83,7 @@ export function makeIsnadiMastraHarnessTestSupport() {
             `SELECT id, thread_id AS threadId, resource_id AS resourceId, model_id AS modelId,
                 turn_id AS turnId, attempts, claimed_at AS claimedAt,
                 next_attempt_at AS nextAttemptAt
-           FROM akeru_observation_queue ORDER BY created_at, id`,
+           FROM isnadi_observation_queue ORDER BY created_at, id`,
           )
           .all(),
       );

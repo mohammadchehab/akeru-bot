@@ -18,19 +18,19 @@ describe("DesktopWindow", () => {
   it("recognizes only same-origin renderer navigations", () => {
     assert.isTrue(
       DesktopWindow.isSameOriginRendererNavigation({
-        applicationUrl: "akeru://app/",
-        navigationUrl: "akeru://app/settings/connections",
+        applicationUrl: "isnadi://app/",
+        navigationUrl: "isnadi://app/settings/connections",
       }),
     );
     assert.isFalse(
       DesktopWindow.isSameOriginRendererNavigation({
-        applicationUrl: "akeru://app/",
+        applicationUrl: "isnadi://app/",
         navigationUrl: "https://accounts.microsoft.com/oauth",
       }),
     );
     assert.isFalse(
       DesktopWindow.isSameOriginRendererNavigation({
-        applicationUrl: "akeru://app/",
+        applicationUrl: "isnadi://app/",
         navigationUrl: "not a url",
       }),
     );
@@ -59,17 +59,17 @@ describe("DesktopWindow", () => {
           return yield* Effect.die("renderer load listeners were not registered");
         }
 
-        didFailLoad({}, -9, "ERR_UNEXPECTED", "akeru-dev://app/", true);
+        didFailLoad({}, -9, "ERR_UNEXPECTED", "isnadi-dev://app/", true);
         assert.equal(fakeWindow.loadURL.mock.calls.length, 1);
 
         yield* TestClock.adjust(100);
         assert.deepEqual(fakeWindow.loadURL.mock.calls, [
-          ["akeru-dev://app/"],
-          ["akeru-dev://app/"],
+          ["isnadi-dev://app/"],
+          ["isnadi-dev://app/"],
         ]);
         assert.equal(fakeWindow.reload.mock.calls.length, 0);
 
-        didFailLoad({}, -9, "ERR_UNEXPECTED", "akeru-dev://app/", true);
+        didFailLoad({}, -9, "ERR_UNEXPECTED", "isnadi-dev://app/", true);
         didFinishLoad();
         yield* TestClock.adjust(250);
         assert.equal(fakeWindow.loadURL.mock.calls.length, 2);
@@ -81,23 +81,23 @@ describe("DesktopWindow", () => {
   it("retries only transient failures for the development renderer", () => {
     assert.isTrue(
       DesktopWindow.isRetryableDevelopmentRendererLoadFailure({
-        applicationUrl: "akeru-dev://app/",
+        applicationUrl: "isnadi-dev://app/",
         errorCode: -102,
         isMainFrame: true,
-        validatedUrl: "akeru-dev://app/",
+        validatedUrl: "isnadi-dev://app/",
       }),
     );
     assert.isFalse(
       DesktopWindow.isRetryableDevelopmentRendererLoadFailure({
-        applicationUrl: "akeru-dev://app/",
+        applicationUrl: "isnadi-dev://app/",
         errorCode: -3,
         isMainFrame: true,
-        validatedUrl: "akeru-dev://app/",
+        validatedUrl: "isnadi-dev://app/",
       }),
     );
     assert.isFalse(
       DesktopWindow.isRetryableDevelopmentRendererLoadFailure({
-        applicationUrl: "akeru-dev://app/",
+        applicationUrl: "isnadi-dev://app/",
         errorCode: -102,
         isMainFrame: true,
         validatedUrl: "https://example.com/",

@@ -53,7 +53,7 @@ const SERVICE_TASK = "Isnadi Remote";
 
 const schtasks = (...parameters) => NodeChildProcess.spawnSync("schtasks.exe", parameters);
 
-const akeru = (...parameters) =>
+const isnadi = (...parameters) =>
   run(node, [serverEntry, ...parameters], {
     env: { ...childEnv, ISNADI_SERVICE_RUNTIME_ROOT: artifactRoot },
   });
@@ -192,9 +192,9 @@ const update = async (parameters) => {
 
       run(tar, ["-xf", NodePath.join(next, archiveName), "-C", next]);
 
-      if (!NodeFS.existsSync(NodePath.join(next, "akeru", "akeru.cmd")))
+      if (!NodeFS.existsSync(NodePath.join(next, "isnadi", "isnadi.cmd")))
         throw new Error("The Isnadi Remote archive is incomplete.");
-      NodeFS.renameSync(NodePath.join(next, "akeru"), target);
+      NodeFS.renameSync(NodePath.join(next, "isnadi"), target);
     } finally {
       NodeFS.rmSync(next, { recursive: true, force: true });
     }
@@ -217,12 +217,12 @@ const update = async (parameters) => {
 
   if (!port || !token)
     throw new Error(
-      "The running service state or update credential is missing. Run akeru remote doctor --repair.",
+      "The running service state or update credential is missing. Run isnadi remote doctor --repair.",
     );
 
   const response = await fetch(`http://127.0.0.1:${port}/api/remote/update`, {
     method: "POST",
-    headers: { "x-akeru-machine-token": token, "content-type": "application/json" },
+    headers: { "x-isnadi-machine-token": token, "content-type": "application/json" },
     body: JSON.stringify({ targetVersion }),
   });
 
@@ -234,7 +234,7 @@ const update = async (parameters) => {
 
     if (Date.now() - Date.parse(NodeFS.readFileSync(deferred, "utf8").trim()) >= 86_400_000) {
       throw new Error(
-        `Update ${targetVersion} exceeded its 24-hour maintenance deadline while bot work remained active. Run akeru remote doctor.`,
+        `Update ${targetVersion} exceeded its 24-hour maintenance deadline while bot work remained active. Run isnadi remote doctor.`,
       );
     }
 
@@ -253,11 +253,11 @@ const update = async (parameters) => {
 
 switch (command) {
   case "doctor":
-    akeru("__remote-doctor", ...args);
+    isnadi("__remote-doctor", ...args);
     break;
   case "status":
-    akeru("__remote-doctor");
-    akeru("service", "status");
+    isnadi("__remote-doctor");
+    isnadi("service", "status");
     break;
   case "logs": {
     const log = NodePath.join(userdata, "logs", "boot-service.log");
@@ -274,7 +274,7 @@ switch (command) {
   case "heartbeat":
   case "unlink":
     throw new Error(
-      "Hosted account linking is not part of self-hosted Isnadi Remote; pair directly with akeru pair.",
+      "Hosted account linking is not part of self-hosted Isnadi Remote; pair directly with isnadi pair.",
     );
   case "rollback":
     run(node, [launcherEntry, "--manual-rollback"], { env: childEnv });
@@ -316,7 +316,7 @@ switch (command) {
     await update(args);
     break;
   case "help":
-    console.log("Usage: akeru remote {doctor|status|logs|update|rollback|uninstall}");
+    console.log("Usage: isnadi remote {doctor|status|logs|update|rollback|uninstall}");
     break;
   default:
     throw new Error("Unknown Isnadi Remote command.");

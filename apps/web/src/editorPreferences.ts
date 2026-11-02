@@ -12,7 +12,7 @@ import { useCallback, useMemo } from "react";
 import { shellEnvironment } from "./state/shell";
 import { useAtomCommand } from "./state/use-atom-command";
 
-const LAST_EDITOR_KEY = "akeru:last-editor";
+const LAST_EDITOR_KEY = "isnadi:last-editor";
 
 // Pre-rebrand key, read as a fallback then drained on the next write.
 const LEGACY_LAST_EDITOR_KEY = "t3code:last-editor";

@@ -11,7 +11,7 @@ export function makeIsnadiSessionResourcesTestSupport() {
   const directories = new Set<string>();
 
   function stateDir() {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-resources-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-resources-"));
     directories.add(directory);
 
     return directory;
@@ -50,7 +50,7 @@ export function makeIsnadiSessionResourcesTestSupport() {
       id: CODEX_COMPUTER_USE_SERVER_ID as never,
       name: "Computer Use",
       transport: "stdio" as const,
-      command: "akeru-codex-computer-use",
+      command: "isnadi-codex-computer-use",
       enabled: true,
       createdAt: "2026-01-01T00:00:00.000Z",
       updatedAt: "2026-01-01T00:00:00.000Z",
@@ -79,7 +79,7 @@ export function makeIsnadiSessionResourcesTestSupport() {
   const remoteInput = {
     resourceScope: "shared",
     workspaceResourceKey: "vercel:shared",
-    workspaceId: "akeru-shared",
+    workspaceId: "isnadi-shared",
     botSandbox: "vercel" as const,
     mcpServers: [],
   };

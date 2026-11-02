@@ -26,7 +26,7 @@
   "platforms": ["macos"],
   "transport": {
     "type": "stdio",
-    "command": "akeru-codex-computer-use",
+    "command": "isnadi-codex-computer-use",
     "args": ["mcp"]
   },
   "connection": {

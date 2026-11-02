@@ -76,7 +76,7 @@
    step above the canvas, a whisper of light at the edge, and rounder corners
    than the classic chassis. */
 
-html[data-theme-id="akeru-noir"] :is([data-slot] .dropdown-glass, .dropdown-glass) {
+html[data-theme-id="isnadi-noir"] :is([data-slot] .dropdown-glass, .dropdown-glass) {
   background: var(--popover);
   border-color: color-mix(in srgb, var(--contrast-foreground) 7%, transparent);
   border-radius: 0.75rem;
@@ -85,7 +85,7 @@ html[data-theme-id="akeru-noir"] :is([data-slot] .dropdown-glass, .dropdown-glas
 /* Noir dialogs are solid elevated panels: the surface itself carries the
    elevation, so the edge light and inset highlight go away. */
 
-html[data-theme-id="akeru-noir"] .dialog-glass {
+html[data-theme-id="isnadi-noir"] .dialog-glass {
   background: var(--card);
   border-color: color-mix(in srgb, var(--contrast-foreground) 6%, transparent);
   box-shadow: 0 32px 80px -24px rgb(0 0 0 / 80%);

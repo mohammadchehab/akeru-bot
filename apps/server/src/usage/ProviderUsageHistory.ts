@@ -66,7 +66,7 @@ const make = Effect.gen(function* () {
         output_tokens AS "outputTokens", reasoning_tokens AS "reasoningTokens",
         provider, model, unavailable_reason AS "unavailableReason",
         created_at AS "createdAt", settled_at AS "settledAt"
-      FROM akeru_bot_usage_entries
+      FROM isnadi_bot_usage_entries
       WHERE state = 'reported'
         AND provider IS NOT NULL
         AND model IS NOT NULL

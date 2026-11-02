@@ -11,7 +11,7 @@ const cases = [
 
 for (const [label, runner, file] of cases) {
   it(`${label} ignores ambient T3CODE_HOME and writes only to Isnadi home`, () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-identity-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-identity-"));
     const legacy = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-legacy-"));
 
     try {

@@ -18,7 +18,7 @@ afterEach(() => {
 describe("OAuth completion ownership", () => {
   for (const cancelDuringWrite of [false, true]) {
     it(`retains exchanged credentials after a write failure unless cancelled (${cancelDuringWrite})`, async () => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-oauth-retry-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-oauth-retry-"));
       directories.push(directory);
       const authPath = NodePath.join(directory, "subscription-auth.json");
 
@@ -74,7 +74,7 @@ describe("OAuth completion ownership", () => {
   for (const provider of ["anthropic", "openai-codex"] as const) {
     for (const cancellation of ["cancel", "logout"] as const) {
       it(`${provider} does not undo ${cancellation} while its credential update waits`, async () => {
-        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-oauth-race-"));
+        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-oauth-race-"));
         directories.push(directory);
         const authPath = NodePath.join(directory, "subscription-auth.json");
 

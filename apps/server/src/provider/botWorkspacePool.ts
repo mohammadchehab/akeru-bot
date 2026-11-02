@@ -51,7 +51,7 @@ export function botWorkspaceIdentity(resourceKey: string): string {
   // Credentials select a live client, not a new durable Railway VM.
   const identityKey = resourceKey.replace(/^railway:[^:]*:/, "railway:");
 
-  return `akeru-${NodeCrypto.createHash("sha256").update(identityKey).digest("hex").slice(0, 24)}`;
+  return `isnadi-${NodeCrypto.createHash("sha256").update(identityKey).digest("hex").slice(0, 24)}`;
 }
 
 export interface BotWorkspaceLease {

@@ -183,7 +183,7 @@ export const makeClaudeTextGeneration = Effect.fn("makeClaudeTextGeneration")(fu
       const workingDirectory =
         operation === "generateThreadTitle"
           ? yield* fileSystem
-              .makeTempDirectoryScoped({ prefix: "akeru-claude-title-" })
+              .makeTempDirectoryScoped({ prefix: "isnadi-claude-title-" })
               .pipe(
                 Effect.mapError((cause) =>
                   normalizeCliError("claude", operation, cause, "Failed to create title directory"),

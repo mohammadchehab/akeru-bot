@@ -58,12 +58,12 @@ describe("stored theme preferences", () => {
 
   it("migrates a stored t3-chat preference to Isnadi Chat", () => {
     expect(getThemeDefinition("t3-chat")).toBe(T3_CHAT_THEME);
-    expect(T3_CHAT_THEME.id).toBe("akeru-chat");
+    expect(T3_CHAT_THEME.id).toBe("isnadi-chat");
     expect(isKnownThemePreference("t3-chat")).toBe(true);
-    expect(canonicalThemePreference("t3-chat")).toBe("akeru-chat");
+    expect(canonicalThemePreference("t3-chat")).toBe("isnadi-chat");
     expect(parseThemeHalves(JSON.stringify({ light: "t3-chat", dark: "t3-chat" }))).toEqual({
-      light: "akeru-chat",
-      dark: "akeru-chat",
+      light: "isnadi-chat",
+      dark: "isnadi-chat",
     });
   });
 
@@ -94,6 +94,24 @@ describe("stored theme preferences", () => {
       light: OCEAN_THEME.id,
       dark: GROVE_THEME.id,
     });
+  });
+
+  it("resolves pre-rename Akeru theme ids onto the Isnadi themes", () => {
+    const legacyBrand = "akeru";
+
+    for (const name of ["noir", "paper", "chat"] as const) {
+      const legacy = `${legacyBrand}-${name}`;
+
+      expect(getThemeDefinition(legacy)?.id).toBe(`isnadi-${name}`);
+      expect(isKnownThemePreference(legacy)).toBe(true);
+      expect(canonicalThemePreference(legacy)).toBe(`isnadi-${name}`);
+    }
+
+    expect(
+      parseThemeHalves(
+        JSON.stringify({ light: `${legacyBrand}-paper`, dark: `${legacyBrand}-noir` }),
+      ),
+    ).toEqual({ light: "isnadi-paper", dark: "isnadi-noir" });
   });
 
   it("recognizes only preferences the runtime can render", () => {

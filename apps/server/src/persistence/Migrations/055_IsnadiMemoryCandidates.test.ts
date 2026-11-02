@@ -6,13 +6,13 @@ import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { runMigrations } from "../Migrations.ts";
 import * as NodeSqliteClient from "../NodeSqliteClient.ts";
 
-it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("055_AkeruMemoryCandidates", (it) => {
+it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("055_IsnadiMemoryCandidates", (it) => {
   it.effect("stores one durable decision for each pending candidate", () =>
     Effect.gen(function* () {
       const sql = yield* SqlClient.SqlClient;
       yield* runMigrations({ toMigrationInclusive: 55 });
       yield* sql`
-        INSERT INTO akeru_memory_candidates (
+        INSERT INTO isnadi_memory_candidates (
           candidate_id, tenant_id, initiating_user_id, source_thread_id,
           fact_text, target_scope, sensitive, confidence, affected_bot_ids_json,
           status, created_at
@@ -22,7 +22,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("055_AkeruMemoryCandida
         )
       `;
       yield* sql`
-        INSERT INTO akeru_memory_decision_receipts (
+        INSERT INTO isnadi_memory_decision_receipts (
           receipt_id, candidate_id, tenant_id, status, fact_text, target_scope,
           affected_bot_ids_json, memory_root_id, created_at
         ) VALUES (
@@ -33,7 +33,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("055_AkeruMemoryCandida
 
       const rows = yield* sql<{ readonly status: string; readonly memoryRootId: string }>`
         SELECT status, memory_root_id AS memoryRootId
-        FROM akeru_memory_decision_receipts
+        FROM isnadi_memory_decision_receipts
       `;
 
       assert.deepEqual(rows, [{ status: "approved", memoryRootId: "root-1" }]);

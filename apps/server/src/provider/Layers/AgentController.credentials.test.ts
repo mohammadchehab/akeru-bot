@@ -68,9 +68,9 @@ describe("toMcpServerConfigs", () => {
       url: server.url,
       headers: {
         Authorization: "Bearer fixture",
-        "x-akeru-browser-mcp-url": browser.browserUrl,
-        "x-akeru-browser-mcp-session-id": "session",
-        "x-akeru-browser-mcp-headers": JSON.stringify(browser.requestHeaders),
+        "x-isnadi-browser-mcp-url": browser.browserUrl,
+        "x-isnadi-browser-mcp-session-id": "session",
+        "x-isnadi-browser-mcp-headers": JSON.stringify(browser.requestHeaders),
       },
     });
     expect(toMcpServerConfigs([local], browser)[server.id]).toMatchObject({
@@ -97,7 +97,7 @@ describe("provider access health", () => {
     ["grok", "xai"],
     ["kimi", "kimi-for-coding"],
   ] as const)("maps %s runtime requests to %s access health", async (driver, provider) => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-access-map-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-access-map-"));
     const authPath = NodePath.join(directory, "subscription-auth.json");
 
     try {
@@ -178,7 +178,7 @@ describe("AgentControllerLive", () => {
       });
     }).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-mastra-auth-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-mastra-auth-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -234,7 +234,7 @@ describe("AgentControllerLive", () => {
         Layer.mergeAll(
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
-          ServerConfig.layerTest(process.cwd(), { prefix: "akeru-railway-rotation-test-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-railway-rotation-test-" }).pipe(
             Layer.provide(NodeServices.layer),
           ),
           NodeServices.layer,

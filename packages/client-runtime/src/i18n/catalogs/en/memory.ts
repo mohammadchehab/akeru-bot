@@ -135,10 +135,11 @@ export const memoryCatalog = {
     "Start a chat with this bot to see and edit what it remembers.",
   "Notes the bot writes on its own as this chat grows, so it can recall earlier parts of a long conversation. They only apply to this chat.":
     "Notes the bot writes on its own as this chat grows, so it can recall earlier parts of a long conversation. They only apply to this chat.",
-  "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.":
-    "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.",
+  "Allow feedback you submit to reach the feedback endpoint set in Advanced settings. Nothing is sent while no endpoint is set.":
+    "Allow feedback you submit to reach the feedback endpoint set in Advanced settings. Nothing is sent while no endpoint is set.",
   "Enable product feedback": "Enable product feedback",
-  "Where submitted product feedback is sent. Use HTTPS or loopback HTTP.":
-    "Where submitted product feedback is sent. Use HTTPS or loopback HTTP.",
+  "Where submitted product feedback is sent. Use HTTPS or loopback HTTP. Leave empty to turn off sending.":
+    "Where submitted product feedback is sent. Use HTTPS or loopback HTTP. Leave empty to turn off sending.",
+  "Not set": "Not set",
   "Approval pending": "Approval pending",
 } as const;

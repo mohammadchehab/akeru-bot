@@ -68,8 +68,8 @@ export function defaultSession(): ChatGptRealtimeSession {
           Authorization: `Bearer ${accessToken}`,
           "ChatGPT-Account-ID": accountId,
           "Content-Type": "application/json",
-          originator: "akeru",
-          "User-Agent": "akeru",
+          originator: "isnadi",
+          "User-Agent": "isnadi",
         },
         body: JSON.stringify({
           sdp: offerSdp,

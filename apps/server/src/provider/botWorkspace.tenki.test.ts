@@ -54,7 +54,7 @@ function mockSession(state: SessionState = "RUNNING") {
 
 describe("Tenki workspace", () => {
   it("creates a sticky VM, reattaches its saved identity, and deletes it only on destroy", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-tenki-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-tenki-"));
     const identityFile = NodePath.join(root, "identity.json");
     const { session } = mockSession();
     sdk.create.mockClear().mockResolvedValue(session);
@@ -94,7 +94,7 @@ describe("Tenki workspace", () => {
   });
 
   it("retains a newly created VM's identity when readiness fails and retries the same VM", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-tenki-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-tenki-"));
     const identityFile = NodePath.join(root, "identity.json");
     const { session } = mockSession("CREATING");
     sdk.create.mockClear().mockResolvedValue(session);
@@ -132,7 +132,7 @@ describe("Tenki workspace", () => {
   });
 
   it("fails closed for a missing saved VM and requires credentials", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-tenki-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-tenki-"));
     const identityFile = NodePath.join(root, "identity.json");
 
     const input = {

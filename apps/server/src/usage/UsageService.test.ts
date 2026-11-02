@@ -75,7 +75,7 @@ const pricedStep = {
 
 const makeFixture = Effect.fnUntraced(function* (response: Effect.Effect<Response>) {
   const fs = yield* FileSystem.FileSystem;
-  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-usage-test-" });
+  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-usage-test-" });
 
   const config = yield* ServerConfig.ServerConfig.pipe(
     Effect.provide(ServerConfig.layerTest("/tmp", baseDir)),
@@ -151,7 +151,7 @@ it.layer(NodeServices.layer)("UsageService pricing", (it) => {
   it.effect("reads the usage ledger's filesystem identity", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-usage-volume-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-usage-volume-" });
       const databasePath = `${directory}/state.sqlite`;
       yield* fs.writeFileString(databasePath, "fixture");
 

@@ -52,7 +52,11 @@ describe("AgentControllerLive", () => {
     vi.useFakeTimers();
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-interrupt-"));
+
+    const memoryDir = NodeFS.mkdtempSync(
+      NodePath.join(NodeOS.tmpdir(), "isnadi-review-interrupt-"),
+    );
+
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-review-interrupt");
     const renew = vi.spyOn(botMemoryStore, "renewReviewClaim");
@@ -128,7 +132,7 @@ describe("AgentControllerLive", () => {
     (successfulMemoryCalls) => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-mastra-review-"));
+      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-review-"));
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-mastra-review");
 
@@ -231,7 +235,7 @@ describe("AgentControllerLive", () => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-renewal-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-review-renewal-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-review-renewal");
     const renew = vi.spyOn(botMemoryStore, "renewReviewClaim");
@@ -473,7 +477,11 @@ describe("AgentControllerLive", () => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
       const credentials = makeMemoryOnlyCredentialOptions();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-cadence-"));
+
+      const memoryDir = NodeFS.mkdtempSync(
+        NodePath.join(NodeOS.tmpdir(), "isnadi-review-cadence-"),
+      );
+
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-legacy-review");
       const groupId = GroupId.make("group-legacy-review");

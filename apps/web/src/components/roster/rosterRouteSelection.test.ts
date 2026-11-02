@@ -34,30 +34,30 @@ function bot(id: string, archivedAt: string | null = null): Bot {
 
 describe("roster route selection", () => {
   it("waits for the active environment roster before judging a deep link", () => {
-    expect(resolveRoutedBot(null, "env-old", [bot("akeru")], "akeru")).toEqual({
+    expect(resolveRoutedBot(null, "env-old", [bot("isnadi")], "isnadi")).toEqual({
       status: "loading",
     });
-    expect(resolveRoutedBot("env-new", null, [], "akeru")).toEqual({ status: "loading" });
-    expect(resolveRoutedBot("env-new", "env-old", [bot("other")], "akeru")).toEqual({
+    expect(resolveRoutedBot("env-new", null, [], "isnadi")).toEqual({ status: "loading" });
+    expect(resolveRoutedBot("env-new", "env-old", [bot("other")], "isnadi")).toEqual({
       status: "loading",
     });
   });
 
   it("accepts the route bot after hydration even when another bot was selected", () => {
-    const akeru = bot("akeru");
+    const isnadi = bot("isnadi");
 
-    expect(resolveRoutedBot("env-one", "env-one", [bot("previous"), akeru], "akeru")).toEqual({
+    expect(resolveRoutedBot("env-one", "env-one", [bot("previous"), isnadi], "isnadi")).toEqual({
       status: "available",
-      bot: akeru,
+      bot: isnadi,
     });
   });
 
   it("only reports a missing or archived bot after hydration", () => {
-    expect(resolveRoutedBot("env-one", "env-one", [bot("other")], "akeru")).toEqual({
+    expect(resolveRoutedBot("env-one", "env-one", [bot("other")], "isnadi")).toEqual({
       status: "missing",
     });
     expect(
-      resolveRoutedBot("env-one", "env-one", [bot("akeru", "2026-08-20T00:00:00.000Z")], "akeru"),
+      resolveRoutedBot("env-one", "env-one", [bot("isnadi", "2026-08-20T00:00:00.000Z")], "isnadi"),
     ).toEqual({ status: "missing" });
   });
 

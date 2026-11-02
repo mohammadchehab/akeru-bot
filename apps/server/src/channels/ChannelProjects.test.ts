@@ -66,7 +66,7 @@ describe("channel runtime", () => {
         projectId: MISSING_PROJECT_ID,
         provider: "telegram",
         status: "connected",
-        externalIdentity: "@akeru",
+        externalIdentity: "@isnadi",
         connectedAt: NOW,
         sentMessageIds: [],
       };
@@ -119,7 +119,7 @@ describe("channel runtime", () => {
       projectId,
       provider: "telegram",
       status,
-      externalIdentity: "@akeru",
+      externalIdentity: "@isnadi",
       connectedAt: status === "connected" ? NOW : null,
       sentMessageIds: [],
     });
@@ -143,7 +143,7 @@ describe("channel runtime", () => {
             starts.push(input.targetProjectId);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown: async () => undefined },
             };
           },
@@ -175,7 +175,7 @@ describe("channel runtime", () => {
             starts.push(input.targetProjectId);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown: async () => undefined },
             };
           },
@@ -282,7 +282,7 @@ describe("channel runtime", () => {
             events.push(`start:${input.targetProjectId}`);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: {
                 post: async () => undefined,
                 shutdown: async () => void events.push(`stop:${input.targetProjectId}`),
@@ -335,7 +335,7 @@ describe("channel runtime", () => {
             callbacks.push(onDirectMessage);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: {
                 post: async () => undefined,
                 shutdown: async () => {

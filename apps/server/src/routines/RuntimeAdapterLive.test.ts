@@ -170,7 +170,7 @@ const makeLayer = (options: {
               childThreadId: helperThreadId,
             }),
         } as never),
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-routine-adapter-test-" }),
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-routine-adapter-test-" }),
       ).pipe(Layer.provideMerge(NodeServices.layer)),
     ),
   );

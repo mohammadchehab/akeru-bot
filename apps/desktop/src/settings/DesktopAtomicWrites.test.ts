@@ -28,7 +28,7 @@ describe("desktop atomic writes", () => {
             const baseFileSystem = yield* FileSystem.FileSystem;
 
             const baseDir = yield* baseFileSystem.makeTempDirectoryScoped({
-              prefix: "akeru-atomic-writes-",
+              prefix: "isnadi-atomic-writes-",
             });
 
             const removedPaths: string[] = [];

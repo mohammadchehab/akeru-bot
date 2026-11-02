@@ -173,7 +173,7 @@ export const RoutineDefinition = Schema.Struct({
 
 export type RoutineDefinition = typeof RoutineDefinition.Type;
 
-export const ISNADI_CREATE_ROUTINE_TOOL_NAME = "akeru_create_routine";
+export const ISNADI_CREATE_ROUTINE_TOOL_NAME = "isnadi_create_routine";
 
 export const IsnadiCreateRoutineInput = Schema.Struct({
   name: TrimmedNonEmptyString,

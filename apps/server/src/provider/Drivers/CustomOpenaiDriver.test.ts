@@ -94,7 +94,7 @@ describe("CustomOpenaiDriver", () => {
     );
 
     return program.pipe(
-      Effect.provide(testLayer("akeru-custom-openai-driver-test-", catalogEndpoint([]))),
+      Effect.provide(testLayer("isnadi-custom-openai-driver-test-", catalogEndpoint([]))),
       Effect.tap(({ instance, snapshot }) =>
         Effect.sync(() => {
           expect(instance.adapter).toBeUndefined();
@@ -137,7 +137,7 @@ describe("CustomOpenaiDriver", () => {
     return program.pipe(
       Effect.provide(
         testLayer(
-          "akeru-custom-openai-catalog-test-",
+          "isnadi-custom-openai-catalog-test-",
           catalogEndpoint([modelListResponse(["gpt-4o-mini", "llama-3.3"])], recorded),
         ),
       ),
@@ -186,7 +186,7 @@ describe("CustomOpenaiDriver", () => {
     return program.pipe(
       Effect.provide(
         testLayer(
-          "akeru-custom-openai-retain-test-",
+          "isnadi-custom-openai-retain-test-",
           catalogEndpoint([modelListResponse(["alpha", "beta"]), failingResponse()], recorded),
         ),
       ),
@@ -223,7 +223,7 @@ describe("CustomOpenaiDriver", () => {
     return program.pipe(
       Effect.provide(
         testLayer(
-          "akeru-custom-openai-rejected-test-",
+          "isnadi-custom-openai-rejected-test-",
           catalogEndpoint([rejectedResponse(), modelListResponse(["alpha"])]),
         ),
       ),
@@ -262,7 +262,7 @@ describe("CustomOpenaiDriver", () => {
     return program.pipe(
       Effect.provide(
         testLayer(
-          "akeru-custom-openai-disabled-test-",
+          "isnadi-custom-openai-disabled-test-",
           catalogEndpoint([modelListResponse(["alpha"])], recorded),
         ),
       ),
@@ -292,7 +292,7 @@ describe("CustomOpenaiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        testLayer("akeru-custom-openai-unreadable-test-", catalogEndpoint([unreadableResponse()])),
+        testLayer("isnadi-custom-openai-unreadable-test-", catalogEndpoint([unreadableResponse()])),
       ),
       Effect.tap((snapshot) =>
         Effect.sync(() => {
@@ -334,7 +334,7 @@ describe("CustomOpenaiDriver", () => {
           else process.env[BASE_URL_ENV] = previousUrl;
         }),
       ),
-      Effect.provide(testLayer("akeru-custom-openai-ambient-test-", catalogEndpoint([]))),
+      Effect.provide(testLayer("isnadi-custom-openai-ambient-test-", catalogEndpoint([]))),
       Effect.tap(({ instance, snapshot }) =>
         Effect.sync(() => {
           // An instance that configures neither would otherwise send the
@@ -367,7 +367,7 @@ describe("CustomOpenaiDriver", () => {
     );
 
     return program.pipe(
-      Effect.provide(testLayer("akeru-custom-openai-env-test-", catalogEndpoint([]))),
+      Effect.provide(testLayer("isnadi-custom-openai-env-test-", catalogEndpoint([]))),
       Effect.tap(({ instance, snapshot }) =>
         Effect.sync(() => {
           expect(snapshot.auth.status).toBe("authenticated");

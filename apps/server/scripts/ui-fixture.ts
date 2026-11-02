@@ -21,7 +21,7 @@ export const UI_FIXTURE_CASES = ["empty", "populated", "edge"] as const;
 
 const decodeFixtureCase = Schema.decodeUnknownEffect(Schema.Literals(UI_FIXTURE_CASES));
 
-const MARKER = "akeru-ui-projection-fixture-v1\n";
+const MARKER = "isnadi-ui-projection-fixture-v1\n";
 
 const TIMESTAMP = "2026-01-15T12:00:00.000Z";
 

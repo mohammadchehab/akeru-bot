@@ -6,12 +6,12 @@ import { remoteDoctorHome } from "./remoteDoctor.ts";
 it("never resolves the remote doctor home from an ambient T3CODE_HOME", () => {
   expect(remoteDoctorHome(Option.none(), { T3CODE_HOME: "/home/user/.t3" })).toBeUndefined();
   expect(
-    remoteDoctorHome(Option.none(), { T3CODE_HOME: "/home/user/.t3", ISNADI_HOME: "/srv/akeru" }),
-  ).toBe("/srv/akeru");
+    remoteDoctorHome(Option.none(), { T3CODE_HOME: "/home/user/.t3", ISNADI_HOME: "/srv/isnadi" }),
+  ).toBe("/srv/isnadi");
   expect(
     remoteDoctorHome(Option.some("/explicit"), {
       T3CODE_HOME: "/home/user/.t3",
-      ISNADI_HOME: "/srv/akeru",
+      ISNADI_HOME: "/srv/isnadi",
     }),
   ).toBe("/explicit");
 });

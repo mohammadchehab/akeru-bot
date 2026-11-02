@@ -20,7 +20,7 @@ import { createEmptyReadModel } from "./projector.ts";
 
 const NOW = "2026-08-27T12:00:00.000Z";
 
-const BOT_ID = BotId.make("bot-akeru");
+const BOT_ID = BotId.make("bot-isnadi");
 
 const THREAD_ID = ThreadId.make("thread-direct");
 

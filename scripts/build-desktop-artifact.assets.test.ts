@@ -130,13 +130,13 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
         ...WINDOWS_SERVER_EXTRA_RESOURCES,
       ]);
       assert.deepStrictEqual(win.nsis, { differentialPackage: true });
-      // Windows registers akeru:// through the installer so the OS routes
+      // Windows registers isnadi:// through the installer so the OS routes
       // activations here instead of an older T3 Code install. Production
       // packages never claim the development scheme.
       assert.deepStrictEqual(win.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru"],
+          schemes: ["isnadi"],
         },
       ]);
       // Native binaries and helper executables cannot load from inside an
@@ -168,7 +168,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       assert.deepStrictEqual(linux.linux?.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ]);
       assert.deepStrictEqual(mac.files, [...DESKTOP_FILE_EXCLUSIONS, ...MAC_FILE_EXCLUSIONS]);
@@ -306,7 +306,7 @@ it.layer(NodeServices.layer)("build-desktop-artifact", (it) => {
       assert.deepStrictEqual(mac.protocols, [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ]);
     }).pipe(Effect.provide(ConfigProvider.layer(ConfigProvider.fromEnv({ env: {} })))),

@@ -205,7 +205,7 @@ describe("presentDelegation failure text", () => {
         failureCode: "internal",
         message:
           "ProviderValidationError: Provider instance 'codex' is disabled in IsnadiBot settings.\n" +
-          "    at disabledProviderError (file:///srv/akeru/apps/server/src/provider/Layers/AgentController.ts:584:10)",
+          "    at disabledProviderError (file:///srv/isnadi/apps/server/src/provider/Layers/AgentController.ts:584:10)",
       },
     });
 

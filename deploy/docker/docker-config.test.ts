@@ -24,10 +24,10 @@ it("health-gates the image on the server's environment endpoint", () => {
   );
   expect(compose).toContain("${ISNADI_IMAGE:-isnadi-remote:local}");
   expect(dockerfile).toContain(
-    "ISNADI_SERVER_ENTRYPOINT=/opt/akeru/node_modules/isnadibot/dist/bin.mjs",
+    "ISNADI_SERVER_ENTRYPOINT=/opt/isnadi/node_modules/isnadibot/dist/bin.mjs",
   );
   expect(dockerfile).toContain("ISNADI_REMOTE_CONTAINER=1");
-  expect(entrypoint).toContain('exec /opt/akeru/remote-admin "$@"');
+  expect(entrypoint).toContain('exec /opt/isnadi/remote-admin "$@"');
 });
 
 it("never schedules the unsupported hosted heartbeat command", () => {
@@ -49,17 +49,17 @@ it("keeps Isnadi's data in ISNADI_HOME and ignores an ambient T3CODE_HOME", () =
     expect(file).not.toContain("T3CODE_HOME");
   }
 
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-entrypoint-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-entrypoint-"));
 
   try {
-    const entry = NodePath.join(root, "akeru");
+    const entry = NodePath.join(root, "isnadi");
     // Replace the container paths with a probe that reports the server's resolved home.
     NodeFS.writeFileSync(
       entry,
       entrypoint
-        .replace("/opt/akeru/initialize-remote-identity.sh", "true")
+        .replace("/opt/isnadi/initialize-remote-identity.sh", "true")
         .replace(
-          /exec node \/opt\/akeru\/node_modules\/akeru-bot\/dist\/bin\.mjs "\$@"/,
+          /exec node \/opt\/isnadi\/node_modules\/isnadibot\/dist\/bin\.mjs "\$@"/,
           'printf "%s|%s" "$ISNADI_HOME" "$T3CODE_HOME"',
         ),
       { mode: 0o755 },

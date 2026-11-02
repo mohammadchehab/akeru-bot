@@ -202,7 +202,7 @@ const make = Effect.gen(function* () {
       );
 
       yield* sql`
-        INSERT INTO akeru_memory_candidates (
+        INSERT INTO isnadi_memory_candidates (
           candidate_id, tenant_id, initiating_user_id, source_thread_id,
           source_message_id, author_bot_id, fact_text, target_scope, sensitive,
           confidence, affected_bot_ids_json, status, created_at
@@ -225,7 +225,7 @@ const make = Effect.gen(function* () {
       }).pipe(
         Effect.tapError(() =>
           sql`
-            DELETE FROM akeru_memory_candidates
+            DELETE FROM isnadi_memory_candidates
             WHERE tenant_id = ${input.access.tenantId} AND candidate_id = ${candidateId}
           `.pipe(Effect.ignore),
         ),
@@ -241,7 +241,7 @@ const make = Effect.gen(function* () {
       SELECT status, fact_text AS fact, target_scope AS scope,
         affected_bot_ids_json AS affectedBotIds, memory_root_id AS memoryRootId,
         created_at AS createdAt
-      FROM akeru_memory_decision_receipts
+      FROM isnadi_memory_decision_receipts
       WHERE tenant_id = ${tenantId} AND candidate_id = ${candidateId}
     `.pipe(
       Effect.flatMap((rows) =>
@@ -295,7 +295,7 @@ const make = Effect.gen(function* () {
             source_thread_id AS sourceThreadId, source_message_id AS sourceMessageId,
             author_bot_id AS authorBotId, fact_text AS fact, target_scope AS scope,
             sensitive, confidence, affected_bot_ids_json AS affectedBotIds, status
-          FROM akeru_memory_candidates
+          FROM isnadi_memory_candidates
           WHERE tenant_id = ${access.tenantId} AND candidate_id = ${decision.candidateId}
         `.pipe(
             Effect.flatMap(Effect.forEach((row) => decodeCandidateRow(row))),
@@ -465,13 +465,13 @@ const make = Effect.gen(function* () {
             .withTransaction(
               Effect.gen(function* () {
                 yield* sql`
-                UPDATE akeru_memory_candidates
+                UPDATE isnadi_memory_candidates
                 SET status = ${receipt.status}, decided_at = ${createdAt},
                   decided_memory_root_id = ${memoryRootId}
                 WHERE tenant_id = ${access.tenantId} AND candidate_id = ${candidate.candidateId}
               `;
                 yield* sql`
-                INSERT INTO akeru_memory_decision_receipts (
+                INSERT INTO isnadi_memory_decision_receipts (
                   receipt_id, candidate_id, tenant_id, status, fact_text, target_scope,
                   affected_bot_ids_json, memory_root_id, created_at
                 ) VALUES (

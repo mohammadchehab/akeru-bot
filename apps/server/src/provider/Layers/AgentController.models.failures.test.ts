@@ -45,7 +45,7 @@ import { mastraHarnessFixture, assistantMessage } from "./test-support/agentCont
 
 describe("provider access health", () => {
   it("records the model a failed turn ran on with the instance failure", async () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-access-model-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-access-model-"));
 
     try {
       const service = await makeTestSubscriptionAuthService(

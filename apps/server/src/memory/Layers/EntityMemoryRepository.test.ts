@@ -160,7 +160,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         }),
       });
       const sql = yield* SqlClient.SqlClient;
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("active")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.tombstone({
         access: botAccess,
@@ -180,13 +180,13 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       const ftsRows = yield* sql<{
         readonly memory_id: string;
-      }>`SELECT memory_id FROM akeru_memory_fts WHERE memory_id = ${"active"}`;
+      }>`SELECT memory_id FROM isnadi_memory_fts WHERE memory_id = ${"active"}`;
 
       assert.deepEqual(ftsRows, []);
 
       const derivedRows = yield* sql<{
         readonly root_id: string;
-      }>`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`;
+      }>`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`;
 
       assert.deepEqual(derivedRows, []);
       const current = yield* repository.getCurrent({ access: botAccess, rootId });
@@ -306,7 +306,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
 
       assert.equal(changed.items[0]?.classification, "changed");
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${first.id}, ${botAccess.threadId}, ${first.updatedAt})`;
       yield* repository.applyImport!({
         access: botAccess,
@@ -315,7 +315,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         previewHash: changed.previewHash,
       });
       assert.deepEqual(
-        yield* sql`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [],
       );
 

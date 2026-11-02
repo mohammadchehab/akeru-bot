@@ -93,7 +93,7 @@ describe("electron development launcher", () => {
     const production = resolveMacLauncherIconPaths("/runtime", false);
 
     assert.match(development.sourceIconPath, /assets\/prod\/isnadi-macos-1024\.png$/);
-    assert.equal(development.generatedIconPath, "/runtime/icon-akeru-dev.icns");
+    assert.equal(development.generatedIconPath, "/runtime/icon-isnadi-dev.icns");
     assert.match(production.sourceIconPath, /assets\/prod\/isnadi-macos-1024\.png$/);
     assert.equal(production.generatedIconPath, "/runtime/icon-prod.icns");
   });

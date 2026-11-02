@@ -163,7 +163,7 @@ export function AgentActivity(
 
   const deepLink =
     deepLinkRow && deepLinkRow.deepLink.startsWith("/") && !deepLinkRow.deepLink.startsWith("//")
-      ? `akeru://${deepLinkRow.deepLink.slice(1)}`
+      ? `isnadi://${deepLinkRow.deepLink.slice(1)}`
       : null;
 
   // A scannable status glyph per phase — reads faster than colored words and

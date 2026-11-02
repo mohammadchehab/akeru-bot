@@ -2,7 +2,7 @@
 
 > For maintainers. Using IsnadiBot? See [Product feedback](../user/product-feedback.md).
 
-Product feedback uses a standalone Cloudflare Worker in `infra/feedback`. Static web clients cannot own the inbox, and each distributed IsnadiBot server belongs to one installation. The default central endpoint is `https://akeru-feedback.leoisadev.workers.dev/v1/feedback`. The `isnadibot.com` zone is on Vercel DNS, so the Worker has no custom hostname; the contracts default points at the workers.dev URL and clients post to it directly with CORS. The Worker exposes no separate inbox route. When configured, it forwards accepted reports to the normal GitHub Issues tab for `mohammadchehab/isnadibot` by default.
+Product feedback uses a standalone Cloudflare Worker in `infra/feedback`. Static web clients cannot own the inbox, and each distributed IsnadiBot server belongs to one installation. There is no default central endpoint: the contracts default is empty, and the composer cannot send until an operator deploys the Worker and sets its `https://isnadi-feedback.<account>.workers.dev/v1/feedback` URL as the endpoint. The Worker has no custom hostname; clients post to the workers.dev URL directly with CORS. The Worker exposes no separate inbox route. When configured, it forwards accepted reports to the normal GitHub Issues tab for `mohammadchehab/isnadibot` by default.
 
 ## Client boundary
 
@@ -12,7 +12,7 @@ The element picker excludes feedback UI, form controls, editable content, and no
 
 `isnadi_product_feedback` is part of the Mastra tool catalog. Standard OpenCode on the legacy bridge does not receive this tool. Its schema accepts only feedback text. The tool returns a local draft acknowledgement. It does not call the central endpoint. Full-access and automatic modes use category policies instead of Mastra `yolo`, and the tool has an explicit per-tool `ask` policy. Its approval offers one-time **Add to feedback draft** and **Cancel** actions. It never offers session approval. The user must select **Send** in the composer after approval.
 
-The server settings `productFeedbackEnabled` and `productFeedbackEndpoint` are enabled by default and server-authoritative. Endpoint validation accepts absolute HTTPS URLs. It accepts HTTP only for `localhost`, `127.0.0.0/8`, or `[::1]`.
+The server settings `productFeedbackEnabled` and `productFeedbackEndpoint` are server-authoritative. `productFeedbackEnabled` defaults to on and `productFeedbackEndpoint` defaults to empty, which leaves **Send** disabled with a note pointing at the setting. Endpoint validation accepts an empty value or an absolute HTTPS URL. It accepts HTTP only for `localhost`, `127.0.0.0/8`, or `[::1]`.
 
 Mobile shares the contracts and server settings but does not expose a product-feedback entry point in this first version. It shows Codex feedback requests as unsupported and allows only cancellation. Web and desktop own the element picker because it describes web DOM elements.
 

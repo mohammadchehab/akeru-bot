@@ -24,7 +24,7 @@ it.effect("selects the Node HTTP layer when the Bun global is absent", () =>
     expect(Layer.isLayer(layer)).toBe(true);
   }).pipe(
     Effect.provide(
-      ServerConfig.layerTest("/tmp", { prefix: "akeru-platform-test-" }).pipe(
+      ServerConfig.layerTest("/tmp", { prefix: "isnadi-platform-test-" }).pipe(
         Layer.provide(NodeServices.layer),
       ),
     ),

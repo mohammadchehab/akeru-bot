@@ -314,10 +314,10 @@ export function createRuntimeIngestionHarness() {
       await dispatch({
         type: "bot.create",
         commandId: CommandId.make("cmd-bot-create"),
-        botId: BotId.make("bot-akeru"),
+        botId: BotId.make("bot-isnadi"),
         name: "Isnadi",
         title: "Research bot",
-        avatar: { kind: "dither", seed: "akeru" },
+        avatar: { kind: "dither", seed: "isnadi" },
         engine: {
           provider: ProviderInstanceId.make("codex"),
           model: "gpt-5-codex",
@@ -334,7 +334,7 @@ export function createRuntimeIngestionHarness() {
       commandId: CommandId.make("cmd-thread-create"),
       threadId: ThreadId.make("thread-1"),
       projectId: asProjectId("project-1"),
-      ...(options?.botOwned ? { botId: BotId.make("bot-akeru") } : {}),
+      ...(options?.botOwned ? { botId: BotId.make("bot-isnadi") } : {}),
       title: options?.threadTitle ?? "Thread",
       modelSelection: {
         instanceId: ProviderInstanceId.make("codex"),
@@ -407,7 +407,7 @@ export function createRuntimeIngestionHarness() {
           channels.connect({
             type: "channel.connect",
             commandId: CommandId.make("cmd-channel-connect"),
-            botId: BotId.make("bot-akeru"),
+            botId: BotId.make("bot-isnadi"),
             targetProjectId: asProjectId("project-1"),
             ...Match.value(channelProvider).pipe(
               Match.when(
@@ -482,7 +482,7 @@ export function createRuntimeIngestionHarness() {
               ledger.reserve({
                 reservationId: IsnadiUsageReservationId.make(`test:${turnId}`),
                 sourceKey: `test:${turnId}`,
-                botId: BotId.make("bot-akeru"),
+                botId: BotId.make("bot-isnadi"),
                 threadId: ThreadId.make("thread-1"),
                 turnId,
                 category: "turn",
@@ -497,7 +497,7 @@ export function createRuntimeIngestionHarness() {
       summarizeBotUsage: () =>
         runtime!.runPromise(
           BotUsageLedger.pipe(
-            Effect.flatMap((ledger) => ledger.summarize(BotId.make("bot-akeru"))),
+            Effect.flatMap((ledger) => ledger.summarize(BotId.make("bot-isnadi"))),
           ),
         ),
     };

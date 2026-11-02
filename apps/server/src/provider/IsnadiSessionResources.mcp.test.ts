@@ -438,7 +438,7 @@ describe("IsnadiSessionResources", () => {
     }));
 
     const remote: IsnadiBotWorkspace = {
-      id: "akeru-shared",
+      id: "isnadi-shared",
       provider: "vercel",
       providerId: "vercel-native-id",
       workspace: workspace(),

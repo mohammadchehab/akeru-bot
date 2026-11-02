@@ -28,7 +28,7 @@ describe("runtimeEventToActivities approval details", () => {
       requestId: RuntimeRequestId.make("approval-routine"),
       payload: {
         requestType: "dynamic_tool_call",
-        toolName: "akeru_create_routine",
+        toolName: "isnadi_create_routine",
         args,
       },
     } satisfies ProviderRuntimeEvent;
@@ -54,14 +54,14 @@ describe("runtimeEventToActivities approval details", () => {
       requestId: RuntimeRequestId.make("approval-feedback"),
       payload: {
         requestType: "dynamic_tool_call",
-        toolName: "akeru_product_feedback",
+        toolName: "isnadi_product_feedback",
         args,
       },
     } satisfies ProviderRuntimeEvent;
 
     const [activity] = runtimeEventToActivities(event);
     expect(activity?.payload).toMatchObject({
-      toolName: "akeru_product_feedback",
+      toolName: "isnadi_product_feedback",
       args,
     });
   });
@@ -87,7 +87,7 @@ describe("runtimeEventToActivities approval details", () => {
       requestId: RuntimeRequestId.make("approval-invalid-feedback"),
       payload: {
         ...event.payload,
-        toolName: "akeru_product_feedback",
+        toolName: "isnadi_product_feedback",
         args: { feedback: "x".repeat(4_001) },
       },
     } satisfies ProviderRuntimeEvent;

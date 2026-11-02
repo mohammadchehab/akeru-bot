@@ -15,7 +15,7 @@ export type PreviewAction =
   | "zoom-out"
   | "reset-zoom";
 
-const EVENT_NAME = "akeru:preview-action";
+const EVENT_NAME = "isnadi:preview-action";
 
 export function dispatchPreviewAction(action: PreviewAction): void {
   if (typeof window === "undefined") return;

@@ -130,7 +130,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* (
 
     if (capability === null) {
       return yield* failWith(
-        "Remote updates require the IsnadiBot background service. Run `akeru service install` on the server machine.",
+        "Remote updates require the IsnadiBot background service. Run `isnadi service install` on the server machine.",
       );
     }
 

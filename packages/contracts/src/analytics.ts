@@ -33,7 +33,7 @@ export const USAGE_SANDBOX_IDS = [
   "none",
   "local",
   "vercel",
-  "akeru_cloud",
+  "isnadi_cloud",
   "upstash",
   "ascii",
   "railway",

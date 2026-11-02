@@ -204,10 +204,10 @@ export function makeSilenceWatchdogHarness() {
       await dispatch({
         type: "bot.create",
         commandId: CommandId.make("cmd-watchdog-bot-create"),
-        botId: BotId.make("bot-akeru"),
+        botId: BotId.make("bot-isnadi"),
         name: "Isnadi",
         title: "Research bot",
-        avatar: { kind: "dither", seed: "akeru" },
+        avatar: { kind: "dither", seed: "isnadi" },
         engine: {
           provider: ProviderInstanceId.make(provider),
           model: "test-model",
@@ -224,7 +224,7 @@ export function makeSilenceWatchdogHarness() {
       commandId: CommandId.make("cmd-watchdog-thread-create"),
       threadId: asThreadId("thread-1"),
       projectId: asProjectId("project-1"),
-      ...(options.botOwned ? { botId: BotId.make("bot-akeru") } : {}),
+      ...(options.botOwned ? { botId: BotId.make("bot-isnadi") } : {}),
       title: options.threadTitle ?? "Watchdog thread",
       modelSelection: {
         instanceId: ProviderInstanceId.make(provider),

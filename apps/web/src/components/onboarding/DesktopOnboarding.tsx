@@ -41,7 +41,7 @@ function writeDraft(draft: DesktopOnboardingDraft): void {
 function readCaptureMode(): boolean {
   return (
     import.meta.env.DEV &&
-    new URLSearchParams(window.location.search).get("akeru-onboarding-capture") === "1"
+    new URLSearchParams(window.location.search).get("isnadi-onboarding-capture") === "1"
   );
 }
 

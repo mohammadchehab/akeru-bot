@@ -118,7 +118,7 @@ function githubHeaders(token: string): HeadersInit {
     Accept: "application/vnd.github+json",
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
-    "User-Agent": "akeru-feedback",
+    "User-Agent": "isnadi-feedback",
     "X-GitHub-Api-Version": GITHUB_API_VERSION,
   };
 }

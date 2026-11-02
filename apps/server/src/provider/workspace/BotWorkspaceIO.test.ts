@@ -41,7 +41,7 @@ describe("BotWorkspaceIO", () => {
   );
 
   it("writes an atomic private identity and removes missing paths safely", async () => {
-    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-workspace-io-"));
+    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-workspace-io-"));
     const file = NodePath.join(root, "private", "provider.json");
 
     try {

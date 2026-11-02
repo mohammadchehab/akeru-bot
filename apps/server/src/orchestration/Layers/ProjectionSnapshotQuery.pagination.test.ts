@@ -482,7 +482,7 @@ projectionSnapshotLayer("ProjectionSnapshotQuery windowed thread detail", (it) =
           )
       `;
       yield* sql`
-        INSERT INTO akeru_memory_candidates (
+        INSERT INTO isnadi_memory_candidates (
           candidate_id, tenant_id, initiating_user_id, source_thread_id, fact_text,
           target_scope, sensitive, confidence, affected_bot_ids_json, status, created_at
         )

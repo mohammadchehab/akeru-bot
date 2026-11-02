@@ -9,10 +9,10 @@ it("batches codesign calls without changing existing signing options", async () 
   const options = {
     app: "/tmp/IsnadiBot.app",
     identity: "Developer ID Application: Example Corp (ABCDE12345)",
-    keychain: "/tmp/akeru.keychain",
-    provisioningProfile: "/tmp/akeru.provisionprofile",
+    keychain: "/tmp/isnadi.keychain",
+    provisioningProfile: "/tmp/isnadi.provisionprofile",
     optionsForFile: () => ({
-      entitlements: "/tmp/akeru.entitlements.plist",
+      entitlements: "/tmp/isnadi.entitlements.plist",
       hardenedRuntime: true,
     }),
   } satisfies SignOptions;

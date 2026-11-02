@@ -134,7 +134,7 @@ describe("sandbox bot browser", () => {
     const browser = createBotBrowser({
       threadId: "thread-1",
       workspace,
-      cacheDir: "/tmp/akeru-browser-test",
+      cacheDir: "/tmp/isnadi-browser-test",
       makeRpc,
     });
 

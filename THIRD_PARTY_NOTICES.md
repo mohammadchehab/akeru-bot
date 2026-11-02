@@ -1,10 +1,10 @@
 # Third-party notices
 
-Akeru Bot includes third-party code, fonts, icons, and brand assets. The exact license files for redistributable components live in [`legal/licenses`](legal/licenses). Release builds copy this notice and that directory into the web, CLI, desktop, and mobile artifacts.
+IsnadiBot includes third-party code, fonts, icons, and brand assets. The exact license files for redistributable components live in [`legal/licenses`](legal/licenses). Release builds copy this notice and that directory into the web, CLI, desktop, and mobile artifacts.
 
 ## Project origin
 
-Akeru Bot is an independent fork of [T3 Code](https://t3.codes). The root [`LICENSE`](LICENSE) preserves the original `Copyright (c) 2026 T3 Tools Inc.` notice as required by the MIT License. T3 Tools does not maintain Akeru Bot.
+IsnadiBot is an independent fork of an MIT-licensed project by [OpenCore](https://github.com/opencoredev), which is itself a fork of [T3 Code](https://t3.codes). The root [`LICENSE`](LICENSE) and [`legal/licenses/MIT-upstream.txt`](legal/licenses/MIT-upstream.txt) preserve the original `Copyright (c) 2026 T3 Tools Inc.` notice as required by the MIT License. Neither OpenCore nor T3 Tools maintains IsnadiBot.
 
 ## Code and SDKs
 

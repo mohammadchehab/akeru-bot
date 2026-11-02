@@ -66,7 +66,7 @@ describe("theme failure handling", () => {
       expect(error).toBeInstanceOf(ThemeStorageError);
       expect(error).toMatchObject({
         operation: "read",
-        storageKey: "akeru:theme",
+        storageKey: "isnadi:theme",
         cause: readCause,
       });
     }
@@ -78,7 +78,7 @@ describe("theme failure handling", () => {
       expect(error).toBeInstanceOf(ThemeStorageError);
       expect(error).toMatchObject({
         operation: "write",
-        storageKey: "akeru:theme",
+        storageKey: "isnadi:theme",
         theme: "dark",
         cause: writeCause,
       });
@@ -90,7 +90,7 @@ describe("theme failure handling", () => {
     storage.setItem("t3code:theme-halves:v1", JSON.stringify({ dark: "grove" }));
     const setItem = storage.setItem.bind(storage);
     storage.setItem = (key, value) => {
-      if (key === "akeru:theme") throw new Error("storage quota exceeded");
+      if (key === "isnadi:theme") throw new Error("storage quota exceeded");
       setItem(key, value);
     };
 
@@ -118,7 +118,7 @@ describe("theme failure handling", () => {
     const before = readThemeHalves();
 
     expect(before).not.toBeNull();
-    expect(useTheme().setTheme("akeru-paper")).toBe(false);
+    expect(useTheme().setTheme("isnadi-paper")).toBe(false);
     expect(readThemeHalves()).toEqual(before);
   });
 
@@ -127,31 +127,31 @@ describe("theme failure handling", () => {
 
     const { readThemePreference } = await import("./useTheme");
 
-    expect(readThemePreference()).toBe("akeru-paper");
+    expect(readThemePreference()).toBe("isnadi-paper");
   });
 
   it("migrates the old system default to Isnadi Paper", async () => {
     vi.stubGlobal("window", {
       localStorage: createStorage({
-        getItem: (key) => (key === "akeru:theme" ? "system" : null),
+        getItem: (key) => (key === "isnadi:theme" ? "system" : null),
       }),
     });
 
     const { readThemePreference } = await import("./useTheme");
 
-    expect(readThemePreference()).toBe("akeru-paper");
+    expect(readThemePreference()).toBe("isnadi-paper");
   });
 
   it("reads the persisted T3 Chat theme preference", async () => {
     vi.stubGlobal("window", {
       localStorage: createStorage({
-        getItem: () => "akeru-chat",
+        getItem: () => "isnadi-chat",
       }),
     });
 
     const { readThemePreference } = await import("./useTheme");
 
-    expect(readThemePreference()).toBe("akeru-chat");
+    expect(readThemePreference()).toBe("isnadi-chat");
   });
 
   it("falls back during initial theme application and logs only safe attributes", async () => {
@@ -174,10 +174,10 @@ describe("theme failure handling", () => {
     await expect(import("./useTheme")).resolves.toBeDefined();
 
     expect(errorLog).toHaveBeenCalledWith(
-      "Failed to read theme preference for akeru:theme.",
+      "Failed to read theme preference for isnadi:theme.",
       expect.objectContaining({
         operation: "read",
-        storageKey: "akeru:theme",
+        storageKey: "isnadi:theme",
         errorTag: "ThemeStorageError",
       }),
     );
@@ -193,7 +193,7 @@ describe("theme failure handling", () => {
       throw cause;
     });
 
-    const getItem = vi.fn((key: string) => (key === "akeru:theme" ? themeGetItem() : null));
+    const getItem = vi.fn((key: string) => (key === "isnadi:theme" ? themeGetItem() : null));
     const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
     let readSnapshot: (() => void) | undefined;
     let subscribeToTheme: ((listener: () => void) => () => void) | undefined;
@@ -233,7 +233,7 @@ describe("theme failure handling", () => {
     expect(errorLog).toHaveBeenCalledTimes(1);
 
     const unsubscribe = subscribeToTheme?.(() => undefined);
-    storageHandler?.({ key: "akeru:theme" } as StorageEvent);
+    storageHandler?.({ key: "isnadi:theme" } as StorageEvent);
     readSnapshot?.();
 
     expect(themeGetItem).toHaveBeenCalledTimes(2);
@@ -310,13 +310,13 @@ describe("legacy key cleanup", () => {
   }
 
   it("keeps the theme preference write when legacy cleanup throws", async () => {
-    const storage = legacyThrowingStorage({ "t3code:theme": "akeru-chat" });
+    const storage = legacyThrowingStorage({ "t3code:theme": "isnadi-chat" });
     vi.stubGlobal("window", { localStorage: storage });
 
     const { writeThemePreference } = await import("./useTheme");
 
     expect(() => writeThemePreference("ocean")).not.toThrow();
-    expect(storage.getItem("akeru:theme")).toBe("ocean");
+    expect(storage.getItem("isnadi:theme")).toBe("ocean");
   });
 
   it("keeps the appearance mode write when legacy cleanup throws", async () => {
@@ -331,7 +331,7 @@ describe("legacy key cleanup", () => {
     const { useTheme } = await import("./useTheme");
 
     expect(useTheme().setAppearanceMode("dark")).toBe(true);
-    expect(storage.getItem("akeru:theme-appearance-mode")).toBe("dark");
+    expect(storage.getItem("isnadi:theme-appearance-mode")).toBe("dark");
   });
 
   it("keeps the theme half write when legacy cleanup throws", async () => {
@@ -346,12 +346,12 @@ describe("legacy key cleanup", () => {
     const { useTheme } = await import("./useTheme");
 
     expect(useTheme().setThemeHalf("light", "ocean")).toBe(true);
-    expect(storage.getItem("akeru:theme-halves:v1")).toBe(JSON.stringify({ light: "ocean" }));
+    expect(storage.getItem("isnadi:theme-halves:v1")).toBe(JSON.stringify({ light: "ocean" }));
   });
 
   it("keeps the theme choice when legacy cleanup throws", async () => {
     const storage = legacyThrowingStorage({
-      "akeru:theme-halves:v1": JSON.stringify({ light: "ocean" }),
+      "isnadi:theme-halves:v1": JSON.stringify({ light: "ocean" }),
     });
 
     mockReactStore();
@@ -364,8 +364,8 @@ describe("legacy key cleanup", () => {
     const { useTheme } = await import("./useTheme");
 
     expect(useTheme().setTheme("grove")).toBe(true);
-    expect(storage.getItem("akeru:theme")).toBe("grove");
-    expect(storage.getItem("akeru:theme-halves:v1")).toBeNull();
+    expect(storage.getItem("isnadi:theme")).toBe("grove");
+    expect(storage.getItem("isnadi:theme-halves:v1")).toBeNull();
   });
 
   it("does not revive a legacy mix after choosing a whole theme or clearing the last half", async () => {
@@ -383,7 +383,7 @@ describe("legacy key cleanup", () => {
     const { readThemeHalves, useTheme } = await import("./useTheme");
 
     expect(useTheme().setTheme("ocean")).toBe(true);
-    expect(storage.getItem("akeru:theme")).toBe("ocean");
+    expect(storage.getItem("isnadi:theme")).toBe("ocean");
     expect(readThemeHalves()).toBeNull();
 
     expect(useTheme().setThemeHalf("light", "ember")).toBe(true);
@@ -393,7 +393,7 @@ describe("legacy key cleanup", () => {
 
   it("keeps cleared theme halves when legacy cleanup throws", async () => {
     const storage = legacyThrowingStorage({
-      "akeru:theme-halves:v1": JSON.stringify({ light: "ocean" }),
+      "isnadi:theme-halves:v1": JSON.stringify({ light: "ocean" }),
       "t3code:theme-halves:v1": JSON.stringify({ dark: "ember" }),
     });
 
@@ -412,7 +412,7 @@ describe("legacy key cleanup", () => {
 
   it("removes the current mix key when no legacy mix remains", async () => {
     const storage = legacyThrowingStorage({
-      "akeru:theme-halves:v1": JSON.stringify({ light: "ocean" }),
+      "isnadi:theme-halves:v1": JSON.stringify({ light: "ocean" }),
     });
 
     mockReactStore();
@@ -425,6 +425,6 @@ describe("legacy key cleanup", () => {
     const { useTheme } = await import("./useTheme");
 
     expect(useTheme().clearThemeHalves()).toBe(true);
-    expect(storage.getItem("akeru:theme-halves:v1")).toBeNull();
+    expect(storage.getItem("isnadi:theme-halves:v1")).toBeNull();
   });
 });

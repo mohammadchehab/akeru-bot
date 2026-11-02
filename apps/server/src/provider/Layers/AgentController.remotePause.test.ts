@@ -86,7 +86,7 @@ describe("AgentControllerLive", () => {
         Layer.mergeAll(
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
-          ServerConfig.layerTest(process.cwd(), { prefix: "akeru-pause-retry-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-pause-retry-" }).pipe(
             Layer.provide(NodeServices.layer),
           ),
         ),
@@ -147,7 +147,7 @@ describe("AgentControllerLive", () => {
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-mastra-same-workspace-test-",
+            prefix: "isnadi-mastra-same-workspace-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       ),
@@ -347,7 +347,7 @@ describe("AgentControllerLive", () => {
     (terminalState) => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-review-failed-"));
+      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-review-failed-"));
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make(`bot-legacy-${terminalState}`);
 

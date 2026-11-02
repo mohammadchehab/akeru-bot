@@ -86,7 +86,7 @@ while [ "$#" -gt 0 ]; do
 done
 case "$url" in
   https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/SHA256SUMS) cp "$FIXTURE_ROOT/checksums" "$out" ;;
-  https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.AppImage)
+  https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/IsnadiBot-1.2.3-x64.AppImage)
     [ "$FIXTURE_SCENARIO" != download ] || exit 22
     cp "$FIXTURE_ROOT/payload" "$out" ;;
   *) exit 99 ;;

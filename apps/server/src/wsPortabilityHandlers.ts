@@ -45,7 +45,7 @@ export const createWsPortabilityHandlers = ({
               const archive = Portability.createPortabilityArchive(snapshot, settings, exportedAt);
 
               return {
-                filename: `akeru-${exportedAt.slice(0, 10)}.isnadi.archive`,
+                filename: `isnadi-${exportedAt.slice(0, 10)}.isnadi.archive`,
                 contents: Portability.serializePortabilityArchive(archive),
               };
             },

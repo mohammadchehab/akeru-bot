@@ -1,6 +1,7 @@
 import {
-  ISNADI_MARKETING_SITE_URL,
+  ISNADI_PRIVACY_POLICY_URL,
   ISNADI_PRIVACY_POLICY_VERSION,
+  ISNADI_TERMS_URL,
   ISNADI_TERMS_VERSION,
   type ClientSettings,
 } from "@isnadi/contracts/settings";
@@ -68,7 +69,7 @@ export function PolicyNotice() {
             Read the{" "}
             <a
               className="text-foreground underline underline-offset-4"
-              href={`${ISNADI_MARKETING_SITE_URL}/terms-of-service`}
+              href={ISNADI_TERMS_URL}
               target="_blank"
               rel="noreferrer"
             >
@@ -77,7 +78,7 @@ export function PolicyNotice() {
             and{" "}
             <a
               className="text-foreground underline underline-offset-4"
-              href={`${ISNADI_MARKETING_SITE_URL}/privacy-policy`}
+              href={ISNADI_PRIVACY_POLICY_URL}
               target="_blank"
               rel="noreferrer"
             >

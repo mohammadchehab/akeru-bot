@@ -55,9 +55,9 @@ export function toMcpServerConfig(
     mcpServerNeedsBrowserAttachment(server, browser.availableToHostedPlugins)
       ? {
           ...runtimeHeaders,
-          "x-akeru-browser-mcp-url": browser.browserUrl,
-          "x-akeru-browser-mcp-session-id": browser.mcpSessionId,
-          "x-akeru-browser-mcp-headers": JSON.stringify(browser.requestHeaders),
+          "x-isnadi-browser-mcp-url": browser.browserUrl,
+          "x-isnadi-browser-mcp-session-id": browser.mcpSessionId,
+          "x-isnadi-browser-mcp-headers": JSON.stringify(browser.requestHeaders),
         }
       : runtimeHeaders;
 

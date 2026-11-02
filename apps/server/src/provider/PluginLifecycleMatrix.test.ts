@@ -30,7 +30,7 @@ function catalogManifests() {
 }
 
 function temporaryRuntimeDir() {
-  return NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-plugin-matrix-"));
+  return NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-plugin-matrix-"));
 }
 
 /**

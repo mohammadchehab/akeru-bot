@@ -20,7 +20,7 @@ const encodeServerSettings = Schema.encodeSync(ServerSettings);
 const decodeImagePatch = Schema.decodeUnknownExit(ImageGenerationSettingsPatch);
 
 function fixture() {
-  const directory = NodePath.join(NodeOS.tmpdir(), `akeru-image-gen-${NodeCrypto.randomUUID()}`);
+  const directory = NodePath.join(NodeOS.tmpdir(), `isnadi-image-gen-${NodeCrypto.randomUUID()}`);
   NodeFS.mkdirSync(directory, { recursive: true });
 
   return { directory, authPath: NodePath.join(directory, "subscription-auth.json") };

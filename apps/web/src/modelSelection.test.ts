@@ -75,7 +75,7 @@ function settingsWithGrokCustomModel(): UnifiedSettings {
 describe("instance-scoped model selection", () => {
   it("returns an explicit empty selection when no provider is available", () => {
     expect(resolveAppModelSelectionState(DEFAULT_UNIFIED_SETTINGS, [])).toEqual({
-      instanceId: ProviderInstanceId.make("akeru_no_provider"),
+      instanceId: ProviderInstanceId.make("isnadi_no_provider"),
       model: "",
     });
   });

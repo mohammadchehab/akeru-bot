@@ -7,8 +7,13 @@ import {
   OCEAN_THEME_ID,
   EMBER_THEME_ID,
   IRIS_THEME_ID,
+  ISNADI_PAPER_THEME_ID,
   type ThemePreference,
 } from "./themeTypes";
+
+// The product shipped as Akeru before the Isnadi rename; its theme ids stay
+// readable through the alias table below.
+const LEGACY_BRAND = "akeru";
 
 // Earlier builds shipped every maintainer theme under a t3- prefix; only the
 // genuinely T3-branded palette keeps it. Stored preferences and mixes with the
@@ -20,6 +25,9 @@ const LEGACY_THEME_ID_ALIASES = {
   "t3-ocean": OCEAN_THEME_ID,
   "t3-ember": EMBER_THEME_ID,
   "t3-iris": IRIS_THEME_ID,
+  [`${LEGACY_BRAND}-noir`]: "isnadi-noir",
+  [`${LEGACY_BRAND}-paper`]: ISNADI_PAPER_THEME_ID,
+  [`${LEGACY_BRAND}-chat`]: T3_CHAT_THEME_ID,
 };
 
 const LEGACY_THEME_ID_ALIASES_LOOKUP = new Map(Object.entries(LEGACY_THEME_ID_ALIASES));

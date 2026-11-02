@@ -41,7 +41,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-driver-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-driver-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),
@@ -104,7 +104,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-refresh-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-refresh-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
           Layer.provideMerge(ModelCatalog.layerTest),
         ),
@@ -160,7 +160,7 @@ describe("KimiDriver", () => {
 
     return program.pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-kimi-catalog-test-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-kimi-catalog-test-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),

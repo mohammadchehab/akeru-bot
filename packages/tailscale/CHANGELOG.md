@@ -1,29 +1,29 @@
-# @akeru/tailscale
+# @isnadi/tailscale
 
 ## 0.0.4
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/shared@0.0.4
+  - @isnadi/shared@0.0.4
 
 ## 0.0.3
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/shared@0.0.3
+  - @isnadi/shared@0.0.3
 
 ## 0.0.2
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/shared@0.0.2
+  - @isnadi/shared@0.0.2
 
 ## 0.0.1
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/shared@0.0.1
+  - @isnadi/shared@0.0.1

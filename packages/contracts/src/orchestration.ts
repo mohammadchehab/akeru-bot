@@ -46,6 +46,7 @@ export {
   BotEngine,
   BotSandbox,
   PersistedBotSandbox,
+  LEGACY_CLOUD_SANDBOX,
   BotSandboxBrowserSharing,
   DEFAULT_BOT_SANDBOX_BROWSER_SHARING,
   MIN_BOT_PERSONALITY_TONE,

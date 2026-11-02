@@ -61,7 +61,7 @@ describe("API-key session reset", () => {
     Effect.gen(function* () {
       const directory = NodePath.join(
         NodeOS.tmpdir(),
-        `akeru-session-reset-${NodeCrypto.randomUUID()}`,
+        `isnadi-session-reset-${NodeCrypto.randomUUID()}`,
       );
 
       NodeFS.mkdirSync(directory, { recursive: true });

@@ -579,7 +579,7 @@ describe("AgentControllerLive", () => {
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-mastra-remote-sandbox-test-",
+            prefix: "isnadi-mastra-remote-sandbox-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       ),
@@ -627,7 +627,7 @@ describe("AgentControllerLive", () => {
             UPSTASH_REDIS_REST_URL: "https://sandbox.example",
             UPSTASH_REDIS_REST_TOKEN: "sandbox-token",
           },
-          workspaceId: expect.stringMatching(/^akeru-[a-f0-9]{24}$/),
+          workspaceId: expect.stringMatching(/^isnadi-[a-f0-9]{24}$/),
           identityFile: expect.stringMatching(/provider\.json$/),
         }),
       );

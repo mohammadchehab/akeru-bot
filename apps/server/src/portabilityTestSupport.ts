@@ -115,7 +115,7 @@ export function makeSnapshot(
     bots: [
       {
         id: BOT_ID,
-        name: "Akeru",
+        name: "Isnadi",
         title: "Builder",
         label: null,
         description: [

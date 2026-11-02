@@ -12,7 +12,7 @@ import * as NodeServices from "@effect/platform-node/NodeServices";
 
 it.effect("reconciles persisted reservations when the ledger restarts", () =>
   Effect.gen(function* () {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-usage-restart-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-usage-restart-"));
     const dbPath = NodePath.join(directory, "state.sqlite");
 
     const restartedLayer = () =>
@@ -122,7 +122,7 @@ it.effect("reconciles persisted reservations when the ledger restarts", () =>
 
 it.effect("keeps pricing complete when a restart interrupts a tool call", () =>
   Effect.gen(function* () {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-usage-tool-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-usage-tool-"));
 
     const restartedLayer = () =>
       BotUsageLedgerLive.pipe(

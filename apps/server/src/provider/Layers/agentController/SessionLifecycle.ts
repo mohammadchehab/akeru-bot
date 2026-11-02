@@ -539,7 +539,7 @@ export function createSessionLifecycle(deps: SessionLifecycleDependencies) {
       .runMastra("createSession", () =>
         deps.bundle.controller.createSession({
           id: key,
-          ownerId: "akeru-desktop",
+          ownerId: "isnadi-desktop",
           resourceId: key,
           threadId: key,
           ...(input.cwd ? { tags: { projectPath: input.cwd } } : {}),

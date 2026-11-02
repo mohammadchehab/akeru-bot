@@ -199,7 +199,7 @@ describe("Plugins dialog content", () => {
     }
 
     expect(markup).not.toContain('aria-label="All"');
-    expect(markup).not.toMatch(/Akeru (?:has|must|needs)/);
+    expect(markup).not.toMatch(/Isnadi (?:has|must|needs)/);
   });
 
   it("shows publisher, transport, authentication, permissions, approvals, platforms, and honest health", () => {

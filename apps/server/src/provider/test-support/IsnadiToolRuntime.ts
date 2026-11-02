@@ -9,7 +9,7 @@ export function makeIsnadiToolRuntimeTestSupport() {
   const workspaceRoots = new WeakMap<Workspace, string>();
 
   function workspace(name: string) {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), `akeru-tool-${name}-`));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), `isnadi-tool-${name}-`));
     const root = NodePath.join(directory, "workspace");
     NodeFS.mkdirSync(root);
     directories.add(directory);

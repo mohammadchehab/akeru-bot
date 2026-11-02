@@ -10,7 +10,10 @@ import { persistIsnadiPreviewSnapshot } from "./IsnadiPreviewSnapshotAttachment.
 const directories = new Set<string>();
 
 function attachmentsDir() {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-preview-attachment-"));
+  const directory = NodeFS.mkdtempSync(
+    NodePath.join(NodeOS.tmpdir(), "isnadi-preview-attachment-"),
+  );
+
   directories.add(directory);
 
   return directory;

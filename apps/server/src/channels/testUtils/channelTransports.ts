@@ -105,7 +105,7 @@ vi.mock("@chat-adapter/discord", async (importOriginal) => {
 
       adapter.getUser = async (userId) => ({
         userId,
-        userName: "akeru",
+        userName: "isnadi",
         fullName: "Isnadi",
         isBot: true,
       });

@@ -8,7 +8,7 @@ import { BotDetailsPanel, BotOverview } from "./BotDetailsPanel";
 import type { Bot } from "./types";
 
 const bot: Bot = {
-  id: "bot-akeru",
+  id: "bot-isnadi",
   name: "Isnadi",
   title: "Generalist",
   label: "Research",
@@ -104,7 +104,7 @@ describe("BotDetailsPanel", () => {
     const source = NodeFS.readFileSync(new URL("./BotDetailsPanel.tsx", import.meta.url), "utf8");
     const storage = NodeFS.readFileSync(new URL("./detailsPanelOpen.ts", import.meta.url), "utf8");
     expect(source).toContain("useBotDetailsOpen(bot.id)");
-    expect(storage).toContain("`akeru:bot-details-open:${botId}`");
+    expect(storage).toContain("`isnadi:bot-details-open:${botId}`");
     expect(storage).toContain("Schema.Boolean");
     expect(source).toContain("setDesktopOpen((open) => !open)");
   });

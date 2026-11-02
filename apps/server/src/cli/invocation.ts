@@ -62,7 +62,7 @@ export function formatCliCommand(input: {
   const runner = detectCliRunner(input.entryPath);
 
   if (runner === null) {
-    return `akeru ${input.subcommand}`;
+    return `isnadi ${input.subcommand}`;
   }
 
   return `${runner} ${suggestedPackageSpec(input.version)} ${input.subcommand}`;

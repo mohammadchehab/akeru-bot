@@ -42,7 +42,7 @@ export const PublicOriginFromString = Schema.String.pipe(
         return Effect.fail(
           new SchemaIssue.InvalidValue({
             message:
-              "Invalid public origin. Use the http(s) origin your tunnel serves, for example https://akeru.example.com.",
+              "Invalid public origin. Use the http(s) origin your tunnel serves, for example https://isnadi.example.com.",
           }),
         );
       },
@@ -146,7 +146,7 @@ const EnvServerConfig = Config.all({
   otlpTracesUrl: optionalEnv(Config.string, "OTLP_TRACES_URL"),
   otlpMetricsUrl: optionalEnv(Config.string, "OTLP_METRICS_URL"),
   otlpExportIntervalMs: envWithDefault(Config.int, "OTLP_EXPORT_INTERVAL_MS", 10_000),
-  otlpServiceName: envWithDefault(Config.string, "OTLP_SERVICE_NAME", "akeru-server"),
+  otlpServiceName: envWithDefault(Config.string, "OTLP_SERVICE_NAME", "isnadi-server"),
   mode: optionalEnv((name) => Config.schema(ServerConfig.RuntimeMode, name), "MODE"),
   port: optionalEnv(Config.port, "PORT"),
   host: optionalEnv(Config.string, "HOST"),

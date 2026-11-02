@@ -201,7 +201,7 @@ const makeTest = Effect.fn("ServerConfig.makeTest")(function* (
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     cwd,
     baseDir,
     ...derivedPaths,

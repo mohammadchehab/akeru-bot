@@ -55,7 +55,7 @@ function TurnstileChallenge({
       });
     };
 
-    const existing = document.querySelector<HTMLScriptElement>("script[data-akeru-turnstile]");
+    const existing = document.querySelector<HTMLScriptElement>("script[data-isnadi-turnstile]");
 
     if (existing) {
       if (window.turnstile) render();
@@ -65,7 +65,7 @@ function TurnstileChallenge({
       script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
       script.async = true;
       script.defer = true;
-      script.dataset.akeruTurnstile = "true";
+      script.dataset.isnadiTurnstile = "true";
       script.addEventListener("load", render, { once: true });
       document.head.append(script);
     }
@@ -126,8 +126,13 @@ export function ProductFeedbackDialog() {
     [draft, turnstileToken, website],
   );
 
+  const endpointConfigured = settings.productFeedbackEndpoint.length > 0;
+
   const canSend =
-    settings.productFeedbackEnabled && draft.feedback.trim().length > 0 && !submitting;
+    settings.productFeedbackEnabled &&
+    endpointConfigured &&
+    draft.feedback.trim().length > 0 &&
+    !submitting;
 
   const handleClose = () => {
     closeFeedback();
@@ -232,6 +237,10 @@ export function ProductFeedbackDialog() {
             {!settings.productFeedbackEnabled ? (
               <p role="status" className="text-sm text-muted-foreground">
                 Product feedback is disabled in Settings.
+              </p>
+            ) : !endpointConfigured ? (
+              <p role="status" className="text-sm text-muted-foreground">
+                No feedback endpoint is set. Add one in Advanced settings under Feedback endpoint.
               </p>
             ) : null}
           </DialogPanel>

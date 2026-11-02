@@ -258,7 +258,7 @@ export function createClaudeSessionLifecycle(deps: {
         ...toClaudeMcpServers(input.mcpServers ?? []),
         ...(mcpSession
           ? {
-              akeru: {
+              isnadi: {
                 type: "http" as const,
                 url: mcpSession.endpoint,
                 headers: { Authorization: mcpSession.authorizationHeader },

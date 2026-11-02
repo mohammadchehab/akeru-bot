@@ -5,7 +5,7 @@ import * as Option from "effect/Option";
  * Server environment variables use `ISNADI_` names. Each one still accepts its
  * older `T3CODE_` name as a fallback alias, so existing shells, service units,
  * and scripts keep working. The `ISNADI_` name wins when both are set. Older
- * `AKERU_` names are copied to `ISNADI_` at startup by `@isnadi/shared/legacyEnv`.
+ * Legacy variable names are copied to `ISNADI_` at startup by `@isnadi/shared/legacyEnv`.
  */
 export const ISNADI_ENV_PREFIX = "ISNADI_";
 

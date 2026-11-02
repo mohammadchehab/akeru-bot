@@ -58,7 +58,7 @@ export function getKimiCodingDeviceHeaders(deviceId: string) {
   if (!isKimiCodingDeviceId(deviceId)) throw new Error("Invalid Kimi For Coding device id");
 
   return {
-    "X-Msh-Platform": "akeru",
+    "X-Msh-Platform": "isnadi",
     "X-Msh-Version": "0.0.34",
     "X-Msh-Device-Name": asciiHeaderValue(NodeOS.hostname()),
     "X-Msh-Device-Model": "Isnadi server",

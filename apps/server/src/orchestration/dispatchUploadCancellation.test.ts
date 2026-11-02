@@ -63,7 +63,7 @@ it.effect("keeps a claimed upload when its queued turn start commits after cance
         Layer.provide(OrchestrationEventStoreLive),
         Layer.provide(RepositoryIdentityResolver.layer),
       ),
-      serverConfigLayerTest(process.cwd(), { prefix: "akeru-upload-cancel-" }),
+      serverConfigLayerTest(process.cwd(), { prefix: "isnadi-upload-cancel-" }),
       WorkspacePaths.layer,
     ).pipe(
       Layer.provideMerge(OrchestrationCommandReceiptRepositoryLive),

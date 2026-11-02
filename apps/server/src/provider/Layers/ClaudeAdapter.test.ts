@@ -21,7 +21,7 @@ import {
 
 describe("ClaudeAdapterLive", () => {
   it.effect("passes a newly saved API key and endpoint to the Claude SDK", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-claude-api-key-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-claude-api-key-"));
     const harness = makeHarness({ baseDir: directory });
 
     return Effect.gen(function* () {

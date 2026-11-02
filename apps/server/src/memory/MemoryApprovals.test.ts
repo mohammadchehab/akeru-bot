@@ -297,7 +297,7 @@ it.layer(testLayer)("MemoryApprovals", (it) => {
       assert.equal(error._tag, "MemoryApprovalError");
 
       const rows = yield* sql`
-        SELECT candidate_id FROM akeru_memory_candidates
+        SELECT candidate_id FROM isnadi_memory_candidates
         WHERE fact_text = 'The group ships on Mondays.'
       `;
 

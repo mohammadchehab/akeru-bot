@@ -22,7 +22,7 @@ import {
   type IsnadiSessionResourceInput,
 } from "./resources/IsnadiSessionResourceTypes.ts";
 
-const ISNADI_PREVIEW_MCP_SERVER_NAME = "akeru";
+const ISNADI_PREVIEW_MCP_SERVER_NAME = "isnadi";
 
 const ISNADI_PREVIEW_TOOL_PREFIX = `${ISNADI_PREVIEW_MCP_SERVER_NAME}_`;
 

@@ -19,7 +19,7 @@ import {
 
 describe("IsnadiMastraHarness", () => {
   it("routes Codex API keys through OpenAI Responses instead of the OAuth transport", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-api-key-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-api-key-auth.json");
 
     const getCredential = vi.fn(() => ({
       type: "api-key" as const,
@@ -41,7 +41,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("uses the selected instance key without reading the provider-wide credential", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-instance-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-instance-auth.json");
 
     const getCredential = vi.fn(() => ({
       type: "api-key" as const,
@@ -73,7 +73,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("resolves a saved API key for the selected account instance", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-bound-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-bound-auth.json");
 
     const getCredential = vi.fn((_provider: string, instanceId?: string) =>
       instanceId === "grok_work" ? { type: "api-key" as const, access: "work-key" } : undefined,
@@ -99,7 +99,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("does not leak provider-wide credentials into an isolated instance", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-isolated-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-isolated-auth.json");
 
     const getCredential = vi.fn(() => ({
       type: "api-key" as const,
@@ -123,7 +123,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("uses the first nonempty trimmed Claude auth token", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-empty-token-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-empty-token-auth.json");
 
     for (const token of ["", "   "]) {
       expect(
@@ -148,7 +148,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("translates Claude 1M model selections into API headers for every credential transport", async () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-context-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-context-auth.json");
     const requests: Array<{ body: unknown; beta: string | null }> = [];
     vi.stubGlobal(
       "fetch",
@@ -208,7 +208,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("keeps Kimi model names on the Kimi subscription transport", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-auth.json");
     assert.equal(
       mastraModelId(ProviderDriverKind.make("kimi"), "k3-256k"),
       "kimi-for-coding/k3-256k",
@@ -227,7 +227,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("keeps OpenCode Go model names on the direct subscription transport", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-auth.json");
     assert.equal(
       mastraModelId(ProviderDriverKind.make("opencodeGo"), "gpt-5.6-luna"),
       "opencode-go/gpt-5.6-luna",
@@ -245,7 +245,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("uses an isolated OpenCode Go inline connection", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-inline-opencode-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-inline-opencode-auth.json");
 
     const getCredential = vi.fn(() => ({
       type: "api-key" as const,
@@ -278,7 +278,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("routes a Custom API model through its configured base URL and key", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-custom-openai-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-custom-openai-auth.json");
     expect(
       resolveIsnadiMastraModel(
         "custom-openai/local-model",
@@ -311,7 +311,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("routes Claude and Grok models through their subscription transports", () => {
-    const authStorage = new AuthStorage("/tmp/akeru-unused-legacy-observer-auth.json");
+    const authStorage = new AuthStorage("/tmp/isnadi-unused-legacy-observer-auth.json");
 
     const getCredential = vi.fn((provider: string) =>
       provider === "anthropic"
@@ -366,7 +366,7 @@ describe("IsnadiMastraHarness", () => {
     assert.include(instructions, "Own the requested outcome");
     assert.include(instructions, "Carry multi-step work through implementation");
     assert.include(instructions, "Never report success before");
-    assert.include(instructions, "akeru_list_routines");
+    assert.include(instructions, "isnadi_list_routines");
     assert.notInclude(instructions, "—");
     assert.notInclude(instructions, "coding agent");
     assert.isBelow(createIsnadiBotInstructions({ now: DateTime.nowUnsafe() }).length, 3_500);

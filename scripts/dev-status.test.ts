@@ -21,7 +21,7 @@ import {
 const directories: string[] = [];
 
 function fixture(linked = true) {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-dev-status-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-dev-status-"));
   directories.push(root);
 
   if (linked) {

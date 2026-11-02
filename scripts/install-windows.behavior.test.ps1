@@ -42,7 +42,7 @@ function Invoke-WebRequest {
   Assert-True ((Split-Path -Parent $directory) -eq $env:TEMP) 'Download escaped the private TEMP directory.'
   Assert-True (Test-Path -LiteralPath $directory -PathType Container) 'Download directory does not exist.'
   $testState.requests += $Uri
-  if ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/Akeru-Bot-1.2.3-x64.exe') {
+  if ($Uri -eq 'https://github.com/mohammadchehab/isnadibot/releases/download/v1.2.3/IsnadiBot-1.2.3-x64.exe') {
     $testState.downloadDirectories += $directory
     $testState.installerFile = $OutFile
     [IO.File]::WriteAllText($OutFile, 'Harmless installer fixture, never executed.')

@@ -32,7 +32,7 @@ import { resolveMemoryArchivePartitions } from "../EntityMemoryAccess.ts";
 
 it("preserves revision history and FTS recall after repository restart", () =>
   Effect.gen(function* () {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-memory-restart-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-restart-"));
     const dbPath = NodePath.join(directory, "state.sqlite");
 
     const restartedLayer = EntityMemoryRepositoryLive.pipe(

@@ -438,8 +438,8 @@ describe("IsnadiDelegationRuntime", () => {
       turnId: CHILD_TURN_ID,
       error: [
         "ProviderValidationError: Provider instance 'codex' is disabled in IsnadiBot settings.",
-        "    at disabledProviderError (file:///srv/akeru/apps/server/src/provider/Layers/AgentController.ts:584:10)",
-        "    at ensureSessionForThread (file:///srv/akeru/apps/server/src/orchestration/Layers/ProviderCommandReactor.ts:1282:28)",
+        "    at disabledProviderError (file:///srv/isnadi/apps/server/src/provider/Layers/AgentController.ts:584:10)",
+        "    at ensureSessionForThread (file:///srv/isnadi/apps/server/src/orchestration/Layers/ProviderCommandReactor.ts:1282:28)",
       ].join("\n"),
     });
 

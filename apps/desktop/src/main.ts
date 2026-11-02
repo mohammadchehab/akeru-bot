@@ -1,4 +1,4 @@
-// Must stay first: maps legacy AKERU_* variables before anything reads the environment.
+// Must stay first: maps legacy environment variable names before anything reads the environment.
 import "@isnadi/shared/legacyEnv";
 
 for (const stream of [process.stdout, process.stderr]) {

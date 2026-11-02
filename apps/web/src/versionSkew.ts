@@ -11,7 +11,7 @@ export interface VersionMismatch {
   readonly hint: string;
 }
 
-export const VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "akeru:version-mismatch-dismissals:v1";
+export const VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "isnadi:version-mismatch-dismissals:v1";
 
 // Pre-rebrand key, read as a fallback so dismissed banners stay dismissed.
 const LEGACY_VERSION_MISMATCH_DISMISSALS_STORAGE_KEY = "t3code:version-mismatch-dismissals:v1";

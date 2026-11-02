@@ -64,7 +64,7 @@ describe("Isnadi catalog MCP tool handlers", () => {
       },
     });
 
-    await handlers.WebSearch!({ input: { query: "akeru" }, emitProgress: vi.fn() });
+    await handlers.WebSearch!({ input: { query: "isnadi" }, emitProgress: vi.fn() });
     await handlers.WebFetch!({ input: { url: "https://example.com" }, emitProgress: vi.fn() });
     await handlers.GenerateImage!({
       input: { operation: "generate", prompt: "a cat" },
@@ -90,7 +90,7 @@ describe("Isnadi catalog MCP tool handlers", () => {
       emitProgress: vi.fn(),
     });
     expect(calls).toEqual([
-      "search:akeru",
+      "search:isnadi",
       "fetch:https://example.com/",
       "image:a cat",
       "add:one",

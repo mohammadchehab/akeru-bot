@@ -236,36 +236,36 @@ if [ -n "$T3_NODE_SCRIPT_PATH" ]; then
   fi
   exec node "$T3_NODE_SCRIPT_PATH" "$@"
 fi
-if command -v akeru >/dev/null 2>&1; then
-  exec akeru "$@"
+if command -v isnadi >/dev/null 2>&1; then
+  exec isnadi "$@"
 fi
 # npm extracts a package before it runs the native builds of its dependencies,
 # so a failed build (isnadibot depends on node-pty, which needs a C toolchain) leaves
-# the npx cache without an akeru executable. \`npx --yes\` then exits 0 without
+# the npx cache without an isnadi executable. \`npx --yes\` then exits 0 without
 # running anything at all, which the caller only ever sees as a server that
 # never becomes ready. Resolve the CLI once up front so that install failure is
 # reported here, with npm's own output on stderr.
-require_installed_akeru_cli() {
-  if ! T3_CLI_PATH="$("$@" -- sh -c 'command -v akeru')"; then
+require_installed_isnadi_cli() {
+  if ! T3_CLI_PATH="$("$@" -- sh -c 'command -v isnadi')"; then
     printf 'Remote host could not install %s. See npm output above for the cause.\\n' @@T3_PACKAGE_SPEC@@ >&2
     return 1
   fi
   if [ -n "$T3_CLI_PATH" ]; then
     return 0
   fi
-  printf 'Remote host installed %s but npm produced no akeru executable, which usually means a native dependency (node-pty) failed to build. Install a C toolchain on the remote host (Debian/Ubuntu: build-essential, Fedora/RHEL: gcc-c++ make, macOS: xcode-select --install) and try again.\\n' @@T3_PACKAGE_SPEC@@ >&2
+  printf 'Remote host installed %s but npm produced no isnadi executable, which usually means a native dependency (node-pty) failed to build. Install a C toolchain on the remote host (Debian/Ubuntu: build-essential, Fedora/RHEL: gcc-c++ make, macOS: xcode-select --install) and try again.\\n' @@T3_PACKAGE_SPEC@@ >&2
   return 1
 }
 # The launcher records this PID, so exec the CLI without an npm wrapper process.
 if command -v npx >/dev/null 2>&1; then
-  require_installed_akeru_cli npx --yes --package @@T3_PACKAGE_SPEC@@ || exit 1
+  require_installed_isnadi_cli npx --yes --package @@T3_PACKAGE_SPEC@@ || exit 1
   exec "$T3_CLI_PATH" "$@"
 fi
 if command -v npm >/dev/null 2>&1; then
-  require_installed_akeru_cli npm exec --yes --package @@T3_PACKAGE_SPEC@@ || exit 1
+  require_installed_isnadi_cli npm exec --yes --package @@T3_PACKAGE_SPEC@@ || exit 1
   exec "$T3_CLI_PATH" "$@"
 fi
-printf 'Remote host is missing the akeru CLI and could not install @@T3_PACKAGE_SPEC@@ because node/npm/npx are unavailable on PATH. Install Node or configure a supported version manager for non-interactive shells.\\n' >&2
+printf 'Remote host is missing the isnadi CLI and could not install @@T3_PACKAGE_SPEC@@ because node/npm/npx are unavailable on PATH. Install Node or configure a supported version manager for non-interactive shells.\\n' >&2
 exit 1
 `;
 

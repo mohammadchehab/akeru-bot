@@ -11,7 +11,7 @@ export function makebotWorkspacePoolTestSupport() {
 
   function remoteWorkspace(overrides: Partial<IsnadiBotWorkspace> = {}): IsnadiBotWorkspace {
     return {
-      id: "akeru-persistent",
+      id: "isnadi-persistent",
       provider: "tenki",
       workspace: localWorkspace(),
       inspect: vi.fn(async () => "running" as const),

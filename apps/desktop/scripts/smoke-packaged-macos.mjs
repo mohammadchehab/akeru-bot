@@ -59,12 +59,12 @@ async function waitForRenderer(cdpPort, child) {
     page = browser
       .contexts()
       .flatMap((context) => context.pages())
-      .find((candidate) => candidate.url().startsWith("akeru://app/"));
+      .find((candidate) => candidate.url().startsWith("isnadi://app/"));
 
     if (!page) await delay(100);
   }
 
-  if (!page) throw new Error("The packaged app did not create its akeru://app/ renderer.");
+  if (!page) throw new Error("The packaged app did not create its isnadi://app/ renderer.");
 
   const rendererErrors = [];
   page.on("console", (message) => {
@@ -170,7 +170,7 @@ async function main() {
 
   if (!dmgPath) throw new Error("Usage: node smoke-packaged-macos.mjs <path-to-dmg>");
 
-  const tempDir = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-packaged-smoke-"));
+  const tempDir = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-packaged-smoke-"));
   const mountPoint = NodePath.join(tempDir, "mount");
   const stateRoot = NodePath.join(tempDir, "state");
   const chromiumDir = NodePath.join(tempDir, "chromium");

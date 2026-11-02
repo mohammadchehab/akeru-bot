@@ -20,7 +20,7 @@ import { componentLogger } from "./DesktopObservability.ts";
 // our own handler entry pointing at the current AppImage and claim the
 // scheme default via xdg-mime, exactly what the file manager's "set as
 // default" checkbox would record in mimeapps.list.
-export const URL_HANDLER_DESKTOP_ENTRY_NAME = "akeru-url-handler.desktop";
+export const URL_HANDLER_DESKTOP_ENTRY_NAME = "isnadi-url-handler.desktop";
 
 // Schemes older releases claimed for this same handler entry. Their defaults
 // must be released on upgrade or t3code:// links keep launching Isnadi.

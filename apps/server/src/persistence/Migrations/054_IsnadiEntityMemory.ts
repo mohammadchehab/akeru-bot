@@ -5,7 +5,7 @@ export default Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
 
   yield* sql`
-    CREATE TABLE akeru_memory_revisions (
+    CREATE TABLE isnadi_memory_revisions (
       memory_id TEXT PRIMARY KEY,
       root_id TEXT NOT NULL,
       revision INTEGER NOT NULL CHECK (revision >= 1),
@@ -32,7 +32,7 @@ export default Effect.gen(function* () {
       updated_at TEXT NOT NULL,
       confidence REAL NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
       approval_state TEXT NOT NULL CHECK (approval_state IN ('pending', 'approved', 'rejected')),
-      supersedes_id TEXT REFERENCES akeru_memory_revisions(memory_id),
+      supersedes_id TEXT REFERENCES isnadi_memory_revisions(memory_id),
       superseded_by_id TEXT,
       visibility TEXT NOT NULL CHECK (visibility IN ('private', 'shared')),
       deletion_state TEXT NOT NULL CHECK (deletion_state IN ('active', 'tombstoned', 'deleted')),
@@ -44,8 +44,8 @@ export default Effect.gen(function* () {
   `;
 
   yield* sql`
-    CREATE INDEX idx_akeru_memory_partition_current
-    ON akeru_memory_revisions (
+    CREATE INDEX idx_isnadi_memory_partition_current
+    ON isnadi_memory_revisions (
       tenant_id,
       scope,
       partition_id,
@@ -55,21 +55,21 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_memory_entity_current
-    ON akeru_memory_revisions (tenant_id, entity_kind, entity_id, superseded_by_id)
+    CREATE INDEX idx_isnadi_memory_entity_current
+    ON isnadi_memory_revisions (tenant_id, entity_kind, entity_id, superseded_by_id)
   `;
   yield* sql`
-    CREATE UNIQUE INDEX idx_akeru_memory_one_current_revision
-    ON akeru_memory_revisions (tenant_id, root_id)
+    CREATE UNIQUE INDEX idx_isnadi_memory_one_current_revision
+    ON isnadi_memory_revisions (tenant_id, root_id)
     WHERE superseded_by_id IS NULL
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_memory_source_thread
-    ON akeru_memory_revisions (source_thread_id)
+    CREATE INDEX idx_isnadi_memory_source_thread
+    ON isnadi_memory_revisions (source_thread_id)
   `;
 
   yield* sql`
-    CREATE TABLE akeru_memory_derived_copies (
+    CREATE TABLE isnadi_memory_derived_copies (
       tenant_id TEXT NOT NULL,
       root_id TEXT NOT NULL,
       revision_id TEXT NOT NULL,
@@ -79,12 +79,12 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_memory_derived_copies_thread
-    ON akeru_memory_derived_copies (thread_id)
+    CREATE INDEX idx_isnadi_memory_derived_copies_thread
+    ON isnadi_memory_derived_copies (thread_id)
   `;
 
   yield* sql`
-    CREATE VIRTUAL TABLE akeru_memory_fts USING fts5(
+    CREATE VIRTUAL TABLE isnadi_memory_fts USING fts5(
       memory_id UNINDEXED,
       fact_text,
       tokenize = 'unicode61 remove_diacritics 2'
@@ -92,23 +92,23 @@ export default Effect.gen(function* () {
   `;
 
   yield* sql`
-    CREATE TRIGGER akeru_memory_fts_insert
-    AFTER INSERT ON akeru_memory_revisions
+    CREATE TRIGGER isnadi_memory_fts_insert
+    AFTER INSERT ON isnadi_memory_revisions
     WHEN NEW.approval_state = 'approved'
       AND NEW.deletion_state = 'active'
       AND NEW.superseded_by_id IS NULL
     BEGIN
-      INSERT INTO akeru_memory_fts(memory_id, fact_text)
+      INSERT INTO isnadi_memory_fts(memory_id, fact_text)
       VALUES (NEW.memory_id, NEW.fact_text);
     END
   `;
 
   yield* sql`
-    CREATE TRIGGER akeru_memory_fts_update
-    AFTER UPDATE ON akeru_memory_revisions
+    CREATE TRIGGER isnadi_memory_fts_update
+    AFTER UPDATE ON isnadi_memory_revisions
     BEGIN
-      DELETE FROM akeru_memory_fts WHERE memory_id = OLD.memory_id;
-      INSERT INTO akeru_memory_fts(memory_id, fact_text)
+      DELETE FROM isnadi_memory_fts WHERE memory_id = OLD.memory_id;
+      INSERT INTO isnadi_memory_fts(memory_id, fact_text)
       SELECT NEW.memory_id, NEW.fact_text
       WHERE NEW.approval_state = 'approved'
         AND NEW.deletion_state = 'active'
@@ -117,10 +117,10 @@ export default Effect.gen(function* () {
   `;
 
   yield* sql`
-    CREATE TRIGGER akeru_memory_fts_delete
-    AFTER DELETE ON akeru_memory_revisions
+    CREATE TRIGGER isnadi_memory_fts_delete
+    AFTER DELETE ON isnadi_memory_revisions
     BEGIN
-      DELETE FROM akeru_memory_fts WHERE memory_id = OLD.memory_id;
+      DELETE FROM isnadi_memory_fts WHERE memory_id = OLD.memory_id;
     END
   `;
 });

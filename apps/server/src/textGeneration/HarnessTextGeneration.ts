@@ -179,7 +179,7 @@ export const makeHarnessTextGeneration = Effect.fn("makeHarnessTextGeneration")(
           );
 
           const agent = new Agent({
-            id: `akeru-${operation}-${input.instanceId}`,
+            id: `isnadi-${operation}-${input.instanceId}`,
             name: "Isnadi writing",
             instructions: "Return only the requested JSON object.",
             model: resolved,

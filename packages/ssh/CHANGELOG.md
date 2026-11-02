@@ -1,33 +1,33 @@
-# @akeru/ssh
+# @isnadi/ssh
 
 ## 0.0.4
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/contracts@0.2.1
-  - @akeru/shared@0.0.4
+  - @isnadi/contracts@0.2.1
+  - @isnadi/shared@0.0.4
 
 ## 0.0.3
 
 ### Patch Changes
 
-- Updated dependencies [[`630de12`](https://github.com/opencoredev/akeru-bot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/opencoredev/akeru-bot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/opencoredev/akeru-bot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/opencoredev/akeru-bot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/opencoredev/akeru-bot/commit/630de12aeb4fe350ec957af323566a31aa85ebad)]:
-  - @akeru/contracts@0.2.0
-  - @akeru/shared@0.0.3
+- Updated dependencies [[`630de12`](https://github.com/mohammadchehab/isnadibot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/mohammadchehab/isnadibot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/mohammadchehab/isnadibot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/mohammadchehab/isnadibot/commit/630de12aeb4fe350ec957af323566a31aa85ebad), [`630de12`](https://github.com/mohammadchehab/isnadibot/commit/630de12aeb4fe350ec957af323566a31aa85ebad)]:
+  - @isnadi/contracts@0.2.0
+  - @isnadi/shared@0.0.3
 
 ## 0.0.2
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/contracts@0.1.1
-  - @akeru/shared@0.0.2
+  - @isnadi/contracts@0.1.1
+  - @isnadi/shared@0.0.2
 
 ## 0.0.1
 
 ### Patch Changes
 
 - Updated dependencies []:
-  - @akeru/contracts@0.1.0
-  - @akeru/shared@0.0.1
+  - @isnadi/contracts@0.1.0
+  - @isnadi/shared@0.0.1

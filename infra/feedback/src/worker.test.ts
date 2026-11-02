@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vite-plus/test";
 import type { FeedbackWorkerEnv } from "../alchemy.run.ts";
 import worker, { makeGitHubIssueOutbox } from "./worker.ts";
 
-const ENDPOINT = "https://akeru-feedback.leoisadev.workers.dev/v1/feedback";
+const ENDPOINT = "https://isnadi-feedback.example.workers.dev/v1/feedback";
 
 function unexpectedDatabaseOperation(): never {
   throw new Error("Unexpected database fixture operation");
@@ -160,7 +160,7 @@ describe("feedback worker", () => {
       {} as ExecutionContext,
     );
 
-    expect(prepare).toHaveBeenCalledWith("DELETE FROM akeru_feedback_inbox WHERE expires_at <= ?");
+    expect(prepare).toHaveBeenCalledWith("DELETE FROM isnadi_feedback_inbox WHERE expires_at <= ?");
     expect(bind).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/));
     expect(run).toHaveBeenCalledOnce();
   });

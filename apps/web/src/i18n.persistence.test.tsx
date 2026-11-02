@@ -175,7 +175,7 @@ describe("language client settings persistence", () => {
     expect(JSON.parse(localStorage.getItem(CLIENT_SETTINGS_STORAGE_KEY)!)).toMatchObject({
       language: "en",
     });
-    expect(localStorage.getItem("akeru:language")).toBeNull();
+    expect(localStorage.getItem("isnadi:language")).toBeNull();
     await current.setPreference("system");
     expect(JSON.parse(localStorage.getItem(CLIENT_SETTINGS_STORAGE_KEY)!)).toMatchObject({
       language: "system",

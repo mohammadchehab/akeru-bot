@@ -52,7 +52,7 @@ const REQUEST_TIMEOUT = "30 seconds";
 
 const JWT_CLAIM_PATH = "https://api.openai.com/auth";
 
-const USER_AGENT = "akeru";
+const USER_AGENT = "isnadi";
 
 const AccountIdClaim = Schema.Struct({ chatgpt_account_id: Schema.NonEmptyString });
 

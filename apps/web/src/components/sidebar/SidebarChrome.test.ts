@@ -188,7 +188,7 @@ describe("sidebar footer", () => {
 
     expect(rosterSource).toContain("runtimeMode: DEFAULT_BOT_RUNTIME_MODE");
     expect(rosterSource).not.toContain('runtimeMode: "full-access"');
-    expect(syncSource).not.toContain('BotId.make("bot-akeru")');
+    expect(syncSource).not.toContain('BotId.make("bot-isnadi")');
     expect(syncSource).not.toContain("botEnvironment.create");
   });
 

@@ -20,8 +20,8 @@ export interface BotActivity {
 // catalog, the routine and feedback contracts, and the memory tool.
 const TOOL_LABELS = {
   [ISNADI_CREATE_ROUTINE_TOOL_NAME]: "Adding a routine",
-  akeru_list_routines: "Checking routines",
-  akeru_delete_routines: "Removing routines",
+  isnadi_list_routines: "Checking routines",
+  isnadi_delete_routines: "Removing routines",
   [ISNADI_PRODUCT_FEEDBACK_TOOL_NAME]: "Drafting feedback",
   Shell: "Running a command",
   ExternalShell: "Running a command",

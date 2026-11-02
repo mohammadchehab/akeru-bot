@@ -364,7 +364,7 @@ it.effect("fails only open delegations after a restart, once", () =>
   }).pipe(
     Effect.provide(
       Layer.provideMerge(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-delegation-restart-test-" }),
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-delegation-restart-test-" }),
         NodeServices.layer,
       ),
     ),

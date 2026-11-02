@@ -16,7 +16,7 @@ const { harnessTest, makeObservationHarness, queuedObservations } =
 describe("IsnadiMastraHarness", () => {
   it.effect("serializes memory work per thread and runs other threads alongside", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-keyed-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-keyed-"));
       const gates = new Map<string, PromiseWithResolvers<void>>();
       const entered = new Map<string, PromiseWithResolvers<void>>();
       const order: string[] = [];
@@ -67,7 +67,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("admits nothing once close begins and waits for work already admitted", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-close-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-close-"));
       const inFlightEntered = Promise.withResolvers<void>();
       const inFlightGate = Promise.withResolvers<void>();
 
@@ -121,7 +121,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("waits for external-turn persistence before closing memory", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-ext-close-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-ext-close-"));
       const persisting = Promise.withResolvers<void>();
       const release = Promise.withResolvers<void>();
 

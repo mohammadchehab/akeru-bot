@@ -126,7 +126,7 @@ export const requestAllCodexModels = Effect.fn("requestAllCodexModels")(function
 export function buildCodexInitializeParams(): CodexSchema.V1InitializeParams {
   return {
     clientInfo: {
-      name: "akeru_bot_desktop",
+      name: "isnadi_bot_desktop",
       title: "IsnadiBot Desktop",
       version: packageJson.version,
     },
@@ -195,7 +195,7 @@ export const probeCodexAppServerProvider = Effect.fn("probeCodexAppServerProvide
 
     const initialize = yield* client.request("initialize", {
       clientInfo: {
-        name: "akeru_bot_desktop",
+        name: "isnadi_bot_desktop",
         title: "IsnadiBot Desktop",
         version: "0.1.0",
       },

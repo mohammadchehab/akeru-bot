@@ -31,7 +31,7 @@ it("reads development identity from app config and respects the personal-team bu
       },
     ).trim();
 
-  expect(identity("scheme")).toBe("akeru-dev");
+  expect(identity("scheme")).toBe("isnadi-dev");
   expect(identity("android-package")).toBe("dev.leodoes.isnadi.dev");
   expect(identity("ios-bundle-id")).toBe("dev.leodoes.isnadi.dev");
   expect(
@@ -43,7 +43,7 @@ it("reads development identity from app config and respects the personal-team bu
 });
 
 function harness() {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-pair-helper-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-pair-helper-"));
   directories.push(directory);
   const log = NodePath.join(directory, "calls.jsonl");
 
@@ -96,7 +96,7 @@ posixIt.each(["ios", "android"])(
     );
     expect(open?.command).toBe(platform === "ios" ? "xcrun" : "adb");
     const command = open!.args.join(" ");
-    expect(command).toContain("akeru-dev://connections/new?pairingUrl=");
+    expect(command).toContain("isnadi-dev://connections/new?pairingUrl=");
     expect(command).toContain("%26value%3Dtwo&autoConnect=1");
 
     if (platform === "android") expect(command).toContain("' dev.leodoes.isnadi.dev");

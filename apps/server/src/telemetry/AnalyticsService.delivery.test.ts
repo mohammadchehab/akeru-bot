@@ -25,7 +25,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
         let attempts = 0;
 
         const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-          prefix: "akeru-analytics-",
+          prefix: "isnadi-analytics-",
         });
 
         const configLayer = ConfigProvider.layer(
@@ -326,7 +326,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
   it.effect("does not discard or overfill a full pending queue", () =>
     Effect.gen(function* () {
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-analytics-full-",
+        prefix: "isnadi-analytics-full-",
       });
 
       const analyticsLayer = makeLayers(serverConfigLayer).pipe(
@@ -376,7 +376,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
       const captured: unknown[] = [];
 
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-analytics-cursor-",
+        prefix: "isnadi-analytics-cursor-",
       });
 
       const analyticsLayer = makeLayers(serverConfigLayer).pipe(

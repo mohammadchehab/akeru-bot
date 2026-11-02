@@ -36,7 +36,7 @@ describe("ElectronProtocol", () => {
         Effect.gen(function* () {
           const protocol = yield* ElectronProtocol.ElectronProtocol;
           yield* protocol.registerDesktopProtocol({
-            scheme: "akeru-dev",
+            scheme: "isnadi-dev",
             targetOrigin: new URL("http://127.0.0.1:3773/"),
             backendOrigin: new URL("http://127.0.0.1:3774/"),
           });
@@ -44,11 +44,11 @@ describe("ElectronProtocol", () => {
 
           const response = yield* Effect.promise(() =>
             handler!(
-              new Request("akeru-dev://app/api/health?verbose=1", {
+              new Request("isnadi-dev://app/api/health?verbose=1", {
                 headers: {
                   accept: "application/json",
-                  origin: "akeru-dev://app",
-                  referer: "akeru-dev://app/",
+                  origin: "isnadi-dev://app",
+                  referer: "isnadi-dev://app/",
                   "sec-fetch-site": "same-origin",
                 },
               }),
@@ -66,18 +66,18 @@ describe("ElectronProtocol", () => {
           );
           assert.include(
             response.headers.get("content-security-policy") ?? "",
-            "img-src 'self' akeru-dev: blob: data: http: https:",
+            "img-src 'self' isnadi-dev: blob: data: http: https:",
           );
           assert.include(
             response.headers.get("content-security-policy") ?? "",
-            "font-src 'self' akeru-dev: data:",
+            "font-src 'self' isnadi-dev: data:",
           );
         }),
       );
 
       assert.deepEqual(
         handleMock.mock.calls.map((call) => call[0]),
-        ["akeru-dev"],
+        ["isnadi-dev"],
       );
       assert.equal(netFetchMock.mock.calls[0]?.[0], "http://127.0.0.1:3773/api/health?verbose=1");
       const forwardedHeaders = new Headers(netFetchMock.mock.calls[0]?.[1]?.headers);
@@ -85,7 +85,7 @@ describe("ElectronProtocol", () => {
       assert.isNull(forwardedHeaders.get("origin"));
       assert.isNull(forwardedHeaders.get("referer"));
       assert.isNull(forwardedHeaders.get("sec-fetch-site"));
-      assert.deepEqual(unhandleMock.mock.calls, [["akeru-dev"]]);
+      assert.deepEqual(unhandleMock.mock.calls, [["isnadi-dev"]]);
     }).pipe(Effect.provide(ElectronProtocol.layer)),
   );
 
@@ -100,12 +100,12 @@ describe("ElectronProtocol", () => {
         Effect.gen(function* () {
           const protocol = yield* ElectronProtocol.ElectronProtocol;
           yield* protocol.registerDesktopProtocol({
-            scheme: "akeru",
+            scheme: "isnadi",
             targetOrigin: new URL("http://127.0.0.1:3773/"),
             backendOrigin: new URL("http://127.0.0.1:3773/"),
           });
 
-          return yield* Effect.promise(() => handler!(new Request("akeru://other/")));
+          return yield* Effect.promise(() => handler!(new Request("isnadi://other/")));
         }),
       );
 
@@ -128,12 +128,12 @@ describe("ElectronProtocol", () => {
         Effect.gen(function* () {
           const protocol = yield* ElectronProtocol.ElectronProtocol;
           yield* protocol.registerDesktopProtocol({
-            scheme: "akeru-dev",
+            scheme: "isnadi-dev",
             targetOrigin: new URL("http://127.0.0.1:5733/"),
             backendOrigin: new URL("http://127.0.0.1:3773/"),
           });
 
-          return yield* Effect.promise(() => handler!(new Request("akeru-dev://app/")));
+          return yield* Effect.promise(() => handler!(new Request("isnadi-dev://app/")));
         }),
       );
 
@@ -153,16 +153,16 @@ describe("ElectronProtocol", () => {
 
       const error = yield* Effect.scoped(
         protocol.registerDesktopProtocol({
-          scheme: "akeru-dev",
+          scheme: "isnadi-dev",
           targetOrigin: new URL("http://127.0.0.1:3773/"),
           backendOrigin: new URL("http://127.0.0.1:3774/"),
         }),
       ).pipe(Effect.flip);
 
       assert.instanceOf(error, ElectronProtocol.ElectronProtocolRegistrationError);
-      assert.equal(error.scheme, "akeru-dev");
+      assert.equal(error.scheme, "isnadi-dev");
       assert.strictEqual(error.cause, cause);
-      assert.equal(error.message, 'Failed to register Electron protocol scheme "akeru-dev".');
+      assert.equal(error.message, 'Failed to register Electron protocol scheme "isnadi-dev".');
     }).pipe(Effect.provide(ElectronProtocol.layer)),
   );
 
@@ -178,7 +178,7 @@ describe("ElectronProtocol", () => {
       const exit = yield* Effect.exit(
         Effect.scoped(
           protocol.registerDesktopProtocol({
-            scheme: "akeru",
+            scheme: "isnadi",
             targetOrigin: new URL("http://127.0.0.1:3773/"),
             backendOrigin: new URL("http://127.0.0.1:3773/"),
           }),
@@ -190,16 +190,16 @@ describe("ElectronProtocol", () => {
       if (Predicate.isTagged(exit, "Failure")) {
         const error = Cause.squash(exit.cause);
         assert.instanceOf(error, ElectronProtocol.ElectronProtocolUnregistrationError);
-        assert.equal(error.scheme, "akeru");
+        assert.equal(error.scheme, "isnadi");
         assert.strictEqual(error.cause, cause);
-        assert.equal(error.message, 'Failed to unregister Electron protocol scheme "akeru".');
+        assert.equal(error.message, 'Failed to unregister Electron protocol scheme "isnadi".');
       }
     }).pipe(Effect.provide(ElectronProtocol.layer)),
   );
 
   it("keeps executable sources host-restricted while allowing runtime network resources", () => {
     const policy = ElectronProtocol.makeDesktopContentSecurityPolicy({
-      scheme: "akeru",
+      scheme: "isnadi",
       targetOrigin: new URL("http://127.0.0.1:3773/"),
       backendOrigin: new URL("http://127.0.0.1:3773/"),
     });
@@ -216,12 +216,23 @@ describe("ElectronProtocol", () => {
     assert.deepEqual(directives["connect-src"], ["'self'", "http:", "https:", "ws:", "wss:"]);
     assert.deepEqual(directives["img-src"], [
       "'self'",
-      "akeru:",
+      "isnadi:",
       "blob:",
       "data:",
       "http:",
       "https:",
     ]);
-    assert.deepEqual(directives["font-src"], ["'self'", "akeru:", "data:"]);
+    assert.deepEqual(directives["font-src"], ["'self'", "isnadi:", "data:"]);
+  });
+
+  it("keeps the legacy schemes privileged so their storage stays readable", () => {
+    assert.deepEqual(ElectronProtocol.DESKTOP_PRIVILEGED_SCHEMES, [
+      "isnadi",
+      "isnadi-dev",
+      ElectronProtocol.LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME,
+      ElectronProtocol.LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME,
+    ]);
+    assert.equal(ElectronProtocol.getLegacyDesktopScheme(false), "akeru");
+    assert.equal(ElectronProtocol.getLegacyDesktopScheme(true), "akeru-dev");
   });
 });

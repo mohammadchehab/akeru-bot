@@ -6,6 +6,7 @@ import {
   USAGE_BASE_COUNTER_KEYS,
   decodeUsage3hEvent,
 } from "./analytics.ts";
+import { LEGACY_CLOUD_SANDBOX } from "./orchestration/roster.ts";
 
 const event = {
   event: "usage_3h",
@@ -76,7 +77,7 @@ describe("Usage3hEvent", () => {
 
     rejects({
       ...event,
-      properties: { ...event.properties, sandbox_provider: "akeru-cloud" },
+      properties: { ...event.properties, sandbox_provider: LEGACY_CLOUD_SANDBOX },
     });
   });
 

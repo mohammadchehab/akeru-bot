@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const routineTime = z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/);
 
-export const ISNADI_LIST_ROUTINES_TOOL_NAME = "akeru_list_routines";
+export const ISNADI_LIST_ROUTINES_TOOL_NAME = "isnadi_list_routines";
 
-export const ISNADI_DELETE_ROUTINES_TOOL_NAME = "akeru_delete_routines";
+export const ISNADI_DELETE_ROUTINES_TOOL_NAME = "isnadi_delete_routines";
 
 export const routineToolInputSchema = z.object({
   name: z.string().trim().min(1),

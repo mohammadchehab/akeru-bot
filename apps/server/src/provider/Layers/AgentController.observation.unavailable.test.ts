@@ -148,7 +148,11 @@ describe("AgentControllerLive", () => {
   it.effect("keeps group memory tools bound to the admitted responding bot", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-group-tool-scope-"));
+
+    const memoryDir = NodeFS.mkdtempSync(
+      NodePath.join(NodeOS.tmpdir(), "isnadi-group-tool-scope-"),
+    );
+
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botA = BotId.make("bot-group-active-a");
     const botB = BotId.make("bot-group-queued-b");
@@ -267,7 +271,7 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const memoryDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-memory-toggle-mastra-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-memory-toggle-mastra-"),
     );
 
     const botMemoryStore = new BotMemoryStore(memoryDir);
@@ -429,7 +433,7 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const memoryDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-mastra-admit-gate-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-mastra-admit-gate-"),
     );
 
     const botMemoryStore = new BotMemoryStore(memoryDir);

@@ -41,7 +41,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
     countByCoarseIpHashSince: async (hash, since) => {
       const row = await database
         .prepare(
-          "SELECT COUNT(*) AS count FROM akeru_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ?",
+          "SELECT COUNT(*) AS count FROM isnadi_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ?",
         )
         .bind(hash, since)
         .first<{ count: number }>();
@@ -51,7 +51,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
     findLatestByInstallHash: async (hash) => {
       const row = await database
         .prepare(
-          "SELECT * FROM akeru_feedback_inbox WHERE install_hash = ? ORDER BY received_at DESC LIMIT 1",
+          "SELECT * FROM isnadi_feedback_inbox WHERE install_hash = ? ORDER BY received_at DESC LIMIT 1",
         )
         .bind(hash)
         .first<FeedbackRow>();
@@ -76,16 +76,16 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
     tryInsert: async (feedback, constraints) => {
       const result = await database
         .prepare(
-          `INSERT INTO akeru_feedback_inbox
+          `INSERT INTO isnadi_feedback_inbox
             (feedback_id, received_at, expires_at, install_hash, coarse_ip_hash, content_hash, payload_json, github_delivery_eligible)
            SELECT ?, ?, ?, ?, ?, ?, ?, 1
-           WHERE (SELECT COUNT(*) FROM akeru_feedback_inbox
+           WHERE (SELECT COUNT(*) FROM isnadi_feedback_inbox
                   WHERE coarse_ip_hash = ? AND received_at >= ?) < ?
-             AND NOT EXISTS (SELECT 1 FROM akeru_feedback_inbox
+             AND NOT EXISTS (SELECT 1 FROM isnadi_feedback_inbox
                              WHERE coarse_ip_hash = ? AND received_at >= ?)
-             AND NOT EXISTS (SELECT 1 FROM akeru_feedback_inbox
+             AND NOT EXISTS (SELECT 1 FROM isnadi_feedback_inbox
                              WHERE install_hash = ? AND received_at >= ?)
-             AND NOT EXISTS (SELECT 1 FROM akeru_feedback_inbox
+             AND NOT EXISTS (SELECT 1 FROM isnadi_feedback_inbox
                              WHERE coarse_ip_hash = ? AND content_hash = ? AND received_at >= ?)`,
         )
         .bind(
@@ -115,7 +115,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
         ((
           await database
             .prepare(
-              "SELECT COUNT(*) AS count FROM akeru_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ?",
+              "SELECT COUNT(*) AS count FROM isnadi_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ?",
             )
             .bind(feedback.coarseIpHash, constraints.coarseIpSince)
             .first<{ count: number }>()
@@ -127,7 +127,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
       if (
         (await database
           .prepare(
-            "SELECT feedback_id FROM akeru_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ? LIMIT 1",
+            "SELECT feedback_id FROM isnadi_feedback_inbox WHERE coarse_ip_hash = ? AND received_at >= ? LIMIT 1",
           )
           .bind(feedback.coarseIpHash, constraints.coarseIpCooldownSince)
           .first()) !== null
@@ -138,7 +138,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
       if (
         (await database
           .prepare(
-            "SELECT feedback_id FROM akeru_feedback_inbox WHERE install_hash = ? AND received_at >= ? LIMIT 1",
+            "SELECT feedback_id FROM isnadi_feedback_inbox WHERE install_hash = ? AND received_at >= ? LIMIT 1",
           )
           .bind(feedback.installHash, constraints.installSince)
           .first()) !== null
@@ -150,7 +150,7 @@ export function makeRepository(database: FeedbackWorkerEnv["DB"]): ProductFeedba
     },
     deleteExpired: async (now) => {
       await database
-        .prepare("DELETE FROM akeru_feedback_inbox WHERE expires_at <= ?")
+        .prepare("DELETE FROM isnadi_feedback_inbox WHERE expires_at <= ?")
         .bind(now)
         .run();
     },
@@ -176,7 +176,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     claim: async (feedbackId, claimId, now, leaseExpiresAt) => {
       const result = await database
         .prepare(
-          `UPDATE akeru_feedback_inbox
+          `UPDATE isnadi_feedback_inbox
            SET github_issue_status = 'delivering',
                github_delivery_attempts = github_delivery_attempts + 1,
                github_delivery_claim_id = ?,
@@ -197,7 +197,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
       if (result.meta.changes !== 1) return null;
 
       const row = await database
-        .prepare("SELECT * FROM akeru_feedback_inbox WHERE feedback_id = ? LIMIT 1")
+        .prepare("SELECT * FROM isnadi_feedback_inbox WHERE feedback_id = ? LIMIT 1")
         .bind(feedbackId)
         .first<FeedbackRow>();
 
@@ -206,7 +206,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     listEligible: async (now, limit) => {
       const result = await database
         .prepare(
-          `SELECT feedback_id FROM akeru_feedback_inbox
+          `SELECT feedback_id FROM isnadi_feedback_inbox
            WHERE github_delivery_eligible = 1
              AND expires_at > ?
              AND (github_issue_status = 'pending'
@@ -224,7 +224,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     markDelivered: async (feedbackId, claimId, issueNumber, issueUrl) => {
       await database
         .prepare(
-          `UPDATE akeru_feedback_inbox
+          `UPDATE isnadi_feedback_inbox
            SET github_issue_status = 'delivered',
                github_issue_number = ?,
                github_issue_url = ?,
@@ -242,7 +242,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     markFailed: async (feedbackId, claimId, nextAttemptAt, errorCode) => {
       await database
         .prepare(
-          `UPDATE akeru_feedback_inbox
+          `UPDATE isnadi_feedback_inbox
            SET github_issue_status = 'failed',
                github_next_attempt_at = ?,
                github_lease_expires_at = NULL,
@@ -258,7 +258,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     markUnknown: async (feedbackId, claimId, errorCode) => {
       await database
         .prepare(
-          `UPDATE akeru_feedback_inbox
+          `UPDATE isnadi_feedback_inbox
            SET github_issue_status = 'unknown',
                github_next_attempt_at = NULL,
                github_lease_expires_at = NULL,
@@ -274,7 +274,7 @@ export function makeGitHubIssueOutbox(database: FeedbackWorkerEnv["DB"]): Feedba
     countUnknown: async () => {
       const row = await database
         .prepare(
-          "SELECT COUNT(*) AS count FROM akeru_feedback_inbox WHERE github_issue_status = 'unknown'",
+          "SELECT COUNT(*) AS count FROM isnadi_feedback_inbox WHERE github_issue_status = 'unknown'",
         )
         .first<{ count: number }>();
 

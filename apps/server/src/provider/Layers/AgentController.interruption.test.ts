@@ -543,7 +543,7 @@ describe("AgentControllerLive", () => {
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-mastra-resource-finalizer-test-",
+            prefix: "isnadi-mastra-resource-finalizer-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       ),

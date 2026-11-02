@@ -86,6 +86,7 @@ import Migration0070 from "./Migrations/070_McpServerInstructions.ts";
 import Migration0071 from "./Migrations/071_RoutineDelegateToBot.ts";
 import Migration0072 from "./Migrations/072_ProjectionThreadMessageChannelDelivery.ts";
 import Migration0073 from "./Migrations/073_RoutineCanceledClaims.ts";
+import Migration0074 from "./Migrations/074_RenameLegacyProductTables.ts";
 
 /**
  * Migration loader with all migrations defined inline.
@@ -151,10 +152,10 @@ export const migrationEntries = [
   [51, "BotDisabledMcpServers", Migration0051],
   [52, "ExecutorPluginCommand", Migration0052],
   [53, "BotVoiceEnabled", Migration0053],
-  [54, "AkeruEntityMemory", Migration0054],
-  [55, "AkeruMemoryCandidates", Migration0055],
-  [56, "AkeruBotUsageLedger", Migration0056],
-  [57, "AkeruMemoryCandidateUpdates", Migration0057],
+  [54, "IsnadiEntityMemory", Migration0054],
+  [55, "IsnadiMemoryCandidates", Migration0055],
+  [56, "IsnadiBotUsageLedger", Migration0056],
+  [57, "IsnadiMemoryCandidateUpdates", Migration0057],
   [58, "ProjectionDelegations", Migration0058],
   [59, "ProjectionThreadSessionMcpServers", Migration0059],
   [60, "ProjectionMessageReactions", Migration0060],
@@ -165,12 +166,13 @@ export const migrationEntries = [
   [65, "ProjectionThreadUserInputLifecycleIndex", Migration0065],
   [66, "BotPersonalityTone", Migration0066],
   [67, "BotImageProvider", Migration0067],
-  [68, "AkeruBotUsageCacheTokens", Migration0068],
+  [68, "IsnadiBotUsageCacheTokens", Migration0068],
   [69, "ProjectionThreadParentLinks", Migration0069],
   [70, "McpServerInstructions", Migration0070],
   [71, "RoutineDelegateToBot", Migration0071],
   [72, "ProjectionThreadMessageChannelDelivery", Migration0072],
   [73, "RoutineCanceledClaims", Migration0073],
+  [74, "RenameLegacyProductTables", Migration0074],
 ] as const;
 
 export const migrationManifest = migrationEntries.map(([id, name]) => [id, name] as const);

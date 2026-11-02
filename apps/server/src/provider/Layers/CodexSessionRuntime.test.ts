@@ -441,7 +441,7 @@ describe("buildCodexDeveloperInstructions", () => {
 describe("Isnadi browser developer instructions", () => {
   it("prefers the product-native preview tools", () => {
     for (const instructions of [codexDefaultModeDeveloperInstructions(true)]) {
-      NodeAssert.match(instructions, /akeru/);
+      NodeAssert.match(instructions, /isnadi/);
       NodeAssert.match(instructions, /preview_status/);
       NodeAssert.match(instructions, /preview_open/);
       NodeAssert.match(instructions, /Do not switch to global browser skills/);
@@ -478,7 +478,7 @@ describe("hasConfiguredMcpServer", () => {
     NodeAssert.equal(hasConfiguredMcpServer(undefined), false);
     NodeAssert.equal(hasConfiguredMcpServer(["--model", "gpt-5.4"]), false);
     NodeAssert.equal(
-      hasConfiguredMcpServer(["-c", 'mcp_servers.akeru.url="http://127.0.0.1/mcp"']),
+      hasConfiguredMcpServer(["-c", 'mcp_servers.isnadi.url="http://127.0.0.1/mcp"']),
       true,
     );
   });

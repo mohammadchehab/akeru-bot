@@ -18,7 +18,7 @@ const { harnessTest, makeObservationHarness, restoreSnapshot, failInserts } =
 describe("IsnadiMastraHarness", () => {
   it.effect("restores original history when rebuilding a conversation fails", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-rebuild-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-rebuild-"));
 
       const harness = await open({
         authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),
@@ -83,7 +83,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("rolls back a failed restore and keeps the original failure as the cause", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-rollback-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-rollback-"));
       const harness = await makeObservationHarness(open, directory);
       const insertFailure = new Error("disk full while restoring");
       let spy: ReturnType<typeof failInserts> | undefined;
@@ -125,7 +125,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("reports both failures when the restore rollback also fails", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-rollback2-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-rollback2-"));
       const harness = await makeObservationHarness(open, directory);
       const insertFailure = new Error("restore insert failed");
       const rollbackFailure = new Error("rollback insert failed");
@@ -165,11 +165,11 @@ describe("IsnadiMastraHarness", () => {
   it.effect("scopes entity invalidation to the owning harness and thread resources", () =>
     harnessTest(async (open) => {
       const firstDirectory = NodeFS.mkdtempSync(
-        NodePath.join(NodeOS.tmpdir(), "akeru-om-owner-a-"),
+        NodePath.join(NodeOS.tmpdir(), "isnadi-om-owner-a-"),
       );
 
       const secondDirectory = NodeFS.mkdtempSync(
-        NodePath.join(NodeOS.tmpdir(), "akeru-om-owner-b-"),
+        NodePath.join(NodeOS.tmpdir(), "isnadi-om-owner-b-"),
       );
 
       const first = await makeObservationHarness(open, firstDirectory);

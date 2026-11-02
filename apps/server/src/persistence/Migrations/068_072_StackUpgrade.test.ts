@@ -13,7 +13,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("stacked schema migrati
         migrationManifest.filter(([id]) => id >= 67 && id <= 72),
         [
           [67, "BotImageProvider"],
-          [68, "AkeruBotUsageCacheTokens"],
+          [68, "IsnadiBotUsageCacheTokens"],
           [69, "ProjectionThreadParentLinks"],
           [70, "McpServerInstructions"],
           [71, "RoutineDelegateToBot"],
@@ -26,7 +26,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("stacked schema migrati
         firstRun.filter(([id]) => id >= 67),
         [
           [67, "BotImageProvider"],
-          [68, "AkeruBotUsageCacheTokens"],
+          [68, "IsnadiBotUsageCacheTokens"],
         ],
       );
 

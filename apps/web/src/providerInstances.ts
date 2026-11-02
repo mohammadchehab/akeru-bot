@@ -16,7 +16,7 @@ import { deriveProviderInstanceEntries } from "./providers/instanceCatalog";
  * send until a live provider replaces it.
  */
 export const NO_PROVIDER_MODEL_SELECTION: ModelSelection = {
-  instanceId: ProviderInstanceId.make("akeru_no_provider"),
+  instanceId: ProviderInstanceId.make("isnadi_no_provider"),
   model: "",
 };
 

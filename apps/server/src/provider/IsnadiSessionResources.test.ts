@@ -140,15 +140,15 @@ describe("IsnadiSessionResources", () => {
       init: vi.fn(async () => undefined),
       disconnect: vi.fn(async () => undefined),
       getTools: vi.fn(() => ({
-        akeru_preview_status: previewStatus,
-        akeru_preview_snapshot: previewSnapshot,
+        isnadi_preview_status: previewStatus,
+        isnadi_preview_snapshot: previewSnapshot,
       })),
       getServerStatuses: vi.fn(() => [
         {
-          name: "akeru",
+          name: "isnadi",
           connected: true,
           toolCount: 2,
-          toolNames: ["akeru_preview_status", "akeru_preview_snapshot"],
+          toolNames: ["isnadi_preview_status", "isnadi_preview_snapshot"],
         },
       ]),
     };
@@ -187,7 +187,7 @@ describe("IsnadiSessionResources", () => {
     expect(getPreviewMcpServerConfig).toHaveBeenCalledExactlyOnceWith("preview-thread");
     expect(makeMcpManager).toHaveBeenCalledOnce();
     expect(makeMcpManager.mock.calls[0]?.[2]).toEqual({
-      akeru: {
+      isnadi: {
         url: "http://127.0.0.1:4000/mcp",
         headers: { Authorization: "Bearer preview-token" },
       },

@@ -27,7 +27,7 @@ import {
 import { createMemoryStorage, type StateStorage } from "./lib/storage";
 import { createMigratingStorage } from "./lib/storageKeyMigration";
 
-const BROWSER_FAVICON_STORAGE_KEY = "akeru:browser-favicons:v1";
+const BROWSER_FAVICON_STORAGE_KEY = "isnadi:browser-favicons:v1";
 
 // Pre-rebrand key, drained by the migrating storage wrapper.
 const LEGACY_BROWSER_FAVICON_STORAGE_KEY = "t3code:browser-favicons:v1";

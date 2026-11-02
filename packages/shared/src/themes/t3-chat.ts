@@ -1,7 +1,7 @@
 import { type ThemeDefinition } from "./types.ts";
 
 export const T3_CHAT_THEME: ThemeDefinition = {
-  id: "akeru-chat",
+  id: "isnadi-chat",
   label: "Isnadi Chat",
   appearance: "light",
   colors: {

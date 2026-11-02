@@ -62,14 +62,14 @@ describe("deriveBotActivity", () => {
 
   it("names the routine tool while it runs", () => {
     expect(
-      deriveBotActivity([started("akeru_create_routine", "call-1")], runningTurn),
+      deriveBotActivity([started("isnadi_create_routine", "call-1")], runningTurn),
     ).toMatchObject({ label: "Adding a routine" });
   });
 
   it("returns to working after a tool finishes", () => {
     expect(
       deriveBotActivity(
-        [started("akeru_list_routines", "call-1"), completed("akeru_list_routines", "call-1")],
+        [started("isnadi_list_routines", "call-1"), completed("isnadi_list_routines", "call-1")],
         runningTurn,
       ),
     ).toMatchObject({ label: "Working" });
@@ -78,7 +78,7 @@ describe("deriveBotActivity", () => {
   it("labels routine deletes by name even though the item type says file change", () => {
     expect(
       deriveBotActivity(
-        [started("akeru_delete_routines", "call-1", { itemType: "file_change" })],
+        [started("isnadi_delete_routines", "call-1", { itemType: "file_change" })],
         runningTurn,
       ),
     ).toMatchObject({ label: "Removing routines" });

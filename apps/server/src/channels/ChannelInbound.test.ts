@@ -213,7 +213,7 @@ describe("channel runtime", () => {
 
       const invalidSignature = yield* handleWhatsAppWebhook(
         BOT_ID,
-        new Request(`https://akeru.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
+        new Request(`https://isnadi.example/api/channels/whatsapp/${BOT_ID}/webhook`, {
           method: "POST",
           body: payload,
         }),
@@ -436,7 +436,7 @@ describe("channel runtime", () => {
           context = transportContext;
 
           return {
-            externalIdentity: "akeru-discord",
+            externalIdentity: "isnadi-discord",
             runtime: { post: async () => undefined, shutdown: async () => undefined },
           };
         },
@@ -513,7 +513,7 @@ describe("channel runtime", () => {
             callbacks.push(onInbound);
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown },
             };
           },
@@ -575,7 +575,7 @@ describe("channel runtime", () => {
       expect(posts).toEqual([
         {
           externalThreadId,
-          text: `Approved answer\n\nOpen in IsnadiBot: https://akeru.example/bots/${BOT_ID}`,
+          text: `Approved answer\n\nOpen in IsnadiBot: https://isnadi.example/bots/${BOT_ID}`,
         },
       ]);
     }),

@@ -18,7 +18,7 @@ import { ISNADI_RECENT_TURN_LIMIT } from "./RecentConversation.ts";
 
 describe("IsnadiMastraHarness", () => {
   it("restores a bounded recent message window after reopening", async () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-message-store-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-message-store-"));
 
     const options = {
       authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),

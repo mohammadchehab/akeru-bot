@@ -27,7 +27,7 @@ export const APP_BUNDLE_ID = isDevelopment
   ? `dev.leodoes.isnadi.dev.${devBundleIdSuffix || "local"}`
   : "dev.leodoes.isnadi";
 
-const APP_PROTOCOL_SCHEMES = isDevelopment ? ["akeru-dev"] : ["akeru"];
+const APP_PROTOCOL_SCHEMES = isDevelopment ? ["isnadi-dev"] : ["isnadi"];
 
 const LAUNCHER_VERSION = 16;
 
@@ -181,7 +181,7 @@ export function resolveMacLauncherIconPaths(runtimeDir, development = isDevelopm
     sourceIconPath: productionMacIconPngPath,
     generatedIconPath: NodePath.join(
       runtimeDir,
-      development ? "icon-akeru-dev.icns" : "icon-prod.icns",
+      development ? "icon-isnadi-dev.icns" : "icon-prod.icns",
     ),
   };
 }

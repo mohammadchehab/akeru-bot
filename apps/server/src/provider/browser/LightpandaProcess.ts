@@ -75,7 +75,7 @@ export async function spawnRemoteBrowser(
 
   const output = await execute(sandbox, "sh", [
     "-lc",
-    `nohup ${command} >${shellQuote(`/tmp/akeru-browser-${port}.log`)} 2>&1 </dev/null & echo $!`,
+    `nohup ${command} >${shellQuote(`/tmp/isnadi-browser-${port}.log`)} 2>&1 </dev/null & echo $!`,
   ]);
 
   const pid = output.trim();

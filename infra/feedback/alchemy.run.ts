@@ -7,10 +7,10 @@ import * as Redacted from "effect/Redacted";
 
 import { FeedbackDatabase } from "./src/database.ts";
 
-// isnadibot.com is served by Vercel DNS, so this Worker has no custom hostname.
-// Clients post straight to the workers.dev URL recorded in the contracts default.
+// The Worker has no custom hostname. Clients post straight to its workers.dev
+// URL, which an operator sets as the feedback endpoint in Settings.
 export const FeedbackWorker = Cloudflare.Worker("FeedbackWorker", {
-  name: "akeru-feedback",
+  name: "isnadi-feedback",
   main: new URL("./src/worker.ts", import.meta.url).pathname,
   compatibility: {
     date: "2026-09-14",

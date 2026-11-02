@@ -5,7 +5,7 @@ export default Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
 
   yield* sql`
-    CREATE TABLE akeru_memory_candidates (
+    CREATE TABLE isnadi_memory_candidates (
       candidate_id TEXT PRIMARY KEY,
       tenant_id TEXT NOT NULL,
       initiating_user_id TEXT NOT NULL,
@@ -26,14 +26,14 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_memory_candidates_thread_status
-    ON akeru_memory_candidates (tenant_id, source_thread_id, status, created_at)
+    CREATE INDEX idx_isnadi_memory_candidates_thread_status
+    ON isnadi_memory_candidates (tenant_id, source_thread_id, status, created_at)
   `;
 
   yield* sql`
-    CREATE TABLE akeru_memory_decision_receipts (
+    CREATE TABLE isnadi_memory_decision_receipts (
       receipt_id TEXT PRIMARY KEY,
-      candidate_id TEXT NOT NULL REFERENCES akeru_memory_candidates(candidate_id),
+      candidate_id TEXT NOT NULL REFERENCES isnadi_memory_candidates(candidate_id),
       tenant_id TEXT NOT NULL,
       status TEXT NOT NULL CHECK (status IN ('approved', 'rejected')),
       fact_text TEXT NOT NULL,
@@ -44,7 +44,7 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE UNIQUE INDEX idx_akeru_memory_candidate_one_decision
-    ON akeru_memory_decision_receipts (tenant_id, candidate_id)
+    CREATE UNIQUE INDEX idx_isnadi_memory_candidate_one_decision
+    ON isnadi_memory_decision_receipts (tenant_id, candidate_id)
   `;
 });

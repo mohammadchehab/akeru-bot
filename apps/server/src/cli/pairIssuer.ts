@@ -44,7 +44,7 @@ export const pairServerConfig = Effect.fn(function* (input: {
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     mode: "web",
     port: state.port,
     host: state.host,
@@ -86,7 +86,7 @@ export const issueAdminPairingLink = Effect.fn("pair.issueAdminPairingLink")(fun
   return yield* environmentAuth.createPairingLink({
     scopes: AuthAdministrativeScopes,
     subject: "one-time-token",
-    label: Option.getOrElse(input.label, () => "akeru pair --admin"),
+    label: Option.getOrElse(input.label, () => "isnadi pair --admin"),
     ...(Option.isSome(input.ttl) ? { ttl: input.ttl.value } : {}),
   });
 });
@@ -107,7 +107,7 @@ export const mintPairingLink = Effect.fn("pair.mintPairingLink")(function* (inpu
     return yield* environmentAuth.createPairingLink({
       scopes: AuthStandardClientScopes,
       subject: "one-time-token",
-      label: Option.getOrElse(input.label, () => "akeru pair"),
+      label: Option.getOrElse(input.label, () => "isnadi pair"),
       ...(Option.isSome(input.ttl) ? { ttl: input.ttl.value } : {}),
     });
   }).pipe(

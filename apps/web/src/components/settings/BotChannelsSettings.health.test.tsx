@@ -200,14 +200,14 @@ describe("channel health and repair", () => {
       {
         ...fixtureConnection,
         provider: "whatsapp",
-        webhookUrl: "https://akeru.example.com/channels/whatsapp/hook",
+        webhookUrl: "https://isnadi.example.com/channels/whatsapp/hook",
       },
     ];
     fixtures.bots = [boundBot("not-live", undefined, undefined, "whatsapp")];
     const html = renderPage("whatsapp");
     expect(html).toContain(">Not live<");
     expect(html).toContain("WhatsApp needs a public HTTPS address to receive messages.");
-    expect(html).toContain("https://akeru.example.com/channels/whatsapp/hook");
+    expect(html).toContain("https://isnadi.example.com/channels/whatsapp/hook");
     expect(button(html, "Reconnect")).toBeUndefined();
     expect(button(html, "Connect")).toBeUndefined();
   });
@@ -224,24 +224,24 @@ describe("channel health and repair", () => {
       {
         ...fixtureConnection,
         provider: "whatsapp",
-        webhookUrl: "https://akeru.example.com/channels/whatsapp/hook",
+        webhookUrl: "https://isnadi.example.com/channels/whatsapp/hook",
       },
     ];
     fixtures.bots = [boundBot("connected", undefined, undefined, "whatsapp")];
     const html = renderPage("whatsapp");
     expect(html).toContain(">Assigned to Isnadi<");
     expect(html).toContain("Webhook URL");
-    expect(html).toContain("https://akeru.example.com/channels/whatsapp/hook");
+    expect(html).toContain("https://isnadi.example.com/channels/whatsapp/hook");
   });
 
   it("does not show a webhook URL for a connected non-WhatsApp channel", () => {
     fixtures.connections = [
-      { ...fixtureConnection, webhookUrl: "https://akeru.example.com/not-whatsapp" },
+      { ...fixtureConnection, webhookUrl: "https://isnadi.example.com/not-whatsapp" },
     ];
     fixtures.bots = [boundBot("connected")];
     const html = renderPage();
     expect(html).not.toContain("Webhook URL");
-    expect(html).not.toContain("https://akeru.example.com/not-whatsapp");
+    expect(html).not.toContain("https://isnadi.example.com/not-whatsapp");
   });
 
   it.each([

@@ -249,7 +249,7 @@ export class LightpandaRpc implements BotBrowserRpc {
         const response = await this.send("initialize", {
           protocolVersion: MCP_PROTOCOL_VERSION,
           capabilities: {},
-          clientInfo: { name: "akeru", version: "1.0.0" },
+          clientInfo: { name: "isnadi", version: "1.0.0" },
         });
 
         if (!response.sessionId) throw new Error("Sandbox browser did not create an MCP session.");

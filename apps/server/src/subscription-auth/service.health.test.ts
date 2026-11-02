@@ -204,7 +204,7 @@ describe("provider health checks", () => {
     expect(calls.map((call) => call.url)).toEqual(["https://api.kimi.com/coding/v1/models"]);
     expect(calls[0]?.headers.get("authorization")).toBe("Bearer kimi-for-coding-access");
     expect(calls[0]?.headers.get("x-msh-device-id")).toBe(kimiDeviceId);
-    expect(calls[0]?.headers.get("x-msh-platform")).toBe("akeru");
+    expect(calls[0]?.headers.get("x-msh-platform")).toBe("isnadi");
     expect(service.statuses().find((s) => s.provider === "kimi-for-coding")?.health).toBe(
       "healthy",
     );

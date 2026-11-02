@@ -58,7 +58,7 @@ describe("AgentControllerLive", () => {
       const bridge = makeBridge();
       const mastraBefore = mastraHarnessFixture();
       const mastraAfter = mastraHarnessFixture();
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-kimi-restart-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-kimi-restart-"));
 
       const layer = (factory: NonNullable<AgentControllerLiveOptions["makeMastraHarness"]>) =>
         makeLayer(bridge.service, factory, undefined, baseDir);
@@ -257,7 +257,7 @@ describe("AgentControllerLive", () => {
         });
       });
 
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-kimi-e2e-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-kimi-e2e-"));
       NodeFS.mkdirSync(NodePath.join(baseDir, "userdata", "secrets"), { recursive: true });
       NodeFS.writeFileSync(
         NodePath.join(baseDir, "userdata", "secrets", "subscription-auth.json"),

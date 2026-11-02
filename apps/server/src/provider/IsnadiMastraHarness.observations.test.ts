@@ -71,7 +71,7 @@ describe("IsnadiMastraHarness", () => {
   });
 
   it("stores observational memory by thread and restores it after reopening", async () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-store-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-store-"));
 
     const options = {
       authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),
@@ -102,7 +102,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("keeps /new thread observational memory isolated", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-new-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-new-"));
 
       const harness = await open({
         authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),
@@ -143,7 +143,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("restores exported observational memory instead of treating import as a no-op", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-restore-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-restore-"));
 
       const harness = await open({
         authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),
@@ -236,7 +236,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("invalidates observations for threads no harness has touched since restart", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-restart-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-restart-"));
       const before = await makeObservationHarness(open, directory);
 
       try {
@@ -273,7 +273,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("clears observational memory used by a tombstone invalidation", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-tombstone-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-tombstone-"));
       const harness = await makeObservationHarness(open, directory);
 
       try {
@@ -305,7 +305,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("keeps the reply path clear when an observation fails and retries it", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-failure-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-failure-"));
       const calls: string[] = [];
 
       const observe = vi
@@ -342,7 +342,7 @@ describe("IsnadiMastraHarness", () => {
           NodePath.join(directory, "observational-memory.sqlite.queue.sqlite"),
         );
 
-        db.prepare("UPDATE akeru_observation_queue SET next_attempt_at = ?").run(
+        db.prepare("UPDATE isnadi_observation_queue SET next_attempt_at = ?").run(
           "2000-01-01T00:00:00.000Z",
         );
         db.close();
@@ -359,7 +359,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("discards a backed-off observation when the chat's memory is cleared", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-clear-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-clear-"));
       const calls: string[] = [];
 
       const observe = vi
@@ -389,7 +389,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("meters external turns through the memory-call hooks", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-external-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-external-"));
       const started: ReadonlyArray<unknown>[] = [];
       const finished: ReadonlyArray<unknown>[] = [];
 

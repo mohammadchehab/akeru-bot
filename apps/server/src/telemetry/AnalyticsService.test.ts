@@ -19,7 +19,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
       const captured: unknown[] = [];
 
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-analytics-bots-total-",
+        prefix: "isnadi-analytics-bots-total-",
       });
 
       const configLayer = ConfigProvider.layer(
@@ -121,7 +121,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
     it.effect(`does not create analytics state by default in ${name}`, () =>
       Effect.gen(function* () {
         const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-          prefix: `akeru-analytics-${name}-`,
+          prefix: `isnadi-analytics-${name}-`,
         });
 
         const analyticsLayer = makeLayers(serverConfigLayer).pipe(
@@ -142,7 +142,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
   it.effect("deletes analytics state when the environment disables analytics", () =>
     Effect.gen(function* () {
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-analytics-disabled-",
+        prefix: "isnadi-analytics-disabled-",
       });
 
       const analyticsLayer = makeLayers(serverConfigLayer).pipe(
@@ -169,7 +169,7 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
   it.effect("uses the bundled PostHog key when no override is configured", () =>
     Effect.gen(function* () {
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-analytics-no-key-",
+        prefix: "isnadi-analytics-no-key-",
       });
 
       const analyticsLayer = makeLayers(serverConfigLayer).pipe(

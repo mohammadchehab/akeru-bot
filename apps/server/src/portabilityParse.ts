@@ -1,11 +1,16 @@
-import { PortabilityArchive, type PortabilityArchiveRecord } from "@isnadi/contracts";
+import {
+  ImportedPortabilityArchive,
+  ISNADI_ARCHIVE_FORMAT,
+  type PortabilityArchive,
+  type PortabilityArchiveRecord,
+} from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
 
 import { BUILTIN_MCP_PREFIX, ARCHIVE_RECORD_TYPES } from "./portabilityArchive.ts";
 import { safeMcpCommand, safeMcpArgs, safeText } from "./portabilitySafety.ts";
 import { canonicalJson, portabilityChecksum } from "./portabilityChecksums.ts";
 
-export const decodeArchive = Schema.decodeUnknownSync(PortabilityArchive);
+export const decodeArchive = Schema.decodeUnknownSync(ImportedPortabilityArchive);
 
 export function assertSafeImportedMcp(
   record: Extract<PortabilityArchiveRecord, { type: "mcp-server" }>,
@@ -136,7 +141,7 @@ export function assertSafeImportedRecord(record: PortabilityArchiveRecord): void
   }
 }
 
-export function parsePortabilityArchive(contents: string) {
+export function parsePortabilityArchive(contents: string): PortabilityArchive {
   const archive = decodeArchive(JSON.parse(contents));
 
   const sorted = [...archive.records].sort((left, right) =>
@@ -271,10 +276,11 @@ export function parsePortabilityArchive(contents: string) {
     }
   }
 
-  // Older archives sign the retired token hard stop; once verified, drop it so
-  // previews and imports compare only the settings bots still have.
+  // Older archives sign the retired token hard stop and the pre-rename format;
+  // once verified, normalize both so previews and imports see a current archive.
   return {
     ...archive,
+    format: ISNADI_ARCHIVE_FORMAT,
     records: archive.records.map((record) => {
       if (record.type !== "bot" || !("usageCap" in record.data)) return record;
       const { usageCap: _usageCap, ...data } = record.data;

@@ -42,7 +42,7 @@ const currentFormat = {
 const authFile = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-credential-store-" });
+  const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-credential-store-" });
 
   return { directory, authPath: path.join(directory, "subscription-auth.json") };
 });

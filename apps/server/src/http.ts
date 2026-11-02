@@ -52,7 +52,7 @@ const OTLP_TRACES_PROXY_PATH = "/api/observability/v1/traces";
 
 const LOOPBACK_HOSTNAMES = new Set(["127.0.0.1", "::1", "localhost"]);
 
-const DESKTOP_RENDERER_ORIGINS = ["akeru://app", "akeru-dev://app"];
+const DESKTOP_RENDERER_ORIGINS = ["isnadi://app", "isnadi-dev://app"];
 
 const SVG_CONTENT_SECURITY_POLICY = "default-src 'none'; style-src 'unsafe-inline'; sandbox";
 

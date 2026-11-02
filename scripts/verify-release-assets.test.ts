@@ -32,7 +32,7 @@ describe("verify-release-assets", () => {
 
   it("rejects missing assets and writes verified SHA256SUMS for the exact release set", async () => {
     const directory = await NodeFSP.mkdtemp(
-      NodePath.join(NodeOS.tmpdir(), "akeru-release-assets-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-release-assets-"),
     );
 
     const names = expectedReleaseAssetNames("1.2.3");

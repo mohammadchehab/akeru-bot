@@ -63,7 +63,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ws-close-" });
+      const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ws-close-" });
       const target = path.join(cwd, "read.txt");
 
       yield* fs.writeFileString(target, "content");

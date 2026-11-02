@@ -69,7 +69,7 @@ describe("ElectronWindow", () => {
         icon: {} as Electron.NativeImage,
         webPreferences: {
           preload: "/tmp/preload.js",
-          partition: "persist:akeru-preview-test",
+          partition: "persist:isnadi-preview-test",
           sandbox: true,
           contextIsolation: true,
           nodeIntegration: false,
@@ -97,7 +97,7 @@ describe("ElectronWindow", () => {
         backgroundColor: "#101010",
         webPreferences: {
           preload: "/tmp/preload.js",
-          partition: "persist:akeru-preview-test",
+          partition: "persist:isnadi-preview-test",
           backgroundThrottling: null,
           sandbox: true,
           contextIsolation: true,

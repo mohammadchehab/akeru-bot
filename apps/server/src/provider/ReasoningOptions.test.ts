@@ -24,7 +24,7 @@ const selection = (model: string, options?: ModelSelection["options"]): ModelSel
 
 const driver = ProviderDriverKind.make;
 
-const auth = new AuthStorage("/tmp/akeru-reasoning-unused-auth.json");
+const auth = new AuthStorage("/tmp/isnadi-reasoning-unused-auth.json");
 
 const stopped = new Error("request captured");
 

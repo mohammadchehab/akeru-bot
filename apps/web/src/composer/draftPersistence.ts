@@ -39,7 +39,7 @@ import {
 import { isDraftThreadPromoting, projectDraftKey } from "./draftIdentity";
 import { shouldRemoveDraft } from "./draftContent";
 
-export const COMPOSER_DRAFT_STORAGE_KEY = "akeru:composer-drafts:v1";
+export const COMPOSER_DRAFT_STORAGE_KEY = "isnadi:composer-drafts:v1";
 
 // Drafts persisted under the `t3code:` prefix before the rebrand.
 export const LEGACY_COMPOSER_DRAFT_STORAGE_KEY = "t3code:composer-drafts:v1";

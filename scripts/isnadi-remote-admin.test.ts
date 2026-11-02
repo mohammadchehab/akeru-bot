@@ -32,7 +32,7 @@ describe("Isnadi Remote administration", () => {
         new URL("./isnadi-remote-admin.sh", import.meta.url).pathname,
       ]).status,
     ).toBe(0);
-    expect(module).not.toContain("app.akeru.bot");
+    expect(module).not.toContain("app.isnadi.bot");
     expect(module).toContain("Hosted account linking is not part");
     expect(shell).not.toMatch(/Usage:[^\n]*heartbeat/);
   });
@@ -60,7 +60,7 @@ describe("Isnadi Remote administration", () => {
       }).stdout;
 
     expect(run({ T3CODE_HOME: "/legacy/.t3" })).toBe(NodePath.join(root, ".isnadi"));
-    expect(run({ T3CODE_HOME: "/legacy/.t3", ISNADI_HOME: "/srv/akeru" })).toBe("/srv/akeru");
+    expect(run({ T3CODE_HOME: "/legacy/.t3", ISNADI_HOME: "/srv/isnadi" })).toBe("/srv/isnadi");
   });
 
   it("shows the service log file, where the first-boot pairing link lands, before journald", () => {
@@ -123,7 +123,7 @@ describe("Isnadi Remote administration", () => {
       ).stdout;
 
     expect(run({ T3CODE_HOME: "/legacy/.t3" })).toBe(NodePath.join(root, ".isnadi"));
-    expect(run({ T3CODE_HOME: "/legacy/.t3", ISNADI_HOME: "/srv/akeru" })).toBe("/srv/akeru");
+    expect(run({ T3CODE_HOME: "/legacy/.t3", ISNADI_HOME: "/srv/isnadi" })).toBe("/srv/isnadi");
   });
 
   it("keeps doctor arguments intact when the Windows launcher forwards `remote`", () => {
@@ -271,11 +271,11 @@ describe("Isnadi Remote administration", () => {
       // The release archive holds `isnadi\`, like the packaged Windows zip.
       const archiveName = "Isnadi-Remote-1.1.0-win32-x64.zip";
       const source = NodePath.join(root, "source");
-      NodeFS.mkdirSync(NodePath.join(source, "akeru"), { recursive: true });
-      NodeFS.writeFileSync(NodePath.join(source, "akeru", "akeru.cmd"), "@echo off\r\n");
-      NodeFS.writeFileSync(NodePath.join(source, "akeru", "VERSION"), "1.1.0\n");
+      NodeFS.mkdirSync(NodePath.join(source, "isnadi"), { recursive: true });
+      NodeFS.writeFileSync(NodePath.join(source, "isnadi", "isnadi.cmd"), "@echo off\r\n");
+      NodeFS.writeFileSync(NodePath.join(source, "isnadi", "VERSION"), "1.1.0\n");
       expect(
-        NodeChildProcess.spawnSync("python3", ["-m", "zipfile", "-c", archiveName, "akeru"], {
+        NodeChildProcess.spawnSync("python3", ["-m", "zipfile", "-c", archiveName, "isnadi"], {
           cwd: source,
         }).status,
       ).toBe(0);
@@ -322,7 +322,7 @@ describe("Isnadi Remote administration", () => {
           request.on("data", (chunk) => (body += chunk));
           request.on("end", () => {
             updateRequests.push({
-              token: request.headers["x-akeru-machine-token"],
+              token: request.headers["x-isnadi-machine-token"],
               body: JSON.parse(body),
             });
             response.writeHead(202).end(JSON.stringify({ targetVersion: "1.1.0" }));

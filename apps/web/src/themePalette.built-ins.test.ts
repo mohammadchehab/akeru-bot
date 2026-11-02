@@ -118,7 +118,7 @@ describe("built-in palettes", () => {
   effectIt.effect("keeps Isnadi Paper dark surfaces flat and opaque", () =>
     Effect.gen(function* () {
       const css = yield* readAppStyles;
-      const scopedOverride = css.match(/html\[data-theme-id="akeru-paper"\] \{[\s\S]*?\n\}/)?.[0];
+      const scopedOverride = css.match(/html\[data-theme-id="isnadi-paper"\] \{[\s\S]*?\n\}/)?.[0];
 
       expect(scopedOverride).toContain("--surface-grain: none");
       expect(scopedOverride).toContain("--glass-opacity: 100%");

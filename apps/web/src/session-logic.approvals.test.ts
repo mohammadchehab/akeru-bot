@@ -37,14 +37,14 @@ describe("derivePendingApprovals", () => {
         payload: {
           requestId: "feedback-approval",
           requestType: "dynamic_tool_call",
-          toolName: "akeru_product_feedback",
+          toolName: "isnadi_product_feedback",
           args,
         },
       }),
     ]);
 
     expect(approvals[0]).toMatchObject({
-      toolName: "akeru_product_feedback",
+      toolName: "isnadi_product_feedback",
       args,
     });
   });

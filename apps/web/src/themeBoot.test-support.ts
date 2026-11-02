@@ -10,7 +10,7 @@ import {
   toCanonicalThemeColor,
 } from "./themePalette";
 
-export const THEME_STORAGE_KEY = "akeru:theme";
+export const THEME_STORAGE_KEY = "isnadi:theme";
 
 // A custom theme that omits chrome falls back to the runtime default, so the
 // boot copy of that default stays derived from the real palette.
@@ -31,6 +31,8 @@ type BootResult = {
   backgroundColor: string;
   bootVariables: Record<string, string>;
   metaContent: string | null;
+  /** localStorage contents after the boot script ran (it migrates legacy keys). */
+  storage: Record<string, string>;
 };
 
 export function runBootScript(options: {
@@ -39,6 +41,7 @@ export function runBootScript(options: {
   prefersDark: boolean;
 }): BootResult {
   const classes = new Set<string>();
+  const storage = new Map<string, string>(Object.entries(options.storage ?? {}));
   const bootVariables: Record<string, string> = {};
 
   type ThemeMeta = { content: string | null; setAttribute: (name: string, value: string) => void };
@@ -81,10 +84,30 @@ export function runBootScript(options: {
 
   const fakeWindow = {
     localStorage: {
+      get length(): number {
+        if (options.storageThrows) throw new Error("storage blocked");
+
+        return storage.size;
+      },
+      key: (index: number): string | null => {
+        if (options.storageThrows) throw new Error("storage blocked");
+
+        return [...storage.keys()][index] ?? null;
+      },
       getItem: (key: string): string | null => {
         if (options.storageThrows) throw new Error("storage blocked");
 
-        return options.storage?.[key] ?? null;
+        return storage.get(key) ?? null;
+      },
+      setItem: (key: string, value: string): void => {
+        if (options.storageThrows) throw new Error("storage blocked");
+
+        storage.set(key, value);
+      },
+      removeItem: (key: string): void => {
+        if (options.storageThrows) throw new Error("storage blocked");
+
+        storage.delete(key);
       },
     },
     matchMedia: () => ({ matches: options.prefersDark }),
@@ -104,6 +127,7 @@ export function runBootScript(options: {
     backgroundColor: documentElement.style.backgroundColor,
     bootVariables,
     metaContent: meta.content,
+    storage: Object.fromEntries(storage),
   };
 }
 

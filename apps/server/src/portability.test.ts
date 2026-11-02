@@ -1,6 +1,8 @@
 import {
   AuthSessionId,
   DEFAULT_SERVER_SETTINGS,
+  ISNADI_ARCHIVE_FORMAT,
+  LEGACY_ARCHIVE_FORMAT,
   GroupId,
   ProjectId,
   ProviderInstanceId,
@@ -113,6 +115,21 @@ describe("portability archive", () => {
       commandsForPortabilityImport(parsedLegacy, snapshot, sharedSettings, AVAILABLE_PROVIDER_IDS)
         .settingsPatch,
     ).toEqual(expect.objectContaining({ botSandboxBrowserSharing: "separate" }));
+  });
+
+  it("imports archives exported under the pre-rename format and normalizes it", () => {
+    const archive = createPortabilityArchive(makeSnapshot(), makeSettings(), NOW);
+    const { checksum: _checksum, ...body } = archive;
+    const legacyBody = { ...body, format: LEGACY_ARCHIVE_FORMAT };
+    const legacy = { ...legacyBody, checksum: portabilityChecksum(legacyBody) };
+
+    const parsed = parsePortabilityArchive(JSON.stringify(legacy));
+
+    expect(parsed.format).toBe(ISNADI_ARCHIVE_FORMAT);
+    expect(parsed.records).toEqual(archive.records);
+    expect(() =>
+      parsePortabilityArchive(JSON.stringify({ ...legacy, format: "other.archive" })),
+    ).toThrow();
   });
 
   it("imports older archives whose bots still carry the retired token hard stop", () => {

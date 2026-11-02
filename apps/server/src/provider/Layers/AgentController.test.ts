@@ -188,7 +188,7 @@ describe("provider access health", () => {
   it.each(["interrupted", "cancelled"] as const)(
     "does not call a %s turn a successful provider request",
     async (state) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-access-stop-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-access-stop-"));
       const authPath = NodePath.join(directory, "subscription-auth.json");
 
       try {
@@ -428,7 +428,7 @@ describe("AgentControllerLive", () => {
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-mastra-real-controller-test-",
+            prefix: "isnadi-mastra-real-controller-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       ),

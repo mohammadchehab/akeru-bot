@@ -194,7 +194,7 @@ export function createGrokSessionLifecycle(deps: {
             ? [
                 {
                   type: "http" as const,
-                  name: "akeru",
+                  name: "isnadi",
                   url: mcpSession.endpoint,
                   headers: [
                     {

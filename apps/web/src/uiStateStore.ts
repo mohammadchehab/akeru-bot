@@ -6,7 +6,7 @@ import { Debouncer } from "@tanstack/react-pacer";
 import { create } from "zustand";
 import { normalizeProjectPathForComparison } from "./lib/projectPaths";
 
-export const PERSISTED_STATE_KEY = "akeru:ui-state:v1";
+export const PERSISTED_STATE_KEY = "isnadi:ui-state:v1";
 
 // Pre-rebrand key, checked before the older `renderer-state` lineage.
 const REBRAND_LEGACY_STATE_KEY = "t3code:ui-state:v1";

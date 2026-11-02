@@ -42,7 +42,7 @@ describe("BotMemoryStore", () => {
   });
 
   it("renews a live cross-store claim and recovers it after its owner disappears", async () => {
-    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-memory-lease-"));
+    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-lease-"));
     directories.push(stateDir);
     let now = 1_000;
     const options = { now: () => now, reviewClaimLeaseMs: 100 };
@@ -69,7 +69,7 @@ describe("BotMemoryStore", () => {
 
     const outside = NodePath.join(
       NodeOS.tmpdir(),
-      `akeru-cadence-outside-${NodeCrypto.randomUUID()}.json`,
+      `isnadi-cadence-outside-${NodeCrypto.randomUUID()}.json`,
     );
 
     await NodeFS.writeFile(outside, "outside", { mode: 0o600 });
@@ -406,7 +406,7 @@ describe("BotMemoryStore", () => {
 
   it("refuses a symlinked bot directory on reads and writes", async () => {
     const store = await fixture();
-    const outside = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-memory-outside-"));
+    const outside = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-outside-"));
     directories.push(outside);
     await NodeFS.mkdir(NodePath.join(store.memoryRoot, "bots"), { recursive: true });
     await NodeFS.symlink(outside, NodePath.join(store.memoryRoot, "bots", "bot-1"));

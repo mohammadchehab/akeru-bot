@@ -414,15 +414,18 @@ export function AdvancedSettingsSections() {
         />
         <SettingsRow
           title={t("Feedback endpoint")}
-          description={t("Where submitted product feedback is sent. Use HTTPS or loopback HTTP.")}
+          description={t(
+            "Where submitted product feedback is sent. Use HTTPS or loopback HTTP. Leave empty to turn off sending.",
+          )}
           control={
             <Input
               aria-label={t("Feedback endpoint")}
               className="w-full sm:w-80"
               defaultValue={settings.productFeedbackEndpoint}
               key={settings.productFeedbackEndpoint}
+              placeholder={t("Not set")}
               onBlur={(event) => {
-                const decoded = decodeProductFeedbackEndpoint(event.currentTarget.value);
+                const decoded = decodeProductFeedbackEndpoint(event.currentTarget.value.trim());
 
                 if (Exit.isFailure(decoded)) {
                   event.currentTarget.value = settings.productFeedbackEndpoint;
@@ -436,10 +439,7 @@ export function AdvancedSettingsSections() {
 
                 const productFeedbackEndpoint = decoded.value;
 
-                if (
-                  productFeedbackEndpoint &&
-                  productFeedbackEndpoint !== settings.productFeedbackEndpoint
-                ) {
+                if (productFeedbackEndpoint !== settings.productFeedbackEndpoint) {
                   updateSettings({ productFeedbackEndpoint });
                 }
               }}

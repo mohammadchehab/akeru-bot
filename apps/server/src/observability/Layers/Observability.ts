@@ -51,7 +51,7 @@ export const ObservabilityLive = Layer.unwrap(
                 resource: {
                   serviceName: config.otlpServiceName,
                   attributes: {
-                    "service.runtime": "akeru-server",
+                    "service.runtime": "isnadi-server",
                     "service.mode": config.mode,
                   },
                 },
@@ -82,7 +82,7 @@ export const ObservabilityLive = Layer.unwrap(
             resource: {
               serviceName: config.otlpServiceName,
               attributes: {
-                "service.runtime": "akeru-server",
+                "service.runtime": "isnadi-server",
                 "service.mode": config.mode,
               },
             },

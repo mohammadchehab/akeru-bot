@@ -1,36 +1,18 @@
-const DEFAULT_MARKETING_SITE_URL = "https://akeru.bot";
+import {
+  ISNADI_REPOSITORY_URL,
+  ISNADI_PRIVACY_POLICY_URL,
+  ISNADI_TERMS_URL,
+} from "@isnadi/contracts/settings";
 
-function resolveMarketingSiteUrl(override: string | undefined): URL {
-  try {
-    const url = new URL(override?.trim() || DEFAULT_MARKETING_SITE_URL);
+// There is no policy site: legal documents are the license, the README, and the
+// security page in the project repository.
+export const PRIVACY_POLICY_URL = ISNADI_PRIVACY_POLICY_URL;
 
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
-      return new URL(DEFAULT_MARKETING_SITE_URL);
-    }
+export const SECURITY_POLICY_URL = `${ISNADI_REPOSITORY_URL}/security`;
 
-    url.search = "";
-    url.hash = "";
-    url.pathname = `${url.pathname.replace(/\/+$/, "")}/`;
+export const TERMS_OF_SERVICE_URL = ISNADI_TERMS_URL;
 
-    return url;
-  } catch {
-    return new URL(DEFAULT_MARKETING_SITE_URL);
-  }
-}
-
-const MARKETING_SITE_URL = resolveMarketingSiteUrl(process.env.EXPO_PUBLIC_MARKETING_SITE_URL);
-
-function marketingSiteDocumentUrl(path: string): string {
-  return new URL(path, MARKETING_SITE_URL).toString();
-}
-
-export const PRIVACY_POLICY_URL = marketingSiteDocumentUrl("privacy-policy");
-
-export const SECURITY_POLICY_URL = marketingSiteDocumentUrl("security-policy");
-
-export const TERMS_OF_SERVICE_URL = marketingSiteDocumentUrl("terms-of-service");
-
-export const LEGAL_URL = marketingSiteDocumentUrl("legal");
+export const LEGAL_URL = ISNADI_TERMS_URL;
 
 export const ALLOWED_LEGAL_DOCUMENT_URLS = [
   LEGAL_URL,

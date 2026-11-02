@@ -134,7 +134,7 @@ const TestLayer = layer({
   Layer.provide(ServerSettingsService.layerTest()),
   Layer.provide(NodeServices.layer),
   Layer.provide(
-    ServerConfig.layerTest(process.cwd(), { prefix: "akeru-voice-call-test-" }).pipe(
+    ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-voice-call-test-" }).pipe(
       Layer.provide(NodeServices.layer),
     ),
   ),
@@ -148,7 +148,7 @@ const VoiceDisabledTestLayer = layer({
   Layer.provide(ServerSettingsService.layerTest({ voice: { enabled: false } })),
   Layer.provide(NodeServices.layer),
   Layer.provide(
-    ServerConfig.layerTest(process.cwd(), { prefix: "akeru-voice-call-disabled-test-" }).pipe(
+    ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-voice-call-disabled-test-" }).pipe(
       Layer.provide(NodeServices.layer),
     ),
   ),
@@ -170,7 +170,7 @@ const SelectedVoiceTestLayer = layer({
   Layer.provide(ServerSettingsService.layerTest({ voice: { voice: "cedar" } })),
   Layer.provide(NodeServices.layer),
   Layer.provide(
-    ServerConfig.layerTest(process.cwd(), { prefix: "akeru-voice-call-selection-test-" }).pipe(
+    ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-voice-call-selection-test-" }).pipe(
       Layer.provide(NodeServices.layer),
     ),
   ),
@@ -223,7 +223,7 @@ it.layer(TestLayer)("VoiceCallManager", (it) => {
         Layer.provide(NodeServices.layer),
         Layer.provide(
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-voice-call-constructor-test-",
+            prefix: "isnadi-voice-call-constructor-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       );
@@ -381,7 +381,7 @@ const CodexCliCredentialTestLayer = layer({
   Layer.provide(ServerSettingsService.layerTest()),
   Layer.provide(NodeServices.layer),
   Layer.provide(
-    ServerConfig.layerTest(process.cwd(), { prefix: "akeru-voice-call-codex-auth-test-" }).pipe(
+    ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-voice-call-codex-auth-test-" }).pipe(
       Layer.provide(NodeServices.layer),
     ),
   ),
@@ -415,7 +415,7 @@ const PendingTestLayer = layer({
   Layer.provide(ServerSettingsService.layerTest()),
   Layer.provide(NodeServices.layer),
   Layer.provide(
-    ServerConfig.layerTest(process.cwd(), { prefix: "akeru-voice-call-pending-test-" }).pipe(
+    ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-voice-call-pending-test-" }).pipe(
       Layer.provide(NodeServices.layer),
     ),
   ),

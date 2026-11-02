@@ -98,7 +98,10 @@ export async function installLightpanda(
   const machine = await execute(sandbox, "uname", ["-m"]);
   const platform = platformFromUname(system, machine);
   const release = LIGHTPANDA_RELEASES[platform];
-  const root = sandbox.provider === "local" ? cacheDir : `/tmp/akeru-browser-${LIGHTPANDA_VERSION}`;
+
+  const root =
+    sandbox.provider === "local" ? cacheDir : `/tmp/isnadi-browser-${LIGHTPANDA_VERSION}`;
+
   const binaryPath = posixPath.join(root, "lightpanda");
   const installKey = sandbox.provider === "local" ? binaryPath : `${sandbox.id}:${binaryPath}`;
   const activeInstall = lightpandaInstalls.get(installKey);

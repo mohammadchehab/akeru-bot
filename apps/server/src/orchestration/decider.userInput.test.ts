@@ -25,7 +25,7 @@ const THREAD_ID = ThreadId.make("thread-user-input");
 
 const REQUEST_ID = ApprovalRequestId.make("request-color");
 
-const BOT_ID = BotId.make("bot-akeru");
+const BOT_ID = BotId.make("bot-isnadi");
 
 const GROUP_ID = GroupId.make("group-product");
 

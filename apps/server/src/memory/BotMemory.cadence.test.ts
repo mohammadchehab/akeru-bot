@@ -130,7 +130,7 @@ describe("BotMemoryStore", () => {
   });
 
   it("does not record an undispatched reservation and records terminal success once", async () => {
-    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-memory-crash-"));
+    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-crash-"));
     directories.push(stateDir);
     const botId = BotId.make("bot-crashed-threshold-candidate");
     const crashed = new BotMemoryStore(stateDir);
@@ -179,7 +179,7 @@ describe("BotMemoryStore", () => {
   });
 
   it("keeps a live review claim exclusive while foreground admission remains immediate", async () => {
-    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-memory-live-"));
+    const stateDir = await NodeFS.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-memory-live-"));
     directories.push(stateDir);
     const firstStore = new BotMemoryStore(stateDir);
     const secondStore = new BotMemoryStore(stateDir);

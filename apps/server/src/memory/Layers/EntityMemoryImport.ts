@@ -296,7 +296,7 @@ export const entityMemoryImport = (dependencies: {
             ? []
             : yield* sql
                 .unsafe<EntityMemoryDbRow>(
-                  `SELECT ${selectColumns} FROM akeru_memory_revisions
+                  `SELECT ${selectColumns} FROM isnadi_memory_revisions
            WHERE tenant_id = ? AND root_id IN (${rootIds.map(() => "?").join(", ")})
            ORDER BY root_id ASC, revision ASC`,
                   [input.access.tenantId, ...rootIds],
@@ -489,14 +489,14 @@ export const entityMemoryImport = (dependencies: {
                   }
 
                   yield* sql`
-                  DELETE FROM akeru_memory_revisions
+                  DELETE FROM isnadi_memory_revisions
                   WHERE tenant_id = ${input.access.tenantId} AND root_id = ${item.rootId}
                 `;
                 }
 
                 if (item.classification !== "conflicting" && local.length > 0 && additions[0]) {
                   const updated = yield* sql<{ readonly id: string }>`
-            UPDATE akeru_memory_revisions
+            UPDATE isnadi_memory_revisions
             SET superseded_by_id = ${additions[0].id}, updated_at = ${additions[0].updatedAt}
             WHERE memory_id = ${local.at(-1)!.id}
               AND tenant_id = ${input.access.tenantId}

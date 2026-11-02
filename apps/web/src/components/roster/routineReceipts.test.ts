@@ -200,7 +200,7 @@ describe("deriveRoutineReceipts", () => {
       failure: {
         kind: "workspace",
         message:
-          "Error: The workspace is missing\n    at readWorkspace (file:///srv/akeru/server.ts:1:2)",
+          "Error: The workspace is missing\n    at readWorkspace (file:///srv/isnadi/server.ts:1:2)",
       },
       completedAt: "2026-09-19T09:02:00.000Z",
     });

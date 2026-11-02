@@ -45,7 +45,7 @@ const setup = Layer.effectDiscard(
 
 export const sqlitePersistenceLayer = Effect.fn("makeSqlitePersistenceLive")(function* (
   dbPath: string,
-  serviceName: string = "akeru-server",
+  serviceName: string = "isnadi-server",
 ) {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;

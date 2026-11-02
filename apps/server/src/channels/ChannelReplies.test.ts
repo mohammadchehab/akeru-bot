@@ -400,7 +400,7 @@ describe("channel runtime", () => {
         projectId: PROJECT_ID,
         provider: "telegram",
         status: "disconnected",
-        externalIdentity: "@akeru",
+        externalIdentity: "@isnadi",
         connectedAt: NOW,
         sentMessageIds: [],
       };
@@ -453,7 +453,7 @@ describe("channel runtime", () => {
                 projectId: PROJECT_ID,
                 provider: "telegram",
                 status: "disconnected",
-                externalIdentity: "@akeru",
+                externalIdentity: "@isnadi",
                 connectedAt: NOW,
                 sentMessageIds: [messageId],
               },

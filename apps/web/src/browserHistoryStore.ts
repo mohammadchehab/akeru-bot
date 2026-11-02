@@ -200,7 +200,7 @@ export const migratePersistedBrowserHistoryState = ((persistedState) => {
   PersistOptions<BrowserHistoryStoreState, PersistedBrowserHistory>["migrate"]
 >;
 
-const BROWSER_HISTORY_STORAGE_KEY = "akeru:browser-history:v1";
+const BROWSER_HISTORY_STORAGE_KEY = "isnadi:browser-history:v1";
 
 // Pre-rebrand key; migrated through the wrapping storage on first write.
 const LEGACY_BROWSER_HISTORY_STORAGE_KEY = "t3code:browser-history:v1";

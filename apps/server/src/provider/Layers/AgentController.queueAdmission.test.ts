@@ -533,7 +533,7 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
     const usageLedger = usageLedgerFixture();
     usageLedger.reserve.mockImplementation(() => Effect.die("usage reserve failed"));
-    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-handoff-inbox-"));
+    const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-handoff-inbox-"));
 
     return provideController(
       Effect.gen(function* () {

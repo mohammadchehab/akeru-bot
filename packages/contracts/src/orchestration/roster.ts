@@ -124,14 +124,20 @@ export const BotSandbox = Schema.Literals([
 
 export type BotSandbox = typeof BotSandbox.Type;
 
+/**
+ * Hosted sandbox id from before the product was renamed. That sandbox no longer
+ * exists, so bots still saved with it decode to no sandbox.
+ */
+export const LEGACY_CLOUD_SANDBOX = "akeru-cloud" as const;
+
 export const PersistedBotSandbox = Schema.Union([
   Schema.NullOr(BotSandbox),
-  Schema.Literal("akeru-cloud"),
+  Schema.Literal(LEGACY_CLOUD_SANDBOX),
 ]).pipe(
   Schema.decodeTo(
     Schema.NullOr(BotSandbox),
     SchemaTransformation.transform({
-      decode: (value) => (value === "akeru-cloud" ? null : value),
+      decode: (value) => (value === LEGACY_CLOUD_SANDBOX ? null : value),
       encode: (value) => value,
     }),
   ),

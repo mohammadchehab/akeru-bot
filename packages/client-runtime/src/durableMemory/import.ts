@@ -106,5 +106,5 @@ export const memoryArchiveSchemaVersion = flow(asRecord, (record) =>
 );
 
 export function durableMemoryExportFileName(scope: DurableMemoryExportScope, threadId: string) {
-  return `akeru-durable-memory-${scope}-${threadId}.json`;
+  return `isnadi-durable-memory-${scope}-${threadId}.json`;
 }

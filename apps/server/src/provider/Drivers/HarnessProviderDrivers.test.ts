@@ -37,7 +37,7 @@ import { GrokDriver } from "./GrokDriver.ts";
 const epoch = DateTime.makeUnsafe("1970-01-01T00:00:00.000Z");
 
 const testLayer = Layer.mergeAll(
-  ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-driver-" }).pipe(
+  ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-driver-" }).pipe(
     Layer.provideMerge(NodeServices.layer),
   ),
   settingsLayer(),

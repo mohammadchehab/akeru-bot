@@ -28,7 +28,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     devAllowedOrigins: [],
   } as const;
 

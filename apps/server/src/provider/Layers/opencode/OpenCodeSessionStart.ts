@@ -161,7 +161,7 @@ export function createOpenCodeSessionStart(deps: {
             if (mcpSession && !server.external) {
               yield* runOpenCodeSdk("mcp.add", () =>
                 client.mcp.add({
-                  name: "akeru",
+                  name: "isnadi",
                   config: {
                     type: "remote",
                     url: mcpSession.endpoint,

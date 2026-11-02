@@ -67,7 +67,7 @@ html[data-theme-id] .chat-markdown .chat-markdown-chrome-action {
    secondary surface flattened over the light chat canvas. The raw muted and
    secondary tokens are substantially darker than those visible pixels. */
 
-html[data-theme-id="akeru-chat"] {
+html[data-theme-id="isnadi-chat"] {
   @variant light {
     & .chat-markdown :not(pre) > code,
     & [data-changed-files-state],
@@ -121,7 +121,7 @@ html[data-theme-id] [data-app-sidebar] {
 /* T3 Chat's panel divider is deliberately pink, and its resize affordance
    keeps that color while hovered. Do not neutralize this branded edge. */
 
-html[data-theme-id="akeru-chat"] [data-app-sidebar] {
+html[data-theme-id="isnadi-chat"] [data-app-sidebar] {
   @variant dark {
     border-color: var(--contrast-sidebar-border);
   }

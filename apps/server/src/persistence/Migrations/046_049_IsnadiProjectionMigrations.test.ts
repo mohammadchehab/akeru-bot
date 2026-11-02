@@ -8,7 +8,7 @@ import * as NodeSqliteClient from "../NodeSqliteClient.ts";
 
 const memoryLayer = () => it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
 
-memoryLayer()("Akeru projection migration slots", (it) => {
+memoryLayer()("Isnadi projection migration slots", (it) => {
   it.effect("uses collision-free slots and preserves bots created by migration 045", () =>
     Effect.gen(function* () {
       const sql = yield* SqlClient.SqlClient;

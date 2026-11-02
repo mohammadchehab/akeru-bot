@@ -116,7 +116,7 @@ describe("channel transports", () => {
 
   describe("discord", () => {
     const gatewayEvent = (id: string, data: Schema.JsonObject) =>
-      new Request("https://akeru.example/discord", {
+      new Request("https://isnadi.example/discord", {
         method: "POST",
         headers: { "x-discord-gateway-token": "discord-token" },
         body: JSON.stringify({
@@ -162,7 +162,7 @@ describe("channel transports", () => {
         // A direct mention still starts a thread and a turn, so the ignores above are real.
         yield* Effect.promise(() =>
           discord.adapter.handleWebhook(
-            gatewayEvent("m-user", { mentions: [{ id: "discord-app", username: "akeru" }] }),
+            gatewayEvent("m-user", { mentions: [{ id: "discord-app", username: "isnadi" }] }),
           ),
         );
         const turn = yield* Queue.take(harness.turns);
@@ -185,7 +185,7 @@ describe("channel transports", () => {
             chat,
             from: { id: 7, is_bot: false, first_name: "Leo" },
             text,
-            ...(text.startsWith("@akeru")
+            ...(text.startsWith("@isnadi")
               ? { entities: [{ type: "mention", offset: 0, length: 6 }] }
               : {}),
           },
@@ -201,7 +201,7 @@ describe("channel transports", () => {
               if (method === "getMe")
                 return Response.json({
                   ok: true,
-                  result: { id: 1, is_bot: true, first_name: "Isnadi", username: "akeru" },
+                  result: { id: 1, is_bot: true, first_name: "Isnadi", username: "isnadi" },
                 });
 
               if (method === "deleteWebhook" || method === "deleteMyCommands")
@@ -213,7 +213,7 @@ describe("channel transports", () => {
                 return Response.json({
                   ok: true,
                   result: [
-                    update(1, { id: -100, type: "supergroup", title: "Team" }, "@akeru help"),
+                    update(1, { id: -100, type: "supergroup", title: "Team" }, "@isnadi help"),
                     update(2, { id: -100, type: "supergroup", title: "Team" }, "anyone?"),
                     update(3, { id: 7, type: "private", first_name: "Leo" }, "direct question"),
                   ],
@@ -310,11 +310,11 @@ describe("channel transports", () => {
 
     it.effect("builds the webhook URL on the server and routes it to the attached bot", () =>
       Effect.gen(function* () {
-        const harness = yield* makeHarness({ publicOrigin: "https://akeru.example" });
+        const harness = yield* makeHarness({ publicOrigin: "https://isnadi.example" });
         yield* harness.runtime.saveConnection(whatsappSave(connectionId));
         const webhookUrl = harness.settings().channelConnections[0]?.webhookUrl;
         expect(webhookUrl).toBe(
-          "https://akeru.example/api/channels/whatsapp/connections/connection-whatsapp/webhook",
+          "https://isnadi.example/api/channels/whatsapp/connections/connection-whatsapp/webhook",
         );
 
         yield* harness.runtime.attach(BOT_ID, connectionId, PROJECT_ID, "whatsapp");
@@ -342,7 +342,7 @@ describe("channel transports", () => {
 
     it.effect("rejects a signed message for another phone number on a connection URL", () =>
       Effect.gen(function* () {
-        const harness = yield* makeHarness({ publicOrigin: "https://akeru.example" });
+        const harness = yield* makeHarness({ publicOrigin: "https://isnadi.example" });
         yield* harness.runtime.saveConnection(whatsappSave(connectionId));
         yield* harness.runtime.attach(BOT_ID, connectionId, PROJECT_ID, "whatsapp");
         const url = harness.settings().channelConnections[0]?.webhookUrl ?? "";

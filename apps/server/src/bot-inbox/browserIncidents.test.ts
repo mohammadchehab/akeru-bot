@@ -20,7 +20,7 @@ afterEach(() => {
 
 describe("browser inbox producer", () => {
   it("opens once, resolves on attach, and reopens with an incremented occurrence", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-browser-inbox-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-browser-inbox-"));
     directories.push(directory);
     const service = new BotInboxService(NodePath.join(directory, "inbox.json"));
 
@@ -49,7 +49,7 @@ describe("browser inbox producer", () => {
   });
 
   it("keeps another workspace's failure open when one browser recovers", () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-browser-inbox-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-browser-inbox-"));
     directories.push(directory);
     const service = new BotInboxService(NodePath.join(directory, "inbox.json"));
     const botId = BotId.make("bot-multi-workspace");

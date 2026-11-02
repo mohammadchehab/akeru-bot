@@ -9,7 +9,7 @@ describe("resolveSelectedThemeCardId", () => {
         appearanceMode: "light",
         initialAppearance: "dark",
         lightOwner: null,
-        darkOwner: "akeru-paper",
+        darkOwner: "isnadi-paper",
       }),
     ).toBeNull();
   });
@@ -18,11 +18,11 @@ describe("resolveSelectedThemeCardId", () => {
     const input = {
       initialAppearance: "dark" as const,
       lightOwner: null,
-      darkOwner: "akeru-paper",
+      darkOwner: "isnadi-paper",
     };
 
-    expect(resolveSelectedThemeCardId({ ...input, appearanceMode: "dark" })).toBe("akeru-paper");
-    expect(resolveSelectedThemeCardId({ ...input, appearanceMode: "system" })).toBe("akeru-paper");
+    expect(resolveSelectedThemeCardId({ ...input, appearanceMode: "dark" })).toBe("isnadi-paper");
+    expect(resolveSelectedThemeCardId({ ...input, appearanceMode: "system" })).toBe("isnadi-paper");
   });
 });
 

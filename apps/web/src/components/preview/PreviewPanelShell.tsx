@@ -15,7 +15,7 @@ import { RightPanelResizeHandle } from "./RightPanelResizeHandle";
 
 export type PreviewPanelMode = "inline" | "sheet" | "sidebar" | "embedded";
 
-const PREVIEW_PANEL_WIDTH_STORAGE_KEY = "akeru:preview-panel-width";
+const PREVIEW_PANEL_WIDTH_STORAGE_KEY = "isnadi:preview-panel-width";
 
 // Pre-rebrand key, drained on module load below.
 const LEGACY_PREVIEW_PANEL_WIDTH_STORAGE_KEY = "t3code:preview-panel-width";

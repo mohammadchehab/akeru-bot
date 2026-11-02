@@ -118,11 +118,11 @@ describe("bot prompt composer", () => {
   it("refuses to route a name two group bots share, whatever their order", () => {
     const mori = { id: "mori-claude", name: "Mori" };
     const otherMori = { id: "mori-grok", name: "Mori" };
-    const akeru = { id: "boss", name: "Isnadi" };
+    const isnadi = { id: "boss", name: "Isnadi" };
 
     for (const bots of [
-      [akeru, mori, otherMori],
-      [otherMori, akeru, mori],
+      [isnadi, mori, otherMori],
+      [otherMori, isnadi, mori],
     ]) {
       const mention = resolveBotMention("@Mori check the logs", bots);
       expect(mention).toEqual({ kind: "ambiguous", name: "Mori" });

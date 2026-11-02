@@ -345,7 +345,7 @@ it.effect("settles scheduled runs whose bot work a restart failed, once", () =>
   }).pipe(
     Effect.provide(
       Layer.provideMerge(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-routine-restart-test-" }),
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-routine-restart-test-" }),
         NodeServices.layer,
       ),
     ),

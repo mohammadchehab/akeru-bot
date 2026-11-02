@@ -1,4 +1,4 @@
-// Must stay first: maps legacy AKERU_* variables before anything reads the environment.
+// Must stay first: maps legacy environment variable names before anything reads the environment.
 import "@isnadi/shared/legacyEnv";
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
@@ -22,7 +22,7 @@ import { remoteDoctorCommand } from "./cli/remoteDoctor.ts";
 const CliRuntimeLayer = Layer.mergeAll(NodeServices.layer, NetService.layer);
 
 export const makeCli = () =>
-  Command.make("akeru", { ...sharedServerCommandFlags }).pipe(
+  Command.make("isnadi", { ...sharedServerCommandFlags }).pipe(
     Command.withDescription("Run the IsnadiBot server."),
     Command.withHandler((flags) => runServerCommand(flags)),
     Command.withSubcommands([

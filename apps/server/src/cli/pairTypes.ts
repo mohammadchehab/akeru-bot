@@ -84,7 +84,7 @@ export class AdminAlreadyPairedError extends Schema.TaggedErrorClass<AdminAlread
   {},
 ) {
   override get message(): string {
-    return "An admin client is already paired, so `akeru pair --admin` is closed. Pair new devices from Settings > Connections on that client, or run `akeru pair` for a standard link.";
+    return "An admin client is already paired, so `isnadi pair --admin` is closed. Pair new devices from Settings > Connections on that client, or run `isnadi pair` for a standard link.";
   }
 }
 
@@ -93,7 +93,7 @@ export class InvalidPublicUrlError extends Schema.TaggedErrorClass<InvalidPublic
   { publicUrl: Schema.String, reason: Schema.String },
 ) {
   override get message(): string {
-    return `--public-url ${this.publicUrl} ${this.reason}. Pass the origin your tunnel serves, for example https://akeru.example.com.`;
+    return `--public-url ${this.publicUrl} ${this.reason}. Pass the origin your tunnel serves, for example https://isnadi.example.com.`;
   }
 }
 

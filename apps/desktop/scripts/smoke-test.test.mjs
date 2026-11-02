@@ -17,7 +17,7 @@ const mocks = {
 
 import { createSmokeEnvironment, resolveSmokeElectronPath, runSmokeTest } from "./smoke-test.mjs";
 
-const root = "/tmp/akeru-desktop-smoke-owned";
+const root = "/tmp/isnadi-desktop-smoke-owned";
 
 const ready = "[desktop-window] backend ready\n[desktop-window] main window created\n";
 

@@ -174,13 +174,13 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
   it.effect("syncs connector incidents through botInbox.list", () =>
     Effect.gen(function* () {
       const bot = {
-        botId: BotId.make("bot-akeru"),
+        botId: BotId.make("bot-isnadi"),
         name: "Isnadi",
         title: "Research bot",
         label: null,
         description: null,
         disabledMcpServerIds: [],
-        avatar: { kind: "dither" as const, seed: "akeru" },
+        avatar: { kind: "dither" as const, seed: "isnadi" },
         engine: { provider: "grok", model: "grok-4.6" },
         sandbox: null,
         runtimeMode: "approval-required" as const,

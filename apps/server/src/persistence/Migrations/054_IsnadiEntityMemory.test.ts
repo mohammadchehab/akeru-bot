@@ -6,7 +6,7 @@ import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { runMigrations } from "../Migrations.ts";
 import * as NodeSqliteClient from "../NodeSqliteClient.ts";
 
-it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_AkeruEntityMemory", (it) => {
+it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_IsnadiEntityMemory", (it) => {
   it.effect("creates revision storage, exact-partition indexes, and FTS5", () =>
     Effect.gen(function* () {
       const sql = yield* SqlClient.SqlClient;
@@ -16,20 +16,20 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_AkeruEntityMemory"
         SELECT name
         FROM sqlite_master
         WHERE name IN (
-          'akeru_memory_revisions',
-          'akeru_memory_derived_copies',
-          'akeru_memory_fts',
-          'idx_akeru_memory_partition_current'
+          'isnadi_memory_revisions',
+          'isnadi_memory_derived_copies',
+          'isnadi_memory_fts',
+          'idx_isnadi_memory_partition_current'
         )
       `;
 
       assert.deepEqual(
         new Set(objects.map((object) => object.name)),
         new Set([
-          "akeru_memory_revisions",
-          "akeru_memory_derived_copies",
-          "akeru_memory_fts",
-          "idx_akeru_memory_partition_current",
+          "isnadi_memory_revisions",
+          "isnadi_memory_derived_copies",
+          "isnadi_memory_fts",
+          "idx_isnadi_memory_partition_current",
         ]),
       );
     }),
@@ -41,7 +41,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_AkeruEntityMemory"
       yield* runMigrations({ toMigrationInclusive: 54 });
 
       const insert = (memoryId: string, approval: string, deletion: string) => sql`
-        INSERT INTO akeru_memory_revisions (
+        INSERT INTO isnadi_memory_revisions (
           memory_id, root_id, revision, tenant_id, scope, partition_id,
           entity_kind, entity_id, kind, value_json, fact_text,
           initiating_user_id, created_at, updated_at, confidence,
@@ -60,7 +60,7 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_AkeruEntityMemory"
       yield* insert("tombstoned", "approved", "tombstoned");
 
       const before = yield* sql<{ readonly memoryId: string }>`
-        SELECT memory_id AS "memoryId" FROM akeru_memory_fts ORDER BY memory_id
+        SELECT memory_id AS "memoryId" FROM isnadi_memory_fts ORDER BY memory_id
       `;
 
       assert.deepEqual(
@@ -69,11 +69,11 @@ it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()))("054_AkeruEntityMemory"
       );
 
       yield* sql`
-        UPDATE akeru_memory_revisions
+        UPDATE isnadi_memory_revisions
         SET deletion_state = 'tombstoned'
         WHERE memory_id = 'approved'
       `;
-      const after = yield* sql`SELECT memory_id FROM akeru_memory_fts`;
+      const after = yield* sql`SELECT memory_id FROM isnadi_memory_fts`;
       assert.equal(after.length, 0);
     }),
   );

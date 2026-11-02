@@ -43,7 +43,7 @@ describe("IsnadiKimiProvider", () => {
       expect(headers.get("authorization")).toBe("Bearer kimi-access");
       expect(headers.get("x-api-key")).toBeNull();
       expect(headers.get("x-msh-device-id")).toBe(access.deviceId);
-      expect(headers.get("x-msh-platform")).toBe("akeru");
+      expect(headers.get("x-msh-platform")).toBe("isnadi");
       expect(headers.get("x-msh-version")).toBe("0.0.34");
 
       return new Response("{}", { status: 200 });

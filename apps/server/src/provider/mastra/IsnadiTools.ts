@@ -45,7 +45,7 @@ export const productFeedbackToolInputSchema: StandardSchemaWithJSON<ProductFeedb
   {
     "~standard": {
       version: 1,
-      vendor: "akeru-effect",
+      vendor: "isnadi-effect",
       validate: (value) => {
         const decoded = decodeProductFeedbackToolDraft(value);
 
@@ -119,7 +119,7 @@ export async function resolveIsnadiTools(
       ? createTool({
           id: ISNADI_DELETE_ROUTINES_TOOL_NAME,
           description:
-            "Delete one or more routines owned by this bot. Pass routine IDs from akeru_list_routines. This tool asks the user for confirmation before deleting anything, so do not ask for separate confirmation.",
+            "Delete one or more routines owned by this bot. Pass routine IDs from isnadi_list_routines. This tool asks the user for confirmation before deleting anything, so do not ask for separate confirmation.",
           inputSchema: z.object({
             routineIds: z.array(z.string().trim().min(1)).min(1),
           }),

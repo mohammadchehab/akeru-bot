@@ -38,7 +38,7 @@ if (
     !IOS_BUNDLE_IDENTIFIER_PATTERN.test(personalTeamBundleIdentifier))
 ) {
   throw new Error(
-    "T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID must be a reverse-DNS identifier such as dev.example.akeru when T3CODE_IOS_PERSONAL_TEAM=1.",
+    "T3CODE_IOS_PERSONAL_TEAM_BUNDLE_ID must be a reverse-DNS identifier such as dev.example.isnadi when T3CODE_IOS_PERSONAL_TEAM=1.",
   );
 }
 
@@ -82,14 +82,14 @@ const RELEASE_ASSETS = {
 const VARIANT_CONFIG = {
   development: {
     appName: "IsnadiBot Dev",
-    scheme: "akeru-dev",
+    scheme: "isnadi-dev",
     iosBundleIdentifier: "dev.leodoes.isnadi.dev",
     androidPackage: "dev.leodoes.isnadi.dev",
     assets: DEVELOPMENT_ASSETS,
   },
   production: {
     appName: "IsnadiBot",
-    scheme: "akeru",
+    scheme: "isnadi",
     iosBundleIdentifier: "dev.leodoes.isnadi",
     androidPackage: "dev.leodoes.isnadi",
     assets: RELEASE_ASSETS,
@@ -172,7 +172,7 @@ const config: ExpoConfig = {
   name: variant.appName,
   slug: "isnadibot",
   platforms: ["ios", "android"],
-  scheme: variant.scheme === "akeru" ? ["akeru"] : [variant.scheme, "akeru"],
+  scheme: variant.scheme === "isnadi" ? ["isnadi"] : [variant.scheme, "isnadi"],
   version: "1.0.4",
   runtimeVersion: {
     // Fingerprint (not appVersion) so an OTA only reaches binaries whose native

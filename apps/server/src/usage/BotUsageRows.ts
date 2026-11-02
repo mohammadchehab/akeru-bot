@@ -43,14 +43,14 @@ export const entryColumns = (sql: SqlClient.SqlClient) =>
 export const selectEntryByReservation = (sql: SqlClient.SqlClient, reservationId: string) =>
   sql<UsageRow>`
     SELECT ${entryColumns(sql)}
-    FROM akeru_bot_usage_entries
+    FROM isnadi_bot_usage_entries
     WHERE reservation_id = ${reservationId}
   `;
 
 export const selectEntryBySource = (sql: SqlClient.SqlClient, botId: string, sourceKey: string) =>
   sql<UsageRow>`
     SELECT ${entryColumns(sql)}
-    FROM akeru_bot_usage_entries
+    FROM isnadi_bot_usage_entries
     WHERE bot_id = ${botId} AND source_key = ${sourceKey}
   `;
 
@@ -62,7 +62,7 @@ export const selectEntryForTurn = (
 ) =>
   sql<UsageRow>`
     SELECT ${entryColumns(sql)}
-    FROM akeru_bot_usage_entries
+    FROM isnadi_bot_usage_entries
     WHERE bot_id = ${botId}
       AND thread_id = ${threadId}
       AND category = 'turn'

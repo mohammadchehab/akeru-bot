@@ -5,7 +5,7 @@ import { assert, it } from "@effect/vitest";
 import { setupWorktreeEnv } from "./setup-worktree-env.ts";
 
 function fixture(run: (root: string, worktree: string) => void) {
-  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-setup-"));
+  const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-setup-"));
   const worktree = NodePath.join(root, "worktree with spaces");
   NodeFS.mkdirSync(worktree);
 

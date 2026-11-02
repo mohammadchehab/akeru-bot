@@ -10,8 +10,8 @@ it.effect("copies the complete release legal bundle", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const repoRoot = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-legal-source-" });
-    const destination = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-legal-output-" });
+    const repoRoot = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-legal-source-" });
+    const destination = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-legal-output-" });
 
     yield* fs.makeDirectory(path.join(repoRoot, "legal/licenses"), { recursive: true });
     yield* fs.writeFileString(path.join(repoRoot, "LICENSE"), "project license");

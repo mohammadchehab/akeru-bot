@@ -12,7 +12,7 @@ import { readImageFile } from "./ImageFile.ts";
 it.effect("loads multiple input images and rejects empty, missing, and oversized files", () =>
   Effect.gen(function* () {
     const directory = yield* Effect.promise(() =>
-      NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "akeru-image-input-")),
+      NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-image-input-")),
     );
 
     try {
@@ -47,7 +47,7 @@ it.effect("loads multiple input images and rejects empty, missing, and oversized
 it.effect("reads multi-chunk images byte for byte up to the size limit", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-image-chunks-" });
+    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-image-chunks-" });
 
     for (const size of [3 * 64 * 1024 + 7, PROVIDER_SEND_TURN_MAX_IMAGE_BYTES]) {
       const path = NodePath.join(directory, `image-${size}.png`);
@@ -64,7 +64,7 @@ it.effect("reads multi-chunk images byte for byte up to the size limit", () =>
 it.effect("returns null when closing an input image fails", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-image-close-" });
+    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-image-close-" });
     const path = NodePath.join(directory, "image.png");
     yield* fs.writeFile(path, new Uint8Array([1, 2, 3]));
 

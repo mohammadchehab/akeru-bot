@@ -34,7 +34,7 @@ const subscriptionStatus = (
 const directories: string[] = [];
 
 async function fixture() {
-  const secretsDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-runtime-auth-"));
+  const secretsDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-runtime-auth-"));
   directories.push(secretsDir);
 
   return { secretsDir, auth: await testSubscriptionAuthServiceForSecretsDir(secretsDir) };

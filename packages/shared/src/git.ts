@@ -11,7 +11,7 @@ import * as Arr from "effect/Array";
 import * as Result from "effect/Result";
 import { detectSourceControlProviderFromRemoteUrl } from "./sourceControl.ts";
 
-export const WORKTREE_BRANCH_PREFIX = "akeru";
+export const WORKTREE_BRANCH_PREFIX = "isnadi";
 
 // Canonical form is `isnadi/<8 hex>`. Older builds generated `t3code/<8 hex>` and `t3code/<uuid>`
 // via Crypto.randomUUID() (always RFC 4122 v4), so the matcher also accepts exactly

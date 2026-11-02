@@ -16,7 +16,7 @@ export function computerUseServer() {
     id: McpServerId.make("builtin-computer-use"),
     name: "Codex Computer Use",
     transport: "stdio" as const,
-    command: "akeru-codex-computer-use",
+    command: "isnadi-codex-computer-use",
     enabled: true,
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",

@@ -34,7 +34,7 @@ describe("AgentControllerLive", () => {
     const mastra = mastraHarnessFixture();
 
     const memoryDir = NodeFS.mkdtempSync(
-      NodePath.join(NodeOS.tmpdir(), "akeru-memory-toggle-legacy-"),
+      NodePath.join(NodeOS.tmpdir(), "isnadi-memory-toggle-legacy-"),
     );
 
     const botMemoryStore = new BotMemoryStore(memoryDir);

@@ -11,7 +11,7 @@ import * as Schema from "effect/Schema";
 import { randomUUID } from "./lib/utils";
 import type { ProductFeedbackDraft } from "./productFeedbackStore";
 
-const INSTALL_TOKEN_STORAGE_KEY = "akeru.product-feedback.install-token.v1";
+const INSTALL_TOKEN_STORAGE_KEY = "isnadi.product-feedback.install-token.v1";
 
 const INSTALL_TOKEN_MAX_AGE_MS = 30 * 86_400_000;
 

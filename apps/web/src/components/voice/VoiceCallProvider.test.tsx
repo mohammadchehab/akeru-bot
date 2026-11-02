@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 const mocks = vi.hoisted(() => ({
   activeProject: { id: "project-1", environmentId: "env-1", workspaceRoot: "/tmp/project" },
   bot: {
-    id: "bot-akeru",
+    id: "bot-isnadi",
     name: "Isnadi",
     title: "Generalist",
     label: null,

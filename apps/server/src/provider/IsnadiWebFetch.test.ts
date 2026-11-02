@@ -172,9 +172,9 @@ describe("Isnadi WebFetch", () => {
   });
 
   it("reports WebSearch as unavailable instead of inventing results", async () => {
-    await expect(isnadiWebSearchUnavailable({ query: "akeru" })).resolves.toMatchObject({
+    await expect(isnadiWebSearchUnavailable({ query: "isnadi" })).resolves.toMatchObject({
       status: "unavailable",
-      query: "akeru",
+      query: "isnadi",
       results: [],
     });
   });

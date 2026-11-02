@@ -7,7 +7,7 @@ describe("work log tool data", () => {
   it("preserves MCP server, tool, arguments, and results for expanded display", () => {
     const item = {
       type: "mcpToolCall",
-      server: "akeru",
+      server: "isnadi",
       tool: "preview_status",
       arguments: {},
       status: "completed",
@@ -18,17 +18,17 @@ describe("work log tool data", () => {
       makeActivity({
         id: "mcp-tool-done",
         kind: "tool.completed",
-        summary: "akeru · preview_status",
+        summary: "isnadi · preview_status",
         payload: {
           itemType: "mcp_tool_call",
-          title: "akeru · preview_status",
+          title: "isnadi · preview_status",
           data: { item },
         },
       }),
     ];
 
     const [entry] = deriveWorkLogEntries(activities);
-    expect(entry?.toolTitle).toBe("akeru · preview_status");
+    expect(entry?.toolTitle).toBe("isnadi · preview_status");
     expect(entry?.toolData).toEqual(item);
   });
 
@@ -69,7 +69,7 @@ describe("work log tool data", () => {
   it("keeps MCP payloads while collapsing lifecycle updates", () => {
     const item = {
       type: "mcpToolCall",
-      server: "akeru",
+      server: "isnadi",
       tool: "preview_snapshot",
       arguments: { interactiveOnly: true },
       status: "completed",
@@ -79,7 +79,7 @@ describe("work log tool data", () => {
       makeActivity({
         id: "mcp-tool-progress",
         kind: "tool.updated",
-        summary: "akeru · preview_snapshot",
+        summary: "isnadi · preview_snapshot",
         payload: {
           itemType: "mcp_tool_call",
           toolCallId: "call-1",
@@ -89,7 +89,7 @@ describe("work log tool data", () => {
       makeActivity({
         id: "mcp-tool-complete",
         kind: "tool.completed",
-        summary: "akeru · preview_snapshot",
+        summary: "isnadi · preview_snapshot",
         payload: {
           itemType: "mcp_tool_call",
           toolCallId: "call-1",

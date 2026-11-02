@@ -169,7 +169,7 @@ vi.mock("@chat-adapter/discord", async (importOriginal) => {
       adapter.getUser = async (userId) => {
         if (externalAdapters.discordIdentityFails) throw new Error("Discord identity failed");
 
-        return { userId, userName: "akeru-discord", fullName: "Isnadi Discord", isBot: true };
+        return { userId, userName: "isnadi-discord", fullName: "Isnadi Discord", isBot: true };
       };
 
       adapter.disconnect = async () => {

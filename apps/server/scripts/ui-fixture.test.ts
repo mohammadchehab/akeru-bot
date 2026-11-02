@@ -27,7 +27,7 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
     () =>
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-fixture-" });
+        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-fixture-" });
 
         for (const scenario of UI_FIXTURE_CASES) {
           const first = yield* runUiFixture({ baseDir, scenario });
@@ -120,11 +120,11 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-retry-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-retry-" });
       // A failed fresh run leaves the marker without userdata; a retry must succeed.
       yield* fs.writeFileString(
         path.join(baseDir, ".ui-fixture"),
-        "akeru-ui-projection-fixture-v1\n",
+        "isnadi-ui-projection-fixture-v1\n",
       );
       const result = yield* runUiFixture({ baseDir, scenario: "populated" });
       assert.equal(result.kind, "projection-only");
@@ -136,11 +136,11 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-partial-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-partial-" });
       // A run that died mid-migration leaves the marker and an incomplete database.
       yield* fs.writeFileString(
         path.join(baseDir, ".ui-fixture"),
-        "akeru-ui-projection-fixture-v1\n",
+        "isnadi-ui-projection-fixture-v1\n",
       );
       yield* fs.makeDirectory(path.join(baseDir, "userdata"), { recursive: true });
       yield* fs.writeFileString(path.join(baseDir, "userdata", "state.sqlite"), "");
@@ -154,7 +154,7 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-guard-" });
+      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-guard-" });
       const shared = path.join(parent, "shared");
       const nested = path.join(shared, "dev");
       yield* fs.makeDirectory(nested, { recursive: true });
@@ -182,7 +182,7 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-running-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-running-" });
       const fixture = yield* runUiFixture({ baseDir, scenario: "populated" });
       const descriptor = path.join(baseDir, "userdata", "server-runtime.json");
       yield* fs.writeFileString(descriptor, yield* encodeRuntimePid({ pid: process.pid }));
@@ -205,7 +205,7 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-credentials-" });
+        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-credentials-" });
         const fixture = yield* runUiFixture({ baseDir, scenario: "populated" });
         yield* runSqliteState({
           operation: "exec",
@@ -232,7 +232,7 @@ it.layer(NodeServices.layer)("ui-fixture", (it) => {
   it.effect("refuses an active SQLite writer without a server descriptor", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-ui-locked-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-ui-locked-" });
       const fixture = yield* runUiFixture({ baseDir, scenario: "populated" });
       yield* Effect.gen(function* () {
         const sql = yield* SqlClient.SqlClient;

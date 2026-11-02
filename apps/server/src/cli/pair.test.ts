@@ -65,23 +65,23 @@ describe("pair base URL selection", () => {
 
 describe("pair public URL", () => {
   it("accepts an http or https origin", () => {
-    expect(parsePublicPairingBaseUrl("https://akeru.example.com")).toBe(
-      "https://akeru.example.com",
+    expect(parsePublicPairingBaseUrl("https://isnadi.example.com")).toBe(
+      "https://isnadi.example.com",
     );
-    expect(parsePublicPairingBaseUrl("https://akeru.example.com:8443/")).toBe(
-      "https://akeru.example.com:8443",
+    expect(parsePublicPairingBaseUrl("https://isnadi.example.com:8443/")).toBe(
+      "https://isnadi.example.com:8443",
     );
     expect(parsePublicPairingBaseUrl("http://192.168.1.10:3773")).toBe("http://192.168.1.10:3773");
   });
 
   it("rejects anything that is not a bare http or https origin", () => {
     for (const raw of [
-      "akeru.example.com",
-      "ftp://akeru.example.com",
+      "isnadi.example.com",
+      "ftp://isnadi.example.com",
       "javascript:alert(1)",
-      "https://user:pass@akeru.example.com",
-      "https://akeru.example.com/akeru",
-      "https://akeru.example.com/?token=abc",
+      "https://user:pass@isnadi.example.com",
+      "https://isnadi.example.com/isnadi",
+      "https://isnadi.example.com/?token=abc",
     ]) {
       expect(parsePublicPairingBaseUrl(raw)).toBeInstanceOf(InvalidPublicUrlError);
     }
@@ -260,7 +260,7 @@ const withDescriptorServer = <A, E, R>(run: (origin: string) => Effect.Effect<A,
     (server) => Effect.sync(() => server.close()),
   );
 
-describe("akeru pair", () => {
+describe("isnadi pair", () => {
   it.effect("mints a token and prints a QR pairing URL for a live server", () =>
     withDescriptorServer((origin) =>
       Effect.gen(function* () {
@@ -295,7 +295,7 @@ describe("akeru pair", () => {
 
         const credentials = JSON.parse(listed) as ReadonlyArray<{ readonly label?: string }>;
         assert.equal(credentials.length, 1);
-        assert.equal(credentials[0]?.label, "akeru pair");
+        assert.equal(credentials[0]?.label, "isnadi pair");
       }),
     ).pipe(Effect.provide(NodeServices.layer)),
   );
@@ -349,10 +349,10 @@ describe("akeru pair", () => {
         });
 
         const output = yield* captureStdout(
-          runCli(["pair", "--base-dir", baseDir, "--public-url", "https://akeru.example.com"]),
+          runCli(["pair", "--base-dir", baseDir, "--public-url", "https://isnadi.example.com"]),
         );
 
-        assert.match(output, /Pairing URL: https:\/\/akeru\.example\.com\/pair#token=[A-Z2-9]+/);
+        assert.match(output, /Pairing URL: https:\/\/isnadi\.example\.com\/pair#token=[A-Z2-9]+/);
         assert.notInclude(output, "only reachable from this machine");
       }),
     ).pipe(Effect.provide(NodeServices.layer)),
@@ -418,7 +418,7 @@ describe("akeru pair", () => {
         }>;
 
         assert.equal(credentials.length, 1);
-        assert.equal(credentials[0]?.label, "akeru pair --admin");
+        assert.equal(credentials[0]?.label, "isnadi pair --admin");
         assert.include(credentials[0]?.scopes ?? [], "access:write");
       }),
     ).pipe(Effect.provide(NodeServices.layer)),
@@ -445,7 +445,7 @@ describe("akeru pair", () => {
     ).pipe(Effect.provide(NodeServices.layer)),
   );
 
-  it.effect("directs to akeru serve when no server is running", () =>
+  it.effect("directs to isnadi serve when no server is running", () =>
     Effect.gen(function* () {
       const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-pair-none-test-"));
 

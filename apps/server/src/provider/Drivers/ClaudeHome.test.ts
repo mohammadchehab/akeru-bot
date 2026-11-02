@@ -57,7 +57,9 @@ it.layer(NodeServices.layer)("ClaudeHome", (it) => {
 
     it.effect("marks CLAUDE_CONFIG_DIR explicit so saved API keys do not replace the account", () =>
       Effect.gen(function* () {
-        const secretsDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-claude-home-"));
+        const secretsDir = NodeFS.mkdtempSync(
+          NodePath.join(NodeOS.tmpdir(), "isnadi-claude-home-"),
+        );
 
         try {
           const auth = yield* SubscriptionAuthService.forSecretsDir(secretsDir);

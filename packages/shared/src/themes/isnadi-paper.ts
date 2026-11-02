@@ -1,7 +1,7 @@
 import { type ThemeDefinition } from "./types.ts";
 
 export const ISNADI_PAPER_THEME: ThemeDefinition = {
-  id: "akeru-paper",
+  id: "isnadi-paper",
   label: "Isnadi Paper",
   appearance: "light",
   colors: {

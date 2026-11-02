@@ -54,7 +54,7 @@ describe("channel runtime", () => {
         const harness = makeHarness({
           onBindings: (bindings) => statuses.push(bindings[0]?.status ?? "none"),
           startTransport: async () => ({
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => void (stops += 1),
@@ -129,7 +129,7 @@ describe("channel runtime", () => {
             await release.promise;
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown: async () => undefined },
             };
           },
@@ -210,7 +210,7 @@ describe("channel runtime", () => {
             }
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: {
                 post: async () => void (posts += 1),
                 shutdown: async () => void (stops += 1),
@@ -264,7 +264,7 @@ describe("channel runtime", () => {
             archiveDuringStart();
 
             return {
-              externalIdentity: "@akeru",
+              externalIdentity: "@isnadi",
               runtime: { post: async () => undefined, shutdown: async () => void (stops += 1) },
             };
           },
@@ -287,7 +287,7 @@ describe("channel runtime", () => {
           projectId: PROJECT_ID,
           provider: "telegram",
           status: "connecting",
-          externalIdentity: "@akeru",
+          externalIdentity: "@isnadi",
           connectedAt: null,
           sentMessageIds: [],
         };
@@ -477,7 +477,7 @@ describe("channel runtime", () => {
                 if (rejected) throw new Error("401 Unauthorized");
 
                 return {
-                  externalIdentity: "@akeru",
+                  externalIdentity: "@isnadi",
                   runtime: { post: async () => undefined, shutdown: async () => undefined },
                 };
               },
@@ -534,7 +534,7 @@ describe("channel runtime", () => {
         const harness = makeHarness({
           bots: [makeBot(BOT_ID), makeBot(secondId)],
           startTransport: async (input) => ({
-            externalIdentity: "@akeru",
+            externalIdentity: "@isnadi",
             runtime: {
               post: async () => undefined,
               shutdown: async () => void stops.push(input.botId),
@@ -565,7 +565,7 @@ describe("channel runtime", () => {
           projectId: PROJECT_ID,
           provider: "telegram",
           status: "connected",
-          externalIdentity: "@akeru",
+          externalIdentity: "@isnadi",
           connectedAt: NOW,
           sentMessageIds: [],
         };

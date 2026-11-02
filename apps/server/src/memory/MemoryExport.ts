@@ -47,7 +47,7 @@ export const memoryRevisionArchivePath = (revision: IsnadiMemoryRevision) =>
   `durable/${safeName(revision.rootId)}/${revision.revision}.md`;
 
 export const renderMemoryRevision = (revision: IsnadiMemoryRevision) =>
-  `---\nakeru-memory: ${encodeMemoryArchiveJson(frontmatter(revision))}\n---\n\n${revision.fact}\n`;
+  `---\nisnadi-memory: ${encodeMemoryArchiveJson(frontmatter(revision))}\n---\n\n${revision.fact}\n`;
 
 export function exportIsnadiMemory(input: {
   readonly repository: Pick<EntityMemoryRepositoryShape, "listByPartitions">;

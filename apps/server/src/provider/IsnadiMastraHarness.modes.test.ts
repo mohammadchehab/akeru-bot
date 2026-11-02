@@ -10,7 +10,7 @@ const { harnessTest, makeObservationHarness } = makeIsnadiMastraHarnessTestSuppo
 describe("IsnadiMastraHarness legacy modes", () => {
   it.effect("accepts legacy plan mode when starting a session", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-plan-start-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-plan-start-"));
       const harness = await makeObservationHarness(open, directory);
 
       try {
@@ -33,7 +33,7 @@ describe("IsnadiMastraHarness legacy modes", () => {
 
   it.effect("accepts legacy plan mode on an active session and returns to build", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-plan-active-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-plan-active-"));
       const harness = await makeObservationHarness(open, directory);
 
       try {

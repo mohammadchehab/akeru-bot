@@ -104,7 +104,7 @@ it.layer(NodeServices.layer)("service state persistence", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const versionDir = yield* fs.makeTempDirectoryScoped({ prefix: "akeru-runtime-node-" });
+      const versionDir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-runtime-node-" });
       assert.strictEqual(
         yield* Effect.promise(() => runtimeNodePath(versionDir)),
         process.execPath,

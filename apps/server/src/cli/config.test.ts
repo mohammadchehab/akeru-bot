@@ -21,7 +21,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
     otlpTracesUrl: undefined,
     otlpMetricsUrl: undefined,
     otlpExportIntervalMs: 10_000,
-    otlpServiceName: "akeru-server",
+    otlpServiceName: "isnadi-server",
     devAllowedOrigins: [],
   } as const;
 
@@ -104,7 +104,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
   it.effect("reads ISNADI_ variables ahead of their legacy T3CODE_ aliases", () =>
     Effect.gen(function* () {
       const { join } = yield* Path.Path;
-      const baseDir = join(NodeOS.tmpdir(), "akeru-cli-config-env-base");
+      const baseDir = join(NodeOS.tmpdir(), "isnadi-cli-config-env-base");
 
       const resolved = yield* resolveServerConfig(
         {
@@ -133,7 +133,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
                   ISNADI_HOME: baseDir,
                   T3CODE_HOME: join(NodeOS.tmpdir(), "ignored-legacy-base"),
                   T3CODE_HOST: "0.0.0.0",
-                  ISNADI_OTLP_SERVICE_NAME: "akeru-test",
+                  ISNADI_OTLP_SERVICE_NAME: "isnadi-test",
                 },
               }),
             ),
@@ -145,7 +145,7 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
       expect(resolved.port).toBe(4002);
       expect(resolved.baseDir).toBe(baseDir);
       expect(resolved.host).toBe("0.0.0.0");
-      expect(resolved.otlpServiceName).toBe("akeru-test");
+      expect(resolved.otlpServiceName).toBe("isnadi-test");
     }),
   );
 

@@ -45,7 +45,7 @@ describe("AgentControllerLive", () => {
   it.effect("reads entity memory for the access of a reused Mastra session", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-entity-reuse-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-entity-reuse-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-entity-reuse");
 
@@ -347,7 +347,11 @@ describe("AgentControllerLive", () => {
     () => {
       const bridge = makeBridge();
       const mastra = mastraHarnessFixture();
-      const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-entity-private-"));
+
+      const memoryDir = NodeFS.mkdtempSync(
+        NodePath.join(NodeOS.tmpdir(), "isnadi-entity-private-"),
+      );
+
       const botMemoryStore = new BotMemoryStore(memoryDir);
       const botId = BotId.make("bot-entity-private-mastra");
       const projectId = ProjectId.make("project-entity-private-mastra");
@@ -428,7 +432,7 @@ describe("AgentControllerLive", () => {
   it.effect("applies the Private bot memory toggle mid-session on the legacy path", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-private-toggle-"));
+    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-private-toggle-"));
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const botId = BotId.make("bot-private-toggle-legacy");
 

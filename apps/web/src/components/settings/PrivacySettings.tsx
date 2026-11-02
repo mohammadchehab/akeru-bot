@@ -4,7 +4,11 @@ import {
   sharedProjectMemoryAutoSaves,
   sharedProjectMemoryMode,
 } from "@isnadi/client-runtime/durable-memory";
-import { ISNADI_MARKETING_SITE_URL, DEFAULT_SERVER_SETTINGS } from "@isnadi/contracts/settings";
+import {
+  DEFAULT_SERVER_SETTINGS,
+  ISNADI_PRIVACY_POLICY_URL,
+  ISNADI_TERMS_URL,
+} from "@isnadi/contracts/settings";
 
 import type { MessageKey } from "@isnadi/client-runtime/i18n";
 
@@ -19,10 +23,6 @@ import {
 } from "./settingsLayout";
 import { PortabilitySettings } from "./PortabilitySettings";
 import { searchableSetting, type SettingsSearchItemId } from "./settingsSearch";
-
-const privacyPolicyUrl = `${ISNADI_MARKETING_SITE_URL}/privacy-policy`;
-
-const termsUrl = `${ISNADI_MARKETING_SITE_URL}/terms-of-service`;
 
 export function PrivacySettingsPanel() {
   const settings = usePrimarySettings();
@@ -65,7 +65,7 @@ export function PrivacySettingsPanel() {
         <SettingsRow
           {...searchableSetting("privacy-product-feedback", t)}
           description={t(
-            "Allow feedback you submit to reach the IsnadiBot feedback service. Submissions may be kept for up to 90 days.",
+            "Allow feedback you submit to reach the feedback endpoint set in Advanced settings. Nothing is sent while no endpoint is set.",
           )}
           control={
             <Switch
@@ -160,7 +160,7 @@ export function PrivacySettingsPanel() {
             <span className="flex gap-3">
               <a
                 className="underline underline-offset-4"
-                href={termsUrl}
+                href={ISNADI_TERMS_URL}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -168,7 +168,7 @@ export function PrivacySettingsPanel() {
               </a>
               <a
                 className="underline underline-offset-4"
-                href={privacyPolicyUrl}
+                href={ISNADI_PRIVACY_POLICY_URL}
                 target="_blank"
                 rel="noreferrer"
               >

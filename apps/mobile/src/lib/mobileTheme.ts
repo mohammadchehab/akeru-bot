@@ -12,6 +12,7 @@ import {
   STANDARD_THEME_PREVIEW_COLORS,
   type ThemePreviewColors,
 } from "@isnadi/shared/themePreview";
+import { canonicalizeLegacyProductThemeId } from "../persistence/legacy-product";
 import { DEFAULT_MOBILE_THEME_VARIABLES } from "./mobileDefaultTheme";
 
 export const DEFAULT_MOBILE_THEME_ID = MOBILE_DEFAULT_THEME_ID;
@@ -42,7 +43,7 @@ export type MobileThemeVariables = Readonly<Record<MobileThemeVariable, string>>
 const LEGACY_MOBILE_THEME_IDS = new Map(
   Object.entries({
     "t3-code": DEFAULT_MOBILE_THEME_ID,
-    "t3-chat": "akeru-chat",
+    "t3-chat": "isnadi-chat",
   } as const),
 );
 
@@ -55,6 +56,12 @@ function themeIdFromString(value: string | null): MobileThemeId {
     const aliased = LEGACY_MOBILE_THEME_IDS.get(value);
 
     if (aliased !== undefined) return aliased;
+
+    // Ids from the previous product prefix keep their suffix (`<legacy>-chat` -> `isnadi-chat`).
+    const renamed = canonicalizeLegacyProductThemeId(value);
+    const renamedThemeId = MOBILE_THEME_IDS.find((id) => id === renamed);
+
+    if (renamedThemeId !== undefined) return renamedThemeId;
   }
 
   return DEFAULT_MOBILE_THEME_ID;

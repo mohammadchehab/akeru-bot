@@ -80,7 +80,7 @@ describe("BotAvatarView", () => {
 
   it("draws a legacy dither avatar as a blob", () => {
     const markup = renderToStaticMarkup(
-      <BotAvatarView name="Isnadi" avatar={{ kind: "dither", seed: "akeru-seed" }} />,
+      <BotAvatarView name="Isnadi" avatar={{ kind: "dither", seed: "isnadi-seed" }} />,
     );
 
     expect(markup).toContain("data-avatar-shape=");

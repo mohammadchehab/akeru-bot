@@ -793,7 +793,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
 
       const sql = yield* SqlClient.SqlClient;
-      yield* sql`INSERT INTO akeru_memory_revisions (
+      yield* sql`INSERT INTO isnadi_memory_revisions (
         memory_id, root_id, revision, tenant_id, scope, partition_id,
         entity_kind, entity_id, kind, value_json, fact_text,
         source_thread_id, source_message_id, author_bot_id, initiating_user_id,

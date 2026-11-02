@@ -9,7 +9,7 @@ import { validatePluginCatalog } from "./validate-plugin-catalog.ts";
 const temporaryDirectories: string[] = [];
 
 function fixtureRoot(): URL {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-plugins-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-plugins-"));
   temporaryDirectories.push(directory);
 
   return NodeURL.pathToFileURL(`${directory}/`);

@@ -28,7 +28,7 @@ const routine: RoutineAdapterItem = {
   procedureApproved: true,
   enabled: true,
   paused: false,
-  pausedByAkeru: false,
+  pausedByIsnadi: false,
   nextRunAt: null,
   lastRunAt: null,
   latestRun: null,

@@ -8,7 +8,7 @@ export const PRODUCT_FEEDBACK_TEXT_MAX_CHARS = 4_000;
 
 export const PRODUCT_FEEDBACK_ELEMENT_LABEL_MAX_CHARS = 120;
 
-export const ISNADI_PRODUCT_FEEDBACK_TOOL_NAME = "akeru_product_feedback";
+export const ISNADI_PRODUCT_FEEDBACK_TOOL_NAME = "isnadi_product_feedback";
 
 const ShortText = TrimmedNonEmptyString.check(Schema.isMaxLength(128));
 

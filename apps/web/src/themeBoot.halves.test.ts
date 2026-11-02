@@ -13,9 +13,9 @@ import { THEME_STORAGE_KEY, runBootScript } from "./themeBoot.test-support";
 describe("index.html boot script", () => {
   it("applies the matching half of an automatic mix to the splash", () => {
     const storage = {
-      [THEME_STORAGE_KEY]: "akeru-chat",
+      [THEME_STORAGE_KEY]: "isnadi-chat",
       [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-      "akeru:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
+      "isnadi:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
     };
 
     const dark = runBootScript({ storage, prefersDark: true });
@@ -27,7 +27,7 @@ describe("index.html boot script", () => {
 
     const light = runBootScript({ storage, prefersDark: false });
     expect(light.isDark).toBe(false);
-    expect(light.themeId).toBe("akeru-chat");
+    expect(light.themeId).toBe("isnadi-chat");
     expect(light.bootVariables["--boot-background"]).toBe(
       getThemeColorsForMode(T3_CHAT_THEME, "light")!.canvas,
     );
@@ -46,7 +46,7 @@ describe("index.html boot script", () => {
             colors: { canvas: "#f8fbff", text: "#10243d", accent: "#5b6cff" },
           },
         ]),
-        "akeru:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
+        "isnadi:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
       },
       prefersDark: true,
     });
@@ -60,7 +60,7 @@ describe("index.html boot script", () => {
       storage: {
         [THEME_STORAGE_KEY]: "gone-theme",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-        "akeru:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
+        "isnadi:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
       },
       prefersDark: true,
     });
@@ -76,9 +76,9 @@ describe("index.html boot script", () => {
   it("resolves a legacy-prefixed mix half onto the renamed theme", () => {
     const boot = runBootScript({
       storage: {
-        [THEME_STORAGE_KEY]: "akeru-chat",
+        [THEME_STORAGE_KEY]: "isnadi-chat",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-        "akeru:theme-halves:v1": JSON.stringify({ dark: "t3-grove" }),
+        "isnadi:theme-halves:v1": JSON.stringify({ dark: "t3-grove" }),
       },
       prefersDark: true,
     });
@@ -93,14 +93,14 @@ describe("index.html boot script", () => {
   it("ignores a mix half that names an unknown theme", () => {
     const boot = runBootScript({
       storage: {
-        [THEME_STORAGE_KEY]: "akeru-chat",
+        [THEME_STORAGE_KEY]: "isnadi-chat",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-        "akeru:theme-halves:v1": JSON.stringify({ dark: "gone-theme" }),
+        "isnadi:theme-halves:v1": JSON.stringify({ dark: "gone-theme" }),
       },
       prefersDark: true,
     });
 
-    expect(boot.themeId).toBe("akeru-chat");
+    expect(boot.themeId).toBe("isnadi-chat");
     expect(boot.isDark).toBe(true);
   });
 });

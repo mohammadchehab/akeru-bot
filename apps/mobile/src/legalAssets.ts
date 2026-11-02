@@ -3,7 +3,7 @@
 void [
   // Metro does not resolve extensionless files as assets on Android. Keep a
   // verbatim .txt copy beside the other bundled notices.
-  require("../../../legal/licenses/MIT-Akeru.txt"),
+  require("../../../legal/licenses/MIT-upstream.txt"),
   require("../../../THIRD_PARTY_NOTICES.md"),
   require("../../../legal/licenses/Apache-2.0.txt"),
   require("../../../legal/licenses/Apache-MesloLGS-NF.txt"),

@@ -126,7 +126,7 @@ If a tunnel you manage publishes the server, pass the public origin so the link 
 instead of the server's own address:
 
 ```sh
-isnadi pair --public-url https://akeru.example.com
+isnadi pair --public-url https://isnadi.example.com
 ```
 
 The value must be an `http` or `https` origin without a path, and it cannot be combined with

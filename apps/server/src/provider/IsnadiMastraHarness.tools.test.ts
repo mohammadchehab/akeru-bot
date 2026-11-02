@@ -31,7 +31,7 @@ describe("IsnadiMastraHarness", () => {
     "does not give the agent task-list tools, which cost a model round trip per update",
     () =>
       harnessTest(async (open) => {
-        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-no-tasks-"));
+        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-no-tasks-"));
 
         const harness = await open({
           authStorage: new AuthStorage(NodePath.join(directory, "auth.json")),
@@ -80,7 +80,7 @@ describe("IsnadiMastraHarness", () => {
     const approvalPolicies: boolean[] = [];
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({
         exa_search: pluginTool,
         RestartMcpServers: pluginTool,
@@ -137,7 +137,7 @@ describe("IsnadiMastraHarness", () => {
     requestContext.setRaw("controller", { resourceId: "thread-1" });
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({}),
       toolRuntime: toolRuntimeFixture({ toolsForThread: () => [] }),
     });
@@ -181,7 +181,7 @@ describe("IsnadiMastraHarness", () => {
     requestContext.setRaw("controller", { resourceId: "thread-1" });
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({}),
       toolRuntime: toolRuntimeFixture({ toolsForThread: () => [] }),
       createRoutine: async (threadId, input) => {
@@ -244,7 +244,7 @@ describe("IsnadiMastraHarness", () => {
     };
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({}),
       toolRuntime: toolRuntimeFixture({ toolsForThread: () => [] }),
       listRoutines: async (threadId) => {
@@ -269,7 +269,7 @@ describe("IsnadiMastraHarness", () => {
     requestContext.setRaw("controller", { resourceId: "thread-1" });
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({}),
       toolRuntime: toolRuntimeFixture({ toolsForThread: () => [] }),
       listRoutines: async () => ({
@@ -329,7 +329,7 @@ describe("IsnadiMastraHarness", () => {
     requestContext.setRaw("controller", { resourceId: "thread-1" });
 
     const tools = await resolveIsnadiTools(requestContext, {
-      authStorage: new AuthStorage("/tmp/akeru-unused-auth.json"),
+      authStorage: new AuthStorage("/tmp/isnadi-unused-auth.json"),
       getThreadTools: () => ({}),
       toolRuntime: toolRuntimeFixture({ toolsForThread: () => [] }),
       listRoutines: async () => ({ routines: [] }),

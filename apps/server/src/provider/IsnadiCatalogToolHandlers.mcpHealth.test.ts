@@ -115,7 +115,7 @@ describe("Isnadi catalog MCP tool handlers", () => {
         healthTest: "failed",
         authenticationExpiresAt: null,
         lastFailure: { at: "2026-09-01T01:30:00.000Z", message: "OAuth expired." },
-        dependentBots: [{ id: "bot-akeru", name: "Isnadi" }],
+        dependentBots: [{ id: "bot-isnadi", name: "Isnadi" }],
         dependentRoutines: [],
       }),
     );

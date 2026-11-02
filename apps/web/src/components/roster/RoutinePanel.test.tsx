@@ -51,7 +51,7 @@ const routine: RoutineAdapterItem = {
   procedureApproved: true,
   enabled: true,
   paused: false,
-  pausedByAkeru: false,
+  pausedByIsnadi: false,
   nextRunAt: "2026-09-01T13:00:00.000Z",
   lastRunAt: "2026-08-31T12:00:00.000Z",
   latestRun: run,

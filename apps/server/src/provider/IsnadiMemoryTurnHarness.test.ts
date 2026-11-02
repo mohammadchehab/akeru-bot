@@ -13,7 +13,7 @@ describe("IsnadiMemoryTurnHarness", () => {
   it.each([0, 1, 2])(
     "settles every foreground provider by the same exact-call contract (count: %s)",
     async (successfulCalls) => {
-      const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-turn-harness-"));
+      const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-turn-harness-"));
       const store = new BotMemoryStore(root);
       const botId = BotId.make(`bot-turn-harness-${successfulCalls}`);
       const access = { botId, groupId: null, groupMemberBotIds: [] } as const;
@@ -66,7 +66,7 @@ describe("IsnadiMemoryTurnHarness", () => {
   );
 
   it("uses the same lifecycle for a deferred review", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-deferred-harness-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-deferred-harness-"));
     const store = new BotMemoryStore(root);
     const botId = BotId.make("bot-deferred-harness");
 
@@ -99,7 +99,7 @@ describe("IsnadiMemoryTurnHarness", () => {
   });
 
   it("releases a review claim when the turn scope closes", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-scope-close-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-scope-close-"));
     const store = new BotMemoryStore(root);
     const botId = BotId.make("bot-scope-close");
 
@@ -124,7 +124,7 @@ describe("IsnadiMemoryTurnHarness", () => {
   });
 
   it("releases a review claim when admission cannot read memory", async () => {
-    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-admission-harness-"));
+    const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-admission-harness-"));
     const store = new BotMemoryStore(root);
     const botId = BotId.make("bot-admission-harness");
 

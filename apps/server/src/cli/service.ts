@@ -56,7 +56,7 @@ export function formatServiceStatus(
   }
 
   if (!status.installed) {
-    return "IsnadiBot service\n  Status: not installed\n  Next: Run `akeru service install`.";
+    return "IsnadiBot service\n  Status: not installed\n  Next: Run `isnadi service install`.";
   }
 
   return [

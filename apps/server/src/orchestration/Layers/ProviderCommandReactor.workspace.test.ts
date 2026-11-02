@@ -102,7 +102,7 @@ describe("ProviderCommandReactor", () => {
     expect(harness.renameBranch.mock.calls[0]?.[0]).toMatchObject({
       cwd: "/tmp/provider-project-worktree",
       oldBranch: "t3code/deadbeef",
-      newBranch: "akeru/deadbeef",
+      newBranch: "isnadi/deadbeef",
     });
   });
 

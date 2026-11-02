@@ -155,13 +155,23 @@ const GENERATIVE_KINDS: ReadonlyArray<GenerativeKind> = [
   "timeline",
 ];
 
-const FENCE_PREFIX = "akeru-";
+const FENCE_PREFIX = "isnadi-";
+
+/**
+ * Prefix used before the product was renamed. Messages saved under the old name
+ * still contain fences like ```akeru-chart, so they keep rendering as blocks.
+ */
+const LEGACY_FENCE_PREFIX = "akeru-";
 
 export function generativeKindForLanguage(language: string): GenerativeKind | null {
   const normalized = language.toLowerCase();
 
-  if (!normalized.startsWith(FENCE_PREFIX)) return null;
-  const suffix = normalized.slice(FENCE_PREFIX.length);
+  const prefix = [FENCE_PREFIX, LEGACY_FENCE_PREFIX].find((candidate) =>
+    normalized.startsWith(candidate),
+  );
+
+  if (prefix === undefined) return null;
+  const suffix = normalized.slice(prefix.length);
 
   return GENERATIVE_KINDS.find((kind) => kind === suffix) ?? null;
 }

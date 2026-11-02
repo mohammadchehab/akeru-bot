@@ -90,7 +90,7 @@ describe("HarnessTextGeneration", () => {
         }),
       ).pipe(
         Effect.provide(
-          ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-timeout-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-timeout-" }).pipe(
             Layer.provideMerge(NodeServices.layer),
           ),
         ),
@@ -143,7 +143,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-claude-context-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-claude-context-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -188,7 +188,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-missing-images-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-missing-images-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -247,7 +247,7 @@ describe("HarnessTextGeneration", () => {
           }),
         ).pipe(
           Effect.provide(
-            ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-writing-" }).pipe(
+            ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-writing-" }).pipe(
               Layer.provideMerge(NodeServices.layer),
             ),
           ),
@@ -319,7 +319,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-options-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-options-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -393,7 +393,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-writing-images-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-writing-images-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),
@@ -434,7 +434,7 @@ describe("HarnessTextGeneration", () => {
       }),
     ).pipe(
       Effect.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "akeru-harness-writing-error-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "isnadi-harness-writing-error-" }).pipe(
           Layer.provideMerge(NodeServices.layer),
         ),
       ),

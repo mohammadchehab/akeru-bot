@@ -58,7 +58,7 @@ export function applyQuietPresentation(entries: ReadonlyArray<TimelineEntry>): T
   return result;
 }
 
-const DETAILED_STORAGE_PREFIX = "akeru.presentation.detailed:";
+const DETAILED_STORAGE_PREFIX = "isnadi.presentation.detailed:";
 
 function storageOrNull(storage?: Storage): Storage | null {
   if (storage) return storage;

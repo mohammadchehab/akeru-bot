@@ -36,7 +36,11 @@ describe("AgentControllerLive", () => {
   it.effect("enforces delegated MCP and memory grants for tools and prompt context", () => {
     const bridge = makeBridge();
     const mastra = mastraHarnessFixture();
-    const memoryDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-delegated-memory-"));
+
+    const memoryDir = NodeFS.mkdtempSync(
+      NodePath.join(NodeOS.tmpdir(), "isnadi-delegated-memory-"),
+    );
+
     const botMemoryStore = new BotMemoryStore(memoryDir);
     const readMemory = vi.spyOn(botMemoryStore, "readPromptSnapshot");
 
@@ -174,7 +178,7 @@ describe("AgentControllerLive", () => {
           Layer.succeed(LegacyProviderBridge, bridge.service),
           Layer.succeed(BotUsageLedger, usageLedgerFixture().service),
           ServerConfig.layerTest(process.cwd(), {
-            prefix: "akeru-mastra-cwd-change-test-",
+            prefix: "isnadi-mastra-cwd-change-test-",
           }).pipe(Layer.provide(NodeServices.layer)),
         ),
       ),
@@ -183,8 +187,8 @@ describe("AgentControllerLive", () => {
     return Effect.gen(function* () {
       const controller = yield* AgentController;
       yield* resolveCodex(controller);
-      const firstCwd = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-cwd-a-"));
-      const secondCwd = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-cwd-b-"));
+      const firstCwd = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-cwd-a-"));
+      const secondCwd = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-cwd-b-"));
 
       try {
         const input = {

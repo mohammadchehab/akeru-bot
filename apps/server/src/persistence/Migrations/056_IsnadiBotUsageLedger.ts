@@ -5,7 +5,7 @@ export default Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;
 
   yield* sql`
-    CREATE TABLE akeru_bot_usage_balances (
+    CREATE TABLE isnadi_bot_usage_balances (
       bot_id TEXT PRIMARY KEY,
       consumed_tokens INTEGER NOT NULL DEFAULT 0 CHECK (consumed_tokens >= 0),
       reserved_tokens INTEGER NOT NULL DEFAULT 0 CHECK (reserved_tokens >= 0),
@@ -13,7 +13,7 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE TABLE akeru_bot_usage_entries (
+    CREATE TABLE isnadi_bot_usage_entries (
       reservation_id TEXT PRIMARY KEY,
       source_key TEXT NOT NULL,
       bot_id TEXT NOT NULL,
@@ -37,16 +37,16 @@ export default Effect.gen(function* () {
     )
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_bot_usage_entries_bot_created
-    ON akeru_bot_usage_entries (bot_id, created_at DESC)
+    CREATE INDEX idx_isnadi_bot_usage_entries_bot_created
+    ON isnadi_bot_usage_entries (bot_id, created_at DESC)
   `;
   yield* sql`
-    CREATE INDEX idx_akeru_bot_usage_entries_thread_turn
-    ON akeru_bot_usage_entries (thread_id, turn_id)
+    CREATE INDEX idx_isnadi_bot_usage_entries_thread_turn
+    ON isnadi_bot_usage_entries (thread_id, turn_id)
   `;
   yield* sql`
-    CREATE UNIQUE INDEX idx_akeru_bot_usage_entries_bound_turn
-    ON akeru_bot_usage_entries (bot_id, thread_id, turn_id)
+    CREATE UNIQUE INDEX idx_isnadi_bot_usage_entries_bound_turn
+    ON isnadi_bot_usage_entries (bot_id, thread_id, turn_id)
     WHERE category = 'turn' AND turn_id IS NOT NULL
   `;
 });

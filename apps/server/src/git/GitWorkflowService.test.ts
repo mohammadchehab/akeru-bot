@@ -52,7 +52,7 @@ describe("GitWorkflowService", () => {
       const workflow = yield* GitWorkflowService.GitWorkflowService;
 
       const error = yield* workflow
-        .renameBranch({ cwd: "/repo", oldBranch: "akeru/tmp", newBranch: "akeru/named" })
+        .renameBranch({ cwd: "/repo", oldBranch: "isnadi/tmp", newBranch: "isnadi/named" })
         .pipe(Effect.flip);
 
       expect(error).toMatchObject({

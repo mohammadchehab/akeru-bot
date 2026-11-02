@@ -19,7 +19,7 @@ const { harnessTest, makeObservationHarness, queuedObservations } =
 describe("IsnadiMastraHarness", () => {
   it.effect("finishes admitted observations on close and leaves unclaimed rows queued", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-queue-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-queue-"));
       const firstBlocked = Promise.withResolvers<void>();
       const firstStarted = Promise.withResolvers<void>();
       let calls = 0;
@@ -78,7 +78,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("interrupts hung memory work after the close grace and keeps its row leased", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-hung-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-hung-"));
       const observeStarted = Promise.withResolvers<void>();
 
       const observe = vi.spyOn(ObservationalMemory.prototype, "observe").mockImplementation(() => {
@@ -128,7 +128,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("releases a claimed row that never started observing when close interrupts it", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-waiting-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-waiting-"));
       const clearStarted = Promise.withResolvers<void>();
 
       const clear = vi.spyOn(ObservationalMemory.prototype, "clear").mockImplementation(() => {
@@ -175,7 +175,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("writes no queue row for a turn that completes after close begins", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-late-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-late-"));
       const inFlightEntered = Promise.withResolvers<void>();
       const inFlightGate = Promise.withResolvers<void>();
 
@@ -221,7 +221,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.live("retries a backed-off observation when its backoff elapses without another turn", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-backoff-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-backoff-"));
       const calls: string[] = [];
       const retried = Promise.withResolvers<void>();
 
@@ -263,19 +263,19 @@ describe("IsnadiMastraHarness", () => {
     "routes a queued observation through its provider instance, including rows queued before instances",
     () =>
       harnessTest(async (open) => {
-        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-instance-"));
+        const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-instance-"));
 
         const legacyQueue = new NodeSqlite.DatabaseSync(
           NodePath.join(directory, "observational-memory.sqlite.queue.sqlite"),
         );
 
         legacyQueue.exec(`
-        CREATE TABLE akeru_observation_queue (
+        CREATE TABLE isnadi_observation_queue (
           id TEXT PRIMARY KEY, thread_id TEXT NOT NULL, resource_id TEXT NOT NULL,
           model_id TEXT NOT NULL, turn_id TEXT, attempts INTEGER NOT NULL DEFAULT 0,
           claimed_at TEXT, next_attempt_at TEXT NOT NULL, created_at TEXT NOT NULL
         );
-        INSERT INTO akeru_observation_queue
+        INSERT INTO isnadi_observation_queue
           (id, thread_id, resource_id, model_id, turn_id, next_attempt_at, created_at)
           VALUES ('legacy', 'thread-legacy', 'thread-legacy', 'openai/gpt-5.6-sol', NULL,
                   '2026-01-01T00:00:00.000Z', '2026-01-01T00:00:00.000Z');
@@ -332,7 +332,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.live("resumes a row left claimed by a stopped harness once its lease expires", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-stale-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-stale-"));
       const observed = Promise.withResolvers<void>();
 
       const observe = vi
@@ -354,7 +354,7 @@ describe("IsnadiMastraHarness", () => {
         );
 
         db.prepare(
-          `INSERT INTO akeru_observation_queue
+          `INSERT INTO isnadi_observation_queue
             (id, thread_id, resource_id, model_id, turn_id, attempts, claimed_at,
              next_attempt_at, created_at)
             VALUES ('stale', 'thread-a', 'thread-a', 'openai/gpt-5.6-sol', NULL, 0, ?, ?, ?)`,
@@ -384,7 +384,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.live("renews a running observation's lease so another drain cannot reclaim it", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-lease-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-lease-"));
       const started = Promise.withResolvers<void>();
       const finish = Promise.withResolvers<void>();
 
@@ -436,7 +436,7 @@ describe("IsnadiMastraHarness", () => {
     });
 
     return harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-retries-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-retries-"));
 
       const observe = vi
         .spyOn(ObservationalMemory.prototype, "observe")
@@ -470,7 +470,7 @@ describe("IsnadiMastraHarness", () => {
             ? harness.observeAfterTurn!(input)
             : harness.drainObservationQueue!());
           const db = new NodeSqlite.DatabaseSync(queuePath);
-          db.prepare("UPDATE akeru_observation_queue SET next_attempt_at = ?").run(
+          db.prepare("UPDATE isnadi_observation_queue SET next_attempt_at = ?").run(
             "2000-01-01T00:00:00.000Z",
           );
           db.close();
@@ -499,7 +499,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("keeps a dropped observation queued until its drop notice lands", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-notice-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-notice-"));
 
       const observe = vi
         .spyOn(ObservationalMemory.prototype, "observe")
@@ -523,7 +523,7 @@ describe("IsnadiMastraHarness", () => {
 
       const makeEligible = () => {
         const db = new NodeSqlite.DatabaseSync(queuePath);
-        db.prepare("UPDATE akeru_observation_queue SET next_attempt_at = ?").run(
+        db.prepare("UPDATE isnadi_observation_queue SET next_attempt_at = ?").run(
           "2000-01-01T00:00:00.000Z",
         );
         db.close();
@@ -563,7 +563,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("lets a later row drain ahead of a backed-off failure", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-hol-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-hol-"));
       const calls: string[] = [];
 
       const observe = vi
@@ -607,7 +607,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("does not let two simultaneous harnesses observe the same row twice", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-claims-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-claims-"));
       const calls: string[] = [];
       let releaseFirst!: () => void;
 
@@ -677,7 +677,7 @@ describe("IsnadiMastraHarness", () => {
 
   it.effect("drains a queued observation persisted before a restart", () =>
     harnessTest(async (open) => {
-      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-om-restart-"));
+      const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-om-restart-"));
       const calls: string[] = [];
       // Persist a queued row without completing its observation: block the first
       // harness's drain inside observe() so the row stays in the durable queue,
@@ -730,7 +730,7 @@ describe("IsnadiMastraHarness", () => {
           NodePath.join(directory, "observational-memory.sqlite.queue.sqlite"),
         );
 
-        db.prepare("UPDATE akeru_observation_queue SET next_attempt_at = ?").run(
+        db.prepare("UPDATE isnadi_observation_queue SET next_attempt_at = ?").run(
           "2000-01-01T00:00:00.000Z",
         );
         db.close();

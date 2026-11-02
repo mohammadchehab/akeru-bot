@@ -152,7 +152,7 @@ export const formatRemoteFirstBootOutput = (accessInfo: HeadlessServeAccessInfo)
     "IsnadiBot Remote is ready and no admin client has been paired yet.",
     "Open this link on the phone or computer you will manage this machine from.",
     "It grants admin scope: that device can pair and revoke other clients and change Connections.",
-    "It works once. Pair more devices later with `akeru pair`.",
+    "It works once. Pair more devices later with `isnadi pair`.",
     "",
     `Pairing URL: ${accessInfo.pairingUrl}`,
     "",
@@ -161,7 +161,7 @@ export const formatRemoteFirstBootOutput = (accessInfo: HeadlessServeAccessInfo)
   ].join("\n");
 
 export const REMOTE_ALREADY_PAIRED_OUTPUT =
-  "IsnadiBot Remote is ready. An admin client is already paired; run `akeru pair` to add a device.";
+  "IsnadiBot Remote is ready. An admin client is already paired; run `isnadi pair` to add a device.";
 
 /**
  * Prints one admin pairing link when a remote install starts with no admin client paired, and a

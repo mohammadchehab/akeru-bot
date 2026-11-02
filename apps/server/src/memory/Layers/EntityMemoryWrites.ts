@@ -135,7 +135,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${revision.id}, updated_at = ${revision.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}
@@ -198,7 +198,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${next.id}, updated_at = ${input.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}
@@ -243,7 +243,7 @@ export const entityMemoryWrites = (dependencies: {
 
         const rows = yield* sql
           .unsafe<EntityMemoryDbRow>(
-            `SELECT ${selectColumns} FROM akeru_memory_revisions
+            `SELECT ${selectColumns} FROM isnadi_memory_revisions
          WHERE tenant_id = ? AND root_id = ?`,
             [input.access.tenantId, input.rootId],
           )
@@ -262,11 +262,11 @@ export const entityMemoryWrites = (dependencies: {
         // Clear observations before the derived-copy rows that locate them are removed.
         yield* invalidateObservations(input.access.tenantId, input.rootId);
         yield* sql`
-        DELETE FROM akeru_memory_revisions
+        DELETE FROM isnadi_memory_revisions
         WHERE tenant_id = ${input.access.tenantId} AND root_id = ${input.rootId}
       `.pipe(Effect.mapError(toPersistenceSqlError("EntityMemoryRepository.deleteRoot:query")));
         yield* sql`
-        DELETE FROM akeru_memory_derived_copies
+        DELETE FROM isnadi_memory_derived_copies
         WHERE tenant_id = ${input.access.tenantId} AND root_id = ${input.rootId}
       `.pipe(
           Effect.mapError(
@@ -529,7 +529,7 @@ export const entityMemoryWrites = (dependencies: {
             .withTransaction(
               Effect.gen(function* () {
                 const updated = yield* sql<{ readonly id: string }>`
-              UPDATE akeru_memory_revisions
+              UPDATE isnadi_memory_revisions
               SET superseded_by_id = ${next.id}, updated_at = ${next.updatedAt}
               WHERE memory_id = ${current.id}
                 AND tenant_id = ${current.partition.tenantId}

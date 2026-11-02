@@ -6,7 +6,7 @@ import * as NodeCrypto from "node:crypto";
 function fixture() {
   const directory = NodePath.join(
     NodeOS.tmpdir(),
-    `akeru-subscription-auth-${NodeCrypto.randomUUID()}`,
+    `isnadi-subscription-auth-${NodeCrypto.randomUUID()}`,
   );
 
   NodeFS.mkdirSync(directory, { recursive: true });

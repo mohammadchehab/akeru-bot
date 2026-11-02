@@ -16,11 +16,11 @@ import {
 
 export type Theme = ThemePreference;
 
-export const STORAGE_KEY = "akeru:theme";
+export const STORAGE_KEY = "isnadi:theme";
 
 export const LEGACY_STORAGE_KEY = "t3code:theme";
 
-export const DEFAULT_THEME = "akeru-paper";
+export const DEFAULT_THEME = "isnadi-paper";
 
 /** Live read of the stored appearance mix, for callers that must not rely on
  * a render-time snapshot (for example rollback after an async dialog). */

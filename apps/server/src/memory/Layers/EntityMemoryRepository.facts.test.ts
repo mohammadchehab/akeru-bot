@@ -151,17 +151,17 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       const repository = yield* EntityMemoryRepository;
       const sql = yield* SqlClient.SqlClient;
       const rootId = IsnadiMemoryRootId.make("derived-write-root");
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("stale")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.insert({
         access: botAccess,
         revision: makeRevision("derived-write-root", "bot:user", { rootId }),
       });
       assert.deepEqual(
-        yield* sql`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [],
       );
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("stale-2")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
       yield* repository.revise({
         access: botAccess,
@@ -173,7 +173,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
         }),
       });
       assert.deepEqual(
-        yield* sql`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [],
       );
     }),
@@ -192,7 +192,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
       const sql = yield* SqlClient.SqlClient;
       const observedThreadId = "clear-fails-thread";
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("clear-fails-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
 
       const unregister = registerEntityMemoryResource(
@@ -218,7 +218,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       assert.equal(current.deletionState, "active");
       assert.equal(current.revision, 1);
       assert.deepEqual(
-        yield* sql`SELECT thread_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT thread_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [{ thread_id: observedThreadId }],
       );
     }),
@@ -234,7 +234,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
       const sql = yield* SqlClient.SqlClient;
       const observedThreadId = "delete-clears-thread";
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("delete-clears-active")}, ${observedThreadId}, ${"2026-08-30T22:00:00.000Z"})`;
       const cleared: Array<string> = [];
 
@@ -607,7 +607,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
       });
 
       const sql = yield* SqlClient.SqlClient;
-      yield* sql`INSERT INTO akeru_memory_revisions (
+      yield* sql`INSERT INTO isnadi_memory_revisions (
         memory_id, root_id, revision, tenant_id, scope, partition_id,
         entity_kind, entity_id, kind, value_json, fact_text,
         source_thread_id, source_message_id, author_bot_id, initiating_user_id,
@@ -748,7 +748,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
           fact: "mutate-delete-marker",
         }),
       });
-      yield* sql`INSERT INTO akeru_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
+      yield* sql`INSERT INTO isnadi_memory_derived_copies (tenant_id, root_id, revision_id, thread_id, created_at)
         VALUES (${botAccess.tenantId}, ${rootId}, ${IsnadiMemoryId.make("mutate-delete-1")}, ${botAccess.threadId}, ${"2026-08-30T22:00:00.000Z"})`;
 
       const forgotten = yield* repository.applyMutation({
@@ -765,7 +765,7 @@ it.layer(repositoryLayer)("EntityMemoryRepository", (it) => {
 
       assert.equal(forgotten!.deletionState, "tombstoned");
       assert.deepEqual(
-        yield* sql`SELECT root_id FROM akeru_memory_derived_copies WHERE root_id = ${rootId}`,
+        yield* sql`SELECT root_id FROM isnadi_memory_derived_copies WHERE root_id = ${rootId}`,
         [],
       );
       assert.deepEqual(

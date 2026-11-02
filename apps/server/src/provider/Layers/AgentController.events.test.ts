@@ -33,7 +33,7 @@ import { mastraHarnessFixture } from "./test-support/agentControllerHarness.ts";
 
 describe("provider access health", () => {
   it("records a failed first request and recovery at the runtime event boundary", async () => {
-    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-access-health-"));
+    const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-access-health-"));
     const authPath = NodePath.join(directory, "subscription-auth.json");
 
     try {

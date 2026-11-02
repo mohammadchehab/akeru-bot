@@ -17,7 +17,7 @@ afterEach(() => {
 });
 
 function makeService() {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-user-action-inbox-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-user-action-inbox-"));
   directories.push(directory);
   const filePath = NodePath.join(directory, "bot-inbox.json");
 
@@ -25,7 +25,7 @@ function makeService() {
 }
 
 const input = {
-  botId: BotId.make("bot-akeru"),
+  botId: BotId.make("bot-isnadi"),
   botName: "Isnadi",
   toolId: "request_box_help",
   summary: "Sign in to the bank site.",
@@ -73,8 +73,8 @@ describe("user-action inbox incidents", () => {
         .map((item) => item.incidentKey)
         .sort(),
     ).toEqual([
-      "user-action:bot-akeru:request_box_help:captcha",
-      "user-action:bot-akeru:request_box_help:login",
+      "user-action:bot-isnadi:request_box_help:captcha",
+      "user-action:bot-isnadi:request_box_help:login",
     ]);
   });
 

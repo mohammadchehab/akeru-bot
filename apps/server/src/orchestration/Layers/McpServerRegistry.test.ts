@@ -29,7 +29,7 @@ const registryLayer = it.layer(
     Layer.provideMerge(SqlitePersistenceMemory),
     Layer.provideMerge(
       ServerConfig.layerTest(process.cwd(), {
-        prefix: "akeru-mcp-server-registry-test-",
+        prefix: "isnadi-mcp-server-registry-test-",
       }),
     ),
     Layer.provideMerge(NodeServices.layer),

@@ -117,7 +117,7 @@ export function packageRemoteArchive(input: {
 
   try {
     const rootName = windows
-      ? "akeru"
+      ? "isnadi"
       : `Isnadi-Remote-${version}-${target.platform}-${target.arch}`;
 
     const root = NodePath.join(staging, rootName);
@@ -138,7 +138,7 @@ export function packageRemoteArchive(input: {
 
     if (windows) {
       copy(input.nodeBinary, NodePath.join("node", "node.exe"), 0o755);
-      NodeFS.writeFileSync(NodePath.join(root, "akeru.cmd"), WINDOWS_LAUNCHER);
+      NodeFS.writeFileSync(NodePath.join(root, "isnadi.cmd"), WINDOWS_LAUNCHER);
       copy(NodePath.join(scriptsDirectory, "isnadi-remote-admin.mjs"), "remote-admin.mjs");
       copy(NodePath.join(scriptsDirectory, "install-remote.ps1"), "install-remote.ps1");
       copy(
@@ -147,7 +147,7 @@ export function packageRemoteArchive(input: {
       );
     } else {
       copy(input.nodeBinary, NodePath.join("node", "bin", "node"), 0o755);
-      NodeFS.writeFileSync(NodePath.join(root, "akeru"), UNIX_LAUNCHER, { mode: 0o755 });
+      NodeFS.writeFileSync(NodePath.join(root, "isnadi"), UNIX_LAUNCHER, { mode: 0o755 });
       copy(NodePath.join(scriptsDirectory, "isnadi-remote-admin.sh"), "remote-admin", 0o755);
       copy(
         NodePath.join(scriptsDirectory, "initialize-remote-identity.sh"),

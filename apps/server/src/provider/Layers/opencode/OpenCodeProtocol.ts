@@ -36,7 +36,7 @@ import {
  * The variant choice that leaves OpenCode on its own configured default. It is
  * namespaced so it never matches a variant name a user configured.
  */
-export const OPENCODE_PROVIDER_DEFAULT_VARIANT = "akeru:provider-default";
+export const OPENCODE_PROVIDER_DEFAULT_VARIANT = "isnadi:provider-default";
 
 /**
  * Decode a persisted resume cursor into the upstream `ses_…` id. Anything

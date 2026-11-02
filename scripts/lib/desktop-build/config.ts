@@ -285,7 +285,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       protocols: [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ],
       // Unsigned builds opt into identity "-" so electron-builder replaces
@@ -339,11 +339,11 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       category: "Development",
       // electron-builder turns these into MimeType=x-scheme-handler/<scheme>;
       // in the .desktop entry (Exec already gets %U), so browsers can hand
-      // akeru:// OAuth callbacks to the app.
+      // isnadi:// OAuth callbacks to the app.
       protocols: [
         {
           name: "IsnadiBot",
-          schemes: ["akeru", "akeru-dev"],
+          schemes: ["isnadi", "isnadi-dev"],
         },
       ],
       desktop: {
@@ -361,14 +361,14 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     // in trading update bandwidth for install speed.
     buildConfig.nsis = { differentialPackage: true };
     // electron-builder writes HKCU URL-protocol registry entries from this
-    // list, so the OS hands akeru:// activations to this install instead of
+    // list, so the OS hands isnadi:// activations to this install instead of
     // whatever app (for example an old T3 build) registered a scheme earlier.
     // Only the production scheme: packaged builds never run as development,
     // and claiming isnadi-dev would steal it from a developer's local build.
     buildConfig.protocols = [
       {
         name: "IsnadiBot",
-        schemes: ["akeru"],
+        schemes: ["isnadi"],
       },
     ];
 

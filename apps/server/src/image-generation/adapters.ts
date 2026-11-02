@@ -356,7 +356,7 @@ export function chatGptImageAdapter(deps: {
               "ChatGPT-Account-ID": access.accountId,
               "Content-Type": "application/json",
               Accept: "text/event-stream",
-              originator: "akeru",
+              originator: "isnadi",
             },
             body: JSON.stringify({
               model: DEFAULT_TEXT_GENERATION_MODEL,

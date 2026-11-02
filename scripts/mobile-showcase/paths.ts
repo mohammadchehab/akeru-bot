@@ -21,7 +21,7 @@ export const MOBILE_ROOT = NodePath.join(REPO_ROOT, "apps/mobile");
 
 export const ANDROID_PACKAGE = "dev.leodoes.isnadi";
 
-export const APP_SCHEME = "akeru";
+export const APP_SCHEME = "isnadi";
 
 export const IOS_READY_FILENAME = "T3ShowcaseReadyScene";
 

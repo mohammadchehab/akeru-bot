@@ -28,9 +28,9 @@ function makeService(times: readonly string[]) {
 }
 
 const incident = {
-  incidentKey: "connector:xai:bot-akeru",
+  incidentKey: "connector:xai:bot-isnadi",
   kind: "connector-failure" as const,
-  botId: BotId.make("bot-akeru"),
+  botId: BotId.make("bot-isnadi"),
   botName: "Isnadi",
   taskOrRoutine: "Morning research",
   lastFailure: "Grok rejected the first ACP request.",
@@ -287,7 +287,7 @@ describe("bot inbox incidents", () => {
 
     const dead = {
       ...incident,
-      incidentKey: "browser:bot-akeru",
+      incidentKey: "browser:bot-isnadi",
       kind: "browser-dead" as const,
       lastFailure: "The managed browser exited.",
     };

@@ -118,7 +118,7 @@ const tryComposio = <A>(operation: string, run: () => Promise<A>) =>
   });
 
 function bytesToId(bytes: Uint8Array): string {
-  return `akeru_${Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
+  return `isnadi_${Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
 }
 
 function toConnection(input: {

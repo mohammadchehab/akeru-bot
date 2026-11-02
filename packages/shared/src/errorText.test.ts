@@ -4,9 +4,9 @@ import { withoutErrorStack } from "./errorText.ts";
 
 const STACK = [
   "ProviderValidationError: Provider validation failed in AgentController.inspectEngine: Provider instance 'codex' is disabled in IsnadiBot settings.",
-  "    at disabledProviderError (file:///home/leo/akeru/apps/server/src/provider/Layers/AgentController.ts:584:10)",
-  "    at AgentController.inspectEngine (definition) (file:///home/leo/akeru/apps/server/src/provider/Layers/AgentController.ts:2497:73)",
-  "    at ensureSessionForThread (file:///home/leo/akeru/apps/server/src/orchestration/Layers/ProviderCommandReactor.ts:1282:28)",
+  "    at disabledProviderError (file:///home/leo/isnadi/apps/server/src/provider/Layers/AgentController.ts:584:10)",
+  "    at AgentController.inspectEngine (definition) (file:///home/leo/isnadi/apps/server/src/provider/Layers/AgentController.ts:2497:73)",
+  "    at ensureSessionForThread (file:///home/leo/isnadi/apps/server/src/orchestration/Layers/ProviderCommandReactor.ts:1282:28)",
 ].join("\n");
 
 describe("withoutErrorStack", () => {

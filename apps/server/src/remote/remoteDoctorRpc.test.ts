@@ -19,7 +19,7 @@ const withContainerHome = <A, E>(use: (baseDir: string) => Effect.Effect<A, E>) 
     Effect.sync(() => {
       const prior = process.env.ISNADI_REMOTE_CONTAINER;
       process.env.ISNADI_REMOTE_CONTAINER = "1";
-      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "akeru-doctor-rpc-"));
+      const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-doctor-rpc-"));
       NodeFS.mkdirSync(NodePath.join(baseDir, "userdata"), { recursive: true });
 
       return { baseDir, prior };

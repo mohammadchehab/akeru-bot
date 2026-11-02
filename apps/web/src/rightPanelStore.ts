@@ -26,7 +26,7 @@ export type RightPanelSurface =
   | { id: "browser:new"; kind: "preview"; resourceId: null }
   | { id: "agents"; kind: "agents" };
 
-const RIGHT_PANEL_STORAGE_KEY = "akeru:right-panel-state:v2";
+const RIGHT_PANEL_STORAGE_KEY = "isnadi:right-panel-state:v2";
 
 // Pre-rebrand key; migrated through the wrapping storage on first write.
 const LEGACY_RIGHT_PANEL_STORAGE_KEY = "t3code:right-panel-state:v2";
