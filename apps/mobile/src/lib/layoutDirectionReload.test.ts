@@ -38,12 +38,13 @@ describe("reloadWithLayoutDirection", () => {
     expect(calls).toEqual(["allowRTL(true)", "forceRTL(true)", "flush", "reload"]);
   });
 
-  it("asks for left-to-right when leaving a right-to-left language", async () => {
+  it("turns RTL off completely when leaving a right-to-left language", async () => {
     const { calls, runtime } = fakeRuntime();
 
     await reloadWithLayoutDirection("ltr", runtime);
 
-    expect(calls).toContain("forceRTL(false)");
+    // allowRTL stays on otherwise, and an RTL-locale device would keep mirroring English.
+    expect(calls).toEqual(["allowRTL(false)", "forceRTL(false)", "flush", "reload"]);
   });
 
   it("still reloads when saving pending writes fails", async () => {

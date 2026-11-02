@@ -36,7 +36,9 @@ export async function reloadWithLayoutDirection(
   direction: LayoutDirection,
   runtime: LayoutDirectionRuntime = nativeRuntime,
 ): Promise<void> {
-  runtime.allowRTL(true);
+  // Both flags persist and isRTL is forceRTL || (allowRTL && an RTL device locale), so leaving an
+  // RTL language on an RTL-locale device needs allowRTL(false) as well as forceRTL(false).
+  runtime.allowRTL(direction === "rtl");
   runtime.forceRTL(direction === "rtl");
   await runtime.flush().catch(() => undefined);
   await runtime.reload();
