@@ -393,6 +393,7 @@ export function createThreads({
               entries: event.payload.entries,
               hopsLeft: event.payload.hopsLeft,
               hopsUsed: event.payload.hopsUsed,
+              ...(event.payload.budgetExhausted ? { budgetExhausted: true } : {}),
               reason: event.payload.reason,
               updatedAt: event.payload.updatedAt,
             },

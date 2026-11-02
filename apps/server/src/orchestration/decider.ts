@@ -200,6 +200,7 @@ export const decideOrchestrationCommand = Effect.fn("decideOrchestrationCommand"
       });
     case "thread.turn.start":
     case "thread.responder.advance":
+    case "thread.responder.mention":
     case "thread.turn.resume":
     case "thread.turn.interrupt":
     case "thread.approval.respond":

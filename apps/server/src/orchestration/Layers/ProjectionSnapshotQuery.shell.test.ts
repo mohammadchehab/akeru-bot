@@ -514,8 +514,9 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
         )
       `;
 
-      const queue = (entries: ReadonlyArray<string>) =>
+      const queue = (entries: ReadonlyArray<string>, budgetExhausted = false) =>
         JSON.stringify({
+          ...(budgetExhausted ? { budgetExhausted: true } : {}),
           entries: entries.map((botId) => ({
             botId,
             trigger: { kind: "user", messageId: "message-1" },
@@ -529,6 +530,7 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
       for (const [threadId, responderQueue, hopBudget] of [
         ["thread-waiting", queue(["bot-a", "bot-b"]), 3],
         ["thread-emptied", queue([]), null],
+        ["thread-cut", queue([], true), null],
       ] as const) {
         yield* sql`
           INSERT INTO projection_threads (
@@ -568,6 +570,9 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
 
       assert.deepEqual(botIds(shellThread("thread-waiting")?.responderQueue), ["bot-a", "bot-b"]);
       assert.equal(shellThread("thread-emptied")?.responderQueue, undefined);
+      // A chain the budget cut keeps its emptied queue on the wire so clients can say so.
+      assert.deepEqual(botIds(shellThread("thread-cut")?.responderQueue), []);
+      assert.equal(shellThread("thread-cut")?.responderQueue?.budgetExhausted, true);
       assert.equal(shellThread("thread-waiting")?.hopBudget, 3);
       assert.equal(shellThread("thread-emptied")?.hopBudget, undefined);
 

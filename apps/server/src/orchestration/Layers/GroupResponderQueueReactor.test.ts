@@ -4,6 +4,7 @@ import {
   EventId,
   MessageId,
   ThreadId,
+  TurnId,
   type OrchestrationCommand,
   type OrchestrationEvent,
   type OrchestrationThread,
@@ -73,6 +74,28 @@ const sessionSet = (sequence: number, threadId: ThreadId, status: "running" | "r
         lastError: null,
         updatedAt: NOW,
       },
+    },
+  }) satisfies OrchestrationEvent;
+
+const reply = (
+  sequence: number,
+  threadId: ThreadId,
+  text: string,
+  options: { readonly streaming?: boolean; readonly turnId?: string } = {},
+) =>
+  ({
+    ...base(sequence, threadId),
+    type: "thread.message-sent",
+    payload: {
+      threadId,
+      messageId: MessageId.make(`reply-${sequence}`),
+      role: "assistant" as const,
+      text,
+      turnId: TurnId.make(options.turnId ?? "turn-1"),
+      respondingBotId: BotId.make("bot-specialist"),
+      streaming: options.streaming ?? false,
+      createdAt: NOW,
+      updatedAt: NOW,
     },
   }) satisfies OrchestrationEvent;
 
@@ -279,6 +302,63 @@ describe("GroupResponderQueueReactor", () => {
             expect(h.dispatched).toEqual([]);
           }),
         [queuedThread("ready", []), { ...makeGroupThread(), id: OTHER_THREAD, session: null }],
+      );
+    }).pipe(Effect.scoped),
+  );
+  it.effect("hands the turn's final reply to the decider, then asks for the next bot", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(h, (reactor) =>
+        Effect.gen(function* () {
+          yield* PubSub.publish(h.events, sessionSet(1, THREAD, "running"));
+          // A streaming partial and an earlier commentary message do not count; the last final one does.
+          yield* PubSub.publish(
+            h.events,
+            reply(2, THREAD, "Looking into @bot-boss", { turnId: "turn-1" }),
+          );
+          yield* PubSub.publish(
+            h.events,
+            reply(3, THREAD, "Over to @bot-boss", { streaming: true }),
+          );
+          yield* PubSub.publish(h.events, reply(4, THREAD, "Done. @bot-boss, your turn."));
+          yield* PubSub.publish(h.events, sessionSet(5, THREAD, "ready"));
+          yield* reactor.drainThrough(5);
+
+          expect(h.dispatched.map((command) => command.type)).toEqual([
+            "thread.responder.mention",
+            "thread.responder.advance",
+          ]);
+          expect(h.dispatched[0]).toMatchObject({
+            threadId: THREAD,
+            turnId: "turn-1",
+            botId: "bot-specialist",
+            text: "Done. @bot-boss, your turn.",
+          });
+        }),
+      );
+    }).pipe(Effect.scoped),
+  );
+
+  it.effect("sends nothing for a reply that mentions nobody, and forgets it after the turn", () =>
+    Effect.gen(function* () {
+      const h = yield* harness;
+
+      yield* run(h, (reactor) =>
+        Effect.gen(function* () {
+          yield* PubSub.publish(h.events, reply(1, THREAD, "All done, nothing to hand over."));
+          yield* PubSub.publish(h.events, sessionSet(2, THREAD, "ready"));
+          // A mentioning reply from a turn that already ended must not be replayed by the next one.
+          yield* PubSub.publish(h.events, reply(3, THREAD, "Ping @bot-boss"));
+          yield* PubSub.publish(h.events, sessionSet(4, THREAD, "ready"));
+          yield* PubSub.publish(h.events, sessionSet(5, THREAD, "ready"));
+          yield* reactor.drainThrough(5);
+
+          expect(h.dispatched.map((command) => command.type)).toEqual([
+            "thread.responder.mention",
+            "thread.responder.advance",
+          ]);
+        }),
       );
     }).pipe(Effect.scoped),
   );

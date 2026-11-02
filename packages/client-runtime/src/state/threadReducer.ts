@@ -237,8 +237,8 @@ export function applyThreadDetailEvent(
       };
 
     // ── Group responder queue ───────────────────────────────────────
-    // The event carries the whole queue; an empty one is left off, as the snapshots do, unless it
-    // ended on the hop budget.
+    // The event carries the whole queue; an empty one is left off, as the snapshots do, unless the
+    // hop budget cut it.
     case "thread.responder-queue.set": {
       const { threadId: _threadId, ...queue } = event.payload;
       const { responderQueue: _previous, ...rest } = thread;
@@ -247,7 +247,7 @@ export function applyThreadDetailEvent(
         kind: "updated",
         thread: {
           ...rest,
-          ...(queue.entries.length > 0 || queue.reason === "budget-exhausted"
+          ...(queue.entries.length > 0 || queue.budgetExhausted === true
             ? { responderQueue: queue }
             : {}),
           updatedAt: event.occurredAt,

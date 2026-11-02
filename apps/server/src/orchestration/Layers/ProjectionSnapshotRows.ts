@@ -392,14 +392,14 @@ export function computeSnapshotSequence(
 /**
  * Clients render "who is next" from the waiting queue, so it travels only while someone is
  * waiting. An emptied queue is left off the wire, like a thread that never had one, except one
- * that ended on the hop budget: clients show a notice from it.
+ * that the hop budget cut: clients show a notice from it.
  */
 export function shellResponderQueue(
   queue: ResponderQueue | null | undefined,
 ): { readonly responderQueue: ResponderQueue } | Record<never, never> {
   return queue !== null &&
     queue !== undefined &&
-    (queue.entries.length > 0 || queue.reason === "budget-exhausted")
+    (queue.entries.length > 0 || queue.budgetExhausted === true)
     ? { responderQueue: queue }
     : {};
 }

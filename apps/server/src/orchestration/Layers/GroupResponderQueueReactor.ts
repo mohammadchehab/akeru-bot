@@ -1,4 +1,11 @@
-import { CommandId, type OrchestrationEvent, type ThreadId } from "@isnadi/contracts";
+import {
+  CommandId,
+  type BotId,
+  type OrchestrationCommand,
+  type OrchestrationEvent,
+  type ThreadId,
+  type TurnId,
+} from "@isnadi/contracts";
 import { makeDrainableWorker } from "@isnadi/shared/DrainableWorker";
 import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
@@ -19,8 +26,9 @@ import {
 
 /**
  * Runs a group chat's responder queue, one bot at a time. The decider fills the queue when a
- * message is addressed; this reactor notices when a queued chat's session is not running and asks
- * the decider to start the next bot. The decider is the authority: it ignores the request when the
+ * message is addressed; this reactor notices when a queued chat's session is not running, hands the
+ * finished reply to the decider so the bots it mentions join the queue, and asks the decider to
+ * start the next bot. The decider is the authority: it ignores the request when the
  * queue is empty or the turn it last started is still in flight.
  *
  * A restart can leave a queue persisted with nobody running. No session event will follow, so
@@ -34,17 +42,30 @@ const make = Effect.gen(function* () {
   // Threads that still have someone waiting.
   const queued = new Set<ThreadId>();
 
-  const advance = (threadId: ThreadId) =>
+  // Each thread's last finished reply that mentions someone (see observe), until its turn ends.
+  const lastReply = new Map<
+    ThreadId,
+    { readonly turnId: TurnId; readonly botId: BotId; readonly text: string }
+  >();
+
+  const dispatchCommand = (
+    threadId: ThreadId,
+    what: string,
+    build: (input: {
+      readonly commandId: CommandId;
+      readonly createdAt: string;
+    }) => OrchestrationCommand,
+  ) =>
     crypto.randomUUIDv4.pipe(
       Effect.flatMap((uuid) =>
         DateTime.now.pipe(
           Effect.flatMap((now) =>
-            orchestrationEngine.dispatch({
-              type: "thread.responder.advance",
-              commandId: CommandId.make(`server:responder-advance:${uuid}`),
-              threadId,
-              createdAt: DateTime.formatIso(now),
-            }),
+            orchestrationEngine.dispatch(
+              build({
+                commandId: CommandId.make(`server:${what}:${uuid}`),
+                createdAt: DateTime.formatIso(now),
+              }),
+            ),
           ),
         ),
       ),
@@ -52,14 +73,42 @@ const make = Effect.gen(function* () {
       Effect.catchCause((cause) =>
         Cause.hasInterruptsOnly(cause)
           ? Effect.failCause(cause)
-          : Effect.logWarning("group responder queue could not start the next bot", {
+          : Effect.logWarning("group responder queue command failed", {
               threadId,
+              what,
               cause: Cause.pretty(cause),
             }),
       ),
     );
 
-  const worker = yield* makeDrainableWorker(advance);
+  // A turn ended (or the server restarted with a queue waiting): let the reply's mentions join the
+  // queue first, so the same pass can start them, then ask for the next bot.
+  const turnEnded = (threadId: ThreadId) =>
+    Effect.gen(function* () {
+      const reply = lastReply.get(threadId);
+      lastReply.delete(threadId);
+
+      if (reply !== undefined) {
+        yield* dispatchCommand(threadId, "responder-mention", (input) => ({
+          type: "thread.responder.mention",
+          threadId,
+          turnId: reply.turnId,
+          botId: reply.botId,
+          text: reply.text,
+          ...input,
+        }));
+      }
+
+      if (reply !== undefined || queued.has(threadId)) {
+        yield* dispatchCommand(threadId, "responder-advance", (input) => ({
+          type: "thread.responder.advance",
+          threadId,
+          ...input,
+        }));
+      }
+    });
+
+  const worker = yield* makeDrainableWorker(turnEnded);
   const seenSequence = yield* SubscriptionRef.make(0);
   // Completes once the persisted queues have been read and any waiting chat has been enqueued.
   const restored = yield* Deferred.make<void>();
@@ -77,6 +126,32 @@ const make = Effect.gen(function* () {
 
     if (event.type === "thread.deleted") {
       queued.delete(event.payload.threadId);
+      lastReply.delete(event.payload.threadId);
+
+      return Effect.void;
+    }
+
+    // The turn's last finished reply decides who it hands over to. Only a reply that mentions
+    // someone is kept, which also keeps this cheap for every chat that is not a group.
+    if (event.type === "thread.message-sent") {
+      const message = event.payload;
+
+      if (
+        message.role === "assistant" &&
+        !message.streaming &&
+        message.turnId !== null &&
+        message.respondingBotId !== undefined &&
+        message.respondingBotId !== null &&
+        message.text.includes("@")
+      ) {
+        lastReply.set(message.threadId, {
+          turnId: message.turnId,
+          botId: message.respondingBotId,
+          text: message.text,
+        });
+      } else if (message.role === "assistant" && !message.streaming) {
+        lastReply.delete(message.threadId);
+      }
 
       return Effect.void;
     }
@@ -88,7 +163,8 @@ const make = Effect.gen(function* () {
     // while the started turn is still in flight, so asking early is harmless.
     const threadId = event.payload.threadId;
 
-    return event.payload.session.status !== "running" && queued.has(threadId)
+    return event.payload.session.status !== "running" &&
+      (queued.has(threadId) || lastReply.has(threadId))
       ? worker.enqueue(threadId)
       : Effect.void;
   };

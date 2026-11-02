@@ -451,6 +451,7 @@ export const ThreadResponderQueueSetPayload = Schema.Struct({
   entries: Schema.Array(ResponderQueueEntry),
   hopsLeft: NonNegativeInt,
   hopsUsed: NonNegativeInt,
+  budgetExhausted: Schema.optional(Schema.Boolean),
   reason: ResponderQueueReason,
   updatedAt: IsoDateTime,
 });

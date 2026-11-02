@@ -26,6 +26,7 @@ import {
   budgetAfterFirstTurn,
   budgetOf,
   decideResponderAdvance,
+  decideResponderMention,
   responderQueueSetEvent,
 } from "./responderQueue.ts";
 import {
@@ -46,6 +47,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
       type:
         | "thread.turn.start"
         | "thread.responder.advance"
+        | "thread.responder.mention"
         | "thread.turn.resume"
         | "thread.turn.interrupt"
         | "thread.approval.respond"
@@ -495,6 +497,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           causationEventId: interruptEvent.eventId,
           entries: [],
           budget: budgetOf(waiting),
+          budgetExhausted: waiting.budgetExhausted,
           reason: "stopped",
         }),
       ];
@@ -502,6 +505,9 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
 
     case "thread.responder.advance":
       return yield* decideResponderAdvance({ command, readModel });
+
+    case "thread.responder.mention":
+      return yield* decideResponderMention({ command, readModel });
 
     case "thread.approval.respond": {
       const thread = yield* requireThread({

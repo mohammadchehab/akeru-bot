@@ -1,4 +1,11 @@
-import { CommandId, MessageId, ThreadId, TurnId, type OrchestrationEvent } from "@isnadi/contracts";
+import {
+  CommandId,
+  MessageId,
+  ThreadId,
+  TurnId,
+  type OrchestrationEvent,
+  type ResponderQueueReason,
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
@@ -40,6 +47,9 @@ const readModel = (input: {
   readonly inactive?: ReadonlyArray<typeof SPECIALIST_ID>;
   readonly hopsLeft?: number;
   readonly hopsUsed?: number;
+  readonly reason?: ResponderQueueReason;
+  readonly queueUpdatedAt?: string;
+  readonly budgetExhausted?: boolean;
 }) => {
   const thread = makeGroupThread();
   const turn = input.turn ?? "completed";
@@ -86,8 +96,9 @@ const readModel = (input: {
                 entries: input.queue,
                 hopsLeft: input.hopsLeft ?? 5,
                 hopsUsed: input.hopsUsed ?? 1,
-                reason: "turn-started" as const,
-                updatedAt: QUEUED_AT,
+                ...(input.budgetExhausted ? { budgetExhausted: true } : {}),
+                reason: input.reason ?? ("turn-started" as const),
+                updatedAt: input.queueUpdatedAt ?? QUEUED_AT,
               },
             }),
         ...(turn === "none"
@@ -136,6 +147,24 @@ const queueOf = (event: ReturnType<typeof Array.prototype.at> & { type?: string 
 
   return event.payload;
 };
+
+const mention = (
+  model: ReturnType<typeof readModel>,
+  text: string,
+  overrides: { readonly turnId?: string } = {},
+) =>
+  decideOrchestrationCommand({
+    command: {
+      type: "thread.responder.mention",
+      commandId: CommandId.make("cmd-mention"),
+      threadId: ThreadId.make("thread-group"),
+      turnId: TurnId.make(overrides.turnId ?? "turn-latest"),
+      botId: SPECIALIST_ID,
+      text,
+      createdAt: NOW,
+    },
+    readModel: model,
+  }).pipe(Effect.map((result) => (Array.isArray(result) ? result : [result])));
 
 const startedBots = (events: Effect.Success<ReturnType<typeof advance>>) =>
   events.flatMap((event) =>
@@ -325,5 +354,153 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
           "thread.turn-interrupt-requested",
         ]);
       }),
+  );
+  it.effect("queues the bot a finished reply mentions, with the mention as its trigger", () =>
+    Effect.gen(function* () {
+      const events = yield* mention(readModel({ queue: [] }), `Over to @${OTHER_SPECIALIST_ID}.`);
+
+      expect(events.map((event) => event.type)).toEqual(["thread.responder-queue.set"]);
+
+      const queue = queueOf(events[0]);
+
+      expect(queue.reason).toBe("mention");
+      expect(queue).toMatchObject({ hopsLeft: 5, hopsUsed: 1 });
+      expect(queue.entries).toEqual([
+        {
+          botId: OTHER_SPECIALIST_ID,
+          trigger: {
+            kind: "bot-mention",
+            sourceTurnId: TurnId.make("turn-latest"),
+            sourceBotId: SPECIALIST_ID,
+          },
+        },
+      ]);
+    }),
+  );
+
+  it.effect("ignores mentions that name nobody new", () =>
+    Effect.gen(function* () {
+      const model = readModel({ queue: [entry(OTHER_SPECIALIST_ID)] });
+
+      expect(yield* mention(model, "No names here.")).toEqual([]);
+      expect(yield* mention(model, `Note to myself, @${SPECIALIST_ID}.`)).toEqual([]);
+      expect(yield* mention(model, "@everyone take a look")).toEqual([]);
+      expect(yield* mention(model, "@nobody-by-that-name")).toEqual([]);
+      // Already waiting: it will speak once, not twice.
+      expect(yield* mention(model, `@${OTHER_SPECIALIST_ID} please`)).toEqual([]);
+    }),
+  );
+
+  it.effect("starts the mentioned bot next, on the bot that mentioned it", () =>
+    Effect.gen(function* () {
+      const base = readModel({ queue: [] });
+      const [queued] = yield* mention(base, `@${OTHER_SPECIALIST_ID} your turn`);
+
+      if (queued === undefined) throw new Error("Expected a queue event");
+
+      const model = yield* projectEvent(base, { ...queued, sequence: 1 } as OrchestrationEvent);
+      const events = yield* advance(model, "cmd-advance-chain");
+
+      // The queue event is newer than the turn, but no turn is in flight, so the chain moves on.
+      expect(startedBots(events)).toEqual([OTHER_SPECIALIST_ID]);
+      expect(queueOf(events[0])).toMatchObject({ hopsLeft: 4, hopsUsed: 2, entries: [] });
+    }),
+  );
+
+  it.effect("adds only as many mentioned bots as the budget has left", () =>
+    Effect.gen(function* () {
+      const events = yield* mention(
+        readModel({ queue: [], hopsLeft: 1 }),
+        `@${OTHER_SPECIALIST_ID} then @${BOSS_ID}`,
+      );
+
+      expect(
+        queueOf(events[0]).entries.map((item: { readonly botId: string }) => item.botId),
+      ).toEqual([OTHER_SPECIALIST_ID]);
+      expect(queueOf(events[0]).reason).toBe("mention");
+    }),
+  );
+
+  it.effect("ends the chain with a budget-exhausted queue when the budget is spent", () =>
+    Effect.gen(function* () {
+      const events = yield* mention(
+        readModel({ queue: [], hopsLeft: 0, hopsUsed: 6 }),
+        `@${OTHER_SPECIALIST_ID} one more`,
+      );
+
+      expect(events.map((event) => event.type)).toEqual(["thread.responder-queue.set"]);
+      expect(queueOf(events[0])).toMatchObject({
+        entries: [],
+        reason: "budget-exhausted",
+        budgetExhausted: true,
+        hopsLeft: 0,
+        hopsUsed: 6,
+      });
+    }),
+  );
+
+  it.effect(
+    "never cuts a bot the user addressed, and still records that the budget cut a chain",
+    () =>
+      Effect.gen(function* () {
+        const events = yield* mention(
+          readModel({ queue: [entry(BOSS_ID)], hopsLeft: 0, hopsUsed: 6 }),
+          `@${OTHER_SPECIALIST_ID} one more`,
+        );
+
+        // The addressed bot keeps its place. The reason does not claim the chain ended, and the
+        // sticky flag is what lets the notice show once the queue has emptied.
+        expect(queueOf(events[0]).reason).toBe("mention");
+        expect(queueOf(events[0]).budgetExhausted).toBe(true);
+        expect(
+          queueOf(events[0]).entries.map((item: { readonly botId: string }) => item.botId),
+        ).toEqual([BOSS_ID]);
+      }),
+  );
+
+  it.effect("keeps the exhausted flag on every later queue event of the same message", () =>
+    Effect.gen(function* () {
+      const model = readModel({
+        queue: [entry(SPECIALIST_ID), entry(OTHER_SPECIALIST_ID)],
+        budgetExhausted: true,
+      });
+
+      const popped = yield* advance(model);
+
+      expect(queueOf(popped[0])).toMatchObject({ reason: "turn-started", budgetExhausted: true });
+
+      const clean = yield* advance(readModel({ queue: [entry(SPECIALIST_ID)] }));
+
+      expect(queueOf(clean[0]).budgetExhausted).toBeUndefined();
+    }),
+  );
+
+  it.effect("ignores a reply that is no longer the chat's latest turn, or was stopped", () =>
+    Effect.gen(function* () {
+      const text = `@${OTHER_SPECIALIST_ID} hi`;
+
+      expect(yield* mention(readModel({ queue: [] }), text, { turnId: "turn-older" })).toEqual([]);
+      expect(yield* mention(readModel({ turn: "none", queue: [] }), text)).toEqual([]);
+
+      // Stop, or a newer user message, rewrote the queue after this turn began.
+      for (const reason of ["stopped", "superseded", "addressed"] as const) {
+        expect(
+          yield* mention(readModel({ queue: [], reason, queueUpdatedAt: AFTER_QUEUED }), text),
+        ).toEqual([]);
+      }
+    }),
+  );
+
+  it.effect("does nothing for a chat that is not a group chat", () =>
+    Effect.gen(function* () {
+      const model = readModel({ queue: [] });
+      const [thread] = model.threads;
+
+      if (thread === undefined) throw new Error("Expected a thread");
+
+      const direct = { ...model, threads: [{ ...thread, groupId: null }] };
+
+      expect(yield* mention(direct, `@${OTHER_SPECIALIST_ID} hi`)).toEqual([]);
+    }),
   );
 });

@@ -7,6 +7,7 @@ import { baseEventFields, baseThread } from "./threadReducer.test-support.ts";
 const queueSet = (
   entries: ReadonlyArray<string>,
   updatedAt = "2026-04-01T01:00:00.000Z",
+  budgetExhausted = false,
 ): OrchestrationEvent => ({
   ...baseEventFields,
   sequence: 7,
@@ -22,6 +23,7 @@ const queueSet = (
     })),
     hopsLeft: 5,
     hopsUsed: 1,
+    ...(budgetExhausted ? { budgetExhausted: true } : {}),
     reason: "addressed",
     updatedAt,
   },
@@ -51,6 +53,26 @@ describe("thread.responder-queue.set", () => {
     if (emptied.kind !== "updated") return;
 
     expect(emptied.thread.responderQueue).toBeUndefined();
+  });
+});
+
+describe("thread.responder-queue.set after the budget cut a chain", () => {
+  it("keeps the emptied queue so the notice survives, until a later event replaces it", () => {
+    const cut = applyThreadDetailEvent(baseThread, queueSet([], "2026-04-01T01:00:00.000Z", true));
+
+    expect(cut.kind).toBe("updated");
+
+    if (cut.kind !== "updated") return;
+
+    expect(cut.thread.responderQueue).toMatchObject({ entries: [], budgetExhausted: true });
+
+    const replaced = applyThreadDetailEvent(cut.thread, queueSet([], "2026-04-01T02:00:00.000Z"));
+
+    expect(replaced.kind).toBe("updated");
+
+    if (replaced.kind !== "updated") return;
+
+    expect(replaced.thread.responderQueue).toBeUndefined();
   });
 });
 

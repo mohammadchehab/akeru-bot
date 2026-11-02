@@ -18,6 +18,7 @@ import type * as PlatformError from "effect/PlatformError";
 
 import { requireThread } from "../commandInvariants.ts";
 import type { OrchestrationCommandInvariantError } from "../Errors.ts";
+import { resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { activeGroupBotIds, withEventBase } from "./eventBase.ts";
 
 /** What a queue event says about the budget; the decider keeps both numbers true at each turn start. */
@@ -55,6 +56,8 @@ export const responderQueueSetEvent = Effect.fn("responderQueueSetEvent")(functi
   readonly causationEventId?: OrchestrationEvent["eventId"];
   readonly entries: ReadonlyArray<ResponderQueueEntry>;
   readonly budget: ResponderBudget;
+  /** Copied from the queue being replaced; a user message starts without it. */
+  readonly budgetExhausted?: boolean | undefined;
   readonly reason: ResponderQueueReason;
 }) {
   return {
@@ -71,6 +74,7 @@ export const responderQueueSetEvent = Effect.fn("responderQueueSetEvent")(functi
       entries: input.entries,
       hopsLeft: input.budget.hopsLeft,
       hopsUsed: input.budget.hopsUsed,
+      ...(input.budgetExhausted ? { budgetExhausted: true } : {}),
       reason: input.reason,
       updatedAt: input.createdAt,
     },
@@ -151,6 +155,7 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
       createdAt: command.createdAt,
       entries,
       budget,
+      budgetExhausted: queue.budgetExhausted,
       reason,
     });
 
@@ -199,4 +204,102 @@ export const decideResponderAdvance = Effect.fn("decideResponderAdvance")(functi
   };
 
   return [poppedEvent, turnStartEvent];
+});
+
+// A queue rewritten by one of these after the reply's turn began belongs to a newer message or a
+// Stop, so that reply no longer chains.
+const REWRITES_THE_CHAIN: ReadonlySet<ResponderQueueReason> = new Set([
+  "addressed",
+  "superseded",
+  "stopped",
+]);
+
+/**
+ * Queues the bots a finished reply mentions. The hop budget gates only these mention-triggered
+ * entries: bots the user addressed always run, so a mention dropped for budget never removes
+ * them. Dropping one sets the sticky `budgetExhausted` flag so clients can say the chain was cut.
+ */
+export const decideResponderMention = Effect.fn("decideResponderMention")(function* ({
+  command,
+  readModel,
+}: {
+  readonly command: Extract<OrchestrationCommand, { type: "thread.responder.mention" }>;
+  readonly readModel: OrchestrationReadModel;
+}): Effect.fn.Return<
+  ReadonlyArray<Omit<OrchestrationEvent, "sequence">>,
+  OrchestrationCommandInvariantError | PlatformError.PlatformError,
+  Crypto.Crypto
+> {
+  const thread = yield* requireThread({ readModel, command, threadId: command.threadId });
+  const queue = thread.responderQueue;
+  const latestTurn = thread.latestTurn;
+
+  const group = thread.groupId
+    ? readModel.groups.find((entry) => entry.id === thread.groupId)
+    : undefined;
+
+  // Only the chat's latest turn chains, and not after a Stop or a newer message rewrote the queue.
+  if (group === undefined || latestTurn === null || latestTurn.turnId !== command.turnId) return [];
+
+  if (
+    queue !== undefined &&
+    queue.updatedAt > latestTurn.requestedAt &&
+    REWRITES_THE_CHAIN.has(queue.reason)
+  ) {
+    return [];
+  }
+
+  const activeIds = activeGroupBotIds(readModel, group);
+
+  const members = readModel.bots.flatMap((bot) =>
+    bot.archivedAt === null && activeIds.has(bot.id) ? [{ id: bot.id, name: bot.name }] : [],
+  );
+
+  const addressing = resolveComposerAddressing(command.text, members);
+
+  if (addressing.kind !== "bots") return [];
+
+  const entries = queue?.entries ?? [];
+  const waiting = new Set(entries.map((entry) => entry.botId));
+
+  // In the order the reply wrote them, so a spent budget keeps the first mention.
+  const fresh = addressing.botIds.flatMap((id) => {
+    const member = members.find((candidate) => candidate.id === id);
+
+    return member !== undefined && member.id !== command.botId && !waiting.has(member.id)
+      ? [member.id]
+      : [];
+  });
+
+  if (fresh.length === 0) return [];
+
+  // Pending entries will spend the budget when they start, so only what is left beyond them can
+  // be added by a mention.
+  const budget = queue === undefined ? budgetAfterFirstTurn(thread) : budgetOf(queue);
+  const added = fresh.slice(0, Math.max(0, budget.hopsLeft - entries.length));
+  const dropped = added.length < fresh.length;
+
+  return [
+    yield* responderQueueSetEvent({
+      threadId: command.threadId,
+      commandId: command.commandId,
+      createdAt: command.createdAt,
+      entries: [
+        ...entries,
+        ...added.map((botId) => ({
+          botId,
+          trigger: {
+            kind: "bot-mention" as const,
+            sourceTurnId: command.turnId,
+            sourceBotId: command.botId,
+          },
+        })),
+      ],
+      budget,
+      budgetExhausted: queue?.budgetExhausted === true || dropped,
+      // The reason names why the queue last changed; "budget-exhausted" only when the budget
+      // is what left it empty.
+      reason: entries.length === 0 && added.length === 0 ? "budget-exhausted" : "mention",
+    }),
+  ];
 });
