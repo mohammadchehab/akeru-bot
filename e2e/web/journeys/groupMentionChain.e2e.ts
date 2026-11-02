@@ -32,17 +32,29 @@ describe("group chat mention chains", () => {
   });
 
   it("hands the floor to a bot another bot @mentions, and ends when nobody new is mentioned", async () => {
+    const asked = crew.stack.stub.completions.length;
+    const answered = await providerReplies(crew.page).count();
+
     await sendToCrew(crew.page, "[say:Bot1=~Bot2, please add to that] start");
 
     // The stub really said it, so a missing second reply is the server's doing.
     await providerReplies(crew.page)
-      .first()
+      .nth(answered)
       .getByText("@Bot2, please add to that")
       .waitFor({ timeout: REPLY_TIMEOUT_MS });
     await providerReplies(crew.page)
-      .nth(1)
+      .nth(answered + 1)
       .getByText(stubReplyFrom("Bot2"))
       .waitFor({ timeout: REPLY_TIMEOUT_MS });
+
+    // A follow-up message proves the chain is over: its turn is the very next request to the model.
+    await sendAndExpectReplies(crew, "[say:Bot1=done] anything more?", ["Bot1"]);
+
+    // Bot2 is asked once and answers once: a double start would add a second turn and reply.
+    const turns = crew.stack.stub.completions.slice(asked).map((completion) => completion.bot);
+
+    expect(turns).toEqual(["Bot1", "Bot2", "Bot1"]);
+    expect(await providerReplies(crew.page).count()).toBe(answered + 3);
   });
 
   it("does not hand the floor on a mention inside a code span", async () => {
