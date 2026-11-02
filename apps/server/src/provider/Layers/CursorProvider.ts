@@ -201,6 +201,9 @@ export const checkCursorProviderStatus = Effect.fn("checkCursorProviderStatus")(
   const versionOutput = versionResult.success.value;
   const version = parseGenericCliVersion(`${versionOutput.stdout}\n${versionOutput.stderr}`);
 
+  // The snapshot keeps the date version; the raw string (with its build suffix) goes to the log.
+  yield* Effect.logDebug("Cursor CLI version.", { raw: versionOutput.stdout.trim(), version });
+
   if (versionOutput.code !== 0) {
     return snapshot({
       installed: true,

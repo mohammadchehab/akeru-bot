@@ -228,7 +228,9 @@ describe("provider enabled defaults", () => {
 
     // Cursor is a driver again, so the legacy map keeps the key and the instance envelope
     // names a driver the registry knows.
-    expect(decoded.providers.cursor).toMatchObject({ enabled: true, binaryPath: "cursor-agent" });
+    // The retired integration's flag never switches the new provider on: enabling is an
+    // explicit opt-in, so `enabled` decodes to false and the other settings are kept.
+    expect(decoded.providers.cursor).toMatchObject({ enabled: false, binaryPath: "cursor-agent" });
     expect(decoded.providerInstances[cursorId]?.driver).toBe(cursor);
     expect(decodeServerSettingsPatch({ providers: { cursor: { enabled: false } } })).toEqual({
       providers: { cursor: { enabled: false } },
@@ -293,6 +295,16 @@ describe("ServerSettingsPatch.providerInstances", () => {
 describe("CursorSettings", () => {
   it("defaults to off with the `agent` binary", () => {
     expect(decodeCursorSettings({})).toMatchObject({ enabled: false, binaryPath: "agent" });
+  });
+
+  it("never decodes a stored enabled flag to true: Cursor is an explicit opt-in", () => {
+    expect(decodeCursorSettings({ enabled: true }).enabled).toBe(false);
+  });
+
+  it("keeps the other legacy settings when it forces enabled off", () => {
+    expect(
+      decodeCursorSettings({ enabled: true, binaryPath: "cursor-agent", customModels: ["x"] }),
+    ).toMatchObject({ enabled: false, binaryPath: "cursor-agent", customModels: ["x"] });
   });
 
   it("carries a custom model list like every other driver", () => {

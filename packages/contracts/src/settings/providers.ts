@@ -2,6 +2,7 @@ import type { ProviderInstanceConfig } from "../providerInstance.ts";
 import * as Predicate from "effect/Predicate";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
+import * as SchemaTransformation from "effect/SchemaTransformation";
 import { TrimmedString } from "../baseSchemas.ts";
 import { binaryPathSetting, providerSettingsSchema } from "./providerForms.ts";
 
@@ -274,8 +275,17 @@ export type OpenCodeSettings = typeof OpenCodeSettings.Type;
 
 export const CursorSettings = providerSettingsSchema(
   {
-    // Off by default; it is hidden from the picker until the Settings card ships.
+    // Cursor is an explicit opt-in. A stored flag, including one written by the retired Cursor
+    // integration, never switches it on: it always decodes to false, and enabling goes through
+    // the instance envelope's `enabled` (the Settings toggle).
     enabled: Schema.Boolean.pipe(
+      Schema.decodeTo(
+        Schema.Boolean,
+        SchemaTransformation.transform<boolean, boolean>({
+          decode: () => false,
+          encode: (enabled) => enabled,
+        }),
+      ),
       Schema.withDecodingDefault(Effect.succeed(false)),
       Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
     ),
