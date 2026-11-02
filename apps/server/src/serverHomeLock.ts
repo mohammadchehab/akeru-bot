@@ -93,7 +93,9 @@ const make = Effect.gen(function* () {
       Effect.gen(function* () {
         const stagedPath = `${lockPath}.${record.pid}.tmp`;
 
-        yield* Effect.addFinalizer(() => fs.remove(stagedPath, { force: true }).pipe(Effect.ignore));
+        yield* Effect.addFinalizer(() =>
+          fs.remove(stagedPath, { force: true }).pipe(Effect.ignore),
+        );
         yield* fs.writeFileString(stagedPath, `${JSON.stringify(record)}\n`);
 
         return yield* fs.link(stagedPath, lockPath).pipe(
@@ -158,7 +160,9 @@ const make = Effect.gen(function* () {
   const ownsLock = readHolder.pipe(
     Effect.map(
       (holder) =>
-        Option.isSome(holder) && holder.value.pid === process.pid && holder.value.hostname === hostname,
+        Option.isSome(holder) &&
+        holder.value.pid === process.pid &&
+        holder.value.hostname === hostname,
     ),
   );
 
@@ -172,6 +176,8 @@ const make = Effect.gen(function* () {
 
   yield* Effect.acquireRelease(acquire, () => release);
 
+  const services = yield* Effect.context<FileSystem.FileSystem | Path.Path>();
+
   const bindPort = (port: number) =>
     Effect.gen(function* () {
       const holder = yield* readHolder;
@@ -183,7 +189,10 @@ const make = Effect.gen(function* () {
         contents: `${JSON.stringify({ ...holder.value, port })}\n`,
       });
     }).pipe(
-      Effect.catchCause((cause) => Effect.logWarning("Failed to record the server port", { cause })),
+      Effect.provideContext(services),
+      Effect.catchCause((cause) =>
+        Effect.logWarning("Failed to record the server port", { cause }),
+      ),
     );
 
   return ServerHomeLock.of({ lockPath, bindPort });

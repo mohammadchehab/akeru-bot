@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import * as NodeChildProcess from "node:child_process";
 import * as NodeOS from "node:os";
 
 import { assert, describe, it } from "@effect/vitest";
@@ -22,7 +22,7 @@ const TestLayer = layerTest(process.cwd(), { prefix: "isnadi-home-lock-test-" })
 
 // A pid that belonged to a process that has since exited.
 const deadPid = (): number => {
-  const child = spawnSync(process.execPath, ["-e", ""]);
+  const child = NodeChildProcess.spawnSync(process.execPath, ["-e", ""]);
 
   if (child.pid === undefined) throw new Error("Could not spawn a child to learn a dead pid.");
 
