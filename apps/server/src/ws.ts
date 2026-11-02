@@ -128,11 +128,13 @@ export const websocketRpcRouteLayer = Layer.unwrap(
         // session is revoked or reaches its expiry; winning the race interrupts the
         // handler, which closes the socket and its subscriptions.
         const { expiresAt } = session;
+
         const sessionEnded = Effect.raceFirst(
           sessions.streamChanges.pipe(
             Stream.filter(
               (change) => change.type === "clientRemoved" && change.sessionId === session.sessionId,
             ),
+            Stream.take(1),
             Stream.runDrain,
           ),
           expiresAt === undefined

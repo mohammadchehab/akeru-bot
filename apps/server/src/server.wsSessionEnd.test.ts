@@ -42,6 +42,7 @@ const pairSecondClient = (ownerCookie: string) =>
       headers: { cookie: ownerCookie },
       body: yield* HttpBody.json({}),
     });
+
     const pairingBody = (yield* pairingResponse.json) as { readonly credential: string };
 
     return yield* getAuthenticatedSessionCookieHeader(pairingBody.credential);
@@ -58,10 +59,12 @@ it.layer(NodeServices.layer)("websocket session lifetime", (it) => {
       const clientsResponse = yield* HttpClient.get("/api/auth/clients", {
         headers: { cookie: ownerCookie },
       });
+
       const clients = (yield* clientsResponse.json) as ReadonlyArray<{
         readonly sessionId: string;
         readonly current: boolean;
       }>;
+
       const pairedSessionId = clients.find((entry) => !entry.current)?.sessionId;
 
       assert.isDefined(pairedSessionId);
