@@ -17,6 +17,7 @@ import * as Equal from "effect/Equal";
 import * as Option from "effect/Option";
 import { resolveThreadWorkspaceCwd } from "../../../checkpointing/Utils.ts";
 import { ProviderAdapterRequestError } from "../../../provider/Errors.ts";
+import { cursorSandboxRejection } from "../../../provider/Layers/cursor/CursorSandbox.ts";
 import {
   botRuntimeResourceScope,
   botWorkspaceCredentialFingerprint,
@@ -305,6 +306,16 @@ export function createSession({
               variable.value,
             ]),
           );
+
+    const sandboxRejection = cursorSandboxRejection(preferredProvider, effectiveSandbox);
+
+    if (sandboxRejection !== undefined) {
+      return yield* new ProviderAdapterRequestError({
+        provider: providerErrorLabel(preferredProvider),
+        method: "thread.turn.start",
+        detail: sandboxRejection,
+      });
+    }
 
     if (effectiveSandbox !== "local") {
       const missingCredential = SANDBOX_PROVIDER_CREDENTIALS[effectiveSandbox].find(
