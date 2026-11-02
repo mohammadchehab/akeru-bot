@@ -88,6 +88,7 @@ import Migration0072 from "./Migrations/072_ProjectionThreadMessageChannelDelive
 import Migration0073 from "./Migrations/073_RoutineCanceledClaims.ts";
 import Migration0074 from "./Migrations/074_RenameLegacyProductTables.ts";
 import Migration0075 from "./Migrations/075_ProjectionThreadResponderQueue.ts";
+import Migration0076 from "./Migrations/076_ProjectionTurnTrigger.ts";
 
 /**
  * Migration loader with all migrations defined inline.
@@ -175,6 +176,7 @@ export const migrationEntries = [
   [73, "RoutineCanceledClaims", Migration0073],
   [74, "RenameLegacyProductTables", Migration0074],
   [75, "ProjectionThreadResponderQueue", Migration0075],
+  [76, "ProjectionTurnTrigger", Migration0076],
 ] as const;
 
 export const migrationManifest = migrationEntries.map(([id, name]) => [id, name] as const);

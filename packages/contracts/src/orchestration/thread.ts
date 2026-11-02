@@ -257,6 +257,7 @@ export const OrchestrationLatestTurn = Schema.Struct({
   assistantMessageId: Schema.NullOr(MessageId),
   requestMessageId: Schema.optional(Schema.NullOr(MessageId)),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  trigger: Schema.optional(ResponderTrigger),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
   errorMessage: Schema.optional(TrimmedNonEmptyString),
   unavailability: Schema.optional(

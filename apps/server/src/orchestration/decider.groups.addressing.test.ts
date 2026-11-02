@@ -237,6 +237,10 @@ it.layer(NodeServices.layer)("group turn addressing", (it) => {
 
       if (event?.type !== "thread.turn-start-requested") throw new Error("Expected turn start");
       expect(event.payload.respondingBotId).toBe(SPECIALIST_ID);
+      expect(event.payload.trigger).toEqual({
+        kind: "user",
+        messageId: event.payload.messageId,
+      });
       expect(event.payload.queuedResponderBotIds ?? []).toEqual([]);
     }),
   );

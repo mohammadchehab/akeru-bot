@@ -311,6 +311,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           interactionMode: targetThread.interactionMode,
           ...(sourceProposedPlan !== undefined ? { sourceProposedPlan } : {}),
           respondingBotId,
+          trigger: { kind: "user", messageId: command.message.messageId },
           ...(command.timezone !== undefined ? { timezone: command.timezone } : {}),
           ...(acknowledgedDelegations.length > 0
             ? {
@@ -597,6 +598,7 @@ export const decideThreadTurns = Effect.fn("decideThreadTurns")(function* ({
           runtimeMode: thread.runtimeMode,
           interactionMode: thread.interactionMode,
           respondingBotId: nextBot.id,
+          trigger: next.trigger,
           createdAt: command.createdAt,
         },
       };

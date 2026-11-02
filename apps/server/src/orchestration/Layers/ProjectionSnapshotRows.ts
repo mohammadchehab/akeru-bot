@@ -16,6 +16,7 @@ import {
   McpServerId,
   NonNegativeInt,
   OrchestrationCheckpointFile,
+  ResponderTrigger,
   OrchestrationMessageReaction,
   OrchestrationProposedPlanId,
   OrchestrationReadModel,
@@ -187,6 +188,7 @@ export const ProjectionLatestTurnDbRowSchema = Schema.Struct({
   assistantMessageId: Schema.NullOr(MessageId),
   pendingMessageId: Schema.NullOr(MessageId),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  trigger: Schema.optional(Schema.NullOr(Schema.fromJsonString(ResponderTrigger))),
   sourceProposedPlanThreadId: Schema.NullOr(ThreadId),
   sourceProposedPlanId: Schema.NullOr(OrchestrationProposedPlanId),
 });
@@ -404,6 +406,7 @@ export function mapLatestTurn(
     assistantMessageId: row.assistantMessageId,
     requestMessageId: row.pendingMessageId,
     respondingBotId: row.respondingBotId ?? null,
+    ...(row.trigger ? { trigger: row.trigger } : {}),
     ...(row.sourceProposedPlanThreadId !== null && row.sourceProposedPlanId !== null
       ? {
           sourceProposedPlan: {

@@ -501,6 +501,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads
@@ -562,6 +563,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads
@@ -590,6 +592,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads

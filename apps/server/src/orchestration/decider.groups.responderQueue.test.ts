@@ -118,6 +118,7 @@ it.layer(NodeServices.layer)("group responder queue decider", (it) => {
       expect(queue.payload.reason).toBe("turn-started");
       expect(start.payload.respondingBotId).toBe(SPECIALIST_ID);
       expect(start.payload.messageId).toBe(USER_MESSAGE);
+      expect(start.payload.trigger).toEqual({ kind: "user", messageId: USER_MESSAGE });
       expect(start.payload.modelSelection).toEqual({
         instanceId: "specialist-provider",
         model: "specialist-model",

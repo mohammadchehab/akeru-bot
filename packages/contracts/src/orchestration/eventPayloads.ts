@@ -56,6 +56,7 @@ import {
   ThreadLinkedPullRequest,
   ResponderQueueEntry,
   ResponderQueueReason,
+  ResponderTrigger,
 } from "./thread.ts";
 
 export const OrchestrationEventType = Schema.Literals([
@@ -489,6 +490,8 @@ export const ThreadTurnStartRequestedPayload = Schema.Struct({
   hiddenWake: Schema.optional(Schema.Boolean),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  /** What started this turn: a user message, or another bot's mention. */
+  trigger: Schema.optional(ResponderTrigger),
   timezone: Schema.optional(TrimmedNonEmptyString),
   /**
    * Finished child delegations acknowledged by this turn start. The same
