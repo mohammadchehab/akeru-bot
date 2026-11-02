@@ -18,6 +18,11 @@ describe("cursorSandboxRejection", () => {
     },
   );
 
+  it("fails closed on a sandbox kind it does not know", () => {
+    // A future or corrupt value is not Local, so it is rejected rather than let through.
+    expect(cursorSandboxRejection(cursor, "someday")).toContain("someday");
+  });
+
   it("leaves every other driver alone", () => {
     expect(cursorSandboxRejection(ProviderDriverKind.make("codex"), "daytona")).toBeUndefined();
   });
