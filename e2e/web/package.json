@@ -1,0 +1,16 @@
+{
+  "name": "@isnadi/e2e-web",
+  "version": "0.0.4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "e2e": "vp test run",
+    "typecheck": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "playwright-core": "1.60.0"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  }
+}

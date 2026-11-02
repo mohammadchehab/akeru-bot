@@ -82,6 +82,18 @@
             }
           },
           {
+            // The e2e harness drives a browser and spawns the dev stack from plain Node. It never
+            // ships and runs outside Effect, so it uses node builtins, timers, and the console.
+            "include": ["**/e2e/**/*.ts"],
+            "options": {
+              "diagnosticSeverity": {
+                "nodeBuiltinImport": "off",
+                "globalConsole": "off",
+                "globalTimers": "off"
+              }
+            }
+          },
+          {
             // Electron guest-page preload bundles and standalone launchers run outside Effect.
             // Desktop pre-ready reads preserve synchronous startup ordering; the native key
             // watchdog and server entry detection also require their platform boundaries.
