@@ -34,7 +34,9 @@
   <a href="ROADMAP.md">Roadmap</a>
 </p>
 
-<!-- Hero screenshot goes here: .github/assets/screenshots/hero.png -->
+<p align="center">
+  <img src=".github/assets/hero.png" alt="IsnadiBot on desktop and iPhone: the Chief bot explains what it can do" width="100%">
+</p>
 
 ---
 

@@ -28,6 +28,10 @@
   <a href="ROADMAP.md"><img src="https://img.shields.io/badge/collaborators-wanted-f97316" alt="نبحث عن مساهمين"></a>
 </p>
 
+<p align="center">
+  <img src=".github/assets/hero.png" alt="IsnadiBot على سطح المكتب والآيفون" width="100%">
+</p>
+
 ---
 
 > [!NOTE]
