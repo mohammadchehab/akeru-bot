@@ -253,7 +253,7 @@ export const BotRosterRow = memo(function BotRosterRow({
               {latestMessage || taskTitle ? (
                 // Messenger preview: the last thing said. A chat with no
                 // messages yet shows its title instead.
-                <span className="truncate text-sm text-sidebar-muted-foreground">
+                <span dir="auto" className="truncate text-sm text-sidebar-muted-foreground">
                   {latestMessage ? latestMessage.text : taskTitle}
                 </span>
               ) : null}
