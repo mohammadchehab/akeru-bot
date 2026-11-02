@@ -65,11 +65,15 @@ function CommandPaletteItemLabel(props: { item: CommandPaletteActionItem }) {
       {props.item.icon}
       {props.item.description ? (
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-sm text-foreground">{props.item.title}</span>
+          <span className="truncate text-sm text-foreground">
+            <bdi>{props.item.title}</bdi>
+          </span>
           <span className="min-w-0 text-muted-foreground/70 text-xs">{props.item.description}</span>
         </span>
       ) : (
-        <span className="min-w-0 flex-1 truncate text-sm text-foreground">{props.item.title}</span>
+        <span className="min-w-0 flex-1 truncate text-sm text-foreground">
+          <bdi>{props.item.title}</bdi>
+        </span>
       )}
     </>
   );

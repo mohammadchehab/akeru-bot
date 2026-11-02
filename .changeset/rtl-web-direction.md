@@ -2,4 +2,4 @@
 "isnadibot": minor
 ---
 
-The web interface now follows the language's writing direction, and each chat message block, composer paragraph, and bot name takes the direction of its own text. Code stays left to right.
+Chat messages, the composer, and bot and chat names now take the direction of their own text, so Arabic, Hebrew, and other right-to-left text reads correctly in the English interface. Code, paths, and shortcut keys stay left to right.
