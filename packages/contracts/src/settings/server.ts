@@ -38,6 +38,7 @@ import {
   GrokSettings,
   KimiSettings,
   OpenCodeGoSettings,
+  CursorSettings,
   CustomOpenaiSettings,
   OpenCodeSettings,
   CodexSettingsPatch,
@@ -45,6 +46,7 @@ import {
   GrokSettingsPatch,
   KimiSettingsPatch,
   OpenCodeGoSettingsPatch,
+  CursorSettingsPatch,
   CustomOpenaiSettingsPatch,
   OpenCodeSettingsPatch,
 } from "./providers.ts";
@@ -231,6 +233,7 @@ export const ServerSettings = Schema.Struct({
     opencode: OpenCodeSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
     opencodeGo: OpenCodeGoSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
     customOpenai: CustomOpenaiSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
+    cursor: CursorSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
   }).pipe(Schema.withDecodingDefault(Effect.succeed({}))),
   // New driver-agnostic instance map. Keyed by `ProviderInstanceId`; values
   // are `ProviderInstanceConfig` envelopes. The driver-specific config blob
@@ -370,6 +373,7 @@ const ServerSettingsPatchFields = {
       opencode: Schema.optionalKey(OpenCodeSettingsPatch),
       opencodeGo: Schema.optionalKey(OpenCodeGoSettingsPatch),
       customOpenai: Schema.optionalKey(CustomOpenaiSettingsPatch),
+      cursor: Schema.optionalKey(CursorSettingsPatch),
     }),
   ),
   // Whole-map replacement for the new instance config. Patching individual

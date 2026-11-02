@@ -3,6 +3,7 @@ import {
   ClientSettingsSchema,
   ClientSettingsPatch,
   ClaudeSettings,
+  CursorSettings,
   ServerSettings,
   ServerSettingsPatch,
   ServerSettingsRpcPatch,
@@ -21,3 +22,5 @@ export const decodeServerSettingsRpcPatch = Schema.decodeUnknownSync(ServerSetti
 export const encodeServerSettings = Schema.encodeSync(ServerSettings);
 
 export const decodeClaudeSettings = Schema.decodeUnknownSync(ClaudeSettings);
+
+export const decodeCursorSettings = Schema.decodeUnknownSync(CursorSettings);

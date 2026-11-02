@@ -10,6 +10,7 @@ import {
   decodeServerSettingsPatch,
   decodeServerSettingsRpcPatch,
   decodeClaudeSettings,
+  decodeCursorSettings,
 } from "./settings.test-support.ts";
 
 describe("ServerSettings voice", () => {
@@ -214,7 +215,7 @@ describe("provider enabled defaults", () => {
     expect(defaultEnabledForDriver(ProviderDriverKind.make("ollama"))).toBe(true);
   });
 
-  it("still decodes settings that name the retired Cursor provider", () => {
+  it("decodes settings written by the earlier Cursor provider into the new one", () => {
     const cursor = ProviderDriverKind.make("cursor");
     const cursorId = ProviderInstanceId.make("cursor");
 
@@ -225,12 +226,12 @@ describe("provider enabled defaults", () => {
       },
     });
 
-    // The legacy map drops the key; the instance envelope survives opaquely and
-    // the registry reports it as an unavailable driver.
-    expect(decoded.providers).not.toHaveProperty("cursor");
+    // Cursor is a driver again, so the legacy map keeps the key and the instance envelope
+    // names a driver the registry knows.
+    expect(decoded.providers.cursor).toMatchObject({ enabled: true, binaryPath: "cursor-agent" });
     expect(decoded.providerInstances[cursorId]?.driver).toBe(cursor);
     expect(decodeServerSettingsPatch({ providers: { cursor: { enabled: false } } })).toEqual({
-      providers: {},
+      providers: { cursor: { enabled: false } },
     });
   });
 
@@ -286,5 +287,27 @@ describe("ServerSettingsPatch.providerInstances", () => {
 
     const ollamaId = ProviderInstanceId.make("ollama_local");
     expect(patch.providerInstances?.[ollamaId]?.driver).toBe("ollama");
+  });
+});
+
+describe("CursorSettings", () => {
+  it("defaults to off with the `agent` binary", () => {
+    expect(decodeCursorSettings({})).toMatchObject({ enabled: false, binaryPath: "agent" });
+  });
+
+  it("keeps a configured binary path", () => {
+    expect(decodeCursorSettings({ binaryPath: "/opt/cursor/agent" }).binaryPath).toBe(
+      "/opt/cursor/agent",
+    );
+  });
+
+  it("is part of the default server settings but stays disabled", () => {
+    expect(DEFAULT_SERVER_SETTINGS.providers.cursor.enabled).toBe(false);
+  });
+
+  it("accepts a cursor patch", () => {
+    expect(decodeServerSettingsPatch({ providers: { cursor: { binaryPath: "agent2" } } })).toEqual({
+      providers: { cursor: { binaryPath: "agent2" } },
+    });
   });
 });
