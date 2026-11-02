@@ -132,25 +132,27 @@ export const makeCursorLoginControl = Effect.fn("makeCursorLoginControl")(functi
 
   /** Signs out. The caller refreshes the provider, so the snapshot it returns is the fresh one. */
   const logout = Effect.fn("CursorLoginControl.logout")(function* (instanceId: ProviderInstanceId) {
-    return yield* lock.withPermits(1)(
-      Effect.gen(function* () {
-        yield* stopCurrent;
+    return yield* lock
+      .withPermits(1)(
+        Effect.gen(function* () {
+          yield* stopCurrent;
 
-        const target = yield* resolve("logout", instanceId);
+          const target = yield* resolve("logout", instanceId);
 
-        const result = yield* spawnAndCollect(
-          target.binaryPath,
-          ChildProcess.make(target.spawnCommand.command, target.spawnCommand.args, {
-            env: target.env,
-            shell: target.spawnCommand.shell,
-          }),
-        ).pipe(Effect.mapError((cause) => failure("logout", String(cause))));
+          const result = yield* spawnAndCollect(
+            target.binaryPath,
+            ChildProcess.make(target.spawnCommand.command, target.spawnCommand.args, {
+              env: target.env,
+              shell: target.spawnCommand.shell,
+            }),
+          ).pipe(Effect.mapError((cause) => failure("logout", String(cause))));
 
-        if (result.code !== 0) {
-          return yield* failure("logout", result.stderr || result.stdout);
-        }
-      }),
-    );
+          if (result.code !== 0) {
+            return yield* failure("logout", result.stderr || result.stdout);
+          }
+        }),
+      )
+      .pipe(Effect.asVoid);
   });
 
   return { start, logout, cancel };

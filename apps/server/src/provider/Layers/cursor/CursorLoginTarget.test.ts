@@ -36,7 +36,7 @@ describe("resolveCursorLoginTarget", () => {
           [ProviderInstanceId.make("cursor_work")]: {
             driver: ProviderDriverKind.make("cursor"),
             config: { binaryPath: "/work/agent" },
-            environment: [{ name: "CURSOR_CONFIG_DIR", value: "/work/cursor" }],
+            environment: [{ name: "CURSOR_CONFIG_DIR", value: "/work/cursor", sensitive: false }],
           },
         },
       }),
