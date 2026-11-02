@@ -73,9 +73,11 @@ const DRIVER_CONNECTIONS = {
   kimi: { provider: "kimi", connection: "kimi-for-coding" },
   opencode: { provider: "opencode", connection: "opencode-go" },
   opencodeGo: { provider: "opencode", connection: "opencode-go" },
+  // Cursor signs in through its own CLI, so no Isnadi connection gates its usage.
+  cursor: { provider: "cursor", connection: null },
 } as const satisfies Record<
   string,
-  { readonly provider: UsageProviderKind; readonly connection: SubscriptionProviderId }
+  { readonly provider: UsageProviderKind; readonly connection: SubscriptionProviderId | null }
 >;
 
 export interface PriceStepUsageInput {
@@ -106,7 +108,11 @@ export function usageRecordFromEntry(
     ([driver]) => driver === entry.provider,
   )?.[1];
 
-  if (mapping === undefined || !connectedProviders.has(mapping.connection)) return null;
+  if (
+    mapping === undefined ||
+    (mapping.connection !== null && !connectedProviders.has(mapping.connection))
+  )
+    return null;
 
   const timestamp = DateTime.make(entry.createdAt);
 
@@ -444,7 +450,11 @@ export const make = Effect.gen(function* () {
     const sources: UsageSource[] = [
       ...new Set(
         Object.values(DRIVER_CONNECTIONS)
-          .filter((mapping) => connectedSet.has(mapping.connection))
+          .filter((mapping) =>
+            mapping.connection === null
+              ? (sessionsByProvider.get(mapping.provider)?.size ?? 0) > 0
+              : connectedSet.has(mapping.connection),
+          )
           .map((mapping) => mapping.provider),
       ),
     ].map((provider) => ({

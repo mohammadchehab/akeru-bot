@@ -142,6 +142,7 @@ const ACTIVITY_COLOR: Record<UsageProviderKind, DitherColor> = {
   grok: "grey",
   kimi: "blue",
   opencode: "green",
+  cursor: "blue",
 };
 
 export function UsageActivityChart(props: {

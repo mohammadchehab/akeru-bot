@@ -1,6 +1,14 @@
 import type { UsageProviderKind } from "@isnadi/contracts";
 
-import { ClaudeAI, GrokIcon, KimiIcon, OpenCodeIcon, type Icon, OpenAI } from "../Icons";
+import {
+  ClaudeAI,
+  CursorIcon,
+  GrokIcon,
+  KimiIcon,
+  OpenCodeIcon,
+  type Icon,
+  OpenAI,
+} from "../Icons";
 
 type UsageProviderPresentation = {
   readonly label: string;
@@ -39,6 +47,11 @@ export const PROVIDER_PRESENTATION = {
     color: "#34d399",
     mark: OpenCodeIcon,
   },
+  cursor: {
+    label: "Cursor",
+    color: "#a78bfa",
+    mark: CursorIcon,
+  },
 } satisfies Record<UsageProviderKind, UsageProviderPresentation>;
 
 /** Stable provider reading order across charts, summaries, tables, and hover rows. */
@@ -48,6 +61,7 @@ export const PROVIDER_ORDER = [
   "grok",
   "kimi",
   "opencode",
+  "cursor",
 ] satisfies UsageProviderKind[];
 
 /** Providers with real activity, independent of the metric currently displayed. */

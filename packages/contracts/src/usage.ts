@@ -22,7 +22,14 @@ import { SubscriptionProviderId } from "./subscriptionAuth.ts";
  */
 export const USAGE_CONTRACT_VERSION = 5 as const;
 
-export const UsageProviderKind = Schema.Literals(["claude", "codex", "grok", "kimi", "opencode"]);
+export const UsageProviderKind = Schema.Literals([
+  "claude",
+  "codex",
+  "grok",
+  "kimi",
+  "opencode",
+  "cursor",
+]);
 
 export type UsageProviderKind = typeof UsageProviderKind.Type;
 

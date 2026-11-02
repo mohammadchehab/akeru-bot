@@ -4,6 +4,7 @@ export { type Icon } from "./icons/iconTypes";
 
 export {
   ClaudeAI,
+  CursorIcon,
   CustomApiIcon,
   GrokIcon,
   KimiIcon,

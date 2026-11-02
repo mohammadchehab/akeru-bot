@@ -68,6 +68,13 @@ export const OpenCodeIcon: Icon = (props) => (
   </svg>
 );
 
+/** Isometric cube mark for Cursor, drawn in the tint colour so it follows the theme. */
+export const CursorIcon: Icon = ({ className, ...props }) => (
+  <svg {...props} viewBox="0 0 24 24" className={cn("fill-tint", className)}>
+    <path d="M12 1.5 21 6.75v10.5L12 22.5 3 17.25V6.75L12 1.5Zm0 2.3L5.6 7.5 12 11.2l6.4-3.7L12 3.8Zm-7 5.4v7.1l6.2 3.6v-7.1L5 9.2Zm14 0-6.2 3.6v7.1l6.2-3.6V9.2Z" />
+  </svg>
+);
+
 /** Neutral plug glyph for user-supplied endpoints, which have no brand of their own. */
 export const CustomApiIcon: Icon = ({ className, ...props }) => (
   <svg

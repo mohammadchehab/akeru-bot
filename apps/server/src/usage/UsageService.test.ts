@@ -129,6 +129,13 @@ describe("usageRecordFromEntry", () => {
     expect(UsageService.usageRecordFromEntry(entry("codex"), new Set())).toBeNull();
   });
 
+  it("counts Cursor usage without an Isnadi connection because Cursor signs in through its own CLI", () => {
+    expect(UsageService.usageRecordFromEntry(entry("cursor"), new Set())).toMatchObject({
+      provider: "cursor",
+      model: "test-model",
+    });
+  });
+
   it.each([
     ["claudeAgent", "anthropic", "claude"],
     ["codex", "openai-codex", "codex"],

@@ -1,6 +1,7 @@
 import {
   ClaudeSettings,
   CodexSettings,
+  CursorSettings,
   CustomOpenaiSettings,
   GrokSettings,
   KimiSettings,
@@ -10,6 +11,7 @@ import {
 import type * as Schema from "effect/Schema";
 import {
   ClaudeAI,
+  CursorIcon,
   CustomApiIcon,
   GrokIcon,
   KimiIcon,
@@ -75,6 +77,12 @@ export const PROVIDER_CLIENT_DEFINITIONS: readonly ProviderClientDefinition[] = 
     label: "OpenCode Go",
     icon: OpenCodeIcon,
     settingsSchema: OpenCodeGoSettings,
+  },
+  {
+    value: ProviderDriverKind.make("cursor"),
+    label: "Cursor",
+    icon: CursorIcon,
+    settingsSchema: CursorSettings,
   },
   {
     value: ProviderDriverKind.make("customOpenai"),

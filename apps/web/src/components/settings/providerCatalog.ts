@@ -1,6 +1,6 @@
 import { ProviderDriverKind } from "@isnadi/contracts";
 
-import { CustomApiIcon, type Icon } from "../Icons";
+import { CursorIcon, CustomApiIcon, type Icon } from "../Icons";
 import {
   SUBSCRIPTION_PROVIDERS,
   subscriptionProviderTargetId,
@@ -47,6 +47,16 @@ export const PROVIDER_CATALOG: ReadonlyArray<ProviderCatalogEntry> = [
   subscriptionEntry("grok", "xai", ["grok"]),
   subscriptionEntry("kimi-for-coding", "kimi-for-coding", ["kimi"]),
   subscriptionEntry("opencode-go", "opencode-go", ["opencodeGo"]),
+  {
+    slug: "cursor",
+    label: "Cursor",
+    icon: CursorIcon,
+    planHint: "Cursor plan",
+    description:
+      "Use your Cursor plan through the Cursor CLI. Sign in once on the machine that runs this environment.",
+    account: null,
+    drivers: [ProviderDriverKind.make("cursor")],
+  },
   {
     slug: "custom-api",
     label: "Custom API",
