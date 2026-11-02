@@ -6,7 +6,6 @@ import { parse } from "yaml";
 
 type Step = {
   readonly name?: string;
-  readonly strategy?: unknown;
   readonly id?: string;
   readonly if?: string;
   readonly run?: string;
@@ -19,6 +18,10 @@ type Job = {
   readonly needs?: string | ReadonlyArray<string>;
   readonly name?: string;
   readonly "runs-on": string;
+  readonly strategy?: {
+    readonly "fail-fast"?: boolean;
+    readonly matrix?: Readonly<Record<string, ReadonlyArray<number | string>>>;
+  };
   readonly steps: ReadonlyArray<Step>;
 };
 
