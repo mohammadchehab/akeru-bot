@@ -176,7 +176,9 @@ export function GroupEditor({
 
               return (
                 <div key={bot.id} className="flex min-h-9 items-center gap-2 rounded-md px-1">
-                  <span className="min-w-0 flex-1 truncate text-sm">{bot.name}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm">
+                    <bdi>{bot.name}</bdi>
+                  </span>
                   <span className="text-xs capitalize text-muted-foreground">
                     {role?.kind === "bot" && role.role === "boss" ? t("Boss") : t("Specialist")}
                   </span>
