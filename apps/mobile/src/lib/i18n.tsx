@@ -19,6 +19,8 @@ import {
 import { AppState, Platform, Settings } from "react-native";
 import { mobilePreferencesAtom } from "../state/preferences";
 import { readDeviceLocales, resolveMobileLanguage } from "./languagePreferences";
+import { layoutDirectionForPreference } from "./layoutDirection";
+import { useLayoutDirectionSync } from "./useLayoutDirectionSync";
 
 const fallbackTranslator = createTranslator("en");
 
@@ -55,6 +57,12 @@ export function MobileLanguageProvider({ children }: { readonly children: ReactN
     () => resolveMobileLanguage(language, deviceLocales),
     [language, deviceLocales],
   );
+
+  useLayoutDirectionSync({
+    ready: AsyncResult.isSuccess(stored) && !stored.waiting,
+    wanted: layoutDirectionForPreference(resolved.preference, deviceLocales),
+    forced: AsyncResult.isSuccess(stored) ? stored.value.forcedLayoutDirection : undefined,
+  });
 
   const loader = useMemo(() => createCatalogLoader(), []);
   const snapshot = useSyncExternalStore(loader.subscribe, loader.getSnapshot, loader.getSnapshot);

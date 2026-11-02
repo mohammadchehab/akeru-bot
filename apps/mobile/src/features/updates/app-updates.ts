@@ -294,7 +294,8 @@ async function defaultConfirmInstallNow(): Promise<boolean> {
   });
 }
 
-async function defaultFlushPendingWrites(): Promise<void> {
+/** Lands the drafts and the outbox on disk, for a restart that must not lose them. */
+export async function defaultFlushPendingWrites(): Promise<void> {
   // Attempt every flush before surfacing the first failure, so one broken
   // store cannot keep the others from landing.
   const results = await Promise.allSettled([

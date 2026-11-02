@@ -34,6 +34,8 @@ const LEGACY_PREFERENCES_FALLBACK_KEYS = [
 
 export interface Preferences {
   readonly language?: string;
+  /** The layout direction the last reload asked the platform for; stops a reload loop. */
+  readonly forcedLayoutDirection?: "ltr" | "rtl";
   readonly reviewedPrivacyPolicyVersion?: string;
   readonly reviewedTermsVersion?: string;
   readonly liveActivitiesEnabled?: boolean;
@@ -94,6 +96,7 @@ export class MobilePreferencesStore extends Context.Service<
 
 const StoredPreferences = Schema.Struct({
   language: Schema.optional(Schema.Unknown),
+  forcedLayoutDirection: Schema.optional(Schema.Unknown),
   reviewedPrivacyPolicyVersion: Schema.optional(Schema.Unknown),
   reviewedTermsVersion: Schema.optional(Schema.Unknown),
   liveActivitiesEnabled: Schema.optional(Schema.Unknown),
@@ -115,6 +118,10 @@ function sanitizePreferences(parsed: typeof StoredPreferences.Type): Preferences
   const preferences: MutablePreferences = {};
 
   if (Predicate.isString(parsed.language)) preferences.language = parsed.language;
+
+  if (parsed.forcedLayoutDirection === "ltr" || parsed.forcedLayoutDirection === "rtl") {
+    preferences.forcedLayoutDirection = parsed.forcedLayoutDirection;
+  }
 
   if (Predicate.isString(parsed.reviewedPrivacyPolicyVersion)) {
     preferences.reviewedPrivacyPolicyVersion = parsed.reviewedPrivacyPolicyVersion;
