@@ -118,9 +118,23 @@ dependencies), and follow `mcp-server.delete` with a `bot.update` for every bot,
 whose `disabledMcpServerIds` still names the deleted server. Legacy bridge sessions don't
 receive the guidance. Environment exports carry it on each MCP server record.
 
-`CloudAgent` was dropped from the catalog specification after Cursor was removed as a supported
-provider. A Cursor account would have introduced a separate credential boundary and no longer fits
-Isnadi's provider-neutral catalog.
+`CloudAgent` was dropped from the catalog specification when Cursor was removed as a supported
+provider, and it stays dropped.
+
+Cursor returns in 0.0.4 as a second legacy-bridge provider, beside standard OpenCode. It drives
+the Cursor CLI (`agent -p --output-format stream-json`) with the user's own `agent login`, so Isnadi
+stores no Cursor credential, as with the Codex and Claude CLI logins. Cursor exposes an agent loop,
+not a model transport, so it cannot run on the Mastra controller. That loop sets the limits:
+
+- Print mode has no per-action approval. A Cursor bot is read-only by default (`--mode ask`). Full
+  access (`--force`) is an explicit per-bot opt-in, and its copy says Cursor acts without asking.
+- Cursor sessions get only Isnadi's read-only MCP tools, and only when the token reaches Cursor
+  through its environment (`${env:…}` in the session's MCP config), never as a file in the user's
+  repository. The mutating tools wait for a server-side approval gate in `McpHttpServer`, so no
+  bridge provider can call them without asking.
+- The CLI has no system-prompt flag. Bot identity and memory are prepended to the prompt, as for
+  standard OpenCode, and are never written to `.cursor/rules`.
+- Cursor bills per token through the user's Cursor plan, not as a flat model subscription.
 
 Mastra keeps approval callbacks enabled in every runtime mode. `AgentController` auto-approves
 `ask_user`, then converts its suspension into a user-input request. In automatic mode, it approves
