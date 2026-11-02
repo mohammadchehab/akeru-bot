@@ -61,7 +61,9 @@ export function BotOverview({
     <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-6 pt-6">
       <div className="flex flex-col items-center text-center">
         <BotAvatarView avatar={bot.avatar} name={bot.name} className="size-16" />
-        <h3 className="mt-3 text-base font-semibold">{bot.name}</h3>
+        <h3 className="mt-3 text-base font-semibold">
+          <bdi>{bot.name}</bdi>
+        </h3>
         {bot.label ? <p className="mt-0.5 text-sm text-muted-foreground">{bot.label}</p> : null}
         {bot.description ? (
           <p className="mt-3 line-clamp-3 max-w-64 text-sm leading-relaxed text-muted-foreground">

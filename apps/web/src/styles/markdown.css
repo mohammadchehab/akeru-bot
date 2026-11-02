@@ -67,7 +67,7 @@
      custom property, so without this a task-list under a 3+ digit ordered
      list would inherit the outer gutter instead of its own default. */
   --list-gutter: 1.25rem;
-  padding-left: 1.25rem;
+  padding-inline-start: 1.25rem;
   list-style-type: disc;
 }
 
@@ -79,7 +79,7 @@
 
 .chat-markdown ol {
   --list-gutter: 1.25rem;
-  padding-left: var(--list-gutter, 1.25rem);
+  padding-inline-start: var(--list-gutter, 1.25rem);
   list-style-type: decimal;
 }
 
@@ -101,6 +101,13 @@
 
 .chat-markdown ol ol ol {
   list-style-type: lower-roman;
+}
+
+/* An item whose direction differs from its list would paint its outside marker past the list's
+   padding, where the column clips it. Keep the marker inside the item's box instead. */
+.chat-markdown :is(ul, ol):dir(ltr) > li:dir(rtl),
+.chat-markdown :is(ul, ol):dir(rtl) > li:dir(ltr) {
+  list-style-position: inside;
 }
 
 .chat-markdown li + li {
@@ -169,8 +176,8 @@
 }
 
 .chat-markdown blockquote {
-  border-left: 2px solid var(--contrast-border);
-  padding-left: 0.8rem;
+  border-inline-start: 2px solid var(--contrast-border);
+  padding-inline-start: 0.8rem;
   color: var(--contrast-muted-foreground);
 }
 
@@ -330,7 +337,7 @@
 .chat-markdown th,
 .chat-markdown td {
   padding: 0.45rem 0.75rem;
-  text-align: left;
+  text-align: start;
 }
 
 .chat-markdown thead th {

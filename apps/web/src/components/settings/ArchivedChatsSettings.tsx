@@ -132,7 +132,7 @@ function ArchivedChatsContent({ environmentId }: { readonly environmentId: Envir
           <SettingsRow
             key={chat.threadId}
             data-testid="archived-chat-row"
-            title={chat.title}
+            title={<bdi>{chat.title}</bdi>}
             description={t("Archived {time}", { time: archivedAt })}
             control={
               <>

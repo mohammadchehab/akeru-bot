@@ -2,6 +2,7 @@ import { recordLookup } from "./recordLookup";
 import { Predicate } from "effect";
 import { classifyMarkdownImageSource } from "@isnadi/client-runtime/markdown-images";
 import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
+import { firstStrongDirection } from "@isnadi/client-runtime/i18n";
 import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
 import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
 import "katex/dist/katex.min.css";
@@ -52,6 +53,7 @@ import {
 } from "./markdown/MarkdownImages";
 import {
   handleMarkdownFragmentClick,
+  hastDescendantText,
   hastHasText,
   MarkdownExternalLinkContent,
   normalizeMarkdownLinkHrefKey,
@@ -125,22 +127,34 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
   p: function MarkdownParagraph({ node: _node, children, ...props }) {
     const { skills } = use(ChatMarkdownRendererContext);
 
-    return <p {...props}>{renderSkillInlineMarkdownChildren(children, skills)}</p>;
+    return (
+      <p {...props} dir="auto">
+        {renderSkillInlineMarkdownChildren(children, skills)}
+      </p>
+    );
   },
-  blockquote: function MarkdownBlockquote({ node: _node, children, ...props }) {
+  blockquote: function MarkdownBlockquote({ node, children, ...props }) {
+    // Not "auto": a quote's text sits in child paragraphs that carry their own dir, which
+    // "auto" skips, so the quote would read as left-to-right and keep its bar on the wrong side.
+    const dir = firstStrongDirection(hastDescendantText(node));
+
     const alert = recordLookup(
       GITHUB_ALERT_PRESENTATIONS,
       String(("data-alert" in props ? props["data-alert"] : "") ?? ""),
     );
 
     if (!alert) {
-      return <blockquote {...props}>{children}</blockquote>;
+      return (
+        <blockquote {...props} dir={dir}>
+          {children}
+        </blockquote>
+      );
     }
 
     // Not a <blockquote>: the stylesheet mutes those, and an alert's body is ordinary
     // text under a colored title — which is how the host renders it.
     return (
-      <div role="note" className={cn("my-1 border-l-2 pl-3", alert.borderClassName)}>
+      <div role="note" dir={dir} className={cn("my-1 border-s-2 ps-3", alert.borderClassName)}>
         <p className={cn("flex items-center gap-1.5 font-medium", alert.titleClassName)}>
           <alert.Icon aria-hidden className="size-3.5 shrink-0" />
           {alert.label}
@@ -152,7 +166,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
   ul: function MarkdownUnorderedList({ node, ...props }) {
     return (
       <MarkdownList node={node}>
-        <ul {...props} />
+        <ul {...props} dir={firstStrongDirection(hastDescendantText(node))} />
       </MarkdownList>
     );
   },
@@ -166,6 +180,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
       <MarkdownList node={node}>
         <ol
           {...props}
+          dir={firstStrongDirection(hastDescendantText(node))}
           start={start}
           style={{ "--list-gutter": orderedListGutter(itemCount, start) }}
         />
@@ -181,7 +196,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
       : null;
 
     return (
-      <li {...props} data-task-marker-offset={markerOffset ?? undefined}>
+      <li {...props} dir="auto" data-task-marker-offset={markerOffset ?? undefined}>
         {renderSkillInlineMarkdownChildren(children, skills)}
       </li>
     );
@@ -356,7 +371,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
     }
 
     return (
-      <code {...props} className={className}>
+      <code {...props} dir="ltr" className={className}>
         {children}
       </code>
     );
@@ -387,6 +402,14 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
 
     return <ChatMarkdownImageFallback alt={altText} />;
   },
+  h1: ({ node: _node, ...props }) => <h1 {...props} dir="auto" />,
+  h2: ({ node: _node, ...props }) => <h2 {...props} dir="auto" />,
+  h3: ({ node: _node, ...props }) => <h3 {...props} dir="auto" />,
+  h4: ({ node: _node, ...props }) => <h4 {...props} dir="auto" />,
+  h5: ({ node: _node, ...props }) => <h5 {...props} dir="auto" />,
+  h6: ({ node: _node, ...props }) => <h6 {...props} dir="auto" />,
+  th: ({ node: _node, ...props }) => <th {...props} dir="auto" />,
+  td: ({ node: _node, ...props }) => <td {...props} dir="auto" />,
   table: function MarkdownTableRenderer({ node: _node, ...props }) {
     return <MarkdownTable {...props} />;
   },

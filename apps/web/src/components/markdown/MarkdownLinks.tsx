@@ -97,6 +97,19 @@ export function plainHastText(node: MarkdownHtmlAstNode | undefined): string | n
   return parts.every((part) => part !== null) ? parts.join("") : null;
 }
 
+/** Every text value under `node`, in order: what a reader sees of a block, for its direction. */
+export function hastDescendantText(node: MarkdownHtmlAstNode | undefined): string {
+  if (!node || !Predicate.isObjectOrArray(node)) return "";
+
+  if ("type" in node && node.type === "text") {
+    return "value" in node && Predicate.isString(node.value) ? node.value : "";
+  }
+
+  if (!("children" in node) || !Array.isArray(node.children)) return "";
+
+  return node.children.map(hastDescendantText).join("");
+}
+
 /**
  * Whether the link carries any words of its own. An anchor that is only an image — a badge, a
  * "Fix in Cursor" button — already shows its identity, and a favicon bolted on in front of it

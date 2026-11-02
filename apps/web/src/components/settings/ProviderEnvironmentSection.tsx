@@ -135,6 +135,7 @@ export function ProviderEnvironmentSection(props: {
                 <TableRow key={variable.id} presentation="provider-environment">
                   <TableCell>
                     <DraftInput
+                      dir="ltr"
                       value={variable.name}
                       onCommit={(name) => updateVariable(variable.id, { name: name.trim() })}
                       placeholder="VARIABLE_NAME"
@@ -144,6 +145,7 @@ export function ProviderEnvironmentSection(props: {
                   </TableCell>
                   <TableCell>
                     <DraftInput
+                      dir="ltr"
                       value={variable.valueRedacted ? "" : variable.value}
                       onCommit={(value) => updateVariable(variable.id, { value })}
                       type={variable.sensitive ? "password" : undefined}
