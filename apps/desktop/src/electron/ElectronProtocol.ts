@@ -8,39 +8,15 @@ import * as Scope from "effect/Scope";
 
 import * as Electron from "electron";
 
-export const DESKTOP_HOST = "app";
+export * from "./DesktopScheme.ts";
 
-export const DESKTOP_PRODUCTION_SCHEME = "isnadi";
-
-export const DESKTOP_DEVELOPMENT_SCHEME = "isnadi-dev";
-
-/**
- * Compatibility only: builds released before the Isnadi rename served the
- * renderer from these schemes. Chromium keys web storage by origin, so the
- * legacy origins stay registered as privileged schemes so their localStorage
- * can be read once and carried over (see LegacyRendererStorageMigration.ts).
- */
-export const LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME = "akeru";
-
-export const LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME = "akeru-dev";
-
-export function getLegacyDesktopScheme(isDevelopment: boolean): string {
-  return isDevelopment
-    ? LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME
-    : LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME;
-}
-
-export function getDesktopScheme(isDevelopment: boolean): string {
-  return isDevelopment ? DESKTOP_DEVELOPMENT_SCHEME : DESKTOP_PRODUCTION_SCHEME;
-}
-
-export function getDesktopOrigin(isDevelopment: boolean): string {
-  return `${getDesktopScheme(isDevelopment)}://${DESKTOP_HOST}`;
-}
-
-export function getDesktopUrl(isDevelopment: boolean): string {
-  return `${getDesktopOrigin(isDevelopment)}/`;
-}
+import {
+  DESKTOP_DEVELOPMENT_SCHEME,
+  DESKTOP_HOST,
+  DESKTOP_PRODUCTION_SCHEME,
+  LEGACY_AKERU_DESKTOP_DEVELOPMENT_SCHEME,
+  LEGACY_AKERU_DESKTOP_PRODUCTION_SCHEME,
+} from "./DesktopScheme.ts";
 
 export class ElectronProtocolRegistrationError extends Schema.TaggedErrorClass<ElectronProtocolRegistrationError>()(
   "ElectronProtocolRegistrationError",

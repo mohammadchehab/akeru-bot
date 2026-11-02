@@ -407,12 +407,15 @@ describe("DesktopBackendConfiguration", () => {
 
       const listeners = new Map<string, DesktopIpc.DesktopIpcSyncListener>();
 
-      const ipc = DesktopIpc.make({
-        removeHandler: () => undefined,
-        handle: () => undefined,
-        removeAllListeners: (channel) => listeners.delete(channel),
-        on: (channel, listener) => listeners.set(channel, listener),
-      });
+      const ipc = DesktopIpc.make(
+        {
+          removeHandler: () => undefined,
+          handle: () => undefined,
+          removeAllListeners: (channel) => listeners.delete(channel),
+          on: (channel, listener) => listeners.set(channel, listener),
+        },
+        () => true,
+      );
 
       yield* ipc.handleSync({
         channel: "desktop.test.primaryLabel",

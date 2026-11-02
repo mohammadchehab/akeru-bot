@@ -5,11 +5,47 @@ import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 import * as Scope from "effect/Scope";
 
-export interface DesktopIpcInvokeEvent {}
+import { getDesktopOrigin } from "../electron/DesktopScheme.ts";
 
-export interface DesktopIpcSyncEvent {
+/** The parts of an Electron IPC event used to decide whether its sender may call a channel. */
+export interface DesktopIpcSenderEvent {
+  readonly sender?: { readonly getType: () => string } | undefined;
+  readonly senderFrame?: { readonly url: string; readonly parent: unknown } | null | undefined;
+}
+
+export interface DesktopIpcInvokeEvent extends DesktopIpcSenderEvent {}
+
+export interface DesktopIpcSyncEvent extends DesktopIpcSenderEvent {
   returnValue: unknown;
 }
+
+const APP_ORIGINS: ReadonlySet<string> = new Set([getDesktopOrigin(false), getDesktopOrigin(true)]);
+
+// Custom schemes have an opaque ("null") WHATWG origin, so compare scheme and host.
+const originOf = (url: string): string | undefined => {
+  try {
+    const parsed = new URL(url);
+
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return undefined;
+  }
+};
+
+/**
+ * Privileged channels are served only to the app's own window: the top frame of a
+ * window-type webContents at the app origin. Preview webviews run third-party pages
+ * with contextIsolation off and a preload that exposes ipcRenderer, so their frames
+ * (even if navigated to the app origin) and any subframe must be refused.
+ */
+export const isTrustedDesktopSender = (event: DesktopIpcSenderEvent): boolean => {
+  const frame = event.senderFrame;
+
+  if (event.sender?.getType() !== "window" || !frame || frame.parent !== null) return false;
+  const origin = originOf(frame.url);
+
+  return origin !== undefined && APP_ORIGINS.has(origin);
+};
 
 export type DesktopIpcHandleListener = Parameters<Electron.IpcMain["handle"]>[1];
 
@@ -79,7 +115,10 @@ export class DesktopIpc extends Context.Service<
   }
 >()("@isnadi/desktop/ipc/DesktopIpc") {}
 
-export const make = (ipcMain: DesktopIpcMain): DesktopIpc["Service"] =>
+export const make = (
+  ipcMain: DesktopIpcMain,
+  isTrustedSender: (event: DesktopIpcSenderEvent) => boolean = isTrustedDesktopSender,
+): DesktopIpc["Service"] =>
   DesktopIpc.of({
     handle: Effect.fn("desktop.ipc.registerInvoke")(function* <E, R>({
       channel,
@@ -93,15 +132,19 @@ export const make = (ipcMain: DesktopIpcMain): DesktopIpc["Service"] =>
         Effect.try({
           try: () => {
             ipcMain.removeHandler(channel);
-            ipcMain.handle(channel, (_event, raw) =>
-              runPromise(
+            ipcMain.handle(channel, (event, raw) => {
+              if (!isTrustedSender(event)) {
+                return Promise.reject(new Error(`Untrusted IPC sender for ${channel}.`));
+              }
+
+              return runPromise(
                 Effect.gen(function* () {
                   yield* Effect.annotateCurrentSpan({ channel });
 
                   return yield* handler(raw);
                 }).pipe(Effect.annotateLogs({ channel }), Effect.withSpan("desktop.ipc.invoke")),
-              ),
-            );
+              );
+            });
           },
           catch: (cause) =>
             new DesktopIpcRegistrationError({ handlerKind: "invoke", channel, cause }),
@@ -128,6 +171,12 @@ export const make = (ipcMain: DesktopIpcMain): DesktopIpc["Service"] =>
           try: () => {
             ipcMain.removeAllListeners(channel);
             ipcMain.on(channel, (event) => {
+              if (!isTrustedSender(event)) {
+                event.returnValue = null;
+
+                return;
+              }
+
               event.returnValue = runSync(
                 Effect.gen(function* () {
                   yield* Effect.annotateCurrentSpan({ channel });
