@@ -374,6 +374,7 @@ export function createThreads({
             responderQueue: {
               entries: event.payload.entries,
               hopsLeft: event.payload.hopsLeft,
+              hopsUsed: event.payload.hopsUsed,
               reason: event.payload.reason,
               updatedAt: event.payload.updatedAt,
             },

@@ -241,7 +241,10 @@ export type ResponderQueueReason = typeof ResponderQueueReason.Type;
 /** The bots still waiting to answer in a group chat, in order. One value replaces the last. */
 export const ResponderQueue = Schema.Struct({
   entries: Schema.Array(ResponderQueueEntry),
-  hopsLeft: Schema.Number,
+  /** Bot turns the chain may still add for this user message: the budget minus the turns started. */
+  hopsLeft: NonNegativeInt,
+  /** Bot turns the queue has started for this user message, so a notice can say how many ran. */
+  hopsUsed: NonNegativeInt,
   reason: ResponderQueueReason,
   updatedAt: IsoDateTime,
 });

@@ -441,7 +441,8 @@ export const ThreadInteractionModeSetPayload = Schema.Struct({
 export const ThreadResponderQueueSetPayload = Schema.Struct({
   threadId: ThreadId,
   entries: Schema.Array(ResponderQueueEntry),
-  hopsLeft: Schema.Number,
+  hopsLeft: NonNegativeInt,
+  hopsUsed: NonNegativeInt,
   reason: ResponderQueueReason,
   updatedAt: IsoDateTime,
 });

@@ -122,7 +122,8 @@ it.layer(NodeServices.layer)("group turn addressing", (it) => {
         kind: "user",
         messageId: "message-1",
       });
-      expect(payload.queueEvent?.hopsLeft).toBe(6);
+      expect(payload.queueEvent?.hopsLeft).toBe(5);
+      expect(payload.queueEvent?.hopsUsed).toBe(1);
     }),
   );
 
@@ -186,7 +187,8 @@ it.layer(NodeServices.layer)("group turn addressing", (it) => {
                 trigger: { kind: "user" as const, messageId: MessageId.make("old") },
               },
             ],
-            hopsLeft: 6,
+            hopsLeft: 5,
+            hopsUsed: 1,
             reason: "addressed" as const,
             updatedAt: NOW,
           },

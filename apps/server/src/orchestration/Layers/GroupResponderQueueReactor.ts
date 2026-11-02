@@ -19,9 +19,9 @@ import {
 
 /**
  * Runs a group chat's responder queue, one bot at a time. The decider fills the queue when a
- * message is addressed; this reactor notices the moment the running bot finishes (a session going
- * from running to anything else) and asks the decider to start the next one. The decider is the
- * authority: it ignores the request when the queue is empty or a turn is still running.
+ * message is addressed; this reactor notices when a queued chat's session is not running and asks
+ * the decider to start the next bot. The decider is the authority: it ignores the request when the
+ * queue is empty or the turn it last started is still in flight.
  *
  * A restart can leave a queue persisted with nobody running. No session event will follow, so
  * start reads the persisted queues once and advances every one that is not mid-turn.
@@ -31,9 +31,8 @@ const make = Effect.gen(function* () {
   const projectionSnapshotQuery = yield* ProjectionSnapshotQuery;
   const crypto = yield* Crypto.Crypto;
 
-  // Per thread: whether anyone is still queued, and the last session status seen.
+  // Threads that still have someone waiting.
   const queued = new Set<ThreadId>();
-  const lastStatus = new Map<ThreadId, string>();
 
   const advance = (threadId: ThreadId) =>
     crypto.randomUUIDv4.pipe(
@@ -78,19 +77,18 @@ const make = Effect.gen(function* () {
 
     if (event.type === "thread.deleted") {
       queued.delete(event.payload.threadId);
-      lastStatus.delete(event.payload.threadId);
 
       return Effect.void;
     }
 
     if (event.type !== "thread.session-set") return Effect.void;
 
+    // Any session that is not running may mean the last bot is done, or never got going (a
+    // provider that fails to start goes starting -> error). The decider ignores the request
+    // while the started turn is still in flight, so asking early is harmless.
     const threadId = event.payload.threadId;
-    const status = event.payload.session.status;
-    const wasRunning = lastStatus.get(threadId) === "running";
-    lastStatus.set(threadId, status);
 
-    return wasRunning && status !== "running" && queued.has(threadId)
+    return event.payload.session.status !== "running" && queued.has(threadId)
       ? worker.enqueue(threadId)
       : Effect.void;
   };
@@ -104,12 +102,9 @@ const make = Effect.gen(function* () {
             return Effect.void;
           }
 
-          const status = thread.session?.status ?? null;
           queued.add(thread.id);
 
-          if (status !== null) lastStatus.set(thread.id, status);
-
-          return status === "running" ? Effect.void : worker.enqueue(thread.id);
+          return thread.session?.status === "running" ? Effect.void : worker.enqueue(thread.id);
         },
         { discard: true },
       ),

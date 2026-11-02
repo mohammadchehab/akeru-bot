@@ -290,7 +290,8 @@ projectionRepositoriesLayer("Projection repositories", (it) => {
             trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
           },
         ],
-        hopsLeft: 6,
+        hopsLeft: 5,
+        hopsUsed: 1,
         reason: "addressed" as const,
         updatedAt: "2026-03-24T00:00:00.000Z",
       };

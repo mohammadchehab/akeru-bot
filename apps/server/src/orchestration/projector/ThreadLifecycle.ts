@@ -281,6 +281,7 @@ export function projectThreadLifecycle(
             responderQueue: {
               entries: payload.entries,
               hopsLeft: payload.hopsLeft,
+              hopsUsed: payload.hopsUsed,
               reason: payload.reason,
               updatedAt: payload.updatedAt,
             },

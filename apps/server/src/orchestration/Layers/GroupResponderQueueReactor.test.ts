@@ -51,13 +51,14 @@ const queueSet = (sequence: number, threadId: ThreadId, botIds: ReadonlyArray<st
         botId: BotId.make(botId),
         trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
       })),
-      hopsLeft: 6,
+      hopsLeft: 5,
+      hopsUsed: 1,
       reason: "addressed" as const,
       updatedAt: NOW,
     },
   }) satisfies OrchestrationEvent;
 
-const sessionSet = (sequence: number, threadId: ThreadId, status: "running" | "ready") =>
+const sessionSet = (sequence: number, threadId: ThreadId, status: "running" | "ready" | "error") =>
   ({
     ...base(sequence, threadId),
     type: "thread.session-set",
@@ -113,7 +114,8 @@ const queuedThread = (
       botId: BotId.make(botId),
       trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
     })),
-    hopsLeft: 6,
+    hopsLeft: 5,
+    hopsUsed: 1,
     reason: "addressed" as const,
     updatedAt: NOW,
   },
@@ -181,21 +183,25 @@ describe("GroupResponderQueueReactor", () => {
     }).pipe(Effect.scoped),
   );
 
-  it.effect("does not start anyone before the first bot has run, or when nobody is waiting", () =>
+  it.effect("asks again when a queued chat's session fails to start, but not for other chats", () =>
     Effect.gen(function* () {
       const h = yield* harness;
 
       yield* run(h, (reactor) =>
         Effect.gen(function* () {
-          // The first bot's session coming up ("ready" before it runs) is not a turn ending.
+          // The next bot's provider never gets going: starting -> error, with no running between.
           yield* PubSub.publish(h.events, queueSet(1, THREAD, ["bot-specialist"]));
-          yield* PubSub.publish(h.events, sessionSet(2, THREAD, "ready"));
+          yield* PubSub.publish(h.events, sessionSet(2, THREAD, "error"));
           // A turn ending in a chat with an empty queue starts nobody.
           yield* PubSub.publish(h.events, sessionSet(3, OTHER_THREAD, "running"));
           yield* PubSub.publish(h.events, sessionSet(4, OTHER_THREAD, "ready"));
           yield* reactor.drainThrough(4);
 
-          expect(h.dispatched).toEqual([]);
+          expect(h.dispatched).toHaveLength(1);
+          expect(h.dispatched[0]).toMatchObject({
+            type: "thread.responder.advance",
+            threadId: THREAD,
+          });
         }),
       );
     }).pipe(Effect.scoped),

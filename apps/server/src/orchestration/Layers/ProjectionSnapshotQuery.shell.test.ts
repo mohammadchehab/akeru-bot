@@ -520,7 +520,8 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
             botId,
             trigger: { kind: "user", messageId: "message-1" },
           })),
-          hopsLeft: 6,
+          hopsLeft: 5,
+          hopsUsed: 1,
           reason: "addressed",
           updatedAt: "2026-04-06T00:00:03.000Z",
         });
