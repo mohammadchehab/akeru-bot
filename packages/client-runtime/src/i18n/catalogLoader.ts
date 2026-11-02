@@ -1,5 +1,5 @@
 import { type LanguagePreference, type TranslationCatalog } from "./types.ts";
-import { canonicalLocale, catalogIdForLocale } from "./locale.ts";
+import { canonicalLocale, catalogIdForLocale, type TextDirection } from "./locale.ts";
 import { createTranslator } from "./translator.ts";
 import { validateCatalog } from "./catalogValidation.ts";
 
@@ -18,14 +18,18 @@ export function createCatalogLoader(registry: CatalogRegistry = catalogRegistry)
   interface CatalogSnapshot {
     selectedLocale: string;
     status: "ready" | "loading" | "error";
+    /** Direction of the catalog in use, which is English while another loads or after a failure. */
+    direction: TextDirection;
     translator: ReturnType<typeof createTranslator>;
   }
 
-  let snapshot: CatalogSnapshot = {
-    selectedLocale: "en",
-    status: "ready",
-    translator: createTranslator("en"),
-  };
+  const snapshotOf = (
+    selectedLocale: string,
+    status: CatalogSnapshot["status"],
+    translator: CatalogSnapshot["translator"],
+  ): CatalogSnapshot => ({ selectedLocale, status, direction: translator.direction, translator });
+
+  let snapshot = snapshotOf("en", "ready", createTranslator("en"));
 
   const emit = () => {
     for (const listener of listeners) listener();
@@ -44,7 +48,7 @@ export function createCatalogLoader(registry: CatalogRegistry = catalogRegistry)
       const version = ++selection;
       const candidates = preference === "system" ? deviceLocales : [preference];
       let selectedLocale = "en";
-      let catalogId: "en" | "zh-CN" | string = "en";
+      let catalogId = "en";
 
       for (const candidate of candidates) {
         const canonical = canonicalLocale(candidate);
@@ -66,17 +70,13 @@ export function createCatalogLoader(registry: CatalogRegistry = catalogRegistry)
       }
 
       if (catalogId === "en") {
-        snapshot = {
-          selectedLocale,
-          status: "ready",
-          translator: createTranslator(selectedLocale),
-        };
+        snapshot = snapshotOf(selectedLocale, "ready", createTranslator(selectedLocale));
         emit();
 
         return;
       }
 
-      snapshot = { selectedLocale, status: "loading", translator: createTranslator("en") };
+      snapshot = snapshotOf(selectedLocale, "loading", createTranslator("en"));
       emit();
 
       try {
@@ -99,18 +99,14 @@ export function createCatalogLoader(registry: CatalogRegistry = catalogRegistry)
         const catalog = await loading;
 
         if (version === selection) {
-          snapshot = {
-            selectedLocale,
-            status: "ready",
-            translator: createTranslator(selectedLocale, catalog),
-          };
+          snapshot = snapshotOf(selectedLocale, "ready", createTranslator(selectedLocale, catalog));
           emit();
         }
       } catch {
         pending.delete(catalogId);
 
         if (version === selection) {
-          snapshot = { selectedLocale, status: "error", translator: createTranslator("en") };
+          snapshot = snapshotOf(selectedLocale, "error", createTranslator("en"));
           emit();
         }
       }

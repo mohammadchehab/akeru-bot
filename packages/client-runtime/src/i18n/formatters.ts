@@ -1,4 +1,19 @@
-import { resolveLocale } from "./locale.ts";
+import { canonicalLocale, resolveLocale } from "./locale.ts";
+
+/** Arabic formats with Western digits and the Gregorian calendar; one constant decides both. */
+const ARABIC_FORMATTING_EXTENSION = "-u-nu-latn-ca-gregory";
+
+/**
+ * The locale an `Intl` formatter is built with. `ar-SA` would otherwise print Hijri dates in
+ * Arabic-Indic digits. An explicit `-u-` extension on the tag is kept; other locales pass through.
+ */
+export function formattingLocale(locale: string): string {
+  const canonical = canonicalLocale(locale);
+
+  if (!canonical || (canonical.split("-")[0] ?? canonical) !== "ar") return locale;
+
+  return canonical.includes("-u-") ? canonical : `${canonical}${ARABIC_FORMATTING_EXTENSION}`;
+}
 
 function cachedFormatter<Options extends object, Formatter>(
   create: (locale: string, options?: Options) => Formatter,
@@ -20,16 +35,18 @@ function cachedFormatter<Options extends object, Formatter>(
 }
 
 export const numberFormatter = cachedFormatter(
-  (locale: string, options?: Intl.NumberFormatOptions) => new Intl.NumberFormat(locale, options),
+  (locale: string, options?: Intl.NumberFormatOptions) =>
+    new Intl.NumberFormat(formattingLocale(locale), options),
 );
 
 export const dateFormatter = cachedFormatter(
   (locale: string, options?: Intl.DateTimeFormatOptions) =>
-    new Intl.DateTimeFormat(locale, options),
+    new Intl.DateTimeFormat(formattingLocale(locale), options),
 );
 
 export const pluralRules = cachedFormatter(
-  (locale: string, options?: Intl.PluralRulesOptions) => new Intl.PluralRules(locale, options),
+  (locale: string, options?: Intl.PluralRulesOptions) =>
+    new Intl.PluralRules(formattingLocale(locale), options),
 );
 
 export function formatNumber(

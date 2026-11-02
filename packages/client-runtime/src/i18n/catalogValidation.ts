@@ -8,6 +8,25 @@ function parameters(message: string): string {
 }
 
 /** Validate a complete catalog before making a language available. */
+const PLURAL_CATEGORIES: ReadonlySet<string> = new Set([
+  "zero",
+  "one",
+  "two",
+  "few",
+  "many",
+  "other",
+] satisfies Intl.LDMLPluralRule[]);
+
+/**
+ * Split a `"<English other form>#<category>"` plural entry. The category is whatever follows the
+ * last `#`, so an English form that itself contains `#` still resolves to the right base.
+ */
+function pluralEntry(key: string): { base: string; category: string } | undefined {
+  const at = key.lastIndexOf("#");
+
+  return at > 0 ? { base: key.slice(0, at), category: key.slice(at + 1) } : undefined;
+}
+
 export function validateCatalog(catalog: TranslationCatalog): string[] {
   const issues: string[] = [];
 
@@ -20,7 +39,16 @@ export function validateCatalog(catalog: TranslationCatalog): string[] {
   }
 
   for (const key of Object.keys(catalog)) {
-    if (!Object.hasOwn(englishCatalog, key)) issues.push(`Unknown message: ${key}`);
+    if (Object.hasOwn(englishCatalog, key)) continue;
+    const entry = pluralEntry(key);
+
+    if (!entry || !Object.hasOwn(englishCatalog, entry.base)) {
+      issues.push(`Unknown message: ${key}`);
+    } else if (!PLURAL_CATEGORIES.has(entry.category)) {
+      issues.push(`Unknown plural category: ${key}`);
+    } else if (parameters(catalog[key] ?? "") !== parameters(entry.base)) {
+      issues.push(`Parameter mismatch: ${key}`);
+    }
   }
 
   return issues;
