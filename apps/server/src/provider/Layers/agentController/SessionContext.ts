@@ -132,49 +132,44 @@ export function createSessionContext(
 
   // The group a thread belongs to, read fresh each turn so a member added or removed
   // between turns shows up without restarting the session. Direct chats return undefined.
+  // The responder is the bot the provider session runs as, because that bot writes the reply
+  // that gets saved; the thread's current responder and then the boss only fill in when the
+  // session has none.
   const readGroupConversation = Effect.fn("AgentController.readGroupConversation")(
-    function* (threadId: ThreadId, fallbackBotId: BotId | null) {
+    function* (threadId: ThreadId, sessionBotId: BotId | null) {
       if (Option.isNone(deps.projectionSnapshotQuery)) return undefined;
       const query = deps.projectionSnapshotQuery.value;
       const { getBotById, getGroupById } = query;
 
-      if (getBotById && getGroupById) {
-        const thread = Option.getOrUndefined(yield* query.getThreadRuntimeContext(threadId));
-
-        const group = thread?.groupId
-          ? Option.getOrUndefined(yield* getGroupById(thread.groupId))
-          : undefined;
-
-        if (!group) return undefined;
-        const respondingBotId = thread?.respondingBotId ?? fallbackBotId ?? group.bossBotId;
-
-        if (!respondingBotId) return undefined;
-
-        const bots = yield* Effect.forEach(
-          group.members.filter(isGroupBotMember),
-          (member) => getBotById(member.botId).pipe(Effect.map(Option.getOrUndefined)),
-          { concurrency: 4 },
-        );
-
-        return toGroupConversation(group, bots, respondingBotId);
-      }
-
-      const snapshot = yield* query.getCommandReadModel();
-      const thread = snapshot.threads.find((candidate) => candidate.id === threadId);
+      if (!getBotById || !getGroupById) return undefined;
+      const thread = Option.getOrUndefined(yield* query.getThreadRuntimeContext(threadId));
 
       const group = thread?.groupId
-        ? snapshot.groups.find((candidate) => candidate.id === thread.groupId)
+        ? Option.getOrUndefined(yield* getGroupById(thread.groupId))
         : undefined;
 
       if (!group) return undefined;
+      const respondingBotId = sessionBotId ?? thread?.respondingBotId ?? group.bossBotId;
 
-      const respondingBotId = thread?.respondingBotId ?? fallbackBotId ?? group.bossBotId;
+      if (!respondingBotId) return undefined;
 
-      return respondingBotId
-        ? toGroupConversation(group, snapshot.bots, respondingBotId)
-        : undefined;
+      const bots = yield* Effect.forEach(
+        group.members.filter(isGroupBotMember),
+        (member) => getBotById(member.botId).pipe(Effect.map(Option.getOrUndefined)),
+        { concurrency: 4 },
+      );
+
+      return toGroupConversation(group, bots, respondingBotId);
     },
-    Effect.orElseSucceed(() => undefined),
+    // A failed lookup must not stop the turn, but it makes every bot read the others' turns
+    // as its own, so say so.
+    (effect, threadId) =>
+      Effect.tapCause(effect, (cause) =>
+        Effect.logWarning("group conversation lookup failed; treating the chat as direct", {
+          threadId,
+          cause,
+        }),
+      ).pipe(Effect.orElseSucceed(() => undefined)),
   );
 
   return { isOpenDelegation, isChildOf, readSessionStartContext, readGroupConversation };

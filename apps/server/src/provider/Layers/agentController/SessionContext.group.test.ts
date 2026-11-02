@@ -98,3 +98,36 @@ it.effect("returns nothing for a direct chat", () =>
     assert.isUndefined(yield* readGroupConversation(threadId, boss));
   }),
 );
+
+it.effect("names the session's bot as the responder when the thread's responder moved on", () =>
+  Effect.gen(function* () {
+    const { readGroupConversation } = makeContext(
+      [
+        { kind: "bot", botId: boss, role: "boss" },
+        { kind: "bot", botId: scout, role: "specialist" },
+      ],
+      scout,
+    );
+
+    const group = yield* readGroupConversation(threadId, boss);
+
+    assert.strictEqual(group?.respondingBotId, boss);
+  }),
+);
+
+it.effect("treats a failed group lookup as a direct chat", () =>
+  Effect.gen(function* () {
+    const { readGroupConversation } = createSessionContext({
+      workerRuntime: {} as never,
+      wired: (() => ({})) as never,
+      projectionSnapshotQuery: Option.some({
+        getThreadRuntimeContext: () => Effect.fail("snapshot unavailable"),
+        getGroupById: () => Effect.succeed(Option.none()),
+        getBotById: () => Effect.succeed(Option.none()),
+        listThreadDelegations: () => Effect.succeed([]),
+      }) as never,
+    });
+
+    assert.isUndefined(yield* readGroupConversation(threadId, boss));
+  }),
+);
