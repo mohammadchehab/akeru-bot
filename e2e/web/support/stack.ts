@@ -55,6 +55,11 @@ export async function startStack(): Promise<Stack> {
   delete env.VITE_HTTP_URL;
   delete env.VITE_WS_URL;
 
+  // The throwaway --home-dir must win; an inherited home would point the stack at live state.
+  delete env.ISNADI_HOME;
+  delete env.AKERU_HOME;
+  delete env.T3CODE_HOME;
+
   // Detached so the whole process tree can be signalled as one group.
   const child = NodeChildProcess.spawn(
     process.execPath,
