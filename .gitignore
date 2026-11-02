@@ -11,6 +11,7 @@ packages/*/dist
 .env
 .env.local
 build/
+.gradle/
 !/dev-tasks/scripts/build/
 .logs/
 release/
@@ -35,8 +36,6 @@ apps/mobile/.showcase/
 artifacts/app-store/screenshots/
 .github/pr-assets/
 native/**/target/
-node_modules/
 .alchemy/
-*.log
 .env*
 !.env.example
