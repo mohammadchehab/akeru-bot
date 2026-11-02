@@ -53,6 +53,7 @@ import { serverEnvironment } from "../../state/server";
 import { useEnvironmentQuery } from "../../state/query";
 import { ComposerCommandPopover, type ComposerCommandItem } from "./ComposerCommandPopover";
 import { buildComposerCommandItems } from "./composer-command-items";
+import { responderQueueLine } from "./responderQueueLine";
 import { composerMentionItemToken, isThreadMentionQuery } from "./composerMentionItems";
 import { ComposerMentionPopover } from "./ComposerMentionPopover";
 import { useExistingThreadSettingsRoutePresentation } from "./ThreadSettingsSheet";
@@ -167,6 +168,8 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
   const composerBotName = composerIdentity.isGroup
     ? composerIdentity.title
     : (bot?.name ?? providerBotName(composerProviderDriver));
+
+  const responderLine = responderQueueLine(props.selectedThread.responderQueue, bots);
 
   const wasExpandedBeforePreviewRef = useRef(false);
   const inFlightThreadIdsRef = useRef(new Set<string>());
@@ -685,6 +688,10 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
             </ComposerToolbarRow>
           ) : null}
         </ComposerSurface>
+
+        {responderLine !== null ? (
+          <Text className="pt-2 text-xs text-foreground-muted">{responderLine}</Text>
+        ) : null}
 
         {/* Queue count */}
         {props.queueCount > 0 ? (
