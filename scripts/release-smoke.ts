@@ -125,16 +125,13 @@ for (const [needle, label] of [
   ["runner: windows-2025", "GitHub-hosted Windows runner"],
   ["runner: ubuntu-24.04", "GitHub-hosted Linux runner"],
   ["macOS signing credentials must be either complete or absent.", "macOS signing mode"],
-  [
-    "Stable macOS releases require the complete Developer ID signing credential set.",
-    "required stable macOS signing guard",
-  ],
   ["Build unsigned macOS artifact", "unsigned macOS fallback"],
   ["Verify unsigned macOS app signature", "unsigned macOS signature verification"],
   ["--signed", "existing signed build path"],
   ["xcrun notarytool submit", "macOS notarization"],
   ["verify-release-assets.ts", "asset name and hash verification"],
   ["gh release create", "stable GitHub Release"],
+  ['--title "IsnadiBot $RELEASE_TAG" --draft', "draft stable GitHub Release"],
   ["actions: write", "next version workflow dispatch permission"],
   ["gh workflow run version-packages.yml --ref main", "next version workflow dispatch"],
 ] as const) {

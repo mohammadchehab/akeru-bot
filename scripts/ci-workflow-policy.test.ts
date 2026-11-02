@@ -215,17 +215,13 @@ describe("CI workflow budget", () => {
     expect(text).toContain("gh workflow run version-packages.yml --ref main");
   });
 
-  it("fails stable but not nightly macOS releases when Apple credentials are absent", () => {
+  it("builds unsigned macOS releases on every channel when Apple credentials are absent", () => {
     const release = workflow(".github/workflows/release.yml");
     const steps = release.jobs.desktop?.steps ?? [];
 
     const validate = steps.find((step) => step.name === "Validate macOS signing credentials");
     expect(validate?.run).toContain("present != 0 && present != ${#values[@]}");
-    expect(validate?.run).toContain(
-      "Stable macOS releases require the complete Developer ID signing credential set.",
-    );
-    expect(validate?.run).toContain('test "$RELEASE_CHANNEL" = stable');
-    expect(validate?.run).toMatch(/credential set\.\\n' >&2\n\s*exit 1/);
+    expect(validate?.run).not.toContain("Stable macOS releases require");
     expect(steps.find((step) => step.name === "Build signed macOS artifact")?.if).toBe(
       "matrix.platform == 'mac' && env.MACOS_SIGNED == 'true'",
     );
