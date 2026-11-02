@@ -8,6 +8,6 @@ source "$(git rev-parse --show-toplevel)/dev-tasks/scripts/lib/common.sh"
 if [[ $# -gt 0 && -f "${1%/}/package.json" ]]; then
   pkg="${1%/}"
   shift
-  exec vp run --filter "./$pkg" test "$@"
+  run_filtered "./$pkg" test "$@"
 fi
 exec vp run -r test "$@"

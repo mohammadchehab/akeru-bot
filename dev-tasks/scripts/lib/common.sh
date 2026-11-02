@@ -13,3 +13,18 @@ if command -v fnm >/dev/null 2>&1; then
 fi
 
 export PATH="$REPO_ROOT/node_modules/.bin:$PATH"
+
+# run_filtered <filter> <vp run args...>: `vp run --filter` prints "No packages
+# matched" and exits 0 for a filter that matches nothing, so a typo or a renamed
+# package would pass silently. Resolve the filter first and fail when it is empty.
+run_filtered() {
+  local filter="$1"
+  shift
+
+  if [ -z "$(pnpm --filter "$filter" list --depth -1 --parseable 2>/dev/null)" ]; then
+    echo "dev-tasks: no workspace package matches filter '$filter'" >&2
+    exit 1
+  fi
+
+  exec vp run --filter "$filter" "$@"
+}
