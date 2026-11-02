@@ -1,7 +1,6 @@
 import { Predicate } from "effect";
 import type { StartThreadTurnInput } from "@isnadi/client-runtime/state/threads";
-import { BotId, MessageId, PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
-import type { ComposerAddressing } from "@isnadi/shared/composerBotMentions";
+import { PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
 import type {
   GroupAddressing,
   GroupId,
@@ -87,28 +86,6 @@ export function buildBotTurnStartInput(input: {
       : {}),
     createdAt: input.createdAt,
   };
-}
-
-/**
- * The wire addressing for what the composer resolved. A prompt that mentions nobody and replies
- * to nothing sends none, and the server routes it.
- */
-export function groupAddressing(
-  addressing: ComposerAddressing | undefined,
-  replyToMessageId?: string,
-): GroupAddressing | undefined {
-  if (addressing?.kind === "everyone") return { kind: "everyone" };
-
-  if (addressing?.kind === "bots") {
-    const [first, ...rest] = addressing.botIds;
-
-    return { kind: "bots", botIds: [BotId.make(first), ...rest.map((id) => BotId.make(id))] };
-  }
-
-  // A reply goes to the bot that wrote the message, unless the prompt names someone itself.
-  if (replyToMessageId) return { kind: "reply", messageId: MessageId.make(replyToMessageId) };
-
-  return undefined;
 }
 
 export function buildGroupTurnStartInput(input: {

@@ -41,6 +41,8 @@ export const commonMessagesCatalog = {
   "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?":
     "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?",
   "An error occurred.": "An error occurred.",
+  "Mention {name} by picking one from the @ menu.":
+    "Mention {name} by picking one from the @ menu.",
   "Mention {name}": "Mention {name}",
   "Remove {name}": "Remove {name}",
   "Select one or more.": "Select one or more.",
