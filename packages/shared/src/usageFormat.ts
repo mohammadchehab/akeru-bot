@@ -50,7 +50,6 @@ export function formatUsd(value: number, locale = DEFAULT_LOCALE): string {
   return numberFormat(locale, {
     style: "currency",
     currency: "USD",
-    currencyDisplay: "narrowSymbol",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
@@ -229,7 +228,10 @@ export function formatDateTimeShort(
   }).format(DateTime.toEpochMillis(date.value));
 }
 
-/** An hourly tooltip label relative to the rolling window's end date. */
+/**
+ * An hourly tooltip label relative to the rolling window's end date. Web only: it uses
+ * `Intl.RelativeTimeFormat`, which Hermes does not have, so mobile must not call it.
+ */
 export function formatRelativeHourShort(
   hourStart: string,
   relativeTo: string,
