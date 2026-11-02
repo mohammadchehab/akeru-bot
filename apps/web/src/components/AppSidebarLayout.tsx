@@ -115,11 +115,12 @@ function SidebarControl({ stageArtworkVisible }: { stageArtworkVisible: boolean 
   }
 
   return (
+    // Physical on purpose: --workspace-controls-left clears the OS window controls at a fixed edge.
     // The right-side layout controls carry me-px (border compensation inside
     // the panel), so the trigger mirrors it: both clusters sit one extra pixel
     // off their edge and the titlebar reads symmetric.
     <div
-      className="pointer-events-none fixed start-(--workspace-controls-left) top-(--workspace-controls-top) z-50 ms-px flex h-(--workspace-topbar-height) items-center"
+      className="pointer-events-none fixed left-(--workspace-controls-left) top-(--workspace-controls-top) z-50 ms-px flex h-(--workspace-topbar-height) items-center"
       data-sidebar-control=""
     >
       <Tooltip>

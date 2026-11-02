@@ -495,7 +495,8 @@ export function ThemeEditorPanel({
       aria-label={isEditing ? "Edit theme" : "Create theme"}
       className={cn(
         "dialog-glass fixed z-110 flex flex-col overflow-hidden rounded-xl border text-popover-foreground",
-        position === null ? "bottom-4 end-4" : "top-(--panel-top) start-(--panel-left)",
+        // Physical on purpose: a dragged position is measured from the screen's left edge.
+        position === null ? "bottom-4 end-4" : "top-(--panel-top) left-(--panel-left)",
         size === null ? "w-min-26rem-vw-2rem" : "w-(--panel-width)",
         sizedHeight
           ? "h-(--panel-height) max-h-dvh-1rem"
@@ -641,9 +642,10 @@ export function ThemeEditorPanel({
               )}
             </Button>
           </div>
+          {/* Physical on purpose: the resize maths in useThemeEditorGeometry is physical. */}
           <div
             aria-hidden
-            className="absolute bottom-0 end-0 z-10 flex size-5 cursor-se-resize touch-none select-none items-end justify-end p-1 text-muted-foreground/70"
+            className="absolute bottom-0 right-0 z-10 flex size-5 cursor-se-resize touch-none select-none items-end justify-end p-1 text-muted-foreground/70"
             {...resizeHandlers}
           >
             <svg

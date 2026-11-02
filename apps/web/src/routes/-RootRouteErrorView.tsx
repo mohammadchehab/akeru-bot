@@ -44,7 +44,7 @@ export function RootRouteErrorView({
       aria-labelledby="root-error-title"
       className="flex h-full min-h-0 flex-col bg-background text-foreground"
     >
-      <header className="flex h-(--workspace-topbar-height) shrink-0 items-center gap-1.5 ps-(--workspace-controls-left) pe-(--workspace-controls-right)">
+      <header className="flex h-(--workspace-topbar-height) shrink-0 items-center gap-1.5 pl-(--workspace-controls-left) pr-(--workspace-controls-right)">
         <IsnadiWordmark aria-hidden className="text-2xl text-foreground" />
         <span className="truncate text-sm font-medium tracking-tight text-muted-foreground">
           {APP_DISPLAY_NAME}

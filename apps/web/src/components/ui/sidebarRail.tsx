@@ -10,6 +10,19 @@ import {
   useSidebar,
 } from "./sidebarContext";
 
+/**
+ * Whether dragging the rail toward the right edge widens the sidebar. `side` is logical, so a
+ * `left` sidebar sits on the right in an RTL interface and its rail grows toward the left.
+ */
+export function sidebarGrowsRight(side: "left" | "right", direction: string) {
+  return (side === "left") !== (direction === "rtl");
+}
+
+/** Width change for a rail drag; `clientX` is physical whatever the interface direction. */
+export function railResizeDelta(growsRight: boolean, startX: number, clientX: number) {
+  return growsRight ? clientX - startX : startX - clientX;
+}
+
 export function clampSidebarWidth(width: number, options: SidebarResolvedResizableOptions): number {
   return Math.max(options.minWidth, Math.min(width, options.maxWidth));
 }
@@ -35,6 +48,7 @@ export function SidebarRail({
     rail: HTMLButtonElement;
     rafId: number | null;
     sidebarRoot: HTMLElement;
+    growsRight: boolean;
     side: "left" | "right";
     startWidth: number;
     startX: number;
@@ -127,6 +141,10 @@ export function SidebarRail({
         rafId: null,
         sidebarRoot,
         side: sidebarInstance?.side ?? "left",
+        growsRight: sidebarGrowsRight(
+          sidebarInstance?.side ?? "left",
+          getComputedStyle(sidebarContainer).direction,
+        ),
         startWidth: initialWidth,
         startX: event.clientX,
         transitionTargets,
@@ -152,10 +170,7 @@ export function SidebarRail({
 
       event.preventDefault();
 
-      const delta =
-        resizeState.side === "right"
-          ? resizeState.startX - event.clientX
-          : event.clientX - resizeState.startX;
+      const delta = railResizeDelta(resizeState.growsRight, resizeState.startX, event.clientX);
 
       if (Math.abs(delta) > 2) {
         resizeState.moved = true;

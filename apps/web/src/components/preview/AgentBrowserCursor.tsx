@@ -54,9 +54,10 @@ function AgentBrowserCursorEvent(props: {
     return () => window.clearTimeout(timeout);
   }, []);
 
+  // Physical on purpose: the cursor is positioned from page coordinates.
   return (
     <div
-      className="pointer-events-none absolute start-0 top-0 z-40 opacity-(--cursor-opacity) transform-(--cursor-transform) transition-transform-opacity duration-150 ease-out motion-reduce:transition-none"
+      className="pointer-events-none absolute left-0 top-0 z-40 opacity-(--cursor-opacity) transform-(--cursor-transform) transition-transform-opacity duration-150 ease-out motion-reduce:transition-none"
       style={{
         "--cursor-opacity": agentBrowserCursorOpacity(active, controller),
         "--cursor-transform": `translate3d(${event.x * zoomFactor * (content?.scale ?? 1) + (content?.x ?? 0) - (content?.scrollLeft ?? 0)}px, ${event.y * zoomFactor * (content?.scale ?? 1) + (content?.y ?? 0) - (content?.scrollTop ?? 0)}px, 0)`,
@@ -67,7 +68,7 @@ function AgentBrowserCursorEvent(props: {
       {event.phase === "click" ? (
         <span
           key={event.sequence}
-          className="absolute start-0.5 top-0.5 size-4 animate-status-ping rounded-full bg-primary/25 motion-reduce:animate-none"
+          className="absolute left-0.5 top-0.5 size-4 animate-status-ping rounded-full bg-primary/25 motion-reduce:animate-none"
         />
       ) : null}
       <MousePointer2
