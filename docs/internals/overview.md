@@ -160,6 +160,12 @@ HTTP listener via `markHttpListening`; publish ready; fork the heartbeat; then e
 output or open the browser. Command readiness precedes the listener, so a socket that opens can
 already dispatch.
 
+One server owns a state directory at a time. [`serverHomeLock.ts`][home-lock] takes `server.lock`
+(pid, hostname, port) in the state directory before the database opens, so a second server exits
+naming the holder instead of running migrations against the same file. A crash leaves the file
+behind; the next start takes it over when its pid is gone, and never when it was written by another
+host. CLI commands that read the database while a server runs do not take it.
+
 ## Related
 
 - [Workspace layout](./workspace-layout.md), [Glossary](./glossary.md)
@@ -172,6 +178,7 @@ already dispatch.
 [ws]: ../../apps/server/src/ws.ts
 [session]: ../../packages/client-runtime/src/rpc/session.ts
 [startup]: ../../apps/server/src/serverRuntimeStartup.ts
+[home-lock]: ../../apps/server/src/serverHomeLock.ts
 [engine]: ../../apps/server/src/orchestration/Layers/OrchestrationEngine.ts
 [snapshot]: ../../apps/server/src/orchestration/Layers/ProjectionSnapshotQuery.ts
 [decider]: ../../apps/server/src/orchestration/decider.ts
