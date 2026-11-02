@@ -274,7 +274,7 @@ export type OpenCodeSettings = typeof OpenCodeSettings.Type;
 
 export const CursorSettings = providerSettingsSchema(
   {
-    // Off by default; it is hidden from the picker until the Settings card ships.
+    // Off by default: Cursor bills the user's own plan, so they turn it on in Settings.
     enabled: Schema.Boolean.pipe(
       Schema.withDecodingDefault(Effect.succeed(false)),
       Schema.annotateKey({ providerSettingsForm: { hidden: true } }),

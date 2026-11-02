@@ -40,7 +40,7 @@ import { BotIdentityFields } from "./BotIdentityFields";
 import { BotMemorySheet } from "./BotMemorySheet";
 import { BotPersonalityToneField } from "./BotPersonalityToneField";
 import { BotToolsSection } from "./BotToolsSection";
-import { BOT_SANDBOX_OPTIONS, botSandboxLabel } from "./botSandbox";
+import { BOT_SANDBOX_OPTIONS, botSandboxLabel, cursorNeedsLocalSandbox } from "./botSandbox";
 import type { Bot } from "./types";
 import { useBotThreadRef } from "./useBotThreadRef";
 import {
@@ -257,7 +257,14 @@ export function BotSettingsForm({
         <SettingsSection id="workspace" title={t("Workspace")}>
           <SettingsRow
             title={t("Sandbox")}
-            description={t("Where this bot runs commands and edits files.")}
+            description={
+              cursorNeedsLocalSandbox(
+                draft.activeEntry?.driverKind,
+                draft.sandbox === "default" ? null : draft.sandbox,
+              )
+                ? t("Cursor runs on this machine and cannot use a cloud sandbox. Choose Local.")
+                : t("Where this bot runs commands and edits files.")
+            }
             control={
               <Select
                 value={draft.sandbox}

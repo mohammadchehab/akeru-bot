@@ -6,7 +6,7 @@
 - [Configure bots](./user/bots.md)
 - [Bot channels](./user/channels.md)
 - [Image generation](./user/image-generation.md)
-- Providers: [Codex](./user/providers-codex.md) · [Claude](./user/providers-claude.md)
+- Providers: [Codex](./user/providers-codex.md) · [Claude](./user/providers-claude.md) · [Cursor](./user/providers-cursor.md)
 - [Provider access and limits](./user/provider-access.md)
 - [Permission modes](./user/permission-modes.md)
 - [Configure sandboxes](./user/sandboxes.md)

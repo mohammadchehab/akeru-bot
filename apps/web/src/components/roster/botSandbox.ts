@@ -42,6 +42,14 @@ export function botSandboxLabel(
   return !option || option.value === "local" ? t("Local") : option.label;
 }
 
+/** Cursor runs on this machine, so the session refuses a cloud sandbox. */
+export function cursorNeedsLocalSandbox(
+  driver: string | undefined,
+  sandbox: Bot["sandbox"],
+): boolean {
+  return driver === "cursor" && sandbox !== null && sandbox !== "local";
+}
+
 export function resolveBotRuntimeMode(
   sandbox: Bot["sandbox"],
   localExecutionMode: LocalExecutionMode,

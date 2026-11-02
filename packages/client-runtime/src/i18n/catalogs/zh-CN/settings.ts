@@ -392,4 +392,6 @@ export const settingsCatalog = {
   "Open the sign-in page on this device. This page updates once Cursor confirms.":
     "在此设备上打开登录页面。Cursor 确认后此页面会自动更新。",
   "Open sign-in page": "打开登录页面",
+  "Cursor runs on this machine and cannot use a cloud sandbox. Choose Local.":
+    "Cursor 在本机运行，无法使用云沙盒。请选择“本地”。",
 } as const;

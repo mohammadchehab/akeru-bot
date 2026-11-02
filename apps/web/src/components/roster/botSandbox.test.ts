@@ -5,6 +5,7 @@ import {
   DEFAULT_BOT_RUNTIME_MODE,
   botSandboxChoice,
   botSandboxLabel,
+  cursorNeedsLocalSandbox,
   resolveBotRuntimeMode,
 } from "./botSandbox";
 
@@ -49,5 +50,20 @@ describe("botSandbox", () => {
     for (const { value: sandbox } of BOT_SANDBOX_OPTIONS.slice(1)) {
       expect(resolveBotRuntimeMode(sandbox, "approval-required")).toBe("full-access");
     }
+  });
+});
+
+describe("cursorNeedsLocalSandbox", () => {
+  it("flags a Cursor bot pointed at a cloud sandbox, which the adapter refuses at session start", () => {
+    expect(cursorNeedsLocalSandbox("cursor", "e2b")).toBe(true);
+  });
+
+  it("accepts Cursor on the local or inherited sandbox", () => {
+    expect(cursorNeedsLocalSandbox("cursor", "local")).toBe(false);
+    expect(cursorNeedsLocalSandbox("cursor", null)).toBe(false);
+  });
+
+  it("leaves other providers alone", () => {
+    expect(cursorNeedsLocalSandbox("codex", "e2b")).toBe(false);
   });
 });

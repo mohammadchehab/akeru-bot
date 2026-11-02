@@ -104,4 +104,5 @@ setup on the same machine never makes Isnadi open its data. If `T3CODE_HOME` is 
 - [Choose a permission mode](./permission-modes.md)
 - [Connect another device](./remote-access.md)
 - [Use Codex](./providers-codex.md)
+- [Use Cursor](./providers-cursor.md)
 - [Use Claude](./providers-claude.md)

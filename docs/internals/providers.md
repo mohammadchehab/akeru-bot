@@ -7,7 +7,7 @@ orchestration layer does not know which one is behind a thread.
 
 ## Built-in drivers
 
-[`builtInDrivers.ts`][drivers] exports `BUILT_IN_DRIVERS` with seven entries:
+[`builtInDrivers.ts`][drivers] exports `BUILT_IN_DRIVERS` with eight entries:
 
 | Driver kind    | Driver source                                    |
 | -------------- | ------------------------------------------------ |
@@ -17,11 +17,12 @@ orchestration layer does not know which one is behind a thread.
 | `kimi`         | [`Drivers/KimiDriver.ts`][kimi]                  |
 | `opencode`     | [`Drivers/OpenCodeDriver.ts`][opencode]          |
 | `opencodeGo`   | [`Drivers/OpenCodeGoDriver.ts`][opencode-go]     |
+| `cursor`       | [`Drivers/CursorDriver.ts`][cursor]              |
 | `customOpenai` | [`Drivers/CustomOpenaiDriver.ts`][custom-openai] |
 
 Each driver declares its `driverKind`, a `configSchema`, and a `create` function that builds a
 provider instance in a child scope. The five subscription drivers and Custom API supply a Mastra
-connection; standard OpenCode supplies a legacy adapter. Adapter implementations live beside them in
+connection; standard OpenCode and Cursor supply legacy adapters. Adapter implementations live beside them in
 `apps/server/src/provider/Layers/` (`ClaudeAdapter.ts`, `OpenCodeAdapter.ts`, and so on) and conform to
 [`ProviderAdapter.ts`][adapter]. Read the driver plus its adapter to see how a specific agent's
 transport, config, and event shapes are mapped.
@@ -565,6 +566,7 @@ when a request opens (approval) or user input is requested, via
 [kimi]: ../../apps/server/src/provider/Drivers/KimiDriver.ts
 [opencode]: ../../apps/server/src/provider/Drivers/OpenCodeDriver.ts
 [opencode-go]: ../../apps/server/src/provider/Drivers/OpenCodeGoDriver.ts
+[cursor]: ../../apps/server/src/provider/Drivers/CursorDriver.ts
 [custom-openai]: ../../apps/server/src/provider/Drivers/CustomOpenaiDriver.ts
 [adapter]: ../../apps/server/src/provider/Services/ProviderAdapter.ts
 [instances]: ../../apps/server/src/provider/Services/ProviderInstanceRegistry.ts

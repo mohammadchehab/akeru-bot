@@ -406,4 +406,6 @@ export const settingsCatalog = {
   "Open the sign-in page on this device. This page updates once Cursor confirms.":
     "Open the sign-in page on this device. This page updates once Cursor confirms.",
   "Open sign-in page": "Open sign-in page",
+  "Cursor runs on this machine and cannot use a cloud sandbox. Choose Local.":
+    "Cursor runs on this machine and cannot use a cloud sandbox. Choose Local.",
 } as const;
