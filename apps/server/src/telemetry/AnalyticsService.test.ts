@@ -24,9 +24,9 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
 
       const configLayer = ConfigProvider.layer(
         ConfigProvider.fromUnknown({
-          T3CODE_TELEMETRY_ENABLED: true,
-          T3CODE_POSTHOG_KEY: "phc_test",
-          T3CODE_POSTHOG_HOST: "http://localhost",
+          ISNADI_TELEMETRY_ENABLED: true,
+          ISNADI_POSTHOG_KEY: "phc_test",
+          ISNADI_POSTHOG_HOST: "http://localhost",
         }),
       );
 
@@ -139,6 +139,31 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
     );
   }
 
+  for (const [name, environment] of [
+    ["no variables", {}],
+    ["analytics enabled without a key", { ISNADI_TELEMETRY_ENABLED: true }],
+  ] as const) {
+    it.effect(`has no built-in project key: ${name}`, () =>
+      Effect.gen(function* () {
+        const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
+          prefix: "isnadi-analytics-no-key-",
+        });
+
+        const analyticsLayer = makeLayers(serverConfigLayer).pipe(
+          Layer.provide(ConfigProvider.layer(ConfigProvider.fromUnknown(environment))),
+        );
+
+        yield* Effect.gen(function* () {
+          const config = yield* ServerConfig.ServerConfig;
+          const fs = yield* FileSystem.FileSystem;
+          const analytics = yield* AnalyticsService.AnalyticsService;
+          yield* analytics.flush;
+          assert.isFalse(yield* fs.exists(config.analyticsStatePath));
+        }).pipe(Effect.provide(analyticsLayer));
+      }),
+    );
+  }
+
   it.effect("deletes analytics state when the environment disables analytics", () =>
     Effect.gen(function* () {
       const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
@@ -166,29 +191,6 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
     }),
   );
 
-  it.effect("uses the bundled PostHog key when no override is configured", () =>
-    Effect.gen(function* () {
-      const serverConfigLayer = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-        prefix: "isnadi-analytics-no-key-",
-      });
-
-      const analyticsLayer = makeLayers(serverConfigLayer).pipe(
-        Layer.provide(
-          ConfigProvider.layer(ConfigProvider.fromUnknown({ T3CODE_TELEMETRY_ENABLED: true })),
-        ),
-      );
-
-      yield* Effect.gen(function* () {
-        const config = yield* ServerConfig.ServerConfig;
-        const fs = yield* FileSystem.FileSystem;
-        const analytics = yield* AnalyticsService.AnalyticsService;
-        yield* analytics.flush;
-
-        assert.isTrue(yield* fs.exists(config.analyticsStatePath));
-      }).pipe(Effect.provide(analyticsLayer));
-    }),
-  );
-
   it("reports retired Cursor usage as another provider", () => {
     assert.equal(AnalyticsService.normalizeProvider("cursor"), "other");
     assert.equal(AnalyticsService.normalizeProvider("claudeagent"), "claude");
@@ -206,6 +208,8 @@ it.layer(NodeServices.layer)("anonymous analytics", (it) => {
       assert.notInclude(source, ".codex");
       assert.notInclude(source, ".claude");
       assert.notInclude(source, "auth.json");
+      // A project key ships only through distributor configuration, never in source.
+      assert.notInclude(source, "phc_");
     }),
   );
 });

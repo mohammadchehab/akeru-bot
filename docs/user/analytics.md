@@ -1,7 +1,8 @@
 # Anonymous usage analytics
 
-Packaged production builds send anonymous aggregate usage by default. Development and CI builds do
-not send it unless a maintainer enables it.
+IsnadiBot does not send usage analytics unless the build you run was configured with an analytics
+destination. A build from the source repository has none, so it sends nothing. Builds that do have one
+send anonymous aggregate usage, and you can turn it off in Settings.
 
 ## What a report contains
 
