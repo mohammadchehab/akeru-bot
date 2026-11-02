@@ -43,6 +43,8 @@ import {
   executable,
 } from "./tools/IsnadiWorkspaceTools.ts";
 
+import { isUnknownDelegationBot } from "./delegation/IsnadiDelegationPolicy.ts";
+
 const isDelegationContextTooLong = Schema.is(IsnadiDelegationContextTooLongError);
 
 const isDelegationProviderUnsupported = Schema.is(IsnadiDelegationProviderUnsupportedError);
@@ -382,7 +384,6 @@ export function createIsnadiToolRuntime(options?: IsnadiToolRuntimeOptions): Isn
           }
 
           failureCode = "internal";
-          let billedBotId = session.botId;
 
           try {
             if (execution.toolId === "CreateAgent") {
@@ -390,17 +391,16 @@ export function createIsnadiToolRuntime(options?: IsnadiToolRuntimeOptions): Isn
               result = await session.delegation.create(execution.input);
             } else if (execution.toolId === "CheckAgent") {
               if (!session.delegation.check) throw new Error("Bot inspection is not available.");
-              const checkInput = execution.input;
-              billedBotId = checkInput.botId;
-              result = await session.delegation.check(checkInput);
+              result = await session.delegation.check(execution.input);
             } else {
               if (!session.delegation.stop) throw new Error("Bot cancellation is not available.");
-              const stopInput = execution.input;
-              billedBotId = stopInput.botId;
-              result = await session.delegation.stop(stopInput);
+              result = await session.delegation.stop(execution.input);
             }
           } catch (cause) {
-            return nonfatalToolFailureReceipt(input, session, cause, failureCode, billedBotId);
+            // The target may be a raw name the bot guessed; bill the calling bot, never that text.
+            if (isUnknownDelegationBot(cause)) failureCode = "not_found";
+
+            return nonfatalToolFailureReceipt(input, session, cause, failureCode, session.botId);
           }
         } else if (
           execution.toolId === "Task" ||

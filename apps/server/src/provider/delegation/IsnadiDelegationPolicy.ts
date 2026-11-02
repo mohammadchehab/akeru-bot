@@ -19,6 +19,23 @@ import { PendingWaiterTimeoutError } from "../PendingWaiters.ts";
 
 export const isPendingWaiterTimeout = Schema.is(PendingWaiterTimeoutError);
 
+/** A bot tool named a target that is neither a bot ID nor a unique member name. */
+export class IsnadiDelegationUnknownBotError extends Schema.TaggedErrorClass<IsnadiDelegationUnknownBotError>()(
+  "IsnadiDelegationUnknownBotError",
+  {
+    requested: Schema.String,
+    members: Schema.Array(Schema.Struct({ id: Schema.String, name: Schema.String })),
+  },
+) {
+  override get message(): string {
+    const members = this.members.map((member) => `${member.name} (${member.id})`).join(", ");
+
+    return `No bot with the ID or name '${this.requested}' is available here. Pass a bot ID. Valid members: ${members || "none"}.`;
+  }
+}
+
+export const isUnknownDelegationBot = Schema.is(IsnadiDelegationUnknownBotError);
+
 export const TERMINAL_PHASES = new Set<IsnadiDelegationPhase["_tag"]>([
   "Completed",
   "Failed",
