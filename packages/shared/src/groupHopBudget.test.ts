@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { effectiveHopBudget, stepHopBudget } from "./groupHopBudget";
+import { effectiveHopBudget, stepHopBudget } from "./groupHopBudget.ts";
 
 describe("hop budget stepper", () => {
   it("reads an unset budget as the default of 6", () => {

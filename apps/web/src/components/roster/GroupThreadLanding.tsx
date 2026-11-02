@@ -148,7 +148,15 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
   const bossCatalog = bossEngine.catalog;
   // A mention sends the draft to that member, so the `$` and `/` pickers offer its provider's catalog.
   const [addressedBotId, setAddressedBotId] = useState<string | null>(null);
-  const addressedBot = resolveGroupAddressedBot(members, boss, addressedBotId);
+  const [replyTarget, setReplyTarget] = useState<MessageReplyTarget | null>(null);
+
+  // A reply goes to the bot that wrote the quoted message, unless the draft names someone.
+  const replyBotId = replyTarget
+    ? (runtime.messages.find((message) => message.id === replyTarget.messageId)?.respondingBotId ??
+      null)
+    : null;
+
+  const addressedBot = resolveGroupAddressedBot(members, boss, addressedBotId ?? replyBotId);
   const composerCatalog = useBotEngineAvailability(addressedBot?.engine ?? null).catalog;
   const noProviderNoticeId = useId();
   // Signing in fixes a reply that failed on a missing account, or a boss that
@@ -185,7 +193,6 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
 
   const replyPlayback = useOptionalReplyPlayback();
   const voiceCall = useOptionalVoiceCall();
-  const [replyTarget, setReplyTarget] = useState<MessageReplyTarget | null>(null);
   const approvalState = useRosterPendingApproval(runtime.linkedThreadRef);
   const enableAutoReview = useEnableBotAutoReview();
   const activities = useThreadActivities(runtime.linkedThreadRef);

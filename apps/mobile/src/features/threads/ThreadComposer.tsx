@@ -1,4 +1,8 @@
-import { responderQueueLine, responderQueueNames } from "@isnadi/client-runtime/responder-queue";
+import {
+  responderQueueLine,
+  responderQueueNames,
+  stopTarget,
+} from "@isnadi/client-runtime/responder-queue";
 import { useMobileI18n } from "../../lib/i18n";
 import type {
   EnvironmentId,
@@ -238,9 +242,7 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
     onEditorFocusChange?.(false);
   }, [onEditorFocusChange]);
 
-  const showStopAction =
-    props.selectedThread.session?.status === "running" ||
-    props.selectedThread.session?.status === "starting";
+  const showStopAction = stopTarget(props.selectedThread) !== null;
 
   const sendLabel =
     props.connectionState !== "connected" || props.queueCount > 0 ? "Queue" : "Send";

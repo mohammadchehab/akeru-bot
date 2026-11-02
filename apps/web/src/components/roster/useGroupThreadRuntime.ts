@@ -1,3 +1,4 @@
+import { stopTarget } from "@isnadi/client-runtime/responder-queue";
 import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
@@ -234,21 +235,15 @@ export function useGroupThreadRuntime(groupId: string) {
 
   // Ends the running turn; the server clears the responder queue with it.
   const stop = useCallback(async (): Promise<boolean> => {
-    const session = rememberedThread?.session;
+    const target = rememberedThread ? stopTarget(rememberedThread) : null;
 
-    const running = session?.status === "running" || session?.status === "starting";
-
-    // Between hops nothing runs but bots still wait in the queue; the server interrupt empties it.
-    if (!linkedThreadRef || (!running && !rememberedThread?.responderQueue?.entries.length)) {
+    if (!linkedThreadRef || target === null) {
       return false;
     }
 
     const result = await interruptTurnCommand({
       environmentId: linkedThreadRef.environmentId,
-      input: {
-        threadId: linkedThreadRef.threadId,
-        ...(running && session?.activeTurnId ? { turnId: session.activeTurnId } : {}),
-      },
+      input: { threadId: linkedThreadRef.threadId, ...target },
     });
 
     if (Predicate.isTagged(result, "Failure")) {
@@ -340,7 +335,12 @@ export function useGroupThreadRuntime(groupId: string) {
       );
 
       // The first addressed bot picks the model for the send; the server resolves who answers.
-      const respondingBotId = addressing?.kind === "bots" ? addressing.botIds[0] : group.bossBotId;
+      const respondingBotId =
+        addressing?.kind === "bots"
+          ? addressing.botIds[0]
+          : addressing?.kind === "reply" && replyTarget?.respondingBotId
+            ? replyTarget.respondingBotId
+            : group.bossBotId;
 
       const respondingBot = bots.find(
         (bot) =>

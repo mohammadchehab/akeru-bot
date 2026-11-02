@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { responderQueueLine, responderQueueNames } from "./responderQueue";
+import { responderQueueLine, responderQueueNames, stopTarget } from "./responderQueue.ts";
 
 const members = [
   { id: "bot-1", name: "Becky" },
@@ -27,5 +27,30 @@ describe("responderQueueLine", () => {
     expect(responderQueueLine(["Becky"], t)).toBe("Becky is next");
     expect(responderQueueLine(["Becky", "Omar"], t)).toBe("Becky, Omar are next");
     expect(responderQueueLine([], t)).toBeNull();
+  });
+});
+
+describe("stopTarget", () => {
+  it("targets the running turn", () => {
+    expect(stopTarget({ session: { status: "running", activeTurnId: "turn-1" } })).toEqual({
+      turnId: "turn-1",
+    });
+    expect(stopTarget({ session: { status: "starting" } })).toEqual({});
+  });
+
+  it("still stops between hops, without a turn id", () => {
+    expect(
+      stopTarget({
+        session: { status: "ready", activeTurnId: "turn-1" },
+        responderQueue: { entries: [{}] },
+      }),
+    ).toEqual({});
+  });
+
+  it("is null when nothing runs and nobody waits", () => {
+    expect(
+      stopTarget({ session: { status: "ready" }, responderQueue: { entries: [] } }),
+    ).toBeNull();
+    expect(stopTarget({})).toBeNull();
   });
 });

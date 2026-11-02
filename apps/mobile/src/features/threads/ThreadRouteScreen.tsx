@@ -1,3 +1,4 @@
+import { stopTarget } from "@isnadi/client-runtime/responder-queue";
 import { Predicate } from "effect";
 import { threadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
@@ -319,22 +320,15 @@ function ThreadRouteContent(
   }, [navigation]);
 
   const handleStopThread = useCallback(() => {
-    if (
-      !selectedThread ||
-      (selectedThread.session?.status !== "running" &&
-        selectedThread.session?.status !== "starting")
-    ) {
+    const target = selectedThread ? stopTarget(selectedThread) : null;
+
+    if (!selectedThread || target === null) {
       return;
     }
 
     return interruptThreadTurn({
       environmentId: selectedThread.environmentId,
-      input: {
-        threadId: selectedThread.id,
-        ...(selectedThread.session.activeTurnId
-          ? { turnId: selectedThread.session.activeTurnId }
-          : {}),
-      },
+      input: { threadId: selectedThread.id, ...target },
     });
   }, [interruptThreadTurn, selectedThread]);
 
