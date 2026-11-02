@@ -79,9 +79,36 @@ function wantsStream(body: string): boolean {
 /** A user message with this marker makes the stub ask for a Shell call, which waits on an approval. */
 export const STUB_APPROVAL_MARKER = "[needs approval]";
 
-/** The follow-up request after a tool ran or was declined carries a tool message. */
+interface RequestMessage {
+  readonly role?: string;
+  readonly content?: string | ReadonlyArray<{ readonly text?: string }> | null;
+}
+
+function requestMessages(body: string): ReadonlyArray<RequestMessage> {
+  try {
+    const parsed: { readonly messages?: ReadonlyArray<RequestMessage> } = JSON.parse(body);
+
+    return parsed.messages ?? [];
+  } catch {
+    return [];
+  }
+}
+
+function textOf(message: RequestMessage | undefined): string {
+  const content = message?.content;
+
+  if (typeof content === "string") return content;
+
+  return Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : "";
+}
+
+/** True while the marker message is the latest turn; the request after a tool result ends in a tool message. */
 function wantsApproval(body: string): boolean {
-  return lastUserTextFrom(body).includes(STUB_APPROVAL_MARKER) && !/"role":"tool"/.test(body);
+  const last = requestMessages(body).at(-1);
+
+  console.error(`[stub] last=${last?.role ?? "none"} text=${textOf(last).slice(0, 80)}`);
+
+  return last?.role === "user" && textOf(last).includes(STUB_APPROVAL_MARKER);
 }
 
 const SHELL_TOOL_CALL = {
