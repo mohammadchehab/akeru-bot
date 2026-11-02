@@ -139,7 +139,7 @@ function MarkdownCodeBlock(props: {
       style={{ backgroundColor: props.backgroundColor, borderColor: props.borderColor }}
     >
       <View
-        className="flex-row items-center justify-between gap-2 border-b py-1 pr-1.5 pl-3.5"
+        className="flex-row items-center justify-between gap-2 border-b py-1 pe-1.5 ps-3.5"
         style={{ borderBottomColor: props.borderColor }}
       >
         <NativeText
@@ -336,11 +336,11 @@ export function useMarkdownStyles(
         textDecorationLine: "underline" as const,
       },
       blockquote: {
-        borderLeftWidth: 2,
-        borderLeftColor: markdownBlockquoteBorder,
-        paddingLeft: 11,
+        borderStartWidth: 2,
+        borderStartColor: markdownBlockquoteBorder,
+        paddingStart: 11,
         paddingVertical: 2,
-        marginLeft: 0,
+        marginStart: 0,
         marginVertical: 10,
       },
       heading: {
@@ -444,7 +444,7 @@ export function useMarkdownStyles(
                   className="font-sans"
                   style={{
                     width: ordered ? 22 : 12,
-                    marginRight: 5,
+                    marginEnd: 5,
                     color: inlineTextColor,
                     fontSize: markdownFontSizes.m,
                     lineHeight: markdownFontSizes.bodyLineHeight,

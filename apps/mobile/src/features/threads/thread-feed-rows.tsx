@@ -221,7 +221,7 @@ export function renderFeedEntry(
               );
             })}
           </View>
-          <View className="mt-1 flex-row items-center justify-end gap-1 pr-0.5">
+          <View className="mt-1 flex-row items-center justify-end gap-1 pe-0.5">
             <Text className="font-t3-medium text-xs tabular-nums text-neutral-600 dark:text-neutral-400">
               {timestampLabel}
             </Text>

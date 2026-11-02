@@ -12,7 +12,7 @@ export function LoadingStrip(props: { readonly progress: number }) {
       className="absolute inset-x-0 top-0 z-10 h-0.5 overflow-hidden"
     >
       <View
-        className="h-full rounded-r-full bg-primary"
+        className="h-full rounded-e-full bg-primary"
         style={{ width: `${clampedProgress * 100}%` }}
       />
     </View>

@@ -717,7 +717,7 @@ export const ThreadDetailScreen = memo(function ThreadDetailScreen(props: Thread
           // IME on both platforms. Visibility is the authoritative closed
           // state, so disable the translation rather than stranding the pill.
           enabled={isKeyboardVisible && !keyboardStateSuspect}
-          style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+          style={{ position: "absolute", bottom: 0, start: 0, end: 0 }}
           offset={{ closed: 0, opened: 0 }}
         >
           {/* No paddingTop here: the overlay's measured height becomes the
@@ -727,7 +727,7 @@ export const ThreadDetailScreen = memo(function ThreadDetailScreen(props: Thread
             {showScrollToEndButton ? (
               <Animated.View
                 pointerEvents="box-none"
-                className="absolute -top-11 left-0 right-0 z-20 items-center"
+                className="absolute -top-11 start-0 end-0 z-20 items-center"
                 entering={FadeInDown.duration(160)}
                 exiting={FadeOut.duration(100)}
               >

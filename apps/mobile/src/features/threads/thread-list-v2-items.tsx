@@ -529,7 +529,7 @@ export const ThreadListV2Row = memo(function ThreadListV2Row(props: {
           <BotAvatarView avatar={botAvatar} size={46} state={avatarState} />
         )}
         {online ? (
-          <View className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full border-2 border-screen bg-green-500" />
+          <View className="absolute -bottom-0.5 -end-0.5 size-3.5 rounded-full border-2 border-screen bg-green-500" />
         ) : null}
       </View>
       <View className="min-w-0 flex-1">

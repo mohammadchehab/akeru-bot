@@ -228,7 +228,7 @@ export function HomeHeader(props: {
                   {initials}
                 </RNText>
                 {hasCustomListOptions ? (
-                  <View className="absolute -right-0.5 -top-0.5 size-3 rounded-full border-2 border-screen bg-blue-500" />
+                  <View className="absolute -end-0.5 -top-0.5 size-3 rounded-full border-2 border-screen bg-blue-500" />
                 ) : null}
               </Pressable>
             </ControlPillMenu>

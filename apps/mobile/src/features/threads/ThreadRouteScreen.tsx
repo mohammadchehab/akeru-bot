@@ -569,7 +569,7 @@ function ThreadBotHeader(props: {
         ) : null}
         <View className="flex-1 flex-row justify-center">
           <View
-            className="max-w-full flex-row items-center gap-2 rounded-full bg-card py-1.5 pl-2 pr-4"
+            className="max-w-full flex-row items-center gap-2 rounded-full bg-card py-1.5 ps-2 pe-4"
             style={{
               elevation: 3,
               shadowColor: "#000000",

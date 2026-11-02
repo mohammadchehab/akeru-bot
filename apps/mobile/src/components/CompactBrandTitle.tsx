@@ -55,7 +55,7 @@ export function CompactBrandTitle(
         alignItems: "center",
         flexDirection: "row",
         gap: 6,
-        marginLeft: titleOffset,
+        marginStart: titleOffset,
       }}
     >
       <BrandIcon borderRadius={4} size={21} />

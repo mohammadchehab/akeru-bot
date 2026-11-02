@@ -72,7 +72,7 @@ export function AndroidScreenHeader(props: {
             accessibilityRole="button"
             hitSlop={8}
             onPress={props.onBack}
-            className="-mr-2 size-11 items-center justify-center"
+            className="-me-2 size-11 items-center justify-center"
           >
             <SymbolView
               name="chevron.left"
@@ -83,7 +83,7 @@ export function AndroidScreenHeader(props: {
           </Pressable>
         ) : null}
 
-        <View className={cn("min-w-0 flex-1", !props.onBack && "pl-1")}>
+        <View className={cn("min-w-0 flex-1", !props.onBack && "ps-1")}>
           <Text numberOfLines={1} className="text-lg font-t3-bold text-foreground">
             {props.title}
           </Text>

@@ -166,8 +166,8 @@ export function ComposerToolbarScroller(props: {
         contentContainerStyle={{
           alignItems: "center",
           gap: COMPOSER_TOOLBAR_GAP,
-          paddingLeft: 0,
-          paddingRight: props.contentPaddingRight ?? 1,
+          paddingStart: 0,
+          paddingEnd: props.contentPaddingRight ?? 1,
         }}
       >
         {props.children}

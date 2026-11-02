@@ -509,8 +509,8 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
                   overflow: "hidden" as const,
                   flexDirection: "row" as const,
                   alignItems: "center" as const,
-                  paddingLeft: 18,
-                  paddingRight: 5,
+                  paddingStart: 18,
+                  paddingEnd: 5,
                   paddingVertical: 5,
                 }
           }
@@ -534,7 +534,7 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
             <Pressable
               accessibilityLabel="Add attachment"
               accessibilityRole="button"
-              className="mr-1 size-9 items-center justify-center rounded-full bg-subtle"
+              className="me-1 size-9 items-center justify-center rounded-full bg-subtle"
               hitSlop={6}
               onPress={() => void props.onPickDraftImages()}
               style={({ pressed }) => ({ opacity: pressed ? 0.55 : 1 })}
@@ -546,7 +546,7 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
             <Pressable
               accessibilityLabel="Model and reasoning settings"
               accessibilityRole="button"
-              className="mr-1 max-w-[112px] flex-row items-center gap-1.5 rounded-full bg-subtle px-2.5 py-2"
+              className="me-1 max-w-[112px] flex-row items-center gap-1.5 rounded-full bg-subtle px-2.5 py-2"
               onPress={openSettings}
               style={({ pressed }) => ({ opacity: pressed ? 0.55 : 1 })}
             >
@@ -599,7 +599,7 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
             />
           </View>
           {!isExpanded && props.draftAttachments.length > 0 ? (
-            <View className="flex-row gap-1 pl-1">
+            <View className="flex-row gap-1 ps-1">
               {props.draftAttachments.slice(0, 3).map((image) => (
                 <Pressable key={image.id} onPress={() => onPressImage(image.previewUri)}>
                   <Image

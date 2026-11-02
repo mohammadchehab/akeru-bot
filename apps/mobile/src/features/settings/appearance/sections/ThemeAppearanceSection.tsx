@@ -138,7 +138,7 @@ function ThemeCard(props: {
       <PreviewOrb appearance={appearance} compact themeId={props.themeId} />
       {selected ? (
         <View
-          className="absolute -bottom-0.5 -right-0.5 size-5 items-center justify-center rounded-full border border-border"
+          className="absolute -bottom-0.5 -end-0.5 size-5 items-center justify-center rounded-full border border-border"
           style={{ backgroundColor: badgeBackground }}
         >
           <SymbolView

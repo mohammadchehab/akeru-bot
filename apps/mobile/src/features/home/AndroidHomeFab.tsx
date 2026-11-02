@@ -36,7 +36,7 @@ function AndroidHomeFab(props: {
         accessibilityLabel={t("New chat")}
         accessibilityRole="button"
         onPress={props.onStartNewTask}
-        className="absolute right-5 size-14 items-center justify-center rounded-full bg-primary shadow-lg"
+        className="absolute end-5 size-14 items-center justify-center rounded-full bg-primary shadow-lg"
         style={{
           bottom: Math.max(insets.bottom, 16) + 16,
         }}

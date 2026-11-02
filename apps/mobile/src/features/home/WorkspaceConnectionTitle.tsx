@@ -133,7 +133,7 @@ export function WorkspaceConnectionTitle(props: {
         hitSlop={8}
         onPress={props.onPress}
         className="flex-row items-center gap-2"
-        style={{ marginLeft: props.statusOffset ?? 0 }}
+        style={{ marginStart: props.statusOffset ?? 0 }}
       >
         {status.showsProgress ? (
           <ActivityIndicator color={iconColor} size="small" />

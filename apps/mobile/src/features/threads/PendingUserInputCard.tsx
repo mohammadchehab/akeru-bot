@@ -179,7 +179,7 @@ export function PendingUserInputCard(props: PendingUserInputCardProps) {
       pointerEvents={props.collapsed ? "auto" : "none"}
       accessibilityElementsHidden={!props.collapsed}
       importantForAccessibility={props.collapsed ? "auto" : "no-hide-descendants"}
-      className="flex-row items-center gap-2 rounded-full border border-neutral-200 bg-neutral-100 py-1.5 pl-4 pr-1.5 dark:border-white/6 dark:bg-neutral-900"
+      className="flex-row items-center gap-2 rounded-full border border-neutral-200 bg-neutral-100 py-1.5 ps-4 pe-1.5 dark:border-white/6 dark:bg-neutral-900"
     >
       <Pressable
         accessibilityRole="button"

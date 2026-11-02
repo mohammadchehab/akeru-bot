@@ -256,7 +256,7 @@ export const ThreadWorkLog = memo(function ThreadWorkLog(props: ThreadWorkLogPro
 
                   <View className="shrink-0 flex-row items-center gap-px">
                     {props.copiedRowId === row.id ? (
-                      <Text className="pr-1 font-t3-medium text-3xs text-emerald-600 dark:text-emerald-400">
+                      <Text className="pe-1 font-t3-medium text-3xs text-emerald-600 dark:text-emerald-400">
                         {t("Copied")}
                       </Text>
                     ) : null}
@@ -299,13 +299,13 @@ export const ThreadWorkLog = memo(function ThreadWorkLog(props: ThreadWorkLogPro
               </Pressable>
 
               {fullDetail ? (
-                <View className="ml-7 border-l border-neutral-300/60 pb-1 pl-3 pt-0.5 dark:border-white/[0.12]">
+                <View className="ms-7 border-s border-neutral-300/60 pb-1 ps-3 pt-0.5 dark:border-white/[0.12]">
                   <ScrollView
                     nestedScrollEnabled
                     directionalLockEnabled
                     showsVerticalScrollIndicator
                     className="max-h-60"
-                    contentContainerStyle={{ paddingRight: 8 }}
+                    contentContainerStyle={{ paddingEnd: 8 }}
                   >
                     <Text
                       selectable

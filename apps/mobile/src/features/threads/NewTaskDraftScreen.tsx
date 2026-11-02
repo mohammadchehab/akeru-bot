@@ -751,7 +751,7 @@ export function NewTaskDraftScreen(props: {
         {heroViewport}
 
         <KeyboardStickyView
-          style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+          style={{ position: "absolute", bottom: 0, start: 0, end: 0 }}
           offset={{ closed: 0, opened: keyboardOpenedOffset }}
         >
           {composerDock}
@@ -779,7 +779,7 @@ export function NewTaskDraftScreen(props: {
 
       {heroViewport}
       <KeyboardStickyView
-        style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        style={{ position: "absolute", bottom: 0, start: 0, end: 0 }}
         offset={{ closed: 0, opened: keyboardOpenedOffset }}
       >
         {composerDock}

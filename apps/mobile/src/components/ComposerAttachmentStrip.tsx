@@ -48,7 +48,7 @@ export function ComposerAttachmentStrip(props: ComposerAttachmentStripProps) {
             className="relative"
             style={{
               paddingTop: removeButtonGutter,
-              paddingRight: removeButtonGutter,
+              paddingEnd: removeButtonGutter,
             }}
           >
             <Pressable

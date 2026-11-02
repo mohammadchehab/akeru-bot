@@ -120,7 +120,7 @@ export function ThreadDelegationCard(props: {
 
   return (
     <View
-      className="mx-4 mb-3 gap-1 border-l-2 border-border pl-3"
+      className="mx-4 mb-3 gap-1 border-s-2 border-border ps-3"
       accessibilityLabel={t("Delegation to {name}", { name: childName })}
     >
       <View className="flex-row items-center gap-2">

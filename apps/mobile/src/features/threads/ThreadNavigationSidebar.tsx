@@ -87,8 +87,8 @@ function NativeSidebarContainer(props: ThreadNavigationSidebarProps) {
       style={{
         width: props.width,
         backgroundColor,
-        borderRightColor: borderColor,
-        borderRightWidth: StyleSheet.hairlineWidth,
+        borderEndColor: borderColor,
+        borderEndWidth: StyleSheet.hairlineWidth,
       }}
     >
       <SidebarNavigationShell>
@@ -659,8 +659,8 @@ function ThreadNavigationSidebarPane(
       style={{
         width: props.width,
         backgroundColor,
-        borderRightColor: borderColor,
-        borderRightWidth: StyleSheet.hairlineWidth,
+        borderEndColor: borderColor,
+        borderEndWidth: StyleSheet.hairlineWidth,
       }}
     >
       <View className="flex-1" style={{ paddingBottom: insets.bottom }}>
