@@ -20,6 +20,9 @@ import {
 /** How long a SIGINT gets before the process is killed outright. */
 const INTERRUPT_GRACE = "2 seconds";
 
+/** A failed turn reports the end of stderr; a long turn must not grow it without limit. */
+const STDERR_TAIL_CHARS = 8192;
+
 export interface CursorTurnStartInput {
   readonly command: string;
   readonly args: ReadonlyArray<string>;
@@ -76,7 +79,9 @@ export const startCursorTurn = Effect.fn("startCursorTurn")(function* (
 
   yield* child.stderr.pipe(
     Stream.decodeText(),
-    Stream.runForEach((chunk) => Ref.update(stderr, (text) => `${text}${chunk}`)),
+    Stream.runForEach((chunk) =>
+      Ref.update(stderr, (text) => `${text}${chunk}`.slice(-STDERR_TAIL_CHARS)),
+    ),
     Effect.ignore,
     Effect.forkScoped,
   );

@@ -111,6 +111,18 @@ describe("startCursorTurn", () => {
     }),
   );
 
+  it.effect("keeps only the tail of a very long stderr", () =>
+    Effect.gen(function* () {
+      const { result } = yield* run(
+        "head -c 200000 /dev/zero | tr '\\0' 'e' >&2; echo THE-END >&2; exit 1",
+      );
+
+      expect(result.outcome).toBe("failed");
+      expect(result.message?.endsWith("THE-END")).toBe(true);
+      expect(result.message?.length).toBeLessThanOrEqual(8192);
+    }),
+  );
+
   it.effect("fails on an error result even when the process exits 0", () =>
     Effect.gen(function* () {
       const line = JSON.stringify({ type: "result", is_error: true, result: "model overloaded" });

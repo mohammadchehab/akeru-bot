@@ -18,14 +18,16 @@ import {
   type ProviderSession,
   type RuntimeMode,
 } from "@isnadi/contracts";
+import * as Cause from "effect/Cause";
 import * as Crypto from "effect/Crypto";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
+import * as Fiber from "effect/Fiber";
 import * as Option from "effect/Option";
 import * as Queue from "effect/Queue";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
-import { ChildProcessSpawner } from "effect/unstable/process";
+import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process";
 import { resolveSpawnCommand } from "@isnadi/shared/shell";
 
 import {
@@ -33,6 +35,7 @@ import {
   ProviderAdapterSessionNotFoundError,
   ProviderAdapterValidationError,
 } from "../Errors.ts";
+import { spawnAndCollect } from "../providerSnapshot.ts";
 import type { CursorAdapterShape } from "../Services/CursorAdapter.ts";
 import { buildCursorTurnArgs } from "./cursor/CursorTurnArgs.ts";
 import {
@@ -53,9 +56,15 @@ export interface CursorAdapterOptions {
   readonly environment?: NodeJS.ProcessEnv;
 }
 
+/**
+ * The turn that is running. `interrupt` does nothing until the child is spawned, so a Stop that
+ * arrives earlier is recorded in `stopRequested` and honoured right after (or instead of) the spawn.
+ */
 interface ActiveTurn {
   readonly turnId: TurnId;
-  readonly interrupt: Effect.Effect<void>;
+  stopRequested: boolean;
+  interrupt: Effect.Effect<void>;
+  fiber: Fiber.Fiber<void> | undefined;
 }
 
 interface CursorSessionContext {
@@ -151,6 +160,40 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
     context.session = { ...context.session, ...patch, updatedAt };
   };
 
+  /** A chat id minted without a model call, so the first turn can already `--resume` it. */
+  const createChat = (cwd: string) =>
+    Effect.gen(function* () {
+      const command = settings.binaryPath || "agent";
+
+      const spawnCommand = yield* resolveSpawnCommand(command, ["create-chat"], {
+        env: environment,
+      });
+
+      const output = yield* spawnAndCollect(
+        command,
+        ChildProcess.make(spawnCommand.command, spawnCommand.args, {
+          cwd,
+          env: environment,
+          extendEnv: true,
+          shell: spawnCommand.shell,
+        }),
+      ).pipe(Effect.timeoutOption("10 seconds"));
+
+      const id =
+        Option.isSome(output) && output.value.code === 0
+          ? output.value.stdout.trim().split(/\r?\n/).at(-1)?.trim()
+          : undefined;
+
+      return id !== undefined && /^[\w-]{8,}$/.test(id) ? id : undefined;
+    }).pipe(
+      Effect.provideService(ChildProcessSpawner.ChildProcessSpawner, spawner),
+      Effect.catchCause((cause) =>
+        Effect.logWarning("Cursor create-chat failed; the first turn starts a fresh chat.", {
+          cause,
+        }).pipe(Effect.as(undefined)),
+      ),
+    );
+
   const startSession: CursorAdapterShape["startSession"] = Effect.fn("startSession")(
     function* (input) {
       if (input.provider !== undefined && input.provider !== PROVIDER) {
@@ -172,6 +215,15 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       const now = yield* nowIso;
       const model = input.modelSelection?.model;
 
+      // Cursor only reports its session id during a turn, and the first turn's id would be lost to
+      // a restart before turn 2; minting it here makes every turn, the first included, a resume.
+      const createdChatId =
+        input.resumeCursor === undefined ? yield* createChat(input.cwd) : undefined;
+
+      const resumeCursor =
+        input.resumeCursor ??
+        (createdChatId !== undefined ? { sessionId: createdChatId } : undefined);
+
       const session: ProviderSession = {
         provider: PROVIDER,
         providerInstanceId: boundInstanceId,
@@ -180,7 +232,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         cwd: input.cwd,
         ...(model !== undefined ? { model } : {}),
         threadId: input.threadId,
-        ...(input.resumeCursor !== undefined ? { resumeCursor: input.resumeCursor } : {}),
+        ...(resumeCursor !== undefined ? { resumeCursor } : {}),
         createdAt: now,
         updatedAt: now,
       };
@@ -203,6 +255,23 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
     },
   );
 
+  const emitAborted = (threadId: ThreadId, turnId: TurnId) =>
+    Effect.gen(function* () {
+      yield* emit({
+        ...(yield* eventBase({ threadId, turnId })),
+        type: "turn.aborted",
+        payload: { reason: "Interrupted by user." },
+      });
+    });
+
+  /** Ends a turn that was stopped before its process started. */
+  const abortTurn = (context: CursorSessionContext, turnId: TurnId) =>
+    Effect.gen(function* () {
+      context.active = undefined;
+      touch(context, { status: "ready" }, yield* nowIso);
+      yield* emitAborted(context.session.threadId, turnId);
+    });
+
   const runTurn = (
     context: CursorSessionContext,
     turnId: TurnId,
@@ -211,6 +280,10 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
   ) =>
     Effect.gen(function* () {
       const threadId = context.session.threadId;
+
+      // Stopped before there was anything to stop: abort without ever starting the process.
+      if (context.active?.stopRequested) return yield* abortTurn(context, turnId);
+
       const resume = Option.getOrUndefined(decodeResumeCursor(context.session.resumeCursor));
 
       const args = buildCursorTurnArgs({
@@ -231,7 +304,12 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         prompt,
       }).pipe(Effect.provideService(ChildProcessSpawner.ChildProcessSpawner, spawner));
 
-      context.active = { turnId, interrupt: turn.interrupt };
+      if (context.active?.turnId === turnId) {
+        context.active.interrupt = turn.interrupt;
+
+        // A Stop that came in while the child was starting: honour it now that there is a process.
+        if (context.active.stopRequested) yield* turn.interrupt;
+      }
 
       const mapper = createCursorRuntimeMapper();
 
@@ -281,13 +359,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         updatedAt,
       );
 
-      if (result.outcome === "interrupted") {
-        return yield* emit({
-          ...(yield* eventBase({ threadId, turnId })),
-          type: "turn.aborted",
-          payload: { reason: "Interrupted by user." },
-        });
-      }
+      if (result.outcome === "interrupted") return yield* emitAborted(threadId, turnId);
 
       if (result.outcome === "failed") {
         yield* emit({
@@ -313,20 +385,24 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       });
     }).pipe(
       // A spawn failure (binary gone, ...) ends the turn instead of leaving it running forever.
-      Effect.catchCause((cause) =>
-        Effect.gen(function* () {
-          const threadId = context.session.threadId;
-          const message = "Failed to run the Cursor CLI.";
+      // Failures only: an interrupt (adapter scope closing) is not a failed turn, and the scope
+      // already kills the child.
+      Effect.catchCauseIf(
+        (cause) => !Cause.hasInterruptsOnly(cause),
+        (cause) =>
+          Effect.gen(function* () {
+            const threadId = context.session.threadId;
+            const message = "Failed to run the Cursor CLI.";
 
-          context.active = undefined;
-          touch(context, { status: "error", lastError: message }, yield* nowIso);
-          yield* Effect.logWarning(message, { cause });
-          yield* emit({
-            ...(yield* eventBase({ threadId, turnId })),
-            type: "turn.completed",
-            payload: { state: "failed", errorMessage: message },
-          });
-        }),
+            context.active = undefined;
+            touch(context, { status: "error", lastError: message }, yield* nowIso);
+            yield* Effect.logWarning(message, { cause });
+            yield* emit({
+              ...(yield* eventBase({ threadId, turnId })),
+              type: "turn.completed",
+              payload: { state: "failed", errorMessage: message },
+            });
+          }),
       ),
       Effect.scoped,
     );
@@ -378,7 +454,7 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         : text;
 
     // Claim the turn before forking so a second sendTurn cannot slip in.
-    context.active = { turnId, interrupt: Effect.void };
+    context.active = { turnId, stopRequested: false, interrupt: Effect.void, fiber: undefined };
     touch(
       context,
       { status: "running", activeTurnId: turnId, ...(model ? { model } : {}) },
@@ -391,7 +467,9 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
       payload: model ? { model } : {},
     });
 
-    yield* runTurn(context, turnId, prompt, model).pipe(Effect.forkIn(scope));
+    const fiber = yield* runTurn(context, turnId, prompt, model).pipe(Effect.forkIn(scope));
+
+    if (context.active?.turnId === turnId) context.active.fiber = fiber;
 
     return {
       threadId: input.threadId,
@@ -402,21 +480,40 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
     };
   });
 
+  /** Signals the running turn, or records the Stop if its process has not been spawned yet. */
+  const requestStop = (context: CursorSessionContext) =>
+    Effect.gen(function* () {
+      const active = context.active;
+
+      if (active === undefined) return undefined;
+
+      active.stopRequested = true;
+      yield* active.interrupt;
+
+      return active;
+    });
+
   const interruptTurn: CursorAdapterShape["interruptTurn"] = Effect.fn("interruptTurn")(
     function* (threadId) {
-      const context = yield* requireContext(threadId);
-
-      if (context.active !== undefined) yield* context.active.interrupt;
+      yield* requestStop(yield* requireContext(threadId));
     },
   );
+
+  const SETTLE_GRACE = "4 seconds";
+
+  /** Waits for a stopped turn to finish (the 2 s kill grace fits inside), without ever failing. */
+  const settle = (active: ActiveTurn | undefined) =>
+    active?.fiber === undefined
+      ? Effect.void
+      : Fiber.join(active.fiber).pipe(Effect.timeoutOption(SETTLE_GRACE), Effect.ignore);
 
   const stopSession: CursorAdapterShape["stopSession"] = Effect.fn("stopSession")(
     function* (threadId) {
       const context = yield* requireContext(threadId);
 
+      // The turn's own abort comes first; only then does the session exit.
+      yield* settle(yield* requestStop(context));
       sessions.delete(threadId);
-
-      if (context.active !== undefined) yield* context.active.interrupt;
 
       yield* emit({
         ...(yield* eventBase({ threadId })),
@@ -468,9 +565,14 @@ export const makeCursorAdapter = Effect.fn("makeCursorAdapter")(function* (
         const contexts = [...sessions.values()];
 
         sessions.clear();
-        yield* Effect.forEach(contexts, (context) => context.active?.interrupt ?? Effect.void, {
-          discard: true,
-        });
+        yield* Effect.forEach(
+          contexts,
+          (context) => requestStop(context).pipe(Effect.flatMap(settle)),
+          {
+            concurrency: "unbounded",
+            discard: true,
+          },
+        );
       }),
     get streamEvents() {
       return Stream.fromQueue(runtimeEvents);

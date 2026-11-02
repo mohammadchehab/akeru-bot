@@ -25,6 +25,13 @@ const decodeSettings = Schema.decodeSync(CursorSettings);
 
 const INIT = JSON.stringify({ type: "system", subtype: "init", session_id: "sess-1" });
 
+const TOOL_STARTED = JSON.stringify({
+  type: "tool_call",
+  subtype: "started",
+  call_id: "call-1",
+  tool_call: { readToolCall: { args: { path: "a" } } },
+});
+
 const ERROR_RESULT = JSON.stringify({ type: "result", is_error: true, result: "model overloaded" });
 
 // A shell stand-in for `agent`. It appends its argv (one arg per line, then a marker) to args.log
@@ -41,6 +48,7 @@ const withAdapter = <A, E>(
     readonly terminal: Deferred.Deferred<void>;
     readonly sessionSeen: Deferred.Deferred<void>;
   }) => Effect.Effect<A, E, FileSystem.FileSystem | Path.Path>,
+  options?: { readonly createChat?: "ok" | "fail" },
 ) =>
   Effect.scoped(
     Effect.gen(function* () {
@@ -49,9 +57,14 @@ const withAdapter = <A, E>(
       const dir = yield* fs.makeTempDirectoryScoped({ prefix: "isnadi-cursor-adapter-" });
       const agent = path.join(dir, "agent");
       const log = path.join(dir, "args.log");
+
+      // `agent create-chat` answers before anything is logged, so turn indexes in args.log are turns.
+      const createChatBody =
+        options?.createChat === "fail" ? "echo boom >&2; exit 1" : "echo chat-created-1; exit 0";
+
       yield* fs.writeFileString(
         agent,
-        `#!/bin/sh\nfor a in "$@"; do printf '%s\\n' "$a" >> ${JSON.stringify(log)}; done\nprintf -- '--END--\\n' >> ${JSON.stringify(log)}\ncat >> ${JSON.stringify(path.join(dir, "stdin.log"))}\nprintf -- '\\n--END--\\n' >> ${JSON.stringify(path.join(dir, "stdin.log"))}\n${body}\n`,
+        `#!/bin/sh\nif [ "$1" = create-chat ]; then ${createChatBody}; fi\nfor a in "$@"; do printf '%s\\n' "$a" >> ${JSON.stringify(log)}; done\nprintf -- '--END--\\n' >> ${JSON.stringify(log)}\ncat >> ${JSON.stringify(path.join(dir, "stdin.log"))}\nprintf -- '\\n--END--\\n' >> ${JSON.stringify(path.join(dir, "stdin.log"))}\n${body}\n`,
       );
       yield* fs.chmod(agent, 0o755);
 
@@ -225,6 +238,141 @@ describe("CursorAdapter", () => {
           expect(session).toMatchObject({ status: "ready", resumeCursor: { sessionId: "sess-1" } });
         }),
     ),
+  );
+
+  it.effect("mints the chat id at startSession so the very first turn already resumes it", () =>
+    withAdapter(`cat ${JSON.stringify(fixturePath)}`, ({ adapter, dir, terminal, argvOfTurn }) =>
+      Effect.gen(function* () {
+        const session = yield* start(adapter, dir, "auto");
+
+        expect(session.resumeCursor).toEqual({ sessionId: "chat-created-1" });
+
+        yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+        yield* Deferred.await(terminal);
+
+        const argv = yield* argvOfTurn(0);
+
+        expect(argv[argv.indexOf("--resume") + 1]).toBe("chat-created-1");
+      }),
+    ),
+  );
+
+  it.effect("starts without a cursor when create-chat fails", () =>
+    withAdapter(
+      `cat ${JSON.stringify(fixturePath)}`,
+      ({ adapter, dir, terminal, argvOfTurn }) =>
+        Effect.gen(function* () {
+          const session = yield* start(adapter, dir, "auto");
+
+          expect(session.resumeCursor).toBeUndefined();
+
+          yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+          yield* Deferred.await(terminal);
+
+          expect(yield* argvOfTurn(0)).not.toContain("--resume");
+        }),
+      { createChat: "fail" },
+    ),
+  );
+
+  // Real clock: the next three wait for real child processes.
+  it.live("a Stop sent before the process spawns aborts the turn and never starts it", () =>
+    withAdapter(`exec sleep 30`, ({ adapter, dir, events, terminal }) =>
+      Effect.gen(function* () {
+        const fs = yield* FileSystem.FileSystem;
+        const path = yield* Path.Path;
+
+        yield* start(adapter, dir, "auto");
+        const turn = yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+
+        // No yield between the two calls: the forked run has not reached the spawn yet.
+        yield* adapter.interruptTurn(THREAD, turn.turnId);
+        yield* Deferred.await(terminal).pipe(Effect.timeout("8 seconds"));
+
+        expect(events.find((event) => event.type === "turn.aborted")).toMatchObject({
+          payload: { reason: "Interrupted by user." },
+        });
+        // The fake agent logs its argv as its first act, so no log means it never ran.
+        expect(yield* fs.exists(path.join(dir, "args.log"))).toBe(false);
+        expect((yield* adapter.listSessions())[0]?.status).toBe("ready");
+      }),
+    ),
+  );
+
+  it.live("cancel: SIGINT, exit 130 with no result is an aborted turn that keeps the session", () =>
+    withAdapter(
+      [
+        `printf '%s\n' '${INIT}' '${TOOL_STARTED}'`,
+        `sleep 30 & P=$!`,
+        `trap 'kill $P 2>/dev/null; echo "Aborting operation..." >&2; exit 130' INT`,
+        `wait`,
+      ].join("\n"),
+      ({ adapter, dir, events, sessionSeen, terminal, argvOfTurn }) =>
+        Effect.gen(function* () {
+          yield* start(adapter, dir, "auto");
+          const turn = yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+
+          yield* Deferred.await(sessionSeen).pipe(Effect.timeout("8 seconds"));
+          yield* adapter.interruptTurn(THREAD, turn.turnId);
+          yield* Deferred.await(terminal).pipe(Effect.timeout("8 seconds"));
+
+          expect(events.some((event) => event.type === "runtime.error")).toBe(false);
+          expect(events.find((event) => event.type === "turn.aborted")).toBeDefined();
+          // The tool Cursor never finished is closed as failed, not left spinning.
+          expect(
+            events.find(
+              (event) =>
+                event.type === "item.completed" && event.payload.itemType === "dynamic_tool_call",
+            ),
+          ).toMatchObject({ payload: { status: "failed" } });
+          expect((yield* adapter.listSessions())[0]).toMatchObject({
+            status: "ready",
+            resumeCursor: { sessionId: "sess-1" },
+          });
+
+          // The next turn resumes the kept session.
+          yield* adapter.sendTurn({ threadId: THREAD, input: "again" });
+
+          let second: ReadonlyArray<string> = [];
+
+          for (let attempt = 0; attempt < 100 && !second.includes("--resume"); attempt++) {
+            yield* Effect.sleep("50 millis");
+            second = yield* argvOfTurn(1);
+          }
+
+          expect(second[second.indexOf("--resume") + 1]).toBe("sess-1");
+          yield* adapter.stopAll();
+        }),
+    ),
+  );
+
+  it.live(
+    "stopSession during a turn aborts it first and only then reports the session exited",
+    () =>
+      withAdapter(
+        `printf '%s\n' '${INIT}'\nexec sleep 30`,
+        ({ adapter, dir, events, sessionSeen }) =>
+          Effect.gen(function* () {
+            yield* start(adapter, dir, "auto");
+            yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+            yield* Deferred.await(sessionSeen).pipe(Effect.timeout("8 seconds"));
+            yield* adapter.stopSession(THREAD);
+
+            // The events reach this list through a consumer fiber, so wait for the last one.
+            for (let attempt = 0; attempt < 100; attempt++) {
+              if (events.some((event) => event.type === "session.exited")) break;
+
+              yield* Effect.sleep("20 millis");
+            }
+
+            const order = events
+              .map((event) => event.type)
+              .filter((type) => type === "turn.aborted" || type === "session.exited");
+
+            expect(order).toEqual(["turn.aborted", "session.exited"]);
+            expect(yield* adapter.hasSession(THREAD)).toBe(false);
+          }),
+      ),
   );
 
   it.effect(
