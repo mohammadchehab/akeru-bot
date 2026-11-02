@@ -12,6 +12,7 @@ export {
   availableLanguages,
   catalogIdForLocale,
   directionForLocale,
+  firstStrongDirection,
   resolveLocale,
   type CatalogId,
   type TextDirection,

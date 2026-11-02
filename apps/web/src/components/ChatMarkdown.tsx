@@ -2,6 +2,7 @@ import { recordLookup } from "./recordLookup";
 import { Predicate } from "effect";
 import { classifyMarkdownImageSource } from "@isnadi/client-runtime/markdown-images";
 import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
+import { firstStrongDirection } from "@isnadi/client-runtime/i18n";
 import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
 import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
 import "katex/dist/katex.min.css";
@@ -52,6 +53,7 @@ import {
 } from "./markdown/MarkdownImages";
 import {
   handleMarkdownFragmentClick,
+  hastDescendantText,
   hastHasText,
   MarkdownExternalLinkContent,
   normalizeMarkdownLinkHrefKey,
@@ -131,7 +133,11 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
       </p>
     );
   },
-  blockquote: function MarkdownBlockquote({ node: _node, children, ...props }) {
+  blockquote: function MarkdownBlockquote({ node, children, ...props }) {
+    // Not "auto": a quote's text sits in child paragraphs that carry their own dir, which
+    // "auto" skips, so the quote would read as left-to-right and keep its bar on the wrong side.
+    const dir = firstStrongDirection(hastDescendantText(node));
+
     const alert = recordLookup(
       GITHUB_ALERT_PRESENTATIONS,
       String(("data-alert" in props ? props["data-alert"] : "") ?? ""),
@@ -139,7 +145,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
 
     if (!alert) {
       return (
-        <blockquote {...props} dir="auto">
+        <blockquote {...props} dir={dir}>
           {children}
         </blockquote>
       );
@@ -148,7 +154,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
     // Not a <blockquote>: the stylesheet mutes those, and an alert's body is ordinary
     // text under a colored title — which is how the host renders it.
     return (
-      <div role="note" dir="auto" className={cn("my-1 border-s-2 ps-3", alert.borderClassName)}>
+      <div role="note" dir={dir} className={cn("my-1 border-s-2 ps-3", alert.borderClassName)}>
         <p className={cn("flex items-center gap-1.5 font-medium", alert.titleClassName)}>
           <alert.Icon aria-hidden className="size-3.5 shrink-0" />
           {alert.label}
@@ -160,7 +166,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
   ul: function MarkdownUnorderedList({ node, ...props }) {
     return (
       <MarkdownList node={node}>
-        <ul {...props} />
+        <ul {...props} dir={firstStrongDirection(hastDescendantText(node))} />
       </MarkdownList>
     );
   },
@@ -174,6 +180,7 @@ const CHAT_MARKDOWN_COMPONENTS: Components = {
       <MarkdownList node={node}>
         <ol
           {...props}
+          dir={firstStrongDirection(hastDescendantText(node))}
           start={start}
           style={{ "--list-gutter": orderedListGutter(itemCount, start) }}
         />

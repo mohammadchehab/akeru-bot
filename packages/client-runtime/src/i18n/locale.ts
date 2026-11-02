@@ -77,6 +77,24 @@ export function directionForLocale(locale: string): TextDirection {
   return RIGHT_TO_LEFT_LANGUAGES.has(base) ? "rtl" : "ltr";
 }
 
+const FIRST_LETTER = /\p{L}/u;
+
+const RIGHT_TO_LEFT_LETTER =
+  /[\p{Script=Arabic}\p{Script=Hebrew}\p{Script=Syriac}\p{Script=Thaana}\p{Script=Nko}\p{Script=Adlam}]/u;
+
+/**
+ * Direction of the first letter in `text`, like `dir="auto"`, or `undefined` when it has none.
+ * For a container whose children carry their own `dir`: the browser's own `auto` skips those,
+ * so the container finds no strong character and falls back to left-to-right.
+ */
+export function firstStrongDirection(text: string): TextDirection | undefined {
+  const letter = FIRST_LETTER.exec(text)?.[0];
+
+  if (letter === undefined) return undefined;
+
+  return RIGHT_TO_LEFT_LETTER.test(letter) ? "rtl" : "ltr";
+}
+
 export function resolveLocale(
   preference: LanguagePreference,
   deviceLocales: readonly string[] = [],
