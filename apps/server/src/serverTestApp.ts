@@ -37,6 +37,7 @@ import * as RemoteOpenTargets from "./environment/RemoteOpenTargets.ts";
 
 import * as OrchestrationEngine from "./orchestration/Services/OrchestrationEngine.ts";
 
+import { GroupResponderQueueReactor } from "./orchestration/Services/GroupResponderQueueReactor.ts";
 import { ThreadDeletionReactor } from "./orchestration/Services/ThreadDeletionReactor.ts";
 
 import * as ProjectionSnapshotQuery from "./orchestration/Services/ProjectionSnapshotQuery.ts";
@@ -526,6 +527,11 @@ export const buildAppUnderTest = (options?: {
               ...options?.layers?.commandReceipts,
             }),
           ),
+          Layer.mock(GroupResponderQueueReactor)({
+            start: () => Effect.void,
+            drain: Effect.void,
+            drainThrough: () => Effect.void,
+          }),
           Layer.mock(ThreadDeletionReactor)({
             start: () => Effect.void,
             drain: Effect.void,

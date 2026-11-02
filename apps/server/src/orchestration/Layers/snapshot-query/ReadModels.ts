@@ -361,6 +361,7 @@ export function createReadModels({
                 ...(row.linkedPullRequest === null
                   ? {}
                   : { linkedPullRequest: row.linkedPullRequest }),
+                ...(row.responderQueue === null ? {} : { responderQueue: row.responderQueue }),
                 latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                 createdAt: row.createdAt,
                 updatedAt: row.updatedAt,
@@ -672,6 +673,7 @@ export function createReadModels({
                   ...(row.linkedPullRequest === null
                     ? {}
                     : { linkedPullRequest: row.linkedPullRequest }),
+                  ...(row.responderQueue === null ? {} : { responderQueue: row.responderQueue }),
                   latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                   createdAt: row.createdAt,
                   updatedAt: row.updatedAt,

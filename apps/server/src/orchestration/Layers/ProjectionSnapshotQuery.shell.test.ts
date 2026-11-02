@@ -4,6 +4,7 @@ import { projectionSnapshotLayer } from "./test-support/ProjectionSnapshotHarnes
 import { ThreadId } from "@isnadi/contracts";
 import { assert } from "@effect/vitest";
 import * as Effect from "effect/Effect";
+import * as Option from "effect/Option";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { ORCHESTRATION_PROJECTOR_NAMES } from "./ProjectionPipeline.ts";
 import {
@@ -491,6 +492,94 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
 
       assert.equal(thread?.settledOverride, "settled");
       assert.equal(thread?.settledAt, "2026-04-06T00:00:04.000Z");
+    }),
+  );
+  it.effect("sends a waiting responder queue to clients, and leaves an emptied one off", () =>
+    Effect.gen(function* () {
+      const snapshotQuery = yield* ProjectionSnapshotQuery;
+      const sql = yield* SqlClient.SqlClient;
+
+      yield* sql`DELETE FROM projection_projects`;
+      yield* sql`DELETE FROM projection_threads`;
+      yield* sql`DELETE FROM projection_state`;
+
+      yield* sql`
+        INSERT INTO projection_projects (
+          project_id, title, workspace_root, default_model_selection_json, scripts_json,
+          created_at, updated_at, deleted_at
+        )
+        VALUES (
+          'project-queue', 'Queue', '/tmp/queue', '{"provider":"codex","model":"gpt-5-codex"}',
+          '[]', '2026-04-06T00:00:00.000Z', '2026-04-06T00:00:01.000Z', NULL
+        )
+      `;
+
+      const queue = (entries: ReadonlyArray<string>) =>
+        JSON.stringify({
+          entries: entries.map((botId) => ({
+            botId,
+            trigger: { kind: "user", messageId: "message-1" },
+          })),
+          hopsLeft: 5,
+          hopsUsed: 1,
+          reason: "addressed",
+          updatedAt: "2026-04-06T00:00:03.000Z",
+        });
+
+      for (const [threadId, responderQueue] of [
+        ["thread-waiting", queue(["bot-a", "bot-b"])],
+        ["thread-emptied", queue([])],
+      ] as const) {
+        yield* sql`
+          INSERT INTO projection_threads (
+            thread_id, project_id, title, model_selection_json, runtime_mode, interaction_mode,
+            branch, worktree_path, latest_turn_id, latest_user_message_at, pending_approval_count,
+            pending_user_input_count, has_actionable_proposed_plan, created_at, updated_at,
+            archived_at, deleted_at, responder_queue_json
+          )
+          VALUES (
+            ${threadId}, 'project-queue', ${threadId}, '{"provider":"codex","model":"gpt-5-codex"}',
+            'full-access', 'default', NULL, NULL, NULL, NULL, 0, 0, 0,
+            '2026-04-06T00:00:02.000Z', '2026-04-06T00:00:05.000Z', NULL, NULL, ${responderQueue}
+          )
+        `;
+      }
+
+      yield* sql`
+        INSERT INTO projection_state (projector, last_applied_sequence, updated_at)
+        VALUES
+          (${ORCHESTRATION_PROJECTOR_NAMES.projects}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.mcpServers}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.threads}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.threadMessages}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.threadProposedPlans}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.threadActivities}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.threadSessions}, 4, '2026-04-06T00:00:07.000Z'),
+          (${ORCHESTRATION_PROJECTOR_NAMES.checkpoints}, 4, '2026-04-06T00:00:07.000Z')
+      `;
+
+      const botIds = (
+        queued: { readonly entries: ReadonlyArray<{ readonly botId: string }> } | undefined,
+      ) => queued?.entries.map((entry) => entry.botId);
+
+      const shell = yield* snapshotQuery.getShellSnapshot();
+
+      const shellThread = (id: string) => shell.threads.find((thread) => thread.id === id);
+
+      assert.deepEqual(botIds(shellThread("thread-waiting")?.responderQueue), ["bot-a", "bot-b"]);
+      assert.equal(shellThread("thread-emptied")?.responderQueue, undefined);
+
+      const upserted = yield* snapshotQuery.getThreadShellById(ThreadId.make("thread-waiting"));
+      assert.deepEqual(botIds(Option.getOrUndefined(upserted)?.responderQueue), ["bot-a", "bot-b"]);
+
+      const detail = yield* snapshotQuery.getThreadDetailById(ThreadId.make("thread-waiting"));
+      assert.deepEqual(botIds(Option.getOrUndefined(detail)?.responderQueue), ["bot-a", "bot-b"]);
+
+      const emptiedDetail = yield* snapshotQuery.getThreadDetailById(
+        ThreadId.make("thread-emptied"),
+      );
+
+      assert.equal(Option.getOrUndefined(emptiedDetail)?.responderQueue, undefined);
     }),
   );
 });

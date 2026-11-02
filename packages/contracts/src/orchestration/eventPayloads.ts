@@ -54,6 +54,9 @@ import {
   OrchestrationThreadActivity,
   ThreadTitleRegeneration,
   ThreadLinkedPullRequest,
+  ResponderQueueEntry,
+  ResponderQueueReason,
+  ResponderTrigger,
 } from "./thread.ts";
 
 export const OrchestrationEventType = Schema.Literals([
@@ -106,6 +109,7 @@ export const OrchestrationEventType = Schema.Literals([
   "thread.runtime-mode-set",
   "thread.interaction-mode-set",
   "thread.message-sent",
+  "thread.responder-queue.set",
   "thread.channel-delivery-set",
   "thread.message-reaction-set",
   "thread.turn-start-requested",
@@ -434,6 +438,15 @@ export const ThreadInteractionModeSetPayload = Schema.Struct({
   updatedAt: IsoDateTime,
 });
 
+export const ThreadResponderQueueSetPayload = Schema.Struct({
+  threadId: ThreadId,
+  entries: Schema.Array(ResponderQueueEntry),
+  hopsLeft: NonNegativeInt,
+  hopsUsed: NonNegativeInt,
+  reason: ResponderQueueReason,
+  updatedAt: IsoDateTime,
+});
+
 export const ThreadMessageSentPayload = Schema.Struct({
   threadId: ThreadId,
   messageId: MessageId,
@@ -478,6 +491,8 @@ export const ThreadTurnStartRequestedPayload = Schema.Struct({
   hiddenWake: Schema.optional(Schema.Boolean),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  /** What started this turn: a user message, or another bot's mention. */
+  trigger: Schema.optional(ResponderTrigger),
   timezone: Schema.optional(TrimmedNonEmptyString),
   /**
    * Finished child delegations acknowledged by this turn start. The same

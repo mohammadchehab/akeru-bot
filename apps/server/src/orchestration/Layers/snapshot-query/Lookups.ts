@@ -26,6 +26,7 @@ import {
   mapSessionRow,
   mapBotRow,
   mapGroupRow,
+  shellResponderQueue,
 } from "../ProjectionSnapshotRows.ts";
 import type { createEnvironmentRows } from "./EnvironmentRows.ts";
 import type { createThreadRows } from "./ThreadRows.ts";
@@ -361,6 +362,7 @@ export function createLookups({
         ...(threadRow.value.linkedPullRequest === null
           ? {}
           : { linkedPullRequest: threadRow.value.linkedPullRequest }),
+        ...shellResponderQueue(threadRow.value.responderQueue),
         latestTurn: Option.isSome(latestTurnRow) ? mapLatestTurn(latestTurnRow.value) : null,
         createdAt: threadRow.value.createdAt,
         updatedAt: threadRow.value.updatedAt,

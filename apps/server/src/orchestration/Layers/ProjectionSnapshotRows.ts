@@ -16,6 +16,7 @@ import {
   McpServerId,
   NonNegativeInt,
   OrchestrationCheckpointFile,
+  ResponderTrigger,
   OrchestrationMessageReaction,
   OrchestrationProposedPlanId,
   OrchestrationReadModel,
@@ -36,6 +37,7 @@ import {
   ModelSelection,
   ProjectId,
   ThreadLinkedPullRequest,
+  ResponderQueue,
   ThreadId,
 } from "@isnadi/contracts";
 import * as Schema from "effect/Schema";
@@ -125,6 +127,7 @@ export const ProjectionThreadDbRowSchema = ProjectionThread.mapFields(
   Struct.assign({
     modelSelection: Schema.fromJsonString(ModelSelection),
     linkedPullRequest: Schema.NullOr(Schema.fromJsonString(ThreadLinkedPullRequest)),
+    responderQueue: Schema.NullOr(Schema.fromJsonString(ResponderQueue)),
   }),
 );
 
@@ -185,6 +188,7 @@ export const ProjectionLatestTurnDbRowSchema = Schema.Struct({
   assistantMessageId: Schema.NullOr(MessageId),
   pendingMessageId: Schema.NullOr(MessageId),
   respondingBotId: Schema.optional(Schema.NullOr(BotId)),
+  trigger: Schema.optional(Schema.NullOr(Schema.fromJsonString(ResponderTrigger))),
   sourceProposedPlanThreadId: Schema.NullOr(ThreadId),
   sourceProposedPlanId: Schema.NullOr(OrchestrationProposedPlanId),
 });
@@ -385,6 +389,21 @@ export function computeSnapshotSequence(
   return Number.isFinite(minSequence) ? minSequence : 0;
 }
 
+/**
+ * Clients render "who is next" from the waiting queue, so it travels only while someone is
+ * waiting. An emptied queue is left off the wire, like a thread that never had one, except one
+ * that ended on the hop budget: clients show a notice from it.
+ */
+export function shellResponderQueue(
+  queue: ResponderQueue | null | undefined,
+): { readonly responderQueue: ResponderQueue } | Record<never, never> {
+  return queue !== null &&
+    queue !== undefined &&
+    (queue.entries.length > 0 || queue.reason === "budget-exhausted")
+    ? { responderQueue: queue }
+    : {};
+}
+
 export function mapLatestTurn(
   row: Schema.Schema.Type<typeof ProjectionLatestTurnDbRowSchema>,
 ): OrchestrationLatestTurn {
@@ -402,6 +421,7 @@ export function mapLatestTurn(
     assistantMessageId: row.assistantMessageId,
     requestMessageId: row.pendingMessageId,
     respondingBotId: row.respondingBotId ?? null,
+    ...(row.trigger ? { trigger: row.trigger } : {}),
     ...(row.sourceProposedPlanThreadId !== null && row.sourceProposedPlanId !== null
       ? {
           sourceProposedPlan: {

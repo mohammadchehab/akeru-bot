@@ -1,4 +1,4 @@
-import { OrchestrationCheckpointFile } from "@isnadi/contracts";
+import { OrchestrationCheckpointFile, ResponderTrigger } from "@isnadi/contracts";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 import * as SqlSchema from "effect/unstable/sql/SqlSchema";
 import * as Effect from "effect/Effect";
@@ -24,12 +24,20 @@ import {
 const ProjectionTurnDbRowSchema = ProjectionTurn.mapFields(
   Struct.assign({
     checkpointFiles: Schema.fromJsonString(Schema.Array(OrchestrationCheckpointFile)),
+    trigger: Schema.optional(Schema.NullOr(Schema.fromJsonString(ResponderTrigger))),
   }),
 );
 
 const ProjectionTurnByIdDbRowSchema = ProjectionTurnById.mapFields(
   Struct.assign({
     checkpointFiles: Schema.fromJsonString(Schema.Array(OrchestrationCheckpointFile)),
+    trigger: Schema.optional(Schema.NullOr(Schema.fromJsonString(ResponderTrigger))),
+  }),
+);
+
+const ProjectionPendingTurnStartDbRowSchema = ProjectionPendingTurnStart.mapFields(
+  Struct.assign({
+    trigger: Schema.optional(Schema.NullOr(Schema.fromJsonString(ResponderTrigger))),
   }),
 );
 
@@ -55,6 +63,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           source_proposed_plan_id,
           assistant_message_id,
           responding_bot_id,
+          trigger_json,
           state,
           requested_at,
           started_at,
@@ -72,6 +81,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           ${row.sourceProposedPlanId},
           ${row.assistantMessageId},
           ${row.respondingBotId},
+          ${row.trigger ?? null},
           ${row.state},
           ${row.requestedAt},
           ${row.startedAt},
@@ -88,6 +98,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           source_proposed_plan_id = excluded.source_proposed_plan_id,
           assistant_message_id = excluded.assistant_message_id,
           responding_bot_id = excluded.responding_bot_id,
+          trigger_json = excluded.trigger_json,
           state = excluded.state,
           requested_at = excluded.requested_at,
           started_at = excluded.started_at,
@@ -112,7 +123,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
   });
 
   const insertPendingProjectionTurn = SqlSchema.void({
-    Request: ProjectionPendingTurnStart,
+    Request: ProjectionPendingTurnStartDbRowSchema,
     execute: (row) =>
       sql`
         INSERT INTO projection_turns (
@@ -123,6 +134,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           source_proposed_plan_id,
           assistant_message_id,
           responding_bot_id,
+          trigger_json,
           state,
           requested_at,
           started_at,
@@ -140,6 +152,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           ${row.sourceProposedPlanId},
           NULL,
           ${row.respondingBotId},
+          ${row.trigger ?? null},
           'pending',
           ${row.requestedAt},
           NULL,
@@ -154,13 +167,14 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
 
   const getPendingProjectionTurn = SqlSchema.findOneOption({
     Request: GetProjectionPendingTurnStartInput,
-    Result: ProjectionPendingTurnStart,
+    Result: ProjectionPendingTurnStartDbRowSchema,
     execute: ({ threadId }) =>
       sql`
         SELECT
           thread_id AS "threadId",
           pending_message_id AS "messageId",
           responding_bot_id AS "respondingBotId",
+          trigger_json AS "trigger",
           source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           source_proposed_plan_id AS "sourceProposedPlanId",
           requested_at AS "requestedAt"
@@ -188,6 +202,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           source_proposed_plan_id AS "sourceProposedPlanId",
           assistant_message_id AS "assistantMessageId",
           responding_bot_id AS "respondingBotId",
+          trigger_json AS "trigger",
           state,
           requested_at AS "requestedAt",
           started_at AS "startedAt",
@@ -222,6 +237,7 @@ const makeProjectionTurnRepository = Effect.gen(function* () {
           source_proposed_plan_id AS "sourceProposedPlanId",
           assistant_message_id AS "assistantMessageId",
           responding_bot_id AS "respondingBotId",
+          trigger_json AS "trigger",
           state,
           requested_at AS "requestedAt",
           started_at AS "startedAt",

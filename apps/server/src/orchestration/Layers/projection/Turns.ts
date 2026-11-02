@@ -67,6 +67,7 @@ export function createTurns({
           threadId: event.payload.threadId,
           messageId: event.payload.messageId,
           respondingBotId: event.payload.respondingBotId ?? null,
+          trigger: event.payload.trigger ?? null,
           sourceProposedPlanThreadId: event.payload.sourceProposedPlan?.threadId ?? null,
           sourceProposedPlanId: event.payload.sourceProposedPlan?.planId ?? null,
           requestedAt: event.payload.createdAt,
@@ -179,6 +180,9 @@ export function createTurns({
             respondingBotId:
               existingTurn.value.respondingBotId ??
               (Option.isSome(pendingTurnStart) ? pendingTurnStart.value.respondingBotId : null),
+            trigger:
+              existingTurn.value.trigger ??
+              (Option.isSome(pendingTurnStart) ? (pendingTurnStart.value.trigger ?? null) : null),
             startedAt:
               existingTurn.value.startedAt ??
               (Option.isSome(pendingTurnStart)
@@ -206,6 +210,9 @@ export function createTurns({
             assistantMessageId: null,
             respondingBotId: Option.isSome(pendingTurnStart)
               ? pendingTurnStart.value.respondingBotId
+              : null,
+            trigger: Option.isSome(pendingTurnStart)
+              ? (pendingTurnStart.value.trigger ?? null)
               : null,
             state: "running",
             requestedAt: Option.isSome(pendingTurnStart)

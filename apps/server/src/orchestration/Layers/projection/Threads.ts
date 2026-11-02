@@ -360,6 +360,29 @@ export function createThreads({
           return;
         }
 
+        case "thread.responder-queue.set": {
+          const existingRow = yield* projectionThreadRepository.getById({
+            threadId: event.payload.threadId,
+          });
+
+          if (Option.isNone(existingRow)) {
+            return;
+          }
+
+          yield* projectionThreadRepository.upsert({
+            ...existingRow.value,
+            responderQueue: {
+              entries: event.payload.entries,
+              hopsLeft: event.payload.hopsLeft,
+              hopsUsed: event.payload.hopsUsed,
+              reason: event.payload.reason,
+              updatedAt: event.payload.updatedAt,
+            },
+          });
+
+          return;
+        }
+
         case "thread.interaction-mode-set": {
           const existingRow = yield* projectionThreadRepository.getById({
             threadId: event.payload.threadId,

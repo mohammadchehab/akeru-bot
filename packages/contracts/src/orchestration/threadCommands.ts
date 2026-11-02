@@ -206,6 +206,20 @@ const ThreadTurnStartBootstrap = Schema.Struct({
 
 export type ThreadTurnStartBootstrap = typeof ThreadTurnStartBootstrap.Type;
 
+/**
+ * Who a group user message is for. The client states the intent and the server resolves it to an
+ * ordered list of responding bots (see docs/internals/group-chats.md, "Addressing"). `auto` is
+ * answered by the boss until auto routing exists.
+ */
+export const GroupAddressing = Schema.Union([
+  Schema.Struct({ kind: Schema.Literal("auto") }),
+  Schema.Struct({ kind: Schema.Literal("bots"), botIds: Schema.NonEmptyArray(BotId) }),
+  Schema.Struct({ kind: Schema.Literal("everyone") }),
+  Schema.Struct({ kind: Schema.Literal("reply"), messageId: MessageId }),
+]);
+
+export type GroupAddressing = typeof GroupAddressing.Type;
+
 export const ThreadTurnStartCommand = Schema.Struct({
   type: Schema.Literal("thread.turn.start"),
   commandId: CommandId,
@@ -227,6 +241,7 @@ export const ThreadTurnStartCommand = Schema.Struct({
   bootstrap: Schema.optional(ThreadTurnStartBootstrap),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
   respondingBotId: Schema.optional(BotId),
+  addressing: Schema.optional(GroupAddressing),
   senderPersonId: Schema.optional(AuthSessionId),
   senderDisplayName: Schema.optional(TrimmedNonEmptyString),
   senderCanManageGroups: Schema.optional(Schema.Boolean),
@@ -258,6 +273,7 @@ export const ClientThreadTurnStartCommand = Schema.Struct({
   bootstrap: Schema.optional(ThreadTurnStartBootstrap),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
   respondingBotId: Schema.optional(BotId),
+  addressing: Schema.optional(GroupAddressing),
   timezone: Schema.optional(TrimmedNonEmptyString),
   createdAt: IsoDateTime,
 });

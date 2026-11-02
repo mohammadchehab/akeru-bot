@@ -204,6 +204,14 @@ export const ClientOrchestrationCommand = Schema.Union([
 
 export type ClientOrchestrationCommand = typeof ClientOrchestrationCommand.Type;
 
+/** Starts the next queued responder of a group chat once the previous turn has ended. */
+const ThreadResponderAdvanceCommand = Schema.Struct({
+  type: Schema.Literal("thread.responder.advance"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  createdAt: IsoDateTime,
+});
+
 const ThreadSessionSetCommand = Schema.Struct({
   type: Schema.Literal("thread.session.set"),
   commandId: CommandId,
@@ -321,6 +329,7 @@ export const DelegationStateSetCommand = Schema.Struct({
 
 const InternalOrchestrationCommand = Schema.Union([
   InternalRoutineCommand,
+  ThreadResponderAdvanceCommand,
   ThreadSessionSetCommand,
   ThreadMessageAssistantDeltaCommand,
   ThreadMessageAssistantCompleteCommand,

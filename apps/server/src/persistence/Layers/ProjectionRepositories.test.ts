@@ -1,4 +1,11 @@
-import { ProjectId, ThreadId, ProviderInstanceId } from "@isnadi/contracts";
+import {
+  BotId,
+  MessageId,
+  ProjectId,
+  ProviderInstanceId,
+  ThreadId,
+  TurnId,
+} from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -8,13 +15,16 @@ import * as SqlClient from "effect/unstable/sql/SqlClient";
 import { SqlitePersistenceMemory } from "./Sqlite.ts";
 import { ProjectionProjectRepositoryLive } from "./ProjectionProjects.ts";
 import { ProjectionThreadRepositoryLive } from "./ProjectionThreads.ts";
+import { ProjectionTurnRepositoryLive } from "./ProjectionTurns.ts";
 import { ProjectionProjectRepository } from "../Services/ProjectionProjects.ts";
 import { ProjectionThreadRepository } from "../Services/ProjectionThreads.ts";
+import { ProjectionTurnRepository } from "../Services/ProjectionTurns.ts";
 
 const projectionRepositoriesLayer = it.layer(
   Layer.mergeAll(
     ProjectionProjectRepositoryLive.pipe(Layer.provideMerge(SqlitePersistenceMemory)),
     ProjectionThreadRepositoryLive.pipe(Layer.provideMerge(SqlitePersistenceMemory)),
+    ProjectionTurnRepositoryLive.pipe(Layer.provideMerge(SqlitePersistenceMemory)),
     SqlitePersistenceMemory,
   ),
 );
@@ -266,6 +276,125 @@ projectionRepositoriesLayer("Projection repositories", (it) => {
 
       const cleared = yield* threads.getById({ threadId: ThreadId.make("thread-linked-pr") });
       assert.strictEqual(Option.getOrNull(cleared)?.linkedPullRequest, null);
+    }),
+  );
+
+  it.effect("round-trips the group responder queue through the thread row", () =>
+    Effect.gen(function* () {
+      const threads = yield* ProjectionThreadRepository;
+
+      const responderQueue = {
+        entries: [
+          {
+            botId: BotId.make("bot-specialist"),
+            trigger: { kind: "user" as const, messageId: MessageId.make("message-1") },
+          },
+        ],
+        hopsLeft: 5,
+        hopsUsed: 1,
+        reason: "addressed" as const,
+        updatedAt: "2026-03-24T00:00:00.000Z",
+      };
+
+      const threadId = ThreadId.make("thread-responder-queue");
+
+      yield* threads.upsert({
+        threadId,
+        projectId: ProjectId.make("project-responder-queue"),
+        title: "Responder queue",
+        modelSelection: {
+          instanceId: ProviderInstanceId.make("codex"),
+          model: "gpt-5.4",
+        },
+        runtimeMode: "full-access",
+        interactionMode: "default",
+        branch: null,
+        worktreePath: null,
+        responderQueue,
+        latestTurnId: null,
+        createdAt: "2026-03-24T00:00:00.000Z",
+        updatedAt: "2026-03-24T00:00:00.000Z",
+        archivedAt: null,
+        settledOverride: null,
+        settledAt: null,
+        unsettledAt: null,
+        snoozedUntil: null,
+        snoozedAt: null,
+        pinnedAt: null,
+        latestUserMessageAt: null,
+        pendingApprovalCount: 0,
+        pendingUserInputCount: 0,
+        hasActionableProposedPlan: 0,
+        deletedAt: null,
+      });
+
+      const persisted = Option.getOrNull(yield* threads.getById({ threadId }));
+      assert.deepStrictEqual(persisted?.responderQueue, responderQueue);
+
+      if (persisted === null) return yield* Effect.die("Expected the thread row to exist.");
+      yield* threads.upsert({ ...persisted, responderQueue: null });
+
+      const cleared = Option.getOrNull(yield* threads.getById({ threadId }));
+      assert.strictEqual(cleared?.responderQueue, null);
+    }),
+  );
+  it.effect("round-trips what started a turn through the pending start and the turn row", () =>
+    Effect.gen(function* () {
+      const turns = yield* ProjectionTurnRepository;
+      const threadId = ThreadId.make("thread-turn-trigger");
+      const turnId = TurnId.make("turn-trigger");
+
+      const userTrigger = {
+        kind: "user" as const,
+        messageId: MessageId.make("message-trigger"),
+      };
+
+      yield* turns.replacePendingTurnStart({
+        threadId,
+        messageId: MessageId.make("message-trigger"),
+        respondingBotId: BotId.make("bot-specialist"),
+        trigger: userTrigger,
+        sourceProposedPlanThreadId: null,
+        sourceProposedPlanId: null,
+        requestedAt: "2026-03-24T00:00:00.000Z",
+      });
+
+      const pending = Option.getOrNull(yield* turns.getPendingTurnStartByThreadId({ threadId }));
+      assert.deepStrictEqual(pending?.trigger, userTrigger);
+
+      const mentionTrigger = {
+        kind: "bot-mention" as const,
+        sourceTurnId: TurnId.make("turn-source"),
+        sourceBotId: BotId.make("bot-boss"),
+      };
+
+      yield* turns.upsertByTurnId({
+        threadId,
+        turnId,
+        pendingMessageId: null,
+        sourceProposedPlanThreadId: null,
+        sourceProposedPlanId: null,
+        assistantMessageId: null,
+        respondingBotId: BotId.make("bot-specialist"),
+        trigger: mentionTrigger,
+        state: "running",
+        requestedAt: "2026-03-24T00:00:00.000Z",
+        startedAt: "2026-03-24T00:00:00.000Z",
+        completedAt: null,
+        checkpointTurnCount: null,
+        checkpointRef: null,
+        checkpointStatus: null,
+        checkpointFiles: [],
+      });
+
+      const stored = Option.getOrNull(yield* turns.getByTurnId({ threadId, turnId }));
+      assert.deepStrictEqual(stored?.trigger, mentionTrigger);
+
+      const listed = yield* turns.listByThreadId({ threadId });
+      assert.deepStrictEqual(
+        listed.map((turn) => turn.trigger),
+        [userTrigger, mentionTrigger],
+      );
     }),
   );
 });

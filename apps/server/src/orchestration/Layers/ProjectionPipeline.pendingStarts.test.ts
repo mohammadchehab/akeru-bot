@@ -126,6 +126,7 @@ it.effect("restores pending turn-start metadata across projection pipeline resta
             planId: sourcePlanId,
           },
           runtimeMode: "approval-required",
+          trigger: { kind: "user", messageId },
           createdAt: turnStartedAt,
         },
       });
@@ -179,6 +180,7 @@ it.effect("restores pending turn-start metadata across projection pipeline resta
         readonly userMessageId: string | null;
         readonly sourceProposedPlanThreadId: string | null;
         readonly sourceProposedPlanId: string | null;
+        readonly trigger: string | null;
         readonly startedAt: string;
       }>`
         SELECT
@@ -186,6 +188,7 @@ it.effect("restores pending turn-start metadata across projection pipeline resta
           pending_message_id AS "userMessageId",
           source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           source_proposed_plan_id AS "sourceProposedPlanId",
+          trigger_json AS "trigger",
           started_at AS "startedAt"
         FROM projection_turns
         WHERE turn_id = ${turnId}
@@ -198,6 +201,7 @@ it.effect("restores pending turn-start metadata across projection pipeline resta
         userMessageId: "message-restart",
         sourceProposedPlanThreadId: "thread-plan-source",
         sourceProposedPlanId: "plan-source",
+        trigger: JSON.stringify({ kind: "user", messageId: "message-restart" }),
         startedAt: turnStartedAt,
       },
     ]);

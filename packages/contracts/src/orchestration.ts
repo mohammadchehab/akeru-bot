@@ -93,6 +93,10 @@ export {
   ThreadSilentRunActivityPayload,
   type OrchestrationLatestTurnState,
   OrchestrationLatestTurn,
+  ResponderQueue,
+  ResponderQueueEntry,
+  ResponderQueueReason,
+  ResponderTrigger,
   ThreadTitleRegeneration,
   ThreadLinkedPullRequest,
   PLACEHOLDER_THREAD_TITLE,
@@ -116,6 +120,7 @@ export {
 export { ProjectCreateCommand } from "./orchestration/rosterCommands.ts";
 
 export {
+  GroupAddressing,
   type ThreadTurnStartBootstrap,
   ThreadTurnStartCommand,
   ThreadVoiceTranscriptAppendCommand,
@@ -173,6 +178,7 @@ export {
   ThreadRuntimeModeSetPayload,
   ThreadInteractionModeSetPayload,
   ThreadMessageSentPayload,
+  ThreadResponderQueueSetPayload,
   ThreadChannelDeliverySetPayload,
   ThreadMessageReactionSetPayload,
   ThreadTurnStartRequestedPayload,

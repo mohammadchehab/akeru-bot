@@ -199,6 +199,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           branch,
           worktree_path AS "worktreePath",
           linked_pull_request_json AS "linkedPullRequest",
+          responder_queue_json AS "responderQueue",
           latest_turn_id AS "latestTurnId",
           created_at AS "createdAt",
           updated_at AS "updatedAt",
@@ -242,6 +243,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           branch,
           worktree_path AS "worktreePath",
           linked_pull_request_json AS "linkedPullRequest",
+          responder_queue_json AS "responderQueue",
           latest_turn_id AS "latestTurnId",
           created_at AS "createdAt",
           updated_at AS "updatedAt",
@@ -287,6 +289,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           branch,
           worktree_path AS "worktreePath",
           linked_pull_request_json AS "linkedPullRequest",
+          responder_queue_json AS "responderQueue",
           latest_turn_id AS "latestTurnId",
           created_at AS "createdAt",
           updated_at AS "updatedAt",
@@ -498,6 +501,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads
@@ -559,6 +563,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads
@@ -587,6 +592,7 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
           turns.assistant_message_id AS "assistantMessageId",
           turns.pending_message_id AS "pendingMessageId",
           turns.responding_bot_id AS "respondingBotId",
+          turns.trigger_json AS "trigger",
           turns.source_proposed_plan_thread_id AS "sourceProposedPlanThreadId",
           turns.source_proposed_plan_id AS "sourceProposedPlanId"
         FROM projection_threads threads
