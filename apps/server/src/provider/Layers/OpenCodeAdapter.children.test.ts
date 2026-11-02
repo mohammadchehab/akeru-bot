@@ -2,6 +2,7 @@ import * as NodeAssert from "node:assert/strict";
 import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
+import * as Fiber from "effect/Fiber";
 import { beforeEach } from "vite-plus/test";
 import { ProviderDriverKind, ProviderInstanceId } from "@isnadi/contracts";
 import { createModelSelection } from "@isnadi/shared/model";
@@ -102,5 +103,57 @@ it.layer(OpenCodeAdapterTestLayer)("OpenCodeAdapterLive", (it) => {
 
       yield* adapter.stopSession(threadId);
     }),
+  );
+});
+
+it.layer(OpenCodeAdapterTestLayer)("OpenCodeAdapterLive", (it) => {
+  it.effect(
+    "a Stop that lands while the prompt is still travelling waits for it, then aborts",
+    () =>
+      Effect.gen(function* () {
+        const adapter = yield* OpenCodeAdapter;
+        const threadId = asThreadId("thread-opencode-stop-in-flight");
+        let release: () => void = () => {};
+
+        runtimeMock.state.promptAsyncHold = () =>
+          new Promise<void>((resolve) => {
+            release = resolve;
+          });
+
+        yield* adapter.startSession({
+          provider: ProviderDriverKind.make("opencode"),
+          threadId,
+          runtimeMode: "full-access",
+        });
+
+        const sending = yield* Effect.forkChild(
+          adapter.sendTurn({
+            threadId,
+            input: "hello",
+            modelSelection: createModelSelection(
+              ProviderInstanceId.make("opencode"),
+              "opencode/kimi-k3",
+            ),
+          }),
+        );
+
+        // Let the request leave: promptAsync is now open and unanswered.
+        yield* Effect.promise(() => new Promise((resolve) => setTimeout(resolve, 20)));
+        NodeAssert.equal(runtimeMock.state.promptCalls.length, 1);
+
+        const stopping = yield* Effect.forkChild(adapter.interruptTurn(threadId));
+
+        yield* Effect.promise(() => new Promise((resolve) => setTimeout(resolve, 20)));
+        // Aborting an idle session is a no-op that the arriving prompt would then outlive.
+        NodeAssert.deepEqual(runtimeMock.state.callOrder, []);
+
+        release();
+        yield* Fiber.join(sending);
+        yield* Fiber.join(stopping);
+
+        NodeAssert.deepEqual(runtimeMock.state.callOrder, ["prompt", "abort"]);
+
+        yield* adapter.stopSession(threadId);
+      }),
   );
 });

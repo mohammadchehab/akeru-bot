@@ -1,4 +1,5 @@
 import { ProviderDriverKind, type ProviderSession, ThreadId, TurnId } from "@isnadi/contracts";
+import type * as Deferred from "effect/Deferred";
 import * as Fiber from "effect/Fiber";
 import * as Ref from "effect/Ref";
 import * as Scope from "effect/Scope";
@@ -71,6 +72,12 @@ export interface OpenCodeSessionContext {
   readonly textPartsByMessageId: Map<string, Map<string, OpenCodeTextPartState>>;
   readonly textPartById: Map<string, OpenCodeTextPartState>;
   activeTurnId: TurnId | undefined;
+  /**
+   * Settles when the `promptAsync` call that started or steered a turn has been answered. A Stop
+   * waits for it: aborting a session whose prompt has not reached the server is a no-op, and the
+   * prompt would then run to completion after the user pressed Stop.
+   */
+  promptInFlight?: Deferred.Deferred<void> | undefined;
   activeAgent: string | undefined;
   activeVariant: string | undefined;
   /**
