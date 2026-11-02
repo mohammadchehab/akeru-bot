@@ -29,6 +29,8 @@ const SIDE_UTILITIES: ReadonlyArray<readonly [RegExp, (match: RegExpExecArray) =
 
 const TRANSLATE_X = /^-?translate-x-/u;
 
+const MEASURED_POSITION = /^-?(?:left|right)-(?:\(--|\[var\(--)/u;
+
 // Cheap pre-filter so ordinary strings skip tokenizing.
 const MAY_CONTAIN_PHYSICAL =
   /(?:^|\s|:)!?-?(?:[mp][lr]-|left-|right-|text-(?:left|right)|border-[lr]|rounded-(?:l|r|tl|tr|bl|br)|scroll-[mp][lr]-|float-|clear-|translate-x-)/u;
@@ -79,6 +81,10 @@ function findViolations(text: string): ReadonlyArray<string> {
             `\`${token}\` moves an element along the horizontal axis, which does not mirror. Add the opposite \`rtl:\` translate in the same class list.`,
           ];
     }
+
+    // A position measured in the browser (a pointer, a bounding box) is physical by nature, so a
+    // custom-property value such as `left-(--tooltip-left)` or `left-[var(--x)]` is allowed.
+    if (MEASURED_POSITION.test(body)) return [];
 
     for (const [pattern, logical] of SIDE_UTILITIES) {
       const match = pattern.exec(body);

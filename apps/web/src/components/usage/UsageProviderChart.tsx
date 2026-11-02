@@ -2,6 +2,7 @@ import type { UsageProviderKind } from "@isnadi/contracts";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import type { DailyTotals, HourlyTotals } from "@isnadi/shared/usageMerge";
+import { useI18n } from "../../i18n";
 import { PROVIDER_ORDER, PROVIDER_PRESENTATION } from "./usageProviders";
 import { useUsageFormat } from "./useUsageFormat";
 
@@ -213,6 +214,7 @@ export function UsageProviderChart({
   timeZone,
 }: UsageProviderChartProps) {
   const fmt = useUsageFormat();
+  const { direction } = useI18n();
   const periods = resolution === "hour" ? hours : days;
 
   const byPeriod = useMemo(
@@ -460,7 +462,8 @@ export function UsageProviderChart({
           {hoveredPeriod === undefined ? null : (
             <div
               ref={tooltipRef}
-              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) start-(--usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
+              dir={direction}
+              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) left-(--usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
             >
               <div className="mb-1 text-muted-foreground">{formatTooltipPeriod(hoveredPeriod)}</div>
               {providers.map((provider) => {

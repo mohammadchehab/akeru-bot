@@ -22,10 +22,13 @@ export function Tooltip({
   labelKey,
   valueFormatter,
   variant = "default",
+  dir,
 }: {
   labelKey?: string;
   valueFormatter?: (value: number, name: string) => string;
   variant?: TooltipVariant;
+  /** Direction of the text inside the card, for a chart that is an LTR island around translated copy. */
+  dir?: "ltr" | "rtl";
 }) {
   const chart = useCommonChart();
   const show = chart.ready && chart.hoverIndex != null;
@@ -48,6 +51,7 @@ export function Tooltip({
       {show && items.length > 0 && (
         <motion.div
           key="dither-tooltip"
+          dir={dir}
           initial={{
             opacity: 0,
             x: "-50%",

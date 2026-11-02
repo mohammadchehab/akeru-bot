@@ -18,6 +18,21 @@ describe("isnadi/no-physical-direction-utilities", () => {
   );
 
   rule.valid(
+    "allows a measured position held in a custom property",
+    `const cls = "absolute left-(--tooltip-left,0px) top-(--tooltip-top) -right-[var(--thumb-right)]";`,
+  );
+
+  rule.invalid(
+    "still reports a fixed left offset",
+    `const cls = "left-4 right-(--x) -left-px";`,
+    (output) => {
+      assert.match(output, /`left-4`.*`start-4`/);
+      assert.match(output, /`-left-px`.*`-start-px`/);
+      assert.isFalse(/right-\(--x\)/.test(output));
+    },
+  );
+
+  rule.valid(
     "allows prose that mentions left and right",
     `const copy = "Click the right arrow, then pick the left-hand panel.";`,
   );
