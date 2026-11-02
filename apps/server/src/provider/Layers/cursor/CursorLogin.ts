@@ -4,7 +4,8 @@
  *
  * @module provider/Layers/cursor/CursorLogin
  */
-const LOGIN_LINK = /https:\/\/\S+/;
+// Stops at whitespace, a colour escape, or a closing bracket or quote the CLI may wrap it in.
+const LOGIN_LINK = new RegExp(`https://[^\\s<>"')${String.fromCharCode(27)}]+`);
 
 /** The first https link in the output, or `undefined` while the CLI has not printed one yet. */
 export function parseCursorLoginUrl(output: string): string | undefined {

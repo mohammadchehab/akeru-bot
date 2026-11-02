@@ -23,4 +23,13 @@ describe("parseCursorLoginUrl", () => {
   it("ignores links that are not https", () => {
     expect(parseCursorLoginUrl("go to http://example.com/login")).toBeUndefined();
   });
+
+  it("stops the link before a colour reset, closing bracket or quote", () => {
+    expect(parseCursorLoginUrl("go to \u001b[36mhttps://cursor.com/login?a=1\u001b[0m now")).toBe(
+      "https://cursor.com/login?a=1",
+    );
+    expect(parseCursorLoginUrl("(https://cursor.com/login?a=1)")).toBe(
+      "https://cursor.com/login?a=1",
+    );
+  });
 });
