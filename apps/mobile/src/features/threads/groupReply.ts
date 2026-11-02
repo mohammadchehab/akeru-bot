@@ -78,9 +78,10 @@ export function extractMessageLinks(markdown: string): MessageLink[] {
 
   const links: MessageLink[] = [];
 
-  for (const { href } of found.toSorted((a, b) => a.index - b.index)) {
+  // Plain sort and a regex host: Hermes lacks toSorted, URL.canParse and a working URL.host.
+  for (const { href } of [...found].sort((a, b) => a.index - b.index)) {
     if (links.some((link) => link.href === href)) continue;
-    const host = URL.canParse(href) ? new URL(href).host : href;
+    const host = /^https?:\/\/([^/?#]+)/.exec(href)?.[1] ?? href;
     links.push({ href, host });
 
     if (links.length === MAX_LINK_ACTIONS) break;

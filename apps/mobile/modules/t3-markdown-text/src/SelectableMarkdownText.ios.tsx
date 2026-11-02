@@ -85,6 +85,7 @@ export function SelectableMarkdownText({
                 />
               ) : (
                 <NativeMarkdownSelectableText
+                  selectable={selectable}
                   runs={chunk.runs}
                   textStyle={textStyle}
                   onLinkPress={onLinkPress}
