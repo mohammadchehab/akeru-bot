@@ -68,7 +68,7 @@ curl --proto '=https' --tlsv1.2 -fsSL -o "$tmp/ISNADI-REMOTE-MANIFEST.txt" "$bas
 curl --proto '=https' --tlsv1.2 -fsSL -o "$tmp/ISNADI-REMOTE-MANIFEST.sig" "$base/ISNADI-REMOTE-MANIFEST.sig"
 cat > "$tmp/isnadi-release-manifest.pub" <<'KEY'
 -----BEGIN PUBLIC KEY-----
-MCowBQYDK2VwAyEAA74gQCflQCtBbynI3b+W2z/unYne9w6mPsei/hpmEWg=
+MCowBQYDK2VwAyEAPNo7VRdcCSxGKbI8eKLnzQ55YnTTcjLzj84AuAdjNjU=
 -----END PUBLIC KEY-----
 KEY
 openssl pkeyutl -verify -pubin -inkey "$tmp/isnadi-release-manifest.pub" -rawin \

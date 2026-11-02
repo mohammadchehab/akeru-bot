@@ -3,7 +3,7 @@ import * as NodeCrypto from "node:crypto";
 /** The pinned Ed25519 key that signs every Isnadi Remote release manifest. */
 export const RELEASE_MANIFEST_KEY = [
   "-----BEGIN PUBLIC KEY-----",
-  "MCowBQYDK2VwAyEAA74gQCflQCtBbynI3b+W2z/unYne9w6mPsei/hpmEWg=",
+  "MCowBQYDK2VwAyEAPNo7VRdcCSxGKbI8eKLnzQ55YnTTcjLzj84AuAdjNjU=",
   "-----END PUBLIC KEY-----",
 ].join("\n");
 

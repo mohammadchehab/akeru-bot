@@ -76,7 +76,7 @@ const currentVersion = () => {
 // environment override: a scheduled task's environment must never be able to replace the release key.
 const RELEASE_MANIFEST_KEY = [
   "-----BEGIN PUBLIC KEY-----",
-  "MCowBQYDK2VwAyEAA74gQCflQCtBbynI3b+W2z/unYne9w6mPsei/hpmEWg=",
+  "MCowBQYDK2VwAyEAPNo7VRdcCSxGKbI8eKLnzQ55YnTTcjLzj84AuAdjNjU=",
   "-----END PUBLIC KEY-----",
 ].join("\n");
 
