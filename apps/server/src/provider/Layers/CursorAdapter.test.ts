@@ -29,15 +29,18 @@ const ERROR_RESULT = JSON.stringify({ type: "result", is_error: true, result: "m
 
 // A shell stand-in for `agent`. It appends its argv (one arg per line, then a marker) to args.log
 // so a test can see exactly what the adapter asked for, then runs `body`.
-const withAdapter = <A, E, R>(
+const withAdapter = <A, E>(
   body: string,
   use: (input: {
     readonly adapter: Effect.Success<ReturnType<typeof makeCursorAdapter>>;
     readonly dir: string;
-    readonly argvOfTurn: (index: number) => Effect.Effect<ReadonlyArray<string>, unknown, R>;
+    readonly argvOfTurn: (
+      index: number,
+    ) => Effect.Effect<ReadonlyArray<string>, unknown, FileSystem.FileSystem>;
     readonly events: ProviderRuntimeEvent[];
     readonly terminal: Deferred.Deferred<void>;
-  }) => Effect.Effect<A, E, R>,
+    readonly sessionSeen: Deferred.Deferred<void>;
+  }) => Effect.Effect<A, E, FileSystem.FileSystem | Path.Path>,
 ) =>
   Effect.scoped(
     Effect.gen(function* () {
@@ -59,11 +62,14 @@ const withAdapter = <A, E, R>(
 
       const events: ProviderRuntimeEvent[] = [];
       const terminal = yield* Deferred.make<void>();
+      const sessionSeen = yield* Deferred.make<void>();
 
       yield* adapter.streamEvents.pipe(
         Stream.runForEach((event) =>
           Effect.gen(function* () {
             events.push(event);
+
+            if (event.type === "thread.started") yield* Deferred.succeed(sessionSeen, undefined);
 
             if (event.type === "turn.completed" || event.type === "turn.aborted") {
               yield* Deferred.succeed(terminal, undefined);
@@ -80,7 +86,7 @@ const withAdapter = <A, E, R>(
             Effect.map((text) => text.split("--END--\n")[index]?.split("\n").filter(Boolean) ?? []),
           );
 
-      return yield* use({ adapter, dir, argvOfTurn, events, terminal });
+      return yield* use({ adapter, dir, argvOfTurn, events, terminal, sessionSeen });
     }),
   ).pipe(Effect.provide(NodeServices.layer));
 
@@ -196,25 +202,27 @@ describe("CursorAdapter", () => {
 
   // Real clock: the test waits for a real child process.
   it.live("interrupts a running turn into turn.aborted and keeps the session id", () =>
-    withAdapter(`printf '%s\\n' '${INIT}'\nexec sleep 30`, ({ adapter, dir, events, terminal }) =>
-      Effect.gen(function* () {
-        yield* start(adapter, dir, "auto");
-        const turn = yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
+    withAdapter(
+      `printf '%s\\n' '${INIT}'\nexec sleep 30`,
+      ({ adapter, dir, events, terminal, sessionSeen }) =>
+        Effect.gen(function* () {
+          yield* start(adapter, dir, "auto");
+          const turn = yield* adapter.sendTurn({ threadId: THREAD, input: "hi" });
 
-        // Give the process time to print its session before signalling it.
-        yield* Effect.sleep("500 millis");
-        yield* adapter.interruptTurn(THREAD, turn.turnId);
-        // A typed end, never a hang: bounded so a regression fails fast instead of timing out.
-        yield* Deferred.await(terminal).pipe(Effect.timeout("8 seconds"));
+          // Signal only once Cursor has reported its session, so the id is there to keep.
+          yield* Deferred.await(sessionSeen).pipe(Effect.timeout("8 seconds"));
+          yield* adapter.interruptTurn(THREAD, turn.turnId);
+          // A typed end, never a hang: bounded so a regression fails fast instead of timing out.
+          yield* Deferred.await(terminal).pipe(Effect.timeout("8 seconds"));
 
-        expect(events.find((event) => event.type === "turn.aborted")).toMatchObject({
-          payload: { reason: "Interrupted by user." },
-        });
+          expect(events.find((event) => event.type === "turn.aborted")).toMatchObject({
+            payload: { reason: "Interrupted by user." },
+          });
 
-        const [session] = yield* adapter.listSessions();
+          const [session] = yield* adapter.listSessions();
 
-        expect(session).toMatchObject({ status: "ready", resumeCursor: { sessionId: "sess-1" } });
-      }),
+          expect(session).toMatchObject({ status: "ready", resumeCursor: { sessionId: "sess-1" } });
+        }),
     ),
   );
 
