@@ -24,6 +24,14 @@ export function composerBotMentionDetail(
   return titleIsUnique ? title : `#${bot.id.slice(-6)}`;
 }
 
+/**
+ * A mention runs to the first character that cannot be part of a member name, so whitespace,
+ * the end of the text, or one of `, . : ; ! ? )` ends it and it still resolves.
+ */
+function endsMention(after: string | undefined): boolean {
+  return after === undefined || /[\s,.:;!?)]/.test(after);
+}
+
 export type ComposerBotMention =
   | { readonly kind: "none" }
   | { readonly kind: "bot"; readonly botId: string }
@@ -52,7 +60,7 @@ export function resolveComposerBotMention(
     const before = prompt[index - 1];
     const after = prompt[index + token.length];
 
-    if ((before === undefined || /\s/.test(before)) && (after === undefined || /\s/.test(after))) {
+    if ((before === undefined || /\s/.test(before)) && endsMention(after)) {
       mentions.push({ bot, index, byId: false });
     }
   }
@@ -91,7 +99,7 @@ export type ComposerAddressing =
   | { readonly kind: "bots"; readonly botIds: readonly [string, ...string[]] }
   | { readonly kind: "ambiguous"; readonly name: string };
 
-const EVERYONE_TOKEN = /(^|\s)@everyone(?=\s|$)/;
+const EVERYONE_TOKEN = /(^|\s)@everyone(?=[\s,.:;!?)]|$)/;
 
 /**
  * Who a group prompt is for (docs/internals/group-chats.md, "Addressing"): `@everyone`, or every
@@ -115,10 +123,7 @@ export function resolveComposerAddressing(
       const before = prompt[from - 1];
       const after = prompt[from + token.length];
 
-      if (
-        (before === undefined || /\s/.test(before)) &&
-        (after === undefined || /\s/.test(after))
-      ) {
+      if ((before === undefined || /\s/.test(before)) && endsMention(after)) {
         if (namesakes.length > 1) return { kind: "ambiguous", name: bot.name };
         found.push({ index: from, botId: bot.id });
       }

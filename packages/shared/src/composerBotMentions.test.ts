@@ -105,3 +105,33 @@ describe("resolveComposerAddressing", () => {
     expect(resolveComposerAddressing("hello team", bots)).toEqual({ kind: "none" });
   });
 });
+
+describe("a mention followed by punctuation", () => {
+  const bots = [
+    { id: "bot-1", name: "Becky" },
+    { id: "bot-2", name: "Mika" },
+    { id: "bot-3", name: "Mika" },
+  ];
+
+  it.each([",", ".", ":", ";", "!", "?", ")"])("still resolves before %s", (mark) => {
+    expect(resolveComposerAddressing(`(ask @Becky${mark} cheapest test)`, bots)).toEqual({
+      kind: "bots",
+      botIds: ["bot-1"],
+    });
+    expect(resolveComposerBotMention(`@Becky${mark} cheapest test`, bots)).toEqual({
+      kind: "bot",
+      botId: "bot-1",
+    });
+    expect(resolveComposerAddressing(`@everyone${mark} status`, bots)).toEqual({
+      kind: "everyone",
+    });
+    expect(resolveComposerAddressing(`@Mika${mark} hi`, bots)).toEqual({
+      kind: "ambiguous",
+      name: "Mika",
+    });
+  });
+
+  it("does not count a name that only starts the word", () => {
+    expect(resolveComposerAddressing("@Beckyland, hi", bots)).toEqual({ kind: "none" });
+  });
+});
