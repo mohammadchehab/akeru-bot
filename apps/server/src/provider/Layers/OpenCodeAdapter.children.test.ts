@@ -1,5 +1,6 @@
 import * as NodeAssert from "node:assert/strict";
 import { it } from "@effect/vitest";
+import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Fiber from "effect/Fiber";
@@ -115,6 +116,10 @@ it.layer(OpenCodeAdapterTestLayer)("OpenCodeAdapterLive", (it) => {
         const threadId = asThreadId("thread-opencode-stop-in-flight");
         let release: () => void = () => {};
 
+        const promptEntered = new Promise<void>((resolve) => {
+          runtimeMock.state.onPromptEntered = resolve;
+        });
+
         runtimeMock.state.promptAsyncHold = () =>
           new Promise<void>((resolve) => {
             release = resolve;
@@ -137,15 +142,24 @@ it.layer(OpenCodeAdapterTestLayer)("OpenCodeAdapterLive", (it) => {
           }),
         );
 
-        // Let the request leave: promptAsync is now open and unanswered.
-        yield* Effect.promise(() => new Promise((resolve) => setTimeout(resolve, 20)));
+        // promptAsync is now entered and held: the request is in flight and unanswered.
+        yield* Effect.promise(() => promptEntered);
         NodeAssert.equal(runtimeMock.state.promptCalls.length, 1);
 
-        const stopping = yield* Effect.forkChild(adapter.interruptTurn(threadId));
+        const stopped = yield* Deferred.make<void>();
 
-        yield* Effect.promise(() => new Promise((resolve) => setTimeout(resolve, 20)));
-        // Aborting an idle session is a no-op that the arriving prompt would then outlive.
+        const stopping = yield* Effect.forkChild(
+          adapter
+            .interruptTurn(threadId)
+            .pipe(Effect.ensuring(Deferred.succeed(stopped, undefined))),
+        );
+
+        // Give the Stop every chance to run ahead of the prompt. Aborting an idle session is a
+        // no-op that the arriving prompt would outlive, so it must be waiting, not aborting.
+        for (let turn = 0; turn < 20; turn++) yield* Effect.yieldNow;
+
         NodeAssert.deepEqual(runtimeMock.state.callOrder, []);
+        NodeAssert.equal(yield* Deferred.isDone(stopped), false);
 
         release();
         yield* Fiber.join(sending);

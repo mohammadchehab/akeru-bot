@@ -72,6 +72,8 @@ export function makeOpenCodeAdapterHarness() {
       promptAsyncError: null as Error | null,
       /** Holds `promptAsync` open, like a request still travelling to the server. */
       promptAsyncHold: null as (() => Promise<void>) | null,
+      /** Called when `promptAsync` is entered, before it is held. */
+      onPromptEntered: null as (() => void) | null,
       /** Order in which the server saw a prompt being accepted and an abort. */
       callOrder: [] as string[],
       closeError: null as Error | null,
@@ -118,6 +120,7 @@ export function makeOpenCodeAdapterHarness() {
       this.state.promptCalls.length = 0;
       this.state.promptAsyncError = null;
       this.state.promptAsyncHold = null;
+      this.state.onPromptEntered = null;
       this.state.callOrder.length = 0;
       this.state.closeError = null;
       this.state.messages = [];
@@ -253,6 +256,7 @@ export function makeOpenCodeAdapterHarness() {
           },
           promptAsync: async <Input>(input: Input) => {
             runtimeMock.state.promptCalls.push(input);
+            runtimeMock.state.onPromptEntered?.();
             await runtimeMock.state.promptAsyncHold?.();
 
             if (runtimeMock.state.promptAsyncError) {
