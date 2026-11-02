@@ -66,7 +66,10 @@ export function BotOverview({
         </h3>
         {bot.label ? <p className="mt-0.5 text-sm text-muted-foreground">{bot.label}</p> : null}
         {bot.description ? (
-          <p className="mt-3 line-clamp-3 max-w-64 text-sm leading-relaxed text-muted-foreground">
+          <p
+            dir="auto"
+            className="mt-3 line-clamp-3 max-w-64 text-sm leading-relaxed text-muted-foreground"
+          >
             {bot.description}
           </p>
         ) : null}
