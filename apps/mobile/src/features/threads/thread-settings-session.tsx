@@ -1,6 +1,7 @@
 import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import type {
   EnvironmentId,
+  GroupHopBudget,
   ModelSelection,
   ProviderOptionDescriptor,
   ProviderOptionSelection,
@@ -39,6 +40,11 @@ export type ThreadSettingsSessionProps = {
     readonly environmentId: EnvironmentId;
     readonly botId: string;
     readonly botName?: string;
+  };
+  /** Group chats only: the reply budget and the setter. Absent in direct chats. */
+  readonly hopBudget?: {
+    readonly value: number;
+    readonly onChange: (hopBudget: GroupHopBudget) => Promise<boolean>;
   };
   /** Deletes the chat's bot. Resolves false when the server refuses. */
   /** Resolves to null on success, or the reason the delete failed. */
@@ -118,6 +124,7 @@ export type ThreadSettingsSessionValue = {
   readonly memoryThreadRef: ThreadSettingsSessionProps["memoryThreadRef"];
   readonly routinesRef: ThreadSettingsSessionProps["routinesRef"];
   readonly onDeleteBot: ThreadSettingsSessionProps["onDeleteBot"];
+  readonly hopBudget: ThreadSettingsSessionProps["hopBudget"];
   /** False when the shown model's provider can neither hand off work nor receive it. */
   readonly canDelegate: boolean;
 };
@@ -261,6 +268,7 @@ export function ThreadSettingsSessionProvider(
       memoryThreadRef: props.memoryThreadRef,
       routinesRef: props.routinesRef,
       onDeleteBot: props.onDeleteBot,
+      hopBudget: props.hopBudget,
       canDelegate,
     }),
     [
@@ -281,6 +289,7 @@ export function ThreadSettingsSessionProvider(
       props.memoryThreadRef,
       props.routinesRef,
       props.onDeleteBot,
+      props.hopBudget,
       searchQuery,
       showLegacyToggle,
       toggleProvider,

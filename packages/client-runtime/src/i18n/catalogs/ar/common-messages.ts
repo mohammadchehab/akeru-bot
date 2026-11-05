@@ -324,4 +324,9 @@ export const commonMessagesCatalog = {
   "{names} use this account.": "{names} يستخدمون هذا الحساب.",
   "Saved · {baseUrl}": "تم الحفظ · {baseUrl}",
   "Regenerating…": "جارٍ إعادة التوليد…",
+  "Mention {name} by picking one from the @ menu.": "اذكر {name} باختيار أحدهم من قائمة @.",
+  "Reply budget": "حد الردود",
+  "Fewer replies": "ردود أقل",
+  "More replies": "ردود أكثر",
+  "Two bots share that name": "بوتان يحملان الاسم نفسه",
 } as const;

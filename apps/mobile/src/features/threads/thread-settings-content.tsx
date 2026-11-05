@@ -1,3 +1,5 @@
+import type { GroupHopBudget } from "@isnadi/contracts";
+import { stepHopBudget } from "@isnadi/shared/groupHopBudget";
 import { useMobileI18n } from "../../lib/i18n";
 import { getProviderOptionCurrentLabel, getProviderOptionCurrentValue } from "@isnadi/shared/model";
 import * as Haptics from "expo-haptics";
@@ -120,6 +122,89 @@ function SwitchRow(props: {
   );
 }
 
+/** A − / value / + row: the stepper's ends disable at the budget's bounds. */
+function StepperRow(props: {
+  readonly label: string;
+  readonly value: number;
+  readonly onStep: (direction: 1 | -1) => void;
+  readonly canStep: (direction: 1 | -1) => boolean;
+  readonly isLast?: boolean;
+}) {
+  const { t } = useMobileI18n();
+  const iconColor = useThemeColor("--color-icon");
+
+  return (
+    <View
+      className={cn(
+        "min-h-11 flex-row items-center justify-between bg-card px-4 py-1",
+        !props.isLast && "border-b border-border-subtle",
+      )}
+    >
+      <Text className="text-sm font-t3-medium text-foreground">{props.label}</Text>
+      <View className="flex-row items-center gap-3">
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t("Fewer replies")}
+          disabled={!props.canStep(-1)}
+          hitSlop={8}
+          onPress={() => props.onStep(-1)}
+          className={cn("p-1", !props.canStep(-1) && "opacity-40")}
+        >
+          <SymbolView name="minus" size={16} tintColor={iconColor} type="monochrome" />
+        </Pressable>
+        <Text
+          accessibilityLiveRegion="polite"
+          className="min-w-6 text-center text-sm text-foreground"
+        >
+          {props.value}
+        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t("More replies")}
+          disabled={!props.canStep(1)}
+          hitSlop={8}
+          onPress={() => props.onStep(1)}
+          className={cn("p-1", !props.canStep(1) && "opacity-40")}
+        >
+          <SymbolView name="plus" size={16} tintColor={iconColor} type="monochrome" />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function HopBudgetRow(props: {
+  readonly hopBudget: {
+    readonly value: number;
+    readonly onChange: (next: GroupHopBudget) => Promise<boolean>;
+  };
+  readonly isLast: boolean;
+}) {
+  const { t } = useMobileI18n();
+  const { onChange } = props.hopBudget;
+  // The server value lags a press, so fast presses step from what was just chosen.
+  const [chosen, setChosen] = useState<{ base: number; value: number } | null>(null);
+  const value = chosen?.base === props.hopBudget.value ? chosen.value : props.hopBudget.value;
+
+  return (
+    <StepperRow
+      isLast={props.isLast}
+      label={t("Reply budget")}
+      value={value}
+      canStep={(direction) => stepHopBudget(value, direction) !== null}
+      onStep={(direction) => {
+        const next = stepHopBudget(value, direction);
+
+        if (next === null) return;
+        setChosen({ base: props.hopBudget.value, value: next });
+        void onChange(next).then((ok) => {
+          if (!ok) setChosen(null);
+        });
+      }}
+    />
+  );
+}
+
 export function ThreadSettingsOptionsItem(props: {
   readonly animationsReady: boolean;
   readonly onOpenSubmenu: (submenu: ThreadSettingsSubmenuPage) => void;
@@ -179,7 +264,7 @@ export function ThreadSettingsOptionsItem(props: {
         })}
         <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
           <DisclosureRow
-            isLast={!session.memoryThreadRef && !session.routinesRef}
+            isLast={!session.hopBudget && !session.memoryThreadRef && !session.routinesRef}
             label={t("Runtime")}
             value={
               RUNTIME_MODE_CHOICES.find((choice) => choice.mode === session.runtimeMode)?.label
@@ -187,6 +272,14 @@ export function ThreadSettingsOptionsItem(props: {
             onPress={() => props.onOpenSubmenu({ kind: "runtime" })}
           />
         </Animated.View>
+        {session.hopBudget ? (
+          <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
+            <HopBudgetRow
+              hopBudget={session.hopBudget}
+              isLast={!session.memoryThreadRef && !session.routinesRef}
+            />
+          </Animated.View>
+        ) : null}
         {session.memoryThreadRef ? (
           <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
             <DisclosureRow

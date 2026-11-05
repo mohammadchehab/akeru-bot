@@ -1,6 +1,10 @@
 import { useAtomValue } from "@effect/atom-react";
 import { composerActionIsDictation } from "@isnadi/client-runtime/dictation";
 import {
+  resolveComposerAddressing,
+  type SendableComposerAddressing,
+} from "@isnadi/shared/composerBotMentions";
+import {
   ArrowUpIcon,
   AtSignIcon,
   CornerDownRightIcon,
@@ -89,6 +93,7 @@ export function BotPromptComposer({
   readOnly = false,
   typeToFocus = true,
   mentionBots = EMPTY_MENTION_BOTS,
+  everyoneMention = false,
   mentionScope = null,
   commandCatalog,
   activitySlot = null,
@@ -109,6 +114,8 @@ export function BotPromptComposer({
   /** Off while something else on the page owns printable keys, like an open question's letter shortcuts. */
   typeToFocus?: boolean;
   mentionBots?: ReadonlyArray<MentionBot>;
+  /** Group chats: offer `@everyone` in the `@` picker. */
+  everyoneMention?: boolean;
   /** Enables `@browser` and `@chat:` mentions for this chat's environment. */
   mentionScope?: BotPromptMentionScope | null;
   /**
@@ -130,7 +137,11 @@ export function BotPromptComposer({
   sendBlockedDescriptionId?: string | undefined;
   /** Reports the bot the draft's mention addresses, or null when it addresses none. */
   onAddressedBotChange?: (botId: string | null) => void;
-  onSubmit: (prompt: string, files: readonly File[], respondingBotId?: string) => Promise<boolean>;
+  onSubmit: (
+    prompt: string,
+    files: readonly File[],
+    addressing?: SendableComposerAddressing,
+  ) => Promise<boolean>;
 }) {
   const { t } = useI18n();
   const prefersReducedMotion = useReducedMotion();
@@ -172,6 +183,8 @@ export function BotPromptComposer({
   const draftMention = resolveBotMention(draft, mentionBots);
   const mentionHint = botMentionHint(draftMention, t);
   const addressedBotId = draftMention.kind === "bot" ? draftMention.botId : null;
+  // A prompt that names someone beats the reply target; the chip keeps the quote and says so.
+  const draftAddressesSomeone = resolveComposerAddressing(draft, mentionBots).kind !== "none";
   useEffect(() => {
     onAddressedBotChange?.(addressedBotId);
   }, [addressedBotId, onAddressedBotChange]);
@@ -405,6 +418,7 @@ export function BotPromptComposer({
               trigger={mentionTrigger}
               scope={mentionScope}
               bots={mentionBots}
+              everyoneAvailable={everyoneMention}
               onSelect={selectMention}
               onClose={closeMentionMenu}
               onActiveOptionChange={setActiveMentionOptionId}
@@ -438,6 +452,9 @@ export function BotPromptComposer({
                 data-testid="composer-reply-preview"
               >
                 <CornerDownRightIcon aria-hidden="true" className="size-3.5 shrink-0 opacity-60" />
+                <span className="shrink-0 text-muted-foreground">
+                  {draftAddressesSomeone ? t("Quoting") : t("Replying to")}
+                </span>
                 <span className="shrink-0 font-medium">{replyPreview.label}</span>
                 <span className="min-w-0 flex-1 truncate text-muted-foreground">
                   {replyPreview.text}

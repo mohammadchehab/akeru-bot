@@ -43,9 +43,15 @@ export const commonMessagesCatalog = {
   "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?":
     "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?",
   "An error occurred.": "An error occurred.",
+  "Mention {name} by picking one from the @ menu.":
+    "Mention {name} by picking one from the @ menu.",
   "Mention {name}": "Mention {name}",
   "Remove {name}": "Remove {name}",
   "Select one or more.": "Select one or more.",
+  "Reply budget": "Reply budget",
+  "Fewer replies": "Fewer replies",
+  "More replies": "More replies",
+  "Two bots share that name": "Two bots share that name",
   "(empty)": "(empty)",
   "Nothing stashed yet.": "Nothing stashed yet.",
   "Dictation ready.": "Dictation ready.",

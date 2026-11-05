@@ -35,6 +35,8 @@ export type UpdateThreadMetadataInput = CommandInput<"thread.meta.update">;
 
 export type SetThreadRuntimeModeInput = CommandInput<"thread.runtime-mode.set">;
 
+export type SetThreadHopBudgetInput = CommandInput<"thread.hop-budget.set">;
+
 export type SetThreadInteractionModeInput = CommandInput<"thread.interaction-mode.set">;
 
 export type SetThreadMessageReactionInput = Omit<
@@ -175,6 +177,19 @@ export const setThreadRuntimeMode: (input: SetThreadRuntimeModeInput) => Command
   return yield* dispatch({
     ...input,
     type: "thread.runtime-mode.set",
+    commandId: metadata.commandId,
+    createdAt: metadata.createdAt,
+  });
+});
+
+export const setThreadHopBudget: (input: SetThreadHopBudgetInput) => CommandEffect = Effect.fn(
+  "EnvironmentCommands.setThreadHopBudget",
+)(function* (input) {
+  const metadata = yield* timestampedCommandMetadata(input);
+
+  return yield* dispatch({
+    ...input,
+    type: "thread.hop-budget.set",
     commandId: metadata.commandId,
     createdAt: metadata.createdAt,
   });

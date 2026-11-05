@@ -61,6 +61,7 @@ export const ComposerMentionPopover = memo(function ComposerMentionPopover(props
       query: props.query,
       browserAvailable: props.browserAvailable,
       bots,
+      everyoneAvailable: bots.length > 0,
       threads: shells.filter((shell) => shell.environmentId === props.environmentId),
       currentThreadId: props.threadId,
       currentProjectId: props.projectId,

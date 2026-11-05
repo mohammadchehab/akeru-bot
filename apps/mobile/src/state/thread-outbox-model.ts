@@ -4,6 +4,7 @@ import type { EnvironmentShellStatus } from "@isnadi/client-runtime/state/shell"
 import {
   CommandId,
   EnvironmentId,
+  GroupAddressing,
   IsoDateTime,
   MessageId,
   ModelSelection,
@@ -11,6 +12,7 @@ import {
   ProviderInteractionMode,
   RuntimeMode,
   ThreadId,
+  type GroupAddressing as GroupAddressingType,
   type ModelSelection as ModelSelectionType,
   type ProjectId as ProjectIdType,
   type ProviderInteractionMode as ProviderInteractionModeType,
@@ -49,6 +51,8 @@ export const QueuedThreadMessageSchema = Schema.Struct({
   modelSelection: Schema.optional(ModelSelection),
   runtimeMode: Schema.optional(RuntimeMode),
   interactionMode: Schema.optional(ProviderInteractionMode),
+  // Who a group chat message is for; absent in a direct chat or when the server routes it.
+  addressing: Schema.optional(GroupAddressing),
   // Present when the queued item creates a brand-new thread (pending task)
   // instead of appending a turn to an existing one.
   creation: Schema.optional(QueuedThreadCreationSchema),
@@ -79,6 +83,7 @@ export interface QueuedThreadMessage {
   readonly modelSelection?: ModelSelectionType;
   readonly runtimeMode?: RuntimeModeType;
   readonly interactionMode?: ProviderInteractionModeType;
+  readonly addressing?: GroupAddressingType;
   readonly creation?: QueuedThreadCreation;
   readonly createdAt: string;
 }

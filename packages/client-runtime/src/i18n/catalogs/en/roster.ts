@@ -324,4 +324,12 @@ export const rosterCatalog = {
   "No channels set up yet": "No channels set up yet",
   "Deleted group": "Deleted group",
   "Removed bot": "Removed bot",
+  "{names} is next": "{names} is next",
+  "Reply budget": "Reply budget",
+  "Bot replies one message can chain before the group stops. Applies from your next message.":
+    "Bot replies one message can chain before the group stops. Applies from your next message.",
+  "Fewer replies": "Fewer replies",
+  "More replies": "More replies",
+  "{names} are next": "{names} are next",
+  "Every member": "Every member",
 } as const;

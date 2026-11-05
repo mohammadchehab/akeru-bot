@@ -21,7 +21,9 @@ import {
   type CodexFeedbackSubmission,
 } from "@isnadi/client-runtime/state/threads";
 import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
+import { groupAddressing, resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { deriveActiveWorkStartedAt } from "@isnadi/shared/orchestrationTiming";
+import { groupMentionBots } from "../features/threads/composerMentionItems";
 import { createQueuedMessageMetadata } from "../lib/commandMetadata";
 import {
   convertPastedImagesToAttachments,
@@ -54,6 +56,7 @@ import { setPendingConnectionError } from "../state/use-remote-environment-regis
 import { useSelectedThreadDetail } from "../state/use-thread-detail";
 import { useThreadSelection } from "../state/use-thread-selection";
 import { environmentSnapshotAtom } from "../state/shell";
+import { environmentBotsAtom, environmentGroupsAtom } from "./bots";
 import { enqueueThreadOutboxMessage } from "./thread-outbox";
 import { useThreadOutboxMessages } from "./use-thread-outbox";
 import { threadEnvironment } from "./threads";
@@ -175,6 +178,11 @@ export function useThreadComposerState() {
         : "\n",
     ),
   );
+
+  // The bots a group prompt can name, so the send can state who it is for.
+  const addressingEnvironmentId = selectedThreadShell?.environmentId ?? EnvironmentId.make("");
+  const addressingBots = useAtomValue(environmentBotsAtom(addressingEnvironmentId));
+  const addressingGroups = useAtomValue(environmentGroupsAtom(addressingEnvironmentId));
 
   const selectedThreadFeedDelegations = useMemo(
     () => decodeFeedDelegations(JSON.parse(selectedThreadDelegations)),
@@ -351,6 +359,29 @@ export function useThreadComposerState() {
       return null;
     }
 
+    // A group message states who it is for. A bare name two bots share cannot be routed.
+    const groupId = thread.groupId ?? null;
+
+    const addressing = groupId
+      ? resolveComposerAddressing(
+          text,
+          groupMentionBots(
+            addressingGroups.find((group) => group.id === groupId),
+            addressingBots,
+          ),
+        )
+      : undefined;
+
+    if (addressing?.kind === "ambiguous") {
+      Alert.alert(
+        t("Two bots share that name"),
+        t("Mention {name} by picking one from the @ menu.", { name: addressing.name }),
+      );
+
+      return null;
+    }
+
+    const wireAddressing = groupAddressing(addressing);
     const metadata = createQueuedMessageMetadata();
     const messageId = MessageId.make(metadata.messageId);
 
@@ -373,6 +404,7 @@ export function useThreadComposerState() {
       }),
       runtimeMode: draft.runtimeMode ?? thread.runtimeMode,
       interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+      ...(wireAddressing ? { addressing: wireAddressing } : {}),
       createdAt: metadata.createdAt,
     });
 
@@ -391,6 +423,8 @@ export function useThreadComposerState() {
 
     return messageId;
   }, [
+    addressingBots,
+    addressingGroups,
     engineBot,
     selectedEnvironmentRuntime?.serverConfig?.providers,
     selectedThreadDetail,

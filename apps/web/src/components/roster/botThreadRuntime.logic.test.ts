@@ -238,7 +238,7 @@ describe("bot thread runtime", () => {
   it("associates a group thread and routes a mention to its selected bot", () => {
     const input = buildGroupTurnStartInput({
       groupId: GroupId.make("group-product"),
-      respondingBotId: BotId.make("bot-specialist"),
+      addressing: { kind: "bots", botIds: [BotId.make("bot-specialist")] },
       threadId: ThreadId.make("thread-product"),
       projectId: ProjectId.make("project-isnadi"),
       title: "Review this",
@@ -259,7 +259,8 @@ describe("bot thread runtime", () => {
     });
 
     expect(input.bootstrap?.createThread?.groupId).toBe("group-product");
-    expect(input.respondingBotId).toBe("bot-specialist");
+    expect(input.addressing).toEqual({ kind: "bots", botIds: ["bot-specialist"] });
+    expect(input.respondingBotId).toBeUndefined();
   });
 
   it("restores the latest durable thread owned by the bot", () => {

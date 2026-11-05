@@ -24,6 +24,8 @@ import type { ComposerCommandItem } from "./ComposerCommandPopover";
 
 const THREAD_QUERY_PREFIX = "chat:";
 
+const EVERYONE_MENTION = "@everyone";
+
 /** Whether an `@` query names a chat explicitly, so file search can be skipped. */
 export function isThreadMentionQuery(query: string): boolean {
   return query.toLowerCase().startsWith(THREAD_QUERY_PREFIX);
@@ -91,6 +93,8 @@ export function buildComposerMentionItems(input: {
   readonly query: string;
   readonly browserAvailable: boolean;
   readonly bots?: ReadonlyArray<ComposerMentionItemBot>;
+  /** Group chats only: offers `@everyone`, which addresses every active member. */
+  readonly everyoneAvailable?: boolean;
   readonly threads: ReadonlyArray<ComposerThreadMentionCandidate>;
   readonly currentThreadId: string;
   readonly currentProjectId: string | null;
@@ -110,6 +114,15 @@ export function buildComposerMentionItems(input: {
 
   if (!isThreadMentionQuery(query)) {
     const bots = input.bots ?? [];
+
+    if (input.everyoneAvailable && EVERYONE_MENTION.slice(1).startsWith(query)) {
+      items.push({
+        id: "mention:everyone",
+        type: "everyone-mention",
+        label: EVERYONE_MENTION,
+        description: "Every member",
+      });
+    }
 
     for (const bot of bots) {
       if (!bot.name.toLowerCase().startsWith(query)) continue;
@@ -158,6 +171,8 @@ export function composerMentionItemToken(item: ComposerCommandItem): string | nu
   switch (item.type) {
     case "browser-mention":
       return COMPOSER_BROWSER_MENTION;
+    case "everyone-mention":
+      return EVERYONE_MENTION;
     case "bot-mention":
       return serializeComposerBotMention(item.botId);
     case "thread-mention":
