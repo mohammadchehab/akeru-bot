@@ -71,7 +71,10 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
 
         if (Result.isFailure(target)) return yield* refuse(target.failure.reason);
 
-        const link = yield* deps.openStreamLink(frame.streamId, frame.ticket).pipe(Effect.result);
+        const link = yield* deps.openStreamLink(frame.streamId, frame.ticket).pipe(
+          Effect.onInterrupt(() => target.success.destroy),
+          Effect.result,
+        );
 
         if (Result.isFailure(link)) {
           yield* target.success.destroy;

@@ -28,6 +28,7 @@ const makeHarness = (
   options: {
     readonly maxStreams?: number;
     readonly throttle?: (bytes: number) => Effect.Effect<void>;
+    readonly openStreamLink?: EgressProviderDeps["openStreamLink"];
   } = {},
 ) => {
   const sent: Array<Parameters<EgressProviderDeps["sendControl"]>[0]> = [];
@@ -37,21 +38,23 @@ const makeHarness = (
 
   const provider = makeEgressProvider({
     dial,
-    openStreamLink: (streamId) =>
-      Effect.sync(() => {
-        links.push(streamId);
+    openStreamLink:
+      options.openStreamLink ??
+      ((streamId) =>
+        Effect.sync(() => {
+          links.push(streamId);
 
-        return {
-          send: (chunk) =>
-            Effect.sync(() => {
-              sentToServer.push(chunk);
+          return {
+            send: (chunk) =>
+              Effect.sync(() => {
+                sentToServer.push(chunk);
+              }),
+            run: () => Effect.never,
+            close: Effect.sync(() => {
+              state.linkClosed += 1;
             }),
-          run: () => Effect.never,
-          close: Effect.sync(() => {
-            state.linkClosed += 1;
-          }),
-        };
-      }),
+          };
+      })),
     sendControl: (frame) =>
       Effect.sync(() => {
         sent.push(frame);
@@ -210,6 +213,26 @@ describe("EgressProvider", () => {
       assert.strictEqual(second.state.destroyed, 1);
       assert.strictEqual(state.linkClosed, 2);
       assert.strictEqual(provider.liveStreams(), 0);
+    }),
+  );
+
+  it.effect("shutdown while the stream link is still opening destroys the dialed socket", () =>
+    Effect.gen(function* () {
+      const quiet = quietTarget();
+
+      const { provider } = makeHarness(() => Effect.succeed(quiet.target), {
+        openStreamLink: () => Effect.never,
+      });
+
+      yield* provider.handleOpen(openFrame);
+      yield* settle;
+
+      assert.strictEqual(quiet.state.destroyed, 0);
+
+      yield* provider.shutdown;
+      yield* settle;
+
+      assert.strictEqual(quiet.state.destroyed, 1);
     }),
   );
 });
