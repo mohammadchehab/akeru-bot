@@ -3,14 +3,22 @@
 name: Install workspace
 description: Set up Vite+, reject dependencies outside the repository, and install from the committed lockfile.
 
+# Self-hosted Hetzner runners install from one persistent pnpm store on the box, which is content-addressed and
+# safe for concurrent installs, so they skip the actions/cache round trip. GitHub-hosted runners (fork pull
+# requests and the light jobs) have no persistent disk and keep the cache.
 runs:
   using: composite
   steps:
+    - name: Use the persistent pnpm store
+      if: ${{ runner.environment == 'self-hosted' }}
+      shell: bash
+      run: echo "pnpm_config_store_dir=/opt/pnpm-store" >> "$GITHUB_ENV"
+
     - name: Setup Vite+
       uses: voidzero-dev/setup-vp@v1
       with:
         node-version-file: package.json
-        cache: true
+        cache: ${{ runner.environment == 'github-hosted' }}
         run-install: false
 
     - name: Reject dependencies outside the repository

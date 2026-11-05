@@ -57,6 +57,11 @@ describe("CI workflow budget", () => {
       install,
     ];
 
+    // Hetzner jobs install from the persistent store; GitHub-hosted jobs keep the dependency cache.
+    expect(install).toContain("runner.environment == 'self-hosted'");
+    expect(install).toContain("pnpm_config_store_dir=/opt/pnpm-store");
+    expect(install).toContain("cache: ${{ runner.environment == 'github-hosted' }}");
+
     expect(Object.keys(ci.on)).toEqual(["push", "pull_request", "workflow_dispatch"]);
     // Main runs after each merge so the README build badge has a status.
     expect(ci.on.push).toEqual({ branches: ["main"] });
@@ -236,11 +241,14 @@ describe("CI workflow budget", () => {
     expect(serverCommand).toContain(
       "--exclude integration/orchestrationEngine.integration.test.ts",
     );
-    expect(serverCommand).toContain("--shard=${{ matrix.shard }}/4");
-    expect(ci.jobs.server?.strategy).toEqual({
-      "fail-fast": false,
-      matrix: { shard: [1, 2, 3, 4] },
-    });
+    // The N in --shard=i/N and in the job name must equal the matrix length, so changing the shard count is a
+    // one-line edit to the matrix list.
+    const shards = ci.jobs.server?.strategy?.matrix?.shard ?? [];
+    expect(shards.length).toBeGreaterThan(0);
+    expect(shards).toEqual(shards.map((_, index) => index + 1));
+    expect(serverCommand).toContain(`--shard=\${{ matrix.shard }}/${shards.length}`);
+    expect(ci.jobs.server?.name).toBe(`Server tests (shard \${{ matrix.shard }}/${shards.length})`);
+    expect(ci.jobs.server?.strategy).toEqual({ "fail-fast": false, matrix: { shard: shards } });
   });
 
   it("coalesces version updates on a 4-vCPU runner", () => {
