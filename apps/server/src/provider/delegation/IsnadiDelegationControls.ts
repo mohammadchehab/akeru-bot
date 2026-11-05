@@ -93,7 +93,11 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.CheckAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
-    const { bot } = availableBot(snapshot, parent, resolveDelegationTargetId(snapshot, parent, request.botId));
+    const { bot } = availableBot(
+      snapshot,
+      parent,
+      resolveDelegationTargetId(snapshot, parent, request.botId),
+    );
 
     // A group thread holds work from several parent bots; each bot reads and
     // acknowledges only its own results.
@@ -136,7 +140,11 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.StopAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
-    const { bot } = availableBot(snapshot, parent, resolveDelegationTargetId(snapshot, parent, request.botId));
+    const { bot } = availableBot(
+      snapshot,
+      parent,
+      resolveDelegationTargetId(snapshot, parent, request.botId),
+    );
 
     const active = snapshot.delegations.filter(
       (delegation) =>
