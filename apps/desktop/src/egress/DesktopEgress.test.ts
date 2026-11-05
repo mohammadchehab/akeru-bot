@@ -1,10 +1,12 @@
 import { assert, describe, it } from "@effect/vitest";
+import type { EgressOpenFrame } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
+import * as Predicate from "effect/Predicate";
 
 import { serveEgressControl } from "./DesktopEgress.ts";
 import type { EgressSocketLink } from "./EgressWebSocket.ts";
 
-const encode = (value: unknown) => new TextEncoder().encode(JSON.stringify(value));
+const encode = (value: EgressOpenFrame | { readonly type: "nonsense" }) => new TextEncoder().encode(JSON.stringify(value));
 
 const makeControl = (frames: ReadonlyArray<Uint8Array>) => {
   const sent: Array<string> = [];
@@ -12,10 +14,14 @@ const makeControl = (frames: ReadonlyArray<Uint8Array>) => {
   const control: EgressSocketLink = {
     send: (data) =>
       Effect.sync(() => {
-        sent.push(typeof data === "string" ? data : new TextDecoder().decode(data));
+        sent.push(Predicate.isString(data) ? data : new TextDecoder().decode(data));
       }),
+    // The socket stays open long enough for forked streams to answer, then closes.
     run: (onMessage) =>
-      Effect.forEach(frames, (frame) => onMessage(frame, true), { discard: true }),
+      Effect.forEach(frames, (frame) => onMessage(frame, true), { discard: true }).pipe(
+        Effect.andThen(Effect.forEach(Array.from({ length: 10 }), () => Effect.yieldNow)),
+        Effect.asVoid,
+      ),
     close: Effect.void,
   };
 
@@ -39,8 +45,6 @@ describe("serveEgressControl", () => {
       ]);
 
       yield* serveEgressControl({ control, openStream });
-      yield* Effect.yieldNow;
-      yield* Effect.yieldNow;
 
       assert.deepStrictEqual(sent.map((text) => JSON.parse(text)), [
         { type: "refused", streamId: "s1", reason: "host-not-granted" },
@@ -56,7 +60,6 @@ describe("serveEgressControl", () => {
       ]);
 
       yield* serveEgressControl({ control, openStream });
-      yield* Effect.yieldNow;
 
       assert.deepStrictEqual(sent, []);
     }),

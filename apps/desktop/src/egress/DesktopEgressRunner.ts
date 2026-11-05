@@ -28,6 +28,7 @@ export const forkDesktopEgress = Effect.gen(function* () {
 
   const getSession = Effect.gen(function* () {
     const config = yield* primary.currentConfig;
+
     const credential = Option.isSome(config) ? config.value.bootstrap.egressProviderToken : undefined;
 
     if (Option.isNone(config) || !credential) return yield* new DesktopEgressNotConfiguredError();

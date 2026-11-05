@@ -1,22 +1,19 @@
 import * as NodeDns from "node:dns";
 import * as NodeNet from "node:net";
-import * as NodeOs from "node:os";
+import * as NodeOS from "node:os";
 
 import { EgressOpenFrame } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
+import * as Exit from "effect/Exit";
+import * as Option from "effect/Option";
 import * as Queue from "effect/Queue";
 import * as Schema from "effect/Schema";
 
 import { denyAllHostPolicy, openEgressTarget } from "./EgressDialer.ts";
-import {
-  BYTES_PER_SECOND,
-  MAX_STREAMS_PER_SESSION,
-  STREAM_IDLE_TIMEOUT_MS,
-  makeTokenBucket,
-} from "./EgressLimits.ts";
-import { makeEgressProvider, type EgressProviderDeps, type EgressTarget } from "./EgressProvider.ts";
+import * as EgressLimits from "./EgressLimits.ts";
+import * as EgressProvider from "./EgressProvider.ts";
 import { EgressLinkError, openEgressSocket, type EgressSocketLink } from "./EgressWebSocket.ts";
 
 const decodeOpenFrame = Schema.decodeUnknownOption(Schema.fromJsonString(EgressOpenFrame));
@@ -48,12 +45,12 @@ const connectTcp = (target: { readonly host: string; readonly port: number }) =>
   });
 
 const interfaceCidrs = (): ReadonlyArray<string> =>
-  Object.values(NodeOs.networkInterfaces()).flatMap((entries) =>
+  Object.values(NodeOS.networkInterfaces()).flatMap((entries) =>
     (entries ?? []).flatMap((entry) => (entry.cidr ? [entry.cidr] : [])),
   );
 
 /** Wraps a dialed socket so the provider can pump it. Reads are queued to stay in order. */
-const toEgressTarget = (socket: NodeNet.Socket): Effect.Effect<EgressTarget> =>
+const toEgressTarget = (socket: NodeNet.Socket): Effect.Effect<EgressProvider.EgressTarget> =>
   Effect.gen(function* () {
     const inbound = yield* Queue.unbounded<Uint8Array, Cause.Done>();
 
@@ -86,12 +83,12 @@ const toEgressTarget = (socket: NodeNet.Socket): Effect.Effect<EgressTarget> =>
  */
 export const serveEgressControl = (input: {
   readonly control: EgressSocketLink;
-  readonly openStream: EgressProviderDeps["openStreamLink"];
+  readonly openStream: EgressProvider.EgressProviderDeps["openStreamLink"];
 }) =>
   Effect.gen(function* () {
-    const bucket = makeTokenBucket(BYTES_PER_SECOND, Date.now());
+    const bucket = EgressLimits.makeTokenBucket(EgressLimits.BYTES_PER_SECOND, Date.now());
 
-    const provider = makeEgressProvider({
+    const provider = EgressProvider.makeEgressProvider({
       dial: (request) =>
         openEgressTarget(request, {
           resolve: lookupAll,
@@ -108,8 +105,8 @@ export const serveEgressControl = (input: {
 
           return waitMs > 0 ? Effect.sleep(waitMs) : Effect.void;
         }),
-      maxStreams: MAX_STREAMS_PER_SESSION,
-      idleTimeoutMs: STREAM_IDLE_TIMEOUT_MS,
+      maxStreams: EgressLimits.MAX_STREAMS_PER_SESSION,
+      idleTimeoutMs: EgressLimits.STREAM_IDLE_TIMEOUT_MS,
     });
 
     yield* input.control
@@ -118,7 +115,7 @@ export const serveEgressControl = (input: {
 
         const frame = decodeOpenFrame(Buffer.from(data).toString("utf8"));
 
-        return frame._tag === "Some" ? provider.handleOpen(frame.value) : Effect.void;
+        return Option.isSome(frame) ? provider.handleOpen(frame.value) : Effect.void;
       })
       .pipe(Effect.ensuring(provider.shutdown));
   });
@@ -166,7 +163,8 @@ export const runDesktopEgress = <E>(
 
       // A connection that held for a while resets the backoff.
       failures = Date.now() - started > 60_000 ? 0 : failures + 1;
-      yield* Effect.logDebug("egress control ended", { failed: exit._tag === "Failure" });
+      yield* Effect.logDebug("egress control ended", { failed: Exit.isFailure(exit) });
+
       yield* Effect.sleep(
         RECONNECT_DELAYS[Math.min(Math.max(failures, 1), RECONNECT_DELAYS.length) - 1] ??
           RECONNECT_DELAYS[0],
