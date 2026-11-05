@@ -197,11 +197,11 @@ export function MarkdownDetails({
     >
       <CollapsibleTrigger
         presentation="markdown-summary"
-        className="flex w-full items-center text-left data-panel-open:[&_svg]:rotate-90"
+        className="flex w-full items-center text-start data-panel-open:[&_svg]:rotate-90"
         data-markdown-details-summary=""
       >
         <ChevronRightIcon
-          className="size-4 shrink-0 text-muted-foreground transition-transform"
+          className="size-4 shrink-0 text-muted-foreground transition-transform rtl:-scale-x-100"
           aria-hidden
         />
         <span>{summary}</span>

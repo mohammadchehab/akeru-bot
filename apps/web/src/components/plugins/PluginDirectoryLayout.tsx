@@ -148,7 +148,7 @@ export function PluginFilterBar({
       <div className="relative inline-flex rounded-10px bg-muted/70 p-0.5" ref={barRef}>
         <span
           aria-hidden="true"
-          className="motion-segment-pill pointer-events-none absolute inset-y-0.5 left-0 rounded-lg bg-card opacity-0 shadow-xs ring-1 ring-border/60"
+          className="motion-segment-pill pointer-events-none absolute inset-y-0.5 start-0 rounded-lg bg-card opacity-0 shadow-xs ring-1 ring-border/60"
           ref={pillRef}
         />
         {PRIMARY_FILTERS.map((item) => (

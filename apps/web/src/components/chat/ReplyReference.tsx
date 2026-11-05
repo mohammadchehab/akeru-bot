@@ -29,7 +29,7 @@ export function ReplyReference({
   };
 
   return (
-    <div className={compact ? "min-w-0" : "min-w-0 text-left"} data-testid="reply-reference">
+    <div className={compact ? "min-w-0" : "min-w-0 text-start"} data-testid="reply-reference">
       <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
         <ReplyIcon aria-hidden className="size-3.5 shrink-0" />
         {sourceMessageId ? (

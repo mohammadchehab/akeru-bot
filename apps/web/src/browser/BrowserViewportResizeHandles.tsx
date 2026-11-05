@@ -27,6 +27,7 @@ interface Props {
 
 type HandleKind = "horizontal" | "vertical" | "corner";
 
+// Physical on purpose: the device viewport is a physical canvas and the handles follow its measured rect.
 const EDGE_BUTTON_CLASS =
   "group absolute top-(--handle-top) left-(--handle-left) z-20 h-(--handle-height) w-(--handle-width) touch-none border-0 bg-transparent p-0 outline-none before:absolute before:-inset-1 focus-visible:bg-foreground/[0.04]";
 

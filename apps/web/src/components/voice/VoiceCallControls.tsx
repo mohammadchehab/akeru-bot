@@ -131,8 +131,8 @@ export function VoiceCallStartingBarView({
 }) {
   return (
     <div className="pointer-events-none fixed inset-x-0 top-2 z-60 flex justify-center px-4">
-      <div className="pointer-events-auto flex h-10 items-center rounded-full border border-border bg-background/95 pl-4 pr-1.5 shadow-lg backdrop-blur">
-        <span className="pr-3 text-sm font-medium">Calling {botName}</span>
+      <div className="pointer-events-auto flex h-10 items-center rounded-full border border-border bg-background/95 ps-4 pe-1.5 shadow-lg backdrop-blur">
+        <span className="pe-3 text-sm font-medium">Calling {botName}</span>
         <Button
           type="button"
           size="icon-sm"
@@ -166,11 +166,11 @@ export function VoiceCallBarView({
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-2 z-60 flex justify-center px-4">
-      <div className="pointer-events-auto flex h-10 items-center rounded-full border border-border bg-background/95 pl-4 pr-1.5 shadow-lg backdrop-blur">
+      <div className="pointer-events-auto flex h-10 items-center rounded-full border border-border bg-background/95 ps-4 pe-1.5 shadow-lg backdrop-blur">
         <button
           type="button"
           aria-label={`Return to call with ${activeCall.botName}`}
-          className="flex items-center gap-2 pr-3"
+          className="flex items-center gap-2 pe-3"
           onClick={onReturn}
         >
           <span

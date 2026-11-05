@@ -10,6 +10,19 @@ import {
   useSidebar,
 } from "./sidebarContext";
 
+/**
+ * Whether dragging the rail toward the right edge widens the sidebar. `side` is logical, so a
+ * `left` sidebar sits on the right in an RTL interface and its rail grows toward the left.
+ */
+export function sidebarGrowsRight(side: "left" | "right", direction: string) {
+  return (side === "left") !== (direction === "rtl");
+}
+
+/** Width change for a rail drag; `clientX` is physical whatever the interface direction. */
+export function railResizeDelta(growsRight: boolean, startX: number, clientX: number) {
+  return growsRight ? clientX - startX : startX - clientX;
+}
+
 export function clampSidebarWidth(width: number, options: SidebarResolvedResizableOptions): number {
   return Math.max(options.minWidth, Math.min(width, options.maxWidth));
 }
@@ -35,6 +48,7 @@ export function SidebarRail({
     rail: HTMLButtonElement;
     rafId: number | null;
     sidebarRoot: HTMLElement;
+    growsRight: boolean;
     side: "left" | "right";
     startWidth: number;
     startX: number;
@@ -127,6 +141,10 @@ export function SidebarRail({
         rafId: null,
         sidebarRoot,
         side: sidebarInstance?.side ?? "left",
+        growsRight: sidebarGrowsRight(
+          sidebarInstance?.side ?? "left",
+          getComputedStyle(sidebarContainer).direction,
+        ),
         startWidth: initialWidth,
         startX: event.clientX,
         transitionTargets,
@@ -152,10 +170,7 @@ export function SidebarRail({
 
       event.preventDefault();
 
-      const delta =
-        resizeState.side === "right"
-          ? resizeState.startX - event.clientX
-          : event.clientX - resizeState.startX;
+      const delta = railResizeDelta(resizeState.growsRight, resizeState.startX, event.clientX);
 
       if (Math.abs(delta) > 2) {
         resizeState.moved = true;
@@ -307,12 +322,12 @@ export function SidebarRail({
             aria-label={railLabel}
             className={cn(
               /* disable pointer events only when offcanvas sidebar is collapsed, that's when the rail sits over the native scrollbar on windows and linux. icon mode stays fully clickable. */
-              "-translate-x-1/2 group-data-[side=left]:-right-4 absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=right]:left-0 sm:flex [[data-collapsible=offcanvas][data-state=collapsed]_&]:pointer-events-none",
-              "in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize",
-              "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize",
-              "group-data-[collapsible=offcanvas]:translate-x-0 hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:after:left-full",
-              "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
-              "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
+              "-translate-x-1/2 rtl:translate-x-1/2 group-data-[side=left]:-end-4 absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=right]:start-0 sm:flex [[data-collapsible=offcanvas][data-state=collapsed]_&]:pointer-events-none",
+              "in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize rtl:in-data-[side=left]:cursor-e-resize rtl:in-data-[side=right]:cursor-w-resize",
+              "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize rtl:[[data-side=left][data-state=collapsed]_&]:cursor-w-resize rtl:[[data-side=right][data-state=collapsed]_&]:cursor-e-resize",
+              "group-data-[collapsible=offcanvas]:translate-x-0 rtl:group-data-[collapsible=offcanvas]:translate-x-0 hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:after:start-full",
+              "[[data-side=left][data-collapsible=offcanvas]_&]:-end-2",
+              "[[data-side=right][data-collapsible=offcanvas]_&]:-start-2",
               className,
             )}
             data-sidebar="rail"

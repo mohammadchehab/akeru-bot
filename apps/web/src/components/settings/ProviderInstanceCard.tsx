@@ -295,14 +295,14 @@ export function ProviderInstanceCard({
       indicatorBackground="var(--card)"
       className="size-5"
       iconClassName="size-4 text-foreground/80"
-      badgeClassName="-right-0.5 -bottom-0.5 h-3 min-w-3 px-0.5 text-7px"
+      badgeClassName="-end-0.5 -bottom-0.5 h-3 min-w-3 px-0.5 text-7px"
     />
   ) : FallbackIconComponent ? (
     <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
       <FallbackIconComponent className="size-4 text-foreground/80" aria-hidden />
       <span
         className={cn(
-          "pointer-events-none absolute -left-0.5 -top-0.5 size-2 rounded-full ring-2 ring-card",
+          "pointer-events-none absolute -start-0.5 -top-0.5 size-2 rounded-full ring-2 ring-card",
           statusStyle.dot,
         )}
         aria-hidden
@@ -448,9 +448,9 @@ export function ProviderInstanceCard({
                         </div>
                       ) : null}
                       {updateCommand ? (
-                        <div className="flex min-w-0 items-center gap-1 rounded-md border border-border/70 bg-muted/40 py-0.5 pr-0.5 pl-2">
+                        <div className="flex min-w-0 items-center gap-1 rounded-md border border-border/70 bg-muted/40 py-0.5 pe-0.5 ps-2">
                           <ScrollArea scrollFade variant="provider-email">
-                            <code className="flex h-full w-max items-center whitespace-nowrap pr-3 font-mono text-11px text-foreground">
+                            <code className="flex h-full w-max items-center whitespace-nowrap pe-3 font-mono text-11px text-foreground">
                               {updateCommand}
                             </code>
                           </ScrollArea>

@@ -495,7 +495,8 @@ export function ThemeEditorPanel({
       aria-label={isEditing ? "Edit theme" : "Create theme"}
       className={cn(
         "dialog-glass fixed z-110 flex flex-col overflow-hidden rounded-xl border text-popover-foreground",
-        position === null ? "bottom-4 right-4" : "top-(--panel-top) left-(--panel-left)",
+        // Physical on purpose: a dragged position is measured from the screen's left edge.
+        position === null ? "bottom-4 end-4" : "top-(--panel-top) left-(--panel-left)",
         size === null ? "w-min-26rem-vw-2rem" : "w-(--panel-width)",
         sizedHeight
           ? "h-(--panel-height) max-h-dvh-1rem"
@@ -576,7 +577,7 @@ export function ThemeEditorPanel({
 
       {isMinimized ? null : (
         <>
-          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto py-3 pl-3 pr-1.5">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto py-3 ps-3 pe-1.5">
             <ThemeEditorNameField
               isEditing={isEditing}
               name={name}
@@ -641,6 +642,7 @@ export function ThemeEditorPanel({
               )}
             </Button>
           </div>
+          {/* Physical on purpose: the resize maths in useThemeEditorGeometry is physical. */}
           <div
             aria-hidden
             className="absolute bottom-0 right-0 z-10 flex size-5 cursor-se-resize touch-none select-none items-end justify-end p-1 text-muted-foreground/70"

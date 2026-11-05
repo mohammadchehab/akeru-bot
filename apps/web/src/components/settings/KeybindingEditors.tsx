@@ -344,7 +344,7 @@ export function NewKeybindingCard({
           onChange={(nextWhenDraft) => setDraft({ whenDraft: nextWhenDraft })}
           onValidityChange={(nextIsValid) => setDraft({ isWhenDraftValid: nextIsValid })}
         />
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ms-auto flex items-center gap-1.5">
           <KeybindingConflictWarning labels={conflictLabels} />
           <ShortcutRecorder
             commandTitle={commandTitle}

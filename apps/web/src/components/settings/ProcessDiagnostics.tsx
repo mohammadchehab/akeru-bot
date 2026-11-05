@@ -43,7 +43,7 @@ export function ProcessNameCell({
 
   return (
     <div
-      className="grid min-w-0 grid-cols-legend-row items-center gap-2 pl-(--row-indent)"
+      className="grid min-w-0 grid-cols-legend-row items-center gap-2 ps-(--row-indent)"
       style={{ "--row-indent": `${Math.min(process.depth, 6) * 10}px` }}
     >
       {hasChildren ? (
@@ -53,7 +53,7 @@ export function ProcessNameCell({
           aria-label={isExpanded ? `Collapse ${name}` : `Expand ${name}`}
           onClick={() => onToggle(process.pid)}
         >
-          <ChevronIcon className="size-3.5" />
+          <ChevronIcon className="size-3.5 rtl:-scale-x-100" />
         </Button>
       ) : (
         <span className="size-5 shrink-0" aria-hidden="true" />
@@ -66,7 +66,7 @@ export function ProcessNameCell({
         <TooltipPopup
           side="top"
           variant="diagnostics-process"
-          className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-left"
+          className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-start"
         >
           {process.command}
         </TooltipPopup>
@@ -175,7 +175,7 @@ export function ProcessDiagnosticsTable({
       variant="diagnostics-process"
       className="max-h-(--spacing-min-64vh-44rem) w-full max-w-full"
     >
-      <table className="w-full min-w-260 table-fixed text-left text-xs">
+      <table className="w-full min-w-260 table-fixed text-start text-xs">
         <colgroup>
           <col className="w-6/25" />
           <col className="w-2/25" />
@@ -187,13 +187,13 @@ export function ProcessDiagnosticsTable({
         </colgroup>
         <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-11px uppercase tracking-caps text-muted-foreground/70">
           <tr>
-            <th className="px-4 py-2 font-semibold sm:pl-5">Name</th>
-            <th className="px-3 py-2 text-right font-semibold">CPU</th>
-            <th className="px-3 py-2 text-right font-semibold">Memory</th>
+            <th className="px-4 py-2 font-semibold sm:ps-5">Name</th>
+            <th className="px-3 py-2 text-end font-semibold">CPU</th>
+            <th className="px-3 py-2 text-end font-semibold">Memory</th>
             <th className="px-3 py-2 font-semibold">Command</th>
-            <th className="px-3 py-2 text-right font-semibold">PID</th>
+            <th className="px-3 py-2 text-end font-semibold">PID</th>
             <th className="px-3 py-2 font-semibold">Type</th>
-            <th className="p-2 text-right font-semibold sm:pr-4">Kill</th>
+            <th className="p-2 text-end font-semibold sm:pe-4">Kill</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/50">
@@ -206,17 +206,17 @@ export function ProcessDiagnosticsTable({
           ) : null}
           {visibleProcesses.map((process) => (
             <tr key={process.pid} className="hover:bg-muted/20">
-              <td className="px-4 py-2 align-middle sm:pl-5">
+              <td className="px-4 py-2 align-middle sm:ps-5">
                 <ProcessNameCell
                   process={process}
                   isExpanded={!collapsedPids.has(process.pid)}
                   onToggle={toggleProcess}
                 />
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {process.cpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {formatBytes(process.rssBytes)}
               </td>
               <td className="px-3 py-2 align-middle text-muted-foreground">
@@ -227,19 +227,19 @@ export function ProcessDiagnosticsTable({
                   <TooltipPopup
                     side="top"
                     variant="diagnostics-process"
-                    className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-left"
+                    className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-start"
                   >
                     {process.command}
                   </TooltipPopup>
                 </Tooltip>
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums text-muted-foreground">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums text-muted-foreground">
                 {process.pid}
               </td>
               <td className="truncate px-3 py-2 align-middle text-muted-foreground">
                 {formatProcessType(process)}
               </td>
-              <td className="p-2 align-middle sm:pr-4">
+              <td className="p-2 align-middle sm:pe-4">
                 <ProcessSignalActions
                   process={process}
                   isSignaling={signalingPid === process.pid}

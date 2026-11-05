@@ -87,7 +87,7 @@ function DesktopUpdateDownloadedIcon() {
   return (
     <span className="relative grid size-4 place-items-center">
       <RotateCwIcon className="size-4" />
-      <span className="absolute -right-0.5 -bottom-0.5 grid size-2 place-items-center rounded-full bg-sidebar-foreground text-sidebar ring-1 ring-sidebar">
+      <span className="absolute -end-0.5 -bottom-0.5 grid size-2 place-items-center rounded-full bg-sidebar-foreground text-sidebar ring-1 ring-sidebar">
         <CheckIcon className="size-1.5" strokeWidth={3.5} />
       </span>
     </span>

@@ -30,7 +30,7 @@ export function CustomApiPresetPicker(props: {
             <RadioPrimitive.Root
               key={preset.id}
               value={preset.id}
-              className="flex cursor-pointer items-center gap-3 rounded-lg bg-card px-3 py-2.5 text-left outline-none ring-1 ring-tint/5 hover:bg-option-hover focus-visible:ring-2 focus-visible:ring-ring data-checked:bg-primary/8 data-checked:ring-2 data-checked:ring-primary data-checked:hover:bg-primary/8 dark:bg-tint/3 dark:hover:bg-tint/5 dark:data-checked:bg-primary/15 dark:data-checked:hover:bg-primary/15"
+              className="flex cursor-pointer items-center gap-3 rounded-lg bg-card px-3 py-2.5 text-start outline-none ring-1 ring-tint/5 hover:bg-option-hover focus-visible:ring-2 focus-visible:ring-ring data-checked:bg-primary/8 data-checked:ring-2 data-checked:ring-primary data-checked:hover:bg-primary/8 dark:bg-tint/3 dark:hover:bg-tint/5 dark:data-checked:bg-primary/15 dark:data-checked:hover:bg-primary/15"
             >
               <span className="grid size-8 shrink-0 place-items-center rounded-md bg-background ring-1 ring-tint/8">
                 <Logo className="size-4.5" aria-hidden />

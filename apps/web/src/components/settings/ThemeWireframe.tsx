@@ -37,7 +37,7 @@ export function ThemeWireframePane({
       }}
     >
       <span className="absolute inset-0 bg-(--wf-canvas)" />
-      <span className="wireframe-sidebar absolute inset-y-0 left-0 bg-(--wf-sidebar)" />
+      <span className="wireframe-sidebar absolute inset-y-0 start-0 bg-(--wf-sidebar)" />
 
       {/* Sidebar: search, then thread rows */}
       <span className="wireframe-search absolute rounded-md bg-(--wf-surface)" />
@@ -57,7 +57,7 @@ export function ThemeWireframePane({
       </span>
 
       {/* Orchestrator island floating over the composer */}
-      <span className="wireframe-island absolute right-1/20 w-1/5 rounded-lg bg-(--wf-surface)">
+      <span className="wireframe-island absolute end-1/20 w-1/5 rounded-lg bg-(--wf-surface)">
         {AGENT_ROWS.map((row) => (
           <span
             className={cn("wireframe-agent-row absolute flex h-1/5 items-center", row.topClassName)}

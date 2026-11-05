@@ -37,7 +37,7 @@ export function ProcessTreeName({
 
   return (
     <div
-      className="grid min-w-0 grid-cols-legend-row items-center gap-2 pl-(--row-indent)"
+      className="grid min-w-0 grid-cols-legend-row items-center gap-2 ps-(--row-indent)"
       style={{ "--row-indent": `${Math.min(process.depth, 7) * 10}px` }}
     >
       {hasChildren ? (
@@ -47,7 +47,7 @@ export function ProcessTreeName({
           onClick={() => onToggle(process)}
           aria-label={collapsed ? `Expand ${name}` : `Collapse ${name}`}
         >
-          <ChevronIcon className="size-3.5" />
+          <ChevronIcon className="size-3.5 rtl:-scale-x-100" />
         </Button>
       ) : (
         <span className="size-5" aria-hidden />
@@ -60,7 +60,7 @@ export function ProcessTreeName({
         <TooltipPopup
           side="top"
           variant="diagnostics-mono"
-          className="max-w-(--spacing-min-520px-vw-2rem) whitespace-normal break-words text-left"
+          className="max-w-(--spacing-min-520px-vw-2rem) whitespace-normal break-words text-start"
         >
           {process.command || process.name}
         </TooltipPopup>
@@ -153,7 +153,7 @@ export function ProcessTable({
       variant="telemetry-process"
       className="max-h-(--spacing-min-68vh-48rem) w-full max-w-full"
     >
-      <table className="w-full min-w-330 table-fixed text-left text-xs">
+      <table className="w-full min-w-330 table-fixed text-start text-xs">
         <colgroup>
           <col className="w-1/5" />
           <col className="w-1/10" />
@@ -169,17 +169,17 @@ export function ProcessTable({
         </colgroup>
         <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-10px uppercase tracking-caps text-muted-foreground/65">
           <tr>
-            <th className="px-4 py-2 font-semibold sm:pl-5">Process</th>
+            <th className="px-4 py-2 font-semibold sm:ps-5">Process</th>
             <th className="px-3 py-2 font-semibold">Category</th>
-            <th className="px-3 py-2 text-right font-semibold">CPU</th>
-            <th className="px-3 py-2 text-right font-semibold">CPU Time</th>
-            <th className="px-3 py-2 text-right font-semibold">Memory</th>
-            <th className="px-3 py-2 text-right font-semibold">Read/s</th>
-            <th className="px-3 py-2 text-right font-semibold">Write/s</th>
-            <th className="px-3 py-2 text-right font-semibold">Read Total</th>
-            <th className="px-3 py-2 text-right font-semibold">Write Total</th>
-            <th className="px-3 py-2 text-right font-semibold">PID</th>
-            <th className="px-2 py-2 text-right font-semibold sm:pr-4">Kill</th>
+            <th className="px-3 py-2 text-end font-semibold">CPU</th>
+            <th className="px-3 py-2 text-end font-semibold">CPU Time</th>
+            <th className="px-3 py-2 text-end font-semibold">Memory</th>
+            <th className="px-3 py-2 text-end font-semibold">Read/s</th>
+            <th className="px-3 py-2 text-end font-semibold">Write/s</th>
+            <th className="px-3 py-2 text-end font-semibold">Read Total</th>
+            <th className="px-3 py-2 text-end font-semibold">Write Total</th>
+            <th className="px-3 py-2 text-end font-semibold">PID</th>
+            <th className="px-2 py-2 text-end font-semibold sm:pe-4">Kill</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/50">
@@ -192,7 +192,7 @@ export function ProcessTable({
           ) : null}
           {visible.map((process) => (
             <tr key={processIdentityKey(process)} className="hover:bg-muted/20">
-              <td className="px-4 py-2 sm:pl-5">
+              <td className="px-4 py-2 sm:ps-5">
                 <ProcessTreeName
                   process={process}
                   collapsed={collapsed.has(processIdentityKey(process))}
@@ -202,34 +202,34 @@ export function ProcessTable({
               <td className="truncate px-3 py-2 text-11px text-muted-foreground">
                 {categoryLabel(process.category)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {process.cpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {formatCpuTime(process.cpuTimeMs)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {formatBytes(process.residentBytes)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-telemetry-read-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-telemetry-read-foreground">
                 {formatRate(process.ioReadBytesPerSecond)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-telemetry-write-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-telemetry-write-foreground">
                 {formatRate(process.ioWriteBytesPerSecond)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-muted-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                 {formatBytes(process.ioReadBytes)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-muted-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                 <Tooltip>
                   <TooltipTrigger render={<span>{formatBytes(process.ioWriteBytes)}</span>} />
                   <TooltipPopup side="top">{ioSemanticsLabel(process.ioSemantics)}</TooltipPopup>
                 </Tooltip>
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-muted-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                 {process.identity.pid}
               </td>
-              <td className="px-2 py-2 text-right sm:pr-4">
+              <td className="px-2 py-2 text-end sm:pe-4">
                 <ProcessActions
                   process={process}
                   signalingKeys={signalingKeys}
@@ -257,7 +257,7 @@ export function HistoryProcessTable({
       variant="telemetry-process"
       className="max-h-112 w-full max-w-full"
     >
-      <table className="w-full min-w-255 table-fixed text-left text-xs">
+      <table className="w-full min-w-255 table-fixed text-start text-xs">
         <colgroup>
           <col className="w-6/25" />
           <col className="w-11/100" />
@@ -271,15 +271,15 @@ export function HistoryProcessTable({
         </colgroup>
         <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-10px uppercase tracking-caps text-muted-foreground/65">
           <tr>
-            <th className="px-4 py-2 font-semibold sm:pl-5">Process</th>
+            <th className="px-4 py-2 font-semibold sm:ps-5">Process</th>
             <th className="px-3 py-2 font-semibold">Category</th>
-            <th className="px-3 py-2 text-right font-semibold">CPU Time</th>
-            <th className="px-3 py-2 text-right font-semibold">Peak CPU</th>
-            <th className="px-3 py-2 text-right font-semibold">Peak Mem</th>
-            <th className="px-3 py-2 text-right font-semibold">Read</th>
-            <th className="px-3 py-2 text-right font-semibold">Write</th>
-            <th className="px-3 py-2 text-right font-semibold">Samples</th>
-            <th className="px-3 py-2 text-right font-semibold sm:pr-5">PID</th>
+            <th className="px-3 py-2 text-end font-semibold">CPU Time</th>
+            <th className="px-3 py-2 text-end font-semibold">Peak CPU</th>
+            <th className="px-3 py-2 text-end font-semibold">Peak Mem</th>
+            <th className="px-3 py-2 text-end font-semibold">Read</th>
+            <th className="px-3 py-2 text-end font-semibold">Write</th>
+            <th className="px-3 py-2 text-end font-semibold">Samples</th>
+            <th className="px-3 py-2 text-end font-semibold sm:pe-5">PID</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/50">
@@ -292,7 +292,7 @@ export function HistoryProcessTable({
           ) : null}
           {processes.map((process) => (
             <tr key={processSummaryIdentityKey(process)} className="hover:bg-muted/20">
-              <td className="px-4 py-2 sm:pl-5">
+              <td className="px-4 py-2 sm:ps-5">
                 <Tooltip>
                   <TooltipTrigger
                     render={
@@ -304,7 +304,7 @@ export function HistoryProcessTable({
                   <TooltipPopup
                     side="top"
                     variant="diagnostics-mono"
-                    className="max-w-(--spacing-min-520px-vw-2rem) whitespace-normal break-words text-left"
+                    className="max-w-(--spacing-min-520px-vw-2rem) whitespace-normal break-words text-start"
                   >
                     {process.command || process.name}
                   </TooltipPopup>
@@ -313,25 +313,25 @@ export function HistoryProcessTable({
               <td className="truncate px-3 py-2 text-11px text-muted-foreground">
                 {categoryLabel(process.category)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {formatCpuTime(process.cpuTimeMs)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {process.maxCpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums">
+              <td className="px-3 py-2 text-end font-mono tabular-nums">
                 {formatBytes(process.peakRssBytes)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-telemetry-read-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-telemetry-read-foreground">
                 {formatBytes(process.ioReadBytes)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-telemetry-write-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-telemetry-write-foreground">
                 {formatBytes(process.ioWriteBytes)}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-muted-foreground">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                 {process.sampleCount}
               </td>
-              <td className="px-3 py-2 text-right font-mono tabular-nums text-muted-foreground sm:pr-5">
+              <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground sm:pe-5">
                 {process.identity.pid}
               </td>
             </tr>

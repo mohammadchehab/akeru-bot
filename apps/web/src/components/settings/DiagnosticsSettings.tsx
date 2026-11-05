@@ -546,7 +546,7 @@ export function DiagnosticsSettingsPanel() {
           <DiagnosticsTable headers={["Span", "Cause", "Duration", "Ended"]}>
             {data.latestFailures.map((failure) => (
               <tr key={`${failure.traceId}:${failure.spanId}`}>
-                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:pl-5">
+                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:ps-5">
                   {failure.name}
                 </td>
                 <td className="max-w-90 px-4 py-3 align-top text-muted-foreground">
@@ -555,7 +555,7 @@ export function DiagnosticsSettingsPanel() {
                 <td className="px-4 py-3 align-top font-mono tabular-nums">
                   {formatDuration(failure.durationMs)}
                 </td>
-                <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground last:sm:pr-5">
+                <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground last:sm:pe-5">
                   {formatRelativeNoWrap(failure.endedAt)}
                 </td>
               </tr>
@@ -574,7 +574,7 @@ export function DiagnosticsSettingsPanel() {
           >
             {data.commonFailures.map((failure) => (
               <tr key={`${failure.name}:${failure.cause}`}>
-                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:pl-5">
+                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:ps-5">
                   {failure.name}
                 </td>
                 <td className="px-4 py-3 align-top font-mono tabular-nums">
@@ -583,7 +583,7 @@ export function DiagnosticsSettingsPanel() {
                 <td className="max-w-90 px-4 py-3 align-top text-muted-foreground">
                   <ExpandableText text={failure.cause} />
                 </td>
-                <td className="w-px whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground last:sm:pr-5">
+                <td className="w-px whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground last:sm:pe-5">
                   {formatRelativeNoWrap(failure.lastSeenAt)}
                 </td>
               </tr>
@@ -605,7 +605,7 @@ export function DiagnosticsSettingsPanel() {
           >
             {data.slowestSpans.map((span) => (
               <tr key={`${span.traceId}:${span.spanId}`}>
-                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:pl-5">
+                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:ps-5">
                   {span.name}
                 </td>
                 <td className="px-4 py-3 align-top font-mono tabular-nums">
@@ -614,7 +614,7 @@ export function DiagnosticsSettingsPanel() {
                 <td className="w-px whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground">
                   {formatRelativeNoWrap(span.endedAt)}
                 </td>
-                <td className="min-w-0 whitespace-nowrap px-4 py-3 align-top text-muted-foreground last:sm:pr-5">
+                <td className="min-w-0 whitespace-nowrap px-4 py-3 align-top text-muted-foreground last:sm:pe-5">
                   <TraceIdCell traceId={span.traceId} />
                 </td>
               </tr>
@@ -634,7 +634,7 @@ export function DiagnosticsSettingsPanel() {
             variant="diagnostics"
             className="w-full max-w-full"
           >
-            <table className="w-full min-w-230 table-fixed text-left text-xs">
+            <table className="w-full min-w-230 table-fixed text-start text-xs">
               <colgroup>
                 <col className="w-11/100" />
                 <col className="w-9/100" />
@@ -644,11 +644,11 @@ export function DiagnosticsSettingsPanel() {
               </colgroup>
               <thead className="border-b border-border/60 text-11px uppercase tracking-caps text-muted-foreground/70">
                 <tr>
-                  <th className="whitespace-nowrap px-4 py-2.5 font-semibold sm:pl-5">Time</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 font-semibold sm:ps-5">Time</th>
                   <th className="whitespace-nowrap px-4 py-2.5 font-semibold">Level</th>
                   <th className="whitespace-nowrap px-4 py-2.5 font-semibold">Span</th>
                   <th className="whitespace-nowrap px-4 py-2.5 font-semibold">Message</th>
-                  <th className="whitespace-nowrap px-4 py-2.5 font-semibold sm:pr-5">Trace</th>
+                  <th className="whitespace-nowrap px-4 py-2.5 font-semibold sm:pe-5">Trace</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
@@ -657,7 +657,7 @@ export function DiagnosticsSettingsPanel() {
                     key={`${event.traceId}:${event.spanId}:${DateTime.formatIso(event.seenAt)}:${event.message}`}
                     className="hover:bg-muted/15"
                   >
-                    <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground sm:pl-5">
+                    <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums text-muted-foreground sm:ps-5">
                       {formatRelativeNoWrap(event.seenAt)}
                     </td>
                     <td className="px-4 py-3 align-top">
@@ -675,7 +675,7 @@ export function DiagnosticsSettingsPanel() {
                         text={event.message}
                       />
                     </td>
-                    <td className="min-w-0 whitespace-nowrap px-4 py-3 align-top text-muted-foreground sm:pr-5">
+                    <td className="min-w-0 whitespace-nowrap px-4 py-3 align-top text-muted-foreground sm:pe-5">
                       <TraceIdCell traceId={event.traceId} />
                     </td>
                   </tr>
@@ -699,7 +699,7 @@ export function DiagnosticsSettingsPanel() {
           >
             {data.topSpansByCount.map((span) => (
               <tr key={span.name}>
-                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:pl-5">
+                <td className="px-4 py-3 align-top text-xs font-medium text-foreground first:sm:ps-5">
                   {span.name}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums">
@@ -711,7 +711,7 @@ export function DiagnosticsSettingsPanel() {
                 <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums">
                   {formatDuration(span.averageDurationMs)}
                 </td>
-                <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums last:sm:pr-5">
+                <td className="whitespace-nowrap px-4 py-3 align-top font-mono tabular-nums last:sm:pe-5">
                   {formatDuration(span.maxDurationMs)}
                 </td>
               </tr>

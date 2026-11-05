@@ -86,9 +86,9 @@ function Toasts({ position }: { position: ToastPosition }) {
           "data-[position*=top]:top-[calc(var(--toast-inset)+var(--toast-header-offset))]",
           "data-[position*=bottom]:bottom-(--toast-inset)",
           // Horizontal positioning
-          "data-[position*=left]:left-(--toast-inset)",
-          "data-[position*=right]:right-(--toast-inset)",
-          "data-[position*=center]:-translate-x-1/2 data-[position*=center]:left-1/2",
+          "data-[position*=left]:start-(--toast-inset)",
+          "data-[position*=right]:end-(--toast-inset)",
+          "data-[position*=center]:-translate-x-1/2 data-[position*=center]:rtl:translate-x-1/2 data-[position*=center]:start-1/2",
         )}
         data-position={position}
         data-slot="toast-viewport"
@@ -113,13 +113,13 @@ function Toasts({ position }: { position: ToastPosition }) {
               className={cn(
                 "dropdown-glass absolute z-[calc(9999-var(--toast-index))] w-full overflow-visible select-none rounded-lg text-popover-foreground shadow-xl shadow-shade/25 [transition:transform_.5s_cubic-bezier(.22,1,.36,1),opacity_.5s,height_.15s]",
                 // Base positioning using data-position
-                "data-[position*=right]:right-0 data-[position*=right]:left-auto",
-                "data-[position*=left]:right-auto data-[position*=left]:left-0",
-                "data-[position*=center]:right-0 data-[position*=center]:left-0",
+                "data-[position*=right]:end-0 data-[position*=right]:start-auto",
+                "data-[position*=left]:end-auto data-[position*=left]:start-0",
+                "data-[position*=center]:end-0 data-[position*=center]:start-0",
                 "data-[position*=top]:top-0 data-[position*=top]:bottom-auto data-[position*=top]:origin-top",
                 "data-[position*=bottom]:top-auto data-[position*=bottom]:bottom-0 data-[position*=bottom]:origin-bottom",
                 // Gap fill for hover
-                "after:absolute after:left-0 after:h-[calc(var(--toast-gap)+1px)] after:w-full",
+                "after:absolute after:start-0 after:h-[calc(var(--toast-gap)+1px)] after:w-full",
                 "data-[position*=top]:after:top-full",
                 "data-[position*=bottom]:after:bottom-full",
                 // `--toast-calc-height`: behind + collapsed = peek height only (content `opacity-0`);
@@ -201,9 +201,9 @@ function Toasts({ position }: { position: ToastPosition }) {
                 className={cn(
                   // `overflow-x: clip` avoids the CSS quirk where pairing `hidden` + `y: visible`
                   // forces `y` to `auto`. Expandable detail panels can extend below without being cut off.
-                  "pointer-events-auto min-h-0 overflow-y-visible pl-3.5 text-sm transition-opacity duration-250 [overflow-x:clip] data-expanded:opacity-100",
+                  "pointer-events-auto min-h-0 overflow-y-visible ps-3.5 text-sm transition-opacity duration-250 [overflow-x:clip] data-expanded:opacity-100",
                   stackedActionLayout
-                    ? "flex flex-col gap-2 py-2.5 pr-3.5"
+                    ? "flex flex-col gap-2 py-2.5 pe-3.5"
                     : cn("py-3", "flex items-center justify-between gap-1.5", inlineContentEndPad),
                   hideCollapsedContent &&
                     "not-data-expanded:pointer-events-none not-data-expanded:opacity-0",

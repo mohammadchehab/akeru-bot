@@ -52,9 +52,9 @@ const buttonPresentations = {
   "provider-email-copy":
     "size-6 shrink-0 rounded-sm p-0 text-muted-foreground hover:text-foreground",
   "wizard-step":
-    "flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-left outline-none hover:bg-card focus-visible:ring-2 focus-visible:ring-ring max-sm:justify-center max-sm:px-2",
+    "flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-start outline-none hover:bg-card focus-visible:ring-2 focus-visible:ring-ring max-sm:justify-center max-sm:px-2",
   "wizard-step-current":
-    "flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-left outline-none hover:bg-card focus-visible:ring-2 focus-visible:ring-ring max-sm:justify-center max-sm:px-2 bg-card text-foreground shadow-xs ring-1 ring-tint/5 hover:bg-card dark:shadow-none dark:ring-tint/5",
+    "flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-start outline-none hover:bg-card focus-visible:ring-2 focus-visible:ring-ring max-sm:justify-center max-sm:px-2 bg-card text-foreground shadow-xs ring-1 ring-tint/5 hover:bg-card dark:shadow-none dark:ring-tint/5",
 };
 
 const buttonVariants = cva(
