@@ -12,6 +12,7 @@ const WAIT_MS = 30_000;
 function endsInDelegatedTask(body: string): boolean {
   const parsed: { readonly messages?: ReadonlyArray<{ role?: string; content?: unknown }> } =
     JSON.parse(body);
+
   const last = parsed.messages?.at(-1);
 
   return last?.role === "user" && JSON.stringify(last.content).includes("Take this over");
@@ -71,9 +72,12 @@ describe("decisions: delegated approval", () => {
     // Second wait: Bravo's delegated chat calls the protected tool. The task has to reach Bravo as
     // its own request first, so this row is the delegated approval, not Alpha's.
     await expect
-      .poll(() => stack.stub.completions.some((completion) => endsInDelegatedTask(completion.body)), {
-        timeout: WAIT_MS,
-      })
+      .poll(
+        () => stack.stub.completions.some((completion) => endsInDelegatedTask(completion.body)),
+        {
+          timeout: WAIT_MS,
+        },
+      )
       .toBe(true);
     await page.getByRole("button", { name: "Alpha" }).first().click();
     await page.getByRole("textbox", { name: "Message Alpha" }).waitFor();
