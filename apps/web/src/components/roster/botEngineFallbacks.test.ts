@@ -3,6 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   addBotEngineFallback,
+  botEngineFromDraft,
   moveBotEngineFallback,
   removeBotEngineFallback,
 } from "./botEngineFallbacks";
@@ -63,5 +64,25 @@ describe("moveBotEngineFallback", () => {
 
     expect(moveBotEngineFallback([first, second], 0, -1)).toEqual([first, second]);
     expect(moveBotEngineFallback([first, second], 1, 1)).toEqual([first, second]);
+  });
+});
+
+describe("botEngineFromDraft", () => {
+  it("saves the picked model with the whole chain", () => {
+    const first = choice("claude", "sonnet");
+
+    expect(botEngineFromDraft({ provider: "codex", model: "gpt-5", fallbacks: [first] })).toEqual({
+      provider: "codex",
+      model: "gpt-5",
+      fallbacks: [first],
+    });
+  });
+
+  it("keeps reasoning options when the draft has them", () => {
+    const options = [{ id: "effort", value: "high" }];
+
+    expect(
+      botEngineFromDraft({ provider: "codex", model: "gpt-5", options, fallbacks: [] }),
+    ).toEqual({ provider: "codex", model: "gpt-5", options, fallbacks: [] });
   });
 });
