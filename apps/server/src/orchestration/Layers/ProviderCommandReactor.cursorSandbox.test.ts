@@ -45,7 +45,7 @@ describe("ProviderCommandReactor with a Cursor bot", () => {
   it("refuses a remote sandbox with a visible turn failure and never starts a session", async () => {
     const harness = await createHarness({
       threadModelSelection: cursor,
-      botEngine: { provider: "cursor", model: "auto" },
+      botEngine: { provider: "cursor", model: "auto", fallbacks: [] },
       botSandbox: "daytona",
     });
 
@@ -77,7 +77,7 @@ describe("ProviderCommandReactor with a Cursor bot", () => {
   it("starts normally for a Cursor bot on the local workspace", async () => {
     const harness = await createHarness({
       threadModelSelection: cursor,
-      botEngine: { provider: "cursor", model: "auto" },
+      botEngine: { provider: "cursor", model: "auto", fallbacks: [] },
       botSandbox: "local",
     });
 
