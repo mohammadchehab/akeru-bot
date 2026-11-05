@@ -75,19 +75,16 @@ describe("keyring port", () => {
 
 // Real OS keychain; only when a developer opts in on their own Mac with
 // ISNADI_REAL_KEYCHAIN_TEST=1, since it may prompt.
-describe.skipIf(process.env.ISNADI_REAL_KEYCHAIN_TEST !== "1")(
-  "real macOS keychain",
-  () => {
-    it("round-trips a key through the login keychain", () => {
-      const factory = loadKeyringEntryFactory();
+describe.skipIf(process.env.ISNADI_REAL_KEYCHAIN_TEST !== "1")("real macOS keychain", () => {
+  it("round-trips a key through the login keychain", () => {
+    const factory = loadKeyringEntryFactory();
 
-      assert.isDefined(factory);
+    assert.isDefined(factory);
 
-      const port = makeKeyringPort(factory, `test-${process.pid}-${Date.now()}`);
+    const port = makeKeyringPort(factory, `test-${process.pid}-${Date.now()}`);
 
-      assert.deepStrictEqual(port.read(), { kind: "not-found" });
-      assert.isTrue(port.write(KEY));
-      assert.deepStrictEqual(port.read(), { kind: "found", key: KEY });
-    });
-  },
-);
+    assert.deepStrictEqual(port.read(), { kind: "not-found" });
+    assert.isTrue(port.write(KEY));
+    assert.deepStrictEqual(port.read(), { kind: "found", key: KEY });
+  });
+});
