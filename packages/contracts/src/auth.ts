@@ -82,11 +82,18 @@ export const AuthAccessReadScope = "access:read" as const;
 
 export const AuthAccessWriteScope = "access:write" as const;
 
+/**
+ * User-only scope for the desktop's egress control socket. Only the desktop-bootstrap
+ * grant carries it; standard, administrative, bot, and pairing credentials never do.
+ */
+export const AuthEgressProvideScope = "egress:provide" as const;
+
 export const AuthEnvironmentScope = Schema.Literals([
   AuthOrchestrationReadScope,
   AuthOrchestrationOperateScope,
   AuthAccessReadScope,
   AuthAccessWriteScope,
+  AuthEgressProvideScope,
 ]);
 
 export type AuthEnvironmentScope = typeof AuthEnvironmentScope.Type;
@@ -128,6 +135,11 @@ export const AuthAdministrativeScopes = [
   ...AuthStandardClientScopes,
   AuthAccessReadScope,
   AuthAccessWriteScope,
+] as const;
+
+export const AuthDesktopBootstrapScopes = [
+  ...AuthAdministrativeScopes,
+  AuthEgressProvideScope,
 ] as const;
 
 export const AuthTokenExchangeGrantType =

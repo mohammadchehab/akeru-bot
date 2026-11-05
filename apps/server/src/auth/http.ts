@@ -2,7 +2,7 @@ import * as Predicate from "effect/Predicate";
 import {
   AuthAccessReadScope,
   AuthAccessWriteScope,
-  AuthAdministrativeScopes,
+  AuthDesktopBootstrapScopes,
   AuthEnvironmentScope,
   AuthRetiredEnvironmentScopes,
   AuthStandardClientScopes,
@@ -108,7 +108,7 @@ export function failEnvironmentInvalidRequest(
 const isAuthEnvironmentScope = Schema.is(AuthEnvironmentScope);
 
 const REQUESTABLE_ENVIRONMENT_SCOPES = new Set<string>([
-  ...AuthAdministrativeScopes,
+  ...AuthDesktopBootstrapScopes,
   ...AuthRetiredEnvironmentScopes,
 ]);
 

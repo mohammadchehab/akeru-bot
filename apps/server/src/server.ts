@@ -21,6 +21,8 @@ import { fixPath } from "./os-jank.ts";
 import { websocketRpcRouteLayer } from "./ws.ts";
 import { remoteMachineUpdateRouteLayer } from "./remote/updateRoute.ts";
 import * as McpHttpServer from "./mcp/McpHttpServer.ts";
+import * as EgressBroker from "./egress/EgressBroker.ts";
+import { egressRouteLayer } from "./egress/EgressRoute.ts";
 import * as PreviewAutomationBroker from "./mcp/PreviewAutomationBroker.ts";
 import * as PreviewAutomationServerHost from "./mcp/PreviewAutomationServerHost.ts";
 import * as ServerRuntimeStartup from "./serverRuntimeStartup.ts";
@@ -134,6 +136,7 @@ const makeRoutesLayerWithSharedMcpRegistry = Layer.mergeAll(
     attachmentUploadRouteLayer,
     staticAndDevRouteLayer,
     websocketRpcRouteLayer,
+    egressRouteLayer,
     remoteMachineUpdateRouteLayer,
   ),
   McpHttpServer.layer,
@@ -149,6 +152,7 @@ const makeRoutesLayerWithSharedMcpRegistry = Layer.mergeAll(
 export const routesLayer = makeRoutesLayerWithSharedMcpRegistry.pipe(
   Layer.provide(McpSessionRegistryLayerLive),
   Layer.provide(PreviewAutomationBroker.layer),
+  Layer.provide(EgressBroker.layer),
 );
 
 export const makeServerLayer = Layer.unwrap(
@@ -297,6 +301,7 @@ export const makeServerLayer = Layer.unwrap(
     return serverApplicationLayer.pipe(
       Layer.provideMerge(runtimeServicesLive),
       Layer.provide(PreviewAutomationBroker.layer),
+      Layer.provide(EgressBroker.layer),
       Layer.provide(activationLayer),
       Layer.provideMerge(HttpServerLive),
       Layer.provide(ApplicationObservabilityLive),
