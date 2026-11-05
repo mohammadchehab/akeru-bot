@@ -162,3 +162,38 @@ describe("latest owner thread atoms", () => {
     expect(registry.get(atoms.latestGroupThreadIdAtom(ENVIRONMENT_ID, "g"))).toBeNull();
   });
 });
+
+describe("decisions atom", () => {
+  const pending = (id: string, updatedAt: string, flags: Partial<OrchestrationThreadShell>) =>
+    ({ ...thread(id, updatedAt, { botId: "a" }), ...flags }) as OrchestrationThreadShell;
+
+  it("emits a new value only when the waiting rows change", () => {
+    const waiting = pending("a-1", "2026-06-01T00:00:00.000Z", { hasPendingApprovals: true });
+    const snapshotAtom = Atom.make<OrchestrationShellSnapshot | null>(snapshot([waiting]));
+
+    const atoms = createEnvironmentThreadShellAtoms({
+      catalogValueAtom: Atom.make(EMPTY_ENVIRONMENT_CATALOG_STATE),
+      snapshotAtom: () => snapshotAtom,
+    });
+
+    const registry = AtomRegistry.make();
+    const decisions = atoms.environmentDecisionsAtom(ENVIRONMENT_ID);
+    const before = registry.get(decisions);
+    expect(before.map((row) => [row.threadId, row.kind])).toEqual([["a-1", "approval"]]);
+
+    registry.set(
+      snapshotAtom,
+      snapshot([
+        {
+          ...waiting,
+          updatedAt: "2026-06-01T00:00:05.000Z",
+          planProgress: { step: "Run tests", completedSteps: 1, totalSteps: 3 },
+        } as OrchestrationThreadShell,
+      ]),
+    );
+    expect(registry.get(decisions)).toBe(before);
+
+    registry.set(snapshotAtom, snapshot([{ ...waiting, hasPendingApprovals: false }]));
+    expect(registry.get(decisions)).toEqual([]);
+  });
+});

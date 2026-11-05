@@ -76,6 +76,46 @@ function wantsStream(body: string): boolean {
   return /"stream"\s*:\s*true/.test(body);
 }
 
+/** A user message with this marker makes the stub call a protected delete tool, which always waits on an approval. */
+export const STUB_APPROVAL_MARKER = "[needs approval]";
+
+interface RequestMessage {
+  readonly role?: string;
+  readonly content?: string | ReadonlyArray<{ readonly text?: string }> | null;
+}
+
+function requestMessages(body: string): ReadonlyArray<RequestMessage> {
+  try {
+    const parsed: { readonly messages?: ReadonlyArray<RequestMessage> } = JSON.parse(body);
+
+    return parsed.messages ?? [];
+  } catch {
+    return [];
+  }
+}
+
+function textOf(message: RequestMessage | undefined): string {
+  const content = message?.content;
+
+  return Array.isArray(content)
+    ? content.map((part) => part.text ?? "").join("")
+    : String(content ?? "");
+}
+
+/** True while the marker message is the latest turn; the request after a tool result ends in a tool message. */
+function wantsApproval(body: string): boolean {
+  const last = requestMessages(body).at(-1);
+
+  return last?.role === "user" && textOf(last).includes(STUB_APPROVAL_MARKER);
+}
+
+const APPROVAL_TOOL_CALL = {
+  index: 0,
+  id: "call_e2e_approval",
+  type: "function",
+  function: { name: "UninstallMcpServer", arguments: JSON.stringify({ serverId: "e2e-server" }) },
+};
+
 function chunk(delta: { role?: string; content?: string }, finishReason: string | null) {
   return `data: ${JSON.stringify({
     id: "chatcmpl-e2e",
@@ -114,6 +154,50 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
         const text = replyFor(bot, lastHumanTextFrom(body));
 
         completions.push({ bot, user: lastUserTextFrom(body), body });
+
+        if (wantsApproval(body)) {
+          if (wantsStream(body)) {
+            response.writeHead(200, { "content-type": "text/event-stream" });
+            response.write(chunk({ role: "assistant", content: "" }, null));
+            response.write(
+              `data: ${JSON.stringify({
+                id: "chatcmpl-e2e",
+                object: "chat.completion.chunk",
+                created: 0,
+                model: STUB_MODEL,
+                choices: [
+                  { index: 0, delta: { tool_calls: [APPROVAL_TOOL_CALL] }, finish_reason: null },
+                ],
+              })}\n\n`,
+            );
+            response.write(chunk({}, "tool_calls"));
+            response.end("data: [DONE]\n\n");
+          } else {
+            response.writeHead(200, { "content-type": "application/json" });
+            response.end(
+              JSON.stringify({
+                id: "chatcmpl-e2e",
+                object: "chat.completion",
+                created: 0,
+                model: STUB_MODEL,
+                choices: [
+                  {
+                    index: 0,
+                    message: {
+                      role: "assistant",
+                      content: null,
+                      tool_calls: [{ ...APPROVAL_TOOL_CALL, index: undefined }],
+                    },
+                    finish_reason: "tool_calls",
+                  },
+                ],
+                usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+              }),
+            );
+          }
+
+          return;
+        }
 
         if (wantsStream(body)) {
           response.writeHead(200, {

@@ -1,4 +1,7 @@
 export const rosterCatalog = {
+  Decisions: "القرارات",
+  "Nothing waiting on you": "لا شيء ينتظرك",
+  "Show all ({count})": "عرض الكل ({count})",
   "Run bots in a persistent Linux VM. Public previews are enabled by default.":
     "شغّل البوتات في جهاز افتراضي Linux دائم. المعاينات العامة مفعلة افتراضيا.",
   "Add project starts in": "تبدأ إضافة المشروع في",
