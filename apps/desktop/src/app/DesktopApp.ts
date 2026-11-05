@@ -16,6 +16,7 @@ import { installDesktopIpcHandlers } from "../ipc/DesktopIpcHandlers.ts";
 import * as DesktopAppIdentity from "./DesktopAppIdentity.ts";
 import * as DesktopApplicationMenu from "../window/DesktopApplicationMenu.ts";
 import * as DesktopWindow from "../window/DesktopWindow.ts";
+import { forkDesktopEgress } from "../egress/DesktopEgressRunner.ts";
 import * as DesktopBackendPool from "../backend/DesktopBackendPool.ts";
 import * as DesktopEnvironment from "./DesktopEnvironment.ts";
 import * as DesktopLifecycle from "./DesktopLifecycle.ts";
@@ -260,6 +261,7 @@ const bootstrap = Effect.gen(function* () {
     // in parallel rather than blocking primary readiness on a possibly
     // slow first wsl.exe spawn.
     yield* Effect.forkScoped(wslBackend.reconcile);
+    yield* forkDesktopEgress;
   }
 }).pipe(Effect.withSpan("desktop.bootstrap"));
 
