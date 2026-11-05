@@ -26,7 +26,9 @@ const ServerHomeLockRecord = Schema.Struct({
 
 type ServerHomeLockRecord = typeof ServerHomeLockRecord.Type;
 
-const decodeRecord = Schema.decodeUnknownOption(Schema.fromJsonString(ServerHomeLockRecord));
+const RecordJson = Schema.fromJsonString(ServerHomeLockRecord);
+const decodeRecord = Schema.decodeUnknownOption(RecordJson);
+const encodeRecord = Schema.encodeSync(RecordJson);
 
 /** Another live server already owns this state directory. */
 export class ServerHomeLockHeldError extends Schema.TaggedErrorClass<ServerHomeLockHeldError>()(
@@ -56,7 +58,7 @@ export class ServerHomeLock extends Context.Service<
     readonly lockPath: string;
     readonly bindPort: (port: number) => Effect.Effect<void>;
   }
->()("isnadi/ServerHomeLock") {}
+>()("isnadibot/serverHomeLock") {}
 
 // Lock paths this process currently holds. After a crash in a container the replacement often has
 // the same pid and hostname as the dead server, so "our pid" only means alive when we hold it.
@@ -114,7 +116,7 @@ const make = Effect.gen(function* () {
         yield* Effect.addFinalizer(() =>
           fs.remove(stagedPath, { force: true }).pipe(Effect.ignore),
         );
-        yield* fs.writeFileString(stagedPath, `${JSON.stringify(record)}\n`);
+        yield* fs.writeFileString(stagedPath, `${encodeRecord(record)}\n`);
 
         return yield* fs.link(stagedPath, lockPath).pipe(
           Effect.as(true),
@@ -207,7 +209,7 @@ const make = Effect.gen(function* () {
 
       yield* writeFileStringAtomically({
         filePath: lockPath,
-        contents: `${JSON.stringify({ ...holder.value, port })}\n`,
+        contents: `${encodeRecord({ ...holder.value, port })}\n`,
       });
     }).pipe(
       Effect.provideContext(services),
