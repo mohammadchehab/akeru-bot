@@ -39,11 +39,18 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
   const addable = choices.filter(
     (choice) => !choice.disabledReason && !taken.has(choiceKey(choice.instanceId, choice.model)),
   );
+
   const atLimit = draft.fallbacks.length >= BOT_ENGINE_MAX_FALLBACKS;
 
   const requestAdd = (entry: BotEngineChoice) => {
-    if (fallbackNeedsHistoryDisclosure({ provider: draft.providerInstanceId, model: draft.model }, entry)) {
+    if (
+      fallbackNeedsHistoryDisclosure(
+        { provider: draft.providerInstanceId, model: draft.model },
+        entry,
+      )
+    ) {
       setPending(entry);
+
       return;
     }
 
@@ -53,7 +60,9 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
   return (
     <>
       <SettingsRow
-        title={t("If {model} can’t answer", { model: labelFor(draft.providerInstanceId, draft.model) })}
+        title={t("If {model} can’t answer", {
+          model: labelFor(draft.providerInstanceId, draft.model),
+        })}
         description={t(
           "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.",
         )}
@@ -61,7 +70,9 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
           <Select
             value=""
             onValueChange={(value) => {
-              const choice = addable.find((item) => choiceKey(item.instanceId, item.model) === value);
+              const choice = addable.find(
+                (item) => choiceKey(item.instanceId, item.model) === value,
+              );
 
               if (choice) requestAdd({ provider: choice.instanceId, model: choice.model });
             }}
