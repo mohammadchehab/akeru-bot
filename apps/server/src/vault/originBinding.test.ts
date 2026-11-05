@@ -4,7 +4,11 @@ import { checkInjectionTarget, normalizeHttpsOrigin } from "./originBinding.ts";
 
 const BOUND = ["https://bank.example"];
 
-const at = (topFrameUrl: string, fieldFrameUrl = topFrameUrl) => ({ topFrameUrl, fieldFrameUrl, documentId: "doc-1" });
+const at = (topFrameUrl: string, fieldFrameUrl = topFrameUrl) => ({
+  topFrameUrl,
+  fieldFrameUrl,
+  documentId: "doc-1",
+});
 
 describe("normalizeHttpsOrigin", () => {
   it("keeps scheme, host and port only", () => {
@@ -12,7 +16,10 @@ describe("normalizeHttpsOrigin", () => {
       normalizeHttpsOrigin("https://Bank.Example:443/login?x=1#y"),
       "https://bank.example",
     );
-    assert.strictEqual(normalizeHttpsOrigin("https://bank.example:8443/"), "https://bank.example:8443");
+    assert.strictEqual(
+      normalizeHttpsOrigin("https://bank.example:8443/"),
+      "https://bank.example:8443",
+    );
   });
 
   it("rejects http, userinfo, opaque and unparseable input", () => {

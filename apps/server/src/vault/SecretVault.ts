@@ -37,7 +37,10 @@ export type SecretVault = {
  * Resolves false when the credential does not exist.
  */
 export type SecretReader = {
-  readonly withSecret: (id: string, consume: (value: string) => void | Promise<void>) => Promise<boolean>;
+  readonly withSecret: (
+    id: string,
+    consume: (value: string) => void | Promise<void>,
+  ) => Promise<boolean>;
 };
 
 export type InMemorySecretVault = {

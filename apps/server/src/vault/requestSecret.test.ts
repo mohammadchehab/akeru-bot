@@ -53,7 +53,14 @@ describe("requestSecret", () => {
     assert.deepStrictEqual(await t.run(), { ok: true });
     assert.deepStrictEqual(t.filled, [SENTINEL]);
     assert.deepStrictEqual(t.audit.list(), [
-      { credentialId: "bank", label: "Bank", botId: "bot-1", origin: BANK, outcome: "filled", at: 2 },
+      {
+        credentialId: "bank",
+        label: "Bank",
+        botId: "bot-1",
+        origin: BANK,
+        outcome: "filled",
+        at: 2,
+      },
     ]);
   });
 
@@ -85,7 +92,10 @@ describe("requestSecret", () => {
   });
 
   it("binds the fill to the checked document and catches a navigation to another document", async () => {
-    const t = setup([page(`${BANK}/a`, `${BANK}/a`, "doc-1"), page(`${BANK}/b`, `${BANK}/b`, "doc-2")]);
+    const t = setup([
+      page(`${BANK}/a`, `${BANK}/a`, "doc-1"),
+      page(`${BANK}/b`, `${BANK}/b`, "doc-2"),
+    ]);
     assert.deepStrictEqual(await t.run(), { ok: false, reason: "redirected-during-fill" });
     assert.deepStrictEqual(t.filledFor, ["doc-1"]);
     assert.strictEqual(t.cleared(), 1);
@@ -107,7 +117,11 @@ describe("requestSecret", () => {
       {
         vault: t.vault,
         reader: { withSecret: async () => false },
-        browser: { inspect: async () => page(`${BANK}/`), fill: async () => undefined, clear: async () => undefined },
+        browser: {
+          inspect: async () => page(`${BANK}/`),
+          fill: async () => undefined,
+          clear: async () => undefined,
+        },
         audit: t.audit,
       },
       { credentialId: "bank", botId: "bot-1", field: "#password" },
@@ -144,10 +158,13 @@ describe("requestSecret", () => {
 describe("SecretVault", () => {
   it("rejects a credential with no https origin or an empty value", () => {
     const { vault } = makeInMemorySecretVault();
-    assert.deepStrictEqual(vault.set({ id: "a", label: "A", origins: ["http://a.test"], value: "x" }), {
-      ok: false,
-      reason: "no-valid-origin",
-    });
+    assert.deepStrictEqual(
+      vault.set({ id: "a", label: "A", origins: ["http://a.test"], value: "x" }),
+      {
+        ok: false,
+        reason: "no-valid-origin",
+      },
+    );
     assert.deepStrictEqual(vault.set({ id: "a", label: "A", origins: [BANK], value: "" }), {
       ok: false,
       reason: "empty-value",

@@ -1,4 +1,8 @@
-import { checkInjectionTarget, normalizeHttpsOrigin, type InjectionTarget } from "./originBinding.ts";
+import {
+  checkInjectionTarget,
+  normalizeHttpsOrigin,
+  type InjectionTarget,
+} from "./originBinding.ts";
 import type { SecretReader, SecretVault } from "./SecretVault.ts";
 
 /**
