@@ -47,3 +47,18 @@ export function moveBotEngineFallback(
 
   return next;
 }
+
+/** The engine a draft saves: its model, reasoning choices, and the whole fallback chain. */
+export function botEngineFromDraft(input: {
+  readonly provider: string;
+  readonly model: string;
+  readonly options?: BotEngineChoice["options"];
+  readonly fallbacks: Fallbacks;
+}): BotEngine {
+  return {
+    provider: input.provider,
+    model: input.model,
+    ...(input.options ? { options: input.options } : {}),
+    fallbacks: input.fallbacks,
+  };
+}
