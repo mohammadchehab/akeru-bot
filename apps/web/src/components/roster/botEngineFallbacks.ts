@@ -12,10 +12,13 @@ export function addBotEngineFallback(input: {
   readonly entry: BotEngineChoice;
 }): Fallbacks {
   const { primary, fallbacks, entry } = input;
+
   if (fallbacks.length >= BOT_ENGINE_MAX_FALLBACKS) return fallbacks;
+
   if (sameChoice(primary, entry) || fallbacks.some((existing) => sameChoice(existing, entry))) {
     return fallbacks;
   }
+
   return [...fallbacks, entry];
 }
 
@@ -30,12 +33,17 @@ export function moveBotEngineFallback(
   direction: -1 | 1,
 ): Fallbacks {
   const target = index + direction;
+
   if (target < 0 || target >= fallbacks.length) return fallbacks;
+
   const next = [...fallbacks];
   const moved = next[index];
   const swapped = next[target];
+
   if (!moved || !swapped) return fallbacks;
+
   next[index] = swapped;
   next[target] = moved;
+
   return next;
 }

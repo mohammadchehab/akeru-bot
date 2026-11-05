@@ -8,6 +8,7 @@ import {
 } from "./botEngineFallbacks";
 
 const choice = (provider: string, model: string): BotEngineChoice => ({ provider, model });
+
 const primary = choice("codex", "gpt-5");
 
 describe("addBotEngineFallback", () => {
