@@ -33,6 +33,7 @@ import {
   phaseChildThreadId,
   phaseChildTurnId,
   isReachableFromThread,
+  resolveDelegationTargetId,
   TERMINAL_PHASES,
   phaseStartedAt,
   type IsnadiDelegationOrigin,
@@ -124,7 +125,9 @@ export function createIsnadiDelegationRuntime(options: IsnadiDelegationRuntimeOp
   ) => {
     const snapshot = await options.readSnapshot();
     const parentThread = snapshot.threads.find((thread) => thread.id === parent.threadId);
-    const bot = snapshot.bots.find((candidate) => candidate.id === request.botId);
+    const bot = snapshot.bots.find(
+      (candidate) => candidate.id === resolveDelegationTargetId(snapshot, parent, request.botId),
+    );
 
     if (!parentThread || !bot || bot.archivedAt !== null) {
       throw new Error("The target bot is not available in this workspace.");

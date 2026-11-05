@@ -19,22 +19,33 @@ import { PendingWaiterTimeoutError } from "../PendingWaiters.ts";
 
 export const isPendingWaiterTimeout = Schema.is(PendingWaiterTimeoutError);
 
-/** A bot tool named a target that is neither a bot ID nor a unique member name. */
+const botRefs = (bots: ReadonlyArray<{ readonly id: string; readonly name: string }>) =>
+  bots.map((bot) => `${bot.name} (${bot.id})`).join(", ");
+
+const BotRefs = Schema.Array(Schema.Struct({ id: Schema.String, name: Schema.String }));
+
+/** A bot tool named a target that is neither a bot ID nor a member name or label. */
 export class IsnadiDelegationUnknownBotError extends Schema.TaggedErrorClass<IsnadiDelegationUnknownBotError>()(
   "IsnadiDelegationUnknownBotError",
-  {
-    requested: Schema.String,
-    members: Schema.Array(Schema.Struct({ id: Schema.String, name: Schema.String })),
-  },
+  { requested: Schema.String, members: BotRefs },
 ) {
   override get message(): string {
-    const members = this.members.map((member) => `${member.name} (${member.id})`).join(", ");
+    return `No bot with the ID or name '${this.requested}' is available here. Pass a bot ID or exact name. Valid members: ${botRefs(this.members) || "none"}.`;
+  }
+}
 
-    return `No bot with the ID or name '${this.requested}' is available here. Pass a bot ID. Valid members: ${members || "none"}.`;
+/** A bot tool named a target that matches several members; it never picks one. */
+export class IsnadiDelegationAmbiguousBotError extends Schema.TaggedErrorClass<IsnadiDelegationAmbiguousBotError>()(
+  "IsnadiDelegationAmbiguousBotError",
+  { requested: Schema.String, candidates: BotRefs },
+) {
+  override get message(): string {
+    return `More than one bot matches '${this.requested}': ${botRefs(this.candidates)}. Pass the bot ID of the one you mean.`;
   }
 }
 
 export const isUnknownDelegationBot = Schema.is(IsnadiDelegationUnknownBotError);
+export const isAmbiguousDelegationBot = Schema.is(IsnadiDelegationAmbiguousBotError);
 
 export const TERMINAL_PHASES = new Set<IsnadiDelegationPhase["_tag"]>([
   "Completed",
@@ -220,4 +231,58 @@ export function childInstructions(input: {
     ...(input.context?.trim() ? ["Context from the parent bot:", input.context.trim()] : []),
     "Return a concise final result to the parent chat. Report a concrete blocker or failure.",
   ].join("\n");
+}
+
+const sameText = (left: string, right: string) =>
+  left.localeCompare(right, undefined, { sensitivity: "accent" }) === 0;
+
+/**
+ * Resolves the bot a delegation tool names. An exact bot ID wins; otherwise the
+ * text is an exact name, then an exact label, matched only among active bots
+ * reachable from the parent thread (never the calling bot), so a name never
+ * reveals a bot outside the group. Several matches fail rather than pick one.
+ * Returns the requested ID unchanged when it is a known bot, so the caller's
+ * archived and group checks still give their own errors.
+ */
+export function resolveDelegationTargetId(
+  snapshot: OrchestrationReadModel,
+  parent: Pick<IsnadiDelegationParent, "threadId" | "botId">,
+  requested: BotId,
+): BotId {
+  if (snapshot.bots.some((candidate) => candidate.id === requested)) return requested;
+
+  const parentThread = snapshot.threads.find((thread) => thread.id === parent.threadId);
+
+  if (!parentThread) return requested;
+
+  const members = snapshot.bots.filter(
+    (candidate) =>
+      candidate.archivedAt === null &&
+      candidate.id !== parent.botId &&
+      isReachableFromThread(snapshot, parentThread, candidate),
+  );
+
+  const text = requested.trim().replace(/^@/, "");
+
+  for (const field of ["name", "label"] as const) {
+    const matches = members.filter((candidate) => {
+      const value = candidate[field];
+
+      return value !== null && sameText(value, text);
+    });
+
+    if (matches.length > 1) {
+      throw new IsnadiDelegationAmbiguousBotError({
+        requested,
+        candidates: matches.map((match) => ({ id: match.id, name: match.name })),
+      });
+    }
+
+    if (matches[0]) return matches[0].id;
+  }
+
+  throw new IsnadiDelegationUnknownBotError({
+    requested,
+    members: members.map((member) => ({ id: member.id, name: member.name })),
+  });
 }

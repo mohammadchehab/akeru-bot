@@ -129,8 +129,11 @@ const UpdateBotProfileInput = Schema.Struct({
  */
 export const ISNADI_DELEGATION_CONTEXT_MAX_CHARS = 8_000;
 
+/** Models see names, not IDs, so a target accepts either. */
+const TargetBotId = BotId.annotate({ description: "bot id or exact name" });
+
 const AgentMessageInput = Schema.Struct({
-  botId: BotId,
+  botId: TargetBotId,
   task: TrimmedNonEmptyString,
   expectedResult: TrimmedNonEmptyString,
   context: Schema.optional(
@@ -170,9 +173,9 @@ export const IsnadiToolInputSchemas = {
     title: Schema.optional(TrimmedNonEmptyString),
     description: Schema.optional(TrimmedNonEmptyString),
   }),
-  CheckAgent: Schema.Struct({ botId: BotId }),
+  CheckAgent: Schema.Struct({ botId: TargetBotId }),
   MessageAgent: AgentMessageInput,
-  StopAgent: Schema.Struct({ botId: BotId }),
+  StopAgent: Schema.Struct({ botId: TargetBotId }),
   SendToAgent: Schema.Struct({
     ...AgentMessageInput.fields,
     /** Keep the work running after the parent turn ends instead of stopping it. */
