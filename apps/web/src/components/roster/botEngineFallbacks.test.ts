@@ -103,9 +103,9 @@ describe("fallbackNeedsHistoryDisclosure", () => {
 describe("fallback consent", () => {
   it("flags a cross-instance entry that lacks consent", () => {
     expect(fallbackLacksConsent(primary, choice("claude", "sonnet"))).toBe(true);
-    expect(fallbackLacksConsent(primary, { ...choice("claude", "sonnet"), historyConsent: true })).toBe(
-      false,
-    );
+    expect(
+      fallbackLacksConsent(primary, { ...choice("claude", "sonnet"), historyConsent: true }),
+    ).toBe(false);
     expect(fallbackLacksConsent(primary, choice("codex", "gpt-5-mini"))).toBe(false);
   });
 

@@ -129,12 +129,11 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
                   {providerLabelFor(entry.provider)}
                 </p>
               </div>
-              {fallbackLacksConsent({ provider: draft.providerInstanceId, model: draft.model }, entry) ? (
-                <Button
-                  size="xs"
-                  variant="outline"
-                  onClick={() => setPending({ entry, index })}
-                >
+              {fallbackLacksConsent(
+                { provider: draft.providerInstanceId, model: draft.model },
+                entry,
+              ) ? (
+                <Button size="xs" variant="outline" onClick={() => setPending({ entry, index })}>
                   {t("Allow chat sharing")}
                 </Button>
               ) : null}

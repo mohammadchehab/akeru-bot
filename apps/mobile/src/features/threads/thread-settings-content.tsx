@@ -290,7 +290,10 @@ export function ThreadSettingsOptionsItem(props: {
         <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
           <DisclosureRow
             isLast={
-              !session.hopBudget && !hasFallbacks && !session.memoryThreadRef && !session.routinesRef
+              !session.hopBudget &&
+              !hasFallbacks &&
+              !session.memoryThreadRef &&
+              !session.routinesRef
             }
             label={t("Runtime")}
             value={
