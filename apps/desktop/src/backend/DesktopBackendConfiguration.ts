@@ -202,7 +202,11 @@ export const make = Effect.gen(function* () {
       Effect.provideService(DesktopEnvironment.DesktopEnvironment, environment),
     );
 
-    return yield* resolvePrimaryStartConfig({ ...shared, egressProviderToken, resourceMonitorPath }).pipe(
+    return yield* resolvePrimaryStartConfig({
+      ...shared,
+      egressProviderToken,
+      resourceMonitorPath,
+    }).pipe(
       Effect.provideService(DesktopEnvironment.DesktopEnvironment, environment),
       Effect.provideService(DesktopServerExposure.DesktopServerExposure, serverExposure),
     );

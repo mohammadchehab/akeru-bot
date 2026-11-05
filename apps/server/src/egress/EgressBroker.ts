@@ -70,7 +70,11 @@ export interface EgressProvider {
   /** Called by the control socket when the desktop sends a frame. */
   readonly onFrame: (
     frame:
-      | { readonly type: "refused"; readonly streamId: string; readonly reason: EgressRefusalReason }
+      | {
+          readonly type: "refused";
+          readonly streamId: string;
+          readonly reason: EgressRefusalReason;
+        }
       | { readonly type: "closed"; readonly streamId: string },
   ) => Effect.Effect<void>;
 }

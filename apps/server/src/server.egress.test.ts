@@ -37,7 +37,9 @@ it.layer(NodeServices.layer)("egress provider credential", (it) => {
     Effect.gen(function* () {
       yield* buildAppUnderTest();
 
-      const asked = yield* exchangeAccessToken(defaultDesktopBootstrapToken, { scope: egressScope });
+      const asked = yield* exchangeAccessToken(defaultDesktopBootstrapToken, {
+        scope: egressScope,
+      });
       const plain = yield* exchangeAccessToken(defaultDesktopBootstrapToken);
 
       assert.notInclude(asked.body.scope ?? "", egressScope);
