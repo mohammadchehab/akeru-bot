@@ -25,7 +25,7 @@ import {
 } from "./cloud/serviceProtocol.ts";
 import { isEntrypoint } from "./entrypoint.ts";
 import { readAliasedEnv } from "./cli/envAliases.ts";
-import { capturedMasterKeyEnv, definedEntries } from "./vault/masterKeyEnv.ts";
+import { capturedMasterKeyEnv, serverChildEnv } from "./vault/masterKeyEnv.ts";
 
 import {
   stopMarkerPath,
@@ -273,11 +273,9 @@ export class Launcher {
 
     const child = NodeChildProcess.spawn(nodePath, [paths.entryPath, "serve"], {
       // The server is the one intended reader of the master key; the launcher took it out of its own environment.
-      env: {
-        ...process.env,
-        ...definedEntries(capturedMasterKeyEnv),
+      env: serverChildEnv(process.env, capturedMasterKeyEnv, {
         [SERVICE_LAUNCHER_CONTEXT_ENV]: JSON.stringify(context),
-      },
+      }),
       stdio: ["inherit", "inherit", "inherit", "ipc"],
     });
 

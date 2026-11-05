@@ -2,7 +2,7 @@ import * as NodeChildProcess from "node:child_process";
 
 import { assert, describe, it } from "@effect/vitest";
 
-import { definedEntries, takeMasterKeyEnv, withoutMasterKeyEnv } from "./masterKeyEnv.ts";
+import { definedEntries, serverChildEnv, takeMasterKeyEnv, withoutMasterKeyEnv } from "./masterKeyEnv.ts";
 
 const SECRETS = { ISNADI_MASTER_KEY: "key-material", ISNADI_MASTER_PASSPHRASE: "pass-phrase" };
 
@@ -45,5 +45,19 @@ describe("master key environment", () => {
       definedEntries({ ISNADI_MASTER_KEY: "k", ISNADI_MASTER_PASSPHRASE: undefined }),
       { ISNADI_MASTER_KEY: "k" },
     );
+  });
+
+  it("regression: a service-launcher server child gets the captured key back", () => {
+    const launcherEnv: NodeJS.ProcessEnv = { PATH: process.env.PATH };
+    const child = serverChildEnv(
+      launcherEnv,
+      { ISNADI_MASTER_KEY: "key-material", ISNADI_MASTER_PASSPHRASE: undefined },
+      { CONTEXT: "x" },
+    );
+
+    assert.strictEqual(child.ISNADI_MASTER_KEY, "key-material");
+    assert.isFalse("ISNADI_MASTER_PASSPHRASE" in child);
+    assert.strictEqual(child.CONTEXT, "x");
+    assert.strictEqual(readFromChild(child), '["key-material",null]');
   });
 });

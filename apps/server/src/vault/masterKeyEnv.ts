@@ -32,6 +32,15 @@ export function definedEntries(captured: CapturedMasterKeyEnv): NodeJS.ProcessEn
   return Object.fromEntries(Object.entries(captured).filter(([, value]) => value !== undefined));
 }
 
+/** Environment for the server child a launcher starts: the captured key material goes back in, since the server is its one reader. */
+export function serverChildEnv(
+  base: NodeJS.ProcessEnv,
+  captured: CapturedMasterKeyEnv,
+  extra: NodeJS.ProcessEnv,
+): NodeJS.ProcessEnv {
+  return { ...base, ...definedEntries(captured), ...extra };
+}
+
 /**
  * Captured when this module first loads, which bin.ts does before anything
  * spawns. The vault reads its key material from here, never from process.env.
