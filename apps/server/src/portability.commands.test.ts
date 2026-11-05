@@ -315,4 +315,41 @@ describe("portability import", () => {
       ],
     });
   });
+
+  it("drops fallbacks on unknown providers and clears history consent on import", () => {
+    const base = makeSnapshot();
+    const [bot] = base.bots;
+
+    if (!bot?.engine) throw new Error("fixture bot needs an engine");
+
+    const source = makeSnapshot({
+      bots: [
+        {
+          ...bot,
+          engine: {
+            ...bot.engine,
+            fallbacks: [
+              { provider: "private", model: "m1", historyConsent: true },
+              { provider: "ghost", model: "m2", historyConsent: true },
+            ],
+          },
+        },
+      ],
+    });
+
+    const archive = createPortabilityArchive(source, makeSettings(), NOW);
+
+    const { commands } = commandsForPortabilityImport(
+      archive,
+      makeSnapshot({ bots: [], groups: [] }),
+      makeSettings(),
+      AVAILABLE_PROVIDER_IDS,
+    );
+
+    const create = commands.find((command) => command.type === "bot.create");
+
+    expect(create?.type === "bot.create" ? create.engine?.fallbacks : undefined).toEqual([
+      { provider: "private", model: "m1" },
+    ]);
+  });
 });
