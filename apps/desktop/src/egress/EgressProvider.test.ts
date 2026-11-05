@@ -54,7 +54,7 @@ const makeHarness = (
               state.linkClosed += 1;
             }),
           };
-      })),
+        })),
     sendControl: (frame) =>
       Effect.sync(() => {
         sent.push(frame);
