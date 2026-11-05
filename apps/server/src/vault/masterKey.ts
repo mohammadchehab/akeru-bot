@@ -39,7 +39,9 @@ export type KeychainPort = {
 export type ScryptParams = { readonly salt: Buffer; readonly N: number; readonly r: number; readonly p: number };
 
 const SCRYPT_N = 2 ** 17;
+
 const SCRYPT_R = 8;
+
 const SCRYPT_P = 1;
 
 /** Not secret: the salt and the key-check record live in the home, the key never does. */
@@ -148,6 +150,7 @@ function fromPassphrase(env: MasterKeyInputs["env"], store: MasterKeyStore): Can
   if (passphrase === undefined || passphrase === "") return { kind: "skip" };
 
   const existing = store.readKdf();
+
   const kdf = existing ?? {
     salt: NodeCrypto.randomBytes(16),
     N: SCRYPT_N,

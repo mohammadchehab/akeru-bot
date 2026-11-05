@@ -118,6 +118,7 @@ describe("resolveMasterKey", () => {
   it("falls through to the passphrase when the keychain appears after a passphrase-sealed vault", () => {
     const sealed = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right" } });
     const first = resolveMasterKey(sealed.inputs);
+
     const t = setup({
       env: { ISNADI_MASTER_PASSPHRASE: "right" },
       keychain: { kind: "not-found" },
