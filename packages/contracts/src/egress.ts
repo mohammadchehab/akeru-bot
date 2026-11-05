@@ -9,6 +9,7 @@ export const EgressRefusalReason = Schema.Literals([
   "connect-failed",
   "stream-limit",
 ]);
+
 export type EgressRefusalReason = typeof EgressRefusalReason.Type;
 
 /**
@@ -23,9 +24,11 @@ export const EgressOpenFrame = Schema.Struct({
   port: Schema.Int,
   profileId: Schema.String,
 });
+
 export type EgressOpenFrame = typeof EgressOpenFrame.Type;
 
 export const EgressServerFrame = EgressOpenFrame;
+
 export type EgressServerFrame = typeof EgressServerFrame.Type;
 
 /** Desktop to server on the control socket. */
@@ -41,4 +44,5 @@ export const EgressClosedFrame = Schema.Struct({
 });
 
 export const EgressDesktopFrame = Schema.Union([EgressRefusedFrame, EgressClosedFrame]);
+
 export type EgressDesktopFrame = typeof EgressDesktopFrame.Type;

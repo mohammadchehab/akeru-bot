@@ -8,16 +8,19 @@ import type { EgressOpenFrame } from "@isnadi/contracts";
 import * as EgressBroker from "./EgressBroker.ts";
 
 const target = { host: "example.com", port: 443, profileId: "p1" };
+
 const noop = () => Effect.void;
 
 const setup = Effect.gen(function* () {
   const broker = yield* EgressBroker.make;
   const sent: EgressOpenFrame[] = [];
+
   const provider = yield* broker.registerProvider("owner-a", (frame) =>
     Effect.sync(() => {
       sent.push(frame);
     }),
   );
+
   return { broker, sent, provider };
 });
 
@@ -91,11 +94,13 @@ describe("EgressBroker", () => {
         yield* Effect.yieldNow;
         const frame = sent[0]!;
         const toDesktop: Uint8Array[] = [];
+
         const handlers = yield* broker.attach("owner-a", frame.streamId, frame.ticket, (chunk) =>
           Effect.sync(() => {
             toDesktop.push(chunk);
           }),
         );
+
         const stream = yield* Fiber.join(fiber);
         yield* stream.write(new Uint8Array([1]));
         yield* handlers.onData(new Uint8Array([2]));
@@ -111,14 +116,17 @@ describe("EgressBroker", () => {
     Effect.gen(function* () {
       const broker = yield* EgressBroker.make;
       const sent: EgressOpenFrame[] = [];
+
       const fiber = yield* Effect.scoped(
         Effect.gen(function* () {
           yield* broker.registerProvider("owner-a", (frame) => Effect.sync(() => void sent.push(frame)));
           const pending = yield* startOpen(broker);
           yield* Effect.yieldNow;
+
           return pending;
         }),
       );
+
       const exit = yield* Fiber.await(fiber);
       assert.isTrue(Exit.isFailure(exit));
       assert.isTrue(Exit.isFailure(yield* Effect.exit(broker.open("owner-a", target))));

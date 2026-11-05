@@ -23,6 +23,7 @@ const decodeDesktopFrame = Schema.decodeUnknownOption(Schema.fromJsonString(Egre
 const authenticateEgress = Effect.gen(function* () {
   const request = yield* HttpServerRequest.HttpServerRequest;
   const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
+
   const session = yield* serverAuth.authenticateWebSocketUpgrade(request).pipe(
     Effect.catchIf(EnvironmentAuth.isServerAuthCredentialError, (error) =>
       failEnvironmentAuthInvalid(EnvironmentAuth.serverAuthCredentialReason(error)),
@@ -31,6 +32,7 @@ const authenticateEgress = Effect.gen(function* () {
       failEnvironmentInternal("internal_error", error),
     ),
   );
+
   return { request, session, allowed: session.scopes.includes(AuthEgressProvideScope) };
 });
 
@@ -44,21 +46,25 @@ const controlRoute = HttpRouter.add(
   "/egress",
   Effect.gen(function* () {
     const { request, session, allowed } = yield* authenticateEgress;
+
     if (!allowed) return HttpServerResponse.empty({ status: 403 });
     const broker = yield* EgressBroker.EgressBroker;
     const socket = yield* request.upgrade;
     const write = yield* socket.writer;
+
     return yield* Effect.scoped(
       Effect.gen(function* () {
         const provider = yield* broker.registerProvider(session.subject, (frame: EgressOpenFrame) =>
           write(JSON.stringify(frame)).pipe(Effect.ignore),
         );
+
         yield* socket.runString((text) =>
           Option.match(decodeDesktopFrame(text), {
             onNone: () => Effect.void,
             onSome: provider.onFrame,
           }),
         );
+
         return HttpServerResponse.empty();
       }),
     ).pipe(Effect.catch(() => Effect.succeed(HttpServerResponse.empty())));
@@ -70,6 +76,7 @@ const streamRoute = HttpRouter.add(
   "/egress/stream/:streamId",
   Effect.gen(function* () {
     const { request, session, allowed } = yield* authenticateEgress;
+
     if (!allowed) return HttpServerResponse.empty({ status: 403 });
     const params = yield* HttpRouter.params;
     const streamId = params.streamId ?? "";
@@ -77,14 +84,17 @@ const streamRoute = HttpRouter.add(
     const broker = yield* EgressBroker.EgressBroker;
     const socket = yield* request.upgrade;
     const write = yield* socket.writer;
+
     const handlers = yield* broker
       .attach(session.subject, streamId, ticket, (chunk) => write(chunk).pipe(Effect.ignore))
       .pipe(Effect.option);
+
     if (Option.isNone(handlers)) return HttpServerResponse.empty({ status: 403 });
     yield* socket.run(handlers.value.onData).pipe(
       Effect.ignore,
       Effect.ensuring(handlers.value.onEnd),
     );
+
     return HttpServerResponse.empty();
   }).pipe(respondErrors),
 );

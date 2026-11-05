@@ -86,7 +86,7 @@ export class EgressBroker extends Context.Service<
   }
 >()("isnadibot/egress/EgressBroker") {}
 
-export const make = Effect.gen(function* () {
+export const make = Effect.sync(() => {
   const providers = new Map<string, (frame: EgressOpenFrame) => Effect.Effect<void>>();
   const streams = new Map<string, PendingStream & { readonly end: Effect.Effect<void> }>();
   const streamsByOwner = new Map<string, Set<string>>();
@@ -96,6 +96,7 @@ export const make = Effect.gen(function* () {
   const drop = (streamId: string) =>
     Effect.sync(() => {
       const stream = streams.get(streamId);
+
       if (stream === undefined) return;
       streams.delete(streamId);
       streamsByOwner.get(stream.owner)?.delete(streamId);
@@ -106,7 +107,9 @@ export const make = Effect.gen(function* () {
       [...(streamsByOwner.get(owner) ?? [])],
       (streamId) => {
         const stream = streams.get(streamId);
+
         if (stream === undefined) return Effect.void;
+
         return Deferred.fail(stream.attached, error).pipe(
           Effect.andThen(Queue.end(stream.inbound)),
           Effect.andThen(drop(streamId)),
@@ -119,18 +122,22 @@ export const make = Effect.gen(function* () {
     Effect.acquireRelease(
       Effect.sync(() => {
         providers.set(owner, sendFrame);
+
         return {
           owner,
           onFrame: (frame) => {
             const stream = streams.get(frame.streamId);
             // A frame for another owner's stream is ignored.
+
             if (stream === undefined || stream.owner !== owner) return Effect.void;
+
             if (frame.type === "refused") {
               return Deferred.fail(stream.attached, new EgressStreamRefused({ reason: frame.reason })).pipe(
                 Effect.andThen(Queue.end(stream.inbound)),
                 Effect.andThen(drop(frame.streamId)),
               );
             }
+
             return stream.end;
           },
         } satisfies EgressProvider;
@@ -138,6 +145,7 @@ export const make = Effect.gen(function* () {
       () =>
         Effect.suspend(() => {
           providers.delete(owner);
+
           return failOwnerStreams(owner, new ProviderGone());
         }),
     );
@@ -146,6 +154,7 @@ export const make = Effect.gen(function* () {
     Effect.gen(function* () {
       const now = yield* Clock.currentTimeMillis;
       const send = providers.get(owner);
+
       if (send === undefined) return yield* new ProviderGone();
       const streamId = yield* randomId;
       const ticket = yield* randomId;
@@ -175,6 +184,7 @@ export const make = Effect.gen(function* () {
         }),
         Effect.onError(() => end),
       );
+
       return {
         streamId,
         inbound,
@@ -188,6 +198,7 @@ export const make = Effect.gen(function* () {
     Effect.gen(function* () {
       const now = yield* Clock.currentTimeMillis;
       const stream = streams.get(streamId);
+
       if (
         stream === undefined ||
         stream.owner !== owner ||
@@ -197,8 +208,10 @@ export const make = Effect.gen(function* () {
       ) {
         return yield* new EgressTicketInvalid();
       }
+
       stream.used = true;
       yield* Deferred.succeed(stream.attached, send);
+
       return {
         onData: (chunk) => Queue.offer(stream.inbound, chunk).pipe(Effect.asVoid),
         onEnd: stream.end,
