@@ -19,3 +19,7 @@ Rules:
 - The running server already holds the home lock, so key generation cannot race a second server.
 
 macOS may ask once to "Always Allow" when the Electron-run and npx-run node processes read the same keychain item.
+
+## Key material in the environment
+
+`ISNADI_MASTER_KEY` and `ISNADI_MASTER_PASSPHRASE` are read once when the server starts and removed from `process.env`, so provider and git child processes never inherit them. Code that builds a child environment from caller input uses `withoutMasterKeyEnv`. A passphrase must be at least 12 characters. Sealed records without a key check are never re-blessed by a new key.

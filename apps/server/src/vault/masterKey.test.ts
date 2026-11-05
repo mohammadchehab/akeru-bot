@@ -116,11 +116,11 @@ describe("resolveMasterKey", () => {
   });
 
   it("falls through to the passphrase when the keychain appears after a passphrase-sealed vault", () => {
-    const sealed = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right" } });
+    const sealed = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right-passphrase" } });
     const first = resolveMasterKey(sealed.inputs);
 
     const t = setup({
-      env: { ISNADI_MASTER_PASSPHRASE: "right" },
+      env: { ISNADI_MASTER_PASSPHRASE: "right-passphrase" },
       keychain: { kind: "not-found" },
       sealed: 1,
       keyCheck: sealed.state.keyCheck,
@@ -138,11 +138,27 @@ describe("resolveMasterKey", () => {
   });
 
   it("stores the scrypt parameters with the salt and reads them back", () => {
-    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "x" } });
+    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "long-enough-phrase" } });
 
     resolveMasterKey(t.inputs);
 
     assert.deepStrictEqual([t.state.kdf?.N, t.state.kdf?.r, t.state.kdf?.p], [2 ** 17, 8, 1]);
+  });
+
+  it("refuses a short passphrase", () => {
+    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "short" } });
+
+    assert.deepStrictEqual(resolveMasterKey(t.inputs), {
+      ok: false,
+      reason: "passphrase-too-short",
+    });
+  });
+
+  it("never blesses an env key when sealed records have no key check", () => {
+    const t = setup({ env: { ISNADI_MASTER_KEY: KEY_A.toString("base64") }, sealed: 3 });
+
+    assert.deepStrictEqual(resolveMasterKey(t.inputs), { ok: false, reason: "key-check-missing" });
+    assert.isUndefined(t.state.keyCheck);
   });
 
   it("never regenerates on a keychain error", () => {
@@ -153,7 +169,7 @@ describe("resolveMasterKey", () => {
   });
 
   it("derives a stable key from the passphrase and keeps the salt", () => {
-    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "correct horse" } });
+    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "correct horse battery" } });
     const first = resolveMasterKey(t.inputs);
     const again = resolveMasterKey(t.inputs);
 
@@ -163,12 +179,12 @@ describe("resolveMasterKey", () => {
   });
 
   it("reports a wrong passphrase without overwriting the key check", () => {
-    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right" } });
+    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right-passphrase" } });
 
     resolveMasterKey(t.inputs);
 
     const check = t.state.keyCheck;
-    const wrong = setup({ env: { ISNADI_MASTER_PASSPHRASE: "wrong" }, keyCheck: check });
+    const wrong = setup({ env: { ISNADI_MASTER_PASSPHRASE: "wrong-passphrase" }, keyCheck: check });
 
     wrong.state.kdf = t.state.kdf;
 

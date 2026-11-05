@@ -1,3 +1,4 @@
+import { withoutMasterKeyEnv } from "../vault/masterKeyEnv.ts";
 import { collectOutput } from "./GitCoreHelpers.ts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -54,8 +55,7 @@ export const gitExecution = () =>
               ChildProcess.make("git", commandInput.args, {
                 cwd: commandInput.cwd,
                 env: {
-                  ...process.env,
-                  ...input.env,
+                  ...withoutMasterKeyEnv({ ...process.env, ...input.env }),
                   ...trace2Monitor.env,
                 },
               }),
