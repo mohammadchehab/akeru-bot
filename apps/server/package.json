@@ -17,8 +17,9 @@
   "scripts": {
     "dev": "node --watch src/bin.ts",
     "dev:once": "node src/bin.ts",
-    "build:bundle": "vp pack && vp pack src/service-launcher.ts --out-dir dist --no-clean",
+    "build:bundle": "vp pack && vp pack src/service-launcher.ts --out-dir dist --no-clean && vp pack src/recall/embedWorker.ts --out-dir dist --no-clean",
     "start": "node dist/bin.mjs",
+    "recall:embed-smoke": "node src/recall/embedSmoke.ts",
     "typecheck": "tsgo --noEmit",
     "test": "vp test run"
   },
@@ -39,6 +40,7 @@
     "@effect/platform-node-shared": "catalog:",
     "@effect/sql-sqlite-bun": "catalog:",
     "@ff-labs/fff-node": "0.9.4",
+    "@huggingface/transformers": "3.8.1",
     "@mastra/code-sdk": "1.5.1",
     "@mastra/core": "1.63.0",
     "@mastra/libsql": "1.22.0",
