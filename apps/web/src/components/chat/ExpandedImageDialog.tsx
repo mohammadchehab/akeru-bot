@@ -68,7 +68,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
   onClose,
   environmentId,
 }: ExpandedImageDialogProps) {
-  const { t } = useI18n();
+  const { t, direction } = useI18n();
   const reveal = useRevealAttachment(environmentId);
 
   const runAction = useCallback((title: string, action: () => Promise<void>) => {
@@ -103,7 +103,10 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
 
       if (preview.images.length <= 1) return;
 
-      if (event.key === "ArrowLeft") {
+      const previousKey = direction === "rtl" ? "ArrowRight" : "ArrowLeft";
+      const nextKey = direction === "rtl" ? "ArrowLeft" : "ArrowRight";
+
+      if (event.key === previousKey) {
         event.preventDefault();
         event.stopPropagation();
         navigateImage(-1);
@@ -111,7 +114,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
         return;
       }
 
-      if (event.key !== "ArrowRight") return;
+      if (event.key !== nextKey) return;
       event.preventDefault();
       event.stopPropagation();
       navigateImage(1);
@@ -120,7 +123,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
     window.addEventListener("keydown", onKeyDown);
 
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navigateImage, onClose, preview.images.length]);
+  }, [direction, navigateImage, onClose, preview.images.length]);
 
   const item = preview.images[index];
 
@@ -145,15 +148,15 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
           size="icon"
           variant="ghost"
           presentation="image-nav"
-          className="absolute left-2 top-1/2 z-20 -translate-y-1/2 sm:left-6"
+          className="absolute start-2 top-1/2 z-20 -translate-y-1/2 sm:start-6"
           aria-label={t("Previous image")}
           onClick={() => navigateImage(-1)}
         >
-          <ChevronLeftIcon className="size-5" />
+          <ChevronLeftIcon className="size-5 rtl:-scale-x-100" />
         </Button>
       )}
       <div className="relative isolate z-10 max-h-92vh max-w-92vw">
-        <div className="absolute right-2 top-2 flex gap-1 rounded-md bg-background/80 p-0.5 shadow-sm">
+        <div className="absolute end-2 top-2 flex gap-1 rounded-md bg-background/80 p-0.5 shadow-sm">
           <Button
             type="button"
             size="icon-xs"
@@ -231,11 +234,11 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
           size="icon"
           variant="ghost"
           presentation="image-nav"
-          className="absolute right-2 top-1/2 z-20 -translate-y-1/2 sm:right-6"
+          className="absolute end-2 top-1/2 z-20 -translate-y-1/2 sm:end-6"
           aria-label={t("Next image")}
           onClick={() => navigateImage(1)}
         >
-          <ChevronRightIcon className="size-5" />
+          <ChevronRightIcon className="size-5 rtl:-scale-x-100" />
         </Button>
       )}
     </div>

@@ -8,6 +8,7 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import { ChildProcessSpawner } from "effect/unstable/process";
+import { withoutMasterKeyEnv } from "../vault/masterKeyEnv.ts";
 import {
   GitCommandError,
   VcsProcessExitError,
@@ -567,7 +568,7 @@ export const makeVcsDriverShape = Effect.fn("makeGitVcsDriverShape")(function* (
       );
 
       const commitEnv: NodeJS.ProcessEnv = {
-        ...process.env,
+        ...withoutMasterKeyEnv(process.env),
         GIT_INDEX_FILE: tempIndexPath,
         GIT_AUTHOR_NAME: "IsnadiBot",
         GIT_AUTHOR_EMAIL: "isnadibot@users.noreply.github.com",

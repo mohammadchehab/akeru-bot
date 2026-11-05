@@ -283,7 +283,7 @@ export function PluginDetails({
               variant="ghost-muted"
               onClick={onBack}
             >
-              <AppIcon icon={ArrowLeft01Icon} className="size-4" />
+              <AppIcon icon={ArrowLeft01Icon} className="size-4 rtl:-scale-x-100" />
             </Button>
             <button
               className="cursor-pointer rounded-md px-1 text-sm text-muted-foreground outline-hidden transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
@@ -302,7 +302,7 @@ export function PluginDetails({
         <DialogHeader variant="divided" className="px-5 py-4">
           <div className="flex items-center gap-2 pe-8">
             <Button aria-label="Back to plugins" size="icon-sm" variant="ghost" onClick={onBack}>
-              <AppIcon icon={ArrowLeft01Icon} className="size-4" />
+              <AppIcon icon={ArrowLeft01Icon} className="size-4 rtl:-scale-x-100" />
             </Button>
             <DialogTitle className="text-base">Plugin details</DialogTitle>
           </div>

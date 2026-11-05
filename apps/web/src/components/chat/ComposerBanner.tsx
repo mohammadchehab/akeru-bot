@@ -45,7 +45,7 @@ function Surface({
         "before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:border before:border-(--chat-composer-attached-outline)",
         "before:bg-composer-glass before:backdrop-blur-(--glass-blur) before:backdrop-saturate-(--glass-saturation)",
         "before:shadow-composer-banner dark:before:shadow-composer-banner-dark",
-        "not-supports-[(backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px))]:before:bg-(--chat-composer-attached-surface)",
+        "not-supports-[((backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px)))]:before:bg-(--chat-composer-attached-surface)",
         className,
       )}
       {...props}
@@ -76,7 +76,7 @@ function Peek({
         neutralOutline,
         "absolute inset-x-0 bottom-0 z-0 mx-auto h-3 w-24/25 cursor-pointer rounded-t-2xl border border-b-0 shadow-peek",
         "bg-composer-glass backdrop-blur-(--glass-blur) backdrop-saturate-(--glass-saturation)",
-        "not-supports-[(backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px))]:bg-(--chat-composer-attached-surface)",
+        "not-supports-[((backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px)))]:bg-(--chat-composer-attached-surface)",
         "transition-opacity duration-150 ease-out focus-visible:outline-2 focus-visible:outline-ring",
         peekBorder[variant],
         className,

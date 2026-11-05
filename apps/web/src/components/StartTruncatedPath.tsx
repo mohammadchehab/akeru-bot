@@ -8,7 +8,7 @@ export function StartTruncatedPath({ path, className }: { path: string; classNam
         render={
           <span
             className={cn(
-              "min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-left",
+              "min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-start",
               className,
             )}
             dir="rtl"

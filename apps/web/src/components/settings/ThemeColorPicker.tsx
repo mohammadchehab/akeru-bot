@@ -96,7 +96,7 @@ export const ThemeColorField = memo(function ThemeColorField({
             <button
               aria-label={`${selected ? "Hide" : "Show"} ${label} usage`}
               aria-pressed={selected}
-              className="flex min-w-0 flex-1 cursor-pointer items-center rounded-md text-left text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-w-0 flex-1 cursor-pointer items-center rounded-md text-start text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
               onClick={() => onToggleSelected?.(role)}
               type="button"
             >
@@ -106,7 +106,7 @@ export const ThemeColorField = memo(function ThemeColorField({
         />
         <TooltipPopup side="top">{`${selected ? "Hide" : "Show"} where ${label} is used`}</TooltipPopup>
       </Tooltip>
-      <div className="ml-auto flex shrink-0 items-center gap-2">
+      <div className="ms-auto flex shrink-0 items-center gap-2">
         <ThemeColorPicker
           label={label}
           onChange={(nextValue) => onChange(role, nextValue)}

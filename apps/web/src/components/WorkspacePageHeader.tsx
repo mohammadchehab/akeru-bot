@@ -12,8 +12,8 @@ export function detailsToggleInsetClass(detailsPanelOpen: boolean | undefined): 
   if (detailsPanelOpen === undefined) return null;
 
   return detailsPanelOpen
-    ? "max-[980px]:pr-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!"
-    : "pr-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!";
+    ? "max-[980px]:pe-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!"
+    : "pe-[calc(var(--workspace-controls-right)+var(--workspace-titlebar-control-size)+var(--workspace-titlebar-control-gap))]!";
 }
 
 /** Shared workspace top-bar geometry. */
@@ -35,7 +35,7 @@ export function WorkspacePageHeader({
       className={cn(
         "flex h-(--workspace-topbar-height) min-h-(--workspace-topbar-height) shrink-0 items-center gap-3 pl-safe-left-0.75rem pr-safe-right-0.75rem transition-padding-left duration-200 ease-linear motion-reduce:transition-none sm:pl-safe-left-1.25rem sm:pr-safe-right-1.25rem",
         electron && "drag-region",
-        reserveNativeControls && "wco:pr-(--workspace-native-controls-inset)",
+        reserveNativeControls && "wco:pe-(--workspace-native-controls-inset)",
         COLLAPSED_SIDEBAR_TITLEBAR_INSET_CLASS,
         // Below md the main sidebar hides and a fixed toggle sits at the left
         // edge of the top bar, so the title starts after it.

@@ -63,6 +63,7 @@ import {
   useRosterDragController,
 } from "./RosterDrag";
 import { BotRosterRow, GroupRosterRow, RosterRail } from "./RosterRows";
+import { DecisionsGroup } from "./DecisionsGroup";
 import { RosterPanelHeader, RosterRailCreateMenu, RosterSidebarHeader } from "./RosterHeaders";
 import {
   commandFailureMessage,
@@ -487,34 +488,37 @@ export default function BotRosterSidebar({ chrome = "full" }: { chrome?: "full" 
         scrollAnchoring={false}
         className="gap-0"
         fixedHeader={
-          chrome === "panel" && !searchOpen && query.length === 0 ? null : (
-            <SidebarGroup className="px-(--sidebar-content-inset) pb-1 pt-1 group-data-[collapsible=icon]:hidden">
-              <label className="flex h-9 items-center gap-2 rounded-lg bg-sidebar-row-hover px-2.5 ring-ring focus-within:ring-2">
-                <SearchIcon className="size-4 shrink-0 text-sidebar-muted-foreground" />
-                <input
-                  type="text"
-                  ref={rosterSearchRef}
-                  data-testid="roster-search-input"
-                  placeholder={t("Search")}
-                  autoFocus={chrome === "panel"}
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  onBlur={() => {
-                    if (query.length === 0) setSearchOpen(false);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Escape" && query.length > 0) {
-                      event.stopPropagation();
-                      setQuery("");
-                    } else if (event.key === "Escape") {
-                      setSearchOpen(false);
-                    }
-                  }}
-                  className="min-w-0 flex-1 bg-transparent text-sm text-sidebar-foreground outline-none placeholder:text-sidebar-muted-foreground"
-                />
-              </label>
-            </SidebarGroup>
-          )
+          <>
+            <DecisionsGroup />
+            {chrome === "panel" && !searchOpen && query.length === 0 ? null : (
+              <SidebarGroup className="px-(--sidebar-content-inset) pb-1 pt-1 group-data-[collapsible=icon]:hidden">
+                <label className="flex h-9 items-center gap-2 rounded-lg bg-sidebar-row-hover px-2.5 ring-ring focus-within:ring-2">
+                  <SearchIcon className="size-4 shrink-0 text-sidebar-muted-foreground" />
+                  <input
+                    type="text"
+                    ref={rosterSearchRef}
+                    data-testid="roster-search-input"
+                    placeholder={t("Search")}
+                    autoFocus={chrome === "panel"}
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    onBlur={() => {
+                      if (query.length === 0) setSearchOpen(false);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape" && query.length > 0) {
+                        event.stopPropagation();
+                        setQuery("");
+                      } else if (event.key === "Escape") {
+                        setSearchOpen(false);
+                      }
+                    }}
+                    className="min-w-0 flex-1 bg-transparent text-sm text-sidebar-foreground outline-none placeholder:text-sidebar-muted-foreground"
+                  />
+                </label>
+              </SidebarGroup>
+            )}
+          </>
         }
       >
         {Match.value(rosterListState).pipe(

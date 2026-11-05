@@ -18,4 +18,16 @@ describe("mergeProviderInstanceEnvironment", () => {
       PATH: "/bin",
     });
   });
+
+  it("never hands the vault master key variables to a provider process", () => {
+    const base = { ISNADI_MASTER_KEY: "k", ISNADI_MASTER_PASSPHRASE: "p", PATH: "/bin" };
+
+    expect(mergeProviderInstanceEnvironment(undefined, base)).toEqual({ PATH: "/bin" });
+    expect(
+      mergeProviderInstanceEnvironment(
+        [{ name: "ISNADI_MASTER_KEY", value: "from-instance", sensitive: true }],
+        base,
+      ),
+    ).toEqual({ PATH: "/bin" });
+  });
 });

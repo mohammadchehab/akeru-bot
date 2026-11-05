@@ -287,6 +287,7 @@ export function HostedBrowserWebview(props: {
     <div
       ref={wrapperRef}
       className={cn(
+        // Physical on purpose: placed from measured screen coordinates.
         "fixed top-(--wrapper-top) left-(--wrapper-left) z-(--wrapper-z) h-(--wrapper-height) w-(--wrapper-width) rounded-(--wrapper-radius) overflow-hidden overscroll-contain bg-muted/35",
         wrapperStyle.pointerEvents === "none" ? "pointer-events-none" : "pointer-events-auto",
         wrapperStyle.visibility === "hidden" && "invisible",
@@ -349,6 +350,7 @@ export function HostedBrowserWebview(props: {
           aria-hidden={active ? undefined : true}
           tabIndex={active && presentation.interactive ? undefined : -1}
           className={cn(
+            // Physical on purpose: placed from measured screen coordinates.
             "absolute top-(--viewport-top) left-(--viewport-left) flex h-(--viewport-height) w-(--viewport-width) origin-top-left transform-(--viewport-transform) overflow-hidden bg-background",
             active && !layout.fillsPanel && "ring-1 ring-border/70 shadow-sm",
           )}

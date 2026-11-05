@@ -228,7 +228,7 @@ export function FontFamilyPicker({
           <div className="relative -translate-y-px border-b border-border/70 pb-1.5 transition-colors focus-within:border-foreground/30">
             <SearchIcon
               aria-hidden="true"
-              className="pointer-events-none absolute top-1.5 left-0 size-4 shrink-0 text-muted-foreground/55"
+              className="pointer-events-none absolute top-1.5 start-0 size-4 shrink-0 text-muted-foreground/55"
             />
             <ComboboxInput
               presentation="font-search"

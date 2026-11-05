@@ -125,7 +125,7 @@ export function ThemeEditorColorsHeader({
             value={roleQuery}
           />
         ) : null}
-        <label className="ml-auto flex shrink-0 cursor-pointer items-center gap-2 pt-0.5 text-sm font-medium">
+        <label className="ms-auto flex shrink-0 cursor-pointer items-center gap-2 pt-0.5 text-sm font-medium">
           <span>Advanced</span>
           <Switch
             aria-label="Use advanced theme colors"

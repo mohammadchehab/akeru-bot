@@ -69,7 +69,7 @@ export function RootRouteErrorView({
             </Button>
           </div>
 
-          <details className="group mt-5 w-full text-left">
+          <details className="group mt-5 w-full text-start">
             <summary className="flex cursor-pointer list-none items-center justify-center rounded-(--control-radius) px-2 py-1.5 text-xs font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
               {t("Technical details")}
             </summary>

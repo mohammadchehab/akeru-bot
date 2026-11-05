@@ -193,7 +193,7 @@ export function DictationControls({
         {active && (
           <button
             type="button"
-            className="absolute top-1/2 right-full mr-1.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            className="absolute top-1/2 end-full me-1.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
             aria-label={t("Cancel dictation")}
             onClick={cancel}
           >
@@ -203,7 +203,7 @@ export function DictationControls({
         {retry && (
           <button
             type="button"
-            className="absolute top-1/2 right-full mr-1.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            className="absolute top-1/2 end-full me-1.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
             aria-label={t("Dismiss dictation error")}
             onClick={() => cancelCallback.current()}
           >

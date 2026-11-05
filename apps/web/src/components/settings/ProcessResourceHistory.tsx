@@ -39,7 +39,7 @@ export function ResourceHistoryProcessNameCell({
 
   return (
     <div
-      className="grid min-w-0 grid-cols-legend-row items-center gap-2 pl-(--row-indent)"
+      className="grid min-w-0 grid-cols-legend-row items-center gap-2 ps-(--row-indent)"
       style={{ "--row-indent": `${Math.min(visualDepth, 6) * 10}px` }}
       aria-label={`${process.isServerRoot ? "Root" : "Child"} process ${name}`}
     >
@@ -57,7 +57,7 @@ export function ResourceHistoryProcessNameCell({
         <TooltipPopup
           side="top"
           variant="diagnostics-process"
-          className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-left"
+          className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-start"
         >
           {process.command}
         </TooltipPopup>
@@ -163,7 +163,7 @@ export function ProcessResourceHistoryTable({
       variant="telemetry-process"
       className="max-h-(--spacing-min-64vh-44rem) w-full max-w-full"
     >
-      <table className="w-full min-w-245 table-fixed text-left text-xs">
+      <table className="w-full min-w-245 table-fixed text-start text-xs">
         <colgroup>
           <col className="w-6/25" />
           <col className="w-1/10" />
@@ -176,14 +176,14 @@ export function ProcessResourceHistoryTable({
         </colgroup>
         <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-11px uppercase tracking-caps text-muted-foreground/70">
           <tr>
-            <th className="px-4 py-2 font-semibold sm:pl-5">Process</th>
-            <th className="px-3 py-2 text-right font-semibold">CPU Time</th>
-            <th className="px-3 py-2 text-right font-semibold">Current</th>
-            <th className="px-3 py-2 text-right font-semibold">Average</th>
-            <th className="px-3 py-2 text-right font-semibold">Peak</th>
-            <th className="px-3 py-2 text-right font-semibold">Max Mem</th>
+            <th className="px-4 py-2 font-semibold sm:ps-5">Process</th>
+            <th className="px-3 py-2 text-end font-semibold">CPU Time</th>
+            <th className="px-3 py-2 text-end font-semibold">Current</th>
+            <th className="px-3 py-2 text-end font-semibold">Average</th>
+            <th className="px-3 py-2 text-end font-semibold">Peak</th>
+            <th className="px-3 py-2 text-end font-semibold">Max Mem</th>
             <th className="px-3 py-2 font-semibold">Command</th>
-            <th className="px-3 py-2 text-right font-semibold sm:pr-5">PID</th>
+            <th className="px-3 py-2 text-end font-semibold sm:pe-5">PID</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/50">
@@ -196,7 +196,7 @@ export function ProcessResourceHistoryTable({
           ) : null}
           {processes.map((process) => (
             <tr key={process.processKey} className="hover:bg-muted/20">
-              <td className="px-4 py-2 align-middle sm:pl-5">
+              <td className="px-4 py-2 align-middle sm:ps-5">
                 <ResourceHistoryProcessNameCell
                   process={process}
                   visualDepth={
@@ -206,19 +206,19 @@ export function ProcessResourceHistoryTable({
                   }
                 />
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {formatCpuTime(process.cpuSecondsApprox)}
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {process.currentCpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {process.avgCpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {process.maxCpuPercent.toFixed(1)}%
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums">
                 {formatBytes(process.maxRssBytes)}
               </td>
               <td className="px-3 py-2 align-middle text-muted-foreground">
@@ -229,13 +229,13 @@ export function ProcessResourceHistoryTable({
                   <TooltipPopup
                     side="top"
                     variant="diagnostics-process"
-                    className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-left"
+                    className="max-w-(--spacing-min-440px-vw-2rem) whitespace-normal break-words text-start"
                   >
                     {process.command}
                   </TooltipPopup>
                 </Tooltip>
               </td>
-              <td className="px-3 py-2 text-right align-middle font-mono tabular-nums text-muted-foreground sm:pr-5">
+              <td className="px-3 py-2 text-end align-middle font-mono tabular-nums text-muted-foreground sm:pe-5">
                 {process.pid}
               </td>
             </tr>

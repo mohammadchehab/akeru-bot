@@ -54,6 +54,7 @@ function AgentBrowserCursorEvent(props: {
     return () => window.clearTimeout(timeout);
   }, []);
 
+  // Physical on purpose: the cursor is positioned from page coordinates.
   return (
     <div
       className="pointer-events-none absolute left-0 top-0 z-40 opacity-(--cursor-opacity) transform-(--cursor-transform) transition-transform-opacity duration-150 ease-out motion-reduce:transition-none"

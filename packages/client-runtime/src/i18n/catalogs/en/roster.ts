@@ -1,4 +1,7 @@
 export const rosterCatalog = {
+  Decisions: "Decisions",
+  "Nothing waiting on you": "Nothing waiting on you",
+  "Show all ({count})": "Show all ({count})",
   "Run bots in a persistent Linux VM. Public previews are enabled by default.":
     "Run bots in a persistent Linux VM. Public previews are enabled by default.",
   "Add project starts in": "Add project starts in",

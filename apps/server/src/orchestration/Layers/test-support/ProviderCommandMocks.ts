@@ -7,7 +7,7 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
 } from "@isnadi/contracts";
-import { ThreadId, TurnId } from "@isnadi/contracts";
+import { ThreadId, TurnId, type BotSandbox } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as PubSub from "effect/PubSub";
 import * as Stream from "effect/Stream";
@@ -55,6 +55,8 @@ export type ProviderCommandHarnessOptions = {
     ProviderAdapterRequestError
   >;
   readonly botEngine?: { readonly provider: string; readonly model: string } | null;
+  /** Sandbox of the configured bot; defaults to the local workspace. */
+  readonly botSandbox?: BotSandbox;
   readonly secondBot?: {
     readonly engine: { readonly provider: string; readonly model: string };
     readonly modelSelection?: ModelSelection;

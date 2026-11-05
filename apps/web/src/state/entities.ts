@@ -1,4 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
+import type { Decision } from "@isnadi/client-runtime/decisions";
 import type {
   EnvironmentProject,
   EnvironmentThread,
@@ -133,6 +134,17 @@ export function useServerConfigs(): ReadonlyMap<EnvironmentId, ServerConfig> {
 
 export function useThreadShells(): ReadonlyArray<EnvironmentThreadShell> {
   return useAtomValue(environmentThreadShells.threadShellsAtom);
+}
+
+const NO_DECISIONS_ATOM = Atom.make<ReadonlyArray<Decision>>([]);
+
+/** Chats waiting on the user in one environment; re-renders only when those rows change. */
+export function useDecisions(environmentId: EnvironmentId | null): ReadonlyArray<Decision> {
+  return useAtomValue(
+    environmentId === null
+      ? NO_DECISIONS_ATOM
+      : environmentThreadShells.environmentDecisionsAtom(environmentId),
+  );
 }
 
 export function useAllEnvironmentShellsBootstrapped(): boolean {

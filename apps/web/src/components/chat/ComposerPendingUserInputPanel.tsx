@@ -217,7 +217,7 @@ function PendingUserInputCard({
             disabled={isResponding}
             onClick={() => onStepChange(step - 1)}
           >
-            <ChevronLeftIcon />
+            <ChevronLeftIcon className="rtl:-scale-x-100" />
             {t("Back")}
           </Button>
         ) : null}

@@ -58,14 +58,14 @@ function EmptyMedia({
             aria-hidden="true"
             className={cn(
               emptyMediaVariants({ className, variant }),
-              "-translate-x-0.5 -rotate-10 pointer-events-none absolute bottom-px origin-bottom-left scale-84 shadow-none",
+              "-translate-x-0.5 rtl:translate-x-0.5 -rotate-10 pointer-events-none absolute bottom-px origin-bottom-left scale-84 shadow-none",
             )}
           />
           <div
             aria-hidden="true"
             className={cn(
               emptyMediaVariants({ className, variant }),
-              "pointer-events-none absolute bottom-px origin-bottom-right translate-x-0.5 rotate-10 scale-84 shadow-none",
+              "pointer-events-none absolute bottom-px origin-bottom-right translate-x-0.5 rtl:-translate-x-0.5 rotate-10 scale-84 shadow-none",
             )}
           />
         </>

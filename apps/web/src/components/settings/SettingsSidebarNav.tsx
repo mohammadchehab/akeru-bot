@@ -58,7 +58,7 @@ export function SettingsPanelNav() {
                     aria-current={active ? "page" : undefined}
                     onClick={() => go(to)}
                     className={cn(
-                      "flex h-9 w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 text-left text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+                      "flex h-9 w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 text-start text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
                       active
                         ? "bg-sidebar-row-active font-medium text-sidebar-foreground"
                         : "text-sidebar-foreground/85 hover:bg-sidebar-row-hover hover:text-sidebar-foreground",
@@ -127,7 +127,7 @@ export function SettingsSidebarNav() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={() => go("/")} tooltip={t("Back to chats")}>
-              <ArrowLeftIcon />
+              <ArrowLeftIcon className="rtl:-scale-x-100" />
               <span className="group-data-[collapsible=icon]:hidden">{t("Back to chats")}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

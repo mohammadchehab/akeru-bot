@@ -40,7 +40,7 @@ export const AdvertisedEndpointListRow = memo(function AdvertisedEndpointListRow
     <div className={endpointRowClassName(presentation, isAvailable)}>
       {isEndpointRail && isDefault ? (
         <span
-          className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-foreground/70"
+          className="absolute inset-y-2 start-0 w-1 rounded-e-full bg-foreground/70"
           aria-hidden
         />
       ) : null}
@@ -69,7 +69,7 @@ export const AdvertisedEndpointListRow = memo(function AdvertisedEndpointListRow
             </span>
           ) : null}
         </div>
-        <div className="ml-auto flex min-h-6 shrink-0 items-center justify-end gap-2">
+        <div className="ms-auto flex min-h-6 shrink-0 items-center justify-end gap-2">
           {isDefault ? (
             <span className="rounded-md border border-border bg-muted px-1 py-0.5 text-10px text-foreground">
               Default
@@ -140,7 +140,7 @@ export function NetworkAccessDescription({
       {hiddenEndpointCount > 0 ? (
         <button
           type="button"
-          className="inline-flex min-w-0 max-w-full items-baseline gap-2 border-b border-dotted border-muted-foreground/60 text-left text-muted-foreground underline-offset-4 hover:border-foreground hover:text-foreground"
+          className="inline-flex min-w-0 max-w-full items-baseline gap-2 border-b border-dotted border-muted-foreground/60 text-start text-muted-foreground underline-offset-4 hover:border-foreground hover:text-foreground"
           onClick={onToggleExpanded}
           aria-expanded={expanded}
         >

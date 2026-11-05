@@ -536,7 +536,7 @@ export function ThemeLibrary({
                     htmlFor={checkboxId}
                     key={customTheme.id}
                   >
-                    <span className="absolute right-2 top-2 inline-grid size-5 grid-cols-1 sm:size-4">
+                    <span className="absolute end-2 top-2 inline-grid size-5 grid-cols-1 sm:size-4">
                       <input
                         checked={checked}
                         className="col-start-1 row-start-1 size-full appearance-none rounded-sm border border-input bg-background outline-none checked:border-primary checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring dark:not-checked:bg-input/32 forced-colors:appearance-auto"

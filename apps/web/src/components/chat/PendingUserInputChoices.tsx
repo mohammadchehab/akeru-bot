@@ -56,7 +56,7 @@ export function ChoiceButton({
   return (
     <button
       type="button"
-      className="gen-choice flex w-full items-start gap-3 rounded-xl border border-border bg-background px-3 py-2.5 text-left transition-colors enabled:hover:bg-accent disabled:cursor-default"
+      className="gen-choice flex w-full items-start gap-3 rounded-xl border border-border bg-background px-3 py-2.5 text-start transition-colors enabled:hover:bg-accent disabled:cursor-default"
       aria-pressed={pressed}
       disabled={disabled}
       onClick={onClick}

@@ -287,6 +287,15 @@ export default defineConfig({
         },
       },
       {
+        // The interface mirrors for right-to-left languages, so the primitives say start and end.
+        // The rest of apps/web/src is converted in follow-up changes; widen this glob as each
+        // directory is done.
+        files: ["apps/web/src/components/ui/**/*.{ts,tsx}"],
+        rules: {
+          "isnadi/no-physical-direction-utilities": "error",
+        },
+      },
+      {
         // Tests pass hardcoded palette classes to class helpers (cn merging, theme inspection)
         // to prove those helpers handle them. The strings are inputs, never rendered UI.
         files: ["apps/web/src/**/*.test.{ts,tsx}"],

@@ -134,6 +134,17 @@ not a model transport, so it cannot run on the Mastra controller. That loop sets
   bridge provider can call them without asking.
 - The CLI has no system-prompt flag. Bot identity and memory are prepended to the prompt, as for
   standard OpenCode, and are never written to `.cursor/rules`.
+- Access follows the session's runtime mode. Only an explicit `full-access` runs with `--force`;
+  every other mode runs `--mode ask`, because print mode cannot ask. The adapter runs the CLI on
+  the environment host, so a bot with a remote sandbox is refused when its session starts rather
+  than silently working on the host.
+- Each turn is one tracked `agent` child process. Interrupting or stopping sends it SIGINT, and
+  Effect's default kill escalates to SIGKILL after 2 seconds; there is no SIGTERM step. The stream
+  then ends without a `result` after our own signal, which is an interrupted turn: it ends as
+  `turn.aborted` and keeps the Cursor `session_id` as the resume cursor for the next `--resume`. A
+  process that dies on its own, an error result or a non-zero exit is a failed turn instead, with
+  stderr as the message. Any tool still open when a turn ends, however it ends, is closed as
+  failed so no tool spinner keeps running.
 - Cursor bills per token through the user's Cursor plan, not as a flat model subscription.
 
 Mastra keeps approval callbacks enabled in every runtime mode. `AgentController` auto-approves
@@ -476,9 +487,8 @@ built-in catalog, so an unlisted model there is not evidence the model is gone:
 When a provider reroutes a request to a different model at runtime and reports it, adapters emit
 the `model.rerouted` runtime event and `ProviderRuntimeIngestion` projects it as a
 `model.rerouted` chat activity line (`Model rerouted from X to Y`), so the effective model is
-visible rather than a silent fallback. Today only the legacy Codex adapter emits this event;
-Mastra sessions do not report the effective model yet, so a reroute inside a Mastra driver never
-produces the activity.
+visible rather than a silent fallback. No adapter emits it yet. The per-bot fallback chain and
+model pauses will, see [model fallback and rate limits](model-fallback.md).
 
 Adding a driver means writing the driver plus adapter and adding it to `BUILT_IN_DRIVERS`. No
 orchestration, contract, or client change is required for the common case.

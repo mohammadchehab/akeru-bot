@@ -702,7 +702,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
           <div
             className={cn(
               "flex min-h-0 flex-1 flex-col overflow-hidden bg-muted/30",
-              showSidebar && "border-l border-border/70",
+              showSidebar && "border-s border-border/70",
             )}
           >
             {/* Search bar */}
@@ -774,7 +774,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
 
             {/* Model list */}
             {hasResults ? (
-              <div className="relative min-h-0 flex-1 overflow-hidden pr-px">
+              <div className="relative min-h-0 flex-1 overflow-hidden pe-px">
                 <ComboboxListVirtualized presentation="model-list">
                   <LegendList<string>
                     ref={modelListRef}
@@ -793,7 +793,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
                             className="group w-full cursor-pointer"
                             contentClassName="flex w-full items-center"
                           >
-                            <div className="min-w-0 flex-1 text-left">
+                            <div className="min-w-0 flex-1 text-start">
                               <div className="text-xs font-medium leading-snug">
                                 {t("Legacy models")}
                               </div>
@@ -806,7 +806,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
                             </div>
                             <ChevronRightIcon
                               className={cn(
-                                "size-4 transition-transform",
+                                "size-4 transition-transform rtl:-scale-x-100",
                                 legacySection.isExpanded && "rotate-90",
                               )}
                             />
@@ -850,7 +850,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
                     estimatedItemSize={52}
                     drawDistance={480}
                     recycleItems
-                    contentContainerClassName="pl-2 pr-px"
+                    contentContainerClassName="ps-2 pe-px"
                     ItemSeparatorComponent={ModelListSeparator}
                     onLayout={updateModelListScrollFades}
                     onScroll={updateModelListScrollFades}

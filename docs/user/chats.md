@@ -10,6 +10,16 @@ To reply to a specific message, use **Reply** on that message. The sent reply ke
 above your text. Select the referenced person's name to jump back to the original message when it
 can be identified.
 
+## Decisions
+
+The **Decisions** group sits at the top of the bot list, above Search. It lists every chat, in any
+project, where a bot is waiting on you for an approval or a question. Each row shows the bot or group,
+the chat title, and **Approval needed** or **Question**. Select a row to open that chat with the
+prompt in view. The row disappears once you answer, or if you archive the chat. When nothing is
+waiting, the group says **Nothing waiting on you**. It shows five rows at first; select **Show all**
+for the rest. The collapsed bot rail has no Decisions group, but a bot's light still shows when it
+needs you.
+
 ## Chat actions
 
 On web and desktop, the roster keeps one row per bot or group, and a bot opens its newest chat.

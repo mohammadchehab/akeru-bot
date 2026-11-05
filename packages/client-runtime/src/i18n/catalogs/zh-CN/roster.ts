@@ -1,4 +1,7 @@
 export const rosterCatalog = {
+  Decisions: "待决事项",
+  "Nothing waiting on you": "没有等你处理的事项",
+  "Show all ({count})": "显示全部（{count}）",
   "Run bots in a persistent Linux VM. Public previews are enabled by default.":
     "在持久化 Linux 虚拟机中运行机器人。默认启用公开预览。",
   "Add project starts in": "添加项目的起始目录",

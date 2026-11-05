@@ -97,11 +97,11 @@ export function KeybindingListRow({
   return (
     <div
       className={cn(
-        "group/row flex min-h-11 items-center gap-3 rounded-lg border border-transparent py-1.5 pr-3 sm:pr-4",
+        "group/row flex min-h-11 items-center gap-3 rounded-lg border border-transparent py-1.5 pe-3 sm:pe-4",
         row.source === "Custom" &&
-          "border-primary/20 border-l-2 border-l-primary bg-primary/[0.045]",
+          "border-primary/20 border-s-2 border-s-primary bg-primary/[0.045]",
         row.source === "Default" && "hover:bg-muted/30",
-        nested ? "pl-9 sm:pl-10" : "pl-3 sm:pl-4",
+        nested ? "ps-9 sm:ps-10" : "ps-3 sm:ps-4",
       )}
     >
       <div className="flex min-w-0 flex-1 flex-col items-start gap-0.5 sm:flex-row sm:items-center sm:gap-2">
@@ -225,16 +225,19 @@ export function KeybindingSeriesItem({
 
   return (
     <div>
-      <div className="flex min-h-11 items-center gap-3 py-1.5 pr-3 pl-3 sm:pr-4 sm:pl-4">
+      <div className="flex min-h-11 items-center gap-3 py-1.5 pe-3 ps-3 sm:pe-4 sm:ps-4">
         <button
           type="button"
           aria-expanded={expanded}
           aria-controls={panelId}
           onClick={() => onExpandedChange(!expanded)}
-          className="-ml-1 flex min-w-0 flex-1 items-center gap-2 rounded-md py-0.5 pl-1 text-left outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/24"
+          className="-ms-1 flex min-w-0 flex-1 items-center gap-2 rounded-md py-0.5 ps-1 text-start outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/24"
         >
           <ChevronRightIcon
-            className={cn("size-3.5 shrink-0 text-muted-foreground", expanded && "rotate-90")}
+            className={cn(
+              "size-3.5 shrink-0 text-muted-foreground rtl:-scale-x-100",
+              expanded && "rotate-90",
+            )}
           />
           <span className="truncate text-13px text-foreground">{series.title}</span>
           {customized > 0 ? (
