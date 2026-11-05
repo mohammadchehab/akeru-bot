@@ -70,8 +70,9 @@ describe("decisions: delegated approval", () => {
 
     // Second wait: Bravo's delegated chat calls the protected tool. The task has to reach Bravo as
     // its own request first, so this row is the delegated approval, not Alpha's.
-    await new Promise((r) => setTimeout(r, 15000));
-    expect(stack.stub.completions.map((c) => { const m = JSON.parse(c.body).messages; return `${c.bot} | ${m.length} | ${m.at(-1).role} | ${JSON.stringify(m.at(-1).content).slice(0, 250)}`; })).toEqual([]);
+    const first = JSON.parse(stack.stub.completions[0].body).messages[0].content;
+    const text = typeof first === "string" ? first : JSON.stringify(first);
+    expect(text.split("\n").filter((l: string) => /Bravo|bot-/.test(l))).toEqual([]);
     await page.getByRole("textbox", { name: "Message Alpha" }).waitFor();
     await row.waitFor({ timeout: WAIT_MS });
     expect(await decisions().getByRole("button").count()).toBe(1);
