@@ -35,10 +35,17 @@ export type KeychainPort = {
   readonly write: (key: Buffer) => boolean;
 };
 
+/** Passphrase derivation settings, stored with the salt so the cost can be raised without breaking existing homes. */
+export type ScryptParams = { readonly salt: Buffer; readonly N: number; readonly r: number; readonly p: number };
+
+const SCRYPT_N = 2 ** 17;
+const SCRYPT_R = 8;
+const SCRYPT_P = 1;
+
 /** Not secret: the salt and the key-check record live in the home, the key never does. */
 export type MasterKeyStore = {
-  readonly readSalt: () => Buffer | undefined;
-  readonly writeSalt: (salt: Buffer) => void;
+  readonly readKdf: () => ScryptParams | undefined;
+  readonly writeKdf: (params: ScryptParams) => void;
   readonly readKeyCheck: () => string | undefined;
   readonly writeKeyCheck: (record: string) => void;
   /** How many sealed credentials the vault holds; decides whether a missing key may be regenerated. */
@@ -108,7 +115,10 @@ function fromEnv(env: MasterKeyInputs["env"]): Candidate {
   return { kind: "key", key, source: "env" };
 }
 
-function fromKeychain({ keychain, store }: MasterKeyInputs): Candidate {
+const hasPassphrase = (env: MasterKeyInputs["env"]): boolean =>
+  env.ISNADI_MASTER_PASSPHRASE !== undefined && env.ISNADI_MASTER_PASSPHRASE !== "";
+
+function fromKeychain({ env, keychain, store }: MasterKeyInputs): Candidate {
   const answer = keychain.read();
 
   if (answer.kind === "unavailable") return { kind: "skip" };
@@ -118,8 +128,12 @@ function fromKeychain({ keychain, store }: MasterKeyInputs): Candidate {
   if (answer.kind === "found") return { kind: "key", key: answer.key, source: "keychain" };
 
   // Fail closed: a fresh key beside sealed records, or a key-check from an earlier key, would orphan them.
-  if (store.sealedRecordCount() > 0 || store.readKeyCheck() !== undefined)
+  if (store.sealedRecordCount() > 0 || store.readKeyCheck() !== undefined) {
+    // A vault sealed by passphrase before a keychain appeared: let the passphrase try, the key check decides.
+    if (hasPassphrase(env) && store.readKeyCheck() !== undefined) return { kind: "skip" };
+
     return { kind: "failed", reason: "keychain-key-missing" };
+  }
 
   const key = NodeCrypto.randomBytes(MASTER_KEY_BYTES);
 
@@ -133,14 +147,24 @@ function fromPassphrase(env: MasterKeyInputs["env"], store: MasterKeyStore): Can
 
   if (passphrase === undefined || passphrase === "") return { kind: "skip" };
 
-  const existing = store.readSalt();
-  const salt = existing ?? NodeCrypto.randomBytes(16);
+  const existing = store.readKdf();
+  const kdf = existing ?? {
+    salt: NodeCrypto.randomBytes(16),
+    N: SCRYPT_N,
+    r: SCRYPT_R,
+    p: SCRYPT_P,
+  };
 
-  if (existing === undefined) store.writeSalt(salt);
+  if (existing === undefined) store.writeKdf(kdf);
 
   return {
     kind: "key",
-    key: NodeCrypto.scryptSync(passphrase, salt, MASTER_KEY_BYTES),
+    key: NodeCrypto.scryptSync(passphrase, kdf.salt, MASTER_KEY_BYTES, {
+      N: kdf.N,
+      r: kdf.r,
+      p: kdf.p,
+      maxmem: 256 * kdf.N * kdf.r,
+    }),
     source: "passphrase",
   };
 }

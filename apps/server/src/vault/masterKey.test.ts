@@ -3,6 +3,7 @@ import { assert, describe, it } from "@effect/vitest";
 import {
   type KeychainRead,
   type MasterKeyInputs,
+  type ScryptParams,
   MASTER_KEY_BYTES,
   resolveMasterKey,
 } from "./masterKey.ts";
@@ -22,7 +23,7 @@ function setup(options: Options = {}) {
   const state = {
     keychain: options.keychain ?? ({ kind: "unavailable" } as KeychainRead),
     keychainWrites: [] as Buffer[],
-    salt: undefined as Buffer | undefined,
+    kdf: undefined as ScryptParams | undefined,
     keyCheck: options.keyCheck,
   };
 
@@ -38,9 +39,9 @@ function setup(options: Options = {}) {
       },
     },
     store: {
-      readSalt: () => state.salt,
-      writeSalt: (salt) => {
-        state.salt = salt;
+      readKdf: () => state.kdf,
+      writeKdf: (params) => {
+        state.kdf = params;
       },
       readKeyCheck: () => state.keyCheck,
       writeKeyCheck: (record) => {
@@ -114,6 +115,32 @@ describe("resolveMasterKey", () => {
     });
   });
 
+  it("falls through to the passphrase when the keychain appears after a passphrase-sealed vault", () => {
+    const sealed = setup({ env: { ISNADI_MASTER_PASSPHRASE: "right" } });
+    const first = resolveMasterKey(sealed.inputs);
+    const t = setup({
+      env: { ISNADI_MASTER_PASSPHRASE: "right" },
+      keychain: { kind: "not-found" },
+      sealed: 1,
+      keyCheck: sealed.state.keyCheck,
+    });
+
+    t.state.kdf = sealed.state.kdf;
+
+    const again = resolveMasterKey(t.inputs);
+
+    assert.deepStrictEqual(again.ok && [again.source, again.key], first.ok && ["passphrase", first.key]);
+    assert.deepStrictEqual(t.state.keychainWrites, []);
+  });
+
+  it("stores the scrypt parameters with the salt and reads them back", () => {
+    const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "x" } });
+
+    resolveMasterKey(t.inputs);
+
+    assert.deepStrictEqual([t.state.kdf?.N, t.state.kdf?.r, t.state.kdf?.p], [2 ** 17, 8, 1]);
+  });
+
   it("never regenerates on a keychain error", () => {
     const t = setup({ keychain: { kind: "error" } });
 
@@ -139,7 +166,7 @@ describe("resolveMasterKey", () => {
     const check = t.state.keyCheck;
     const wrong = setup({ env: { ISNADI_MASTER_PASSPHRASE: "wrong" }, keyCheck: check });
 
-    wrong.state.salt = t.state.salt;
+    wrong.state.kdf = t.state.kdf;
 
     assert.deepStrictEqual(resolveMasterKey(wrong.inputs), { ok: false, reason: "wrong-key" });
     assert.strictEqual(wrong.state.keyCheck, check);
