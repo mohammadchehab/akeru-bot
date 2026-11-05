@@ -1,5 +1,6 @@
 import * as NodeCrypto from "node:crypto";
 
+import type * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
@@ -29,7 +30,7 @@ export class EgressTicketInvalid extends Schema.TaggedErrorClass<EgressTicketInv
 export interface EgressStream {
   readonly streamId: string;
   /** Bytes from the target, ending when the stream closes. */
-  readonly inbound: Queue.Dequeue<Uint8Array, Queue.Done>;
+  readonly inbound: Queue.Dequeue<Uint8Array, Cause.Done>;
   /** Bytes to the target. */
   readonly write: (chunk: Uint8Array) => Effect.Effect<void, ProviderGone>;
   readonly close: Effect.Effect<void>;
@@ -50,7 +51,7 @@ interface PendingStream {
   readonly expiresAt: number;
   used: boolean;
   readonly attached: Deferred.Deferred<SendToDesktop, EgressStreamRefused | ProviderGone>;
-  readonly inbound: Queue.Queue<Uint8Array, Queue.Done>;
+  readonly inbound: Queue.Queue<Uint8Array, Cause.Done>;
 }
 
 export interface EgressProvider {
@@ -159,7 +160,7 @@ export const make = Effect.sync(() => {
       const streamId = yield* randomId;
       const ticket = yield* randomId;
       const attached = yield* Deferred.make<SendToDesktop, EgressStreamRefused | ProviderGone>();
-      const inbound = yield* Queue.unbounded<Uint8Array, Queue.Done>();
+      const inbound = yield* Queue.unbounded<Uint8Array, Cause.Done>();
       const end = Queue.end(inbound).pipe(Effect.asVoid, Effect.andThen(drop(streamId)));
       streams.set(streamId, {
         owner,
