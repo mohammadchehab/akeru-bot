@@ -6,7 +6,8 @@ import * as Predicate from "effect/Predicate";
 import { serveEgressControl } from "./DesktopEgress.ts";
 import type { EgressSocketLink } from "./EgressWebSocket.ts";
 
-const encode = (value: EgressOpenFrame | { readonly type: "nonsense" }) => new TextEncoder().encode(JSON.stringify(value));
+const encode = (value: EgressOpenFrame | { readonly type: "nonsense" }) =>
+  new TextEncoder().encode(JSON.stringify(value));
 
 const makeControl = (frames: ReadonlyArray<Uint8Array>) => {
   const sent: Array<string> = [];
@@ -46,9 +47,10 @@ describe("serveEgressControl", () => {
 
       yield* serveEgressControl({ control, openStream });
 
-      assert.deepStrictEqual(sent.map((text) => JSON.parse(text)), [
-        { type: "refused", streamId: "s1", reason: "host-not-granted" },
-      ]);
+      assert.deepStrictEqual(
+        sent.map((text) => JSON.parse(text)),
+        [{ type: "refused", streamId: "s1", reason: "host-not-granted" }],
+      );
     }),
   );
 

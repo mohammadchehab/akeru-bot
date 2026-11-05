@@ -120,9 +120,17 @@ export const serveEgressControl = (input: {
       .pipe(Effect.ensuring(provider.shutdown));
   });
 
-const openStreamLink = (httpBaseUrl: string, bearerToken: string, streamId: string, ticket: string) =>
+const openStreamLink = (
+  httpBaseUrl: string,
+  bearerToken: string,
+  streamId: string,
+  ticket: string,
+) =>
   openEgressSocket(
-    toWsUrl(httpBaseUrl, `/egress/stream/${encodeURIComponent(streamId)}?ticket=${encodeURIComponent(ticket)}`),
+    toWsUrl(
+      httpBaseUrl,
+      `/egress/stream/${encodeURIComponent(streamId)}?ticket=${encodeURIComponent(ticket)}`,
+    ),
     { authorization: `Bearer ${bearerToken}` },
   ).pipe(
     Effect.map((socket) => ({
@@ -143,6 +151,7 @@ export const runDesktopEgress = <E>(
 ) => {
   const attempt = Effect.gen(function* () {
     const session = yield* getSession;
+
     const control = yield* openEgressSocket(toWsUrl(session.httpBaseUrl, "/egress"), {
       authorization: `Bearer ${session.bearerToken}`,
     });
