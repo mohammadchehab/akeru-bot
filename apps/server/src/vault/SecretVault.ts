@@ -17,12 +17,11 @@ export type SetCredentialInput = {
 
 export type SetCredentialResult =
   | { readonly ok: true; readonly credential: CredentialMetadata }
-  | { readonly ok: false; readonly reason: "no-valid-origin" | "empty-value" };
+  | { readonly ok: false; readonly reason: "no-valid-origin" | "empty-value" | "already-exists" };
 
 /**
- * Write-only credential storage. Nothing here returns a stored value: callers
- * can set, replace, delete, list metadata, or hand `withSecret` a function
- * that consumes the value. Only the request_secret broker calls `withSecret`.
+ * Write-only admin surface for the user-scope RPC. Nothing here returns a
+ * stored value, and `set` never rebinds the origins of an existing credential.
  */
 export type SecretVault = {
   readonly set: (input: SetCredentialInput) => SetCredentialResult;
@@ -30,19 +29,31 @@ export type SecretVault = {
   readonly delete: (id: string) => boolean;
   readonly list: () => ReadonlyArray<CredentialMetadata>;
   readonly find: (id: string) => CredentialMetadata | undefined;
-  readonly withSecret: <A>(id: string, consume: (value: string) => A) => A | undefined;
+};
+
+/**
+ * Broker-only surface. Only `requestSecret` receives it; the RPC layer never
+ * imports it. `consume` returns nothing, so the value cannot be returned out.
+ * Resolves false when the credential does not exist.
+ */
+export type SecretReader = {
+  readonly withSecret: (id: string, consume: (value: string) => void | Promise<void>) => Promise<boolean>;
 };
 
 /**
  * Holds values in memory only. Nothing is persisted yet, so no plaintext
  * password reaches disk; persistence arrives with the master key service.
  */
-export function makeInMemorySecretVault(now: () => number = Date.now): SecretVault {
+export function makeInMemorySecretVault(now: () => number = Date.now): {
+  readonly vault: SecretVault;
+  readonly reader: SecretReader;
+} {
   const values = new Map<string, string>();
   const metadata = new Map<string, CredentialMetadata>();
 
-  return {
+  const vault: SecretVault = {
     set: (input) => {
+      if (metadata.has(input.id)) return { ok: false, reason: "already-exists" };
       const origins = [
         ...new Set(
           input.origins
@@ -70,9 +81,14 @@ export function makeInMemorySecretVault(now: () => number = Date.now): SecretVau
     },
     list: () => [...metadata.values()],
     find: (id) => metadata.get(id),
-    withSecret: (id, consume) => {
+  };
+  const reader: SecretReader = {
+    withSecret: async (id, consume) => {
       const value = values.get(id);
-      return value === undefined ? undefined : consume(value);
+      if (value === undefined) return false;
+      await consume(value);
+      return true;
     },
   };
+  return { vault, reader };
 }

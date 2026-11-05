@@ -1,10 +1,16 @@
-import { checkInjectionTarget, type InjectionTarget } from "./originBinding.ts";
-import type { SecretVault } from "./SecretVault.ts";
+import { checkInjectionTarget, normalizeHttpsOrigin, type InjectionTarget } from "./originBinding.ts";
+import type { SecretReader, SecretVault } from "./SecretVault.ts";
 
-/** What the broker needs from the browser. `inspect` reports the live frame URLs. */
+/**
+ * What the broker needs from the browser. `inspect` reports the live frames and
+ * a document identity. `fill` must throw when the live document is not
+ * `target.documentId` (the adapter enforces it in the same in-page task that
+ * writes, for example DOM.focus plus Input.insertText on the checked frame's
+ * execution context). Its errors must never echo the value.
+ */
 export type SecretFieldBrowser = {
   readonly inspect: (field: string) => Promise<InjectionTarget>;
-  readonly fill: (field: string, value: string) => Promise<void>;
+  readonly fill: (field: string, value: string, target: InjectionTarget) => Promise<void>;
   readonly clear: (field: string) => Promise<void>;
 };
 
@@ -13,8 +19,9 @@ export type SecretUseRecord = {
   readonly credentialId: string;
   readonly label: string;
   readonly botId: string;
+  /** The top-frame origin that was attempted (never a path), or null when it is not https. */
   readonly origin: string | null;
-  readonly outcome: "filled" | "refused" | "redirected";
+  readonly outcome: "filled" | "refused" | "redirected" | "failed";
   readonly at: number;
 };
 
@@ -37,18 +44,20 @@ export type RequestSecretResult =
         | "top-frame-not-https"
         | "origin-not-bound"
         | "field-not-in-top-frame"
-        | "redirected-during-fill";
+        | "redirected-during-fill"
+        | "fill-failed";
     };
 
 /**
  * Types a stored secret into one field, only when the top frame is on a bound
- * origin. The origin is checked right before the fill and again after it, so a
- * redirect that lands mid-fill is caught and the field is cleared. The result
- * names a reason, never the value.
+ * origin. The fill is bound to the document that was checked, and the origin
+ * is checked again afterwards as a second line of defence: a redirect that
+ * lands mid-fill clears the field. The result names a reason, never the value.
  */
 export async function requestSecret(
   deps: {
-    readonly vault: SecretVault;
+    readonly vault: Pick<SecretVault, "find">;
+    readonly reader: SecretReader;
     readonly browser: SecretFieldBrowser;
     readonly audit: SecretUseAudit;
     readonly now?: () => number;
@@ -69,18 +78,28 @@ export async function requestSecret(
       at: now(),
     });
 
-  const before = checkInjectionTarget(credential.origins, await deps.browser.inspect(input.field));
+  const target = await deps.browser.inspect(input.field);
+  const before = checkInjectionTarget(credential.origins, target);
   if (!before.allowed) {
-    log("refused", null);
+    log("refused", normalizeHttpsOrigin(target.topFrameUrl));
     return { ok: false, reason: before.reason };
   }
 
-  await deps.vault.withSecret(input.credentialId, (value) =>
-    deps.browser.fill(input.field, value),
-  );
+  let found: boolean;
+  try {
+    found = await deps.reader.withSecret(input.credentialId, (value) =>
+      deps.browser.fill(input.field, value, target),
+    );
+  } catch {
+    await deps.browser.clear(input.field).catch(() => undefined);
+    log("failed", before.origin);
+    return { ok: false, reason: "fill-failed" };
+  }
+  if (!found) return { ok: false, reason: "unknown-credential" };
 
-  const after = checkInjectionTarget(credential.origins, await deps.browser.inspect(input.field));
-  if (!after.allowed || after.origin !== before.origin) {
+  const next = await deps.browser.inspect(input.field);
+  const after = checkInjectionTarget(credential.origins, next);
+  if (!after.allowed || after.origin !== before.origin || next.documentId !== target.documentId) {
     await deps.browser.clear(input.field);
     log("redirected", before.origin);
     return { ok: false, reason: "redirected-during-fill" };

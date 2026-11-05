@@ -3,7 +3,7 @@ import { assert, describe, it } from "@effect/vitest";
 import { checkInjectionTarget, normalizeHttpsOrigin } from "./originBinding.ts";
 
 const BOUND = ["https://bank.example"];
-const at = (topFrameUrl: string, fieldFrameUrl = topFrameUrl) => ({ topFrameUrl, fieldFrameUrl });
+const at = (topFrameUrl: string, fieldFrameUrl = topFrameUrl) => ({ topFrameUrl, fieldFrameUrl, documentId: "doc-1" });
 
 describe("normalizeHttpsOrigin", () => {
   it("keeps scheme, host and port only", () => {

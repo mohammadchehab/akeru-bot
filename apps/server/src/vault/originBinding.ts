@@ -17,6 +17,8 @@ export type InjectionTarget = {
   readonly topFrameUrl: string;
   /** URL of the frame that owns the field being filled. */
   readonly fieldFrameUrl: string;
+  /** Frame id plus navigation/loader id of the checked document. `fill` must refuse when the live document differs. */
+  readonly documentId: string;
 };
 
 export type OriginCheck =
