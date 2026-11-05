@@ -2,7 +2,8 @@ import * as Data from "effect/Data";
 
 import * as Predicate from "effect/Predicate";
 import {
-  AuthDesktopBootstrapScopes,
+  AuthAdministrativeScopes,
+  AuthEgressProviderScopes,
   AuthStandardClientScopes,
   type AuthEnvironmentScope,
   type AuthPairingLink,
@@ -132,7 +133,7 @@ export const make = Effect.gen(function* () {
     const now = yield* DateTime.now;
     yield* seedGrant(config.desktopBootstrapToken, {
       method: "desktop-bootstrap",
-      scopes: AuthDesktopBootstrapScopes,
+      scopes: AuthAdministrativeScopes,
       subject: "desktop-bootstrap",
       expiresAt: DateTime.add(now, {
         milliseconds: Duration.toMillis(DESKTOP_BOOTSTRAP_TTL_HOURS),
@@ -142,6 +143,21 @@ export const make = Effect.gen(function* () {
       // bearer expires). The seed itself stays inside the desktop
       // process and the rendered page, both of which the user already
       // implicitly trusts.
+      remainingUses: "unbounded",
+    });
+  }
+
+  if (config.egressProviderToken) {
+    const now = yield* DateTime.now;
+    // Same owner subject as the bootstrap grant, so the broker pairs the provider with the
+    // sessions it serves. Re-exchanged on every control reconnect, hence unbounded uses.
+    yield* seedGrant(config.egressProviderToken, {
+      method: "egress-provider",
+      scopes: AuthEgressProviderScopes,
+      subject: "desktop-bootstrap",
+      expiresAt: DateTime.add(now, {
+        milliseconds: Duration.toMillis(DESKTOP_BOOTSTRAP_TTL_HOURS),
+      }),
       remainingUses: "unbounded",
     });
   }

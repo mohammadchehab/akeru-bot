@@ -54,12 +54,16 @@ export class DesktopBackendConfiguration extends Context.Service<
     // fall-back to Windows), so the env switcher can't show "WSL" for a
     // backend that actually resolved to Windows.
     readonly resolvePrimaryLabel: Effect.Effect<string>;
+    // The main-process-only egress provider token, for exchanging with
+    // `scope=egress:provide`. Same value the primary backend was seeded with.
+    readonly egressProviderToken: Effect.Effect<string, PlatformError.PlatformError>;
   }
 >()("@isnadi/desktop/backend/DesktopBackendConfiguration") {}
 
 const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolvePrimary")(
   function* (
     input: SharedBootstrapInput & {
+      readonly egressProviderToken: string;
       readonly resourceMonitorPath: Option.Option<string>;
     },
   ): Effect.fn.Return<
@@ -78,6 +82,7 @@ const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolv
       t3Home: environment.baseDir,
       host: backendExposure.bindHost,
       desktopBootstrapToken: input.bootstrapToken,
+      egressProviderToken: input.egressProviderToken,
       tailscaleServeEnabled: backendExposure.tailscaleServeEnabled,
       tailscaleServePort: backendExposure.tailscaleServePort,
       desktopTelemetryFd: 4,
@@ -124,21 +129,28 @@ export const make = Effect.gen(function* () {
   // backends holding mismatched tokens and breaking the shared-token
   // invariant the renderer relies on. modifyEffect serializes the whole
   // get-or-create so the first caller wins and the rest reuse its token.
-  const tokenRef = yield* SynchronizedRef.make(Option.none<string>());
+  const createTokenSource = Effect.gen(function* () {
+    const ref = yield* SynchronizedRef.make(Option.none<string>());
 
-  const getOrCreateBootstrapToken = SynchronizedRef.modifyEffect(tokenRef, (current) =>
-    Option.match(current, {
-      onSome: (token) => Effect.succeed([token, current] as const),
-      onNone: () =>
-        crypto.randomBytes(24).pipe(
-          Effect.map((bytes) => {
-            const token = Encoding.encodeHex(bytes);
+    return SynchronizedRef.modifyEffect(ref, (current) =>
+      Option.match(current, {
+        onSome: (token) => Effect.succeed([token, current] as const),
+        onNone: () =>
+          crypto.randomBytes(24).pipe(
+            Effect.map((bytes) => {
+              const token = Encoding.encodeHex(bytes);
 
-            return [token, Option.some(token)] as const;
-          }),
-        ),
-    }),
-  );
+              return [token, Option.some(token)] as const;
+            }),
+          ),
+      }),
+    );
+  });
+
+  const getOrCreateBootstrapToken = yield* createTokenSource;
+  // Main-process only: never reaches the renderer or IPC. The server seeds a separate
+  // `egress:provide` grant from it, so the renderer's bootstrap token cannot mint egress access.
+  const getOrCreateEgressProviderToken = yield* createTokenSource;
 
   // Both resolvers share the same bootstrap token: the renderer holds a
   // single token and uses it against whichever backend it's currently
@@ -182,13 +194,14 @@ export const make = Effect.gen(function* () {
 
   const buildWindowsPrimaryConfig = Effect.gen(function* () {
     const shared = yield* sharedInputs;
+    const egressProviderToken = yield* getOrCreateEgressProviderToken;
 
     const resourceMonitorPath = yield* resolveResourceMonitorPath().pipe(
       Effect.provideService(FileSystem.FileSystem, fileSystem),
       Effect.provideService(DesktopEnvironment.DesktopEnvironment, environment),
     );
 
-    return yield* resolvePrimaryStartConfig({ ...shared, resourceMonitorPath }).pipe(
+    return yield* resolvePrimaryStartConfig({ ...shared, egressProviderToken, resourceMonitorPath }).pipe(
       Effect.provideService(DesktopEnvironment.DesktopEnvironment, environment),
       Effect.provideService(DesktopServerExposure.DesktopServerExposure, serverExposure),
     );
@@ -231,6 +244,7 @@ export const make = Effect.gen(function* () {
 
       return yield* buildWindowsPrimaryConfig;
     }).pipe(Effect.withSpan("desktop.backendConfiguration.resolvePrimary")),
+    egressProviderToken: getOrCreateEgressProviderToken,
     resolvePrimaryLabel: Effect.gen(function* () {
       const { useWsl, distro } = yield* describePrimary;
 

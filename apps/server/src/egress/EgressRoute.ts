@@ -8,6 +8,7 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import {
+  HttpMiddleware,
   HttpRouter,
   HttpServerRequest,
   HttpServerRespondable,
@@ -18,9 +19,18 @@ import * as EnvironmentAuth from "../auth/EnvironmentAuth.ts";
 import { failEnvironmentAuthInvalid, failEnvironmentInternal } from "../auth/http.ts";
 import * as EgressBroker from "./EgressBroker.ts";
 
+/** The request logger strips the query, but the tracer records `url.full`, which carries `?ticket=`. */
+export const isEgressStreamRequest = (request: { readonly url: string }) =>
+  new URL(request.url, "http://localhost").pathname.startsWith("/egress/stream/");
+
+/** Keeps stream tickets out of trace spans. */
+export const egressTicketRedactionLayer = Layer.succeed(HttpMiddleware.TracerDisabledWhen)(
+  isEgressStreamRequest,
+);
+
 const decodeDesktopFrame = Schema.decodeUnknownOption(Schema.fromJsonString(EgressDesktopFrame));
 
-/** Authenticates the upgrade and requires the user-only `egress:provide` scope. */
+/** Authenticates the upgrade and requires a session whose scopes are exactly `[egress:provide]`, so an admin bearer is refused. */
 const authenticateEgress = Effect.gen(function* () {
   const request = yield* HttpServerRequest.HttpServerRequest;
   const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
@@ -34,79 +44,85 @@ const authenticateEgress = Effect.gen(function* () {
     ),
   );
 
-  return { request, session, allowed: session.scopes.includes(AuthEgressProvideScope) };
+  return { request, session, allowed: session.scopes.length === 1 && session.scopes[0] === AuthEgressProvideScope };
 });
 
 const controlRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
   HttpRouter.add(
-    "GET",
-    "/egress",
-    Effect.gen(function* () {
-      const { request, session, allowed } = yield* authenticateEgress;
+  "GET",
+  "/egress",
+  Effect.gen(function* () {
+    const { request, session, allowed } = yield* authenticateEgress;
 
-      if (!allowed) return HttpServerResponse.empty({ status: 403 });
-      const socket = yield* request.upgrade;
-      const write = yield* socket.writer;
+    if (!allowed) return HttpServerResponse.empty({ status: 403 });
+    const socket = yield* request.upgrade;
+    const write = yield* socket.writer;
 
-      return yield* Effect.scoped(
-        Effect.gen(function* () {
-          const provider = yield* broker.registerProvider(
-            session.subject,
-            (frame: EgressOpenFrame) => write(JSON.stringify(frame)).pipe(Effect.ignore),
-          );
+    return yield* Effect.scoped(
+      Effect.gen(function* () {
+        const provider = yield* broker.registerProvider(session.subject, (frame: EgressOpenFrame) =>
+          write(JSON.stringify(frame)).pipe(Effect.ignore),
+          write(new Socket.CloseEvent(1000)).pipe(Effect.ignore),
+        );
 
-          yield* socket.runString<void, never>((text) =>
-            Option.match(decodeDesktopFrame(text), {
-              onNone: () => Effect.void,
-              onSome: provider.onFrame,
-            }),
-          );
+        yield* socket.runString<void, never>((text) =>
+          Option.match(decodeDesktopFrame(text), {
+            onNone: () => Effect.void,
+            onSome: provider.onFrame,
+          }),
+        );
 
-          return HttpServerResponse.empty();
-        }),
-      ).pipe(Effect.orElseSucceed(() => HttpServerResponse.empty()));
-    }).pipe(
-      Effect.catchTags({
-        EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
-        EnvironmentInternalError: HttpServerRespondable.toResponse,
+        return HttpServerResponse.empty();
       }),
-    ),
-  );
+    ).pipe(Effect.orElseSucceed(() => HttpServerResponse.empty()));
+  }).pipe(
+    Effect.catchTags({
+      EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
+      EnvironmentInternalError: HttpServerRespondable.toResponse,
+    }),
+  ),
+);
 
 const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
   HttpRouter.add(
-    "GET",
-    "/egress/stream/:streamId",
-    Effect.gen(function* () {
-      const { request, session, allowed } = yield* authenticateEgress;
+  "GET",
+  "/egress/stream/:streamId",
+  Effect.gen(function* () {
+    const { request, session, allowed } = yield* authenticateEgress;
 
-      if (!allowed) return HttpServerResponse.empty({ status: 403 });
-      const params = yield* HttpRouter.params;
-      const streamId = params.streamId ?? "";
-      const ticket = new URL(request.url, "http://localhost").searchParams.get("ticket") ?? "";
-      const socket = yield* request.upgrade;
-      const write = yield* socket.writer;
+    if (!allowed) return HttpServerResponse.empty({ status: 403 });
+    const params = yield* HttpRouter.params;
+    const streamId = params.streamId ?? "";
+    const ticket = new URL(request.url, "http://localhost").searchParams.get("ticket") ?? "";
 
-      const handlers = yield* broker
-        .attach(session.subject, streamId, ticket, {
-          send: (chunk) => write(chunk).pipe(Effect.ignore),
-          close: write(new Socket.CloseEvent(1000)).pipe(Effect.ignore),
-        })
-        .pipe(Effect.option);
+    // Refuse a bad ticket before the upgrade so the desktop sees a plain 403.
+    if (!(yield* broker.checkTicket(session.subject, streamId, ticket))) {
+      return HttpServerResponse.empty({ status: 403 });
+    }
+    const socket = yield* request.upgrade;
+    const write = yield* socket.writer;
 
-      if (Option.isNone(handlers)) return HttpServerResponse.empty({ status: 403 });
-      yield* socket
-        .run<void, never>(handlers.value.onData)
-        .pipe(Effect.ignore, Effect.ensuring(handlers.value.onEnd));
+    const handlers = yield* broker
+      .attach(session.subject, streamId, ticket, {
+        send: (chunk) => write(chunk).pipe(Effect.ignore),
+        close: write(new Socket.CloseEvent(1000)).pipe(Effect.ignore),
+      })
+      .pipe(Effect.option);
 
-      return HttpServerResponse.empty();
-    }).pipe(
-      Effect.catchTags({
-        EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
-        EnvironmentInternalError: HttpServerRespondable.toResponse,
-      }),
-    ),
-  );
+    if (Option.isNone(handlers)) return HttpServerResponse.empty({ status: 403 });
+    yield* socket.run<void, never>(handlers.value.onData).pipe(
+      Effect.ignore,
+      Effect.ensuring(handlers.value.onEnd),
+    );
+
+    return HttpServerResponse.empty();
+  }).pipe(
+    Effect.catchTags({
+      EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
+      EnvironmentInternalError: HttpServerRespondable.toResponse,
+    }),
+  ),
+);
 
 /** Needs `EgressBroker`; the server provides one shared instance so the proxy and the routes agree. */
 export const egressRouteLayer = Layer.unwrap(

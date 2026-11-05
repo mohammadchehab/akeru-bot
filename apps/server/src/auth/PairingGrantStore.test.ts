@@ -13,7 +13,9 @@ import { SqlitePersistenceMemory } from "../persistence/Layers/Sqlite.ts";
 import * as PairingGrantStore from "./PairingGrantStore.ts";
 
 const makeServerConfigLayer = (
-  overrides?: Partial<Pick<ServerConfig.ServerConfig["Service"], "desktopBootstrapToken">>,
+  overrides?: Partial<
+    Pick<ServerConfig.ServerConfig["Service"], "desktopBootstrapToken" | "egressProviderToken">
+  >,
 ) =>
   Layer.effect(
     ServerConfig.ServerConfig,
@@ -111,6 +113,26 @@ it.layer(NodeServices.layer)("PairingGrantStore.layer", (it) => {
     }).pipe(Effect.provide(makePairingGrantStoreLayer())),
   );
 
+  it.effect("seeds the egress provider credential with only the egress scope", () =>
+    Effect.gen(function* () {
+      const grants = yield* PairingGrantStore.PairingGrantStore;
+      const egress = yield* grants.consume("egress-provider-token");
+      const bootstrap = yield* grants.consume("desktop-bootstrap-token");
+
+      expect(egress.method).toBe("egress-provider");
+      expect(egress.scopes).toEqual(["egress:provide"]);
+      expect(egress.subject).toBe("desktop-bootstrap");
+      expect(bootstrap.scopes).not.toContain("egress:provide");
+    }).pipe(
+      Effect.provide(
+        makePairingGrantStoreLayer({
+          desktopBootstrapToken: "desktop-bootstrap-token",
+          egressProviderToken: "egress-provider-token",
+        }),
+      ),
+    ),
+  );
+
   it.effect("seeds the desktop bootstrap credential as a reusable grant", () =>
     Effect.gen(function* () {
       const bootstrapCredentials = yield* PairingGrantStore.PairingGrantStore;
@@ -124,7 +146,6 @@ it.layer(NodeServices.layer)("PairingGrantStore.layer", (it) => {
         "orchestration:operate",
         "access:read",
         "access:write",
-        "egress:provide",
       ]);
       expect(first.subject).toBe("desktop-bootstrap");
       expect(second.method).toBe("desktop-bootstrap");

@@ -49,7 +49,11 @@ export type ServerAuthPolicy = typeof ServerAuthPolicy.Type;
  * - `one-time-token`: a short-lived pairing token, suitable for manual pairing
  *   flows such as `/pair?token=...`
  */
-export const ServerAuthBootstrapMethod = Schema.Literals(["desktop-bootstrap", "one-time-token"]);
+export const ServerAuthBootstrapMethod = Schema.Literals([
+  "desktop-bootstrap",
+  "egress-provider",
+  "one-time-token",
+]);
 
 export type ServerAuthBootstrapMethod = typeof ServerAuthBootstrapMethod.Type;
 
@@ -83,8 +87,9 @@ export const AuthAccessReadScope = "access:read" as const;
 export const AuthAccessWriteScope = "access:write" as const;
 
 /**
- * User-only scope for the desktop's egress control socket. Only the desktop-bootstrap
- * grant carries it; standard, administrative, bot, and pairing credentials never do.
+ * User-only scope for the desktop's egress control socket. Only the egress-provider grant,
+ * whose token never leaves the desktop main process, carries it; standard, administrative,
+ * desktop-bootstrap, bot, and pairing credentials never do.
  */
 export const AuthEgressProvideScope = "egress:provide" as const;
 
@@ -137,10 +142,7 @@ export const AuthAdministrativeScopes = [
   AuthAccessWriteScope,
 ] as const;
 
-export const AuthDesktopBootstrapScopes = [
-  ...AuthAdministrativeScopes,
-  AuthEgressProvideScope,
-] as const;
+export const AuthEgressProviderScopes = [AuthEgressProvideScope] as const;
 
 export const AuthTokenExchangeGrantType =
   "urn:ietf:params:oauth:grant-type:token-exchange" as const;

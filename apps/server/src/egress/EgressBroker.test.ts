@@ -3,6 +3,7 @@ import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Fiber from "effect/Fiber";
 import * as Queue from "effect/Queue";
+import * as Scope from "effect/Scope";
 import * as TestClock from "effect/testing/TestClock";
 import type { EgressOpenFrame } from "@isnadi/contracts";
 import * as EgressBroker from "./EgressBroker.ts";
@@ -209,5 +210,76 @@ describe("EgressBroker", () => {
 
       assert.strictEqual(closes.count, 1);
     }),
+  );
+  it.effect("a replaced provider closes, and its late release leaves the new one registered", () =>
+    Effect.gen(function* () {
+      const broker = yield* EgressBroker.make;
+      const sent: EgressOpenFrame[] = [];
+      let firstClosed = false;
+      const first = yield* Effect.scope;
+      const firstScope = yield* Scope.fork(first);
+
+      yield* Scope.provide(firstScope)(
+        broker.registerProvider(
+          "owner-a",
+          () => Effect.void,
+          Effect.sync(() => {
+            firstClosed = true;
+          }),
+        ),
+      );
+
+      yield* Effect.scoped(
+        Effect.gen(function* () {
+          yield* broker.registerProvider("owner-a", (frame) => Effect.sync(() => void sent.push(frame)));
+          assert.isTrue(firstClosed);
+          yield* Scope.close(firstScope, Exit.void);
+          yield* startOpen(broker);
+          yield* Effect.yieldNow;
+          assert.lengthOf(sent, 1);
+        }),
+      );
+    }),
+  );
+
+  it.effect("checkTicket reports validity without spending the ticket", () =>
+    Effect.scoped(
+      Effect.gen(function* () {
+        const { broker, sent } = yield* setup;
+        yield* startOpen(broker);
+        yield* Effect.yieldNow;
+        const frame = sent[0]!;
+        assert.isFalse(yield* broker.checkTicket("owner-b", frame.streamId, frame.ticket));
+        assert.isFalse(yield* broker.checkTicket("owner-a", frame.streamId, "nope"));
+        assert.isTrue(yield* broker.checkTicket("owner-a", frame.streamId, frame.ticket));
+        assert.isTrue(yield* broker.checkTicket("owner-a", frame.streamId, frame.ticket));
+        yield* broker.attach("owner-a", frame.streamId, frame.ticket, noop);
+        assert.isFalse(yield* broker.checkTicket("owner-a", frame.streamId, frame.ticket));
+      }),
+    ),
+  );
+
+  it.effect("the inbound queue is bounded", () =>
+    Effect.scoped(
+      Effect.gen(function* () {
+        const { broker, sent } = yield* setup;
+        const fiber = yield* startOpen(broker);
+        yield* Effect.yieldNow;
+        const frame = sent[0]!;
+        const handlers = yield* broker.attach("owner-a", frame.streamId, frame.ticket, noop);
+        const stream = yield* Fiber.join(fiber);
+        const writer = yield* Effect.forkChild(
+          Effect.forEach(
+            Array.from({ length: EgressBroker.EGRESS_INBOUND_CAPACITY + 1 }),
+            () => handlers.onData(new Uint8Array([1])),
+            { discard: true },
+          ),
+        );
+        yield* Effect.yieldNow;
+        assert.isUndefined(writer.pollUnsafe());
+        yield* Queue.take(stream.inbound);
+        yield* Fiber.join(writer);
+      }),
+    ),
   );
 });

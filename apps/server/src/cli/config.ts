@@ -359,6 +359,7 @@ export const resolveServerConfig = (
     );
 
     const desktopBootstrapToken = bootstrap?.desktopBootstrapToken;
+    const egressProviderToken = bootstrap?.egressProviderToken;
     const desktopTelemetryFd = bootstrap?.desktopTelemetryFd;
     const desktopTelemetryControlFd = bootstrap?.desktopTelemetryControlFd;
     const resourceMonitorPath = bootstrap?.resourceMonitorPath;
@@ -449,6 +450,7 @@ export const resolveServerConfig = (
       noBrowser,
       startupPresentation,
       desktopBootstrapToken,
+      egressProviderToken,
       desktopTelemetryFd,
       desktopTelemetryControlFd,
       resourceMonitorPath,

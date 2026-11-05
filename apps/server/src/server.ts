@@ -22,7 +22,7 @@ import { websocketRpcRouteLayer } from "./ws.ts";
 import { remoteMachineUpdateRouteLayer } from "./remote/updateRoute.ts";
 import * as McpHttpServer from "./mcp/McpHttpServer.ts";
 import * as EgressBroker from "./egress/EgressBroker.ts";
-import { egressRouteLayer } from "./egress/EgressRoute.ts";
+import { egressRouteLayer, egressTicketRedactionLayer } from "./egress/EgressRoute.ts";
 import * as PreviewAutomationBroker from "./mcp/PreviewAutomationBroker.ts";
 import * as PreviewAutomationServerHost from "./mcp/PreviewAutomationServerHost.ts";
 import * as ServerRuntimeStartup from "./serverRuntimeStartup.ts";
@@ -288,7 +288,10 @@ export const makeServerLayer = Layer.unwrap(
       {
         disableLogger: !config.logWebSocketEvents,
       },
-    ).pipe(Layer.tap(() => Deferred.succeed(routesReady, undefined).pipe(Effect.orDie)));
+    ).pipe(
+      Layer.provide(egressTicketRedactionLayer),
+      Layer.tap(() => Deferred.succeed(routesReady, undefined).pipe(Effect.orDie)),
+    );
 
     const serverApplicationLayer = Layer.mergeAll(
       routesLayer,

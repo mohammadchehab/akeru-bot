@@ -257,6 +257,8 @@ function resolveGrantedScopes(
   return requested.filter((scope) => granted.includes(scope));
 }
 
+const EGRESS_PROVIDER_SESSION_TTL = Duration.minutes(15);
+
 export const make = Effect.gen(function* () {
   const policy = yield* EnvironmentAuthPolicy.EnvironmentAuthPolicy;
   const bootstrapCredentials = yield* PairingGrantStore.PairingGrantStore;
@@ -413,6 +415,8 @@ export const make = Effect.gen(function* () {
                 method: "bearer-access-token",
                 subject: grant.subject,
                 scopes: grantedScopes,
+                // The egress provider re-exchanges on every reconnect, so its bearer is short-lived.
+                ...(grant.method === "egress-provider" ? { ttl: EGRESS_PROVIDER_SESSION_TTL } : {}),
                 client: {
                   ...requestMetadata,
                   ...(grant.label ? { label: grant.label } : {}),
