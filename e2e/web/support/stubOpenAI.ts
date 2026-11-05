@@ -102,12 +102,8 @@ function textOf(message: RequestMessage | undefined): string {
     : String(content ?? "");
 }
 
-/** True while the marker message is the latest turn; the request after a tool result ends in a tool message. */
-function wantsApproval(body: string): boolean {
-  const last = requestMessages(body).at(-1);
-
-  return last?.role === "user" && textOf(last).includes(STUB_APPROVAL_MARKER);
-}
+/** A user message with this marker makes the stub delegate a task to Bravo, whose chat then waits on an approval. */
+export const STUB_DELEGATE_MARKER = "[delegate]";
 
 const APPROVAL_TOOL_CALL = {
   index: 0,
@@ -115,6 +111,38 @@ const APPROVAL_TOOL_CALL = {
   type: "function",
   function: { name: "UninstallMcpServer", arguments: JSON.stringify({ serverId: "e2e-server" }) },
 };
+
+/** The delegated task carries the approval marker, so Bravo's turn on it ends in the protected tool call. */
+const DELEGATE_TOOL_CALL = {
+  index: 0,
+  id: "call_e2e_delegate",
+  type: "function",
+  function: {
+    name: "SendToAgent",
+    arguments: JSON.stringify({
+      botId: "Bravo",
+      task: `Take this over ${STUB_APPROVAL_MARKER}`,
+      expectedResult: "Done.",
+    }),
+  },
+};
+
+/** The tool call a request scripts, while the marker message is the latest turn; the request after a tool result ends in a tool message. */
+function toolCallFor(body: string): typeof APPROVAL_TOOL_CALL | undefined {
+  const last = requestMessages(body).at(-1);
+
+  if (last?.role !== "user") {
+    return undefined;
+  }
+
+  const text = textOf(last);
+
+  if (text.includes(STUB_APPROVAL_MARKER)) {
+    return APPROVAL_TOOL_CALL;
+  }
+
+  return text.includes(STUB_DELEGATE_MARKER) ? DELEGATE_TOOL_CALL : undefined;
+}
 
 function chunk(delta: { role?: string; content?: string }, finishReason: string | null) {
   return `data: ${JSON.stringify({
@@ -155,7 +183,9 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
 
         completions.push({ bot, user: lastUserTextFrom(body), body });
 
-        if (wantsApproval(body)) {
+        const toolCall = toolCallFor(body);
+
+        if (toolCall) {
           if (wantsStream(body)) {
             response.writeHead(200, { "content-type": "text/event-stream" });
             response.write(chunk({ role: "assistant", content: "" }, null));
@@ -165,9 +195,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
                 object: "chat.completion.chunk",
                 created: 0,
                 model: STUB_MODEL,
-                choices: [
-                  { index: 0, delta: { tool_calls: [APPROVAL_TOOL_CALL] }, finish_reason: null },
-                ],
+                choices: [{ index: 0, delta: { tool_calls: [toolCall] }, finish_reason: null }],
               })}\n\n`,
             );
             response.write(chunk({}, "tool_calls"));
@@ -186,7 +214,7 @@ export async function startStubOpenAI(): Promise<StubOpenAI> {
                     message: {
                       role: "assistant",
                       content: null,
-                      tool_calls: [{ ...APPROVAL_TOOL_CALL, index: undefined }],
+                      tool_calls: [{ ...toolCall, index: undefined }],
                     },
                     finish_reason: "tool_calls",
                   },
