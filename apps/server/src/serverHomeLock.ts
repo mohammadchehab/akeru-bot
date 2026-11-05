@@ -27,7 +27,9 @@ const ServerHomeLockRecord = Schema.Struct({
 type ServerHomeLockRecord = typeof ServerHomeLockRecord.Type;
 
 const RecordJson = Schema.fromJsonString(ServerHomeLockRecord);
+
 const decodeRecord = Schema.decodeUnknownOption(RecordJson);
+
 const encodeRecord = Schema.encodeSync(RecordJson);
 
 /** Another live server already owns this state directory. */
