@@ -116,6 +116,7 @@ const make = Effect.gen(function* () {
         yield* Effect.addFinalizer(() =>
           fs.remove(stagedPath, { force: true }).pipe(Effect.ignore),
         );
+
         yield* fs.writeFileString(stagedPath, `${encodeRecord(record)}\n`);
 
         return yield* fs.link(stagedPath, lockPath).pipe(
@@ -163,6 +164,7 @@ const make = Effect.gen(function* () {
           lockPath,
           previousPid: Option.isSome(holder) ? holder.value.pid : null,
         });
+
         yield* fs.remove(lockPath, { force: true });
       }
     }
