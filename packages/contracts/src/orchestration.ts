@@ -44,6 +44,8 @@ export {
   OrchestrationProject,
   BotAvatar,
   BotEngine,
+  BotEngineChoice,
+  BOT_ENGINE_MAX_FALLBACKS,
   BotSandbox,
   PersistedBotSandbox,
   LEGACY_CLOUD_SANDBOX,

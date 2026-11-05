@@ -37,6 +37,7 @@ it.effect("decodes bot engine options while keeping old engines valid", () =>
     assert.deepStrictEqual(yield* decodeBotEngine({ provider: "codex", model: "gpt-5.6-sol" }), {
       provider: "codex",
       model: "gpt-5.6-sol",
+      fallbacks: [],
     });
     assert.deepStrictEqual(
       yield* decodeBotEngine({
@@ -54,6 +55,7 @@ it.effect("decodes bot engine options while keeping old engines valid", () =>
           { id: "reasoningEffort", value: "high" },
           { id: "serviceTier", value: "priority" },
         ],
+        fallbacks: [],
       },
     );
   }),
