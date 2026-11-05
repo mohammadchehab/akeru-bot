@@ -4,6 +4,7 @@ import * as NodeOS from "node:os";
 
 import { EgressOpenFrame } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
+import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -35,11 +36,11 @@ const lookupAll = (host: string) =>
   }).pipe(Effect.map((records) => records.map((record) => record.address)));
 
 const connectTcp = (target: { readonly host: string; readonly port: number }) =>
-  Effect.callback<NodeNet.Socket, unknown>((resume) => {
+  Effect.callback<NodeNet.Socket, EgressLinkError>((resume) => {
     const socket = NodeNet.connect({ host: target.host, port: target.port });
 
     socket.once("connect", () => resume(Effect.succeed(socket)));
-    socket.once("error", (cause) => resume(Effect.fail(cause)));
+    socket.once("error", (cause) => resume(Effect.fail(new EgressLinkError({ cause }))));
 
     return Effect.sync(() => socket.destroy());
   });
@@ -86,7 +87,10 @@ export const serveEgressControl = (input: {
   readonly openStream: EgressProvider.EgressProviderDeps["openStreamLink"];
 }) =>
   Effect.gen(function* () {
-    const bucket = EgressLimits.makeTokenBucket(EgressLimits.BYTES_PER_SECOND, Date.now());
+    const bucket = EgressLimits.makeTokenBucket(
+      EgressLimits.BYTES_PER_SECOND,
+      yield* Clock.currentTimeMillis,
+    );
 
     const provider = EgressProvider.makeEgressProvider({
       dial: (request) =>
@@ -100,11 +104,13 @@ export const serveEgressControl = (input: {
       openStreamLink: (streamId, ticket) => input.openStream(streamId, ticket),
       sendControl: (frame) => input.control.send(JSON.stringify(frame)),
       throttle: (bytes) =>
-        Effect.suspend(() => {
-          const waitMs = bucket.take(bytes, Date.now());
+        Clock.currentTimeMillis.pipe(
+          Effect.flatMap((now) => {
+            const waitMs = bucket.take(bytes, now);
 
-          return waitMs > 0 ? Effect.sleep(waitMs) : Effect.void;
-        }),
+            return waitMs > 0 ? Effect.sleep(waitMs) : Effect.void;
+          }),
+        ),
       maxStreams: EgressLimits.MAX_STREAMS_PER_SESSION,
       idleTimeoutMs: EgressLimits.STREAM_IDLE_TIMEOUT_MS,
     });
@@ -167,11 +173,11 @@ export const runDesktopEgress = <E>(
     let failures = 0;
 
     while (true) {
-      const started = Date.now();
+      const started = yield* Clock.currentTimeMillis;
       const exit = yield* attempt.pipe(Effect.exit);
 
       // A connection that held for a while resets the backoff.
-      failures = Date.now() - started > 60_000 ? 0 : failures + 1;
+      failures = (yield* Clock.currentTimeMillis) - started > 60_000 ? 0 : failures + 1;
       yield* Effect.logDebug("egress control ended", { failed: Exit.isFailure(exit) });
 
       yield* Effect.sleep(
