@@ -32,6 +32,7 @@ export type SecretUseAudit = {
 
 export function makeInMemorySecretUseAudit(): SecretUseAudit {
   const entries: Array<SecretUseRecord> = [];
+
   return { record: (entry) => entries.push(entry), list: () => [...entries] };
 }
 
@@ -66,6 +67,7 @@ export async function requestSecret(
 ): Promise<RequestSecretResult> {
   const now = deps.now ?? Date.now;
   const credential = deps.vault.find(input.credentialId);
+
   if (credential === undefined) return { ok: false, reason: "unknown-credential" };
 
   const log = (outcome: SecretUseRecord["outcome"], origin: string | null) =>
@@ -80,12 +82,14 @@ export async function requestSecret(
 
   const target = await deps.browser.inspect(input.field);
   const before = checkInjectionTarget(credential.origins, target);
+
   if (!before.allowed) {
     log("refused", normalizeHttpsOrigin(target.topFrameUrl));
     return { ok: false, reason: before.reason };
   }
 
   let found: boolean;
+
   try {
     found = await deps.reader.withSecret(input.credentialId, (value) =>
       deps.browser.fill(input.field, value, target),
@@ -95,10 +99,12 @@ export async function requestSecret(
     log("failed", before.origin);
     return { ok: false, reason: "fill-failed" };
   }
+
   if (!found) return { ok: false, reason: "unknown-credential" };
 
   const next = await deps.browser.inspect(input.field);
   const after = checkInjectionTarget(credential.origins, next);
+
   if (!after.allowed || after.origin !== before.origin || next.documentId !== target.documentId) {
     await deps.browser.clear(input.field);
     log("redirected", before.origin);
@@ -106,5 +112,6 @@ export async function requestSecret(
   }
 
   log("filled", before.origin);
+
   return { ok: true };
 }

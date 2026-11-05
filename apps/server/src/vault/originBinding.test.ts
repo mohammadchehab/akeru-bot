@@ -36,13 +36,19 @@ describe("checkInjectionTarget", () => {
       "https://evil-bank.example/",
       "https://login.bank.example/",
       "https://bank.example:8443/",
-      "https://bank.example@evil.test/",
     ]) {
       assert.deepStrictEqual(checkInjectionTarget(BOUND, at(url)), {
         allowed: false,
         reason: "origin-not-bound",
       });
     }
+  });
+
+  it("refuses a URL with userinfo, which can disguise the real host", () => {
+    assert.deepStrictEqual(checkInjectionTarget(BOUND, at("https://bank.example@evil.test/")), {
+      allowed: false,
+      reason: "top-frame-not-https",
+    });
   });
 
   it("refuses plain http even when the host matches", () => {

@@ -7,8 +7,11 @@
 /** Reduces a URL to its exact https origin, or null for anything else (http, userinfo, opaque). */
 export function normalizeHttpsOrigin(input: string): string | null {
   const parsed = URL.parse(input);
+
   if (parsed === null || parsed.protocol !== "https:") return null;
+
   if (parsed.username !== "" || parsed.password !== "") return null;
+
   return parsed.origin;
 }
 
@@ -38,10 +41,14 @@ export function checkInjectionTarget(
   target: InjectionTarget,
 ): OriginCheck {
   const topOrigin = normalizeHttpsOrigin(target.topFrameUrl);
+
   if (topOrigin === null) return { allowed: false, reason: "top-frame-not-https" };
+
   if (!boundOrigins.includes(topOrigin)) return { allowed: false, reason: "origin-not-bound" };
+
   if (normalizeHttpsOrigin(target.fieldFrameUrl) !== topOrigin) {
     return { allowed: false, reason: "field-not-in-top-frame" };
   }
+
   return { allowed: true, origin: topOrigin };
 }

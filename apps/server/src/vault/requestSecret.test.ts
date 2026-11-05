@@ -23,16 +23,19 @@ const setup = (frames: ReadonlyArray<InjectionTarget>, failFill = false) => {
     inspect: async () => frames[Math.min(inspections++, frames.length - 1)]!,
     fill: async (_field, value, target) => {
       if (failFill) throw new Error("browser exploded");
+
       filled.push(value);
       filledFor.push(target.documentId);
     },
     clear: async () => void cleared++,
   };
+
   const run = () =>
     requestSecret(
       { vault, reader, browser, audit, now: () => 2 },
       { credentialId: "bank", botId: "bot-1", field: "#password" },
     );
+
   return { vault, reader, audit, filled, filledFor, run, cleared: () => cleared };
 };
 
@@ -106,6 +109,7 @@ describe("requestSecret", () => {
       },
       { credentialId: "bank", botId: "bot-1", field: "#password" },
     );
+
     assert.deepStrictEqual(result, { ok: false, reason: "unknown-credential" });
     assert.deepStrictEqual(t.audit.list(), []);
   });
@@ -128,13 +132,14 @@ describe("requestSecret", () => {
       ok.audit.list(),
       refused.audit.list(),
     ];
+
     assert.notInclude(JSON.stringify(surfaces), SENTINEL);
   });
 });
 
 describe("SecretVault", () => {
   it("rejects a credential with no https origin or an empty value", () => {
-    const { vault, reader } = makeInMemorySecretVault();
+    const { vault } = makeInMemorySecretVault();
     assert.deepStrictEqual(vault.set({ id: "a", label: "A", origins: ["http://a.test"], value: "x" }), {
       ok: false,
       reason: "no-valid-origin",
