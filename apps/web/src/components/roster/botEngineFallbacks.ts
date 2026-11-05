@@ -70,3 +70,15 @@ export function fallbackNeedsHistoryDisclosure(
 ): boolean {
   return primary.provider !== entry.provider;
 }
+
+/** True when the entry needs the user's consent before the server accepts it, and lacks it. */
+export function fallbackLacksConsent(primary: BotEngineChoice, entry: BotEngineChoice): boolean {
+  return fallbackNeedsHistoryDisclosure(primary, entry) && entry.historyConsent !== true;
+}
+
+/** Records consent on one entry; the other entries and their order stay as they are. */
+export function grantBotEngineFallbackConsent(fallbacks: Fallbacks, index: number): Fallbacks {
+  return fallbacks.map((entry, position) =>
+    position === index ? { ...entry, historyConsent: true } : entry,
+  );
+}

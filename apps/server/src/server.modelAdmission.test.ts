@@ -218,6 +218,72 @@ it.describe("ws bot engine model routing preflight", () => {
     }).pipe(Effect.provide(Layer.mergeAll(NodeHttpServer.layerTest, NodeServices.layer))),
   );
 
+  const refusedHttpFallbacks = [
+    {
+      name: "a fallback on an instance the registry does not report, without consent",
+      fallbacks: [{ provider: "ghost", model: "m" }],
+      detail: /consent/i,
+    },
+    {
+      name: "a standard OpenCode fallback",
+      fallbacks: [{ provider: "opencode", model: "m" }],
+      detail: /OpenCode/,
+    },
+  ] as const;
+
+  for (const refused of refusedHttpFallbacks) {
+    it.effect(`rejects an HTTP bot.create with ${refused.name}`, () =>
+      Effect.gen(function* () {
+        const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-http-fallback-"));
+        seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
+
+        const dispatch = vi.fn<
+          OrchestrationEngine.OrchestrationEngineService["Service"]["dispatch"]
+        >(() => Effect.succeed({ sequence: 1 }));
+
+        yield* buildAppUnderTest({
+          config: { baseDir },
+          layers: {
+            providerRegistry: {
+              getProviders: Effect.succeed([
+                readyProvider(["gpt-5.6-sol"]),
+                {
+                  ...readyProvider(["m"], ProviderInstanceId.make("opencode")),
+                  driver: ProviderDriverKind.make("opencode"),
+                },
+              ]),
+            },
+            orchestrationEngine: { dispatch, readEvents: () => Stream.empty },
+          },
+        });
+
+        const { body: tokenBody } = yield* exchangeAccessToken(defaultDesktopBootstrapToken, {
+          scope: "orchestration:operate",
+        });
+
+        const response = yield* HttpClient.post("/api/orchestration/dispatch", {
+          headers: { authorization: `Bearer ${tokenBody.access_token ?? ""}` },
+          body: yield* HttpBody.json({
+            type: "bot.create",
+            commandId: CommandId.make("cmd-http-bot-create-fallback"),
+            botId: BotId.make("bot-http-fallback"),
+            name: "Fallback bot",
+            title: "Fallback bot",
+            avatar: { kind: "dither", seed: "fallback" },
+            engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: refused.fallbacks },
+            sandbox: "local",
+            groupId: null,
+            createdAt: now,
+          }),
+        });
+
+        assert.equal(response.status, 400);
+        assert.match(JSON.stringify(yield* response.json), refused.detail);
+        assert.equal(dispatch.mock.calls.length, 0);
+      }).pipe(Effect.provide(Layer.mergeAll(NodeHttpServer.layerTest, NodeServices.layer))),
+    );
+  }
+
   it.effect("lets bot.update pass when the saved engine is unchanged", () =>
     Effect.gen(function* () {
       const botId = BotId.make("bot-stale-model");

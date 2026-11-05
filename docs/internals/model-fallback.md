@@ -188,13 +188,14 @@ The rule is enforced in `inspectEngine`: an entry whose instance reports anythin
 ### History consent and save-time checks (slice 3)
 
 A fallback entry can move the chat's history to another vendor, so the contract carries
-`BotEngineChoice.historyConsent`. Adding a Custom API entry under a different primary driver asks the user
-once and records `historyConsent: true`; the server refuses the save without it. Saves also refuse a
+`BotEngineChoice.historyConsent`. Adding an entry on another instance asks the user once and records `historyConsent: true`; the server
+refuses a Custom API entry, or one on an instance the registry does not report, on another instance without
+it. An entry left without consent (after import) shows an "Allow chat sharing" action that grants it. Saves also refuse a
 standard OpenCode entry. Both rules live in `provider/engineFallbackPolicy.ts`, called from the
-`dispatchCommand` handler, which already requires operate scope. No bot tool edits its own engine.
+WebSocket `dispatchCommand` handler and the HTTP dispatch, which already require operate scope. No bot tool edits its own engine.
 Portability import keeps only entries whose provider exists in the target environment and clears
 `historyConsent` on them, so consent never travels with a file. The `FallbackPolicy` seam that decides
-when a turn may move arrives with slice 5.
+when a turn may move arrives with slice 4 (TASK-63.2).
 
 ## Contracts
 

@@ -17,7 +17,7 @@ import {
 import { Button } from "../ui/button";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 import { buildBotModelChoices } from "./BotModelPicker";
-import { fallbackNeedsHistoryDisclosure } from "./botEngineFallbacks";
+import { fallbackLacksConsent, fallbackNeedsHistoryDisclosure } from "./botEngineFallbacks";
 import type { BotProfileDraft } from "./useBotProfileDraft";
 
 const choiceKey = (instanceId: string, model: string) => `${instanceId}\u0000${model}`;
@@ -25,7 +25,11 @@ const choiceKey = (instanceId: string, model: string) => `${instanceId}\u0000${m
 /** The "If <model> can't answer" row and its ordered list of fallback models. */
 export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDraft }) {
   const { t } = useI18n();
-  const [pending, setPending] = useState<BotEngineChoice | null>(null);
+  // `index` is the entry that gets consent, or null while a new entry is being added.
+  const [pending, setPending] = useState<{
+    readonly entry: BotEngineChoice;
+    readonly index: number | null;
+  } | null>(null);
   const choices = buildBotModelChoices(draft.instanceEntries, draft.modelOptionsByInstance);
 
   const labelFor = (provider: string, model: string) =>
@@ -40,8 +44,16 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
     ...draft.fallbacks.map((entry) => choiceKey(entry.provider, entry.model)),
   ]);
 
+  // Standard OpenCode runs on the legacy bridge, which cannot retry a turn, so the server refuses it.
+  const isOpenCode = (instanceId: string) =>
+    draft.instanceEntries.find((entry) => entry.instanceId === instanceId)?.driverKind ===
+    "opencode";
+
   const addable = choices.filter(
-    (choice) => !choice.disabledReason && !taken.has(choiceKey(choice.instanceId, choice.model)),
+    (choice) =>
+      !choice.disabledReason &&
+      !isOpenCode(choice.instanceId) &&
+      !taken.has(choiceKey(choice.instanceId, choice.model)),
   );
 
   const primaryLabel = labelFor(draft.providerInstanceId, draft.model);
@@ -55,7 +67,7 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
         entry,
       )
     ) {
-      setPending(entry);
+      setPending({ entry, index: null });
 
       return;
     }
@@ -115,6 +127,15 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
                   {providerLabelFor(entry.provider)}
                 </p>
               </div>
+              {fallbackLacksConsent({ provider: draft.providerInstanceId, model: draft.model }, entry) ? (
+                <Button
+                  size="xs"
+                  variant="outline"
+                  onClick={() => setPending({ entry, index })}
+                >
+                  {t("Allow chat sharing")}
+                </Button>
+              ) : null}
               <Button
                 size="xs"
                 variant="ghost"
@@ -148,7 +169,7 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
             <AlertDialogDescription>
               {t(
                 "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.",
-                { provider: pending ? providerLabelFor(pending.provider) : "" },
+                { provider: pending ? providerLabelFor(pending.entry.provider) : "" },
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -158,13 +179,14 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
               render={
                 <Button
                   onClick={() => {
-                    if (pending) draft.addFallback({ ...pending, historyConsent: true });
+                    if (pending?.index != null) draft.grantFallbackConsent(pending.index);
+                    else if (pending) draft.addFallback({ ...pending.entry, historyConsent: true });
                     setPending(null);
                   }}
                 />
               }
             >
-              {t("Add model")}
+              {t("Share chat")}
             </AlertDialogClose>
           </AlertDialogFooter>
         </AlertDialogPopup>

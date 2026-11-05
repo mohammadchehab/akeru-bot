@@ -63,11 +63,21 @@ describe("validateEngineFallbacks", () => {
     ).toBeUndefined();
   });
 
-  it("accepts a Custom API fallback when the primary is Custom API too", () => {
-    expect(validate("custom", [{ provider: "custom-2", model: "a" }])).toBeUndefined();
+  it("requires consent for an instance the registry does not report", () => {
+    expect(validate("codex", [{ provider: "ghost", model: "a" }])).toMatch(/consent/i);
+    expect(
+      validate("codex", [{ provider: "ghost", model: "a", historyConsent: true }]),
+    ).toBeUndefined();
   });
 
-  it("ignores instances the registry does not know yet", () => {
-    expect(validate("codex", [{ provider: "ghost", model: "a" }])).toBeUndefined();
+  it("requires consent for a different Custom API instance under a Custom API primary", () => {
+    expect(validate("custom", [{ provider: "custom-2", model: "a" }])).toMatch(/consent/i);
+    expect(
+      validate("custom", [{ provider: "custom-2", model: "a", historyConsent: true }]),
+    ).toBeUndefined();
+  });
+
+  it("accepts an entry on the primary's own instance without consent", () => {
+    expect(validate("custom", [{ provider: "custom", model: "a" }])).toBeUndefined();
   });
 });

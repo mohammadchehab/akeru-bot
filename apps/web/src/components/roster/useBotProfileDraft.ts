@@ -27,6 +27,7 @@ import { shouldRenderTraitsControls } from "../chat/TraitsPicker";
 import {
   addBotEngineFallback,
   botEngineFromDraft,
+  grantBotEngineFallbackConsent,
   moveBotEngineFallback,
   removeBotEngineFallback,
 } from "./botEngineFallbacks";
@@ -317,6 +318,11 @@ export function useBotProfileDraft(
       setFallbacks((current) =>
         addBotEngineFallback({ primary: { provider, model }, fallbacks: current, entry }),
       );
+      setEngineChanged(true);
+      markChanged();
+    },
+    grantFallbackConsent: (index: number) => {
+      setFallbacks((current) => grantBotEngineFallbackConsent(current, index));
       setEngineChanged(true);
       markChanged();
     },

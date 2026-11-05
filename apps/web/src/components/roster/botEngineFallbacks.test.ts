@@ -4,7 +4,9 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   addBotEngineFallback,
   botEngineFromDraft,
+  fallbackLacksConsent,
   fallbackNeedsHistoryDisclosure,
+  grantBotEngineFallbackConsent,
   moveBotEngineFallback,
   removeBotEngineFallback,
 } from "./botEngineFallbacks";
@@ -95,5 +97,25 @@ describe("fallbackNeedsHistoryDisclosure", () => {
 
   it("stays quiet for a model on the same provider instance", () => {
     expect(fallbackNeedsHistoryDisclosure(primary, choice("codex", "gpt-5-mini"))).toBe(false);
+  });
+});
+
+describe("fallback consent", () => {
+  it("flags a cross-instance entry that lacks consent", () => {
+    expect(fallbackLacksConsent(primary, choice("claude", "sonnet"))).toBe(true);
+    expect(fallbackLacksConsent(primary, { ...choice("claude", "sonnet"), historyConsent: true })).toBe(
+      false,
+    );
+    expect(fallbackLacksConsent(primary, choice("codex", "gpt-5-mini"))).toBe(false);
+  });
+
+  it("grants consent to one entry and keeps order", () => {
+    const first = choice("claude", "sonnet");
+    const second = choice("grok", "grok-4");
+
+    expect(grantBotEngineFallbackConsent([first, second], 1)).toEqual([
+      first,
+      { ...second, historyConsent: true },
+    ]);
   });
 });

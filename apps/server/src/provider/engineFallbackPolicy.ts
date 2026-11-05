@@ -9,8 +9,9 @@ const CUSTOM_API_DRIVER = "customOpenai";
  * is refused, or undefined when it may be stored. Standard OpenCode runs on the
  * legacy bridge, which cannot retry a turn on another model, so it cannot be a
  * fallback. A Custom API endpoint is an arbitrary host, so it only receives a
- * chat from another provider after the user consented to sharing the history.
- * An instance the registry has not reported yet is not evidence of a problem.
+ * chat from another instance after the user consented to sharing the history,
+ * and so does an instance the registry does not report, since its host is
+ * unknown.
  */
 export const validateEngineFallbacks = (input: {
   readonly providers: ReadonlyArray<ServerProvider>;
@@ -18,8 +19,6 @@ export const validateEngineFallbacks = (input: {
 }): string | undefined => {
   const driverOf = (instanceId: string) =>
     input.providers.find((provider) => provider.instanceId === instanceId)?.driver;
-
-  const primaryDriver = driverOf(input.engine.provider);
 
   for (const entry of input.engine.fallbacks) {
     const driver = driverOf(entry.provider);
@@ -29,8 +28,8 @@ export const validateEngineFallbacks = (input: {
     }
 
     if (
-      driver === CUSTOM_API_DRIVER &&
-      primaryDriver !== CUSTOM_API_DRIVER &&
+      entry.provider !== input.engine.provider &&
+      (driver === CUSTOM_API_DRIVER || driver === undefined) &&
       entry.historyConsent !== true
     ) {
       return "A Custom API fallback needs consent to share this bot's chat history with it.";
