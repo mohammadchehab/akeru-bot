@@ -9,6 +9,7 @@ type Step = {
   readonly id?: string;
   readonly if?: string;
   readonly run?: string;
+  readonly env?: Readonly<Record<string, string>>;
   readonly uses?: string;
   readonly with?: Readonly<Record<string, string | boolean>>;
 };
@@ -18,6 +19,7 @@ type Job = {
   readonly needs?: string | ReadonlyArray<string>;
   readonly name?: string;
   readonly "runs-on": string;
+  readonly outputs?: Readonly<Record<string, string>>;
   readonly strategy?: {
     readonly "fail-fast"?: boolean;
     readonly matrix?: Readonly<Record<string, ReadonlyArray<number | string>>>;
@@ -97,8 +99,25 @@ describe("CI workflow budget", () => {
 
     for (const name of ["static", "desktop", "server", "native"]) {
       expect(ci.jobs[name]?.needs).toBe("changes");
+    }
+    // Light jobs stay on GitHub-hosted runners. Heavy jobs take the runner that `changes` picked:
+    // the self-hosted hetzner runners for the repository's own branches, GitHub-hosted for fork
+    // pull requests, so fork code never runs on our machine.
+    for (const name of ["static", "native"]) {
       expect(ci.jobs[name]?.["runs-on"]).toBe("ubuntu-24.04");
     }
+
+    for (const name of ["desktop", "server"]) {
+      expect(ci.jobs[name]?.["runs-on"]).toBe("${{ needs.changes.outputs.heavy_runner }}");
+    }
+
+    const pickRunner = ci.jobs.changes?.steps?.find((step) => step.id === "runner");
+    expect(pickRunner?.env?.IS_FORK).toBe("${{ github.event.pull_request.head.repo.fork }}");
+    expect(pickRunner?.run).toContain('[ "$IS_FORK" = "true" ]');
+    expect(pickRunner?.run).toContain("heavy_runner=ubuntu-24.04");
+    expect(pickRunner?.run).toContain("heavy_runner=hetzner");
+    expect(ci.jobs.changes?.outputs?.heavy_runner).toBe("${{ steps.runner.outputs.heavy_runner }}");
+
     // Docs-only pull requests skip the heavy jobs, never the required check.
 
     for (const name of ["desktop", "server", "native"]) {
