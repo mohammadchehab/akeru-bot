@@ -85,4 +85,15 @@ describe("live bot settings sheet", () => {
 
     expect(liveBotThreadSettings(session, bot, [model])).toBe(session);
   });
+
+  it("reports how many fallbacks the bot holds", () => {
+    const fallback = { provider: ProviderInstanceId.make("claude"), model: "sonnet" };
+
+    const bot = makeMobileBot({
+      engine: { provider: "codex", model: "new-model", fallbacks: [fallback] },
+    });
+
+    expect(liveBotThreadSettings(settings(), bot, [model]).fallbackCount).toBe(1);
+    expect(liveBotThreadSettings(settings(), bot, []).fallbackCount).toBe(1);
+  });
 });

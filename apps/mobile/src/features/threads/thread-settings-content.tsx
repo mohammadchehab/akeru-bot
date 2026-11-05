@@ -57,6 +57,28 @@ function DisclosureRow(props: {
   );
 }
 
+/** Read-only row for a value that is edited on web or desktop. */
+function InfoRow(props: {
+  readonly label: string;
+  readonly value: string;
+  readonly isLast?: boolean;
+}) {
+  return (
+    <View
+      className={cn(
+        "min-h-11 flex-row items-center gap-2 bg-card px-4 py-2",
+        !props.isLast && "border-b border-border-subtle",
+      )}
+    >
+      <Text className="text-sm font-t3-medium text-foreground">{props.label}</Text>
+      <View className="flex-1" />
+      <Text className="text-sm text-foreground-muted" numberOfLines={1}>
+        {props.value}
+      </Text>
+    </View>
+  );
+}
+
 /** Single option inside a submenu panel. */
 function ChoiceRow(props: {
   readonly label: string;
@@ -128,6 +150,9 @@ export function ThreadSettingsOptionsItem(props: {
   const insets = useSafeAreaInsets();
   const session = useThreadSettingsSession();
 
+  const fallbackCount = session.fallbackCount ?? 0;
+  const hasFallbacks = fallbackCount > 0;
+
   const bottomToolbarInset =
     Platform.OS === "ios" && NATIVE_MAIL_SEARCH_TOOLBAR_SUPPORTED
       ? NATIVE_MAIL_SEARCH_TOOLBAR_CONTENT_INSET
@@ -179,7 +204,7 @@ export function ThreadSettingsOptionsItem(props: {
         })}
         <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
           <DisclosureRow
-            isLast={!session.memoryThreadRef && !session.routinesRef}
+            isLast={!hasFallbacks && !session.memoryThreadRef && !session.routinesRef}
             label={t("Runtime")}
             value={
               RUNTIME_MODE_CHOICES.find((choice) => choice.mode === session.runtimeMode)?.label
@@ -187,6 +212,15 @@ export function ThreadSettingsOptionsItem(props: {
             onPress={() => props.onOpenSubmenu({ kind: "runtime" })}
           />
         </Animated.View>
+        {hasFallbacks ? (
+          <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
+            <InfoRow
+              isLast={!session.memoryThreadRef && !session.routinesRef}
+              label={t("Fallback models")}
+              value={String(fallbackCount)}
+            />
+          </Animated.View>
+        ) : null}
         {session.memoryThreadRef ? (
           <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
             <DisclosureRow

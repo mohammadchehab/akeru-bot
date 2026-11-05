@@ -12,6 +12,8 @@ export function liveBotThreadSettings(
 ): ExistingThreadSettingsRouteSession {
   if (!session.engineBotRef || !bot?.engine || bot.archivedAt !== null) return session;
 
+  const fallbackCount = bot.engine.fallbacks.length;
+
   const selection = botEngineModelSelection(bot.engine);
 
   const model = models.find(
@@ -20,10 +22,11 @@ export function liveBotThreadSettings(
       candidate.selection.model === selection.model,
   );
 
-  if (!model) return session;
+  if (!model) return { ...session, fallbackCount };
 
   return {
     ...session,
+    fallbackCount,
     selectedModel: selection,
     providerGroups: groupByProvider(models).filter(
       (group) => group.providerKey === selection.instanceId,
