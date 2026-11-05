@@ -1,11 +1,13 @@
 import type { ProviderInstanceEnvironment } from "@isnadi/contracts";
 
+import { withoutMasterKeyEnv } from "../vault/masterKeyEnv.ts";
+
 export function mergeProviderInstanceEnvironment(
   environment: ProviderInstanceEnvironment | undefined,
   baseEnv: NodeJS.ProcessEnv = process.env,
 ): NodeJS.ProcessEnv {
   if (!environment || environment.length === 0) {
-    return baseEnv;
+    return withoutMasterKeyEnv(baseEnv);
   }
 
   const next: NodeJS.ProcessEnv = { ...baseEnv };
@@ -14,7 +16,7 @@ export function mergeProviderInstanceEnvironment(
     next[variable.name] = variable.value;
   }
 
-  return next;
+  return withoutMasterKeyEnv(next);
 }
 
 export function explicitProviderInstanceEnvironment(
