@@ -1,6 +1,7 @@
 import { type Mock } from "vite-plus/test";
 import { createObservationHistory } from "../../test-support/Observations.ts";
 import {
+  type BotEngine,
   ModelSelection,
   ProviderRuntimeEvent,
   ProviderSession,
