@@ -3,6 +3,7 @@ import {
   ProviderInstanceId,
   isImageProviderId,
   type BotEngine,
+  type BotEngineChoice,
   type ImageProviderId,
   type McpServerId,
 } from "@isnadi/contracts";
@@ -23,6 +24,13 @@ import {
 } from "../../providerInstances";
 import { primaryServerProvidersAtom } from "../../state/server";
 import { shouldRenderTraitsControls } from "../chat/TraitsPicker";
+import {
+  addBotEngineFallback,
+  botEngineFromDraft,
+  grantBotEngineFallbackConsent,
+  moveBotEngineFallback,
+  removeBotEngineFallback,
+} from "./botEngineFallbacks";
 import {
   botDraftModelOptions,
   botEngineForModelPick,
@@ -102,6 +110,10 @@ export function useBotProfileDraft(
     bot.disabledMcpServerIds,
   );
 
+  const [fallbacks, setFallbacks] = useState<BotEngine["fallbacks"]>(
+    () => bot.engine?.fallbacks ?? [],
+  );
+
   const [engineChanged, setEngineChanged] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -175,6 +187,7 @@ export function useBotProfileDraft(
 
   useEffect(() => {
     if (engineChanged) return;
+    setFallbacks(bot.engine?.fallbacks ?? []);
     setProvider(bot.engine?.provider ?? defaultSelection.instanceId);
 
     if (bot.engine?.model) setModel(bot.engine.model);
@@ -237,7 +250,7 @@ export function useBotProfileDraft(
 
   const nextEngine: Bot["engine"] =
     engineChanged && model
-      ? { provider, model, ...(modelOptions ? { options: modelOptions } : {}) }
+      ? botEngineFromDraft({ provider, model, options: modelOptions, fallbacks })
       : bot.engine;
 
   const showModelOptions =
@@ -299,6 +312,30 @@ export function useBotProfileDraft(
     setDisabledMcpServerIds,
     model,
     modelOptions,
+    fallbacks,
+
+    addFallback: (entry: BotEngineChoice) => {
+      setFallbacks((current) =>
+        addBotEngineFallback({ primary: { provider, model }, fallbacks: current, entry }),
+      );
+      setEngineChanged(true);
+      markChanged();
+    },
+    grantFallbackConsent: (index: number) => {
+      setFallbacks((current) => grantBotEngineFallbackConsent(current, index));
+      setEngineChanged(true);
+      markChanged();
+    },
+    removeFallback: (index: number) => {
+      setFallbacks((current) => removeBotEngineFallback(current, index));
+      setEngineChanged(true);
+      markChanged();
+    },
+    moveFallback: (index: number, direction: -1 | 1) => {
+      setFallbacks((current) => moveBotEngineFallback(current, index, direction));
+      setEngineChanged(true);
+      markChanged();
+    },
 
     /** Applies a model pick, including the option reset the picker implies. */
     selectModel: (instanceId: string, nextModel: string) => {
@@ -310,12 +347,14 @@ export function useBotProfileDraft(
         },
         instanceId,
         model: nextModel,
+        fallbacks,
         instanceEntries,
       });
 
       setProvider(instanceId);
       setModel(nextModel);
       setModelOptions(engine.options);
+      setFallbacks(engine.fallbacks);
       setEngineChanged(true);
       markChanged();
     },
@@ -324,6 +363,7 @@ export function useBotProfileDraft(
         botEngineForOptions({
           selection: { instanceId: providerInstanceId, model },
           options: nextOptions,
+          fallbacks,
           instanceEntries,
         }).options,
       );

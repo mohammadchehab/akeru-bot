@@ -38,7 +38,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
         label: "Research",
         description: "Finds evidence for product decisions.",
         avatar: { kind: "blob", shape: "hex", color: "#7357ff" },
-        engine: { provider: "codex", model: "gpt-5.6" },
+        engine: { provider: "codex", model: "gpt-5.6", fallbacks: [] },
         sandbox: "local",
         runtimeMode: "full-access",
         groupId: null,
@@ -92,6 +92,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
             { id: "reasoningEffort", value: "high" },
             { id: "serviceTier", value: "priority" },
           ],
+          fallbacks: [],
         },
         sandbox: null,
         runtimeMode: "approval-required",
@@ -167,6 +168,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
             { id: "reasoningEffort", value: "high" },
             { id: "serviceTier", value: "priority" },
           ],
+          fallbacks: [],
         },
         sandbox: null,
         runtimeMode: "approval-required",
@@ -221,6 +223,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
           { id: "reasoningEffort", value: "high" },
           { id: "serviceTier", value: "priority" },
         ],
+        fallbacks: [],
       });
       assert.equal(rebuiltBot?.groupId, null);
       assert.equal(rebuiltBot?.archivedAt, null);
@@ -244,7 +247,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
         name: "Painter",
         title: "Illustrator",
         avatar: { kind: "dither", seed: "painter" },
-        engine: { provider: "claudeAgent", model: "claude-opus-5.5" },
+        engine: { provider: "claudeAgent", model: "claude-opus-5.5", fallbacks: [] },
         sandbox: "local",
         groupId: null,
         createdAt,

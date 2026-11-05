@@ -548,7 +548,11 @@ export function useThreadComposerState() {
         environmentId: selectedThreadShell.environmentId,
         input: {
           botId: engineBot.id,
-          engine: threadBotEngineUpdate(selectedEnvironmentRuntime?.serverConfig, value),
+          engine: threadBotEngineUpdate(
+            selectedEnvironmentRuntime?.serverConfig,
+            value,
+            engineBot.engine?.fallbacks ?? [],
+          ),
         },
       }).then((result) => {
         if (Predicate.isTagged(result, "Failure") && !isAtomCommandInterrupted(result)) {

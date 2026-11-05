@@ -103,11 +103,48 @@ export const BotAvatar = Schema.Union([
 
 export type BotAvatar = typeof BotAvatar.Type;
 
-export const BotEngine = Schema.Struct({
+/**
+ * One provider instance, model, and its options. `historyConsent` is set when
+ * the user agreed to replay this chat's history to a Custom API entry from a
+ * primary that is not one.
+ */
+export const BotEngineChoice = Schema.Struct({
   provider: TrimmedNonEmptyString,
   model: TrimmedNonEmptyString,
   options: Schema.optionalKey(ProviderOptionSelections),
+  historyConsent: Schema.optionalKey(Schema.Boolean),
 });
+
+export type BotEngineChoice = typeof BotEngineChoice.Type;
+
+export const BOT_ENGINE_MAX_FALLBACKS = 4;
+
+const engineChoiceKey = (choice: Pick<BotEngineChoice, "provider" | "model">) =>
+  `${choice.provider}\u0000${choice.model}`;
+
+/** A bot's primary engine plus the ordered models it falls back to. */
+export const BotEngine = Schema.Struct({
+  ...BotEngineChoice.fields,
+  fallbacks: Schema.Array(BotEngineChoice).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
+}).check(
+  Schema.makeFilter((engine) => {
+    if (engine.fallbacks.length > BOT_ENGINE_MAX_FALLBACKS) {
+      return `A bot can have at most ${BOT_ENGINE_MAX_FALLBACKS} fallback models.`;
+    }
+
+    const seen = new Set([engineChoiceKey(engine)]);
+
+    for (const fallback of engine.fallbacks) {
+      const key = engineChoiceKey(fallback);
+
+      if (seen.has(key)) return "A fallback model cannot repeat the primary or another fallback.";
+
+      seen.add(key);
+    }
+
+    return undefined;
+  }),
+);
 
 export type BotEngine = typeof BotEngine.Type;
 

@@ -60,7 +60,7 @@ describe("AgentControllerLive", () => {
         const settings = yield* ServerSettingsService;
         yield* controller.resolveEngine({
           threadId: claudeThreadId,
-          engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5" },
+          engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -162,7 +162,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: claudeThreadId,
-          engine: { provider: "opencode", model: "gpt-5.6" },
+          engine: { provider: "opencode", model: "gpt-5.6", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,

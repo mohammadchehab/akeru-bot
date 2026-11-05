@@ -387,4 +387,13 @@ export const settingsCatalog = {
     "Pay per request instead of using the subscription.",
   "Finish signing in to {provider} in the browser.":
     "Finish signing in to {provider} in the browser.",
+  "If {model} can’t answer": "If {model} can’t answer",
+  "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.":
+    "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.",
+  "Add model": "Add model",
+  "Share this chat with another provider?": "Share this chat with another provider?",
+  "Allow chat sharing": "Allow chat sharing",
+  "Share chat": "Share chat",
+  "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.":
+    "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.",
 } as const;

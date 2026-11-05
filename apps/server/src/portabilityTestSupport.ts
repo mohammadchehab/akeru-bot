@@ -136,7 +136,7 @@ export function makeSnapshot(
           assetPath: "/Users/leo/.isnadi/avatars/private.png",
           dithered: true,
         },
-        engine: { provider: "codex", model: "gpt-5.6-sol" },
+        engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
         sandbox: "local",
         runtimeMode: "full-access",
         imageProvider: null,

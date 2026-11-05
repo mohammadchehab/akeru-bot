@@ -515,7 +515,7 @@ describe("ProviderCommandReactor", () => {
 
   it("uses the updated bot engine model for the next turn after bot.update", async () => {
     const harness = await createHarness({
-      botEngine: { provider: "codex", model: "gpt-5-codex" },
+      botEngine: { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
     });
 
     const now = "2026-01-01T00:00:00.000Z";
@@ -543,7 +543,7 @@ describe("ProviderCommandReactor", () => {
         type: "bot.update",
         commandId: CommandId.make("cmd-bot-update-model"),
         botId: BotId.make("bot-1"),
-        engine: { provider: "codex", model: "gpt-5.6-sol" },
+        engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
       }),
     );
 
@@ -567,7 +567,7 @@ describe("ProviderCommandReactor", () => {
 
     expect(harness.resolveEngine).toHaveBeenNthCalledWith(2, {
       threadId: ThreadId.make("thread-1"),
-      engine: { provider: "codex", model: "gpt-5.6-sol" },
+      engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
       fallback: {
         instanceId: ProviderInstanceId.make("codex"),
         model: "gpt-5.6-sol",

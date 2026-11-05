@@ -1,6 +1,7 @@
 import { type Mock } from "vite-plus/test";
 import { createObservationHistory } from "../../test-support/Observations.ts";
 import {
+  type BotEngine,
   ModelSelection,
   ProviderRuntimeEvent,
   ProviderSession,
@@ -54,11 +55,11 @@ export type ProviderCommandHarnessOptions = {
     { readonly threadId: ThreadId; readonly turnId: TurnId },
     ProviderAdapterRequestError
   >;
-  readonly botEngine?: { readonly provider: string; readonly model: string } | null;
+  readonly botEngine?: BotEngine | null;
   /** Sandbox of the configured bot; defaults to the local workspace. */
   readonly botSandbox?: BotSandbox;
   readonly secondBot?: {
-    readonly engine: { readonly provider: string; readonly model: string };
+    readonly engine: BotEngine;
     readonly modelSelection?: ModelSelection;
   };
   readonly bindTurnFailure?: boolean;

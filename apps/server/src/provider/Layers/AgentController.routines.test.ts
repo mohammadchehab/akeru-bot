@@ -293,7 +293,7 @@ describe("AgentControllerLive", () => {
           const { controller, toolCall, requestId } = yield* openRoutineReview(mastra, events);
           yield* controller.resolveEngine({
             threadId: claudeThreadId,
-            engine: { provider: "codex", model: "gpt-5.6-sol" },
+            engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
             fallback: codexSelection,
             mode: "default",
             botConversation: true,

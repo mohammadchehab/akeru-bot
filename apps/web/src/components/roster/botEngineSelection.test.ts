@@ -42,7 +42,7 @@ describe("resolveStickyBotEngine", () => {
 
     expect(
       resolveStickyBotEngine({
-        engine: { provider: instanceId, model: "gpt-5.6-sol" },
+        engine: { provider: instanceId, model: "gpt-5.6-sol", fallbacks: [] },
         instanceEntries,
         settings,
         providers,
@@ -142,7 +142,7 @@ describe("resolveStickyBotEngine", () => {
 
     const providers = [makeComposerTestProvider(), signedOut];
     const instanceEntries = deriveProviderInstanceEntries(providers);
-    const engine = { provider: signedOut.instanceId, model: "claude-opus-5-5" };
+    const engine = { provider: signedOut.instanceId, model: "claude-opus-5-5", fallbacks: [] };
 
     const resolved = resolveStickyBotEngine({
       engine,
@@ -179,7 +179,7 @@ describe("resolveStickyBotEngine", () => {
     const instanceEntries = deriveProviderInstanceEntries(providers);
 
     const selected = resolveStickyBotEngine({
-      engine: { provider: savedId, model: "gpt-5-codex" },
+      engine: { provider: savedId, model: "gpt-5-codex", fallbacks: [] },
       instanceEntries,
       settings,
       providers,
@@ -202,6 +202,7 @@ describe("resolveStickyBotEngine", () => {
         provider: instanceId,
         model: "gpt-5.6-sol",
         options: [{ id: "reasoningEffort", value: "high" }],
+        fallbacks: [],
       },
       instanceEntries,
       settings,
@@ -241,7 +242,7 @@ describe("resolveStickyBotEngine", () => {
 
     expect(
       resolveStickyBotEngine({
-        engine: { provider: instanceId, model: "gpt-5.6-sol" },
+        engine: { provider: instanceId, model: "gpt-5.6-sol", fallbacks: [] },
         instanceEntries,
         settings,
         providers,
@@ -405,20 +406,32 @@ describe("botEngineTakesDelegatedWork", () => {
 
   it("marks only a saved engine on standard OpenCode", () => {
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "opencode", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(false);
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode_go", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "opencode_go", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "codex", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "codex", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
   });
 
   it("does not mark a bot without an engine or on an unknown instance", () => {
     expect(botEngineTakesDelegatedWork(null, instanceEntries)).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "missing", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "missing", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
   });
 });
@@ -437,7 +450,7 @@ describe("routineDelegateOptions", () => {
     id,
     name: id,
     archivedAt,
-    engine: provider === null ? null : { provider, model: "model" },
+    engine: provider === null ? null : { provider, model: "model", fallbacks: [] },
   });
 
   it("leaves out the routine's own bot and archived bots, and marks bots that cannot take work", () => {
@@ -507,6 +520,8 @@ describe("bot engine reasoning choices", () => {
 
   const codex = ProviderInstanceId.make("codex");
 
+  const fallbacks = [{ provider: "claudeAgent", model: "claude-opus-5-5" }];
+
   const saved = {
     instanceId: codex,
     model: "gpt-a",
@@ -521,7 +536,12 @@ describe("bot engine reasoning choices", () => {
     };
 
     expect(
-      botDraftModelOptions({ provider: "codex", model: "gpt-a" }, appDefault, "codex", "gpt-a"),
+      botDraftModelOptions(
+        { provider: "codex", model: "gpt-a", fallbacks: [] },
+        appDefault,
+        "codex",
+        "gpt-a",
+      ),
     ).toBeUndefined();
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-a")).toEqual(appDefault.options);
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-b")).toBeUndefined();
@@ -533,17 +553,19 @@ describe("bot engine reasoning choices", () => {
         previous: saved,
         instanceId: "codex",
         model: "gpt-a",
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-a", options: saved.options });
+    ).toEqual({ provider: "codex", model: "gpt-a", options: saved.options, fallbacks });
     expect(
       botEngineForModelPick({
         previous: saved,
         instanceId: "codex",
         model: "gpt-b",
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-b" });
+    ).toEqual({ provider: "codex", model: "gpt-b", fallbacks });
   });
 
   it("clears choices for another instance, an optionless model, and an unknown model", () => {
@@ -553,8 +575,8 @@ describe("bot engine reasoning choices", () => {
       ["codex", "gpt-custom"],
     ] as const) {
       expect(
-        botEngineForModelPick({ previous: saved, instanceId, model, instanceEntries }),
-      ).toEqual({ provider: instanceId, model });
+        botEngineForModelPick({ previous: saved, instanceId, model, fallbacks, instanceEntries }),
+      ).toEqual({ provider: instanceId, model, fallbacks });
     }
   });
 
@@ -563,19 +585,22 @@ describe("bot engine reasoning choices", () => {
       botEngineForOptions({
         selection: saved,
         options: [{ id: "reasoningEffort", value: "high" }],
+        fallbacks,
         instanceEntries,
       }),
     ).toEqual({
       provider: "codex",
       model: "gpt-a",
       options: [{ id: "reasoningEffort", value: "high" }],
+      fallbacks,
     });
     expect(
       botEngineForOptions({
         selection: saved,
         options: [{ id: "reasoningEffort", value: "default" }],
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-a" });
+    ).toEqual({ provider: "codex", model: "gpt-a", fallbacks });
   });
 });

@@ -51,10 +51,15 @@ export function serverModelCapabilities(
     ?.models.find((model) => model.slug === selection.model)?.capabilities;
 }
 
-/** The engine a direct bot saves for a picked selection, keeping only chosen options. */
+/** The engine a direct bot saves for a picked selection, keeping only chosen options and the bot's fallbacks. */
 export function threadBotEngineUpdate(
   config: ServerConfig | null | undefined,
   selection: ModelSelection,
+  fallbacks: BotEngine["fallbacks"],
 ): BotEngine {
-  return botEngineFromModelSelection(selection, serverModelCapabilities(config, selection));
+  return botEngineFromModelSelection(
+    selection,
+    serverModelCapabilities(config, selection),
+    fallbacks,
+  );
 }

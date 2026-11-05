@@ -154,7 +154,7 @@ describe("bot mentions", () => {
         name,
         title: "",
         archivedAt: null,
-        engine: { provider: ProviderInstanceId.make(provider), model: "m" },
+        engine: { provider: ProviderInstanceId.make(provider), model: "m", fallbacks: [] },
       });
 
     const engineBots = [

@@ -20,6 +20,7 @@ import * as ProjectionGroups from "../persistence/Services/ProjectionGroups.ts";
 import { OrchestrationCommandReceiptRepository } from "../persistence/Services/OrchestrationCommandReceipts.ts";
 import * as ProviderRegistry from "../provider/Services/ProviderRegistry.ts";
 import { deriveProviderInstanceConfigMap } from "../provider/Layers/ProviderInstanceRegistryHydration.ts";
+import { validateEngineFallbacks } from "../provider/engineFallbackPolicy.ts";
 import { preflightProvider } from "../provider/providerPreflight.ts";
 import { SubscriptionAuthService } from "../subscription-auth/service.ts";
 import { resolveGroupResponderBotId } from "./groupResponder.ts";
@@ -231,6 +232,20 @@ export const orchestrationHttpApiLayer = HttpApiBuilder.group(
             Option.isSome(providerRegistry)
           ) {
             const engine = normalizedCommand.engine;
+
+            if (engine.fallbacks.length > 0) {
+              const refusal = validateEngineFallbacks({
+                providers: yield* providerRegistry.value.getProviders,
+                engine,
+              });
+
+              if (refusal !== undefined) {
+                return yield* failEnvironmentInvalidRequest("invalid_command", {
+                  detail: refusal,
+                  unavailability: "unsupported-model",
+                });
+              }
+            }
 
             const existingBot =
               normalizedCommand.type === "bot.update"

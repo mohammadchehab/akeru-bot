@@ -151,6 +151,7 @@ export function botEngineForModelPick(input: {
   readonly previous: ModelSelection | null;
   readonly instanceId: string;
   readonly model: string;
+  readonly fallbacks: BotEngine["fallbacks"];
   readonly instanceEntries: ReadonlyArray<ProviderInstanceEntry>;
 }): BotEngine {
   const options = providerOptionsForModelChange({
@@ -159,7 +160,15 @@ export function botEngineForModelPick(input: {
     nextCaps: botEngineModelCapabilities(input.instanceEntries, input.instanceId, input.model),
   });
 
-  return { provider: input.instanceId, model: input.model, ...(options ? { options } : {}) };
+  return botEngineFromModelSelection(
+    {
+      instanceId: ProviderInstanceId.make(input.instanceId),
+      model: input.model,
+      ...(options ? { options } : {}),
+    },
+    undefined,
+    input.fallbacks,
+  );
 }
 
 /**
@@ -169,6 +178,7 @@ export function botEngineForModelPick(input: {
 export function botEngineForOptions(input: {
   readonly selection: ModelSelection;
   readonly options: ReadonlyArray<ProviderOptionSelection> | undefined;
+  readonly fallbacks: BotEngine["fallbacks"];
   readonly instanceEntries: ReadonlyArray<ProviderInstanceEntry>;
 }): BotEngine {
   const { instanceId, model } = input.selection;
@@ -180,6 +190,7 @@ export function botEngineForOptions(input: {
       input.selection.instanceId,
       input.selection.model,
     ),
+    input.fallbacks,
   );
 }
 

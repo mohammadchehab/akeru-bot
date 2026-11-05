@@ -390,4 +390,13 @@ export const settingsCatalog = {
   Subscription: "الاشتراك",
   "Pay per request instead of using the subscription.": "ادفع لكل طلب بدلا من استخدام الاشتراك.",
   "Finish signing in to {provider} in the browser.": "أكمل تسجيل الدخول إلى {provider} في المتصفح.",
+  "If {model} can’t answer": "إذا تعذّر على {model} الرد",
+  "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.":
+    "عند بلوغ حد المعدل أو حد الاستخدام، يعيد هذا البوت المحاولة في الدور نفسه على النموذج التالي بالترتيب.",
+  "Add model": "إضافة نموذج",
+  "Share this chat with another provider?": "مشاركة هذه المحادثة مع مزود آخر؟",
+  "Allow chat sharing": "السماح بمشاركة المحادثة",
+  "Share chat": "مشاركة المحادثة",
+  "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.":
+    "إذا تعذّر على النموذج الأول الرد، يُرسل سجل محادثة هذا البوت إلى {provider} ليكمل الدور.",
 } as const;

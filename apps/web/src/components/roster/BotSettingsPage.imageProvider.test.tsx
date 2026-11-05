@@ -145,7 +145,7 @@ function makeBot(overrides: Partial<Bot> = {}): Bot {
     description: null,
     disabledMcpServerIds: [],
     avatar: { kind: "blob", shape: "circle", color: "#2E8EFF" },
-    engine: { provider: codexId, model: "gpt-5" },
+    engine: { provider: codexId, model: "gpt-5", fallbacks: [] },
     sandbox: "local",
     runtimeMode: "full-access",
     personalityTone: 50,
@@ -348,7 +348,7 @@ describe("bot settings image provider", () => {
 
   it("keeps a removed saved provider visible while editing another field", async () => {
     const missingId = ProviderInstanceId.make("removed_claude");
-    state.bots = [makeBot({ engine: { provider: missingId, model: "sonnet" } })];
+    state.bots = [makeBot({ engine: { provider: missingId, model: "sonnet", fallbacks: [] } })];
 
     let tree = renderForm();
     expect(modelPicker(tree).activeInstanceId).toBe(missingId);
@@ -429,7 +429,7 @@ describe("bot settings image provider", () => {
     await flushPromises();
     expect(state.updateBot).toHaveBeenCalledWith(
       expectedUpdate(state.bots[0]!, {
-        engine: { provider: codexId, model: "gpt-5-mini" },
+        engine: { provider: codexId, model: "gpt-5-mini", fallbacks: [] },
         imageProvider: "chatgpt",
       }),
     );
@@ -445,7 +445,7 @@ describe("bot settings image provider", () => {
     await flushPromises();
     expect(state.updateBot).toHaveBeenCalledWith(
       expectedUpdate(state.bots[0]!, {
-        engine: { provider: codexId, model: "gpt-5-mini" },
+        engine: { provider: codexId, model: "gpt-5-mini", fallbacks: [] },
         imageProvider: "grok",
       }),
     );

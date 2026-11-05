@@ -340,6 +340,7 @@ export function createRuntimeIngestionHarness() {
         engine: {
           provider: ProviderInstanceId.make("codex"),
           model: "gpt-5-codex",
+          fallbacks: [],
         },
         sandbox: null,
         runtimeMode: "approval-required",

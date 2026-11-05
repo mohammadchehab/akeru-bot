@@ -368,7 +368,9 @@ describe("bot engine option helpers", () => {
   });
 
   it("reads a saved engine without borrowing anything and saves only chosen options", () => {
-    expect(botEngineModelSelection({ provider: "claudeAgent", model: "claude-opus-5-5" })).toEqual({
+    expect(
+      botEngineModelSelection({ provider: "claudeAgent", model: "claude-opus-5-5", fallbacks: [] }),
+    ).toEqual({
       instanceId: "claudeAgent",
       model: "claude-opus-5-5",
     });
@@ -378,8 +380,33 @@ describe("bot engine option helpers", () => {
           { id: "reasoningEffort", value: "default" },
         ]),
         nativeReasoningCaps(["high"]),
+        [],
       ),
-    ).toEqual({ provider: "codex", model: "gpt-a" });
+    ).toEqual({ provider: "codex", model: "gpt-a", fallbacks: [] });
+  });
+
+  it("keeps the saved fallback chain when the primary changes", () => {
+    const fallbacks = [{ provider: "claudeAgent", model: "claude-opus-5-5" }];
+
+    expect(
+      botEngineFromModelSelection(
+        createModelSelection(ProviderInstanceId.make("codex"), "gpt-b"),
+        undefined,
+        fallbacks,
+      ).fallbacks,
+    ).toEqual(fallbacks);
+  });
+
+  it("drops a fallback that becomes the primary", () => {
+    const kept = { provider: "claudeAgent", model: "claude-opus-5-5" };
+
+    expect(
+      botEngineFromModelSelection(
+        createModelSelection(ProviderInstanceId.make("codex"), "gpt-b"),
+        undefined,
+        [{ provider: "codex", model: "gpt-b" }, kept],
+      ).fallbacks,
+    ).toEqual([kept]);
   });
 
   it("keeps an explicit OpenCode variant that matches a common default", () => {
@@ -405,11 +432,13 @@ describe("bot engine option helpers", () => {
           { id: "variant", value: "medium" },
         ]),
         caps,
+        [],
       ),
     ).toEqual({
       provider: "opencode",
       model: "openai/gpt-5.4",
       options: [{ id: "variant", value: "medium" }],
+      fallbacks: [],
     });
   });
 });

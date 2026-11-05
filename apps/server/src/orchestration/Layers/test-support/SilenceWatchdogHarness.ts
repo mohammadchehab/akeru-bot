@@ -211,6 +211,7 @@ export function makeSilenceWatchdogHarness() {
         engine: {
           provider: ProviderInstanceId.make(provider),
           model: "test-model",
+          fallbacks: [],
         },
         sandbox: null,
         runtimeMode: "approval-required",

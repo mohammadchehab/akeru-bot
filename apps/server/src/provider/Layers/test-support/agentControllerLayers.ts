@@ -342,7 +342,7 @@ export function provideController<A, E>(
 export function resolveCodex(controller: AgentController["Service"]) {
   return controller.resolveEngine({
     threadId: codexThreadId,
-    engine: { provider: "codex", model: "gpt-5.6-sol" },
+    engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
     fallback: codexSelection,
     mode: "default",
     botConversation: true,
@@ -532,7 +532,7 @@ export const kimiStartInput = (
 export const resolveKimi = (controller: AgentController["Service"], model = "k3-256k") =>
   controller.resolveEngine({
     threadId: kimiThreadId,
-    engine: { provider: String(kimiInstanceId), model },
+    engine: { provider: String(kimiInstanceId), model, fallbacks: [] },
     fallback: codexSelection,
     mode: "default",
     botConversation: true,

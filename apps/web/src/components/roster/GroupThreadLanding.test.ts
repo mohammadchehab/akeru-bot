@@ -67,8 +67,11 @@ describe("group composer menus", () => {
     const instanceEntries = deriveProviderInstanceEntries(providers);
 
     const members = [
-      { id: "specialist", engine: { provider: claude.instanceId, model: "claude-opus-5-5" } },
-      { id: "boss", engine: { provider: codex.instanceId, model: "gpt-5-codex" } },
+      {
+        id: "specialist",
+        engine: { provider: claude.instanceId, model: "claude-opus-5-5", fallbacks: [] },
+      },
+      { id: "boss", engine: { provider: codex.instanceId, model: "gpt-5-codex", fallbacks: [] } },
     ];
 
     // Mirrors GroupThreadLanding: the boss answers first, so its engine picks the catalog.

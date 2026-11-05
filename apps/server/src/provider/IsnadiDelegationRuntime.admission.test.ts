@@ -182,7 +182,11 @@ describe("IsnadiDelegationRuntime", () => {
         bots: [
           bot(PARENT_BOT_ID),
           bot(CHILD_BOT_ID, {
-            engine: { provider: ProviderInstanceId.make("deleted-instance"), model: "model" },
+            engine: {
+              provider: ProviderInstanceId.make("deleted-instance"),
+              model: "model",
+              fallbacks: [],
+            },
           }),
         ],
       }),

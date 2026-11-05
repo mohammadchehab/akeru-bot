@@ -451,7 +451,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: openCodeGoThreadId,
-          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna" },
+          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -502,7 +502,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: openCodeGoThreadId,
-          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna" },
+          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,

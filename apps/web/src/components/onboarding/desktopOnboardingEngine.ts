@@ -44,7 +44,9 @@ export function resolveDesktopOnboardingEngine(
 
   const model = provider?.models.find((candidate) => candidate.isDefault) ?? provider?.models[0];
 
-  return provider && model ? { provider: provider.instanceId, model: model.slug } : null;
+  return provider && model
+    ? { provider: provider.instanceId, model: model.slug, fallbacks: [] }
+    : null;
 }
 
 export function resolveDesktopOnboardingCreationReadiness(

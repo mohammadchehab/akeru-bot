@@ -77,7 +77,7 @@ describe("ProviderCommandReactor", () => {
     ["kimi", "k3-256k"],
   ] as const)("routes a saved %s bot model to its provider driver", async (provider, model) => {
     const harness = await createHarness({
-      botEngine: { provider, model },
+      botEngine: { provider, model, fallbacks: [] },
     });
 
     const now = "2026-01-01T00:00:00.000Z";
@@ -102,7 +102,7 @@ describe("ProviderCommandReactor", () => {
     await harness.waitFor(() => harness.startSession.mock.calls.length === 1);
     expect(harness.resolveEngine).toHaveBeenCalledWith({
       threadId: ThreadId.make("thread-1"),
-      engine: { provider, model },
+      engine: { provider, model, fallbacks: [] },
       fallback: {
         instanceId: ProviderInstanceId.make(provider),
         model,
@@ -125,7 +125,7 @@ describe("ProviderCommandReactor", () => {
     Effect.gen(function* () {
       const harness = yield* Effect.promise(() =>
         createHarness({
-          botEngine: { provider: "codex", model: "gpt-5-codex" },
+          botEngine: { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
         }),
       );
 
@@ -168,7 +168,7 @@ describe("ProviderCommandReactor", () => {
     Effect.gen(function* () {
       const harness = yield* Effect.promise(() =>
         createHarness({
-          botEngine: { provider: "codex", model: "gpt-5-codex" },
+          botEngine: { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
         }),
       );
 
@@ -201,7 +201,7 @@ describe("ProviderCommandReactor", () => {
     Effect.gen(function* () {
       const harness = yield* Effect.promise(() =>
         createHarness({
-          botEngine: { provider: "codex", model: "gpt-5-codex" },
+          botEngine: { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
           bindTurnFailure: true,
         }),
       );
@@ -235,7 +235,7 @@ describe("ProviderCommandReactor", () => {
 
   it("projects a typed failure when the configured bot engine is unavailable", async () => {
     const harness = await createHarness({
-      botEngine: { provider: "missing", model: "missing-model" },
+      botEngine: { provider: "missing", model: "missing-model", fallbacks: [] },
       unavailableEngine: true,
     });
 
@@ -280,7 +280,7 @@ describe("ProviderCommandReactor", () => {
 
   it("keeps a missing sign-in typed so the chat can point to Settings", async () => {
     const harness = await createHarness({
-      botEngine: { provider: "claudeAgent", model: "claude-sonnet-4-6" },
+      botEngine: { provider: "claudeAgent", model: "claude-sonnet-4-6", fallbacks: [] },
       unavailableEngine: "missing-login",
     });
 
@@ -324,7 +324,7 @@ describe("ProviderCommandReactor", () => {
 
   it("reports a disabled engine as one readable line and names the bot on its bot work", async () => {
     const harness = await createHarness({
-      botEngine: { provider: "codex", model: "gpt-5-codex" },
+      botEngine: { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
       disabledEngine: true,
     });
 

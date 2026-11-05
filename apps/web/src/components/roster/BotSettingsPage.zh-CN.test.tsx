@@ -137,7 +137,7 @@ function makeBot(overrides: Partial<Bot> = {}): Bot {
     description: null,
     disabledMcpServerIds: [],
     avatar: { kind: "blob", shape: "circle", color: "#2E8EFF" },
-    engine: { provider: codexId, model: "gpt-5" },
+    engine: { provider: codexId, model: "gpt-5", fallbacks: [] },
     sandbox: "local",
     runtimeMode: "full-access",
     personalityTone: 50,

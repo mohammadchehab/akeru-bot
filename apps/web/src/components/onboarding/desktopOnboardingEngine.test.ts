@@ -42,14 +42,20 @@ describe("desktop onboarding engine", () => {
     expect(resolveDesktopOnboardingEngine("anthropic", providers)).toEqual({
       provider: "claudeAgent",
       model: "claude-default",
+      fallbacks: [],
     });
     expect(resolveDesktopOnboardingEngine("opencode-go", providers)).toEqual({
       provider: "opencodeGo",
       model: "gpt-5.6-luna",
+      fallbacks: [],
     });
     expect(resolveDesktopOnboardingEngine("xai", providers)).toBeNull();
     expect(
-      desktopOnboardingModelSelection({ provider: "claudeAgent", model: "claude-default" }),
+      desktopOnboardingModelSelection({
+        provider: "claudeAgent",
+        model: "claude-default",
+        fallbacks: [],
+      }),
     ).toEqual({ instanceId: "claudeAgent", model: "claude-default" });
   });
 
@@ -75,7 +81,7 @@ describe("desktop onboarding engine", () => {
       ]),
     ).toEqual({
       status: "ready",
-      engine: { provider: "codex", model: "gpt-default" },
+      engine: { provider: "codex", model: "gpt-default", fallbacks: [] },
     });
   });
 
@@ -100,6 +106,7 @@ describe("desktop onboarding engine", () => {
     expect(resolveDesktopOnboardingEngine(providerId, [provider])).toEqual({
       provider: provider.instanceId,
       model: "default",
+      fallbacks: [],
     });
     expect(
       resolveDesktopOnboardingEngine(providerId, [{ ...provider, enabled: false }]),

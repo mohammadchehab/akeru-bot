@@ -263,7 +263,7 @@ describe("AgentControllerLive", () => {
         // OpenCode reads per-turn context as its system prompt.
         yield* controller.resolveEngine({
           threadId: claudeThreadId,
-          engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5" },
+          engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: false,
@@ -401,7 +401,7 @@ describe("AgentControllerLive", () => {
           const controller = yield* AgentController;
           yield* controller.resolveEngine({
             threadId: claudeThreadId,
-            engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5" },
+            engine: { provider: "opencode", model: "anthropic/claude-sonnet-4-5", fallbacks: [] },
             fallback: codexSelection,
             mode: "default",
             botConversation: true,
@@ -448,7 +448,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: openCodeGoThreadId,
-          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna" },
+          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -492,7 +492,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: openCodeGoThreadId,
-          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna" },
+          engine: { provider: String(openCodeGoInstanceId), model: "gpt-5.6-luna", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -538,6 +538,7 @@ describe("AgentControllerLive", () => {
               { id: "reasoningEffort", value: "high" },
               { id: "serviceTier", value: "priority" },
             ],
+            fallbacks: [],
           },
           fallback: codexSelection,
           mode: "default",
@@ -566,6 +567,7 @@ describe("AgentControllerLive", () => {
               { id: "reasoningEffort", value: "low" },
               { id: "serviceTier", value: "flex" },
             ],
+            fallbacks: [],
           },
           fallback: codexSelection,
           mode: "default",

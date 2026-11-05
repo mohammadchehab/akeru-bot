@@ -24,14 +24,14 @@ describe("bot step meter", () => {
     const meters = buildBotStepMeters([
       activity("usage", "bot.step-usage.updated", {
         botId: "bot-1",
-        engine: { provider: "codex", model: "gpt-5.6-sol" },
+        engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
         tokens: 1_200,
         estimatedCost: { status: "available", usd: 0.42 },
       }),
     ]);
 
     expect(meters.get("turn-1")).toEqual({
-      engine: { provider: "codex", model: "gpt-5.6-sol" },
+      engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
       tokens: 1_200,
       costUsd: 0.42,
     });
@@ -41,7 +41,7 @@ describe("bot step meter", () => {
     const meters = buildBotStepMeters([
       activity("usage", "bot.step-usage.updated", {
         botId: "bot-1",
-        engine: { provider: "anthropic", model: "anthropic/claude-opus-5" },
+        engine: { provider: "anthropic", model: "anthropic/claude-opus-5", fallbacks: [] },
         tokens: null,
         estimatedCost: { status: "unavailable", usd: null },
       }),
@@ -53,7 +53,7 @@ describe("bot step meter", () => {
   it("keeps the last valid snapshot", () => {
     const snapshot = {
       botId: "bot-1",
-      engine: { provider: "codex", model: "gpt-5.6-sol" },
+      engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
       tokens: 100,
       estimatedCost: { status: "available", usd: 0.1 },
     };

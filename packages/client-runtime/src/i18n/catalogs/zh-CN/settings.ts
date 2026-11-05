@@ -373,4 +373,13 @@ export const settingsCatalog = {
   Subscription: "订阅",
   "Pay per request instead of using the subscription.": "按请求付费，而不使用订阅。",
   "Finish signing in to {provider} in the browser.": "在浏览器中完成 {provider} 的登录。",
+  "If {model} can’t answer": "如果 {model} 无法回答",
+  "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.":
+    "遇到速率限制或用量限制时，此机器人会按顺序在下一个模型上重试同一轮。",
+  "Add model": "添加模型",
+  "Share this chat with another provider?": "与其他提供商共享此聊天？",
+  "Allow chat sharing": "允许共享聊天",
+  "Share chat": "共享聊天",
+  "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.":
+    "如果第一个模型无法回答，此机器人的聊天记录会发送给 {provider}，以便继续这一轮。",
 } as const;

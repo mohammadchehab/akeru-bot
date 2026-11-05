@@ -181,7 +181,11 @@ const createBot = (
       name: botId,
       title: "Designer",
       avatar: { kind: "dither", seed: botId },
-      engine: { provider, model: provider === "codex" ? "gpt-5.6" : "claude-opus-5.5" },
+      engine: {
+        provider,
+        model: provider === "codex" ? "gpt-5.6" : "claude-opus-5.5",
+        fallbacks: [],
+      },
       sandbox: "local",
       runtimeMode: "full-access",
       groupId: null,

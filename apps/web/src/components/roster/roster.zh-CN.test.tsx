@@ -137,7 +137,7 @@ describe("roster in Simplified Chinese", () => {
     const markup = renderInChinese(
       <BotStepMeter
         meter={{
-          engine: { provider: ProviderInstanceId.make("codex"), model: "gpt-5" },
+          engine: { provider: ProviderInstanceId.make("codex"), model: "gpt-5", fallbacks: [] },
           tokens: 1200,
           costUsd: null,
         }}

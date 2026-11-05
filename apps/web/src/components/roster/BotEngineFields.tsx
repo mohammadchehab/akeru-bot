@@ -4,6 +4,7 @@ import { useI18n } from "../../i18n";
 import { ProviderUnavailableNotice } from "../chat/ProviderUnavailableNotice";
 import { TraitsPicker } from "../chat/TraitsPicker";
 import { SettingsRow, SettingsSection } from "../settings/settingsLayout";
+import { BotEngineFallbackList } from "./BotEngineFallbackList";
 import { BotModelPicker } from "./BotModelPicker";
 import { BotUsageSection } from "./BotUsageSection";
 import type { Bot } from "./types";
@@ -69,6 +70,8 @@ export function BotEngineFields({
           }
         />
       ) : null}
+
+      {draft.model ? <BotEngineFallbackList draft={draft} /> : null}
 
       <SettingsRow title={t("Usage")} description={t("What this bot has spent so far.")}>
         <div className="mt-3 max-w-2xl pb-3.5">

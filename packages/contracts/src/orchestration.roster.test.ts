@@ -37,6 +37,7 @@ it.effect("decodes bot engine options while keeping old engines valid", () =>
     assert.deepStrictEqual(yield* decodeBotEngine({ provider: "codex", model: "gpt-5.6-sol" }), {
       provider: "codex",
       model: "gpt-5.6-sol",
+      fallbacks: [],
     });
     assert.deepStrictEqual(
       yield* decodeBotEngine({
@@ -54,8 +55,32 @@ it.effect("decodes bot engine options while keeping old engines valid", () =>
           { id: "reasoningEffort", value: "high" },
           { id: "serviceTier", value: "priority" },
         ],
+        fallbacks: [],
       },
     );
+  }),
+);
+
+it.effect("decodes the fallback chain with its limits", () =>
+  Effect.gen(function* () {
+    const primary = { provider: "codex", model: "gpt-5.6-sol" };
+    const entry = (model: string) => ({ provider: "claude", model });
+
+    assert.deepStrictEqual((yield* decodeBotEngine(primary)).fallbacks, []);
+    assert.deepStrictEqual(
+      (yield* decodeBotEngine({
+        ...primary,
+        fallbacks: [{ ...entry("sonnet"), historyConsent: true }, entry("opus")],
+      })).fallbacks,
+      [{ ...entry("sonnet"), historyConsent: true }, entry("opus")],
+    );
+
+    const rejected = (fallbacks: ReadonlyArray<unknown>) =>
+      decodeBotEngine({ ...primary, fallbacks }).pipe(Effect.flip);
+
+    yield* rejected(["a", "b", "c", "d", "e"].map(entry));
+    yield* rejected([primary]);
+    yield* rejected([entry("sonnet"), entry("sonnet")]);
   }),
 );
 

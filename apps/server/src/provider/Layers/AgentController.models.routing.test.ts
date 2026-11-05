@@ -74,7 +74,7 @@ describe("AgentControllerLive", () => {
           ] as const) {
             yield* controller.resolveEngine({
               threadId,
-              engine: { provider: "codex", model },
+              engine: { provider: "codex", model, fallbacks: [] },
               fallback: { instanceId: codexInstanceId, model },
               mode: "default",
               botConversation: true,

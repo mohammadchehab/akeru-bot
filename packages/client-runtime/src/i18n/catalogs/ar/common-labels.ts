@@ -326,6 +326,7 @@ export const commonLabelsCatalog = {
   Clear: "امسح",
   "Clear observations": "امسح الملاحظات",
   "Markdown and observations": "Markdown والملاحظات",
+  "Fallback models": "النماذج الاحتياطية",
   "Not loaded": "غير محمّل",
   Unknown: "غير معروف",
   "Keep mine": "أبقِ نسختي",
