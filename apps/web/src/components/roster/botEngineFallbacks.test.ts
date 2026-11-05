@@ -4,6 +4,7 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   addBotEngineFallback,
   botEngineFromDraft,
+  fallbackNeedsHistoryDisclosure,
   moveBotEngineFallback,
   removeBotEngineFallback,
 } from "./botEngineFallbacks";
@@ -84,5 +85,15 @@ describe("botEngineFromDraft", () => {
     expect(
       botEngineFromDraft({ provider: "codex", model: "gpt-5", options, fallbacks: [] }),
     ).toEqual({ provider: "codex", model: "gpt-5", options, fallbacks: [] });
+  });
+});
+
+describe("fallbackNeedsHistoryDisclosure", () => {
+  it("asks once when the entry runs on another provider instance", () => {
+    expect(fallbackNeedsHistoryDisclosure(primary, choice("claude", "sonnet"))).toBe(true);
+  });
+
+  it("stays quiet for a model on the same provider instance", () => {
+    expect(fallbackNeedsHistoryDisclosure(primary, choice("codex", "gpt-5-mini"))).toBe(false);
   });
 });
