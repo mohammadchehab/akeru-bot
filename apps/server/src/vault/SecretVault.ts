@@ -48,13 +48,32 @@ export type InMemorySecretVault = {
   readonly reader: SecretReader;
 };
 
+/** Where a vault keeps its entries between runs; `save` gets every entry after each change. */
+export type VaultPersistence = {
+  readonly initial: ReadonlyArray<{ readonly metadata: CredentialMetadata; readonly value: string }>;
+  readonly save: (
+    entries: ReadonlyArray<{ readonly metadata: CredentialMetadata; readonly value: string }>,
+  ) => void;
+};
+
 /**
- * Holds values in memory only. Nothing is persisted yet, so no plaintext
- * password reaches disk; persistence arrives with the master key service.
+ * Holds values in memory. Without `persistence` nothing reaches disk; with
+ * it, `save` is the only place a value leaves, and the caller seals it there.
  */
-export function makeInMemorySecretVault(now: () => number = Date.now): InMemorySecretVault {
+export function makeInMemorySecretVault(
+  now: () => number = Date.now,
+  persistence?: VaultPersistence,
+): InMemorySecretVault {
   const values = new Map<string, string>();
   const metadata = new Map<string, CredentialMetadata>();
+
+  for (const entry of persistence?.initial ?? []) {
+    values.set(entry.metadata.id, entry.value);
+    metadata.set(entry.metadata.id, entry.metadata);
+  }
+
+  const persist = () =>
+    persistence?.save([...metadata.values()].map((m) => ({ metadata: m, value: values.get(m.id) ?? "" })));
 
   const vault: SecretVault = {
     set: (input) => {
@@ -76,6 +95,7 @@ export function makeInMemorySecretVault(now: () => number = Date.now): InMemoryS
 
       values.set(input.id, input.value);
       metadata.set(input.id, credential);
+      persist();
 
       return { ok: true, credential };
     },
@@ -86,13 +106,18 @@ export function makeInMemorySecretVault(now: () => number = Date.now): InMemoryS
 
       values.set(id, value);
       metadata.set(id, { ...current, updatedAt: now() });
+      persist();
 
       return true;
     },
     delete: (id) => {
       values.delete(id);
 
-      return metadata.delete(id);
+      const removed = metadata.delete(id);
+
+      if (removed) persist();
+
+      return removed;
     },
     list: () => [...metadata.values()],
     find: (id) => metadata.get(id),
