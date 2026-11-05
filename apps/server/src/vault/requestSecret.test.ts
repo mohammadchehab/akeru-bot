@@ -96,6 +96,7 @@ describe("requestSecret", () => {
       page(`${BANK}/a`, `${BANK}/a`, "doc-1"),
       page(`${BANK}/b`, `${BANK}/b`, "doc-2"),
     ]);
+
     assert.deepStrictEqual(await t.run(), { ok: false, reason: "redirected-during-fill" });
     assert.deepStrictEqual(t.filledFor, ["doc-1"]);
     assert.strictEqual(t.cleared(), 1);
