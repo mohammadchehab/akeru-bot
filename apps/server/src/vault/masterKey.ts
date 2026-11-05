@@ -1,4 +1,4 @@
-import * as Crypto from "node:crypto";
+import * as NodeCrypto from "node:crypto";
 
 export const MASTER_KEY_BYTES = 32;
 
@@ -54,15 +54,20 @@ export type MasterKeyInputs = {
 const fail = (reason: MasterKeyFailure): MasterKeyResult => ({ ok: false, reason });
 
 export const keyIdOf = (key: Buffer): string =>
-  Crypto.createHash("sha256").update(key).digest("hex").slice(0, 16);
+  NodeCrypto.createHash("sha256").update(key).digest("hex").slice(0, 16);
 
 /** AES-256-GCM of a constant, plus the key id, so a wrong key is caught before any record is touched. */
 export function sealKeyCheck(key: Buffer): string {
-  const iv = Crypto.randomBytes(12);
-  const cipher = Crypto.createCipheriv("aes-256-gcm", key, iv);
+  const iv = NodeCrypto.randomBytes(12);
+  const cipher = NodeCrypto.createCipheriv("aes-256-gcm", key, iv);
   const body = Buffer.concat([cipher.update(KEY_CHECK_PLAINTEXT, "utf8"), cipher.final()]);
 
-  return [keyIdOf(key), iv.toString("base64"), cipher.getAuthTag().toString("base64"), body.toString("base64")].join(".");
+  return [
+    keyIdOf(key),
+    iv.toString("base64"),
+    cipher.getAuthTag().toString("base64"),
+    body.toString("base64"),
+  ].join(".");
 }
 
 export function verifyKeyCheck(key: Buffer, record: string): boolean {
@@ -73,7 +78,7 @@ export function verifyKeyCheck(key: Buffer, record: string): boolean {
   }
 
   try {
-    const decipher = Crypto.createDecipheriv("aes-256-gcm", key, Buffer.from(iv, "base64"));
+    const decipher = NodeCrypto.createDecipheriv("aes-256-gcm", key, Buffer.from(iv, "base64"));
 
     decipher.setAuthTag(Buffer.from(tag, "base64"));
 
@@ -113,9 +118,10 @@ function fromKeychain({ keychain, store }: MasterKeyInputs): Candidate {
   if (answer.kind === "found") return { kind: "key", key: answer.key, source: "keychain" };
 
   // Fail closed: a fresh key beside sealed records, or a key-check from an earlier key, would orphan them.
-  if (store.sealedRecordCount() > 0 || store.readKeyCheck() !== undefined) return { kind: "failed", reason: "keychain-key-missing" };
+  if (store.sealedRecordCount() > 0 || store.readKeyCheck() !== undefined)
+    return { kind: "failed", reason: "keychain-key-missing" };
 
-  const key = Crypto.randomBytes(MASTER_KEY_BYTES);
+  const key = NodeCrypto.randomBytes(MASTER_KEY_BYTES);
 
   if (!keychain.write(key)) return { kind: "failed", reason: "keychain-error" };
 
@@ -128,11 +134,15 @@ function fromPassphrase(env: MasterKeyInputs["env"], store: MasterKeyStore): Can
   if (passphrase === undefined || passphrase === "") return { kind: "skip" };
 
   const existing = store.readSalt();
-  const salt = existing ?? Crypto.randomBytes(16);
+  const salt = existing ?? NodeCrypto.randomBytes(16);
 
   if (existing === undefined) store.writeSalt(salt);
 
-  return { kind: "key", key: Crypto.scryptSync(passphrase, salt, MASTER_KEY_BYTES), source: "passphrase" };
+  return {
+    kind: "key",
+    key: NodeCrypto.scryptSync(passphrase, salt, MASTER_KEY_BYTES),
+    source: "passphrase",
+  };
 }
 
 /**

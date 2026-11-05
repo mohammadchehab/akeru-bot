@@ -8,6 +8,7 @@ import {
 } from "./masterKey.ts";
 
 const KEY_A = Buffer.alloc(MASTER_KEY_BYTES, 1);
+
 const KEY_B = Buffer.alloc(MASTER_KEY_BYTES, 2);
 
 type Options = {
