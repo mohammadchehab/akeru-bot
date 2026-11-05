@@ -40,6 +40,7 @@ it.layer(NodeServices.layer)("egress provider credential", (it) => {
       const asked = yield* exchangeAccessToken(defaultDesktopBootstrapToken, {
         scope: egressScope,
       });
+
       const plain = yield* exchangeAccessToken(defaultDesktopBootstrapToken);
 
       assert.notInclude(asked.body.scope ?? "", egressScope);
