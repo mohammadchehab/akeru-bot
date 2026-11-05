@@ -25,11 +25,13 @@ const choiceKey = (instanceId: string, model: string) => `${instanceId}\u0000${m
 /** The "If <model> can't answer" row and its ordered list of fallback models. */
 export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDraft }) {
   const { t } = useI18n();
+
   // `index` is the entry that gets consent, or null while a new entry is being added.
   const [pending, setPending] = useState<{
     readonly entry: BotEngineChoice;
     readonly index: number | null;
   } | null>(null);
+
   const choices = buildBotModelChoices(draft.instanceEntries, draft.modelOptionsByInstance);
 
   const labelFor = (provider: string, model: string) =>
