@@ -75,6 +75,7 @@ describe("decisions: delegated approval", () => {
         timeout: WAIT_MS,
       })
       .toBe(true);
+    await page.getByRole("button", { name: "Alpha" }).first().click();
     await page.getByRole("textbox", { name: "Message Alpha" }).waitFor();
     await row.waitFor({ timeout: WAIT_MS });
     expect(await decisions().getByRole("button").count()).toBe(1);
