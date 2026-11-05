@@ -3,19 +3,20 @@ import * as NodeFSP from "node:fs/promises";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-import { afterEach, assert, describe, it } from "@effect/vitest";
+import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 
-import { ensureEmbeddingModel, embeddingModelFileUrl } from "./EmbeddingModelDownload.ts";
+import { embeddingModelFileUrl, ensureEmbeddingModel } from "./EmbeddingModelDownload.ts";
 import type { EmbeddingModelManifest } from "./EmbeddingModelManifest.ts";
 
 const sha = (text: string) => NodeCrypto.createHash("sha256").update(text).digest("hex");
+const revision = "a".repeat(40);
 
 const manifest: EmbeddingModelManifest = {
   name: "tiny",
   repo: "acme/tiny",
-  revision: "a".repeat(40),
+  revision,
   dims: 4,
   prefixes: { query: "q: ", passage: "p: " },
   files: [
@@ -24,108 +25,131 @@ const manifest: EmbeddingModelManifest = {
   ],
 };
 
-const bodies: Record<string, string> = { "config.json": "{}", "onnx/model.onnx": "weights" };
+const bodies = new Map([
+  ["config.json", "{}"],
+  ["onnx/model.onnx", "weights"],
+]);
+
+const pathOf = (url: string) => manifest.files.find((file) => url.endsWith(`/${file.path}`))?.path ?? "";
 
 const fetchFor =
-  (overrides: Record<string, string> = {}, urls: string[] = []) =>
+  (overrides: ReadonlyMap<string, string> = new Map(), urls: string[] = []) =>
   async (url: string) => {
     urls.push(url);
-    const file = manifest.files.find((entry) => url.endsWith(`/${entry.path}`));
 
-    return new Response(overrides[file?.path ?? ""] ?? bodies[file?.path ?? ""] ?? "", { status: 200 });
+    return new Response(overrides.get(pathOf(url)) ?? bodies.get(pathOf(url)) ?? "", { status: 200 });
   };
 
-const directories: string[] = [];
+/** A models directory inside a fresh temp dir, removed when the test scope closes. */
+const tempModels = Effect.acquireRelease(
+  Effect.promise(() => NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-embed-dl-"))),
+  (dir) => Effect.promise(() => NodeFSP.rm(dir, { recursive: true, force: true })),
+).pipe(Effect.map((dir) => NodePath.join(dir, "models")));
 
-const tempModels = async () => {
-  const dir = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-embed-dl-"));
-  directories.push(dir);
-
-  return NodePath.join(dir, "models");
-};
-
-afterEach(async () => {
-  await Promise.all(directories.splice(0).map((dir) => NodeFSP.rm(dir, { recursive: true, force: true })));
-});
+const modelDirOf = (modelsDir: string) => NodePath.join(modelsDir, `tiny@${revision}`);
+const modeOf = (path: string) =>
+  Effect.promise(() => NodeFSP.stat(path)).pipe(Effect.map((stat) => stat.mode & 0o777));
 
 describe("ensureEmbeddingModel", () => {
-  it("fetches pinned commit-sha urls, verifies them, and stores with 0700 dirs and 0600 files", async () => {
-    const modelsDir = await tempModels();
-    const urls: string[] = [];
+  it.effect("fetches pinned commit-sha urls, verifies them, and stores with 0700 dirs and 0600 files", () =>
+    Effect.gen(function* () {
+      const modelsDir = yield* tempModels;
+      const urls: string[] = [];
 
-    const dir = await Effect.runPromise(
-      ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor({}, urls) }),
-    );
+      const dir = yield* ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor(new Map(), urls) });
 
-    assert.deepStrictEqual(urls, manifest.files.map((file) => embeddingModelFileUrl(manifest, file)));
-    assert.strictEqual(urls[0], `https://huggingface.co/acme/tiny/resolve/${"a".repeat(40)}/config.json`);
-    assert.strictEqual(dir, NodePath.join(modelsDir, `tiny@${"a".repeat(40)}`));
-    assert.strictEqual((await NodeFSP.stat(dir)).mode & 0o777, 0o700);
-    assert.strictEqual((await NodeFSP.stat(NodePath.join(dir, "onnx"))).mode & 0o777, 0o700);
-    assert.strictEqual((await NodeFSP.stat(NodePath.join(dir, "onnx/model.onnx"))).mode & 0o777, 0o600);
-  });
+      assert.deepStrictEqual(
+        urls,
+        manifest.files.map((file) => embeddingModelFileUrl(manifest, file)),
+      );
+      assert.strictEqual(urls[0], `https://huggingface.co/acme/tiny/resolve/${revision}/config.json`);
+      assert.strictEqual(dir, modelDirOf(modelsDir));
+      assert.strictEqual(yield* modeOf(dir), 0o700);
+      assert.strictEqual(yield* modeOf(NodePath.join(dir, "onnx")), 0o700);
+      assert.strictEqual(yield* modeOf(NodePath.join(dir, "onnx/model.onnx")), 0o600);
+    }).pipe(Effect.scoped),
+  );
 
-  it("deletes a file whose sha256 does not match and fails", async () => {
-    const modelsDir = await tempModels();
+  it.effect("deletes a file whose sha256 does not match and fails", () =>
+    Effect.gen(function* () {
+      const modelsDir = yield* tempModels;
 
-    const exit = await Effect.runPromiseExit(
-      ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor({ "onnx/model.onnx": "tampered" }) }),
-    );
+      const exit = yield* Effect.exit(
+        ensureEmbeddingModel({
+          manifest,
+          modelsDir,
+          fetch: fetchFor(new Map([["onnx/model.onnx", "tampered"]])),
+        }),
+      );
 
-    assert.isTrue(Exit.isFailure(exit));
-    const dir = NodePath.join(modelsDir, `tiny@${"a".repeat(40)}`);
-    assert.deepStrictEqual(await NodeFSP.readdir(NodePath.join(dir, "onnx")), []);
-  });
+      assert.isTrue(Exit.isFailure(exit));
+      const leftovers = yield* Effect.promise(() => NodeFSP.readdir(NodePath.join(modelDirOf(modelsDir), "onnx")));
+      assert.deepStrictEqual(leftovers, []);
+    }).pipe(Effect.scoped),
+  );
 
-  it("does not refetch files that already match, and replaces ones that do not", async () => {
-    const modelsDir = await tempModels();
-    const dir = await Effect.runPromise(ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor() }));
-    await NodeFSP.writeFile(NodePath.join(dir, "config.json"), "xx");
+  it.effect("does not refetch files that already match, and replaces ones that do not", () =>
+    Effect.gen(function* () {
+      const modelsDir = yield* tempModels;
+      const dir = yield* ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor() });
+      yield* Effect.promise(() => NodeFSP.writeFile(NodePath.join(dir, "config.json"), "xx"));
 
-    const urls: string[] = [];
-    await Effect.runPromise(ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor({}, urls) }));
+      const urls: string[] = [];
+      yield* ensureEmbeddingModel({ manifest, modelsDir, fetch: fetchFor(new Map(), urls) });
 
-    assert.deepStrictEqual(urls, [embeddingModelFileUrl(manifest, manifest.files[0]!)]);
-    assert.strictEqual(await NodeFSP.readFile(NodePath.join(dir, "config.json"), "utf8"), "{}");
-  });
+      assert.deepStrictEqual(urls, [embeddingModelFileUrl(manifest, manifest.files[0]!)]);
+      const restored = yield* Effect.promise(() => NodeFSP.readFile(NodePath.join(dir, "config.json"), "utf8"));
+      assert.strictEqual(restored, "{}");
+    }).pipe(Effect.scoped),
+  );
 
-  it("follows https redirects but refuses a redirect to http", async () => {
-    const modelsDir = await tempModels();
-    const hops: string[] = [];
+  it.effect("follows https redirects", () =>
+    Effect.gen(function* () {
+      const modelsDir = yield* tempModels;
+      const hops: string[] = [];
+      const redirecting = async (url: string) => {
+        hops.push(url);
+        if (url.startsWith("https://huggingface.co/")) {
+          return new Response(null, {
+            status: 302,
+            headers: { location: `https://cdn.example/${bodies.get(pathOf(url))}` },
+          });
+        }
 
-    const redirecting = async (url: string) => {
-      hops.push(url);
+        return new Response(url.slice("https://cdn.example/".length));
+      };
 
-      if (url.startsWith("https://huggingface.co/")) {
-        return new Response(null, { status: 302, headers: { location: "https://cdn.example/blob" } });
-      }
+      yield* ensureEmbeddingModel({ manifest, modelsDir, fetch: redirecting });
 
-      return new Response(url.endsWith("/blob") && hops.length < 3 ? "{}" : "weights");
-    };
+      assert.isTrue(hops.includes("https://cdn.example/weights"));
+    }).pipe(Effect.scoped),
+  );
 
-    await Effect.runPromise(ensureEmbeddingModel({ manifest, modelsDir, fetch: redirecting }));
-    assert.isTrue(hops.some((url) => url === "https://cdn.example/blob"));
+  it.effect("refuses a redirect to http", () =>
+    Effect.gen(function* () {
+      const exit = yield* Effect.exit(
+        ensureEmbeddingModel({
+          manifest,
+          modelsDir: yield* tempModels,
+          fetch: async () => new Response(null, { status: 302, headers: { location: "http://evil.example/x" } }),
+        }),
+      );
 
-    const insecure = await Effect.runPromiseExit(
-      ensureEmbeddingModel({
-        manifest,
-        modelsDir: await tempModels(),
-        fetch: async () => new Response(null, { status: 302, headers: { location: "http://evil.example/x" } }),
-      }),
-    );
+      assert.isTrue(Exit.isFailure(exit));
+    }).pipe(Effect.scoped),
+  );
 
-    assert.isTrue(Exit.isFailure(insecure));
-  });
+  it.effect("fails on a non-200 response", () =>
+    Effect.gen(function* () {
+      const exit = yield* Effect.exit(
+        ensureEmbeddingModel({
+          manifest,
+          modelsDir: yield* tempModels,
+          fetch: async () => new Response("nope", { status: 404 }),
+        }),
+      );
 
-  it("fails on a non-200 response", async () => {
-    const exit = await Effect.runPromiseExit(
-      ensureEmbeddingModel({
-        manifest,
-        modelsDir: await tempModels(),
-        fetch: async () => new Response("nope", { status: 404 }),
-      }),
-    );
-
-    assert.isTrue(Exit.isFailure(exit));
-  });
+      assert.isTrue(Exit.isFailure(exit));
+    }).pipe(Effect.scoped),
+  );
 });

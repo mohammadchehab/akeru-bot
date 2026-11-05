@@ -3,7 +3,7 @@ import * as NodeWorkerThreads from "node:worker_threads";
 import type { EmbedWorkerRequest } from "../embedWorkerProtocol.ts";
 
 /** Stands in for the ONNX worker: burns CPU for each embed so the test can watch the main thread. */
-NodeWorkerThreads.NodeWorkerThreads.parentPort?.on("message", (request: EmbedWorkerRequest) => {
+NodeWorkerThreads.parentPort?.on("message", (request: EmbedWorkerRequest) => {
   if (request.type === "init") {
     NodeWorkerThreads.parentPort?.postMessage({ type: "ready", dims: 4 });
 
