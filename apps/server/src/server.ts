@@ -33,6 +33,7 @@ import {
   persistedServerRuntimeState,
   persistServerRuntimeState,
 } from "./serverRuntimeState.ts";
+import * as ServerHomeLock from "./serverHomeLock.ts";
 import { orchestrationHttpApiLayer } from "./orchestration/http.ts";
 import { disableTailscaleServe, ensureTailscaleServe } from "@isnadi/tailscale";
 import { ServerActivation } from "./serverActivation.ts";
@@ -188,6 +189,9 @@ export const makeServerLayer = Layer.unwrap(
             port: address.port,
           });
 
+          const homeLock = yield* ServerHomeLock.ServerHomeLock;
+
+          yield* homeLock.bindPort(address.port);
           yield* persistServerRuntimeState({
             path: config.serverRuntimeStatePath,
             state,
@@ -298,6 +302,8 @@ export const makeServerLayer = Layer.unwrap(
       Layer.provide(ApplicationObservabilityLive),
       Layer.provideMerge(FetchHttpClient.layer),
       Layer.provideMerge(VcsProcess.layer),
+      // Built before everything above, so a second server exits before it opens the database.
+      Layer.provideMerge(ServerHomeLock.layer),
       Layer.provideMerge(PlatformServicesLive),
     );
   }),
