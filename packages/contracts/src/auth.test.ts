@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vite-plus/test";
 import * as Schema from "effect/Schema";
 
-import { AuthEnvironmentScopes } from "./auth.ts";
+import {
+  AuthAdministrativeScopes,
+  AuthDesktopBootstrapScopes,
+  AuthEgressProvideScope,
+  AuthEnvironmentScopes,
+  AuthStandardClientScopes,
+} from "./auth.ts";
 
 const decodeScopes = Schema.decodeUnknownSync(AuthEnvironmentScopes);
 
@@ -27,5 +33,13 @@ describe("AuthEnvironmentScopes", () => {
 
   it("still rejects unknown scopes", () => {
     expect(() => decodeScopes(["orchestration:read", "admin:everything"])).toThrow();
+  });
+});
+
+describe("egress:provide scope", () => {
+  it("is granted by the desktop bootstrap and by no other credential set", () => {
+    expect(AuthDesktopBootstrapScopes).toContain(AuthEgressProvideScope);
+    expect(AuthAdministrativeScopes).not.toContain(AuthEgressProvideScope);
+    expect(AuthStandardClientScopes).not.toContain(AuthEgressProvideScope);
   });
 });
