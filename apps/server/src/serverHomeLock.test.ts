@@ -97,7 +97,9 @@ describe("serverHomeLock", () => {
 
       yield* fs.writeFileString(lockPath, lockRecord({ pid: process.ppid }));
 
-      const error = yield* Effect.flip(Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))));
+      const error = yield* Effect.flip(
+        Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))),
+      );
 
       assert.isTrue(isHeldError(error));
       assert.include(error.message, "port not bound yet");
@@ -148,7 +150,9 @@ describe("serverHomeLock", () => {
         lockRecord({ pid: deadPid(), hostname: "another-machine.example", port: 4_971 }),
       );
 
-      const error = yield* Effect.flip(Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))));
+      const error = yield* Effect.flip(
+        Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))),
+      );
 
       assert.isTrue(isHeldError(error));
       assert.include(error.message, "another-machine.example");
@@ -197,7 +201,9 @@ describe("serverHomeLock", () => {
 
           yield* first.bindPort(4_971);
 
-          const error = yield* Effect.flip(Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))));
+          const error = yield* Effect.flip(
+            Effect.scoped(Layer.build(Layer.fresh(ServerHomeLock.layer))),
+          );
 
           assert.isTrue(isHeldError(error));
           assert.include(error.message, `pid ${process.pid}`);
