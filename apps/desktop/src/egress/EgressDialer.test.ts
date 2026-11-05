@@ -1,10 +1,15 @@
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
+import * as Schema from "effect/Schema";
 
 import { classifyAddress } from "./EgressAddressPolicy.ts";
 import { EgressRefused, denyAllHostPolicy, openEgressTarget } from "./EgressDialer.ts";
 
 const PUBLIC_IP = "93.184.216.34";
+
+class ConnectRefused extends Schema.TaggedErrorClass<ConnectRefused>()("ConnectRefused", {
+  code: Schema.String,
+}) {}
 
 const grantAll = { allows: () => true };
 
@@ -240,7 +245,7 @@ describe("connect failures", () => {
       const reason = yield* refusal(
         openEgressTarget(
           { host: "down.example", port: 443, profileId: "p" },
-          { ...deps, connect: () => Effect.fail(new Error("ECONNREFUSED")) },
+          { ...deps, connect: () => Effect.fail(new ConnectRefused({ code: "ECONNREFUSED" })) },
         ),
       );
 
