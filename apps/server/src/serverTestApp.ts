@@ -130,6 +130,7 @@ import { RoutineRuntime, type RoutineRuntimeShape } from "./routines/Runtime.ts"
 
 import {
   defaultDesktopBootstrapToken,
+  defaultEgressProviderToken,
   TEST_EPOCH,
   defaultOrchestrationReadModel,
   defaultThreadId,
@@ -211,6 +212,7 @@ export const buildAppUnderTest = (options?: {
       noBrowser: true,
       startupPresentation: "browser",
       desktopBootstrapToken: defaultDesktopBootstrapToken,
+      egressProviderToken: defaultEgressProviderToken,
       autoBootstrapProjectFromCwd: false,
       logWebSocketEvents: false,
       tailscaleServeEnabled: false,
