@@ -240,7 +240,7 @@ describe("connect failures", () => {
       const reason = yield* refusal(
         openEgressTarget(
           { host: "down.example", port: 443, profileId: "p" },
-          { ...deps, connect: () => Effect.fail("ECONNREFUSED") },
+          { ...deps, connect: () => Effect.fail(new Error("ECONNREFUSED")) },
         ),
       );
 
