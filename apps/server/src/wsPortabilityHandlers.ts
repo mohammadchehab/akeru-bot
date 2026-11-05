@@ -9,6 +9,7 @@ import {
   nowIso,
   portabilityError,
   availablePortabilityProviderIds,
+  openCodePortabilityInstanceIds,
   validatePortabilityProjectFolders,
 } from "./wsSupport.ts";
 import type { WsConnection } from "./wsConnection.ts";
@@ -141,6 +142,7 @@ export const createWsPortabilityHandlers = ({
             settings,
             availableProviderIds,
             validatedProjectFolders,
+            openCodePortabilityInstanceIds(providers),
           );
 
           yield* decideCommandSequence({ commands: plan.commands, readModel: snapshot }).pipe(

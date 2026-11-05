@@ -352,4 +352,41 @@ describe("portability import", () => {
       { provider: "private", model: "m1" },
     ]);
   });
+
+  it("drops fallbacks on standard OpenCode instances on import", () => {
+    const base = makeSnapshot();
+    const [bot] = base.bots;
+
+    if (!bot?.engine) throw new Error("fixture bot needs an engine");
+
+    const source = makeSnapshot({
+      bots: [
+        {
+          ...bot,
+          engine: {
+            ...bot.engine,
+            fallbacks: [
+              { provider: "private", model: "m1" },
+              { provider: "opencode", model: "m2" },
+            ],
+          },
+        },
+      ],
+    });
+
+    const { commands } = commandsForPortabilityImport(
+      createPortabilityArchive(source, makeSettings(), NOW),
+      makeSnapshot({ bots: [], groups: [] }),
+      makeSettings(),
+      new Set([...AVAILABLE_PROVIDER_IDS, "opencode"]),
+      {},
+      new Set(["opencode"]),
+    );
+
+    const create = commands.find((command) => command.type === "bot.create");
+
+    expect(create?.type === "bot.create" ? create.engine?.fallbacks : undefined).toEqual([
+      { provider: "private", model: "m1" },
+    ]);
+  });
 });
