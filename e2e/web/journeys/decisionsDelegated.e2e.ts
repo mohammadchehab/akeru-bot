@@ -59,10 +59,24 @@ describe("decisions: delegated approval", () => {
 
     const row = decisions().getByRole("button", { name: /^Approval needed: Crew/ });
 
+    // First wait: Alpha's own SendToAgent needs the user's go-ahead before anything is delegated.
+    await row.waitFor({ timeout: WAIT_MS });
+    await row.click();
+    await page.getByLabel("Approval required").waitFor();
+    await page
+      .getByRole("button", { name: /^(Allow once|Approve)$/ })
+      .first()
+      .click();
+
+    // Second wait: Bravo's delegated chat calls the protected tool. The task has to reach Bravo as
+    // its own request first, so this row is the delegated approval, not Alpha's.
+    await expect
+      .poll(() => stack.stub.completions.some((completion) => endsInDelegatedTask(completion.body)), {
+        timeout: WAIT_MS,
+      })
+      .toBe(true);
+    await page.getByRole("textbox", { name: "Message Alpha" }).waitFor();
     await row.waitFor({ timeout: WAIT_MS });
     expect(await decisions().getByRole("button").count()).toBe(1);
-    // A request that ends in the delegated task as a user message is the delegate's own turn; Alpha's
-    // follow-up only repeats the task inside its tool call.
-    expect(stack.stub.completions.map((c) => { const m = JSON.parse(c.body).messages; return `${c.bot} | ${m.length} | ${m.at(-1).role} | ${JSON.stringify(m.at(-1).content).slice(0, 300)}`; })).toEqual([]);
   });
 });
