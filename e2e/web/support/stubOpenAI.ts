@@ -112,20 +112,28 @@ const APPROVAL_TOOL_CALL = {
   function: { name: "UninstallMcpServer", arguments: JSON.stringify({ serverId: "e2e-server" }) },
 };
 
-/** The delegated task carries the approval marker, so Bravo's turn on it ends in the protected tool call. */
-const DELEGATE_TOOL_CALL = {
-  index: 0,
-  id: "call_e2e_delegate",
-  type: "function",
-  function: {
-    name: "SendToAgent",
-    arguments: JSON.stringify({
-      botId: "Bravo",
-      task: `Take this over ${STUB_APPROVAL_MARKER}`,
-      expectedResult: "Done.",
-    }),
-  },
-};
+/**
+ * Delegation takes a bot id, and the group's roster in the system prompt ("- Bravo (bot-…), …") is where a
+ * real model finds it. The delegated task carries the approval marker, so Bravo's turn on it ends in the
+ * protected tool call.
+ */
+function delegateToolCall(body: string) {
+  const botId = /- Bravo \((bot-[\w-]+)\)/.exec(body)?.[1] ?? "Bravo";
+
+  return {
+    index: 0,
+    id: "call_e2e_delegate",
+    type: "function",
+    function: {
+      name: "SendToAgent",
+      arguments: JSON.stringify({
+        botId,
+        task: `Take this over ${STUB_APPROVAL_MARKER}`,
+        expectedResult: "Done.",
+      }),
+    },
+  };
+}
 
 /** The tool call a request scripts, while the marker message is the latest turn; the request after a tool result ends in a tool message. */
 function toolCallFor(body: string): typeof APPROVAL_TOOL_CALL | undefined {
@@ -141,7 +149,7 @@ function toolCallFor(body: string): typeof APPROVAL_TOOL_CALL | undefined {
     return APPROVAL_TOOL_CALL;
   }
 
-  return text.includes(STUB_DELEGATE_MARKER) ? DELEGATE_TOOL_CALL : undefined;
+  return text.includes(STUB_DELEGATE_MARKER) ? delegateToolCall(body) : undefined;
 }
 
 function chunk(delta: { role?: string; content?: string }, finishReason: string | null) {
