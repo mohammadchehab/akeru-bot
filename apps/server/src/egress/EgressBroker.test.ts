@@ -268,6 +268,7 @@ describe("EgressBroker", () => {
         const frame = sent[0]!;
         const handlers = yield* broker.attach("owner-a", frame.streamId, frame.ticket, noop);
         const stream = yield* Fiber.join(fiber);
+
         const writer = yield* Effect.forkChild(
           Effect.forEach(
             Array.from({ length: EgressBroker.EGRESS_INBOUND_CAPACITY + 1 }),
@@ -275,6 +276,7 @@ describe("EgressBroker", () => {
             { discard: true },
           ),
         );
+
         yield* Effect.yieldNow;
         assert.isUndefined(writer.pollUnsafe());
         yield* Queue.take(stream.inbound);

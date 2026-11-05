@@ -101,6 +101,7 @@ describe("openEgressTarget", () => {
           lookups: [[PUBLIC_IP]],
           hostPolicy: { allows: (_profileId, granted) => granted === host.replace(/^\[|\]$/g, "") },
         });
+
         const reason = yield* refusal(openEgressTarget({ host, port: 443, profileId: "p" }, deps));
 
         assert.strictEqual(reason, "blocked-address", host);

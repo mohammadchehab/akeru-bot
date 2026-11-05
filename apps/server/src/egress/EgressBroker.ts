@@ -114,6 +114,7 @@ export const make = Effect.sync(() => {
       readonly close: Effect.Effect<void>;
     }
   >();
+
   const streams = new Map<string, PendingStream & { readonly end: Effect.Effect<void> }>();
   const streamsByOwner = new Map<string, Set<string>>();
 

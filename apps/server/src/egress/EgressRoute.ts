@@ -99,6 +99,7 @@ const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
     if (!(yield* broker.checkTicket(session.subject, streamId, ticket))) {
       return HttpServerResponse.empty({ status: 403 });
     }
+
     const socket = yield* request.upgrade;
     const write = yield* socket.writer;
 

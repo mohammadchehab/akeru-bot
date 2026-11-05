@@ -129,6 +129,7 @@ export const make = Effect.gen(function* () {
   // backends holding mismatched tokens and breaking the shared-token
   // invariant the renderer relies on. modifyEffect serializes the whole
   // get-or-create so the first caller wins and the rest reuse its token.
+
   const createTokenSource = Effect.gen(function* () {
     const ref = yield* SynchronizedRef.make(Option.none<string>());
 

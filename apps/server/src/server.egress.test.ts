@@ -57,6 +57,7 @@ it.layer(NodeServices.layer)("egress provider credential", (it) => {
       yield* buildAppUnderTest();
 
       const admin = yield* getAuthenticatedBearerSessionToken();
+
       const { body } = yield* exchangeAccessToken(defaultDesktopBootstrapToken, {
         scope: "orchestration:read",
       });
