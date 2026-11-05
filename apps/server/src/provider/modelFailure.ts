@@ -1,4 +1,5 @@
-import * as Predicate from "effect/Predicate";
+import * as Option from "effect/Option";
+import * as Schema from "effect/Schema";
 
 /**
  * Why a model call failed, as far as the fallback router cares. `rate-limit`, `usage-limit`,
@@ -21,7 +22,7 @@ export interface ModelFailureInput {
   readonly errorType?: string | undefined;
 }
 
-export const RATE_LIMIT_PATTERN = /rate limit|too many requests|\b429\b/i;
+export const RATE_LIMIT_PATTERN = /rate[\s_-]?limit|too many requests|\b429\b/i;
 
 export const USAGE_LIMIT_PATTERN =
   /usage limit|quota|usage cap|limit reached|hit your .*limit|spending limit|budget exceeded|max usage/i;
@@ -56,29 +57,35 @@ export function classifyModelFailure(input: ModelFailureInput): ModelFailureClas
   return "request";
 }
 
+const ProviderErrorShape = Schema.Struct({
+  statusCode: Schema.optional(Schema.Number),
+  responseHeaders: Schema.optional(Schema.Record(Schema.String, Schema.Unknown)),
+  data: Schema.optional(
+    Schema.Struct({
+      type: Schema.optional(Schema.String),
+      error: Schema.optional(Schema.Struct({ type: Schema.optional(Schema.String) })),
+    }),
+  ),
+});
+
+const decodeProviderError = Schema.decodeUnknownOption(ProviderErrorShape);
+
 /**
  * Reads the fields the classifier uses off an error thrown by the AI SDK (`APICallError`) without
  * importing it. Anything that is not shaped like one yields only the message.
  */
 export function modelFailureInputFromError(error: unknown, message: string): ModelFailureInput {
-  if (!Predicate.isObject(error)) return { message };
+  const parsed = decodeProviderError(error);
 
-  const statusCode =
-    "statusCode" in error && typeof error.statusCode === "number" ? error.statusCode : undefined;
-  const headers =
-    "responseHeaders" in error && Predicate.isObject(error.responseHeaders)
-      ? error.responseHeaders
-      : undefined;
-  const retryAfter = headers && "retry-after" in headers ? Number(headers["retry-after"]) : NaN;
-  const data = "data" in error && Predicate.isObject(error.data) ? error.data : undefined;
-  const nested = data && "error" in data && Predicate.isObject(data.error) ? data.error : data;
-  const errorType =
-    nested && "type" in nested && typeof nested.type === "string" ? nested.type : undefined;
+  if (Option.isNone(parsed)) return { message };
+
+  const { statusCode, responseHeaders, data } = parsed.value;
+  const retryAfter = Number(responseHeaders?.["retry-after"]);
 
   return {
     message,
     statusCode,
     retryAfterMs: Number.isFinite(retryAfter) && retryAfter >= 0 ? retryAfter * 1_000 : undefined,
-    errorType,
+    errorType: data?.error?.type ?? data?.type,
   };
 }
