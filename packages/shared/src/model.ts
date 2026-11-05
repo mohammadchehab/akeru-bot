@@ -466,6 +466,7 @@ export function botEngineModelSelection(engine: BotEngine): ModelSelection {
 export function botEngineFromModelSelection(
   selection: ModelSelection,
   caps: ModelCapabilities | null | undefined,
+  fallbacks: BotEngine["fallbacks"],
 ): BotEngine {
   const options = retainChosenProviderOptions(selection.options, caps);
 
@@ -473,6 +474,7 @@ export function botEngineFromModelSelection(
     provider: selection.instanceId,
     model: selection.model,
     ...(options ? { options } : {}),
+    fallbacks,
   };
 }
 
