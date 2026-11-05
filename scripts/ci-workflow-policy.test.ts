@@ -100,6 +100,7 @@ describe("CI workflow budget", () => {
     for (const name of ["static", "desktop", "server", "native"]) {
       expect(ci.jobs[name]?.needs).toBe("changes");
     }
+
     // Light jobs stay on GitHub-hosted runners. Heavy jobs take the runner that `changes` picked:
     // the self-hosted hetzner runners for the repository's own branches, GitHub-hosted for fork
     // pull requests, so fork code never runs on our machine.
