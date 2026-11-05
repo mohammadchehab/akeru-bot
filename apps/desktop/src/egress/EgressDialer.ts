@@ -8,7 +8,7 @@ import { classifyAddress } from "./EgressAddressPolicy.ts";
 const ALLOWED_PORTS: ReadonlySet<number> = new Set([80, 443]);
 
 export class EgressRefused extends Schema.TaggedErrorClass<EgressRefused>()("EgressRefused", {
-  reason: Schema.Literals(["port", "host-not-granted", "blocked-address", "resolve-failed"]),
+  reason: Schema.Literals(["port", "host-not-granted", "blocked-address", "resolve-failed", "connect-failed"]),
   host: Schema.String,
   port: Schema.Int,
 }) {}
@@ -69,15 +69,15 @@ export const openEgressTarget = <Socket>(
     const connectTo = (ip: string) =>
       deps
         .connect({ host: ip, port: request.port })
-        .pipe(Effect.catch(() => refuse("resolve-failed")));
+        .pipe(Effect.catch(() => refuse("connect-failed")));
+
+    if (!deps.hostPolicy.allows(request.profileId, host)) return yield* refuse("host-not-granted");
 
     if (NodeNet.isIP(host) !== 0) {
       if (classifyAddress(host, interfaces) !== "public") return yield* refuse("blocked-address");
 
       return yield* connectTo(host);
     }
-
-    if (!deps.hostPolicy.allows(request.profileId, host)) return yield* refuse("host-not-granted");
 
     const addresses = yield* deps.resolve(host).pipe(Effect.catch(() => refuse("resolve-failed")));
     const [first] = addresses;
