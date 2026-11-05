@@ -23,3 +23,5 @@ macOS may ask once to "Always Allow" when the Electron-run and npx-run node proc
 ## Key material in the environment
 
 `ISNADI_MASTER_KEY` and `ISNADI_MASTER_PASSPHRASE` are read once when the server starts and removed from `process.env`, so provider and git child processes never inherit them. Code that builds a child environment from caller input uses `withoutMasterKeyEnv`: git commands and `mergeProviderInstanceEnvironment` (every provider and agent subprocess) both do. The service launcher hands the captured values to the server it starts, the one intended reader. `wsServices.ts` only reads the environment and spawns nothing. A passphrase must be at least 12 characters. Sealed records without a key check are never re-blessed by a new key.
+
+`ISNADI_MASTER_KEY` is for headless and CI installs only. On a desktop the keychain is the key source; do not put a long-lived key in a shell profile.
