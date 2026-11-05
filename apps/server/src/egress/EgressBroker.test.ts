@@ -44,22 +44,28 @@ describe("EgressBroker", () => {
         yield* Effect.yieldNow;
         const frame = sent[0]!;
         const wrongOwner = yield* Effect.exit(
+
           broker.attach("owner-b", frame.streamId, frame.ticket, noop),
         );
         const wrongTicket = yield* Effect.exit(
+
           broker.attach("owner-a", frame.streamId, "nope", noop),
         );
         const wrongStream = yield* Effect.exit(
+
           broker.attach("owner-a", "other", frame.ticket, noop),
         );
         assert.isTrue(Exit.isFailure(wrongOwner));
+
         assert.isTrue(Exit.isFailure(wrongTicket));
         assert.isTrue(Exit.isFailure(wrongStream));
         yield* broker.attach("owner-a", frame.streamId, frame.ticket, noop);
         const replay = yield* Effect.exit(
+
           broker.attach("owner-a", frame.streamId, frame.ticket, noop),
         );
         assert.isTrue(Exit.isFailure(replay));
+
         const stream = yield* Fiber.join(fiber);
         assert.strictEqual(stream.streamId, frame.streamId);
       }),
@@ -75,9 +81,11 @@ describe("EgressBroker", () => {
         const frame = sent[0]!;
         yield* TestClock.adjust(EgressBroker.EGRESS_TICKET_TTL_MS + 1);
         const late = yield* Effect.exit(
+
           broker.attach("owner-a", frame.streamId, frame.ticket, noop),
         );
         assert.isTrue(Exit.isFailure(late));
+
         assert.isTrue(Exit.isFailure(yield* Fiber.await(fiber)));
       }),
     ),
