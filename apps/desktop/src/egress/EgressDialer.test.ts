@@ -1,10 +1,15 @@
 import { assert, describe, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
+import * as Schema from "effect/Schema";
 
 import { classifyAddress } from "./EgressAddressPolicy.ts";
 import { EgressRefused, denyAllHostPolicy, openEgressTarget } from "./EgressDialer.ts";
 
 const PUBLIC_IP = "93.184.216.34";
+
+class ConnectRefused extends Schema.TaggedErrorClass<ConnectRefused>()("ConnectRefused", {
+  code: Schema.String,
+}) {}
 
 const grantAll = { allows: () => true };
 
@@ -164,6 +169,87 @@ describe("openEgressTarget", () => {
       );
 
       assert.strictEqual(reason, "resolve-failed");
+    }),
+  );
+});
+
+describe("host grants for IP literals (TASK-40.1)", () => {
+  it.effect("refuses an ungranted public literal and connects once it is granted", () =>
+    Effect.gen(function* () {
+      const denied = makeDeps({ lookups: [[]], hostPolicy: denyAllHostPolicy });
+
+      const reason = yield* refusal(
+        openEgressTarget({ host: PUBLIC_IP, port: 443, profileId: "p" }, denied.deps),
+      );
+
+      assert.strictEqual(reason, "host-not-granted");
+      assert.deepStrictEqual(denied.calls.connect, []);
+
+      const granted = makeDeps({
+        lookups: [[]],
+        hostPolicy: { allows: (_profileId, host) => host === PUBLIC_IP },
+      });
+
+      yield* openEgressTarget({ host: PUBLIC_IP, port: 443, profileId: "p" }, granted.deps);
+
+      assert.deepStrictEqual(granted.calls.connect, [{ host: PUBLIC_IP, port: 443 }]);
+    }),
+  );
+});
+
+describe("classifyAddress hardening (#110 L1-L6)", () => {
+  it("blocks the extra reserved ranges", () => {
+    for (const ip of [
+      "fec0::1",
+      "2001:0:4136:e378:8000:63bf:3fff:fdd2",
+      "64:ff9b:1::1",
+      "100::1",
+      "2001:db8::1",
+      "192.88.99.1",
+    ]) {
+      assert.isTrue(classifyAddress(ip, []).startsWith("blocked:"), ip);
+    }
+  });
+
+  it("blocks mapped private and 6to4 loopback forms", () => {
+    assert.isTrue(classifyAddress("::ffff:10.0.0.1", []).startsWith("blocked:"));
+    assert.isTrue(classifyAddress("2002:7f00:1::", []).startsWith("blocked:"));
+  });
+
+  it("checks the outer address against the interface subnets before the embedded one", () => {
+    assert.strictEqual(
+      classifyAddress("2002:5db8:d822::1", ["2002:5db8:d822::5/64"]),
+      "blocked:local-interface-subnet",
+    );
+  });
+
+  it("blocks the /56 around an IPv6 interface, not only its /64", () => {
+    assert.strictEqual(
+      classifyAddress("2a02:8084:1:2f::9", ["2a02:8084:1:20::5/64"]),
+      "blocked:local-interface-subnet",
+    );
+    assert.strictEqual(classifyAddress("2a02:8084:1:100::9", ["2a02:8084:1:20::5/64"]), "public");
+  });
+
+  it("strips a zone id before every check", () => {
+    assert.isTrue(classifyAddress("fe80::1%en0", []).startsWith("blocked:"));
+    assert.isTrue(classifyAddress("fc00::1%en0", []).startsWith("blocked:"));
+  });
+});
+
+describe("connect failures", () => {
+  it.effect("report connect-failed, not resolve-failed", () =>
+    Effect.gen(function* () {
+      const { deps } = makeDeps({ lookups: [[PUBLIC_IP]] });
+
+      const reason = yield* refusal(
+        openEgressTarget(
+          { host: "down.example", port: 443, profileId: "p" },
+          { ...deps, connect: () => Effect.fail(new ConnectRefused({ code: "ECONNREFUSED" })) },
+        ),
+      );
+
+      assert.strictEqual(reason, "connect-failed");
     }),
   );
 });

@@ -30,6 +30,8 @@ export * from "./remoteAccess.ts";
 
 export * from "./relay.ts";
 
+export * from "./egress.ts";
+
 export * from "./ipc.ts";
 
 export * from "./provider.ts";

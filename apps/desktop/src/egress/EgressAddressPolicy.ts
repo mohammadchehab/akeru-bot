@@ -12,6 +12,7 @@ const BLOCKED_V4: ReadonlyArray<readonly [string, number]> = [
   ["198.18.0.0", 15],
   ["224.0.0.0", 4],
   ["240.0.0.0", 4],
+  ["192.88.99.0", 24],
 ];
 
 const BLOCKED_V6: ReadonlyArray<readonly [string, number]> = [
@@ -20,6 +21,11 @@ const BLOCKED_V6: ReadonlyArray<readonly [string, number]> = [
   ["fc00::", 7],
   ["fe80::", 10],
   ["ff00::", 8],
+  ["fec0::", 10],
+  ["100::", 64],
+  ["2001::", 32],
+  ["2001:db8::", 32],
+  ["64:ff9b:1::", 48],
 ];
 
 const staticList = new NodeNet.BlockList();
@@ -73,6 +79,9 @@ const embeddedV4 = (groups: ReadonlyArray<number>): string | null => {
   return null;
 };
 
+/** An IPv6 interface is blocked out to its /56, since a delegated prefix usually spans it. */
+const WIDEST_V6_INTERFACE_PREFIX = 56;
+
 const interfaceList = (cidrs: ReadonlyArray<string>): NodeNet.BlockList => {
   const list = new NodeNet.BlockList();
 
@@ -81,7 +90,10 @@ const interfaceList = (cidrs: ReadonlyArray<string>): NodeNet.BlockList => {
     const family = NodeNet.isIP(address);
 
     if (family !== 0 && prefix !== "") {
-      list.addSubnet(address, Number(prefix), family === 4 ? "ipv4" : "ipv6");
+      const length =
+        family === 6 ? Math.min(Number(prefix), WIDEST_V6_INTERFACE_PREFIX) : Number(prefix);
+
+      list.addSubnet(address, length, family === 4 ? "ipv4" : "ipv6");
     }
   }
 
@@ -93,12 +105,19 @@ const interfaceList = (cidrs: ReadonlyArray<string>): NodeNet.BlockList => {
  * `os.networkInterfaces()`), blocked because home LANs hand out globally routable IPv6.
  */
 export const classifyAddress = (
-  ip: string,
+  rawIp: string,
   interfaceCidrs: ReadonlyArray<string>,
 ): "public" | `blocked:${string}` => {
+  const ip = rawIp.split("%")[0] ?? rawIp;
   const family = NodeNet.isIP(ip);
 
   if (family === 0) return "blocked:not-an-ip";
+
+  const kind = family === 4 ? "ipv4" : "ipv6";
+
+  if (staticList.check(ip, kind)) return "blocked:reserved-range";
+
+  if (interfaceList(interfaceCidrs).check(ip, kind)) return "blocked:local-interface-subnet";
 
   const groups = family === 6 ? expandV6(ip) : null;
   const embedded = groups === null ? null : embeddedV4(groups);
@@ -107,12 +126,6 @@ export const classifyAddress = (
     const inner = classifyAddress(embedded, interfaceCidrs);
 
     return inner === "public" ? "public" : `blocked:embedded-${inner.slice("blocked:".length)}`;
-  }
-
-  if (staticList.check(ip, family === 4 ? "ipv4" : "ipv6")) return "blocked:reserved-range";
-
-  if (interfaceList(interfaceCidrs).check(ip, family === 4 ? "ipv4" : "ipv6")) {
-    return "blocked:local-interface-subnet";
   }
 
   return "public";

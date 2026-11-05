@@ -2,7 +2,7 @@ import * as Data from "effect/Data";
 
 import * as Predicate from "effect/Predicate";
 import {
-  AuthAdministrativeScopes,
+  AuthDesktopBootstrapScopes,
   AuthStandardClientScopes,
   type AuthEnvironmentScope,
   type AuthPairingLink,
@@ -132,7 +132,7 @@ export const make = Effect.gen(function* () {
     const now = yield* DateTime.now;
     yield* seedGrant(config.desktopBootstrapToken, {
       method: "desktop-bootstrap",
-      scopes: AuthAdministrativeScopes,
+      scopes: AuthDesktopBootstrapScopes,
       subject: "desktop-bootstrap",
       expiresAt: DateTime.add(now, {
         milliseconds: Duration.toMillis(DESKTOP_BOOTSTRAP_TTL_HOURS),

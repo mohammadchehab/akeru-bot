@@ -124,6 +124,7 @@ it.layer(NodeServices.layer)("PairingGrantStore.layer", (it) => {
         "orchestration:operate",
         "access:read",
         "access:write",
+        "egress:provide",
       ]);
       expect(first.subject).toBe("desktop-bootstrap");
       expect(second.method).toBe("desktop-bootstrap");
