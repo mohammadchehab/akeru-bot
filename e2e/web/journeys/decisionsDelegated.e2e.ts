@@ -63,8 +63,6 @@ describe("decisions: delegated approval", () => {
     expect(await decisions().getByRole("button").count()).toBe(1);
     // A request that ends in the delegated task as a user message is the delegate's own turn; Alpha's
     // follow-up only repeats the task inside its tool call.
-    expect(stack.stub.completions.some((completion) => endsInDelegatedTask(completion.body))).toBe(
-      true,
-    );
+    expect(stack.stub.completions.map((c) => { const m = JSON.parse(c.body).messages; return `${c.bot} | ${m.length} | ${m.at(-1).role} | ${JSON.stringify(m.at(-1).content).slice(0, 300)}`; })).toEqual([]);
   });
 });
