@@ -16,16 +16,21 @@ export const KEYCHAIN_SERVICE = "isnadibot";
 /** One master key per Isnadi home, so a dev home never reads or overwrites the real install's key. */
 export const keychainAccountFor = (homeDir: string): string => `vault-master-key:${homeDir}`;
 
-const NO_KEYRING_MESSAGE = /no (secure )?storage|platform secure storage|not supported|no secret service/i;
+const NO_KEYRING_MESSAGE =
+  /no (secure )?storage|platform secure storage|not supported|no secret service/i;
 
-const messageOf = (cause: unknown): string => (cause instanceof Error ? cause.message : String(cause));
+const messageOf = (cause: unknown): string =>
+  cause instanceof Error ? cause.message : String(cause);
 
 /**
  * Maps the OS keychain onto KeychainPort. No keyring on the platform is
  * `unavailable`, a missing item is `not-found`, and a locked or denied
  * keychain or any other failure is `error`, which never regenerates a key.
  */
-export function makeKeyringPort(createEntry: KeyringEntryFactory | undefined, account: string): KeychainPort {
+export function makeKeyringPort(
+  createEntry: KeyringEntryFactory | undefined,
+  account: string,
+): KeychainPort {
   if (createEntry === undefined) {
     return { read: () => ({ kind: "unavailable" }), write: () => false };
   }
@@ -43,7 +48,9 @@ export function makeKeyringPort(createEntry: KeyringEntryFactory | undefined, ac
 
         return key.length === MASTER_KEY_BYTES ? { kind: "found", key } : { kind: "error" };
       } catch (cause) {
-        return NO_KEYRING_MESSAGE.test(messageOf(cause)) ? { kind: "unavailable" } : { kind: "error" };
+        return NO_KEYRING_MESSAGE.test(messageOf(cause))
+          ? { kind: "unavailable" }
+          : { kind: "error" };
       }
     },
     write: (key) => {

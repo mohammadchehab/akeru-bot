@@ -73,8 +73,9 @@ describe("keyring port", () => {
   });
 });
 
-// Real OS keychain; only on a developer Mac that opts in, since it may prompt.
-describe.skipIf(process.platform !== "darwin" || process.env.ISNADI_REAL_KEYCHAIN_TEST !== "1")(
+// Real OS keychain; only when a developer opts in on their own Mac with
+// ISNADI_REAL_KEYCHAIN_TEST=1, since it may prompt.
+describe.skipIf(process.env.ISNADI_REAL_KEYCHAIN_TEST !== "1")(
   "real macOS keychain",
   () => {
     it("round-trips a key through the login keychain", () => {
