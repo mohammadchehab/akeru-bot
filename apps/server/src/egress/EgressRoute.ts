@@ -41,14 +41,14 @@ const respondErrors = Effect.catchTags({
   EnvironmentInternalError: HttpServerRespondable.toResponse,
 });
 
-const controlRoute = HttpRouter.add(
+const controlRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
+  HttpRouter.add(
   "GET",
   "/egress",
   Effect.gen(function* () {
     const { request, session, allowed } = yield* authenticateEgress;
 
     if (!allowed) return HttpServerResponse.empty({ status: 403 });
-    const broker = yield* EgressBroker.EgressBroker;
     const socket = yield* request.upgrade;
     const write = yield* socket.writer;
 
@@ -71,7 +71,8 @@ const controlRoute = HttpRouter.add(
   }).pipe(respondErrors),
 );
 
-const streamRoute = HttpRouter.add(
+const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
+  HttpRouter.add(
   "GET",
   "/egress/stream/:streamId",
   Effect.gen(function* () {
@@ -81,7 +82,6 @@ const streamRoute = HttpRouter.add(
     const params = yield* HttpRouter.params;
     const streamId = params.streamId ?? "";
     const ticket = new URL(request.url, "http://localhost").searchParams.get("ticket") ?? "";
-    const broker = yield* EgressBroker.EgressBroker;
     const socket = yield* request.upgrade;
     const write = yield* socket.writer;
 
@@ -100,4 +100,10 @@ const streamRoute = HttpRouter.add(
 );
 
 /** Needs `EgressBroker`; the server provides one shared instance so the proxy and the routes agree. */
-export const egressRouteLayer = Layer.mergeAll(controlRoute, streamRoute);
+export const egressRouteLayer = Layer.unwrap(
+  Effect.gen(function* () {
+    const broker = yield* EgressBroker.EgressBroker;
+
+    return Layer.mergeAll(controlRoute(broker), streamRoute(broker));
+  }),
+);
