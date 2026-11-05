@@ -59,6 +59,7 @@ describe("resolveMasterKey", () => {
       env: { ISNADI_MASTER_KEY: KEY_A.toString("base64") },
       keychain: { kind: "found", key: KEY_B },
     });
+
     const result = resolveMasterKey(t.inputs);
 
     assert.deepStrictEqual(result.ok && [result.source, result.key], ["env", KEY_A]);
