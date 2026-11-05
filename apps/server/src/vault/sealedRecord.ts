@@ -24,10 +24,9 @@ export function openValue(key: Buffer, id: string, sealed: string): string | und
     decipher.setAAD(Buffer.from(id, "utf8"));
     decipher.setAuthTag(Buffer.from(tag, "base64"));
 
-    return Buffer.concat([
-      decipher.update(Buffer.from(body, "base64")),
-      decipher.final(),
-    ]).toString("utf8");
+    return Buffer.concat([decipher.update(Buffer.from(body, "base64")), decipher.final()]).toString(
+      "utf8",
+    );
   } catch {
     return undefined;
   }

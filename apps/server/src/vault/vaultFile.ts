@@ -11,7 +11,12 @@ type StoredCredential = CredentialMetadata & { readonly sealed: string };
 
 type StoredVault = {
   readonly version: 1;
-  readonly kdf?: { readonly salt: string; readonly N: number; readonly r: number; readonly p: number };
+  readonly kdf?: {
+    readonly salt: string;
+    readonly N: number;
+    readonly r: number;
+    readonly p: number;
+  };
   readonly keyCheck?: string;
   readonly credentials: ReadonlyArray<StoredCredential>;
 };

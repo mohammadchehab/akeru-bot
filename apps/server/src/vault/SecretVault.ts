@@ -50,7 +50,10 @@ export type InMemorySecretVault = {
 
 /** Where a vault keeps its entries between runs; `save` gets every entry after each change. */
 export type VaultPersistence = {
-  readonly initial: ReadonlyArray<{ readonly metadata: CredentialMetadata; readonly value: string }>;
+  readonly initial: ReadonlyArray<{
+    readonly metadata: CredentialMetadata;
+    readonly value: string;
+  }>;
   readonly save: (
     entries: ReadonlyArray<{ readonly metadata: CredentialMetadata; readonly value: string }>,
   ) => void;
@@ -73,7 +76,9 @@ export function makeInMemorySecretVault(
   }
 
   const persist = () =>
-    persistence?.save([...metadata.values()].map((m) => ({ metadata: m, value: values.get(m.id) ?? "" })));
+    persistence?.save(
+      [...metadata.values()].map((m) => ({ metadata: m, value: values.get(m.id) ?? "" })),
+    );
 
   const vault: SecretVault = {
     set: (input) => {
