@@ -75,7 +75,7 @@ describe("desktop onboarding engine", () => {
       ]),
     ).toEqual({
       status: "ready",
-      engine: { provider: "codex", model: "gpt-default" },
+      engine: { provider: "codex", model: "gpt-default", fallbacks: [] },
     });
   });
 

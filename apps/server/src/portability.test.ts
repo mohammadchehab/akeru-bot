@@ -477,7 +477,7 @@ describe("portability import", () => {
       bots: [
         {
           ...makeSnapshot().bots[0]!,
-          engine: { provider: "missing-provider", model: "missing-model" },
+          engine: { provider: "missing-provider", model: "missing-model", fallbacks: [] },
         },
       ],
       threads: [

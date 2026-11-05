@@ -241,7 +241,7 @@ describe("ProviderRuntimeIngestion", () => {
         name: "Child",
         title: "Research bot",
         avatar: { kind: "dither", seed: "child" },
-        engine: { provider: ProviderInstanceId.make("codex"), model: "gpt-5-codex" },
+        engine: { provider: ProviderInstanceId.make("codex"), model: "gpt-5-codex", fallbacks: [] },
         sandbox: null,
         runtimeMode: "approval-required",
         groupId: null,

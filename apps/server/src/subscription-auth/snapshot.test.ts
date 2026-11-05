@@ -79,6 +79,7 @@ describe("provider access capabilities", () => {
             engine: {
               provider: ProviderInstanceId.make("kimi-custom"),
               model: "k3-256k",
+              fallbacks: [],
             },
           },
         ],

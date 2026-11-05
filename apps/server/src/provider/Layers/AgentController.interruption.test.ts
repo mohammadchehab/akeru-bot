@@ -591,14 +591,14 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: codexThreadId,
-          engine: { provider: "claudeAgent", model: "claude-fable-5" },
+          engine: { provider: "claudeAgent", model: "claude-fable-5", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: false,
         });
         yield* controller.resolveEngine({
           threadId: codexThreadId,
-          engine: { provider: "codex", model: "gpt-5.6-sol" },
+          engine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: false,

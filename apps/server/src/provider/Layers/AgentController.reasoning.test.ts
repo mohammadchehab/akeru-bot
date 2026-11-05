@@ -69,7 +69,7 @@ const resolve = (
 ) =>
   controller.resolveEngine({
     threadId: codexThreadId,
-    engine: { provider, model, ...(options ? { options } : {}) },
+    engine: { provider, model, ...(options ? { options } : {}), fallbacks: [] },
     fallback: codexSelection,
     mode: "default",
     botConversation: true,

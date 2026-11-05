@@ -40,7 +40,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
       const bot = {
         ...makeChannelTestBot(),
         botId,
-        engine: { provider: "claudeAgent", model: "claude-sonnet" },
+        engine: { provider: "claudeAgent", model: "claude-sonnet", fallbacks: [] },
         imageProvider: null,
         groupId,
       } satisfies ProjectionBots.ProjectionBot;

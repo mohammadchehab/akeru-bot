@@ -69,7 +69,7 @@ describe("AgentControllerLive", () => {
         const first = Context.get(firstContext, AgentController);
         yield* first.resolveEngine({
           threadId: kimiThreadId,
-          engine: { provider: String(kimiInstanceId), model: "k3-256k" },
+          engine: { provider: String(kimiInstanceId), model: "k3-256k", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -91,7 +91,7 @@ describe("AgentControllerLive", () => {
         // Mastra session for the same thread.
         yield* second.resolveEngine({
           threadId: kimiThreadId,
-          engine: { provider: String(kimiInstanceId), model: "k3-256k" },
+          engine: { provider: String(kimiInstanceId), model: "k3-256k", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -320,7 +320,7 @@ describe("AgentControllerLive", () => {
 
         yield* controller.resolveEngine({
           threadId: kimiThreadId,
-          engine: { provider: String(kimiInstanceId), model: "kimi-for-coding" },
+          engine: { provider: String(kimiInstanceId), model: "kimi-for-coding", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -437,7 +437,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: kimiThreadId,
-          engine: { provider: String(kimiInstanceId), model: "k3-256k" },
+          engine: { provider: String(kimiInstanceId), model: "k3-256k", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -478,6 +478,7 @@ describe("AgentControllerLive", () => {
                 provider: String(testCase.instanceId),
                 model: testCase.model,
                 ...(testCase.options ? { options: [...testCase.options] } : {}),
+                fallbacks: [],
               },
               fallback: codexSelection,
               mode: "default",
@@ -550,6 +551,7 @@ describe("AgentControllerLive", () => {
                 { id: "agent", value: "build" },
                 { id: "variant", value: "high" },
               ],
+              fallbacks: [],
             },
             fallback: codexSelection,
             mode: "default",
@@ -649,7 +651,7 @@ describe("AgentControllerLive", () => {
             const error = yield* controller
               .resolveEngine({
                 threadId,
-                engine: { provider, model: "removed-model" },
+                engine: { provider, model: "removed-model", fallbacks: [] },
                 fallback: codexSelection,
                 mode: "default",
                 botConversation: true,
@@ -707,7 +709,7 @@ describe("AgentControllerLive", () => {
           const error = yield* controller
             .resolveEngine({
               threadId: ThreadId.make("thread-claude-signed-out"),
-              engine: { provider: "claudeAgent", model: "claude-sonnet-4-6" },
+              engine: { provider: "claudeAgent", model: "claude-sonnet-4-6", fallbacks: [] },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,
@@ -757,7 +759,7 @@ describe("AgentControllerLive", () => {
           const error = yield* controller
             .resolveEngine({
               threadId: ThreadId.make("thread-custom-api-no-url"),
-              engine: { provider: "customOpenai", model: "llama-3.3" },
+              engine: { provider: "customOpenai", model: "llama-3.3", fallbacks: [] },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,
@@ -793,7 +795,7 @@ describe("AgentControllerLive", () => {
           const error = yield* controller
             .resolveEngine({
               threadId: claudeThreadId,
-              engine: { provider: String(claudeInstanceId), model: "claude-opus-4-6" },
+              engine: { provider: String(claudeInstanceId), model: "claude-opus-4-6", fallbacks: [] },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,

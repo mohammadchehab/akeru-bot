@@ -179,7 +179,7 @@ describe("IsnadiDelegationRuntime", () => {
           bot(PARENT_BOT_ID),
           bot(CHILD_BOT_ID, {
             name: "Legacy",
-            engine: { provider: ProviderInstanceId.make("opencode"), model: "model" },
+            engine: { provider: ProviderInstanceId.make("opencode"), model: "model", fallbacks: [] },
           }),
         ],
       }),

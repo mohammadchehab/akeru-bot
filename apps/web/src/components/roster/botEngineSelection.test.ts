@@ -42,7 +42,7 @@ describe("resolveStickyBotEngine", () => {
 
     expect(
       resolveStickyBotEngine({
-        engine: { provider: instanceId, model: "gpt-5.6-sol" },
+        engine: { provider: instanceId, model: "gpt-5.6-sol", fallbacks: [] },
         instanceEntries,
         settings,
         providers,
@@ -179,7 +179,7 @@ describe("resolveStickyBotEngine", () => {
     const instanceEntries = deriveProviderInstanceEntries(providers);
 
     const selected = resolveStickyBotEngine({
-      engine: { provider: savedId, model: "gpt-5-codex" },
+      engine: { provider: savedId, model: "gpt-5-codex", fallbacks: [] },
       instanceEntries,
       settings,
       providers,
@@ -202,6 +202,7 @@ describe("resolveStickyBotEngine", () => {
         provider: instanceId,
         model: "gpt-5.6-sol",
         options: [{ id: "reasoningEffort", value: "high" }],
+        fallbacks: [],
       },
       instanceEntries,
       settings,
@@ -241,7 +242,7 @@ describe("resolveStickyBotEngine", () => {
 
     expect(
       resolveStickyBotEngine({
-        engine: { provider: instanceId, model: "gpt-5.6-sol" },
+        engine: { provider: instanceId, model: "gpt-5.6-sol", fallbacks: [] },
         instanceEntries,
         settings,
         providers,

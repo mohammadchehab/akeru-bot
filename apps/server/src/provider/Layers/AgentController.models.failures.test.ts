@@ -164,7 +164,7 @@ describe("AgentControllerLive", () => {
 
         const resolved = yield* controller.resolveEngine({
           threadId: claudeThreadId,
-          engine: { provider: "claudeAgent", model: "claude-fable-5" },
+          engine: { provider: "claudeAgent", model: "claude-fable-5", fallbacks: [] },
           fallback: codexSelection,
           mode: "plan",
           botConversation: true,
@@ -210,7 +210,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: grokThreadId,
-          engine: { provider: "grok", model: "grok-code-fast-1" },
+          engine: { provider: "grok", model: "grok-code-fast-1", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -253,7 +253,7 @@ describe("AgentControllerLive", () => {
         const controller = yield* AgentController;
         yield* controller.resolveEngine({
           threadId: kimiThreadId,
-          engine: { provider: String(kimiInstanceId), model: "k3-256k" },
+          engine: { provider: String(kimiInstanceId), model: "k3-256k", fallbacks: [] },
           fallback: codexSelection,
           mode: "default",
           botConversation: true,
@@ -303,7 +303,7 @@ describe("AgentControllerLive", () => {
               const resolve = (model: string) =>
                 controller.resolveEngine({
                   threadId: testCase.threadId,
-                  engine: { provider: String(testCase.instanceId), model },
+                  engine: { provider: String(testCase.instanceId), model, fallbacks: [] },
                   fallback: codexSelection,
                   mode: "default",
                   botConversation: true,
@@ -385,7 +385,7 @@ describe("AgentControllerLive", () => {
 
             const resolved = yield* controller.resolveEngine({
               threadId: codexThreadId,
-              engine: { provider: "codex", model: "gpt-5.4" },
+              engine: { provider: "codex", model: "gpt-5.4", fallbacks: [] },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,
@@ -411,7 +411,7 @@ describe("AgentControllerLive", () => {
 
             const resolved = yield* controller.resolveEngine({
               threadId: grokThreadId,
-              engine: { provider: "grok", model },
+              engine: { provider: "grok", model, fallbacks: [] },
               fallback: { instanceId: grokInstanceId, model: "grok-build" },
               mode: "default",
               botConversation: true,
@@ -440,6 +440,7 @@ describe("AgentControllerLive", () => {
               provider: "claudeAgent",
               model: "claude-opus-4-6",
               options: [{ id: "contextWindow", value: "1m" }],
+              fallbacks: [],
             },
             fallback: { instanceId: claudeInstanceId, model: "claude-fable-5" },
             mode: "default",
@@ -475,7 +476,7 @@ describe("AgentControllerLive", () => {
           const failure = yield* Effect.flip(
             controller.resolveEngine({
               threadId: codexThreadId,
-              engine: { provider: "codex", model: "not-a-model" },
+              engine: { provider: "codex", model: "not-a-model", fallbacks: [] },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,
@@ -514,7 +515,7 @@ describe("AgentControllerLive", () => {
 
           const resolved = yield* controller.resolveEngine({
             threadId: codexThreadId,
-            engine: { provider: "codex", model: "custom-codex" },
+            engine: { provider: "codex", model: "custom-codex", fallbacks: [] },
             fallback: codexSelection,
             mode: "default",
             botConversation: true,
@@ -548,7 +549,7 @@ describe("AgentControllerLive", () => {
 
           const resolved = yield* controller.resolveEngine({
             threadId: codexThreadId,
-            engine: { provider: "codex", model: "cli-only-model" },
+            engine: { provider: "codex", model: "cli-only-model", fallbacks: [] },
             fallback: codexSelection,
             mode: "default",
             botConversation: true,

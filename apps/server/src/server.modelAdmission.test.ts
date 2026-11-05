@@ -80,7 +80,7 @@ it.describe("ws bot engine model routing preflight", () => {
 
   const bot = (
     botId: BotId,
-    engine: { readonly provider: string; readonly model: string } | null,
+    engine: { readonly provider: string; readonly model: string, fallbacks: [] } | null,
   ) =>
     ({
       botId,
@@ -147,7 +147,7 @@ it.describe("ws bot engine model routing preflight", () => {
             name: "Bad model bot",
             title: "Bad model bot",
             avatar: { kind: "dither", seed: "bad-model" },
-            engine: { provider: "codex", model: "not-a-model" },
+            engine: { provider: "codex", model: "not-a-model", fallbacks: [] },
             sandbox: "local",
             groupId: null,
             createdAt: now,
@@ -200,7 +200,7 @@ it.describe("ws bot engine model routing preflight", () => {
           name: "Bad model bot",
           title: "Bad model bot",
           avatar: { kind: "dither", seed: "bad-model" },
-          engine: { provider: "codex", model: "not-a-model" },
+          engine: { provider: "codex", model: "not-a-model", fallbacks: [] },
           sandbox: "local",
           groupId: null,
           createdAt: now,
