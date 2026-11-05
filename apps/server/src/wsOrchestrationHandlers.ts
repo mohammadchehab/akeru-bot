@@ -28,6 +28,7 @@ import {
 } from "./orchestration/Normalizer.ts";
 import { resolveGroupResponderBotId } from "./orchestration/groupResponder.ts";
 import { readWorkflowScript } from "./orchestration/workflowScriptQuery.ts";
+import { validateEngineFallbacks } from "./provider/engineFallbackPolicy.ts";
 import { preflightProvider } from "./provider/providerPreflight.ts";
 
 import { isOrchestrationDispatchCommandError, nowIso } from "./wsSupport.ts";
@@ -186,6 +187,17 @@ export const createWsOrchestrationHandlers = ({
                 message: verdict.detail,
                 unavailability: verdict.category,
               });
+            }
+          }
+
+          if (engineForValidation !== undefined && engineForValidation.fallbacks.length > 0) {
+            const refusal = validateEngineFallbacks({
+              providers: yield* providerRegistry.getProviders,
+              engine: engineForValidation,
+            });
+
+            if (refusal !== undefined) {
+              return yield* new OrchestrationDispatchCommandError({ message: refusal });
             }
           }
 

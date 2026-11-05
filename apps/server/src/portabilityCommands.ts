@@ -2,6 +2,7 @@ import * as Match from "effect/Match";
 import * as NodeCrypto from "node:crypto";
 import {
   BotId,
+  type BotEngine,
   BALANCED_BOT_PERSONALITY_TONE,
   CommandId,
   GroupId,
@@ -164,6 +165,25 @@ export function summarizePortabilityApply(
     failed: failures.filter((failure) => !failure.partial).length,
     partial: failures.filter((failure) => failure.partial).length,
     failures,
+  };
+}
+
+/**
+ * A fallback chain from an archive keeps only entries on providers this
+ * environment has, and never carries history consent across machines: the
+ * user grants it again where the bot lands.
+ */
+function importedEngine<Engine extends BotEngine | null | undefined>(
+  engine: Engine,
+  availableProviderIds: ReadonlySet<string>,
+): Engine {
+  if (!engine) return engine;
+
+  return {
+    ...engine,
+    fallbacks: engine.fallbacks
+      .filter((entry) => availableProviderIds.has(entry.provider))
+      .map(({ historyConsent: _historyConsent, ...entry }) => entry),
   };
 }
 
@@ -347,7 +367,7 @@ export function commandsForPortabilityImport(
       description: record.data.description,
       disabledMcpServerIds: record.data.disabledMcpServerIds,
       avatar: record.data.avatar,
-      engine: record.data.engine,
+      engine: importedEngine(record.data.engine, availableProviderIds),
       sandbox: record.data.sandbox,
       runtimeMode: record.data.runtimeMode,
       imageProvider: record.data.imageProvider,
