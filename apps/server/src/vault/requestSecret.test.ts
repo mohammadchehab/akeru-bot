@@ -9,6 +9,7 @@ import {
 import { makeInMemorySecretVault } from "./SecretVault.ts";
 
 const SENTINEL = "s3ntinel-p4ssword-DO-NOT-LEAK";
+
 const BANK = "https://bank.example";
 
 const setup = (frames: ReadonlyArray<InjectionTarget>, failFill = false) => {
@@ -19,6 +20,7 @@ const setup = (frames: ReadonlyArray<InjectionTarget>, failFill = false) => {
   let cleared = 0;
   let inspections = 0;
   const filledFor: Array<string> = [];
+
   const browser: SecretFieldBrowser = {
     inspect: async () => frames[Math.min(inspections++, frames.length - 1)]!,
     fill: async (_field, value, target) => {
@@ -100,6 +102,7 @@ describe("requestSecret", () => {
 
   it("treats a credential deleted after the lookup as unknown", async () => {
     const t = setup([page(`${BANK}/`)]);
+
     const result = await requestSecret(
       {
         vault: t.vault,
@@ -124,6 +127,7 @@ describe("requestSecret", () => {
   it("keeps the value out of every result, listing and audit row", async () => {
     const ok = setup([page(`${BANK}/`)]);
     const refused = setup([page("https://evil.test/")]);
+
     const surfaces = [
       await ok.run(),
       await refused.run(),

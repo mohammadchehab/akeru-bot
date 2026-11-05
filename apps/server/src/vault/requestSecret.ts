@@ -85,6 +85,7 @@ export async function requestSecret(
 
   if (!before.allowed) {
     log("refused", normalizeHttpsOrigin(target.topFrameUrl));
+
     return { ok: false, reason: before.reason };
   }
 
@@ -97,6 +98,7 @@ export async function requestSecret(
   } catch {
     await deps.browser.clear(input.field).catch(() => undefined);
     log("failed", before.origin);
+
     return { ok: false, reason: "fill-failed" };
   }
 
@@ -108,6 +110,7 @@ export async function requestSecret(
   if (!after.allowed || after.origin !== before.origin || next.documentId !== target.documentId) {
     await deps.browser.clear(input.field);
     log("redirected", before.origin);
+
     return { ok: false, reason: "redirected-during-fill" };
   }
 
