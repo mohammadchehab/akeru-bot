@@ -223,7 +223,7 @@ describe("classifyAddress hardening (#110 L1-L6)", () => {
       classifyAddress("2a02:8084:1:2f::9", ["2a02:8084:1:20::5/64"]),
       "blocked:local-interface-subnet",
     );
-    assert.strictEqual(classifyAddress("2a02:8084:1:ff::9", ["2a02:8084:1:20::5/64"]), "public");
+    assert.strictEqual(classifyAddress("2a02:8084:1:100::9", ["2a02:8084:1:20::5/64"]), "public");
   });
 
   it("strips a zone id before every check", () => {
