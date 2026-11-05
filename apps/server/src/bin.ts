@@ -1,5 +1,7 @@
 // Must stay first: maps legacy environment variable names before anything reads the environment.
 import "@isnadi/shared/legacyEnv";
+// Takes the vault key variables out of process.env before anything can spawn a child with them.
+import "./vault/masterKeyEnv.ts";
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";

@@ -11,7 +11,9 @@ export type MasterKeyFailure =
   | "invalid-env-key"
   | "keychain-error"
   | "keychain-key-missing"
-  | "wrong-key";
+  | "wrong-key"
+  | "key-check-missing"
+  | "passphrase-too-short";
 
 export type MasterKeyResult =
   | {
@@ -42,6 +44,8 @@ export type ScryptParams = {
   readonly r: number;
   readonly p: number;
 };
+
+export const MIN_PASSPHRASE_LENGTH = 12;
 
 const SCRYPT_N = 2 ** 17;
 
@@ -154,6 +158,9 @@ function fromPassphrase(env: MasterKeyInputs["env"], store: MasterKeyStore): Can
 
   if (passphrase === undefined || passphrase === "") return { kind: "skip" };
 
+  if (passphrase.length < MIN_PASSPHRASE_LENGTH)
+    return { kind: "failed", reason: "passphrase-too-short" };
+
   const existing = store.readKdf();
 
   const kdf = existing ?? {
@@ -197,6 +204,9 @@ export function resolveMasterKey(inputs: MasterKeyInputs): MasterKeyResult {
     const record = store.readKeyCheck();
 
     if (record !== undefined && !verifyKeyCheck(candidate.key, record)) return fail("wrong-key");
+
+    // Sealed records with no key check cannot prove this key is theirs; never bless one.
+    if (record === undefined && store.sealedRecordCount() > 0) return fail("key-check-missing");
 
     if (record === undefined) store.writeKeyCheck(sealKeyCheck(candidate.key));
 
