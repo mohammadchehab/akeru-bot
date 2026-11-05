@@ -71,6 +71,7 @@ const backendConfigurationLayer = Layer.succeed(
     resolvePrimary: Effect.die("unexpected resolvePrimary"),
     resolvePrimaryLabel: Effect.succeed("Windows"),
     resolveWsl: () => Effect.die("unexpected resolveWsl"),
+    egressProviderToken: Effect.die("unexpected egress token read"),
   } satisfies DesktopBackendConfiguration.DesktopBackendConfiguration["Service"],
 );
 
