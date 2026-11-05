@@ -5,7 +5,7 @@ import * as TestClock from "effect/testing/TestClock";
 
 import { EgressRefused } from "./EgressDialer.ts";
 import { BYTES_PER_SECOND, makeTokenBucket, STREAM_IDLE_TIMEOUT_MS } from "./EgressLimits.ts";
-import { makeEgressProvider, type EgressTarget } from "./EgressProvider.ts";
+import { makeEgressProvider, type EgressProviderDeps, type EgressTarget } from "./EgressProvider.ts";
 
 const openFrame = {
   type: "open" as const,
@@ -26,7 +26,7 @@ const makeHarness = (
     readonly throttle?: (bytes: number) => Effect.Effect<void>;
   } = {},
 ) => {
-  const sent: Array<{ type: string; reason?: string }> = [];
+  const sent: Array<Parameters<EgressProviderDeps["sendControl"]>[0]> = [];
   const links: string[] = [];
   const sentToServer: Uint8Array[] = [];
   const state = { linkClosed: 0 };
