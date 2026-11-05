@@ -795,7 +795,11 @@ describe("AgentControllerLive", () => {
           const error = yield* controller
             .resolveEngine({
               threadId: claudeThreadId,
-              engine: { provider: String(claudeInstanceId), model: "claude-opus-4-6", fallbacks: [] },
+              engine: {
+                provider: String(claudeInstanceId),
+                model: "claude-opus-4-6",
+                fallbacks: [],
+              },
               fallback: codexSelection,
               mode: "default",
               botConversation: true,

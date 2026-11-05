@@ -55,7 +55,10 @@ describe("BotDetailsPanel", () => {
   it("keeps an unavailable model on the overview without a second warning", () => {
     const markup = renderToStaticMarkup(
       <BotOverview
-        bot={{ ...bot, engine: { provider: "claudeAgent", model: "claude-fable-5", fallbacks: [] } }}
+        bot={{
+          ...bot,
+          engine: { provider: "claudeAgent", model: "claude-fable-5", fallbacks: [] },
+        }}
         routinePanelRef={createRef<HTMLDivElement>()}
       />,
     );

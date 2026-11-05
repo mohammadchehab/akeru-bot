@@ -125,9 +125,7 @@ const engineChoiceKey = (choice: Pick<BotEngineChoice, "provider" | "model">) =>
 /** A bot's primary engine plus the ordered models it falls back to. */
 export const BotEngine = Schema.Struct({
   ...BotEngineChoice.fields,
-  fallbacks: Schema.Array(BotEngineChoice).pipe(
-    Schema.withDecodingDefault(Effect.succeed([])),
-  ),
+  fallbacks: Schema.Array(BotEngineChoice).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
 }).check(
   Schema.makeFilter((engine) => {
     if (engine.fallbacks.length > BOT_ENGINE_MAX_FALLBACKS) {

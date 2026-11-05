@@ -80,7 +80,11 @@ it.describe("ws bot engine model routing preflight", () => {
 
   const bot = (
     botId: BotId,
-    engine: { readonly provider: string; readonly model: string; readonly fallbacks: readonly never[] } | null,
+    engine: {
+      readonly provider: string;
+      readonly model: string;
+      readonly fallbacks: readonly never[];
+    } | null,
   ) =>
     ({
       botId,
@@ -273,7 +277,9 @@ it.describe("ws bot engine model routing preflight", () => {
             getById: ({ botId: requested }) =>
               Effect.succeed(
                 requested === botId
-                  ? Option.some(bot(botId, { provider: "codex", model: "dropped-model", fallbacks: [] }))
+                  ? Option.some(
+                      bot(botId, { provider: "codex", model: "dropped-model", fallbacks: [] }),
+                    )
                   : Option.none(),
               ),
           },
@@ -328,7 +334,9 @@ it.describe("ws bot engine model routing preflight", () => {
             getById: ({ botId: requested }) =>
               Effect.succeed(
                 requested === botId
-                  ? Option.some(bot(botId, { provider: "codex", model: "custom-model", fallbacks: [] }))
+                  ? Option.some(
+                      bot(botId, { provider: "codex", model: "custom-model", fallbacks: [] }),
+                    )
                   : Option.none(),
               ),
           },
@@ -418,8 +426,14 @@ it.describe("ws bot engine model routing preflight", () => {
       const threadId = ThreadId.make("thread-group-preflight");
 
       const bots = new Map<string, ProjectionBots.ProjectionBot>([
-        [String(staleBotId), bot(staleBotId, { provider: "codex", model: "dropped-model", fallbacks: [] })],
-        [String(healthyBotId), bot(healthyBotId, { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] })],
+        [
+          String(staleBotId),
+          bot(staleBotId, { provider: "codex", model: "dropped-model", fallbacks: [] }),
+        ],
+        [
+          String(healthyBotId),
+          bot(healthyBotId, { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] }),
+        ],
       ]);
 
       let sequence = 0;

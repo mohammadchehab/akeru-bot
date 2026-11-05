@@ -59,7 +59,7 @@ describe("ProviderCommandReactor", () => {
   it("routes two bots on the same provider instance to their own saved models", async () => {
     const harness = await createHarness({
       botEngine: { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] },
-      secondBot: { engine: { provider: "codex", model: "gpt-5.6-codex-mini" } },
+      secondBot: { engine: { provider: "codex", model: "gpt-5.6-codex-mini", fallbacks: [] } },
     });
 
     const now = "2026-01-01T00:00:00.000Z";

@@ -49,7 +49,11 @@ describe("desktop onboarding engine", () => {
     });
     expect(resolveDesktopOnboardingEngine("xai", providers)).toBeNull();
     expect(
-      desktopOnboardingModelSelection({ provider: "claudeAgent", model: "claude-default", fallbacks: [] }),
+      desktopOnboardingModelSelection({
+        provider: "claudeAgent",
+        model: "claude-default",
+        fallbacks: [],
+      }),
     ).toEqual({ instanceId: "claudeAgent", model: "claude-default" });
   });
 

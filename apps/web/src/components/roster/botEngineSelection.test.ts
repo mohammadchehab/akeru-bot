@@ -406,20 +406,32 @@ describe("botEngineTakesDelegatedWork", () => {
 
   it("marks only a saved engine on standard OpenCode", () => {
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode", model: "model", fallbacks: [] }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "opencode", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(false);
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode_go", model: "model", fallbacks: [] }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "opencode_go", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "codex", model: "model", fallbacks: [] }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "codex", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
   });
 
   it("does not mark a bot without an engine or on an unknown instance", () => {
     expect(botEngineTakesDelegatedWork(null, instanceEntries)).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "missing", model: "model", fallbacks: [] }, instanceEntries),
+      botEngineTakesDelegatedWork(
+        { provider: "missing", model: "model", fallbacks: [] },
+        instanceEntries,
+      ),
     ).toBe(true);
   });
 });
@@ -524,7 +536,12 @@ describe("bot engine reasoning choices", () => {
     };
 
     expect(
-      botDraftModelOptions({ provider: "codex", model: "gpt-a", fallbacks: [] }, appDefault, "codex", "gpt-a"),
+      botDraftModelOptions(
+        { provider: "codex", model: "gpt-a", fallbacks: [] },
+        appDefault,
+        "codex",
+        "gpt-a",
+      ),
     ).toBeUndefined();
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-a")).toEqual(appDefault.options);
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-b")).toBeUndefined();

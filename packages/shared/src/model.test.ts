@@ -368,7 +368,9 @@ describe("bot engine option helpers", () => {
   });
 
   it("reads a saved engine without borrowing anything and saves only chosen options", () => {
-    expect(botEngineModelSelection({ provider: "claudeAgent", model: "claude-opus-5-5", fallbacks: [] })).toEqual({
+    expect(
+      botEngineModelSelection({ provider: "claudeAgent", model: "claude-opus-5-5", fallbacks: [] }),
+    ).toEqual({
       instanceId: "claudeAgent",
       model: "claude-opus-5-5",
     });
