@@ -7,7 +7,7 @@ Sources, first match wins:
 
 1. `ISNADI_MASTER_KEY`: 32 bytes, base64. For headless hosts, CI and tests. A set but malformed value is an error, never a fall-through.
 2. The OS keychain: service `isnadibot`, account the sha256 of the canonical `ISNADI_HOME` path.
-3. `ISNADI_MASTER_PASSPHRASE` through scrypt. The salt is stored in the home; it is not secret.
+3. `ISNADI_MASTER_PASSPHRASE` through scrypt. The salt and the scrypt parameters (N=2^17, r=8, p=1) are stored in the home together; they are not secret. A keychain that reports not-found while a passphrase is set and a key check exists falls through to the passphrase, and the key check decides.
 
 With no source the vault is disabled and `set` / `replace` fail with "no master key source".
 

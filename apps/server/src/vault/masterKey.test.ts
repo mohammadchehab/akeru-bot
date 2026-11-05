@@ -130,7 +130,10 @@ describe("resolveMasterKey", () => {
 
     const again = resolveMasterKey(t.inputs);
 
-    assert.deepStrictEqual(again.ok && [again.source, again.key], first.ok && ["passphrase", first.key]);
+    assert.deepStrictEqual(
+      again.ok && [again.source, again.key],
+      first.ok && ["passphrase", first.key],
+    );
     assert.deepStrictEqual(t.state.keychainWrites, []);
   });
 

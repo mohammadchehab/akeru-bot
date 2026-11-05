@@ -36,7 +36,12 @@ export type KeychainPort = {
 };
 
 /** Passphrase derivation settings, stored with the salt so the cost can be raised without breaking existing homes. */
-export type ScryptParams = { readonly salt: Buffer; readonly N: number; readonly r: number; readonly p: number };
+export type ScryptParams = {
+  readonly salt: Buffer;
+  readonly N: number;
+  readonly r: number;
+  readonly p: number;
+};
 
 const SCRYPT_N = 2 ** 17;
 
