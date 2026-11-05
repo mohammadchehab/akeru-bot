@@ -9,6 +9,14 @@ import { STUB_DELEGATE_MARKER } from "../support/stubOpenAI.ts";
 
 const WAIT_MS = 30_000;
 
+function endsInDelegatedTask(body: string): boolean {
+  const parsed: { readonly messages?: ReadonlyArray<{ role?: string; content?: unknown }> } =
+    JSON.parse(body);
+  const last = parsed.messages?.at(-1);
+
+  return last?.role === "user" && JSON.stringify(last.content).includes("Take this over");
+}
+
 // Crew: boss Alpha, member Bravo. Alpha delegates a task to Bravo; Bravo's delegated chat then waits
 // on an approval, and the Decisions group lists it under the chat the user actually started.
 describe("decisions: delegated approval", () => {
@@ -53,8 +61,10 @@ describe("decisions: delegated approval", () => {
 
     await row.waitFor({ timeout: WAIT_MS });
     expect(await decisions().getByRole("button").count()).toBe(1);
-    expect(
-      stack.stub.completions.some((completion) => completion.user.includes("Take this over")),
-    ).toBe(true);
+    // A request that ends in the delegated task as a user message is the delegate's own turn; Alpha's
+    // follow-up only repeats the task inside its tool call.
+    expect(stack.stub.completions.some((completion) => endsInDelegatedTask(completion.body))).toBe(
+      true,
+    );
   });
 });
