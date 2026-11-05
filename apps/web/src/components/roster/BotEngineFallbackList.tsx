@@ -27,18 +27,24 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
   const { t } = useI18n();
   const [pending, setPending] = useState<BotEngineChoice | null>(null);
   const choices = buildBotModelChoices(draft.instanceEntries, draft.modelOptionsByInstance);
+
   const labelFor = (provider: string, model: string) =>
     choices.find((choice) => choice.instanceId === provider && choice.model === model)?.label ??
     model;
+
   const providerLabelFor = (provider: string) =>
     draft.instanceEntries.find((entry) => entry.instanceId === provider)?.displayName ?? provider;
+
   const taken = new Set([
     choiceKey(draft.providerInstanceId, draft.model),
     ...draft.fallbacks.map((entry) => choiceKey(entry.provider, entry.model)),
   ]);
+
   const addable = choices.filter(
     (choice) => !choice.disabledReason && !taken.has(choiceKey(choice.instanceId, choice.model)),
   );
+
+  const primaryLabel = labelFor(draft.providerInstanceId, draft.model);
 
   const atLimit = draft.fallbacks.length >= BOT_ENGINE_MAX_FALLBACKS;
 
@@ -60,9 +66,7 @@ export function BotEngineFallbackList({ draft }: { readonly draft: BotProfileDra
   return (
     <>
       <SettingsRow
-        title={t("If {model} can’t answer", {
-          model: labelFor(draft.providerInstanceId, draft.model),
-        })}
+        title={t("If {model} can’t answer", { model: primaryLabel })}
         description={t(
           "On a rate limit or usage limit, this bot retries the same turn on the next model, in order.",
         )}
