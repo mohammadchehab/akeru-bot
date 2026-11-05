@@ -242,6 +242,7 @@ export const orchestrationHttpApiLayer = HttpApiBuilder.group(
               if (refusal !== undefined) {
                 return yield* failEnvironmentInvalidRequest("invalid_command", {
                   detail: refusal,
+                  unavailability: "unsupported-model",
                 });
               }
             }
