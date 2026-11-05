@@ -15,7 +15,7 @@ const message: OrchestrationMessage = {
   updatedAt: "2026-09-26T00:00:00.000Z",
 };
 
-const engine = { provider: "codex", model: "gpt" } as const;
+const engine = { provider: "codex", model: "gpt", fallbacks: [] } as const;
 
 const result = { kind: "plugin-search-results" } as NonNullable<
   RowProps["pluginResults"]

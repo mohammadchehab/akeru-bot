@@ -28,7 +28,11 @@ const isProviderUnsupported = Schema.is(IsnadiDelegationProviderUnsupportedError
 
 // Every provider instance in this matrix is named after its driver kind.
 const onDriver = (driverKind: string) => {
-  const engine = { provider: ProviderInstanceId.make(driverKind), model: `${driverKind}-model` };
+  const engine = {
+    provider: ProviderInstanceId.make(driverKind),
+    model: `${driverKind}-model`,
+    fallbacks: [],
+  };
 
   return harnessFor(
     snapshot({

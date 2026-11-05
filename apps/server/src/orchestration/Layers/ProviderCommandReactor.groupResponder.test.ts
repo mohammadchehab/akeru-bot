@@ -26,7 +26,7 @@ const GROUP_THREAD = ThreadId.make("thread-group");
 
 const PERSON = AuthSessionId.make("session-person");
 
-const ENGINE = { provider: "codex", model: "gpt-5.6-sol" };
+const ENGINE = { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] };
 
 describe("ProviderCommandReactor group responder", () => {
   const testScope = createProviderCommandHarness();
@@ -160,7 +160,7 @@ describe("ProviderCommandReactor group responder", () => {
     expect(harness.startSession.mock.calls[1]?.[1]).toMatchObject({ botId: SPECIALIST });
   });
   it("runs each responder on its own engine, not the boss's the client sent", async () => {
-    const specialistEngine = { provider: "codex", model: "gpt-5.4-mini" };
+    const specialistEngine = { provider: "codex", model: "gpt-5.4-mini", fallbacks: [] };
     const { harness, sendTurn } = await createGroupHarness(specialistEngine);
 
     // The client sent the boss's model; the thread carries it too.

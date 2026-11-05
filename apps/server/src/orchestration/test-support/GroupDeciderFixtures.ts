@@ -70,7 +70,10 @@ export function makeBot(input: {
     description: null,
     disabledMcpServerIds: [],
     avatar: { kind: "dither", seed: input.id },
-    engine: input.provider && input.model ? { provider: input.provider, model: input.model } : null,
+    engine:
+      input.provider && input.model
+        ? { provider: input.provider, model: input.model, fallbacks: [] }
+        : null,
     sandbox: "local",
     runtimeMode: "full-access",
     imageProvider: null,

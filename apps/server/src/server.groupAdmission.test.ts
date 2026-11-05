@@ -110,7 +110,7 @@ it.layer(NodeServices.layer)("server router seam", (it) => {
     const groupId = GroupId.make("group-mention-preflight");
     const bossId = BotId.make("bot-group-boss");
     const memberId = BotId.make("bot-group-member");
-    const unavailableEngine = { provider: "claudeAgent", model: "claude-sonnet" };
+    const unavailableEngine = { provider: "claudeAgent", model: "claude-sonnet", fallbacks: [] };
 
     const makeGroupBot = (botId: BotId, engine: typeof unavailableEngine | null) =>
       ({

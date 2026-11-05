@@ -142,7 +142,7 @@ describe("resolveStickyBotEngine", () => {
 
     const providers = [makeComposerTestProvider(), signedOut];
     const instanceEntries = deriveProviderInstanceEntries(providers);
-    const engine = { provider: signedOut.instanceId, model: "claude-opus-5-5" };
+    const engine = { provider: signedOut.instanceId, model: "claude-opus-5-5", fallbacks: [] };
 
     const resolved = resolveStickyBotEngine({
       engine,
@@ -406,20 +406,20 @@ describe("botEngineTakesDelegatedWork", () => {
 
   it("marks only a saved engine on standard OpenCode", () => {
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork({ provider: "opencode", model: "model", fallbacks: [] }, instanceEntries),
     ).toBe(false);
     expect(
-      botEngineTakesDelegatedWork({ provider: "opencode_go", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork({ provider: "opencode_go", model: "model", fallbacks: [] }, instanceEntries),
     ).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "codex", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork({ provider: "codex", model: "model", fallbacks: [] }, instanceEntries),
     ).toBe(true);
   });
 
   it("does not mark a bot without an engine or on an unknown instance", () => {
     expect(botEngineTakesDelegatedWork(null, instanceEntries)).toBe(true);
     expect(
-      botEngineTakesDelegatedWork({ provider: "missing", model: "model" }, instanceEntries),
+      botEngineTakesDelegatedWork({ provider: "missing", model: "model", fallbacks: [] }, instanceEntries),
     ).toBe(true);
   });
 });
@@ -438,7 +438,7 @@ describe("routineDelegateOptions", () => {
     id,
     name: id,
     archivedAt,
-    engine: provider === null ? null : { provider, model: "model" },
+    engine: provider === null ? null : { provider, model: "model", fallbacks: [] },
   });
 
   it("leaves out the routine's own bot and archived bots, and marks bots that cannot take work", () => {
@@ -524,7 +524,7 @@ describe("bot engine reasoning choices", () => {
     };
 
     expect(
-      botDraftModelOptions({ provider: "codex", model: "gpt-a" }, appDefault, "codex", "gpt-a"),
+      botDraftModelOptions({ provider: "codex", model: "gpt-a", fallbacks: [] }, appDefault, "codex", "gpt-a"),
     ).toBeUndefined();
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-a")).toEqual(appDefault.options);
     expect(botDraftModelOptions(null, appDefault, "codex", "gpt-b")).toBeUndefined();

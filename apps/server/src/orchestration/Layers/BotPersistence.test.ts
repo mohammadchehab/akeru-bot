@@ -223,6 +223,7 @@ it.layer(TestLayer)("bot persistence", (it) => {
           { id: "reasoningEffort", value: "high" },
           { id: "serviceTier", value: "priority" },
         ],
+        fallbacks: [],
       });
       assert.equal(rebuiltBot?.groupId, null);
       assert.equal(rebuiltBot?.archivedAt, null);

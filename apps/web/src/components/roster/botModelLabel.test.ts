@@ -45,13 +45,13 @@ describe("resolveBotModelLabel", () => {
 
   it("shows the bot's own model by display name", () => {
     expect(
-      resolveBotModelLabel({ provider: "codex", model: "gpt-6-luna" }, settings, providers),
+      resolveBotModelLabel({ provider: "codex", model: "gpt-6-luna", fallbacks: [] }, settings, providers),
     ).toBe("GPT-6-Luna");
   });
 
   it("falls back to the raw slug when the provider no longer lists the model", () => {
     expect(
-      resolveBotModelLabel({ provider: "codex", model: "gpt-retired" }, settings, providers),
+      resolveBotModelLabel({ provider: "codex", model: "gpt-retired", fallbacks: [] }, settings, providers),
     ).toBe("gpt-retired");
   });
 

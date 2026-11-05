@@ -80,7 +80,7 @@ it.describe("ws bot engine model routing preflight", () => {
 
   const bot = (
     botId: BotId,
-    engine: { readonly provider: string; readonly model: string, fallbacks: [] } | null,
+    engine: { readonly provider: string; readonly model: string; readonly fallbacks: readonly never[] } | null,
   ) =>
     ({
       botId,
@@ -217,7 +217,7 @@ it.describe("ws bot engine model routing preflight", () => {
   it.effect("lets bot.update pass when the saved engine is unchanged", () =>
     Effect.gen(function* () {
       const botId = BotId.make("bot-stale-model");
-      const engine = { provider: "codex", model: "dropped-model" };
+      const engine = { provider: "codex", model: "dropped-model", fallbacks: [] };
       let sequence = 0;
       const baseDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "isnadi-ws-preflight-"));
       seedSubscriptionAuth(NodePath.join(baseDir, "userdata", "secrets"));
@@ -273,7 +273,7 @@ it.describe("ws bot engine model routing preflight", () => {
             getById: ({ botId: requested }) =>
               Effect.succeed(
                 requested === botId
-                  ? Option.some(bot(botId, { provider: "codex", model: "dropped-model" }))
+                  ? Option.some(bot(botId, { provider: "codex", model: "dropped-model", fallbacks: [] }))
                   : Option.none(),
               ),
           },
@@ -328,7 +328,7 @@ it.describe("ws bot engine model routing preflight", () => {
             getById: ({ botId: requested }) =>
               Effect.succeed(
                 requested === botId
-                  ? Option.some(bot(botId, { provider: "codex", model: "custom-model" }))
+                  ? Option.some(bot(botId, { provider: "codex", model: "custom-model", fallbacks: [] }))
                   : Option.none(),
               ),
           },
@@ -418,8 +418,8 @@ it.describe("ws bot engine model routing preflight", () => {
       const threadId = ThreadId.make("thread-group-preflight");
 
       const bots = new Map<string, ProjectionBots.ProjectionBot>([
-        [String(staleBotId), bot(staleBotId, { provider: "codex", model: "dropped-model" })],
-        [String(healthyBotId), bot(healthyBotId, { provider: "codex", model: "gpt-5.6-sol" })],
+        [String(staleBotId), bot(staleBotId, { provider: "codex", model: "dropped-model", fallbacks: [] })],
+        [String(healthyBotId), bot(healthyBotId, { provider: "codex", model: "gpt-5.6-sol", fallbacks: [] })],
       ]);
 
       let sequence = 0;
