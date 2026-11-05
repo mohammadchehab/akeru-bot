@@ -2,14 +2,8 @@ import type { UsageProviderKind } from "@isnadi/contracts";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import type { DailyTotals, HourlyTotals } from "@isnadi/shared/usageMerge";
-import {
-  formatDayShort,
-  formatHourShort,
-  formatRelativeHourShort,
-  formatTokens,
-  formatUsd,
-} from "@isnadi/shared/usageFormat";
 import { PROVIDER_ORDER, PROVIDER_PRESENTATION } from "./usageProviders";
+import { useUsageFormat } from "./useUsageFormat";
 
 const VIEW_WIDTH = 960;
 
@@ -218,6 +212,7 @@ export function UsageProviderChart({
   resolution,
   timeZone,
 }: UsageProviderChartProps) {
+  const fmt = useUsageFormat();
   const periods = resolution === "hour" ? hours : days;
 
   const byPeriod = useMemo(
@@ -292,7 +287,7 @@ export function UsageProviderChart({
     };
   }, [byPeriod, metric, periods, providers]);
 
-  const format = metric === "tokens" ? formatTokens : formatUsd;
+  const format = metric === "tokens" ? fmt.tokens : fmt.usd;
 
   const positionTooltip = useCallback(() => {
     const plot = plotRef.current;
@@ -362,11 +357,11 @@ export function UsageProviderChart({
   const hoveredColumn = hoverIndex === null ? undefined : series[hoverIndex];
 
   const formatPeriod = (period: string) =>
-    resolution === "hour" ? formatHourShort(period, timeZone) : formatDayShort(period);
+    resolution === "hour" ? fmt.hourShort(period, timeZone) : fmt.dayShort(period);
 
   const formatTooltipPeriod = (period: string) =>
     resolution === "hour" && referenceTime !== undefined
-      ? formatRelativeHourShort(period, referenceTime, timeZone)
+      ? fmt.relativeHourShort(period, referenceTime, timeZone)
       : formatPeriod(period);
 
   // A blank 260px plot reads as broken; the table below already says this, so match it.

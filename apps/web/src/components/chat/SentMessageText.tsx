@@ -15,6 +15,7 @@ import { useRosterStore } from "../roster/rosterStore";
 import { parseReplyPrompt } from "./MessageControls";
 import { ReplyReference } from "./ReplyReference";
 import { SkillInlineText } from "./SkillInlineText";
+import { UserTextParagraphs } from "./UserTextParagraphs";
 
 /**
  * Renders the text of a sent message. A reply serialized by `buildReplyPrompt` keeps a
@@ -36,9 +37,10 @@ export function SentMessageText({
 
   if (!reply) {
     return (
-      <p className="whitespace-pre-wrap">
-        <MentionText text={text} skills={skills} />
-      </p>
+      <UserTextParagraphs
+        text={text}
+        renderParagraph={(paragraph) => <MentionText text={paragraph} skills={skills} />}
+      />
     );
   }
 
@@ -52,9 +54,10 @@ export function SentMessageText({
         />
       </div>
       {reply.body ? (
-        <p className="whitespace-pre-wrap">
-          <MentionText text={reply.body} skills={skills} />
-        </p>
+        <UserTextParagraphs
+          text={reply.body}
+          renderParagraph={(paragraph) => <MentionText text={paragraph} skills={skills} />}
+        />
       ) : null}
     </>
   );

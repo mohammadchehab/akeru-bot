@@ -13,39 +13,68 @@ import {
   type UsageTokenTotals,
 } from "@isnadi/contracts";
 
-const CURRENCY = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
+/** English is the default so a caller without a locale renders exactly as before. */
+const DEFAULT_LOCALE = "en-US";
 
-const INTEGER = new Intl.NumberFormat("en-US");
+function cached<Options extends object, Formatter>(
+  create: (locale: string, options: Options) => Formatter,
+) {
+  const formatters = new Map<string, Formatter>();
 
-export function formatUsd(value: number): string {
-  return CURRENCY.format(value);
+  return (locale: string, options: Options): Formatter => {
+    const key = JSON.stringify([locale, options]);
+    const existing = formatters.get(key);
+
+    if (existing) return existing;
+    const formatter = create(locale, options);
+
+    formatters.set(key, formatter);
+
+    return formatter;
+  };
 }
 
-export function formatCount(value: number): string {
-  return INTEGER.format(Math.round(value));
+const numberFormat = cached(
+  (locale: string, options: Intl.NumberFormatOptions) => new Intl.NumberFormat(locale, options),
+);
+
+const dateFormat = cached(
+  (locale: string, options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, options),
+);
+
+/**
+ * Every formatter takes the locale as its last argument. Pass the interface language through
+ * `formattingLocale` so Arabic gets Western digits and the Gregorian calendar.
+ */
+export function formatUsd(value: number, locale = DEFAULT_LOCALE): string {
+  return numberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+export function formatCount(value: number, locale = DEFAULT_LOCALE): string {
+  return numberFormat(locale, {}).format(Math.round(value));
 }
 
 /**
  * Compacts a token count to three significant figures with a unit suffix, so
  * columns of numbers line up at a glance (`19.9B`, `76.7M`, `804K`).
  */
-export function formatTokens(value: number): string {
+export function formatTokens(value: number, locale = DEFAULT_LOCALE): string {
   const abs = Math.abs(value);
 
-  if (abs >= 1e12) return `${trim(value / 1e12)}T`;
+  if (abs >= 1e12) return `${trim(value / 1e12, locale)}T`;
 
-  if (abs >= 1e9) return `${trim(value / 1e9)}B`;
+  if (abs >= 1e9) return `${trim(value / 1e9, locale)}B`;
 
-  if (abs >= 1e6) return `${trim(value / 1e6)}M`;
+  if (abs >= 1e6) return `${trim(value / 1e6, locale)}M`;
 
-  if (abs >= 1e3) return `${trim(value / 1e3)}K`;
+  if (abs >= 1e3) return `${trim(value / 1e3, locale)}K`;
 
-  return INTEGER.format(Math.round(value));
+  return formatCount(value, locale);
 }
 
 export function stepTokenCount(usage: ThreadTokenUsageSnapshot): number | null {
@@ -70,39 +99,36 @@ export function stepUsageTokenTotals(usage: ThreadTokenUsageSnapshot): UsageToke
   };
 }
 
-function trim(value: number): string {
+function trim(value: number, locale: string): string {
   const abs = Math.abs(value);
   const digits = abs >= 100 ? 0 : abs >= 10 ? 1 : 2;
 
-  return value.toFixed(digits).replace(/\.0+$/, "");
+  // Zero fraction digits are dropped (`20K`, not `20.0K`), as `toFixed` plus a trim did.
+  return numberFormat(locale, {
+    useGrouping: false,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: digits,
+  }).format(Number(value.toFixed(digits)));
 }
 
-export function formatPercent(share: number, digits = 1): string {
-  return `${(share * 100).toFixed(digits)}%`;
+export function formatPercent(share: number, digits = 1, locale = DEFAULT_LOCALE): string {
+  return numberFormat(locale, {
+    style: "percent",
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(share);
 }
 
 /** `2026-08-07` to `Aug 7`. */
-export function formatDayShort(day: string): string {
+export function formatDayShort(day: string, locale = DEFAULT_LOCALE): string {
   const [year, month, dayOfMonth] = day.split("-").map((part) => Number(part));
 
   if (year === undefined || month === undefined || dayOfMonth === undefined) return day;
 
-  const MONTHS = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  return `${MONTHS[month - 1] ?? ""} ${dayOfMonth}`;
+  // The day is a calendar date, so it is formatted as UTC to avoid the host zone shifting it.
+  return dateFormat(locale, { timeZone: "UTC", month: "short", day: "numeric" }).format(
+    Date.UTC(year, month - 1, dayOfMonth),
+  );
 }
 
 /** Inclusive day list between two `YYYY-MM-DD` bounds. */
@@ -143,19 +169,24 @@ export function enumerateHourStarts(sinceTime: string, untilTime: string): reado
  * Repeated wall-clock hours during a fall-back transition include their short
  * zone name so the two distinct buckets remain distinguishable.
  */
-export function formatHourShort(hourStart: string, timeZone?: string): string {
+export function formatHourShort(
+  hourStart: string,
+  timeZone?: string,
+  locale = DEFAULT_LOCALE,
+): string {
   const parsed = DateTime.make(Date.parse(hourStart));
 
   if (Option.isNone(parsed)) return hourStart;
   const instant = DateTime.toEpochMillis(parsed.value);
   const options = timeZone === undefined ? {} : { timeZone };
 
-  const hourFormat = new Intl.DateTimeFormat("en-US", {
+  const hourFormat = dateFormat(locale, {
     ...options,
     hour: "numeric",
   });
 
-  const wallHourFormat = new Intl.DateTimeFormat("en-CA", {
+  // A machine-readable wall hour used only to spot repeated hours, never shown.
+  const wallHourFormat = dateFormat("en-CA", {
     ...options,
     year: "numeric",
     month: "2-digit",
@@ -172,7 +203,7 @@ export function formatHourShort(hourStart: string, timeZone?: string): string {
 
   if (!isRepeatedHour) return hourFormat.format(instant);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return dateFormat(locale, {
     ...(timeZone === undefined ? {} : { timeZone }),
     hour: "numeric",
     timeZoneName: "short",
@@ -180,12 +211,16 @@ export function formatHourShort(hourStart: string, timeZone?: string): string {
 }
 
 /** `2026-08-11T14:37:00Z` to `Aug 11, 2 PM` in the requested zone. */
-export function formatDateTimeShort(instant: string, timeZone?: string): string {
+export function formatDateTimeShort(
+  instant: string,
+  timeZone?: string,
+  locale = DEFAULT_LOCALE,
+): string {
   const date = DateTime.make(Date.parse(instant));
 
   if (Option.isNone(date)) return instant;
 
-  return new Intl.DateTimeFormat("en-US", {
+  return dateFormat(locale, {
     ...(timeZone === undefined ? {} : { timeZone }),
     month: "short",
     day: "numeric",
@@ -193,20 +228,24 @@ export function formatDateTimeShort(instant: string, timeZone?: string): string 
   }).format(DateTime.toEpochMillis(date.value));
 }
 
-/** An hourly tooltip label relative to the rolling window's end date. */
+/**
+ * An hourly tooltip label relative to the rolling window's end date. Web only: it uses
+ * `Intl.RelativeTimeFormat`, which Hermes does not have, so mobile must not call it.
+ */
 export function formatRelativeHourShort(
   hourStart: string,
   relativeTo: string,
   timeZone?: string,
+  locale = DEFAULT_LOCALE,
 ): string {
   const instant = DateTime.make(Date.parse(hourStart));
   const reference = DateTime.make(Date.parse(relativeTo));
 
   if (Option.isNone(instant) || Option.isNone(reference)) {
-    return formatDateTimeShort(hourStart, timeZone);
+    return formatDateTimeShort(hourStart, timeZone, locale);
   }
 
-  const dayFormat = new Intl.DateTimeFormat("en-CA", {
+  const dayFormat = dateFormat("en-CA", {
     ...(timeZone === undefined ? {} : { timeZone }),
     year: "numeric",
     month: "2-digit",
@@ -222,13 +261,19 @@ export function formatRelativeHourShort(
   );
 
   const calendarDaysAgo = Math.round((referenceDay - instantDay) / (24 * HOUR_MS));
-  const hour = formatHourShort(hourStart, timeZone);
+  const hour = formatHourShort(hourStart, timeZone, locale);
 
-  if (calendarDaysAgo === 0) return `${hour} today`;
+  if (calendarDaysAgo === 0 || calendarDaysAgo === 1) {
+    // "today" and "yesterday" in the interface language; in English this is "2 PM today".
+    const day = new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(
+      -calendarDaysAgo,
+      "day",
+    );
 
-  if (calendarDaysAgo === 1) return `${hour} yesterday`;
+    return `${hour} ${day}`;
+  }
 
-  return formatDateTimeShort(hourStart, timeZone);
+  return formatDateTimeShort(hourStart, timeZone, locale);
 }
 
 /**

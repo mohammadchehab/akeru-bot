@@ -22,6 +22,7 @@ import {
   mapGroupRow,
   mapTitleRegeneration,
   decodeShellSnapshot,
+  shellHopBudget,
   shellResponderQueue,
 } from "../ProjectionSnapshotRows.ts";
 import type { createEnvironmentRows } from "./EnvironmentRows.ts";
@@ -252,6 +253,8 @@ export function createShellSnapshots({
                           ? {}
                           : { linkedPullRequest: row.linkedPullRequest }),
                         ...shellResponderQueue(row.responderQueue),
+                        ...shellHopBudget(row.hopBudget),
+                        ...shellHopBudget(row.hopBudget),
                         latestTurn: latestTurnByThread.get(row.threadId) ?? null,
                         createdAt: row.createdAt,
                         updatedAt: row.updatedAt,

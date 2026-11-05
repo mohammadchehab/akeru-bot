@@ -48,7 +48,8 @@ type GroupAddressing =
 
 The queue is part of the thread read model, `responderQueue`, and one event replaces the whole queue
 each time it changes, `thread.responder-queue.set`:
-`{ threadId, entries: [{ botId, trigger }], hopsLeft, reason, updatedAt }`, where `reason` is
+`{ threadId, entries: [{ botId, trigger }], hopsLeft, hopsUsed, budgetExhausted?, reason, updatedAt }`,
+where `reason` says why the queue last changed:
 `addressed | mention | turn-started | stopped | superseded | budget-exhausted`. A single replacing
 event keeps the projector trivial and lets a client that reconnects render the queue from one value.
 
@@ -77,7 +78,16 @@ doesn't need him to film?") and that bot answers next.
 Rules:
 
 - A bot never queues itself.
-- Mentions inside code spans, code blocks and quotes don't count.
+- Mentions inside code spans, code blocks and quoted lines (`> ...`) don't count, so a bot that
+  echoes the user's "@Becky ..." does not queue Becky again. The server strips them before reading
+  the reply (`botReplyMentionText` in `packages/shared`).
+- Bots cannot address `@everyone`. The token is ignored in a reply, and the members it names beside
+  it still queue.
+- A name shared by two members is ambiguous, and a reply cannot disambiguate it, so it queues
+  nobody. Where one name starts another ("Bo" and "Bo Two"), the longest name at that position is
+  the one meant.
+- The hand-over is read from the reply when the turn ends and is held in memory until then. A server
+  restart between the reply and the end of the turn drops it, and the chain stops there.
 - A bot already waiting in the queue is not added twice.
 - A mention runs to the first character that cannot be part of a member name, so `@Becky,` counts.
   A typed `@bot:<id>` ends the same way: an id may contain `.` `:` `-` `_` inside but starts and ends
@@ -95,10 +105,18 @@ Rules:
     moment. Stop clears the queue and keeps `hopsLeft` as it was.
   - `hopsLeft` is the budget minus the turns already started. The decider lowers it at each turn
     start, so the queue on the wire is always true.
-  - When a finished reply would queue a bot with `hopsLeft` at 0, the decider writes an empty queue
-    with reason `budget-exhausted` and starts no turn. While the queue holds that reason, the chat
-    shows "Stopped after N replies" under the last reply. Clients render it from the queue and
-    never count on their own, so it survives a reconnect. The next queue event replaces it.
+  - `hopsUsed` is the number of turns the queue has started for the message, so a client can say
+    how many replies ran without counting.
+  - The budget gates only mention-triggered entries, so a bot the user named is never removed. When
+    a finished reply mentions a bot and `hopsLeft` (less the entries already waiting) leaves no room,
+    the decider drops that mention and sets the sticky queue field `budgetExhausted: true`. Every
+    queue event for the same user message copies it, and the next user message starts without it.
+    `reason` stays the usual "why it last changed"; `budget-exhausted` is the reason only on the
+    event that leaves the queue empty because of the budget.
+  - Clients show "Stopped after N replies" (N is `hopsUsed`) under the last reply while the queue is
+    empty and `budgetExhausted` is true. They render it from the queue and never count on their
+    own, so it survives a reconnect. An emptied queue is left off the wire unless `budgetExhausted`
+    is true, and the next queue event replaces it.
 - A chain ends when a reply mentions nobody new.
 
 Delegation stays separate: `send` hands background work to a member's own chat and posts the result

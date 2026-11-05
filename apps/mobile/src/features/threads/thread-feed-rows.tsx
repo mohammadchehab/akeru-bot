@@ -2,6 +2,7 @@ import { Match } from "effect";
 import { ThreadTurnFoldRow } from "./thread-turn-fold-row";
 import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
+import { formattingLocale } from "@isnadi/client-runtime/i18n";
 import type { BotId, EnvironmentId, TurnId } from "@isnadi/contracts";
 import {
   channelDeliveryLabel,
@@ -366,9 +367,12 @@ export function renderFeedEntry(
 }
 
 function BotStepMeter(props: { readonly meter: BotStepMeterData }) {
+  const { locale } = useMobileI18n();
+  const formatting = formattingLocale(locale);
+
   const label = `${formatBotStepEngine(props.meter.engine)} · ${
-    props.meter.tokens === null ? "—" : formatTokens(props.meter.tokens)
-  } tokens · ${props.meter.costUsd === null ? "$—" : formatUsd(props.meter.costUsd)}`;
+    props.meter.tokens === null ? "—" : formatTokens(props.meter.tokens, formatting)
+  } tokens · ${props.meter.costUsd === null ? "$—" : formatUsd(props.meter.costUsd, formatting)}`;
 
   return (
     <Text

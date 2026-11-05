@@ -71,6 +71,7 @@ import {
   ThreadRuntimeModeSetPayload,
   ThreadInteractionModeSetPayload,
   ThreadMessageSentPayload,
+  ThreadHopBudgetSetPayload,
   ThreadResponderQueueSetPayload,
   ThreadChannelDeliverySetPayload,
   ThreadMessageReactionSetPayload,
@@ -378,6 +379,11 @@ export const OrchestrationEvent = Schema.Union([
     ...EventBaseFields,
     type: Schema.Literal("thread.interaction-mode-set"),
     payload: ThreadInteractionModeSetPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.hop-budget-set"),
+    payload: ThreadHopBudgetSetPayload,
   }),
   Schema.Struct({
     ...EventBaseFields,

@@ -311,6 +311,7 @@ projectionRepositoriesLayer("Projection repositories", (it) => {
         branch: null,
         worktreePath: null,
         responderQueue,
+        hopBudget: 7,
         latestTurnId: null,
         createdAt: "2026-03-24T00:00:00.000Z",
         updatedAt: "2026-03-24T00:00:00.000Z",
@@ -330,12 +331,14 @@ projectionRepositoriesLayer("Projection repositories", (it) => {
 
       const persisted = Option.getOrNull(yield* threads.getById({ threadId }));
       assert.deepStrictEqual(persisted?.responderQueue, responderQueue);
+      assert.strictEqual(persisted?.hopBudget, 7);
 
       if (persisted === null) return yield* Effect.die("Expected the thread row to exist.");
-      yield* threads.upsert({ ...persisted, responderQueue: null });
+      yield* threads.upsert({ ...persisted, responderQueue: null, hopBudget: null });
 
       const cleared = Option.getOrNull(yield* threads.getById({ threadId }));
       assert.strictEqual(cleared?.responderQueue, null);
+      assert.strictEqual(cleared?.hopBudget, null);
     }),
   );
   it.effect("round-trips what started a turn through the pending start and the turn row", () =>

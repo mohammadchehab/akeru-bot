@@ -27,6 +27,9 @@ export class OrchestrationCommandDecodeError extends Schema.TaggedErrorClass<Orc
   }
 }
 
+/** The detail of the invariant error for a command whose decision was "nothing to do". */
+export const COMMAND_PRODUCED_NO_EVENTS = "Command produced no events.";
+
 export class OrchestrationCommandInvariantError extends Schema.TaggedErrorClass<OrchestrationCommandInvariantError>()(
   "OrchestrationCommandInvariantError",
   {

@@ -1,0 +1,10 @@
+Available models
+
+auto - Auto (default)
+gpt-5.3-codex-low - Codex 5.3 Low
+gpt-5.3-codex - Codex 5.3
+gpt-5.3-codex-high - Codex 5.3 High
+gpt-5.3-codex-xhigh - Codex 5.3 Extra High
+gpt-5.2 - GPT-5.2
+composer-2.5 - Composer 2.5
+Tip: use --model <id> (or /model <id> in interactive mode) to switch. Parameterized models also accept quoted overrides, e.g. --model 'claude-opus-4-8[context=1m,effort=high,fast=false]'.
