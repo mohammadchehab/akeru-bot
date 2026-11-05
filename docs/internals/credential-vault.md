@@ -27,3 +27,11 @@ macOS may ask once to "Always Allow" when the Electron-run and npx-run node proc
 `ISNADI_MASTER_KEY` is for headless and CI installs only. On a desktop the keychain is the key source; do not put a long-lived key in a shell profile.
 
 A process running as the same uid can still read the key from `/proc/<pid>/environ` or `ps eww` while the server runs with the env source; the env strip protects children, not same-uid peers.
+
+## Persistence and the keychain adapter
+
+Credentials persist in one file under the Isnadi home (`vault.json`, mode 0600, written to a temp file and renamed). It holds the scrypt parameters, the key-check record and one sealed value per credential. A sealed value is AES-256-GCM with the credential id as associated data, stored as `iv.tag.body` in base64, so a value cannot be moved to another id. A wrong key, wrong id or edited value opens to nothing; no plaintext ever reaches the file.
+
+Scrypt parameters are read back from the file, so they are bounded before use (N up to 2^20, r up to 16, p up to 4, salt at least 16 bytes); anything else fails closed as `kdf-params-out-of-bounds`.
+
+`@napi-rs/keyring` backs `KeychainPort` (`keychainAdapter.ts`). The item is per Isnadi home, so a dev home never reads the real install's key. No keyring on the platform is `unavailable` (the chain falls to the passphrase), a missing item is `not-found`, and a locked, denied or corrupt item is `error` (never regenerates). `ISNADI_REAL_KEYCHAIN_TEST=1` enables the real macOS keychain test on a developer machine.
