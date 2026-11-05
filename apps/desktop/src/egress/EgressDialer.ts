@@ -33,7 +33,7 @@ export interface EgressDialerDeps<Socket> {
   readonly connect: (target: {
     readonly host: string;
     readonly port: number;
-  }) => Effect.Effect<Socket, unknown>;
+  }) => Effect.Effect<Socket, Error>;
   readonly hostPolicy: EgressHostPolicy;
   /** The PC's own subnets as CIDR strings, read fresh on every open. */
   readonly interfaces: () => ReadonlyArray<string>;
