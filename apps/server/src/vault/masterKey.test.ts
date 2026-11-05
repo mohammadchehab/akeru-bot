@@ -16,7 +16,7 @@ type Options = {
   readonly env?: Record<string, string>;
   readonly keychain?: KeychainRead;
   readonly sealed?: number;
-  readonly keyCheck?: string;
+  readonly keyCheck?: string | undefined;
 };
 
 function setup(options: Options = {}) {
