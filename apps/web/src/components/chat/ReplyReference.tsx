@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useI18n } from "~/i18n";
 
 import { parseReplyPrompt } from "./MessageControls";
+import { UserTextParagraphs } from "./UserTextParagraphs";
 
 export function ReplyReference({
   label,
@@ -44,10 +45,15 @@ export function ReplyReference({
           <span className="max-w-28 shrink-0 truncate font-semibold text-foreground">{label}</span>
         )}
         <span aria-hidden="true">·</span>
-        <span className="min-w-0 flex-1 truncate">{text.replace(/\s+/g, " ")}</span>
+        <span dir="auto" className="min-w-0 flex-1 truncate">
+          {text.replace(/\s+/g, " ")}
+        </span>
       </div>
       {expanded ? (
-        <p className="mt-1 whitespace-pre-wrap break-words text-xs leading-5 text-muted-foreground">
+        <p
+          dir="auto"
+          className="mt-1 whitespace-pre-wrap break-words text-xs leading-5 text-muted-foreground"
+        >
           {text}
         </p>
       ) : null}
@@ -74,7 +80,7 @@ export function ReplyMessageBody({
 }) {
   const reply = parseReplyPrompt(text);
 
-  if (!reply) return <p className="whitespace-pre-wrap">{text}</p>;
+  if (!reply) return <UserTextParagraphs text={text} />;
 
   return (
     <div className="space-y-2">
@@ -83,7 +89,7 @@ export function ReplyMessageBody({
         text={reply.quotedText}
         sourceMessageId={sourceMessageId ?? null}
       />
-      <p className="whitespace-pre-wrap">{reply.body}</p>
+      <UserTextParagraphs text={reply.body} />
     </div>
   );
 }

@@ -13,11 +13,14 @@ import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
+import * as Logger from "effect/Logger";
 import * as PubSub from "effect/PubSub";
+import * as Ref from "effect/Ref";
 import * as Stream from "effect/Stream";
 import { describe, expect } from "vite-plus/test";
 
 import { ServerActivation } from "../../serverActivation.ts";
+import { COMMAND_PRODUCED_NO_EVENTS, OrchestrationCommandInvariantError } from "../Errors.ts";
 import { OrchestrationEngineService } from "../Services/OrchestrationEngine.ts";
 import { ProjectionSnapshotQuery } from "../Services/ProjectionSnapshotQuery.ts";
 import { makeGroupThread, makeReadModel } from "../test-support/GroupDeciderFixtures.ts";
@@ -105,6 +108,10 @@ const reply = (
 
 const harness = Effect.gen(function* () {
   const dispatched: OrchestrationCommand[] = [];
+
+  // When set, every dispatch fails with it, as the engine does for a command it rejects.
+  const failure = yield* Ref.make<OrchestrationCommandInvariantError | undefined>(undefined);
+
   const events = yield* PubSub.unbounded<OrchestrationEvent>();
 
   const engine: OrchestrationEngineService["Service"] = {
@@ -112,11 +119,15 @@ const harness = Effect.gen(function* () {
     readThreadEvents: () => Stream.die("unused"),
     getThreadReplayStats: () => Effect.die("unused"),
     dispatch: (command) =>
-      Effect.sync(() => {
-        dispatched.push(command);
+      Ref.get(failure).pipe(
+        Effect.flatMap((rejection) => {
+          dispatched.push(command);
 
-        return { sequence: dispatched.length };
-      }),
+          return rejection
+            ? Effect.fail(rejection)
+            : Effect.succeed({ sequence: dispatched.length });
+        }),
+      ),
     get streamDomainEvents() {
       return Stream.die("start should subscribe") as Stream.Stream<OrchestrationEvent>;
     },
@@ -127,7 +138,7 @@ const harness = Effect.gen(function* () {
   const activation = yield* Deferred.make<void>();
   yield* Deferred.succeed(activation, undefined);
 
-  return { dispatched, events, engine, activation };
+  return { dispatched, failure, events, engine, activation };
 });
 
 const queuedThread = (
@@ -492,5 +503,48 @@ describe("GroupResponderQueueReactor", () => {
         }),
       );
     }).pipe(Effect.scoped),
+  );
+
+  const advanceRejectedWith = (detail: string) =>
+    Effect.gen(function* () {
+      const warnings: string[] = [];
+
+      const logger = Logger.make(({ logLevel, message }) => {
+        if (logLevel === "Warn") warnings.push(String(message));
+      });
+
+      const h = yield* harness;
+      yield* Ref.set(
+        h.failure,
+        new OrchestrationCommandInvariantError({ commandType: "thread.responder.advance", detail }),
+      );
+
+      yield* run(h, (reactor) =>
+        Effect.gen(function* () {
+          yield* PubSub.publish(h.events, queueSet(1, THREAD, ["bot-specialist"]));
+          yield* PubSub.publish(h.events, sessionSet(2, THREAD, "running"));
+          yield* PubSub.publish(h.events, sessionSet(3, THREAD, "ready"));
+          yield* reactor.drainThrough(3);
+        }),
+      ).pipe(Effect.provide(Logger.layer([logger], { mergeWithExisting: false })));
+
+      expect(h.dispatched).toHaveLength(1);
+
+      return warnings;
+    }).pipe(Effect.scoped);
+
+  it.effect("does not warn when the decider found nothing to do", () =>
+    Effect.gen(function* () {
+      expect(yield* advanceRejectedWith(COMMAND_PRODUCED_NO_EVENTS)).toEqual([]);
+    }),
+  );
+
+  it.effect("still warns when a command fails for any other reason", () =>
+    Effect.gen(function* () {
+      const warnings = yield* advanceRejectedWith("Thread 'thread-group' does not exist.");
+
+      expect(warnings).toHaveLength(1);
+      expect(warnings[0]).toContain("group responder queue command failed");
+    }),
   );
 });
