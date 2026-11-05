@@ -50,6 +50,7 @@ describe("groupModelSelection", () => {
 
   it("keeps a member's own engine even when its provider is signed out", () => {
     const context = contextFor([signedOutCodex, claude]);
+
     const selection = groupModelSelection(
       { provider: "codex", model: "gpt-5-codex", fallbacks: [] },
       context,

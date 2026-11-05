@@ -131,12 +131,17 @@ export const BotEngine = Schema.Struct({
     if (engine.fallbacks.length > BOT_ENGINE_MAX_FALLBACKS) {
       return `A bot can have at most ${BOT_ENGINE_MAX_FALLBACKS} fallback models.`;
     }
+
     const seen = new Set([engineChoiceKey(engine)]);
+
     for (const fallback of engine.fallbacks) {
       const key = engineChoiceKey(fallback);
+
       if (seen.has(key)) return "A fallback model cannot repeat the primary or another fallback.";
+
       seen.add(key);
     }
+
     return undefined;
   }),
 );

@@ -77,6 +77,7 @@ it.effect("decodes the fallback chain with its limits", () =>
 
     const rejected = (fallbacks: ReadonlyArray<unknown>) =>
       decodeBotEngine({ ...primary, fallbacks }).pipe(Effect.flip);
+
     yield* rejected(["a", "b", "c", "d", "e"].map(entry));
     yield* rejected([primary]);
     yield* rejected([entry("sonnet"), entry("sonnet")]);

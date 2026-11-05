@@ -102,7 +102,7 @@ describe("ProviderCommandReactor", () => {
     await harness.waitFor(() => harness.startSession.mock.calls.length === 1);
     expect(harness.resolveEngine).toHaveBeenCalledWith({
       threadId: ThreadId.make("thread-1"),
-      engine: { provider, model },
+      engine: { provider, model, fallbacks: [] },
       fallback: {
         instanceId: ProviderInstanceId.make(provider),
         model,
