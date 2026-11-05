@@ -185,6 +185,17 @@ model to a hosted free endpoint" will go.
 The rule is enforced in `inspectEngine`: an entry whose instance reports anything other than
 `sessionModelSwitch: "in-session"` is invalid as a fallback.
 
+### History consent and save-time checks (slice 3)
+
+A fallback entry can move the chat's history to another vendor, so the contract carries
+`BotEngineChoice.historyConsent`. Adding a Custom API entry under a different primary driver asks the user
+once and records `historyConsent: true`; the server refuses the save without it. Saves also refuse a
+standard OpenCode entry. Both rules live in `provider/engineFallbackPolicy.ts`, called from the
+`dispatchCommand` handler, which already requires operate scope. No bot tool edits its own engine.
+Portability import keeps only entries whose provider exists in the target environment and clears
+`historyConsent` on them, so consent never travels with a file. The `FallbackPolicy` seam that decides
+when a turn may move arrives with slice 5.
+
 ## Contracts
 
 All changes are additive, and older clients decode them.
