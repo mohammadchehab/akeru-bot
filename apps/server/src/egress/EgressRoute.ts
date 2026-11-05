@@ -51,11 +51,6 @@ const authenticateEgress = Effect.gen(function* () {
   };
 });
 
-const respondErrors = Effect.catchTags({
-  EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
-  EnvironmentInternalError: HttpServerRespondable.toResponse,
-});
-
 const controlRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
   HttpRouter.add(
     "GET",
@@ -75,7 +70,7 @@ const controlRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
             write(new Socket.CloseEvent(1000)).pipe(Effect.ignore),
           );
 
-          yield* socket.runString((text) =>
+          yield* socket.runString<void, never>((text) =>
             Option.match(decodeDesktopFrame(text), {
               onNone: () => Effect.void,
               onSome: provider.onFrame,
@@ -84,8 +79,13 @@ const controlRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
 
           return HttpServerResponse.empty();
         }),
-      ).pipe(Effect.catch(() => Effect.succeed(HttpServerResponse.empty())));
-    }).pipe(respondErrors),
+      ).pipe(Effect.orElseSucceed(() => HttpServerResponse.empty()));
+    }).pipe(
+      Effect.catchTags({
+        EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
+        EnvironmentInternalError: HttpServerRespondable.toResponse,
+      }),
+    ),
   );
 
 const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
@@ -117,11 +117,16 @@ const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
 
       if (Option.isNone(handlers)) return HttpServerResponse.empty({ status: 403 });
       yield* socket
-        .run(handlers.value.onData)
+        .run<void, never>(handlers.value.onData)
         .pipe(Effect.ignore, Effect.ensuring(handlers.value.onEnd));
 
       return HttpServerResponse.empty();
-    }).pipe(respondErrors),
+    }).pipe(
+      Effect.catchTags({
+        EnvironmentAuthInvalidError: HttpServerRespondable.toResponse,
+        EnvironmentInternalError: HttpServerRespondable.toResponse,
+      }),
+    ),
   );
 
 /** Needs `EgressBroker`; the server provides one shared instance so the proxy and the routes agree. */
