@@ -10,9 +10,10 @@ Every change follows these steps. A card is done when its PR is merged to `main`
    - `vp lint <paths>` on the files you touched
    - `vp run --filter <package> typecheck` for each package you touched
    - `vp test run <files>` for the tests you touched
-4. Push and open a **draft** PR linked to the card. An assigned card counts as the ask to open its PR.
+4. Push and open the PR **ready for review**, linked to the card. An assigned card counts as the ask to open its PR.
+   CI skips draft PRs, so a draft never gets `Repository checks`.
 5. Wait for CI. If it is red, fix it. A red PR comes before any new work.
-6. When `Repository checks` is green, mark the PR ready for review.
+6. `Repository checks` green on the latest commit is the merge gate. Push fixes to the same PR until it is.
 7. The merge owner merges ready PRs every 30 minutes, or sends them back with the reason.
 8. Merged: move the card to Done, then take the next card.
 
@@ -27,7 +28,7 @@ Do not run repo-wide checks or heavy builds (the full server suite, desktop pack
 
 ## Early drafts
 
-A draft opened only to get the approach reviewed says so in its title: `(approach review)`. It is not handed to the merge owner.
+A draft opened only to get the approach reviewed says so in its title: `(approach review)`. CI does not run on it, and it is not handed to the merge owner. Mark it ready once the approach is agreed and the scoped checks pass.
 
 ## Who owns what
 
