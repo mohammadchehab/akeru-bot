@@ -62,3 +62,11 @@ export function botEngineFromDraft(input: {
     fallbacks: input.fallbacks,
   };
 }
+
+/** True when the entry would carry this bot's history to a different provider instance. */
+export function fallbackNeedsHistoryDisclosure(
+  primary: BotEngineChoice,
+  entry: BotEngineChoice,
+): boolean {
+  return primary.provider !== entry.provider;
+}
