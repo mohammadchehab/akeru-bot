@@ -1,6 +1,7 @@
 import type { BotEngine, ServerProvider } from "@isnadi/contracts";
 
 const OPENCODE_DRIVER = "opencode";
+
 const CUSTOM_API_DRIVER = "customOpenai";
 
 /**

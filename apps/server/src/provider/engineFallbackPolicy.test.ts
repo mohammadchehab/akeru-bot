@@ -32,7 +32,7 @@ const validate = (
 ) =>
   validateEngineFallbacks({
     providers,
-    engine: { provider: primary, model: "m", fallbacks },
+    engine: { provider: primary, fallbacks },
   });
 
 describe("validateEngineFallbacks", () => {
