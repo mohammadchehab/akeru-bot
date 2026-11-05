@@ -11,7 +11,10 @@ import type { SecretReader, SecretVault } from "./SecretVault.ts";
 
 export type VaultStatus =
   | { readonly status: "ready"; readonly vault: SecretVault; readonly reader: SecretReader }
-  | { readonly status: "disabled"; readonly reason: Extract<OpenVaultResult, { ok: false }>["reason"] };
+  | {
+      readonly status: "disabled";
+      readonly reason: Extract<OpenVaultResult, { ok: false }>["reason"];
+    };
 
 /**
  * The credential vault for this server. `disabled` means no master key source is
@@ -37,7 +40,10 @@ export const layer = Layer.effect(
     });
 
     if (opened.ok) {
-      yield* Effect.logInfo("Credential vault ready", { keyId: opened.keyId, source: opened.source });
+      yield* Effect.logInfo("Credential vault ready", {
+        keyId: opened.keyId,
+        source: opened.source,
+      });
 
       return { status: "ready", vault: opened.vault, reader: opened.reader } as const;
     }

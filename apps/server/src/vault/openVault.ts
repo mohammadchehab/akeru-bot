@@ -6,15 +6,8 @@ import {
   keychainAccountFor,
   makeKeyringPort,
 } from "./keychainAdapter.ts";
-import {
-  type MasterKeyFailure,
-  type MasterKeySource,
-  resolveMasterKey,
-} from "./masterKey.ts";
-import {
-  type InMemorySecretVault,
-  makeInMemorySecretVault,
-} from "./SecretVault.ts";
+import { type MasterKeyFailure, type MasterKeySource, resolveMasterKey } from "./masterKey.ts";
+import { type InMemorySecretVault, makeInMemorySecretVault } from "./SecretVault.ts";
 import { makeVaultFileKeyStore, makeVaultFilePersistence } from "./vaultFile.ts";
 
 export const VAULT_FILE_NAME = "vault.json";
@@ -55,7 +48,10 @@ export function openVault(input: OpenVaultInput): OpenVaultResult {
   try {
     const key = resolveMasterKey({
       env: input.env,
-      keychain: makeKeyringPort(input.createKeyringEntry, keychainAccountFor(canonical(input.homeDir))),
+      keychain: makeKeyringPort(
+        input.createKeyringEntry,
+        keychainAccountFor(canonical(input.homeDir)),
+      ),
       store: makeVaultFileKeyStore(vaultPath),
     });
 
