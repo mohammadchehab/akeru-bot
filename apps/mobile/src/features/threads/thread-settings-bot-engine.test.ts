@@ -56,6 +56,7 @@ describe("live bot settings sheet", () => {
         provider: "codex",
         model: "new-model",
         options: [{ id: "reasoningEffort", value: "high" }],
+        fallbacks: [],
       },
     });
 
@@ -71,7 +72,7 @@ describe("live bot settings sheet", () => {
 
     const reset = liveBotThreadSettings(
       session,
-      { ...bot, engine: { provider: "codex", model: "new-model" } },
+      { ...bot, engine: { provider: "codex", model: "new-model", fallbacks: [] } },
       [model],
     );
 
@@ -80,7 +81,7 @@ describe("live bot settings sheet", () => {
 
   it("leaves group and plain settings unchanged without a direct engine bot reference", () => {
     const { engineBotRef: _reference, ...session } = settings();
-    const bot = makeMobileBot({ engine: { provider: "codex", model: "new-model" } });
+    const bot = makeMobileBot({ engine: { provider: "codex", model: "new-model", fallbacks: [] } });
 
     expect(liveBotThreadSettings(session, bot, [model])).toBe(session);
   });

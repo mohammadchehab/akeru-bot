@@ -27,6 +27,7 @@ function bot(overrides: Partial<OrchestrationBot> = {}): OrchestrationBot {
       provider: "codex",
       model: "gpt-a",
       options: [{ id: "reasoningEffort", value: "minimal" }],
+      fallbacks: [],
     },
     ...overrides,
   });
@@ -115,12 +116,21 @@ describe("thread bot engine", () => {
         instanceId: codex,
         model: "gpt-a",
         options: [{ id: "reasoningEffort", value: "high" }],
-      }),
+      }, []),
     ).toEqual({
       provider: "codex",
       model: "gpt-a",
       options: [{ id: "reasoningEffort", value: "high" }],
+      fallbacks: [],
     });
+  });
+
+  it("keeps the bot's fallbacks when the model changes", () => {
+    const fallbacks = [{ provider: "grok", model: "grok-4.6" }];
+
+    expect(
+      threadBotEngineUpdate(config, { instanceId: codex, model: "gpt-a" }, fallbacks).fallbacks,
+    ).toEqual(fallbacks);
   });
 
   it("drops a provider default and keeps options on a model with unknown capabilities", () => {
@@ -129,18 +139,19 @@ describe("thread bot engine", () => {
         instanceId: codex,
         model: "gpt-a",
         options: [{ id: "reasoningEffort", value: "default" }],
-      }),
-    ).toEqual({ provider: "codex", model: "gpt-a" });
+      }, []),
+    ).toEqual({ provider: "codex", model: "gpt-a", fallbacks: [] });
     expect(
       threadBotEngineUpdate(config, {
         instanceId: codex,
         model: "gpt-custom",
         options: [{ id: "reasoningEffort", value: "high" }],
-      }),
+      }, []),
     ).toEqual({
       provider: "codex",
       model: "gpt-custom",
       options: [{ id: "reasoningEffort", value: "high" }],
+      fallbacks: [],
     });
   });
 });
