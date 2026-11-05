@@ -16,10 +16,11 @@ function Probe() {
 }
 
 describe("client-local language preference", () => {
-  it("ships English and Simplified Chinese and normalizes invalid or unapproved preferences to system", () => {
+  it("ships English, Simplified Chinese, and Arabic and normalizes invalid or unapproved preferences to system", () => {
     expect(availableLanguages).toEqual([
       { id: "en", label: "English" },
       { id: "zh-CN", label: "简体中文" },
+      { id: "ar", label: "العربية" },
     ]);
 
     for (const value of [null, undefined, "", "fr", "__proto__", {}, "system"]) {
@@ -28,6 +29,7 @@ describe("client-local language preference", () => {
 
     expect(normalizeLanguagePreference("en")).toBe("en");
     expect(normalizeLanguagePreference("zh-CN")).toBe("zh-CN");
+    expect(normalizeLanguagePreference("ar")).toBe("ar");
   });
 
   it("injects a partial test catalog with English fallback without registering a locale", () => {
@@ -39,7 +41,7 @@ describe("client-local language preference", () => {
 
     expect(output).toContain('lang="fr"');
     expect(output).toContain("Langue de test / Close");
-    expect(availableLanguages).toHaveLength(2);
+    expect(availableLanguages).toHaveLength(3);
     expect(renderToStaticMarkup(createElement(Probe))).toContain("Language / Close");
   });
 });

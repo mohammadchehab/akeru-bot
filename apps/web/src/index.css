@@ -84,7 +84,8 @@
 @theme {
   --font-brand-serif: Georgia, "Times New Roman", serif;
   --font-sans:
-    "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    "Geist Variable", -apple-system, "SF Arabic", "Geeza Pro", BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans Arabic", system-ui, sans-serif;
   --font-mono:
     "Geist Mono Variable", "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono",
     monospace;
