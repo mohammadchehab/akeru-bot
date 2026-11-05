@@ -507,6 +507,8 @@ describe("bot engine reasoning choices", () => {
 
   const codex = ProviderInstanceId.make("codex");
 
+  const fallbacks = [{ provider: "claudeAgent", model: "claude-opus-5-5" }];
+
   const saved = {
     instanceId: codex,
     model: "gpt-a",
@@ -533,17 +535,19 @@ describe("bot engine reasoning choices", () => {
         previous: saved,
         instanceId: "codex",
         model: "gpt-a",
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-a", options: saved.options });
+    ).toEqual({ provider: "codex", model: "gpt-a", options: saved.options, fallbacks });
     expect(
       botEngineForModelPick({
         previous: saved,
         instanceId: "codex",
         model: "gpt-b",
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-b" });
+    ).toEqual({ provider: "codex", model: "gpt-b", fallbacks });
   });
 
   it("clears choices for another instance, an optionless model, and an unknown model", () => {
@@ -553,8 +557,8 @@ describe("bot engine reasoning choices", () => {
       ["codex", "gpt-custom"],
     ] as const) {
       expect(
-        botEngineForModelPick({ previous: saved, instanceId, model, instanceEntries }),
-      ).toEqual({ provider: instanceId, model });
+        botEngineForModelPick({ previous: saved, instanceId, model, fallbacks, instanceEntries }),
+      ).toEqual({ provider: instanceId, model, fallbacks });
     }
   });
 
@@ -563,19 +567,22 @@ describe("bot engine reasoning choices", () => {
       botEngineForOptions({
         selection: saved,
         options: [{ id: "reasoningEffort", value: "high" }],
+        fallbacks,
         instanceEntries,
       }),
     ).toEqual({
       provider: "codex",
       model: "gpt-a",
       options: [{ id: "reasoningEffort", value: "high" }],
+      fallbacks,
     });
     expect(
       botEngineForOptions({
         selection: saved,
         options: [{ id: "reasoningEffort", value: "default" }],
+        fallbacks,
         instanceEntries,
       }),
-    ).toEqual({ provider: "codex", model: "gpt-a" });
+    ).toEqual({ provider: "codex", model: "gpt-a", fallbacks });
   });
 });

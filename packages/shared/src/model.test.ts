@@ -395,6 +395,18 @@ describe("bot engine option helpers", () => {
     ).toEqual(fallbacks);
   });
 
+  it("drops a fallback that becomes the primary", () => {
+    const kept = { provider: "claudeAgent", model: "claude-opus-5-5" };
+
+    expect(
+      botEngineFromModelSelection(
+        createModelSelection(ProviderInstanceId.make("codex"), "gpt-b"),
+        undefined,
+        [{ provider: "codex", model: "gpt-b" }, kept],
+      ).fallbacks,
+    ).toEqual([kept]);
+  });
+
   it("keeps an explicit OpenCode variant that matches a common default", () => {
     const caps = {
       optionDescriptors: [
