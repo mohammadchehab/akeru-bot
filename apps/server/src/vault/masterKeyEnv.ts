@@ -27,6 +27,11 @@ export function withoutMasterKeyEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   return copy;
 }
 
+/** The variables that are set, for handing the key material to the one child that is meant to read it. */
+export function definedEntries(captured: CapturedMasterKeyEnv): NodeJS.ProcessEnv {
+  return Object.fromEntries(Object.entries(captured).filter(([, value]) => value !== undefined));
+}
+
 /**
  * Captured when this module first loads, which bin.ts does before anything
  * spawns. The vault reads its key material from here, never from process.env.

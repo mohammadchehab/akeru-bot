@@ -2,7 +2,7 @@ import * as NodeChildProcess from "node:child_process";
 
 import { assert, describe, it } from "@effect/vitest";
 
-import { takeMasterKeyEnv, withoutMasterKeyEnv } from "./masterKeyEnv.ts";
+import { definedEntries, takeMasterKeyEnv, withoutMasterKeyEnv } from "./masterKeyEnv.ts";
 
 const SECRETS = { ISNADI_MASTER_KEY: "key-material", ISNADI_MASTER_PASSPHRASE: "pass-phrase" };
 
@@ -38,5 +38,12 @@ describe("master key environment", () => {
 
     assert.strictEqual(readFromChild(withoutMasterKeyEnv(env)), "[null,null]");
     assert.deepStrictEqual(env.ISNADI_MASTER_KEY, "key-material");
+  });
+
+  it("hands only the set variables to the one child meant to read them", () => {
+    assert.deepStrictEqual(
+      definedEntries({ ISNADI_MASTER_KEY: "k", ISNADI_MASTER_PASSPHRASE: undefined }),
+      { ISNADI_MASTER_KEY: "k" },
+    );
   });
 });
