@@ -5,7 +5,11 @@ import * as TestClock from "effect/testing/TestClock";
 
 import { EgressRefused } from "./EgressDialer.ts";
 import { BYTES_PER_SECOND, makeTokenBucket, STREAM_IDLE_TIMEOUT_MS } from "./EgressLimits.ts";
-import { makeEgressProvider, type EgressProviderDeps, type EgressTarget } from "./EgressProvider.ts";
+import {
+  makeEgressProvider,
+  type EgressProviderDeps,
+  type EgressTarget,
+} from "./EgressProvider.ts";
 
 const openFrame = {
   type: "open" as const,
@@ -85,7 +89,9 @@ describe("EgressProvider", () => {
       yield* provider.handleOpen(openFrame);
       yield* settle;
 
-      assert.deepStrictEqual(sent, [{ type: "refused", streamId: "s1", reason: "blocked-address" }]);
+      assert.deepStrictEqual(sent, [
+        { type: "refused", streamId: "s1", reason: "blocked-address" },
+      ]);
       assert.deepStrictEqual(links, []);
     }),
   );
@@ -106,14 +112,18 @@ describe("EgressProvider", () => {
       const { provider, sent } = makeHarness((request) =>
         request.host === "slow"
           ? Effect.never
-          : Effect.fail(new EgressRefused({ reason: "blocked-address", host: request.host, port: 1 })),
+          : Effect.fail(
+              new EgressRefused({ reason: "blocked-address", host: request.host, port: 1 }),
+            ),
       );
 
       yield* provider.handleOpen({ ...openFrame, streamId: "slow", host: "slow" });
       yield* provider.handleOpen({ ...openFrame, streamId: "fast", host: "fast" });
       yield* settle;
 
-      assert.deepStrictEqual(sent, [{ type: "refused", streamId: "fast", reason: "blocked-address" }]);
+      assert.deepStrictEqual(sent, [
+        { type: "refused", streamId: "fast", reason: "blocked-address" },
+      ]);
     }),
   );
 
@@ -146,7 +156,8 @@ describe("EgressProvider", () => {
       const chunk = new Uint8Array(BYTES_PER_SECOND);
 
       const target: EgressTarget = {
-        run: (onData) => onData(chunk).pipe(Effect.andThen(onData(chunk)), Effect.andThen(Effect.never)),
+        run: (onData) =>
+          onData(chunk).pipe(Effect.andThen(onData(chunk)), Effect.andThen(Effect.never)),
         write: () => Effect.void,
         destroy: Effect.void,
       };
@@ -182,7 +193,9 @@ describe("EgressProvider", () => {
       const targets = [first.target, second.target];
       let next = 0;
 
-      const { provider, state } = makeHarness(() => Effect.succeed(targets[next++] ?? first.target));
+      const { provider, state } = makeHarness(() =>
+        Effect.succeed(targets[next++] ?? first.target),
+      );
 
       yield* provider.handleOpen(openFrame);
       yield* provider.handleOpen({ ...openFrame, streamId: "s2" });

@@ -67,7 +67,11 @@ export interface EgressProvider {
   /** Called by the control socket when the desktop sends a frame. */
   readonly onFrame: (
     frame:
-      | { readonly type: "refused"; readonly streamId: string; readonly reason: EgressRefusalReason }
+      | {
+          readonly type: "refused";
+          readonly streamId: string;
+          readonly reason: EgressRefusalReason;
+        }
       | { readonly type: "closed"; readonly streamId: string },
   ) => Effect.Effect<void>;
 }
@@ -144,7 +148,10 @@ export const make = Effect.sync(() => {
             if (stream === undefined || stream.owner !== owner) return Effect.void;
 
             if (frame.type === "refused") {
-              return Deferred.fail(stream.attached, new EgressStreamRefused({ reason: frame.reason })).pipe(
+              return Deferred.fail(
+                stream.attached,
+                new EgressStreamRefused({ reason: frame.reason }),
+              ).pipe(
                 Effect.andThen(Queue.end(stream.inbound)),
                 Effect.andThen(drop(frame.streamId)),
               );

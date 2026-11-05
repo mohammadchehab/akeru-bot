@@ -35,7 +35,11 @@ export interface EgressProviderDeps {
   ) => Effect.Effect<EgressStreamLink, Error>;
   readonly sendControl: (
     frame:
-      | { readonly type: "refused"; readonly streamId: string; readonly reason: EgressRefusalReason }
+      | {
+          readonly type: "refused";
+          readonly streamId: string;
+          readonly reason: EgressRefusalReason;
+        }
       | { readonly type: "closed"; readonly streamId: string },
   ) => Effect.Effect<void>;
   /** Waits before moving `bytes`, per the session's token bucket. */
@@ -67,9 +71,7 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
 
         if (Result.isFailure(target)) return yield* refuse(target.failure.reason);
 
-        const link = yield* deps
-          .openStreamLink(frame.streamId, frame.ticket)
-          .pipe(Effect.result);
+        const link = yield* deps.openStreamLink(frame.streamId, frame.ticket).pipe(Effect.result);
 
         if (Result.isFailure(link)) {
           yield* target.success.destroy;
@@ -85,11 +87,17 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
         });
 
         const toServer = target.success.run((chunk) =>
-          mark.pipe(Effect.andThen(deps.throttle(chunk.byteLength)), Effect.andThen(link.success.send(chunk))),
+          mark.pipe(
+            Effect.andThen(deps.throttle(chunk.byteLength)),
+            Effect.andThen(link.success.send(chunk)),
+          ),
         );
 
         const toTarget = link.success.run((chunk) =>
-          mark.pipe(Effect.andThen(deps.throttle(chunk.byteLength)), Effect.andThen(target.success.write(chunk))),
+          mark.pipe(
+            Effect.andThen(deps.throttle(chunk.byteLength)),
+            Effect.andThen(target.success.write(chunk)),
+          ),
         );
 
         const idle = Effect.gen(function* () {

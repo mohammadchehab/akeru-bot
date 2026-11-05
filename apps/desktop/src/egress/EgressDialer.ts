@@ -8,7 +8,13 @@ import { classifyAddress } from "./EgressAddressPolicy.ts";
 const ALLOWED_PORTS: ReadonlySet<number> = new Set([80, 443]);
 
 export class EgressRefused extends Schema.TaggedErrorClass<EgressRefused>()("EgressRefused", {
-  reason: Schema.Literals(["port", "host-not-granted", "blocked-address", "resolve-failed", "connect-failed"]),
+  reason: Schema.Literals([
+    "port",
+    "host-not-granted",
+    "blocked-address",
+    "resolve-failed",
+    "connect-failed",
+  ]),
   host: Schema.String,
   port: Schema.Int,
 }) {}
