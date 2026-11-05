@@ -1,4 +1,4 @@
-import { parentPort } from "node:worker_threads";
+import * as NodeWorkerThreads from "node:worker_threads";
 
 import type { EmbedWorkerRequest, EmbedWorkerResponse } from "./embedWorkerProtocol.ts";
 
@@ -7,7 +7,8 @@ type Extractor = (
   options: { readonly pooling: "mean"; readonly normalize: true },
 ) => Promise<{ readonly data: Float32Array; readonly dims: ReadonlyArray<number> }>;
 
-const port = parentPort;
+const port = NodeWorkerThreads.parentPort;
+
 let extractor: Extractor | undefined;
 
 const send = (message: EmbedWorkerResponse, transfer: ArrayBuffer[] = []) =>
@@ -26,6 +27,7 @@ async function init(request: Extract<EmbedWorkerRequest, { type: "init" }>) {
     dtype: "q8",
     session_options: { intraOpNumThreads: request.threads },
   });
+
   extractor = (texts, options) => created(texts.slice(), options);
 
   const probe = await extractor(["warmup"], { pooling: "mean", normalize: true });
@@ -37,11 +39,13 @@ async function embed(request: Extract<EmbedWorkerRequest, { type: "embed" }>) {
 
   const output = await extractor(request.texts, { pooling: "mean", normalize: true });
   const dims = output.dims[output.dims.length - 1] ?? 0;
-  const vectors = request.texts.map((_, index) => output.data.slice(index * dims, (index + 1) * dims));
+  const vectors = request.texts.map((_, index) =>
+    Float32Array.from(output.data.subarray(index * dims, (index + 1) * dims)),
+  );
 
   send(
     { type: "result", id: request.id, vectors },
-    vectors.map((vector) => vector.buffer as ArrayBuffer),
+    vectors.map((vector) => vector.buffer),
   );
 }
 

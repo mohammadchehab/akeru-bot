@@ -2,7 +2,7 @@ import * as NodeCrypto from "node:crypto";
 import * as NodeFS from "node:fs";
 import * as NodeFSP from "node:fs/promises";
 import * as NodePath from "node:path";
-import { Readable } from "node:stream";
+import * as NodeStream from "node:stream";
 import * as Effect from "effect/Effect";
 import * as Predicate from "effect/Predicate";
 
@@ -14,8 +14,11 @@ import {
 } from "./EmbeddingModelManifest.ts";
 
 const MODEL_HOST = "huggingface.co";
+
 const MAX_REDIRECTS = 5;
+
 const DIR_MODE = 0o700;
+
 const FILE_MODE = 0o600;
 
 type FetchLike = (url: string, init: { readonly redirect: "manual" }) => Promise<Response>;
@@ -43,15 +46,19 @@ async function fetchPinned(fetchImpl: FetchLike, start: string): Promise<Respons
     requireHttps(url);
 
     const response = await fetchImpl(url, { redirect: "manual" });
+
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get("location");
+
       if (!location) throw fail("download", "Model download redirected without a location.");
       url = new URL(location, url).href;
       continue;
     }
+
     if (!response.ok || !response.body) {
       throw fail("download", `Model download failed with status ${response.status}.`);
     }
+
     return response;
   }
 
@@ -60,6 +67,7 @@ async function fetchPinned(fetchImpl: FetchLike, start: string): Promise<Respons
 
 async function hashFile(filePath: string): Promise<string> {
   const hash = NodeCrypto.createHash("sha256");
+
   for await (const chunk of NodeFS.createReadStream(filePath)) hash.update(chunk);
 
   return hash.digest("hex");
@@ -71,6 +79,7 @@ const isMissing = (cause: unknown) =>
 async function matchesManifest(filePath: string, file: EmbeddingModelFile): Promise<boolean> {
   try {
     const stat = await NodeFSP.stat(filePath);
+
     if (stat.size !== file.bytes) return false;
 
     return (await hashFile(filePath)) === file.sha256;
@@ -94,14 +103,17 @@ async function downloadFile(input: {
   await NodeFSP.mkdir(NodePath.dirname(input.destination), { recursive: true, mode: DIR_MODE });
 
   const handle = await NodeFSP.open(partial, "w", FILE_MODE);
+
   try {
     if (!response.body) throw fail("download", "Model download had no body.");
 
-    for await (const chunk of Readable.fromWeb(response.body)) {
+    for await (const chunk of NodeStream.Readable.fromWeb(response.body)) {
       received += chunk.length;
+
       if (received > input.file.bytes) {
         throw fail("integrity", `${input.file.path} is larger than the manifest allows.`);
       }
+
       hash.update(chunk);
       await handle.write(chunk);
     }
@@ -110,6 +122,7 @@ async function downloadFile(input: {
     await NodeFSP.rm(partial, { force: true });
     throw cause;
   }
+
   await handle.close();
 
   if (received !== input.file.bytes || hash.digest("hex") !== input.file.sha256) {
@@ -141,6 +154,7 @@ export const ensureEmbeddingModel = (input: {
 
       for (const file of input.manifest.files) {
         const destination = NodePath.join(modelDir, file.path);
+
         if (await matchesManifest(destination, file)) continue;
 
         await NodeFSP.rm(destination, { force: true });

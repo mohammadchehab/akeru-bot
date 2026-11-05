@@ -1,4 +1,4 @@
-import * as NodeWorker from "node:worker_threads";
+import * as NodeWorkerThreads from "node:worker_threads";
 import * as Effect from "effect/Effect";
 
 import { ensureEmbeddingModel } from "./EmbeddingModelDownload.ts";
@@ -30,7 +30,7 @@ const runtimeError = (message: string) => new EmbeddingError({ reason: "runtime"
  * worker starts on first use and stops after `idleMs` with nothing in flight. The `query: ` and
  * `passage: ` prefixes the model expects are applied here.
  */
-export function makeLocalEmbeddingProvider(options: {
+export function createLocalEmbeddingProvider(options: {
   readonly modelsDir: string;
   readonly manifest?: EmbeddingModelManifest;
   readonly idleMs?: number;
@@ -42,7 +42,7 @@ export function makeLocalEmbeddingProvider(options: {
   const idleMs = options.idleMs ?? 60_000;
   const threads = options.threads ?? 2;
 
-  let started: Promise<NodeWorker.Worker> | undefined;
+  let started: Promise<NodeWorkerThreads.Worker> | undefined;
   let nextId = 0;
   let idleTimer: ReturnType<typeof setTimeout> | undefined;
   const pending = new Map<number, Pending>();
@@ -55,31 +55,35 @@ export function makeLocalEmbeddingProvider(options: {
   const stop = async () => {
     const current = started;
     started = undefined;
+
     if (idleTimer) clearTimeout(idleTimer);
     idleTimer = undefined;
     failAll(runtimeError("Embedding worker stopped."));
+
     if (current) await current.then((worker) => worker.terminate()).catch(() => undefined);
   };
 
   const scheduleIdle = () => {
     if (idleTimer) clearTimeout(idleTimer);
+
     if (pending.size > 0) return;
 
     idleTimer = setTimeout(() => void stop(), idleMs);
     idleTimer.unref();
   };
 
-  const start = (): Promise<NodeWorker.Worker> => {
+  const start = (): Promise<NodeWorkerThreads.Worker> => {
     started ??= (async () => {
       await Effect.runPromise(
         ensureEmbeddingModel({ manifest, modelsDir: options.modelsDir, fetch: options.fetch }),
       );
 
-      const worker = new NodeWorker.Worker(options.workerUrl ?? defaultWorkerUrl());
+      const worker = new NodeWorkerThreads.Worker(options.workerUrl ?? defaultWorkerUrl());
       const ready = Promise.withResolvers<number>();
 
       worker.on("message", (message: EmbedWorkerResponse) => {
         if (message.type === "ready") return ready.resolve(message.dims);
+
         if (message.type === "result") {
           pending.get(message.id)?.resolve(message.vectors);
           pending.delete(message.id);
@@ -89,6 +93,7 @@ export function makeLocalEmbeddingProvider(options: {
           pending.get(message.id)?.reject(runtimeError(message.message));
           pending.delete(message.id);
         }
+
         scheduleIdle();
       });
       worker.on("error", (cause) => {
@@ -107,6 +112,7 @@ export function makeLocalEmbeddingProvider(options: {
         modelName: embeddingModelDirName(manifest),
         threads,
       };
+
       worker.postMessage(init);
       await ready.promise;
 
@@ -125,13 +131,16 @@ export function makeLocalEmbeddingProvider(options: {
         if (texts.length === 0) return [];
 
         const worker = await start();
+
         if (idleTimer) clearTimeout(idleTimer);
 
         const id = nextId++;
         const prefix = kind === "query" ? manifest.prefixes.query : manifest.prefixes.passage;
+
         const result = new Promise<ReadonlyArray<Float32Array>>((resolve, reject) =>
           pending.set(id, { resolve, reject }),
         );
+
         const request: EmbedWorkerRequest = { type: "embed", id, texts: texts.map((t) => prefix + t) };
         worker.postMessage(request);
 

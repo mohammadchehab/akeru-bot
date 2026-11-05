@@ -204,6 +204,11 @@ export default defineConfig({
     },
     overrides: [
       {
+        // worker_threads ports have no origin; the rule is meant for window.postMessage.
+        files: ["apps/server/src/recall/**"],
+        rules: { "unicorn/require-post-message-target-origin": "off" },
+      },
+      {
         // Generated and vendored code is fixed at its source, not at the call site.
         files: ["**/_generated/**", "**/*.gen.ts", "**/vendor/**"],
         rules: {

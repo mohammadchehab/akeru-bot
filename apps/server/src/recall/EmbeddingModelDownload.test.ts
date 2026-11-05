@@ -36,6 +36,7 @@ const fetchFor =
   };
 
 const directories: string[] = [];
+
 const tempModels = async () => {
   const dir = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "isnadi-embed-dl-"));
   directories.push(dir);
@@ -91,8 +92,10 @@ describe("ensureEmbeddingModel", () => {
   it("follows https redirects but refuses a redirect to http", async () => {
     const modelsDir = await tempModels();
     const hops: string[] = [];
+
     const redirecting = async (url: string) => {
       hops.push(url);
+
       if (url.startsWith("https://huggingface.co/")) {
         return new Response(null, { status: 302, headers: { location: "https://cdn.example/blob" } });
       }
@@ -110,6 +113,7 @@ describe("ensureEmbeddingModel", () => {
         fetch: async () => new Response(null, { status: 302, headers: { location: "http://evil.example/x" } }),
       }),
     );
+
     assert.isTrue(Exit.isFailure(insecure));
   });
 
