@@ -90,6 +90,7 @@ export function projectEvent(
     case "thread.interaction-mode-set":
     case "thread.channel-delivery-set":
     case "thread.responder-queue.set":
+    case "thread.hop-budget-set":
       return projectThreadLifecycle(nextBase, event);
     case "thread.message-sent":
     case "thread.message-reaction-set":

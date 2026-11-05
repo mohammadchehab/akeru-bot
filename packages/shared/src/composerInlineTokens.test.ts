@@ -255,3 +255,13 @@ describe("composer mention tokens", () => {
     ]);
   });
 });
+
+describe("an @chat:<id> mention followed by punctuation", () => {
+  it.each([",", ".", ";", ":", "!", "?", ")"])("keeps the id clean before %s", (mark) => {
+    const tokens = collectComposerInlineTokens(`see @chat:thread-1${mark} ok`);
+
+    expect(
+      tokens.map((token) => [token.type, token.type === "thread-mention" && token.value]),
+    ).toContainEqual(["thread-mention", "thread-1"]);
+  });
+});

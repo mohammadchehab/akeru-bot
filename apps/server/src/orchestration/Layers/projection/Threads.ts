@@ -360,6 +360,24 @@ export function createThreads({
           return;
         }
 
+        case "thread.hop-budget-set": {
+          const existingRow = yield* projectionThreadRepository.getById({
+            threadId: event.payload.threadId,
+          });
+
+          if (Option.isNone(existingRow)) {
+            return;
+          }
+
+          yield* projectionThreadRepository.upsert({
+            ...existingRow.value,
+            hopBudget: event.payload.hopBudget,
+            updatedAt: event.payload.updatedAt,
+          });
+
+          return;
+        }
+
         case "thread.responder-queue.set": {
           const existingRow = yield* projectionThreadRepository.getById({
             threadId: event.payload.threadId,
@@ -375,6 +393,7 @@ export function createThreads({
               entries: event.payload.entries,
               hopsLeft: event.payload.hopsLeft,
               hopsUsed: event.payload.hopsUsed,
+              ...(event.payload.budgetExhausted ? { budgetExhausted: true } : {}),
               reason: event.payload.reason,
               updatedAt: event.payload.updatedAt,
             },

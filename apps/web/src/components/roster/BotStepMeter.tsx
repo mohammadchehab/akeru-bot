@@ -1,18 +1,18 @@
-import { formatTokens, formatUsd } from "@isnadi/shared/usageFormat";
-
 import { useI18n } from "../../i18n";
+import { useUsageFormat } from "../usage/useUsageFormat";
 import { formatBotStepEngine, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
 
 export function BotStepMeter({ meter }: { readonly meter: BotStepMeterData | undefined }) {
   const { t } = useI18n();
+  const fmt = useUsageFormat();
 
   if (!meter) return null;
 
   // Unknown usage is left out rather than shown as a placeholder.
   const parts = [
     formatBotStepEngine(meter.engine),
-    meter.tokens === null ? null : t("{tokens} tokens", { tokens: formatTokens(meter.tokens) }),
-    meter.costUsd === null ? null : formatUsd(meter.costUsd),
+    meter.tokens === null ? null : t("{tokens} tokens", { tokens: fmt.tokens(meter.tokens) }),
+    meter.costUsd === null ? null : fmt.usd(meter.costUsd),
   ].filter((part) => part !== null);
 
   return (

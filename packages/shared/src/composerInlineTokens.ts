@@ -47,7 +47,14 @@ export const COMPOSER_BROWSER_MENTION = "@browser";
 
 const THREAD_MENTION_PREFIX = "@chat:";
 
-const THREAD_MENTION_ID_PATTERN = "[A-Za-z0-9][A-Za-z0-9._:-]*";
+/**
+ * An id mention token: `.`, `:`, `-` and `_` may sit inside the id, but it starts and ends with a
+ * letter or digit, so a trailing mark ends the mention instead of joining the id.
+ */
+export const THREAD_MENTION_ID_PATTERN = "[A-Za-z0-9](?:[A-Za-z0-9._:-]*[A-Za-z0-9])?";
+
+/** What may follow an id mention token: whitespace, the end of the text, or `, . ; : ! ? )`. */
+export const MENTION_TOKEN_END_PATTERN = "(?=$|\\s|[,.;:!?)])";
 
 const THREAD_MENTION_ID_REGEX = new RegExp(`^${THREAD_MENTION_ID_PATTERN}$`);
 
@@ -56,12 +63,12 @@ const BOT_MENTION_PREFIX = "@bot:";
 const BROWSER_MENTION_TOKEN_REGEX = /(^|\s)@browser(?=\s)/g;
 
 const THREAD_MENTION_TOKEN_REGEX = new RegExp(
-  `(^|\\s)@chat:(${THREAD_MENTION_ID_PATTERN})(?=\\s)`,
+  `(^|\\s)@chat:(${THREAD_MENTION_ID_PATTERN})${MENTION_TOKEN_END_PATTERN}`,
   "g",
 );
 
 const BOT_MENTION_TOKEN_REGEX = new RegExp(
-  `(^|\\s)@bot:(${THREAD_MENTION_ID_PATTERN})(?=\\s)`,
+  `(^|\\s)@bot:(${THREAD_MENTION_ID_PATTERN})${MENTION_TOKEN_END_PATTERN}`,
   "g",
 );
 

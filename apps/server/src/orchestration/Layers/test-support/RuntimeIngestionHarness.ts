@@ -68,6 +68,7 @@ import { OrchestrationProjectionSnapshotQueryLive } from "../ProjectionSnapshotQ
 import * as ThreadBackgroundLiveness from "../../ThreadBackgroundLiveness.ts";
 import * as ThreadPlanProgress from "../../ThreadPlanProgress.ts";
 import { ProviderRuntimeIngestionLive } from "../ProviderRuntimeIngestion.ts";
+import { OrchestrationCommandInvariantError } from "../../Errors.ts";
 import { OrchestrationEngineService } from "../../Services/OrchestrationEngine.ts";
 import { ProviderRuntimeIngestionService } from "../../Services/ProviderRuntimeIngestion.ts";
 import { ProjectionSnapshotQuery } from "../../Services/ProjectionSnapshotQuery.ts";
@@ -202,6 +203,8 @@ export function createRuntimeIngestionHarness() {
     threadTitle?: string;
     botOwned?: boolean;
     workspaceSubdirectory?: string;
+    /** Commands for which the engine rejects dispatch, to exercise ingestion's failure paths. */
+    failDispatch?: (command: OrchestrationCommand) => boolean;
   }) {
     const repositoryRoot = makeTempDir("t3-provider-project-");
     NodeChildProcess.execFileSync("git", ["init", "--initial-branch=main"], {
@@ -251,6 +254,22 @@ export function createRuntimeIngestionHarness() {
       Layer.provide(SqlitePersistenceMemory),
     );
 
+    const failableOrchestrationLayer = Layer.effect(
+      OrchestrationEngineService,
+      Effect.map(Effect.service(OrchestrationEngineService), (real) => ({
+        ...real,
+        dispatch: (...args: Parameters<typeof real.dispatch>) =>
+          options?.failDispatch?.(args[0])
+            ? Effect.fail(
+                new OrchestrationCommandInvariantError({
+                  commandType: args[0].type,
+                  detail: "injected dispatch failure",
+                }),
+              )
+            : real.dispatch(...args),
+      })),
+    ).pipe(Layer.provideMerge(orchestrationLayer));
+
     const projectionSnapshotLayer = OrchestrationProjectionSnapshotQueryLive.pipe(
       Layer.provide(RepositoryIdentityResolver.layer),
       Layer.provide(SqlitePersistenceMemory),
@@ -258,7 +277,7 @@ export function createRuntimeIngestionHarness() {
 
     const layer = ProviderRuntimeIngestionLive.pipe(
       Layer.provideMerge(channelRuntimeLayer),
-      Layer.provideMerge(orchestrationLayer),
+      Layer.provideMerge(failableOrchestrationLayer),
       Layer.provideMerge(projectionSnapshotLayer),
       // Single shared liveness instance across ingestion (writer), the
       // engine, and the snapshot query (reader).

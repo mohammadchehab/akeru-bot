@@ -31,6 +31,7 @@ import {
   mapProposedPlanRow,
   mapSessionRow,
   decodeThread,
+  shellHopBudget,
   shellResponderQueue,
 } from "../ProjectionSnapshotRows.ts";
 import type { createThreadHistoryRows } from "./ThreadHistoryRows.ts";
@@ -306,6 +307,7 @@ export function createThreadDetail({
           ? {}
           : { linkedPullRequest: threadRow.value.linkedPullRequest }),
         ...shellResponderQueue(threadRow.value.responderQueue),
+        ...shellHopBudget(threadRow.value.hopBudget),
         latestTurn: Option.isSome(latestTurnRow) ? mapLatestTurn(latestTurnRow.value) : null,
         createdAt: threadRow.value.createdAt,
         updatedAt: threadRow.value.updatedAt,

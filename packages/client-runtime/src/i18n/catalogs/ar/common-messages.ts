@@ -31,6 +31,8 @@ export const commonMessagesCatalog = {
   "Expand user input, {count} questions#many": "وسّع إدخال المستخدم، {count} سؤالًا",
   "{count} question": "{count} سؤال",
   "{count} questions": "{count} سؤال",
+  "<1m": "أقل من دقيقة",
+  "{time} ago": "منذ {time}",
   "{count} questions#zero": "{count} سؤال",
   "{count} questions#two": "سؤالان ({count})",
   "{count} questions#few": "{count} أسئلة",

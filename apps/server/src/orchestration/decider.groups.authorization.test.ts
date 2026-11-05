@@ -222,6 +222,13 @@ it.layer(NodeServices.layer)("group membership decider", (it) => {
           title: "Outsider title",
         },
         {
+          type: "thread.hop-budget.set",
+          commandId: CommandId.make("cmd-outsider-thread-hop-budget"),
+          threadId: ThreadId.make("thread-group"),
+          hopBudget: 3,
+          createdAt: NOW,
+        },
+        {
           type: "thread.session.stop",
           commandId: CommandId.make("cmd-outsider-thread-stop"),
           threadId: ThreadId.make("thread-group"),
@@ -473,6 +480,7 @@ it.layer(NodeServices.layer)("group membership decider", (it) => {
       expect(events.map((event) => event.type)).toEqual([
         "group.person-assigned",
         "thread.message-sent",
+        "thread.responder-queue.set",
         "thread.turn-start-requested",
       ]);
       const assigned = events[0];
@@ -508,6 +516,7 @@ it.layer(NodeServices.layer)("group membership decider", (it) => {
 
       expect(events.map((event) => event.type)).toEqual([
         "thread.message-sent",
+        "thread.responder-queue.set",
         "thread.turn-start-requested",
       ]);
     }),

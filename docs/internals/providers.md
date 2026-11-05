@@ -487,9 +487,8 @@ built-in catalog, so an unlisted model there is not evidence the model is gone:
 When a provider reroutes a request to a different model at runtime and reports it, adapters emit
 the `model.rerouted` runtime event and `ProviderRuntimeIngestion` projects it as a
 `model.rerouted` chat activity line (`Model rerouted from X to Y`), so the effective model is
-visible rather than a silent fallback. Today only the legacy Codex adapter emits this event;
-Mastra sessions do not report the effective model yet, so a reroute inside a Mastra driver never
-produces the activity.
+visible rather than a silent fallback. No adapter emits it yet. The per-bot fallback chain and
+model pauses will, see [model fallback and rate limits](model-fallback.md).
 
 Adding a driver means writing the driver plus adapter and adding it to `BUILT_IN_DRIVERS`. No
 orchestration, contract, or client change is required for the common case.
