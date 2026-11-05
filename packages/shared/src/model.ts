@@ -462,7 +462,10 @@ export function botEngineModelSelection(engine: BotEngine): ModelSelection {
   );
 }
 
-/** The engine to save for a selection, keeping only options the user chose. */
+/**
+ * The engine to save for a selection, keeping only options the user chose and
+ * the fallback chain minus any entry the new primary now duplicates.
+ */
 export function botEngineFromModelSelection(
   selection: ModelSelection,
   caps: ModelCapabilities | null | undefined,
@@ -474,7 +477,9 @@ export function botEngineFromModelSelection(
     provider: selection.instanceId,
     model: selection.model,
     ...(options ? { options } : {}),
-    fallbacks,
+    fallbacks: fallbacks.filter(
+      (entry) => entry.provider !== selection.instanceId || entry.model !== selection.model,
+    ),
   };
 }
 
