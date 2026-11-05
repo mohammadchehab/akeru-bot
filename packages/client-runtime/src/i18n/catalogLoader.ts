@@ -7,6 +7,7 @@ export type CatalogRegistry = Readonly<Record<string, () => Promise<TranslationC
 
 export const catalogRegistry: CatalogRegistry = Object.freeze({
   "zh-CN": () => import("./zh-CN.ts").then((mod) => mod.zhCNCatalog),
+  ar: () => import("./ar.ts").then((mod) => mod.arCatalog),
 });
 
 /** Each client owns one loader. Injected registries are for tests. */

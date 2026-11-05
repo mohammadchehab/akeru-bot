@@ -1,3 +1,8 @@
+import {
+  responderQueueLine,
+  responderQueueNames,
+  stopTarget,
+} from "@isnadi/client-runtime/responder-queue";
 import { useMobileI18n } from "../../lib/i18n";
 import type {
   EnvironmentId,
@@ -168,6 +173,11 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
     ? composerIdentity.title
     : (bot?.name ?? providerBotName(composerProviderDriver));
 
+  const responderLine = responderQueueLine(
+    responderQueueNames(props.selectedThread.responderQueue, bots),
+    t,
+  );
+
   const wasExpandedBeforePreviewRef = useRef(false);
   const inFlightThreadIdsRef = useRef(new Set<string>());
   const { onExpandedChange } = props;
@@ -232,9 +242,7 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
     onEditorFocusChange?.(false);
   }, [onEditorFocusChange]);
 
-  const showStopAction =
-    props.selectedThread.session?.status === "running" ||
-    props.selectedThread.session?.status === "starting";
+  const showStopAction = stopTarget(props.selectedThread) !== null;
 
   const sendLabel =
     props.connectionState !== "connected" || props.queueCount > 0 ? "Queue" : "Send";
@@ -685,6 +693,10 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
             </ComposerToolbarRow>
           ) : null}
         </ComposerSurface>
+
+        {responderLine !== null ? (
+          <Text className="pt-2 text-xs text-foreground-muted">{responderLine}</Text>
+        ) : null}
 
         {/* Queue count */}
         {props.queueCount > 0 ? (

@@ -100,6 +100,25 @@ describe("bot mentions", () => {
     expect(groupMentionBots(undefined, bots)).toEqual([]);
   });
 
+  it("offers @everyone only when the chat allows it, and inserts @everyone", () => {
+    const base = {
+      query: "ev",
+      browserAvailable: false,
+      bots: members,
+      threads: [],
+      currentThreadId: "thread-1",
+      currentProjectId: "project-1",
+      matchedIds: new Set<string>(),
+    };
+
+    expect(buildComposerMentionItems(base)).toEqual([]);
+
+    const [item] = buildComposerMentionItems({ ...base, everyoneAvailable: true });
+
+    expect(item?.type).toBe("everyone-mention");
+    expect(composerMentionItemToken(item!)).toBe("@everyone");
+  });
+
   it("lists both bots named Mika and routes each row to its own id", () => {
     const items = buildComposerMentionItems({
       query: "mi",

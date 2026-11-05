@@ -325,4 +325,12 @@ export const rosterCatalog = {
   "No channels set up yet": "لم تُعد قنوات بعد",
   "Deleted group": "مجموعة محذوفة",
   "Removed bot": "بوت مزال",
+  "{names} is next": "التالي: {names}",
+  "Reply budget": "حد الردود",
+  "Bot replies one message can chain before the group stops. Applies from your next message.":
+    "عدد ردود البوتات المتتالية التي قد تنتج عن رسالة واحدة قبل أن تتوقف المجموعة. يسري من رسالتك التالية.",
+  "Fewer replies": "ردود أقل",
+  "More replies": "ردود أكثر",
+  "{names} are next": "التاليان: {names}",
+  "Every member": "كل الأعضاء",
 } as const;

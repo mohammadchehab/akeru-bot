@@ -561,4 +561,6 @@ export const commonLabelsCatalog = {
   "Regenerate title": "أعد توليد العنوان",
   "Mark unread": "علّم كغير مقروء",
   Unread: "غير مقروء",
+  Quoting: "اقتباس",
+  "Replying to": "رد على",
 } as const;

@@ -1,3 +1,4 @@
+import { responderQueueNames } from "@isnadi/client-runtime/responder-queue";
 import { Predicate } from "effect";
 import { threadDelegations } from "@isnadi/client-runtime/delegation-presentation";
 import { botChatTimeline } from "@isnadi/client-runtime/state/bot-chat-timeline";
@@ -26,6 +27,8 @@ import { ConversationSeparator } from "../chat/ConversationSeparator";
 import { useOptionalReplyPlayback } from "../chat/ReplyPlaybackProvider";
 import { useReplyPlaybackThread } from "~/lib/replyPlaybackThread";
 import { useI18n } from "~/i18n";
+import { GroupResponderQueue } from "./GroupResponderQueue";
+import { GroupHopBudgetControl } from "./GroupHopBudgetControl";
 import { ProviderUnavailableLine } from "../chat/ProviderUnavailableNotice";
 import { ThreadErrorBanner } from "../chat/ThreadErrorBanner";
 import { useOptionalVoiceCall } from "../voice/VoiceCall";
@@ -145,7 +148,15 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
   const bossCatalog = bossEngine.catalog;
   // A mention sends the draft to that member, so the `$` and `/` pickers offer its provider's catalog.
   const [addressedBotId, setAddressedBotId] = useState<string | null>(null);
-  const addressedBot = resolveGroupAddressedBot(members, boss, addressedBotId);
+  const [replyTarget, setReplyTarget] = useState<MessageReplyTarget | null>(null);
+
+  // A reply goes to the bot that wrote the quoted message, unless the draft names someone.
+  const replyBotId = replyTarget
+    ? (runtime.messages.find((message) => message.id === replyTarget.messageId)?.respondingBotId ??
+      null)
+    : null;
+
+  const addressedBot = resolveGroupAddressedBot(members, boss, addressedBotId ?? replyBotId);
   const composerCatalog = useBotEngineAvailability(addressedBot?.engine ?? null).catalog;
   const noProviderNoticeId = useId();
   // Signing in fixes a reply that failed on a missing account, or a boss that
@@ -182,7 +193,6 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
 
   const replyPlayback = useOptionalReplyPlayback();
   const voiceCall = useOptionalVoiceCall();
-  const [replyTarget, setReplyTarget] = useState<MessageReplyTarget | null>(null);
   const approvalState = useRosterPendingApproval(runtime.linkedThreadRef);
   const enableAutoReview = useEnableBotAutoReview();
   const activities = useThreadActivities(runtime.linkedThreadRef);
@@ -284,6 +294,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
   }
 
   const currentPersonId = peopleIdentity.current?.id;
+  const queuedNames = responderQueueNames(runtime.responderQueue, members);
   const activeBot = members.find((bot) => bot.id === runtime.respondingBotId) ?? boss;
 
   const inboxItems = selectOpenBotInboxItems(
@@ -340,6 +351,12 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               </span>
             </div>
             <div data-chat-header-actions className="ml-auto flex items-center">
+              {runtime.linkedThreadRef ? (
+                <GroupHopBudgetControl
+                  hopBudget={runtime.hopBudget}
+                  onChange={runtime.setHopBudget}
+                />
+              ) : null}
               <ChatActionsMenu threadRef={runtime.linkedThreadRef} />
             </div>
           </WorkspacePageHeader>
@@ -495,13 +512,20 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
             draftKey={`group:${group.id}`}
             busy={working && pendingApproval === null}
             activitySlot={
-              working && activeBot && !waitingForUserInput && pendingApproval === null ? (
-                <BotActivityStatus
-                  name={activeBot.name}
-                  activity={botActivity}
-                  update={workingUpdate}
-                  silentRun={silentRun}
-                />
+              !waitingForUserInput &&
+              pendingApproval === null &&
+              (working || queuedNames.length > 0) ? (
+                <>
+                  {working && activeBot ? (
+                    <BotActivityStatus
+                      name={activeBot.name}
+                      activity={botActivity}
+                      update={workingUpdate}
+                      silentRun={silentRun}
+                    />
+                  ) : null}
+                  <GroupResponderQueue names={queuedNames} onStop={() => void runtime.stop()} />
+                </>
               ) : null
             }
             pendingActionSlot={
@@ -557,6 +581,7 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
               runtime.defaultProject === null ||
               (!waitingForUserInput && !runtime.providerAvailable)
             }
+            everyoneMention
             mentionBots={members.map((bot) => ({
               id: bot.id,
               name: bot.name,
@@ -571,11 +596,12 @@ export function GroupThreadLanding({ groupId }: { readonly groupId: string }) {
             sendBlockedDescriptionId={
               runtime.providerAvailable || waitingForUserInput ? undefined : noProviderNoticeId
             }
-            onSubmit={async (prompt, files, respondingBotId) => {
+            onSubmit={async (prompt, files, addressing) => {
               const sent = await runtime.send(
                 buildReplyPrompt(replyTarget, prompt),
                 files,
-                respondingBotId,
+                addressing,
+                replyTarget?.messageId,
               );
 
               if (sent) setReplyTarget(null);

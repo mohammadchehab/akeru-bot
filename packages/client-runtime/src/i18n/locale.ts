@@ -3,6 +3,7 @@ import { type LanguagePreference } from "./types.ts";
 export const availableLanguages = [
   { id: "en", label: "English" },
   { id: "zh-CN", label: "简体中文" },
+  { id: "ar", label: "العربية" },
 ] as const;
 
 export function canonicalLocale(locale: string): string | undefined {

@@ -127,6 +127,8 @@ export const commonLabelsCatalog = {
   "Copy ID": "Copy ID",
   "Stash entry may come back": "Stash entry may come back",
   "Could not dictate": "Could not dictate",
+  Quoting: "Quoting",
+  "Replying to": "Replying to",
   "Cancel reply": "Cancel reply",
   "Dictation unavailable": "Dictation unavailable",
   Mention: "Mention",

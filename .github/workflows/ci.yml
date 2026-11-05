@@ -1,4 +1,6 @@
-# GitHub-hosted CI validates pull requests before they reach main, and main after each merge.
+# CI validates pull requests before they reach main, and main after each merge.
+# Heavy jobs (desktop, server shards) run on the self-hosted `hetzner` runners for the repository's own
+# branches, and on GitHub-hosted runners for pull requests from forks, so fork code never runs on our box.
 # Independent jobs run in parallel; the last job, "Repository checks", is the single required status.
 
 name: CI
@@ -33,6 +35,7 @@ jobs:
       contents: read
       pull-requests: read
     outputs:
+      heavy_runner: ${{ steps.runner.outputs.heavy_runner }}
       code: ${{ steps.filter.outputs.code }}
     steps:
       # Docs-only pull requests skip the build and test jobs. Renames count both paths. Pushes to main and dispatches always run everything.
@@ -54,6 +57,13 @@ jobs:
           else
             echo 'code=false' >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Pick the runner for heavy jobs
+        id: runner
+        env:
+          IS_FORK: ${{ github.event.pull_request.head.repo.fork }}
+        run: |
+          if [ "$IS_FORK" = "true" ]; then echo "heavy_runner=ubuntu-24.04"; else echo "heavy_runner=hetzner"; fi >> "$GITHUB_OUTPUT"
 
   static:
     name: Static checks
@@ -162,7 +172,7 @@ jobs:
     name: Desktop build and package tests
     needs: changes
     if: ${{ needs.changes.outputs.code == 'true' }}
-    runs-on: ubuntu-24.04
+    runs-on: ${{ needs.changes.outputs.heavy_runner }}
     timeout-minutes: 30
     steps:
       - name: Checkout
@@ -204,7 +214,7 @@ jobs:
     name: Server tests (shard ${{ matrix.shard }}/4)
     needs: changes
     if: ${{ needs.changes.outputs.code == 'true' }}
-    runs-on: ubuntu-24.04
+    runs-on: ${{ needs.changes.outputs.heavy_runner }}
     timeout-minutes: 45
     # Files inside a shard still run one at a time; the suite is not safe to parallelize in one process.
     strategy:

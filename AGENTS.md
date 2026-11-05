@@ -8,6 +8,10 @@ Conversations, bot profiles, settings, secrets, and logs live under `~/.isnadi`.
 
 IsnadiBot is not affiliated with ping.gg.
 
+## Delivery process
+
+Follow [the delivery process](docs/operations/delivery-process.md) for every change. It is mandatory.
+
 ## Project ownership and upstream
 
 Leo maintains IsnadiBot and sets its product direction.

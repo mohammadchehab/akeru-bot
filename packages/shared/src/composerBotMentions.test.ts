@@ -4,6 +4,7 @@ import { serializeComposerBotMention } from "./composerInlineTokens.ts";
 import {
   botReplyMentionText,
   composerBotMentionDetail,
+  groupAddressing,
   resolveComposerAddressing,
   resolveComposerBotMention,
 } from "./composerBotMentions.ts";
@@ -225,5 +226,44 @@ describe("botReplyMentionText", () => {
   it("does not let a bot address everyone, but still reads the bots it names", () => {
     expect(mentioned("@everyone status?")).toEqual({ kind: "none" });
     expect(mentioned("@everyone, @Mori check")).toEqual({ kind: "bots", botIds: ["bot-1"] });
+  });
+});
+
+describe("groupAddressing", () => {
+  const reply = { messageId: "message-1", respondingBotId: "bot-1" };
+
+  it("sends none for a prompt that mentions nobody and replies to nothing", () => {
+    expect(groupAddressing(undefined)).toBeUndefined();
+    expect(groupAddressing({ kind: "none" })).toBeUndefined();
+  });
+
+  it("carries everyone and the mentioned bots in order", () => {
+    expect(groupAddressing({ kind: "everyone" })).toEqual({ kind: "everyone" });
+    expect(groupAddressing({ kind: "bots", botIds: ["bot-1", "bot-2"] })).toEqual({
+      kind: "bots",
+      botIds: ["bot-1", "bot-2"],
+    });
+  });
+
+  it("sends a reply when nobody is mentioned", () => {
+    expect(groupAddressing(undefined, reply)).toEqual({ kind: "reply", messageId: "message-1" });
+    expect(groupAddressing({ kind: "none" }, reply)).toEqual({
+      kind: "reply",
+      messageId: "message-1",
+    });
+  });
+
+  it("lets a mention in the reply win", () => {
+    expect(groupAddressing({ kind: "bots", botIds: ["bot-1"] }, reply)).toEqual({
+      kind: "bots",
+      botIds: ["bot-1"],
+    });
+  });
+
+  it("sends no addressing when the quoted message has no responding bot", () => {
+    expect(groupAddressing(undefined, { messageId: "message-1" })).toBeUndefined();
+    expect(
+      groupAddressing(undefined, { messageId: "message-1", respondingBotId: null }),
+    ).toBeUndefined();
   });
 });

@@ -2,7 +2,7 @@
 
 exports[`discovered interface message coverage > covers static calls and finite label sources without translating identifiers 1`] = `
 {
-  "directMessageCount": 1803,
+  "directMessageCount": 1804,
   "expressions": {
     "apps/mobile/src/components/DictationControls.tsx": [
       "announcements[status]);",
@@ -349,6 +349,7 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/mobile/src/features/settings/appearance/sections/TextAppearanceSection.tsx",
     "apps/mobile/src/features/settings/appearance/sections/ThemeAppearanceSection.tsx",
     "apps/mobile/src/features/sharing/IncomingShareProvider.tsx",
+    "apps/mobile/src/features/threads/ComposerCommandPopover.tsx",
     "apps/mobile/src/features/threads/ComputerDesktopNotice.tsx",
     "apps/mobile/src/features/threads/DurableFactsCard.tsx",
     "apps/mobile/src/features/threads/NewTaskContextPickerScreens.tsx",
@@ -464,7 +465,6 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/web/src/components/roster/BotConversationScrollArea.tsx",
     "apps/web/src/components/roster/BotDetailsPanel.tsx",
     "apps/web/src/components/roster/BotDurableMemory.tsx",
-    "apps/web/src/components/roster/BotEngineFallbackList.tsx",
     "apps/web/src/components/roster/BotEngineFields.tsx",
     "apps/web/src/components/roster/BotIdentityFields.tsx",
     "apps/web/src/components/roster/BotInboxAlertStack.tsx",
@@ -494,6 +494,8 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/web/src/components/roster/DurableMemoryPanels.tsx",
     "apps/web/src/components/roster/GroupDetailsPanel.tsx",
     "apps/web/src/components/roster/GroupEditor.tsx",
+    "apps/web/src/components/roster/GroupHopBudgetControl.tsx",
+    "apps/web/src/components/roster/GroupResponderQueue.tsx",
     "apps/web/src/components/roster/GroupThreadLanding.tsx",
     "apps/web/src/components/roster/MemoryApprovalPrompt.tsx",
     "apps/web/src/components/roster/NewBotDialog.tsx",

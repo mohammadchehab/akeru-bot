@@ -1,6 +1,7 @@
 import { driverSupportsDelegation } from "@isnadi/shared/delegationProviders";
 import type {
   EnvironmentId,
+  GroupHopBudget,
   ModelSelection,
   ProviderOptionDescriptor,
   ProviderOptionSelection,
@@ -42,6 +43,11 @@ export type ThreadSettingsSessionProps = {
   };
   /** How many fallback models the chat's bot has; edited on web and desktop. */
   readonly fallbackCount?: number;
+  /** Group chats only: the reply budget and the setter. Absent in direct chats. */
+  readonly hopBudget?: {
+    readonly value: number;
+    readonly onChange: (hopBudget: GroupHopBudget) => Promise<boolean>;
+  };
   /** Deletes the chat's bot. Resolves false when the server refuses. */
   /** Resolves to null on success, or the reason the delete failed. */
   readonly onDeleteBot?: () => Promise<string | null>;
@@ -121,6 +127,7 @@ export type ThreadSettingsSessionValue = {
   readonly routinesRef: ThreadSettingsSessionProps["routinesRef"];
   readonly fallbackCount: ThreadSettingsSessionProps["fallbackCount"];
   readonly onDeleteBot: ThreadSettingsSessionProps["onDeleteBot"];
+  readonly hopBudget: ThreadSettingsSessionProps["hopBudget"];
   /** False when the shown model's provider can neither hand off work nor receive it. */
   readonly canDelegate: boolean;
 };
@@ -265,6 +272,7 @@ export function ThreadSettingsSessionProvider(
       routinesRef: props.routinesRef,
       fallbackCount: props.fallbackCount,
       onDeleteBot: props.onDeleteBot,
+      hopBudget: props.hopBudget,
       canDelegate,
     }),
     [
@@ -286,6 +294,7 @@ export function ThreadSettingsSessionProvider(
       props.routinesRef,
       props.fallbackCount,
       props.onDeleteBot,
+      props.hopBudget,
       searchQuery,
       showLegacyToggle,
       toggleProvider,

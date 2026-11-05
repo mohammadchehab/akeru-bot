@@ -18,7 +18,8 @@ export const commonMessagesCatalog = {
   "Sidebar (legacy)": "Sidebar (legacy)",
   "Version {version}": "Version {version}",
   "Reset {label} to default": "Reset {label} to default",
-  "English and Simplified Chinese are available.": "English and Simplified Chinese are available.",
+  "English, Simplified Chinese, and Arabic are available.":
+    "English, Simplified Chinese, and Arabic are available.",
   "Menu, filters active": "Menu, filters active",
   "Menu, no filters": "Menu, no filters",
   "Trace ID:": "Trace ID:",
@@ -43,9 +44,15 @@ export const commonMessagesCatalog = {
   "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?":
     "A new version has been downloaded and installs automatically the next time you leave the app. Install it now instead?",
   "An error occurred.": "An error occurred.",
+  "Mention {name} by picking one from the @ menu.":
+    "Mention {name} by picking one from the @ menu.",
   "Mention {name}": "Mention {name}",
   "Remove {name}": "Remove {name}",
   "Select one or more.": "Select one or more.",
+  "Reply budget": "Reply budget",
+  "Fewer replies": "Fewer replies",
+  "More replies": "More replies",
+  "Two bots share that name": "Two bots share that name",
   "(empty)": "(empty)",
   "Nothing stashed yet.": "Nothing stashed yet.",
   "Dictation ready.": "Dictation ready.",

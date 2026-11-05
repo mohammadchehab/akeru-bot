@@ -18,7 +18,7 @@ export function LanguageSetting() {
       description={
         <span id="language-description">
           {t("Language applies only to this device.")}{" "}
-          {t("English and Simplified Chinese are available.")}{" "}
+          {t("English, Simplified Chinese, and Arabic are available.")}{" "}
           {t("User messages and bot responses are not translated.")}
         </span>
       }

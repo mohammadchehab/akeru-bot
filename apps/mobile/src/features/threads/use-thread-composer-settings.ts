@@ -1,6 +1,7 @@
 import { Predicate } from "effect";
 import type {
   EnvironmentId,
+  GroupHopBudget,
   ModelSelection,
   OrchestrationBot,
   OrchestrationThreadShell,
@@ -9,12 +10,14 @@ import type {
   SubscriptionProviderStatus,
 } from "@isnadi/contracts";
 import { squashAtomCommandFailure } from "@isnadi/client-runtime/state/runtime";
+import { effectiveHopBudget } from "@isnadi/shared/groupHopBudget";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { useMobileI18n } from "../../lib/i18n";
 import { buildModelOptions, groupByProvider } from "../../lib/modelOptions";
 import { resolveProviderOptionDescriptors } from "../../lib/providerOptions";
 import { botEnvironment } from "../../state/bots";
+import { threadEnvironment } from "../../state/threads";
 import { useAtomCommand } from "../../state/use-atom-command";
 import type { ExistingThreadSettingsRouteSession } from "./ThreadSettingsSheet";
 
@@ -54,6 +57,7 @@ export function useThreadComposerSettings(input: {
   const openSettingsSheet = input.settingsSheetPresentation.open;
   const { t } = useMobileI18n();
   const deleteBot = useAtomCommand(botEnvironment.delete, { reportFailure: false });
+  const setHopBudget = useAtomCommand(threadEnvironment.setHopBudget, { reportFailure: false });
   const currentModelSelection = selectedThread.modelSelection;
   const currentRuntimeMode = selectedThread.runtimeMode;
 
@@ -133,6 +137,21 @@ export function useThreadComposerSettings(input: {
             onDeleteBot: deleteThreadBot,
           }
         : {}),
+      ...(selectedThread.groupId
+        ? {
+            hopBudget: {
+              value: effectiveHopBudget(selectedThread.hopBudget),
+              onChange: async (hopBudget: GroupHopBudget) =>
+                !Predicate.isTagged(
+                  await setHopBudget({
+                    environmentId,
+                    input: { threadId: selectedThread.id, hopBudget },
+                  }),
+                  "Failure",
+                ),
+            },
+          }
+        : {}),
     }),
     [
       currentModelSelection,
@@ -144,6 +163,8 @@ export function useThreadComposerSettings(input: {
       onUpdateRuntimeMode,
       selectedThread.id,
       selectedThread.groupId,
+      selectedThread.hopBudget,
+      setHopBudget,
       providerOptionDescriptors,
       settingsOwnerId,
       threadProviderGroups,

@@ -3,6 +3,7 @@ import type { StartThreadTurnInput } from "@isnadi/client-runtime/state/threads"
 import { PLACEHOLDER_THREAD_TITLE } from "@isnadi/contracts";
 import type {
   BotId,
+  GroupAddressing,
   GroupId,
   ModelSelection,
   ProjectId,
@@ -90,7 +91,7 @@ export function buildBotTurnStartInput(input: {
 
 export function buildGroupTurnStartInput(input: {
   groupId: GroupId;
-  respondingBotId?: BotId;
+  addressing?: GroupAddressing;
   threadId: ThreadId;
   projectId: ProjectId;
   title: string;
@@ -107,7 +108,7 @@ export function buildGroupTurnStartInput(input: {
     modelSelection: input.modelSelection,
     runtimeMode: input.runtimeMode,
     interactionMode: input.interactionMode,
-    ...(input.respondingBotId ? { respondingBotId: input.respondingBotId } : {}),
+    ...(input.addressing ? { addressing: input.addressing } : {}),
     ...(input.createThread
       ? {
           bootstrap: {

@@ -1,3 +1,4 @@
+import { useMobileI18n } from "../../lib/i18n";
 import {
   resolveProviderSkillSourceKind,
   resolveProviderSkillTextIcon,
@@ -47,6 +48,12 @@ export type ComposerCommandItem =
   | {
       readonly id: string;
       readonly type: "browser-mention";
+      readonly label: string;
+      readonly description: string;
+    }
+  | {
+      readonly id: string;
+      readonly type: "everyone-mention";
       readonly label: string;
       readonly description: string;
     }
@@ -109,6 +116,7 @@ function itemIcon(item: ComposerCommandItem): AppSymbolName | null {
     case "browser-mention":
       return "globe";
     case "bot-mention":
+    case "everyone-mention":
       return "person.crop.circle";
     case "thread-mention":
       return "text.bubble";
@@ -156,7 +164,11 @@ const CommandRow = memo(function CommandRow(props: {
   readonly isLast: boolean;
   readonly isSlashSkill: boolean;
 }) {
+  const { t } = useMobileI18n();
   const iconName = itemIcon(props.item);
+
+  const description =
+    props.item.type === "everyone-mention" ? t("Every member") : props.item.description;
 
   // A skill's own emoji wins; named glyphs and provider asset paths fall back
   // to the source-kind symbol from itemIcon.
@@ -169,9 +181,7 @@ const CommandRow = memo(function CommandRow(props: {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={
-        props.item.description ? `${props.item.label}, ${props.item.description}` : props.item.label
-      }
+      accessibilityLabel={description ? `${props.item.label}, ${description}` : props.item.label}
       onPress={props.onPress}
       style={({ pressed }) => ({
         flexDirection: "row",
@@ -207,9 +217,9 @@ const CommandRow = memo(function CommandRow(props: {
           props.item.label
         )}
       </Text>
-      {props.item.description ? (
+      {description ? (
         <Text className="min-w-0 flex-1 text-xs text-foreground-muted" numberOfLines={1}>
-          {props.item.description}
+          {description}
         </Text>
       ) : null}
     </Pressable>

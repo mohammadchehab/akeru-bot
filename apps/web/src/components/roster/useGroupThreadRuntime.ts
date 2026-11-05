@@ -1,8 +1,20 @@
+import { stopTarget } from "@isnadi/client-runtime/responder-queue";
 import { Predicate } from "effect";
 import { useBotConversationMessageProjection } from "./botConversationMessageProjection";
 import { useAtomValue } from "@effect/atom-react";
 import { scopeThreadRef } from "@isnadi/client-runtime/environment";
-import { BotId, EnvironmentId, GroupId, ThreadId, type ScopedThreadRef } from "@isnadi/contracts";
+import {
+  type SendableComposerAddressing,
+  groupAddressing,
+} from "@isnadi/shared/composerBotMentions";
+import {
+  EnvironmentId,
+  GroupId,
+  type GroupHopBudget,
+  ThreadId,
+  type ScopedThreadRef,
+} from "@isnadi/contracts";
+import { effectiveHopBudget } from "@isnadi/shared/groupHopBudget";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -160,7 +172,16 @@ export function useGroupThreadRuntime(groupId: string) {
     reportFailure: false,
   });
 
+  const setHopBudgetCommand = useAtomCommand(threadEnvironment.setHopBudget, {
+    reportFailure: false,
+  });
+
   const startTurn = useAtomCommand(threadEnvironment.startTurn, { reportFailure: false });
+
+  const interruptTurnCommand = useAtomCommand(threadEnvironment.interruptTurn, {
+    reportFailure: false,
+  });
+
   const resumeTurnCommand = useAtomCommand(threadEnvironment.resumeTurn, { reportFailure: false });
   const groupReady = serverGroups.some((candidate) => candidate.id === groupId);
   const sendQueueRef = useRef(createBotTurnSubmissionQueue());
@@ -211,8 +232,61 @@ export function useGroupThreadRuntime(groupId: string) {
     return true;
   }, [canResume, linkedThreadRef, resumeTurnCommand, resuming]);
 
+  // Ends the running turn; the server clears the responder queue with it.
+  const stop = useCallback(async (): Promise<boolean> => {
+    const target = rememberedThread ? stopTarget(rememberedThread) : null;
+
+    if (!linkedThreadRef || target === null) {
+      return false;
+    }
+
+    const result = await interruptTurnCommand({
+      environmentId: linkedThreadRef.environmentId,
+      input: { threadId: linkedThreadRef.threadId, ...target },
+    });
+
+    if (Predicate.isTagged(result, "Failure")) {
+      setError(commandFailure(result));
+
+      return false;
+    }
+
+    return true;
+  }, [
+    interruptTurnCommand,
+    linkedThreadRef,
+    rememberedThread?.responderQueue,
+    rememberedThread?.session,
+  ]);
+
+  // A change applies from the next user message; the server rejects it for a non-group chat.
+  const setHopBudget = useCallback(
+    async (hopBudget: GroupHopBudget): Promise<boolean> => {
+      if (!linkedThreadRef) return false;
+
+      const result = await setHopBudgetCommand({
+        environmentId: linkedThreadRef.environmentId,
+        input: { threadId: linkedThreadRef.threadId, hopBudget },
+      });
+
+      if (Predicate.isTagged(result, "Failure")) {
+        setError(commandFailure(result));
+
+        return false;
+      }
+
+      return true;
+    },
+    [linkedThreadRef, setHopBudgetCommand],
+  );
+
   const send = useCallback(
-    async (prompt: string, files: readonly File[], requestedBotId?: string): Promise<boolean> => {
+    async (
+      prompt: string,
+      files: readonly File[],
+      requestedAddressing?: SendableComposerAddressing,
+      replyToMessageId?: string,
+    ): Promise<boolean> => {
       const pendingUserInput = pendingUserInputs[0];
 
       if (pendingUserInput && linkedThreadRef && files.length === 0) {
@@ -248,7 +322,24 @@ export function useGroupThreadRuntime(groupId: string) {
         return false;
       }
 
-      const respondingBotId = requestedBotId ?? group.bossBotId;
+      const replyTarget = replyToMessageId
+        ? messages.find((message) => message.id === replyToMessageId)
+        : undefined;
+
+      const addressing = groupAddressing(
+        requestedAddressing,
+        replyToMessageId
+          ? { messageId: replyToMessageId, respondingBotId: replyTarget?.respondingBotId }
+          : undefined,
+      );
+
+      // The first addressed bot picks the model for the send; the server resolves who answers.
+      const respondingBotId =
+        addressing?.kind === "bots"
+          ? addressing.botIds[0]
+          : addressing?.kind === "reply" && replyTarget?.respondingBotId
+            ? replyTarget.respondingBotId
+            : group.bossBotId;
 
       const respondingBot = bots.find(
         (bot) =>
@@ -317,7 +408,7 @@ export function useGroupThreadRuntime(groupId: string) {
             environmentId,
             input: buildGroupTurnStartInput({
               groupId: GroupId.make(groupId),
-              respondingBotId: BotId.make(respondingBot.id),
+              ...(addressing ? { addressing } : {}),
               threadId,
               projectId: activeProject.id,
               title: threadTitle(prompt, files),
@@ -433,6 +524,10 @@ export function useGroupThreadRuntime(groupId: string) {
     setPendingUserInputStep,
     respondingRequestIds,
     respondingBotId: rememberedThread?.respondingBotId ?? group?.bossBotId ?? null,
+    responderQueue: rememberedThread?.responderQueue ?? null,
+    hopBudget: effectiveHopBudget(rememberedThread?.hopBudget),
+    setHopBudget,
+    stop,
     resume,
     resuming,
     answerPendingUserInputWithText,
