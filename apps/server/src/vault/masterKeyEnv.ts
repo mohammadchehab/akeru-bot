@@ -1,16 +1,19 @@
 /** Env vars that carry vault key material. They are read once at startup and never reach a child process. */
 export const MASTER_KEY_ENV_VARS = ["ISNADI_MASTER_KEY", "ISNADI_MASTER_PASSPHRASE"] as const;
 
-export type CapturedMasterKeyEnv = Readonly<Record<string, string | undefined>>;
+export type CapturedMasterKeyEnv = {
+  readonly ISNADI_MASTER_KEY: string | undefined;
+  readonly ISNADI_MASTER_PASSPHRASE: string | undefined;
+};
 
 /** Moves the master key variables out of `env`, so nothing spawned later inherits them. */
 export function takeMasterKeyEnv(env: NodeJS.ProcessEnv): CapturedMasterKeyEnv {
-  const taken: Record<string, string | undefined> = {};
+  const taken = {
+    ISNADI_MASTER_KEY: env.ISNADI_MASTER_KEY,
+    ISNADI_MASTER_PASSPHRASE: env.ISNADI_MASTER_PASSPHRASE,
+  };
 
-  for (const name of MASTER_KEY_ENV_VARS) {
-    taken[name] = env[name];
-    delete env[name];
-  }
+  for (const name of MASTER_KEY_ENV_VARS) delete env[name];
 
   return taken;
 }
