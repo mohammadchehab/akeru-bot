@@ -125,6 +125,7 @@ export function createIsnadiDelegationRuntime(options: IsnadiDelegationRuntimeOp
   ) => {
     const snapshot = await options.readSnapshot();
     const parentThread = snapshot.threads.find((thread) => thread.id === parent.threadId);
+
     const bot = snapshot.bots.find(
       (candidate) => candidate.id === resolveDelegationTargetId(snapshot, parent, request.botId),
     );

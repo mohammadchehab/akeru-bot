@@ -45,6 +45,7 @@ export class IsnadiDelegationAmbiguousBotError extends Schema.TaggedErrorClass<I
 }
 
 export const isUnknownDelegationBot = Schema.is(IsnadiDelegationUnknownBotError);
+
 export const isAmbiguousDelegationBot = Schema.is(IsnadiDelegationAmbiguousBotError);
 
 export const TERMINAL_PHASES = new Set<IsnadiDelegationPhase["_tag"]>([
