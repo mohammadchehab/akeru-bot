@@ -1,6 +1,8 @@
 import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
 
+import * as Predicate from "effect/Predicate";
+
 import type { MasterKeyStore, ScryptParams } from "./masterKey.ts";
 import { openValue, sealValue } from "./sealedRecord.ts";
 import type { CredentialMetadata, VaultPersistence } from "./SecretVault.ts";
@@ -22,7 +24,7 @@ function read(filePath: string): StoredVault {
   try {
     raw = NodeFS.readFileSync(filePath, "utf8");
   } catch (cause) {
-    if ((cause as NodeJS.ErrnoException).code === "ENOENT") return EMPTY;
+    if (Predicate.hasProperty(cause, "code") && cause.code === "ENOENT") return EMPTY;
 
     throw cause;
   }
