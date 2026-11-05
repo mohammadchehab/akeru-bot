@@ -112,11 +112,15 @@ describe("thread bot engine", () => {
 
   it("saves a model and its options to the bot in one engine", () => {
     expect(
-      threadBotEngineUpdate(config, {
-        instanceId: codex,
-        model: "gpt-a",
-        options: [{ id: "reasoningEffort", value: "high" }],
-      }, []),
+      threadBotEngineUpdate(
+        config,
+        {
+          instanceId: codex,
+          model: "gpt-a",
+          options: [{ id: "reasoningEffort", value: "high" }],
+        },
+        [],
+      ),
     ).toEqual({
       provider: "codex",
       model: "gpt-a",
@@ -135,18 +139,26 @@ describe("thread bot engine", () => {
 
   it("drops a provider default and keeps options on a model with unknown capabilities", () => {
     expect(
-      threadBotEngineUpdate(config, {
-        instanceId: codex,
-        model: "gpt-a",
-        options: [{ id: "reasoningEffort", value: "default" }],
-      }, []),
+      threadBotEngineUpdate(
+        config,
+        {
+          instanceId: codex,
+          model: "gpt-a",
+          options: [{ id: "reasoningEffort", value: "default" }],
+        },
+        [],
+      ),
     ).toEqual({ provider: "codex", model: "gpt-a", fallbacks: [] });
     expect(
-      threadBotEngineUpdate(config, {
-        instanceId: codex,
-        model: "gpt-custom",
-        options: [{ id: "reasoningEffort", value: "high" }],
-      }, []),
+      threadBotEngineUpdate(
+        config,
+        {
+          instanceId: codex,
+          model: "gpt-custom",
+          options: [{ id: "reasoningEffort", value: "high" }],
+        },
+        [],
+      ),
     ).toEqual({
       provider: "codex",
       model: "gpt-custom",
