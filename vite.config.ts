@@ -242,7 +242,8 @@ export default defineConfig({
         // Composition roots for per-instance provider runtimes. Each configured provider
         // instance (or Grok text-generation request) gets its own scoped adapter, logger, and
         // session runtime, so these files call the make* constructors directly instead of
-        // yielding a singleton service.
+        // yielding a singleton service. The vault opener composes plain-function vault parts
+        // (not Effect services) before VaultService wraps the result in a layer.
         files: [
           "apps/server/src/provider/Drivers/**",
           "apps/server/src/provider/Layers/*Adapter.ts",
@@ -253,6 +254,7 @@ export default defineConfig({
           "apps/server/src/provider/Layers/grok/GrokSessionLifecycle.ts",
           "apps/server/src/provider/acp/GrokAcpSupport.ts",
           "apps/server/src/provider/providerMaintenanceRunner.ts",
+          "apps/server/src/vault/openVault.ts",
         ],
         rules: {
           "anti-slop-effect/no-service-constructor-imports": "off",

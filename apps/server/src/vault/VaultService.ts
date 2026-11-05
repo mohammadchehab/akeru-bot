@@ -28,6 +28,7 @@ export const layer = Layer.effect(
     yield* ServerHomeLock;
 
     const config = yield* ServerConfig;
+
     const opened = openVault({
       homeDir: config.baseDir,
       stateDir: config.stateDir,
