@@ -9,7 +9,7 @@ import * as EgressBroker from "./EgressBroker.ts";
 
 const target = { host: "example.com", port: 443, profileId: "p1" };
 
-const noop = () => Effect.void;
+const noop = { send: () => Effect.void, close: Effect.void };
 
 const setup = Effect.gen(function* () {
   const broker = yield* EgressBroker.make;
@@ -95,11 +95,13 @@ describe("EgressBroker", () => {
         const frame = sent[0]!;
         const toDesktop: Uint8Array[] = [];
 
-        const handlers = yield* broker.attach("owner-a", frame.streamId, frame.ticket, (chunk) =>
-          Effect.sync(() => {
-            toDesktop.push(chunk);
-          }),
-        );
+        const handlers = yield* broker.attach("owner-a", frame.streamId, frame.ticket, {
+          send: (chunk) =>
+            Effect.sync(() => {
+              toDesktop.push(chunk);
+            }),
+          close: Effect.void,
+        });
 
         const stream = yield* Fiber.join(fiber);
         yield* stream.write(new Uint8Array([1]));
@@ -130,6 +132,56 @@ describe("EgressBroker", () => {
       const exit = yield* Fiber.await(fiber);
       assert.isTrue(Exit.isFailure(exit));
       assert.isTrue(Exit.isFailure(yield* Effect.exit(broker.open("owner-a", target))));
+    }),
+  );
+
+  it.effect("closing a stream closes its websocket", () =>
+    Effect.scoped(
+      Effect.gen(function* () {
+        const { broker, sent } = yield* setup;
+        const fiber = yield* startOpen(broker);
+        yield* Effect.yieldNow;
+        const frame = sent[0]!;
+        const closes = { count: 0 };
+
+        yield* broker.attach("owner-a", frame.streamId, frame.ticket, {
+          send: () => Effect.void,
+          close: Effect.sync(() => {
+            closes.count += 1;
+          }),
+        });
+
+        const stream = yield* Fiber.join(fiber);
+        yield* stream.close;
+
+        assert.strictEqual(closes.count, 1);
+      }),
+    ),
+  );
+
+  it.effect("the provider leaving closes the websocket of every open stream", () =>
+    Effect.gen(function* () {
+      const broker = yield* EgressBroker.make;
+      const sent: EgressOpenFrame[] = [];
+      const closes = { count: 0 };
+
+      yield* Effect.scoped(
+        Effect.gen(function* () {
+          yield* broker.registerProvider("owner-a", (frame) => Effect.sync(() => void sent.push(frame)));
+          const fiber = yield* startOpen(broker);
+          yield* Effect.yieldNow;
+
+          yield* broker.attach("owner-a", sent[0]!.streamId, sent[0]!.ticket, {
+            send: () => Effect.void,
+            close: Effect.sync(() => {
+              closes.count += 1;
+            }),
+          });
+          yield* Fiber.join(fiber);
+        }),
+      );
+
+      assert.strictEqual(closes.count, 1);
     }),
   );
 });

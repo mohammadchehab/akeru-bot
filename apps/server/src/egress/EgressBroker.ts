@@ -45,11 +45,19 @@ export interface EgressStreamHandlers {
 
 type SendToDesktop = (chunk: Uint8Array) => Effect.Effect<void>;
 
+/** The stream socket as the broker drives it: bytes out, and a close that ends the websocket. */
+export interface EgressStreamLink {
+  readonly send: SendToDesktop;
+  readonly close: Effect.Effect<void>;
+}
+
 interface PendingStream {
   readonly owner: string;
   readonly ticket: string;
   readonly expiresAt: number;
   used: boolean;
+  /** Closes the stream websocket once it is attached; a no-op before that. */
+  closeLink: Effect.Effect<void>;
   readonly attached: Deferred.Deferred<SendToDesktop, EgressStreamRefused | ProviderGone>;
   readonly inbound: Queue.Queue<Uint8Array, Cause.Done>;
 }
@@ -82,7 +90,7 @@ export class EgressBroker extends Context.Service<
       owner: string,
       streamId: string,
       ticket: string,
-      send: SendToDesktop,
+      link: EgressStreamLink,
     ) => Effect.Effect<EgressStreamHandlers, EgressTicketInvalid>;
   }
 >()("isnadibot/egress/EgressBroker") {}
@@ -94,13 +102,16 @@ export const make = Effect.sync(() => {
 
   const randomId = Effect.sync(() => NodeCrypto.randomBytes(24).toString("base64url"));
 
+  /** Forgets the stream and closes its websocket, so a close never leaves the desktop's TCP open. */
   const drop = (streamId: string) =>
-    Effect.sync(() => {
+    Effect.suspend(() => {
       const stream = streams.get(streamId);
 
-      if (stream === undefined) return;
+      if (stream === undefined) return Effect.void;
       streams.delete(streamId);
       streamsByOwner.get(stream.owner)?.delete(streamId);
+
+      return stream.closeLink;
     });
 
   const failOwnerStreams = (owner: string, error: ProviderGone | EgressStreamRefused) =>
@@ -167,6 +178,7 @@ export const make = Effect.sync(() => {
         ticket,
         expiresAt: now + EGRESS_TICKET_TTL_MS,
         used: false,
+        closeLink: Effect.void,
         attached,
         inbound,
         end,
@@ -195,7 +207,7 @@ export const make = Effect.sync(() => {
       } satisfies EgressStream;
     });
 
-  const attach: EgressBroker["Service"]["attach"] = (owner, streamId, ticket, send) =>
+  const attach: EgressBroker["Service"]["attach"] = (owner, streamId, ticket, link) =>
     Effect.gen(function* () {
       const now = yield* Clock.currentTimeMillis;
       const stream = streams.get(streamId);
@@ -211,7 +223,8 @@ export const make = Effect.sync(() => {
       }
 
       stream.used = true;
-      yield* Deferred.succeed(stream.attached, send);
+      stream.closeLink = link.close;
+      yield* Deferred.succeed(stream.attached, link.send);
 
       return {
         onData: (chunk) => Queue.offer(stream.inbound, chunk).pipe(Effect.asVoid),

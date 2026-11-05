@@ -1,5 +1,6 @@
 import type { EgressOpenFrame, EgressRefusalReason } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
+import * as Fiber from "effect/Fiber";
 import * as Result from "effect/Result";
 
 import type { EgressRefused } from "./EgressDialer.ts";
@@ -51,7 +52,9 @@ export interface EgressProviderDeps {
 export const makeEgressProvider = (deps: EgressProviderDeps) => {
   const streams = createStreamCounter(deps.maxStreams);
 
-  const handleOpen = (frame: EgressOpenFrame): Effect.Effect<void> => {
+  const running = new Set<Fiber.Fiber<void>>();
+
+  const serve = (frame: EgressOpenFrame): Effect.Effect<void> => {
     const refuse = (reason: EgressRefusalReason) =>
       deps.sendControl({ type: "refused", streamId: frame.streamId, reason });
 
@@ -108,5 +111,21 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
     });
   };
 
-  return { handleOpen, liveStreams: streams.live };
+  /** Forks the stream so one slow dial never blocks the control loop. */
+  const handleOpen = (frame: EgressOpenFrame): Effect.Effect<void> =>
+    Effect.gen(function* () {
+      const fiber = yield* Effect.forkDetach(serve(frame));
+
+      running.add(fiber);
+      fiber.addObserver(() => {
+        running.delete(fiber);
+      });
+    });
+
+  /** Destroys every live stream. Call when the control socket closes. */
+  const shutdown = Effect.suspend(() =>
+    Fiber.interruptAll([...running]).pipe(Effect.andThen(Effect.sync(() => running.clear()))),
+  );
+
+  return { handleOpen, shutdown, liveStreams: streams.live };
 };

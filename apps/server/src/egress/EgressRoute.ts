@@ -13,6 +13,7 @@ import {
   HttpServerRespondable,
   HttpServerResponse,
 } from "effect/unstable/http";
+import * as Socket from "effect/unstable/socket/Socket";
 import * as EnvironmentAuth from "../auth/EnvironmentAuth.ts";
 import { failEnvironmentAuthInvalid, failEnvironmentInternal } from "../auth/http.ts";
 import * as EgressBroker from "./EgressBroker.ts";
@@ -86,7 +87,10 @@ const streamRoute = (broker: EgressBroker.EgressBroker["Service"]) =>
     const write = yield* socket.writer;
 
     const handlers = yield* broker
-      .attach(session.subject, streamId, ticket, (chunk) => write(chunk).pipe(Effect.ignore))
+      .attach(session.subject, streamId, ticket, {
+        send: (chunk) => write(chunk).pipe(Effect.ignore),
+        close: write(new Socket.CloseEvent(1000)).pipe(Effect.ignore),
+      })
       .pipe(Effect.option);
 
     if (Option.isNone(handlers)) return HttpServerResponse.empty({ status: 403 });
