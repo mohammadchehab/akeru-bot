@@ -53,6 +53,8 @@ describe("decisions: delegated approval", () => {
 
     await row.waitFor({ timeout: WAIT_MS });
     expect(await decisions().getByRole("button").count()).toBe(1);
-    expect(stack.stub.completions.some((completion) => completion.bot === "Bravo")).toBe(true);
+    expect(
+      stack.stub.completions.some((completion) => completion.user.includes("Take this over")),
+    ).toBe(true);
   });
 });
