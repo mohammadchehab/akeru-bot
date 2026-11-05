@@ -395,6 +395,8 @@ export const settingsCatalog = {
     "عند بلوغ حد المعدل أو حد الاستخدام، يعيد هذا البوت المحاولة في الدور نفسه على النموذج التالي بالترتيب.",
   "Add model": "إضافة نموذج",
   "Share this chat with another provider?": "مشاركة هذه المحادثة مع مزود آخر؟",
+  "Allow chat sharing": "السماح بمشاركة المحادثة",
+  "Share chat": "مشاركة المحادثة",
   "If the first model can’t answer, this bot’s chat history is sent to {provider} so it can continue the turn.":
     "إذا تعذّر على النموذج الأول الرد، يُرسل سجل محادثة هذا البوت إلى {provider} ليكمل الدور.",
 } as const;
