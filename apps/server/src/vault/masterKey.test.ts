@@ -198,4 +198,24 @@ describe("resolveMasterKey", () => {
       reason: "no-master-key-source",
     });
   });
+
+  it("fails closed on stored scrypt params outside the bounds", () => {
+    const salt = Buffer.alloc(16, 3);
+
+    for (const bad of [
+      { N: 2 ** 21, r: 8, p: 1 },
+      { N: 2 ** 17, r: 17, p: 1 },
+      { N: 2 ** 17, r: 8, p: 5 },
+      { N: 2 ** 17 + 1, r: 8, p: 1 },
+    ]) {
+      const t = setup({ env: { ISNADI_MASTER_PASSPHRASE: "long enough pass" } });
+
+      t.state.kdf = { salt, ...bad };
+
+      assert.deepStrictEqual(resolveMasterKey(t.inputs), {
+        ok: false,
+        reason: "kdf-params-out-of-bounds",
+      });
+    }
+  });
 });

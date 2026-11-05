@@ -119,7 +119,10 @@
             // Native filesystem capabilities absent from FileSystem: adopting or duplicating
             // inherited raw descriptors, non-following lstat, bigint/nanosecond metadata,
             // POSIX X_OK access checks, and statfs. File.stat and ino/dev are available.
+            // The vault file store opens synchronously at startup, before any Effect runtime,
+            // and needs realpath plus an atomic mode-0600 rename.
             "include": [
+              "**/apps/server/src/vault/vaultFile.ts",
               "**/apps/server/src/bootstrap.ts",
               "**/apps/server/src/http.ts",
               "**/apps/server/src/orchestration/workflowScriptQuery.ts",

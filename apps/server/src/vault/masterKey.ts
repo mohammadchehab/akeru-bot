@@ -13,7 +13,8 @@ export type MasterKeyFailure =
   | "keychain-key-missing"
   | "wrong-key"
   | "key-check-missing"
-  | "passphrase-too-short";
+  | "passphrase-too-short"
+  | "kdf-params-out-of-bounds";
 
 export type MasterKeyResult =
   | {
@@ -52,6 +53,23 @@ const SCRYPT_N = 2 ** 17;
 const SCRYPT_R = 8;
 
 const SCRYPT_P = 1;
+
+/** Upper bounds on stored scrypt params: a tampered file must not make startup burn unbounded memory or time. */
+const MAX_SCRYPT_N = 2 ** 20;
+
+const MAX_SCRYPT_R = 16;
+
+const MAX_SCRYPT_P = 4;
+
+const kdfWithinBounds = ({ N, r, p, salt }: ScryptParams): boolean =>
+  Number.isInteger(Math.log2(N)) &&
+  N >= 2 &&
+  N <= MAX_SCRYPT_N &&
+  r >= 1 &&
+  r <= MAX_SCRYPT_R &&
+  p >= 1 &&
+  p <= MAX_SCRYPT_P &&
+  salt.length >= 16;
 
 /** Not secret: the salt and the key-check record live in the home, the key never does. */
 export type MasterKeyStore = {
@@ -169,6 +187,10 @@ function fromPassphrase(env: MasterKeyInputs["env"], store: MasterKeyStore): Can
     r: SCRYPT_R,
     p: SCRYPT_P,
   };
+
+  if (existing !== undefined && !kdfWithinBounds(existing)) {
+    return { kind: "failed", reason: "kdf-params-out-of-bounds" };
+  }
 
   if (existing === undefined) store.writeKdf(kdf);
 
