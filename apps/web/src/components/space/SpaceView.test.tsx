@@ -28,7 +28,8 @@ describe("SpaceView", () => {
   it("lists the four tabs", () => {
     const html = render("chat");
 
-    for (const label of ["Overview", "Chat", "Skills", "Files"]) expect(html).toContain(label);
+    for (const label of ["Overview", "Group chat", "Skills", "Files"])
+      expect(html).toContain(label);
   });
 
   it("shows only the selected tab's panel", () => {

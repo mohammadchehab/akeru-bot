@@ -339,4 +339,5 @@ export const rosterCatalog = {
   Activity: "动态",
   "Skills for this space show here.": "此空间的技能显示在这里。",
   "Files you add to this space show here.": "你添加到此空间的文件显示在这里。",
+  "Group chat": "群聊",
 } as const;

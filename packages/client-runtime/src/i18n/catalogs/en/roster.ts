@@ -355,4 +355,5 @@ export const rosterCatalog = {
   Activity: "Activity",
   "Skills for this space show here.": "Skills for this space show here.",
   "Files you add to this space show here.": "Files you add to this space show here.",
+  "Group chat": "Group chat",
 } as const;

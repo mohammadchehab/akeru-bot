@@ -35,7 +35,7 @@ export function SpaceView({
     >
       <TabsList aria-label={t("Space")}>
         <TabsTab value="overview">{t("Overview")}</TabsTab>
-        <TabsTab value="chat">{t("Chat")}</TabsTab>
+        <TabsTab value="chat">{t("Group chat")}</TabsTab>
         <TabsTab value="skills">{t("Skills")}</TabsTab>
         <TabsTab value="files">{t("Files")}</TabsTab>
       </TabsList>

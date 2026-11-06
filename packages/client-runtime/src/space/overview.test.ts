@@ -112,6 +112,7 @@ describe("space overview", () => {
 
     expect(weekStart(now, "UTC", "ar")).toBe("2026-10-31T00:00:00.000Z");
     expect(weekStart(now, "UTC", "en-US")).toBe("2026-11-01T00:00:00.000Z");
+    expect(weekStart(now, "UTC", "en-GB")).toBe("2026-11-02T00:00:00.000Z");
     expect(weekStart(now, "UTC", "not a locale")).toBe("2026-11-02T00:00:00.000Z");
     expect(weekStart(now, "UTC")).toBe("2026-11-02T00:00:00.000Z");
   });
