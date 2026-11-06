@@ -39,7 +39,9 @@ import { BotEngineFields } from "./BotEngineFields";
 import { BotIdentityFields } from "./BotIdentityFields";
 import { BotMemorySheet } from "./BotMemorySheet";
 import { BotPersonalityToneField } from "./BotPersonalityToneField";
+import { BotSkillsSheet } from "./BotSkillsSheet";
 import { BotToolsSection } from "./BotToolsSection";
+import { botSkillsEnabledCount } from "./botSkills";
 import { BOT_SANDBOX_OPTIONS, botSandboxLabel } from "./botSandbox";
 import type { Bot } from "./types";
 import { useBotThreadRef } from "./useBotThreadRef";
@@ -96,6 +98,7 @@ export function BotSettingsForm({
   const [avatarOpen, setAvatarOpen] = useState(false);
   const [memoryOpen, setMemoryOpen] = useState(false);
   const [channelsOpen, setChannelsOpen] = useState(false);
+  const [skillsOpen, setSkillsOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const deletedRef = useRef(false);
 
@@ -353,6 +356,28 @@ export function BotSettingsForm({
           />
 
           <SettingsRow
+            title={t("Skills")}
+            description={t("What this bot can load on demand.")}
+            control={
+              <Button
+                variant="outline"
+                size="xs"
+                type="button"
+                aria-label={t("Manage bot skills")}
+                aria-expanded={skillsOpen}
+                onClick={() => setSkillsOpen(true)}
+              >
+                {draft.skills.length === 0
+                  ? t("No skills")
+                  : t("{on} of {total} on", {
+                      on: botSkillsEnabledCount(draft.skills),
+                      total: draft.skills.length,
+                    })}
+              </Button>
+            }
+          />
+
+          <SettingsRow
             title={t("Channels")}
             description={t("Where this bot answers outside IsnadiBot.")}
             control={
@@ -428,6 +453,7 @@ export function BotSettingsForm({
       <AvatarPickerDialog bot={bot} open={avatarOpen} onOpenChange={setAvatarOpen} />
       <BotMemorySheet open={memoryOpen} onOpenChange={setMemoryOpen} threadRef={threadRef} />
       <BotChannelsSheet bot={bot} open={channelsOpen} onOpenChange={setChannelsOpen} />
+      <BotSkillsSheet bot={bot} draft={draft} open={skillsOpen} onOpenChange={setSkillsOpen} />
     </>
   );
 }

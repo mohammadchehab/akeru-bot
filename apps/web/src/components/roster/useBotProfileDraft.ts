@@ -4,6 +4,7 @@ import {
   isImageProviderId,
   type BotEngine,
   type BotEngineChoice,
+  type BotSkill,
   type ImageProviderId,
   type McpServerId,
 } from "@isnadi/contracts";
@@ -37,6 +38,7 @@ import {
   botEngineForOptions,
   botEngineUnavailability,
 } from "./botEngineSelection";
+import { botSkillsKey } from "./botSkills";
 import { canonicalizeBotPersonalityTone } from "./botPersonalityTone";
 import { botSandboxChoice, type BotSandboxChoice } from "./botSandbox";
 import type { Bot } from "./types";
@@ -68,6 +70,8 @@ export interface BotProfileUpdate {
   readonly voiceEnabled: boolean;
   readonly imageProvider: ImageProviderId | null;
   readonly disabledMcpServerIds: readonly McpServerId[];
+  readonly skills: readonly BotSkill[];
+  readonly skillRegistryAccess: boolean;
 }
 
 /** Select value for "use the global default" in the bot image provider picker. */
@@ -109,6 +113,9 @@ export function useBotProfileDraft(
   const [disabledMcpServerIds, setDisabledMcpServerIds] = useState<readonly McpServerId[]>(
     bot.disabledMcpServerIds,
   );
+
+  const [skills, setSkills] = useState<readonly BotSkill[]>(bot.skills ?? []);
+  const [skillRegistryAccess, setSkillRegistryAccess] = useState(bot.skillRegistryAccess ?? false);
 
   const [fallbacks, setFallbacks] = useState<BotEngine["fallbacks"]>(
     () => bot.engine?.fallbacks ?? [],
@@ -240,6 +247,21 @@ export function useBotProfileDraft(
         (a, b) => mcpServerIdsKey(a) === mcpServerIdsKey(b),
       ),
     );
+    setSkills((current) =>
+      rebaseUneditedValue(
+        current,
+        previous.skills ?? [],
+        bot.skills ?? [],
+        (a, b) => botSkillsKey(a) === botSkillsKey(b),
+      ),
+    );
+    setSkillRegistryAccess((current) =>
+      rebaseUneditedValue(
+        current,
+        previous.skillRegistryAccess ?? false,
+        bot.skillRegistryAccess ?? false,
+      ),
+    );
   }, [bot]);
 
   const markChanged = () => setSaved(false);
@@ -268,6 +290,10 @@ export function useBotProfileDraft(
   const toolOverridesDirty =
     mcpServerIdsKey(disabledMcpServerIds) !== mcpServerIdsKey(bot.disabledMcpServerIds);
 
+  const skillsDirty =
+    botSkillsKey(skills) !== botSkillsKey(bot.skills ?? []) ||
+    skillRegistryAccess !== (bot.skillRegistryAccess ?? false);
+
   const sandboxDirty = sandbox !== botSandboxChoice(bot.sandbox);
 
   const dirty =
@@ -279,7 +305,8 @@ export function useBotProfileDraft(
     personalityTone !== savedTone ||
     voiceEnabled !== bot.voiceEnabled ||
     imageProvider !== (bot.imageProvider ?? null) ||
-    toolOverridesDirty;
+    toolOverridesDirty ||
+    skillsDirty;
 
   const canSave = Boolean(onSave) && dirty && name.trim().length > 0;
 
@@ -310,6 +337,10 @@ export function useBotProfileDraft(
     setImageProvider,
     disabledMcpServerIds,
     setDisabledMcpServerIds,
+    skills,
+    setSkills,
+    skillRegistryAccess,
+    setSkillRegistryAccess,
     model,
     modelOptions,
     fallbacks,
@@ -389,6 +420,8 @@ export function useBotProfileDraft(
         voiceEnabled,
         imageProvider,
         disabledMcpServerIds,
+        skills,
+        skillRegistryAccess,
       }).then((success) => {
         setSaving(false);
         setSaved(success);

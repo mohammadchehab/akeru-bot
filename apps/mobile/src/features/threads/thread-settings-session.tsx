@@ -43,6 +43,8 @@ export type ThreadSettingsSessionProps = {
   };
   /** How many fallback models the chat's bot has; edited on web and desktop. */
   readonly fallbackCount?: number;
+  /** How many of the chat's bot's skills are on; edited on web and desktop. */
+  readonly skillsOnCount?: number;
   /** Group chats only: the reply budget and the setter. Absent in direct chats. */
   readonly hopBudget?: {
     readonly value: number;
@@ -126,6 +128,7 @@ export type ThreadSettingsSessionValue = {
   readonly memoryThreadRef: ThreadSettingsSessionProps["memoryThreadRef"];
   readonly routinesRef: ThreadSettingsSessionProps["routinesRef"];
   readonly fallbackCount: ThreadSettingsSessionProps["fallbackCount"];
+  readonly skillsOnCount: ThreadSettingsSessionProps["skillsOnCount"];
   readonly onDeleteBot: ThreadSettingsSessionProps["onDeleteBot"];
   readonly hopBudget: ThreadSettingsSessionProps["hopBudget"];
   /** False when the shown model's provider can neither hand off work nor receive it. */
@@ -271,6 +274,7 @@ export function ThreadSettingsSessionProvider(
       memoryThreadRef: props.memoryThreadRef,
       routinesRef: props.routinesRef,
       fallbackCount: props.fallbackCount,
+      skillsOnCount: props.skillsOnCount,
       onDeleteBot: props.onDeleteBot,
       hopBudget: props.hopBudget,
       canDelegate,
@@ -293,6 +297,7 @@ export function ThreadSettingsSessionProvider(
       props.memoryThreadRef,
       props.routinesRef,
       props.fallbackCount,
+      props.skillsOnCount,
       props.onDeleteBot,
       props.hopBudget,
       searchQuery,

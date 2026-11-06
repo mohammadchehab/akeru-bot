@@ -177,6 +177,18 @@ instead. A helper that has not finished in 10 minutes fails as a timeout. Helper
 bot finishes or you stop the request. Their work doesn't appear as separate chats, even when the
 bot works in a group chat. Standard OpenCode bots don't use helpers.
 
+## Skills
+
+Open **Skills** under Workspace in the bot editor to choose which skills a bot can load. Each
+skill the bot has shows a switch. A skill that is off stays with the bot but is not used. The
+button on the row shows how many are on, for example "2 of 3 on".
+
+Turn on **Use other skills from the registry** to let the bot find and load registry skills it
+has not been given. It is off by default. Changes save with the rest of the bot's settings.
+
+On mobile, the chat's settings show how many of the bot's skills are on. Change them on web or
+desktop.
+
 ## Organize the roster
 
 The sidebar shows pinned bots and groups as launcher cards at the top, followed by the rest as detailed rows under **Bots**. Drag a bot or group to reorder it, pin it, or unpin it. Dragging into **Pinned** pins it at that spot, and dragging a pinned item back into **Bots** unpins it.

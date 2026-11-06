@@ -333,4 +333,17 @@ export const rosterCatalog = {
   "More replies": "ردود أكثر",
   "{names} are next": "التاليان: {names}",
   "Every member": "كل الأعضاء",
+  "What this bot can load on demand.": "ما يمكن لهذا البوت تحميله عند الحاجة.",
+  "Manage bot skills": "إدارة مهارات البوت",
+  "No skills": "لا توجد مهارات",
+  "{on} of {total} on": "{on} من {total} قيد التشغيل",
+  "Bot skills": "مهارات البوت",
+  "No skills yet": "لا توجد مهارات بعد",
+  "Skills you give {name} show up here.": "المهارات التي تمنحها لـ {name} تظهر هنا.",
+  "Turn off {skill} for {name}": "إيقاف {skill} لـ {name}",
+  "Turn on {skill} for {name}": "تشغيل {skill} لـ {name}",
+  "Use other skills from the registry": "استخدام مهارات أخرى من السجل",
+  "Let {name} find and load registry skills it has not been given.":
+    "اسمح لـ {name} بالعثور على مهارات السجل التي لم تُمنح له وتحميلها.",
+  "What {name} can load on demand.": "ما يمكن لـ {name} تحميله عند الحاجة.",
 } as const;

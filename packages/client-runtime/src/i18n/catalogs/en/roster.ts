@@ -332,4 +332,17 @@ export const rosterCatalog = {
   "More replies": "More replies",
   "{names} are next": "{names} are next",
   "Every member": "Every member",
+  "What this bot can load on demand.": "What this bot can load on demand.",
+  "Manage bot skills": "Manage bot skills",
+  "No skills": "No skills",
+  "{on} of {total} on": "{on} of {total} on",
+  "Bot skills": "Bot skills",
+  "No skills yet": "No skills yet",
+  "Skills you give {name} show up here.": "Skills you give {name} show up here.",
+  "Turn off {skill} for {name}": "Turn off {skill} for {name}",
+  "Turn on {skill} for {name}": "Turn on {skill} for {name}",
+  "Use other skills from the registry": "Use other skills from the registry",
+  "Let {name} find and load registry skills it has not been given.":
+    "Let {name} find and load registry skills it has not been given.",
+  "What {name} can load on demand.": "What {name} can load on demand.",
 } as const;

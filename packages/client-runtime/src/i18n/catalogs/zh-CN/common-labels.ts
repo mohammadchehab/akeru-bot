@@ -330,6 +330,7 @@ export const commonLabelsCatalog = {
   "Clear observations": "清除观察记录",
   "Markdown and observations": "Markdown 与观察记录",
   "Fallback models": "后备模型",
+  "Skills on": "已开启技能",
   "Not loaded": "未加载",
   Unknown: "未知",
   "Keep mine": "保留我的",

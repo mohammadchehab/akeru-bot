@@ -1,5 +1,6 @@
 import type {
   BotEngine,
+  BotSkill,
   ChannelBinding,
   GroupMembership,
   ImageProviderId,
@@ -35,6 +36,10 @@ export interface Bot {
   label: string | null;
   description: string | null;
   disabledMcpServerIds: readonly McpServerId[];
+  /** Skills this bot has, each on or off. Absent on bots from servers older than the field. */
+  skills?: ReadonlyArray<BotSkill>;
+  /** Whether the bot may use registry skills beyond its own set. */
+  skillRegistryAccess?: boolean;
   avatar: BotAvatar;
   engine: BotEngine | null;
   sandbox:
