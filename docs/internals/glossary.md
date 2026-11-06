@@ -9,6 +9,7 @@ This is a living glossary for IsnadiBot. It explains what common terms mean in t
 - [Project and workspace](#project-and-workspace)
 - [Thread timeline](#thread-timeline)
 - [Roster organization](#roster-organization)
+- [Role and fleet template](#role-and-fleet-template)
 - [Orchestration](#orchestration)
 - [Channels](#channels)
 - [Fleet operations](#fleet-operations)
@@ -85,6 +86,10 @@ It appears as a chat card and a bot inbox item, and either one decides it throug
 An automatically generated, inspectable summary of older content in one thread. It complements the
 recent complete-turn window and never acts as a writable group-wide memory store. See
 [memory architecture](memory.md).
+
+### Role and fleet template
+
+A **role** is a built-in teammate definition in `packages/contracts/src/fleet/roles.ts`: name, job, avatar, driver kind and model, reasoning level, skills. A **fleet template** is a named set of roles with one boss, used to seed a squad. See [fleet-operations.md](./fleet-operations.md#role-library).
 
 ### Orchestration
 

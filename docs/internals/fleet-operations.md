@@ -232,6 +232,12 @@ From a bot's chat menu, the group menu and the command palette:
 - Status derivation in `packages/client-runtime`, shared by web and mobile.
 - Web and mobile verified in isolated clients ([verification.md](./verification.md)).
 
+## Role library
+
+`packages/contracts/src/fleet/roles.ts` holds the built-in roles (`FLEET_ROLES`) and the six squad templates (`FLEET_TEMPLATES`). A role is a name, a one-line job, an avatar, a driver kind with a model, a reasoning level, and a skill list. It names a driver, not a provider instance, because instances differ per environment. `skills` stays empty until the skill registry lands (TASK-123.2).
+
+`seedSquad` in `packages/client-runtime/src/fleet/squadSeed.ts` turns a template into engines for the connected providers, boss first. It uses the first ready instance of the role's driver. Otherwise it uses any ready instance with that instance's default model and returns a `provider-fallback` notice. If the model lacks the role's reasoning level it takes the model's default and returns `reasoning-adjusted`. With no ready provider the engine is null and the notice is `no-provider`. Nothing here crosses the wire. Web and mobile share it.
+
 ## Slices
 
 | Card               | Slice                              | After            |
