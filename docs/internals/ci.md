@@ -7,8 +7,23 @@ on every push to `main`. Draft pull requests do not use a runner. A new revision
 for that pull request. Runs on `main` are never cancelled, and each push has its own concurrency group keyed by commit SHA
 (a shared group would cancel the one queued run when a newer one arrived), so every merge gets its own
 verdict and a broken `main` points at the merge that broke it. Maintainers can also dispatch the workflow manually
-for diagnostics. Every CI job uses a GitHub-hosted `ubuntu-24.04` runner. The issue-label and PR-size
-jobs use Tenki Linux runners.
+for diagnostics. The heavy jobs (desktop and the server shards) run on the ten self-hosted `hetzner` runners
+for the repository's own branches, and on GitHub-hosted `ubuntu-24.04` runners for pull requests from forks, so
+fork code never runs on our box. The other jobs use GitHub-hosted `ubuntu-24.04` runners, and the issue-label
+and PR-size jobs use Tenki Linux runners.
+
+### Hetzner pnpm store
+
+The ten runners share one user (`runner`, home `/opt/actions-runner`) and one persistent pnpm store at
+`/opt/pnpm-store`, so a hetzner job links dependencies from disk instead of restoring a cache tarball. The
+[install action](../../.github/actions/install/action.yml) selects it with `pnpm_config_store_dir` on
+self-hosted runners; GitHub-hosted jobs keep `cache: true`. The box also sets `storeDir: /opt/pnpm-store` in
+`/opt/actions-runner/.config/pnpm/config.yaml` for any other pnpm run as that user. pnpm's store is content
+addressed and safe for concurrent installs, and it sits on the same filesystem as the runners' `_work`
+directories so files hardlink. To rebuild it, create `/opt/pnpm-store` owned by `runner` (mode 775).
+
+Never run `pnpm store prune` while runners are online. A prune deletes files that a running install still
+needs, and the install then fails with `ERR_PNPM_ENOENT`. Stop the runners first, or leave the store alone.
 
 CI runs as parallel jobs, so a run takes as long as its slowest job instead of the sum of all steps:
 
