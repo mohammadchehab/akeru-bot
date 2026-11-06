@@ -11,6 +11,7 @@ import {
   TurnId,
 } from "../baseSchemas.ts";
 import { IsnadiDelegationRecord } from "../isnadiDelegation.ts";
+import { ClientWorkItemCommand } from "./workItems.ts";
 import { ClientRoutineCommand, InternalRoutineCommand } from "../routines.ts";
 import { ChatAttachment } from "./attachments.ts";
 import {
@@ -112,6 +113,7 @@ const DispatchableClientOrchestrationCommand = Schema.Union([
   McpServerEnableCommand,
   McpServerDisableCommand,
   ClientRoutineCommand,
+  ClientWorkItemCommand,
   ThreadCreateCommand,
   ThreadDeleteCommand,
   ThreadArchiveCommand,
@@ -177,6 +179,7 @@ export const ClientOrchestrationCommand = Schema.Union([
   McpServerEnableCommand,
   McpServerDisableCommand,
   ClientRoutineCommand,
+  ClientWorkItemCommand,
   ThreadCreateCommand,
   ThreadDeleteCommand,
   ThreadArchiveCommand,

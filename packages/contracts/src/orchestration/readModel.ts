@@ -22,6 +22,7 @@ import {
   RoutineSkillAssignment,
   SkillAssignmentId,
 } from "../routines.ts";
+import { WorkItem, WorkItemId } from "./workItems.ts";
 import { DelegationIdSchema } from "./identities.ts";
 import {
   ModelSelection,
@@ -56,6 +57,7 @@ export const OrchestrationReadModel = Schema.Struct({
   ),
   mcpServers: Schema.optional(Schema.Array(McpServer)),
   routines: Schema.optional(Schema.Array(Routine)),
+  workItems: Schema.Array(WorkItem).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
   routineRuns: Schema.optional(Schema.Array(RoutineRun)),
   skillAssignments: Schema.optional(Schema.Array(RoutineSkillAssignment)),
   threads: Schema.Array(OrchestrationThread),
@@ -157,6 +159,7 @@ export const OrchestrationShellSnapshot = Schema.Struct({
   ),
   mcpServers: Schema.optional(Schema.Array(McpServer)),
   routines: Schema.optional(Schema.Array(Routine)),
+  workItems: Schema.Array(WorkItem).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
   routineReceiptSources: Schema.optional(Schema.Array(RoutineReceiptSource)),
   routineRuns: Schema.optional(Schema.Array(RoutineRun)),
   skillAssignments: Schema.optional(Schema.Array(RoutineSkillAssignment)),
@@ -211,6 +214,16 @@ export const OrchestrationShellStreamEvent = Schema.Union([
     kind: Schema.Literal("delegation-upserted"),
     sequence: NonNegativeInt,
     delegation: Schema.suspend(() => IsnadiDelegationRecord),
+  }),
+  Schema.Struct({
+    kind: Schema.Literal("work-item-upserted"),
+    sequence: NonNegativeInt,
+    workItem: WorkItem,
+  }),
+  Schema.Struct({
+    kind: Schema.Literal("work-item-removed"),
+    sequence: NonNegativeInt,
+    workItemId: WorkItemId,
   }),
   Schema.Struct({
     kind: Schema.Literal("routine-upserted"),

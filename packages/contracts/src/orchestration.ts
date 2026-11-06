@@ -240,3 +240,5 @@ export {
   OrchestrationGetFullThreadDiffError,
   OrchestrationSearchThreadsError,
 } from "./orchestration/rpc.ts";
+
+export * from "./orchestration/workItems.ts";
