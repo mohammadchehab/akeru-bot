@@ -7,6 +7,7 @@ import {
   type TurnId,
 } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
+import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import { readableErrorDetail } from "../../../provider/Errors.ts";
@@ -243,7 +244,9 @@ export function createFailures({
         detail,
         unavailability: undefined,
         class: "models_exhausted",
-        ...(resumesAt !== undefined ? { resumesAt: new Date(resumesAt).toISOString() } : {}),
+        ...(resumesAt !== undefined
+          ? { resumesAt: DateTime.formatIso(DateTime.makeUnsafe(resumesAt)) }
+          : {}),
       };
     }
 
