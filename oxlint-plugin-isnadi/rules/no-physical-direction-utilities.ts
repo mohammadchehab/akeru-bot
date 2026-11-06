@@ -29,7 +29,7 @@ const SIDE_UTILITIES: ReadonlyArray<readonly [RegExp, (match: RegExpExecArray) =
 
 const TRANSLATE_X = /^-?translate-x-/u;
 
-const MEASURED_POSITION = /^-?(?:left|right)-(?:\(--|\[var\(--)/u;
+const MEASURED_POSITION = /^-?(?:left|right)-(?:\(--measured-|\[var\(--measured-)/u;
 
 // Cheap pre-filter so ordinary strings skip tokenizing.
 const MAY_CONTAIN_PHYSICAL =
@@ -83,7 +83,8 @@ function findViolations(text: string): ReadonlyArray<string> {
     }
 
     // A position measured in the browser (a pointer, a bounding box) is physical by nature, so a
-    // custom-property value such as `left-(--tooltip-left)` or `left-[var(--x)]` is allowed.
+    // custom property named `--measured-*`, such as `left-(--measured-thumb-left)`, is allowed. Any other
+    // custom property (a layout inset, say) must still use `start` or `end`.
     if (MEASURED_POSITION.test(body)) return [];
 
     for (const [pattern, logical] of SIDE_UTILITIES) {

@@ -19,16 +19,28 @@ describe("isnadi/no-physical-direction-utilities", () => {
 
   rule.valid(
     "allows a measured position held in a custom property",
-    `const cls = "absolute left-(--tooltip-left,0px) top-(--tooltip-top) -right-[var(--thumb-right)]";`,
+    `const cls = "absolute left-(--measured-tooltip-left,0px) top-(--tooltip-top) -right-[var(--measured-thumb-right)]";`,
+  );
+
+  rule.invalid(
+    "still reports a layout inset held in a custom property",
+    `const cls = "fixed left-(--workspace-controls-left) right-[var(--inset)]";`,
+    (output) => {
+      assert.match(
+        output,
+        /`left-\(--workspace-controls-left\)`.*`start-\(--workspace-controls-left\)`/,
+      );
+      assert.match(output, /`right-\[var\(--inset\)\]`/);
+    },
   );
 
   rule.invalid(
     "still reports a fixed left offset",
-    `const cls = "left-4 right-(--x) -left-px";`,
+    `const cls = "left-4 right-(--measured-x) -left-px";`,
     (output) => {
       assert.match(output, /`left-4`.*`start-4`/);
       assert.match(output, /`-left-px`.*`-start-px`/);
-      assert.isFalse(/right-\(--x\)/.test(output));
+      assert.isFalse(/measured-x/.test(output));
     },
   );
 

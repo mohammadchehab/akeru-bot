@@ -316,7 +316,7 @@ export function UsageProviderChart({
 
     const left = Math.min(Math.max(0, preferredLeft), Math.max(0, plotWidth - tooltipWidth));
     const top = Math.min(Math.max(0, preferredTop), Math.max(0, plotHeight - tooltipHeight));
-    plot.style.setProperty("--usage-tooltip-left", `${left}px`);
+    plot.style.setProperty("--measured-usage-tooltip-left", `${left}px`);
     plot.style.setProperty("--usage-tooltip-top", `${top}px`);
   }, []);
 
@@ -463,7 +463,7 @@ export function UsageProviderChart({
             <div
               ref={tooltipRef}
               dir={direction}
-              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) left-(--usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
+              className="surface-glass pointer-events-none absolute top-(--usage-tooltip-top,0px) left-(--measured-usage-tooltip-left,0px) z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
             >
               <div className="mb-1 text-muted-foreground">{formatTooltipPeriod(hoveredPeriod)}</div>
               {providers.map((provider) => {
