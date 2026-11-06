@@ -552,7 +552,7 @@ export default function BotRosterSidebar({ chrome = "full" }: { chrome?: "full" 
                       // Focusable only on purpose: where focus lands when an
                       // archived row leaves and no sibling row survives it.
                       tabIndex={-1}
-                      aria-label={t("Bots and groups")}
+                      aria-label={t("Bots and spaces")}
                       className="relative flex flex-wrap justify-center gap-x-1 gap-y-px"
                     >
                       {rosterListItems.map((item) => {

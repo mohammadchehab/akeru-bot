@@ -2,7 +2,7 @@
 
 exports[`discovered interface message coverage > covers static calls and finite label sources without translating identifiers 1`] = `
 {
-  "directMessageCount": 1826,
+  "directMessageCount": 1837,
   "expressions": {
     "apps/mobile/src/components/DictationControls.tsx": [
       "announcements[status]);",
@@ -573,6 +573,8 @@ exports[`discovered interface message coverage > covers static calls and finite 
     "apps/web/src/components/sidebar/SidebarChrome.tsx",
     "apps/web/src/components/sidebar/SidebarProviderUpdatePill.tsx",
     "apps/web/src/components/sidebar/SidebarUpdatePill.tsx",
+    "apps/web/src/components/space/SpaceOverview.tsx",
+    "apps/web/src/components/space/SpaceView.tsx",
     "apps/web/src/components/ui/AnchoredToasts.tsx",
     "apps/web/src/components/ui/ToastBody.tsx",
     "apps/web/src/components/ui/sidebar.tsx",

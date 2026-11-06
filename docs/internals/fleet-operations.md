@@ -182,6 +182,16 @@ From a bot's chat menu, the group menu and the command palette:
 - **Steer** interrupts and then sends the user's message to the same bot.
 - **Clear** runs the handoff flow, or with "without handoff", resets the context epoch directly.
 
+### Space Overview (TASK-129)
+
+The space view's Overview tab adds no server read model. Every tile derives from data the client already holds, so there is no new payload to size and nothing to keep in step across clients or connection modes:
+
+- **Decisions** come from `useDecisions`, filtered to the space.
+- **Routines** come from the shell snapshot's `routines`.
+- **Activity** comes from thread shells, so rows show chat titles and not message text.
+
+The Tasks tile and board wait for TASK-87. The Usage tile waits for the bounded usage window, because a tile must never count loaded items.
+
 ## Contracts
 
 - `packages/contracts/src/orchestration/workItems.ts`: the work item, its commands and events.

@@ -65,6 +65,10 @@ The live sidebar is `BotRosterSidebar`. Pins and the main Bots list are a client
 
 The top group of the web roster sidebar: live chats in the primary environment where a bot waits on the user. `selectDecisions` in `packages/client-runtime/src/decisions.ts` derives it from `hasPendingApprovals` and `hasPendingUserInput` on thread shells, and a delegated sub-chat stands for its root chat: the row shows the root's title, while `targetThreadId` names the chat that holds the prompt (the newest pending approval in the tree, otherwise the newest question) and is what the row opens. Rows order by `updatedAt`, which a streaming pending chat keeps bumping, so two pending rows can swap places mid-stream. `environmentDecisionsAtom` emits only when the rows change, so streaming progress does not re-render the sidebar. `DecisionsGroup` renders it and `useOpenChat` jumps to a row.
 
+#### Space and Overview
+
+A **space** is the user-facing name for a group. Its route, `/groups/$groupId`, shows `SpaceView` with four tabs (`?tab=overview|skills|files`; chat is the default and leaves the URL bare). **Overview** has no server read model: `packages/client-runtime/src/space/overview.ts` derives it from data the client already holds. Decisions come from `useDecisions`, routines from the shell snapshot, and activity from thread shells, so rows are chat titles and not message text. An item belongs to the space when its `groupId` matches, or it has no group and a member bot owns it. `weekStart` returns the locale's first day of the week, falling back to Monday, for the usage window that lands in a later slice.
+
 #### Activity
 
 A user-visible log item attached to a thread. In [the contracts][1], activities cover important non-message events like approvals, tool actions, and failures. They are projected into thread state in [projector.ts][4].

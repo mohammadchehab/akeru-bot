@@ -165,9 +165,9 @@ export function rosterZoneHeading(items: readonly RosterItemRef[]): string {
   const hasBots = items.some((item) => item.kind === "bot");
   const hasGroups = items.some((item) => item.kind === "group");
 
-  if (hasGroups && hasBots) return "Bots and groups";
+  if (hasGroups && hasBots) return "Bots and spaces";
 
-  if (hasGroups) return "Groups";
+  if (hasGroups) return "Spaces";
 
   return "Bots";
 }
