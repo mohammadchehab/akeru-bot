@@ -54,6 +54,8 @@ export const RPC_REQUIRED_SCOPES = {
   [WS_METHODS.imageProviderHealthTest]: AuthOrchestrationOperateScope,
   [WS_METHODS.mcpServerAuthenticate]: AuthOrchestrationOperateScope,
   [WS_METHODS.botInboxList]: AuthOrchestrationReadScope,
+  [WS_METHODS.workItemsList]: AuthOrchestrationReadScope,
+  [WS_METHODS.workItemsCounts]: AuthOrchestrationReadScope,
   [WS_METHODS.botInboxResolve]: AuthOrchestrationOperateScope,
   [WS_METHODS.voiceProviders]: AuthOrchestrationReadScope,
   [WS_METHODS.voiceConnect]: AuthOrchestrationOperateScope,

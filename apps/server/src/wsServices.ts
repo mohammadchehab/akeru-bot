@@ -48,6 +48,7 @@ import { ThreadDeletionReactor } from "./orchestration/Services/ThreadDeletionRe
 import { OrchestrationCommandReceiptRepository } from "./persistence/Services/OrchestrationCommandReceipts.ts";
 import * as ProjectionBots from "./persistence/Services/ProjectionBots.ts";
 import * as ProjectionGroups from "./persistence/Services/ProjectionGroups.ts";
+import * as ProjectionWorkItems from "./persistence/Services/ProjectionWorkItems.ts";
 import { BotMemoryStore } from "./memory/BotMemory.ts";
 import { EntityMemoryRepository } from "./memory/Services/EntityMemoryRepository.ts";
 import { MemoryApprovals } from "./memory/MemoryApprovals.ts";
@@ -149,6 +150,8 @@ export const createWsServices = (
     const projectionGroups = yield* ProjectionGroups.ProjectionGroupRepository;
 
     const routineRepository = yield* RoutineRepository;
+
+    const projectionWorkItems = yield* ProjectionWorkItems.ProjectionWorkItemRepository;
 
     const routineRuntime = yield* RoutineRuntime;
 
@@ -686,6 +689,7 @@ export const createWsServices = (
       botUsageLedger,
       projectionGroups,
       routineRepository,
+      projectionWorkItems,
       routineRuntime,
       orchestrationEngine,
       canReplayPersistedRange,

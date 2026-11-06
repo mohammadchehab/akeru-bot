@@ -16,6 +16,7 @@ export const createWsBotServicesHandlers = ({
   projectionBots,
   botUsageLedger,
   routineRepository,
+  projectionWorkItems,
   providerRegistry,
   botInbox,
   usage,
@@ -26,6 +27,7 @@ export const createWsBotServicesHandlers = ({
   | "projectionBots"
   | "botUsageLedger"
   | "routineRepository"
+  | "projectionWorkItems"
   | "providerRegistry"
   | "botInbox"
   | "usage"
@@ -48,6 +50,16 @@ export const createWsBotServicesHandlers = ({
         ),
         { "rpc.aggregate": "routines" },
       ),
+
+    [WS_METHODS.workItemsList]: (input) =>
+      observeRpcEffect(WS_METHODS.workItemsList, projectionWorkItems.list(input), {
+        "rpc.aggregate": "workItems",
+      }),
+
+    [WS_METHODS.workItemsCounts]: (input) =>
+      observeRpcEffect(WS_METHODS.workItemsCounts, projectionWorkItems.counts(input), {
+        "rpc.aggregate": "workItems",
+      }),
 
     [WS_METHODS.routinesListThreadRuns]: (input) =>
       observeRpcEffect(
@@ -207,6 +219,8 @@ export const createWsBotServicesHandlers = ({
   }) satisfies Pick<
     RpcGroup.HandlersFrom<RpcGroup.Rpcs<typeof WsRpcGroup>>,
     | typeof WS_METHODS.routinesListRuns
+    | typeof WS_METHODS.workItemsList
+    | typeof WS_METHODS.workItemsCounts
     | typeof WS_METHODS.routinesListThreadRuns
     | typeof WS_METHODS.botInboxList
     | typeof WS_METHODS.botInboxResolve

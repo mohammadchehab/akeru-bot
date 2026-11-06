@@ -49,6 +49,7 @@ import { OrchestrationCommandReceiptRepository } from "./persistence/Services/Or
 import * as ProjectionBots from "./persistence/Services/ProjectionBots.ts";
 
 import * as ProjectionGroups from "./persistence/Services/ProjectionGroups.ts";
+import * as ProjectionWorkItems from "./persistence/Services/ProjectionWorkItems.ts";
 
 import { EntityMemoryRepositoryLive } from "./memory/Layers/EntityMemoryRepository.ts";
 
@@ -605,6 +606,10 @@ export const buildAppUnderTest = (options?: {
             deleteById: () => Effect.void,
             ...options?.layers?.projectionGroups,
           } satisfies ProjectionGroups.ProjectionGroupRepositoryShape),
+          Layer.succeed(ProjectionWorkItems.ProjectionWorkItemRepository, {
+            list: () => Effect.succeed({ items: [] }),
+            counts: () => Effect.succeed({ open: 0, inProgress: 0, doneSince: 0 }),
+          } satisfies ProjectionWorkItems.ProjectionWorkItemRepositoryShape),
           Layer.mock(ProjectionSnapshotQuery.ProjectionSnapshotQuery)({
             getCommandReadModel: () => Effect.succeed(defaultOrchestrationReadModel()),
             getSnapshot: () => Effect.succeed(defaultOrchestrationReadModel()),
