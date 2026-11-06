@@ -177,6 +177,10 @@ const ModelReroutedPayload = Schema.Struct({
   fromModel: TrimmedNonEmptyStringSchema,
   toModel: TrimmedNonEmptyStringSchema,
   reason: TrimmedNonEmptyStringSchema,
+  /** The provider instances the turn moved between. A router reroute always sets both. */
+  fromInstanceId: Schema.optional(TrimmedNonEmptyStringSchema),
+  toInstanceId: Schema.optional(TrimmedNonEmptyStringSchema),
+  failureClass: Schema.optional(TrimmedNonEmptyStringSchema),
 });
 
 export type ModelReroutedPayload = typeof ModelReroutedPayload.Type;

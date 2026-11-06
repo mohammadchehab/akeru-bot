@@ -50,6 +50,7 @@ describe("ProviderCommandReactor", () => {
       },
       mode: "default",
       botConversation: false,
+      providers: [{ instanceId: ProviderInstanceId.make("codex") }],
     });
     expect(harness.startSession.mock.calls[0]?.[0]).toEqual(ThreadId.make("thread-1"));
     expect(harness.startSession.mock.calls[0]?.[1]).toMatchObject({

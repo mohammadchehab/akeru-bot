@@ -15,6 +15,7 @@ import * as Stream from "effect/Stream";
 import { vi } from "vite-plus/test";
 import { TextGenerationError } from "@isnadi/contracts";
 import {
+  AgentControllerModelsExhaustedError,
   AgentControllerUnsupportedEngineError,
   ProviderAdapterRequestError,
   ProviderValidationError,
@@ -64,6 +65,8 @@ export type ProviderCommandHarnessOptions = {
   };
   readonly bindTurnFailure?: boolean;
   readonly unavailableEngine?: boolean | "missing-login";
+  /** Fails engine resolution with every model paused until this epoch-ms time. */
+  readonly modelsExhaustedUntil?: number;
   readonly disabledEngine?: boolean;
   readonly composioResolveRuntimeMcpServer?: ComposioServiceShape["resolveRuntimeMcpServer"];
   readonly enableAgentBrowserAccess?: boolean;
@@ -320,6 +323,15 @@ export function createProviderCommandMocks(
   const resolveEngine = observeMock(
     vi.fn<AgentControllerShape["resolveEngine"]>(({ engine, fallback, mode }) => {
       notify();
+
+      if (input?.modelsExhaustedUntil !== undefined) {
+        return Effect.fail(
+          new AgentControllerModelsExhaustedError({
+            detail: "Every model is out of usage.",
+            resumesAt: input.modelsExhaustedUntil,
+          }),
+        );
+      }
 
       if (input?.unavailableEngine === "missing-login" && engine !== null) {
         return Effect.fail(

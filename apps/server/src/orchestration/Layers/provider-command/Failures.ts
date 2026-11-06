@@ -7,6 +7,7 @@ import {
   type TurnId,
 } from "@isnadi/contracts";
 import * as Cause from "effect/Cause";
+import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import { readableErrorDetail } from "../../../provider/Errors.ts";
@@ -14,6 +15,7 @@ import { providerUnavailabilityFromDetail } from "../../../provider/providerSnap
 import {
   resolveControllerBotId,
   isComposioOperationError,
+  isModelsExhaustedError,
   isProviderAdapterRequestError,
   isUnsupportedEngineError,
   withoutUnavailability,
@@ -27,6 +29,10 @@ interface ProviderFailureReport {
   readonly unavailability: OrchestrationLatestTurn["unavailability"];
   /** The instance that failed, when an engine refusal named it. */
   readonly providerInstanceId?: string;
+  /** Set when every model in the bot's chain is paused, so the chat can say when it is back. */
+  readonly class?: "models_exhausted";
+  /** ISO time the earliest paused model comes back, when known. */
+  readonly resumesAt?: string;
 }
 
 export function createFailures({
@@ -89,6 +95,8 @@ export function createFailures({
     readonly unavailability?: OrchestrationLatestTurn["unavailability"];
     /** The instance that failed, so the chat repairs it even after the bot switches models. */
     readonly providerInstanceId?: string | undefined;
+    readonly class?: "models_exhausted" | undefined;
+    readonly resumesAt?: string | undefined;
   }) =>
     Effect.all({
       commandId: serverCommandId("provider-failure-activity"),
@@ -109,6 +117,8 @@ export function createFailures({
               ...(input.unavailability ? { unavailability: input.unavailability } : {}),
               ...(input.requestId ? { requestId: input.requestId } : {}),
               ...(input.providerInstanceId ? { providerInstanceId: input.providerInstanceId } : {}),
+              ...(input.class ? { class: input.class } : {}),
+              ...(input.resumesAt ? { resumesAt: input.resumesAt } : {}),
             },
             turnId: input.turnId,
             createdAt: input.createdAt,
@@ -224,6 +234,19 @@ export function createFailures({
         unavailability:
           engineError.unavailability ?? providerUnavailabilityFromDetail("unknown", detail),
         providerInstanceId: engineError.provider,
+      };
+    }
+
+    if (isModelsExhaustedError(failReason?.error)) {
+      const { resumesAt } = failReason.error;
+
+      return {
+        detail,
+        unavailability: undefined,
+        class: "models_exhausted",
+        ...(resumesAt !== undefined
+          ? { resumesAt: DateTime.formatIso(DateTime.makeUnsafe(resumesAt)) }
+          : {}),
       };
     }
 

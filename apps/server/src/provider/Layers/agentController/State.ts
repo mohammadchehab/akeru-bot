@@ -80,8 +80,9 @@ export interface ActiveSession {
   startInput: Parameters<AgentControllerShape["startSession"]>[1];
   readonly session: MastraSession;
   readonly turnPreparation: Semaphore.Semaphore;
-  readonly provider: ProviderDriverKind;
-  readonly providerInstanceId: ProviderInstanceId;
+  /** Follow the model the router picked for the turn, so events name the model that ran it. */
+  provider: ProviderDriverKind;
+  providerInstanceId: ProviderInstanceId;
   cwd: string | undefined;
   readonly createdAt: string;
   readonly mcpServerIds: readonly McpServer["id"][];

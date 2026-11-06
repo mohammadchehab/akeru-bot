@@ -173,4 +173,44 @@ describe("runtimeEventToActivities model.rerouted", () => {
     expect(payload.toModel).toBe("gpt-5.6-astra");
     expect(payload.reason).toBe("The requested model is unavailable on this plan.");
   });
+
+  it("carries both instance ids and the failure class into the activity payload", () => {
+    const event = {
+      ...base,
+      type: "model.rerouted",
+      eventId: EventId.make("evt-rerouted-instances"),
+      payload: {
+        fromModel: "a",
+        toModel: "b",
+        reason: "usage limit",
+        fromInstanceId: "codex",
+        toInstanceId: "claude",
+        failureClass: "usage-limit",
+      },
+    } satisfies ProviderRuntimeEvent;
+
+    const payload = runtimeEventToActivities(event)[0]?.payload as Record<string, Schema.Json>;
+
+    expect(payload.fromInstanceId).toBe("codex");
+    expect(payload.toInstanceId).toBe("claude");
+    expect(payload.failureClass).toBe("usage-limit");
+  });
+});
+
+describe("runtimeEventToActivities models_exhausted", () => {
+  it("carries the error class and resume time so the chat can say when the bot is back", () => {
+    const event = {
+      ...base,
+      type: "runtime.error",
+      eventId: EventId.make("evt-exhausted"),
+      payload: {
+        message: "Every model is out of usage.",
+        class: "models_exhausted",
+      },
+    } satisfies ProviderRuntimeEvent;
+
+    const payload = runtimeEventToActivities(event)[0]?.payload as Record<string, Schema.Json>;
+
+    expect(payload.class).toBe("models_exhausted");
+  });
 });

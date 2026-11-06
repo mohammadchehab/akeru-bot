@@ -458,6 +458,8 @@ const make = (options?: AgentControllerLiveOptions) =>
       resolvedByThread,
       sessions,
       mastraModelOptions,
+      publish,
+      modelPausedUntil: options?.modelPausedUntil ?? (() => Effect.succeed(undefined)),
       runMastra,
     });
 

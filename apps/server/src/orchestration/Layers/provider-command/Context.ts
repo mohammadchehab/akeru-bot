@@ -55,6 +55,7 @@ export function createContext({
             .pipe(Effect.map(Option.getOrUndefined));
 
     const engine = bot?.engine ?? null;
+    const providers = yield* providerRegistry.getProviders;
 
     const selection = yield* agentController.resolveEngine({
       threadId: thread.id,
@@ -63,6 +64,7 @@ export function createContext({
       // Plan mode is retired; threads that stored "plan" run in default mode.
       mode: "default",
       botConversation: thread.botId != null || thread.groupId != null,
+      providers,
     });
 
     return { ...selection, configured: engine !== null };

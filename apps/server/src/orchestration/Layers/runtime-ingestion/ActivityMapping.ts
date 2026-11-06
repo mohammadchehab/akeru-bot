@@ -98,7 +98,8 @@ export function runtimeEventToActivities(
     }
 
     case "model.rerouted": {
-      const { fromModel, toModel, reason } = event.payload;
+      const { fromModel, toModel, reason, fromInstanceId, toInstanceId, failureClass } =
+        event.payload;
 
       return [
         {
@@ -111,6 +112,9 @@ export function runtimeEventToActivities(
             fromModel,
             toModel,
             reason: truncateDetail(reason),
+            ...(fromInstanceId ? { fromInstanceId } : {}),
+            ...(toInstanceId ? { toInstanceId } : {}),
+            ...(failureClass ? { failureClass } : {}),
           },
           turnId: toTurnId(event.turnId) ?? null,
           ...maybeSequence,
@@ -128,6 +132,7 @@ export function runtimeEventToActivities(
           summary: "Runtime error",
           payload: {
             message: truncateDetail(event.payload.message),
+            ...(event.payload.class ? { class: event.payload.class } : {}),
           },
           turnId: toTurnId(event.turnId) ?? null,
           ...maybeSequence,

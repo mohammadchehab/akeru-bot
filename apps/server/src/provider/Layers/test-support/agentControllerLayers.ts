@@ -111,6 +111,7 @@ export function makeInstanceSnapshot(
 export function makeBridge() {
   instanceModelCatalog.clear();
   let instanceEnabled = true;
+  const disabledInstances = new Set<string>();
   let disableBeforeNextDispatchAdmission = false;
   let nextDispatchAdmissionWait: Promise<void> | undefined;
   let releaseNextDispatchAdmission: (() => void) | undefined;
@@ -169,7 +170,7 @@ export function makeBridge() {
           instanceId,
           driverKind,
           displayName: undefined,
-          enabled: instanceEnabled,
+          enabled: instanceEnabled && !disabledInstances.has(String(instanceId)),
           continuationIdentity: {
             driverKind,
             continuationKey: `${driverKind}:instance:${instanceId}`,
@@ -221,6 +222,10 @@ export function makeBridge() {
     stopSession,
     rollbackConversation,
     getCapabilities,
+    /** Disables one instance and leaves the rest enabled. */
+    disableInstance: (instanceId: string) => {
+      disabledInstances.add(instanceId);
+    },
     setInstanceEnabled: (enabled: boolean) => {
       instanceEnabled = enabled;
     },
