@@ -383,15 +383,17 @@ describe("AgentControllerLive", () => {
         mastra.finishSend();
         yield* Effect.yieldNow;
 
-        yield* controller.interruptTurn({ threadId: codexThreadId });
-        yield* Effect.yieldNow;
-
         const ofRequest = (type: string) =>
           events.filter(
             (event) => event.type === type && String(event.requestId) === "tool-input-interrupted",
           );
 
         expect(ofRequest("user-input.requested")).toHaveLength(1);
+        expect(ofRequest("user-input.resolved")).toHaveLength(0);
+
+        yield* controller.interruptTurn({ threadId: codexThreadId });
+        yield* Effect.yieldNow;
+
         expect(ofRequest("user-input.resolved")).toHaveLength(1);
         yield* Fiber.interrupt(collector);
       }),

@@ -169,8 +169,8 @@ export function createTurnLifecycle(deps: {
     deps.toolRuntime.clearApprovals(String(threadId));
   };
 
-  // A turn that ends while ask_user questions are suspended can never receive their answers,
-  // so close each question card with an empty answer set.
+  // A turn that ends while tool calls are suspended (ask_user or any other suspending tool)
+  // can never receive their answers, so close each open question card with an empty answer set.
   const resolveSuspendedUserInputs = (
     threadId: ThreadId,
     active: ActiveSession,
