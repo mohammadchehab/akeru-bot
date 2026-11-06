@@ -347,6 +347,60 @@ describe("AgentControllerLive", () => {
       mastra.factory,
     );
   });
+
+  it.effect("resolves a suspended ask_user question when the turn is interrupted", () => {
+    const bridge = makeBridge();
+    const mastra = mastraHarnessFixture();
+
+    return provideController(
+      Effect.gen(function* () {
+        const controller = yield* AgentController;
+        const events: ProviderRuntimeEvent[] = [];
+
+        const collector = yield* controller.streamEvents.pipe(
+          Stream.runForEach((event) => Effect.sync(() => events.push(event))),
+          Effect.forkChild({ startImmediately: true }),
+        );
+
+        yield* resolveCodex(controller);
+        yield* controller.startSession(codexThreadId, {
+          threadId: codexThreadId,
+          provider: ProviderDriverKind.make("codex"),
+          providerInstanceId: codexInstanceId,
+          cwd: process.cwd(),
+          modelSelection: codexSelection,
+          runtimeMode: "approval-required",
+        });
+        yield* controller.sendTurn({ threadId: codexThreadId, input: "Ask for input." });
+        mastra.emit({
+          type: "tool_suspended",
+          toolCallId: "tool-input-interrupted",
+          toolName: "ask_user",
+          args: {},
+          suspendPayload: { question: "Which branch?" },
+        } as AgentControllerEvent);
+        mastra.emit({ type: "agent_end", reason: "suspended" } as AgentControllerEvent);
+        mastra.finishSend();
+        yield* Effect.yieldNow;
+
+        const ofRequest = (type: string) =>
+          events.filter(
+            (event) => event.type === type && String(event.requestId) === "tool-input-interrupted",
+          );
+
+        expect(ofRequest("user-input.requested")).toHaveLength(1);
+        expect(ofRequest("user-input.resolved")).toHaveLength(0);
+
+        yield* controller.interruptTurn({ threadId: codexThreadId });
+        yield* Effect.yieldNow;
+
+        expect(ofRequest("user-input.resolved")).toHaveLength(1);
+        yield* Fiber.interrupt(collector);
+      }),
+      bridge.service,
+      mastra.factory,
+    );
+  });
 });
 
 describe("AgentControllerLive", () => {

@@ -169,6 +169,25 @@ export function createTurnLifecycle(deps: {
     deps.toolRuntime.clearApprovals(String(threadId));
   };
 
+  // A turn that ends while tool calls are suspended (ask_user or any other suspending tool)
+  // can never receive their answers, so close each open question card with an empty answer set.
+  const resolveSuspendedUserInputs = (
+    threadId: ThreadId,
+    active: ActiveSession,
+    turn: ActiveTurn,
+  ) => {
+    for (const toolCallId of turn.suspendedToolCalls) {
+      deps.publish({
+        ...deps.baseEvent(threadId, active, turn.turnId),
+        requestId: RuntimeRequestId.make(toolCallId),
+        type: "user-input.resolved",
+        payload: { answers: {} },
+      });
+    }
+
+    turn.suspendedToolCalls.clear();
+  };
+
   const beginPendingTurn = (
     active: ActiveSession,
     { threadId, turnId, botUsage, hiddenWake }: PendingTurn,
@@ -463,6 +482,7 @@ export function createTurnLifecycle(deps: {
     turn.finished = true;
     deps.completeAssistantMessages(threadId, active, turn);
     cancelAllPendingApprovals(threadId, active);
+    resolveSuspendedUserInputs(threadId, active, turn);
     deps.publish({
       ...deps.baseEvent(threadId, active, turn.turnId),
       type: "turn.completed",
