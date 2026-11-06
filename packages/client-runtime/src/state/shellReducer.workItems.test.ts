@@ -1,13 +1,13 @@
-import { GroupId, WorkItemId, type WorkItem } from "@isnadi/contracts";
+import { GroupId, WorkItemId, type WorkItemSummary } from "@isnadi/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { applyShellStreamEvent } from "./shellReducer.ts";
 import { baseSnapshot } from "./shellReducer.test-support.ts";
 
-const item: WorkItem = {
+const item: WorkItemSummary = {
   id: WorkItemId.make("work-item-1"),
   groupId: GroupId.make("group-1"),
   title: "Ship it",
-  brief: "",
+  briefPreview: "",
   kind: "task",
   state: "queued",
   createdAt: "2026-04-01T00:00:00.000Z",

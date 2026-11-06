@@ -113,6 +113,7 @@ export const WS_METHODS = {
   routinesListThreadRuns: "routines.listThreadRuns",
   workItemsList: "workItems.list",
   workItemsCounts: "workItems.counts",
+  workItemsGet: "workItems.get",
 
   // Streaming subscriptions
   subscribePreviewEvents: "subscribePreviewEvents",

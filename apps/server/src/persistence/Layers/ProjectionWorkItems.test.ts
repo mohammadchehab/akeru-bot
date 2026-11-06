@@ -108,4 +108,22 @@ it.layer(layer)("ProjectionWorkItemRepository", (it) => {
       assert.deepEqual(counts, { open: 4, inProgress: 2, doneSince: 1 });
     }),
   );
+
+  it.effect("gets one item with its full brief and fails for an unknown id", () =>
+    Effect.gen(function* () {
+      const sql = yield* SqlClient.SqlClient;
+      yield* runMigrations();
+      yield* seed(sql, "g", "queued");
+
+      const repository = yield* ProjectionWorkItemRepository;
+      const found = yield* repository.get({ workItemId: WorkItemId.make("g") });
+
+      const missing = yield* repository
+        .get({ workItemId: WorkItemId.make("nope") })
+        .pipe(Effect.flip);
+
+      assert.strictEqual(found.brief, "g");
+      assert.strictEqual(missing._tag, "WorkItemGetError");
+    }),
+  );
 });

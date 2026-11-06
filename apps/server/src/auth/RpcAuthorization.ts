@@ -56,6 +56,7 @@ export const RPC_REQUIRED_SCOPES = {
   [WS_METHODS.botInboxList]: AuthOrchestrationReadScope,
   [WS_METHODS.workItemsList]: AuthOrchestrationReadScope,
   [WS_METHODS.workItemsCounts]: AuthOrchestrationReadScope,
+  [WS_METHODS.workItemsGet]: AuthOrchestrationReadScope,
   [WS_METHODS.botInboxResolve]: AuthOrchestrationOperateScope,
   [WS_METHODS.voiceProviders]: AuthOrchestrationReadScope,
   [WS_METHODS.voiceConnect]: AuthOrchestrationOperateScope,

@@ -153,8 +153,11 @@ import {
   PortabilityPreviewImportInput,
 } from "../portability.ts";
 import {
+  WorkItem,
   WorkItemCountsInput,
   WorkItemCountsResult,
+  WorkItemGetError,
+  WorkItemGetInput,
   WorkItemListInput,
   WorkItemListResult,
   WorkItemReadError,
@@ -624,6 +627,12 @@ export const WsWorkItemsCountsRpc = Rpc.make(WS_METHODS.workItemsCounts, {
   payload: WorkItemCountsInput,
   success: WorkItemCountsResult,
   error: Schema.Union([WorkItemReadError, EnvironmentAuthorizationError]),
+});
+
+export const WsWorkItemsGetRpc = Rpc.make(WS_METHODS.workItemsGet, {
+  payload: WorkItemGetInput,
+  success: WorkItem,
+  error: Schema.Union([WorkItemGetError, EnvironmentAuthorizationError]),
 });
 
 export const WsShellOpenInEditorRpc = Rpc.make(WS_METHODS.shellOpenInEditor, {

@@ -11,6 +11,7 @@ import {
   type OrchestrationShellStreamItem,
   type ProjectId,
   ThreadId,
+  toWorkItemSummary,
 } from "@isnadi/contracts";
 import { toShellDelegation } from "./orchestration/ShellDelegations.ts";
 import { toRoutineReceiptSource } from "./orchestration/routineReceiptSources.ts";
@@ -130,7 +131,7 @@ export const createWsOrchestrationStreams = ({
             : Option.some({
                 kind: "work-item-upserted" as const,
                 sequence: event.sequence,
-                workItem,
+                workItem: toWorkItemSummary(workItem),
               }),
         );
       }

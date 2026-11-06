@@ -56,6 +56,11 @@ export const createWsBotServicesHandlers = ({
         "rpc.aggregate": "workItems",
       }),
 
+    [WS_METHODS.workItemsGet]: (input) =>
+      observeRpcEffect(WS_METHODS.workItemsGet, projectionWorkItems.get(input), {
+        "rpc.aggregate": "workItems",
+      }),
+
     [WS_METHODS.workItemsCounts]: (input) =>
       observeRpcEffect(WS_METHODS.workItemsCounts, projectionWorkItems.counts(input), {
         "rpc.aggregate": "workItems",
@@ -221,6 +226,7 @@ export const createWsBotServicesHandlers = ({
     | typeof WS_METHODS.routinesListRuns
     | typeof WS_METHODS.workItemsList
     | typeof WS_METHODS.workItemsCounts
+    | typeof WS_METHODS.workItemsGet
     | typeof WS_METHODS.routinesListThreadRuns
     | typeof WS_METHODS.botInboxList
     | typeof WS_METHODS.botInboxResolve

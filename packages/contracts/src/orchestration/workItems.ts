@@ -1,4 +1,5 @@
 import * as Schema from "effect/Schema";
+import * as Struct from "effect/Struct";
 
 import {
   BotId,
@@ -111,6 +112,34 @@ export const WorkItem = Schema.Struct({
 });
 
 export type WorkItem = typeof WorkItem.Type;
+
+export const WORK_ITEM_PREVIEW_LIMIT = 280;
+
+/** The first {@link WORK_ITEM_PREVIEW_LIMIT} characters of a brief, cut at a word boundary with an ellipsis. */
+export function briefPreview(brief: string): string {
+  const text = brief.trim();
+
+  if (text.length <= WORK_ITEM_PREVIEW_LIMIT) return text;
+
+  const room = text.slice(0, WORK_ITEM_PREVIEW_LIMIT - 1);
+  const lastSpace = room.search(/\s\S*$/);
+
+  return `${(lastSpace > 0 ? room.slice(0, lastSpace) : room).trimEnd()}…`;
+}
+
+/** What the shell carries: the item without its brief, which clients fetch with `workItems.get`. */
+export const WorkItemSummary = Schema.Struct({
+  ...Struct.omit(WorkItem.fields, ["brief"]),
+  briefPreview: Schema.String.check(Schema.isMaxLength(WORK_ITEM_PREVIEW_LIMIT)),
+});
+
+export type WorkItemSummary = typeof WorkItemSummary.Type;
+
+export function toWorkItemSummary(item: WorkItem): WorkItemSummary {
+  const { brief, ...rest } = item;
+
+  return { ...rest, briefPreview: briefPreview(brief) };
+}
 
 const ActorBotId = Schema.optional(BotId);
 
@@ -237,4 +266,13 @@ export type WorkItemCountsResult = typeof WorkItemCountsResult.Type;
 export class WorkItemReadError extends Schema.TaggedErrorClass<WorkItemReadError>()(
   "WorkItemReadError",
   { groupId: GroupId, message: TrimmedNonEmptyString },
+) {}
+
+export const WorkItemGetInput = Schema.Struct({ workItemId: WorkItemId });
+
+export type WorkItemGetInput = typeof WorkItemGetInput.Type;
+
+export class WorkItemGetError extends Schema.TaggedErrorClass<WorkItemGetError>()(
+  "WorkItemGetError",
+  { workItemId: WorkItemId, message: TrimmedNonEmptyString },
 ) {}

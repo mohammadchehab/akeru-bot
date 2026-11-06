@@ -5,7 +5,9 @@ import * as SqlClient from "effect/unstable/sql/SqlClient";
 import {
   WORK_ITEM_PAGE_LIMIT,
   WorkItem,
+  WorkItemGetError,
   WorkItemReadError,
+  type WorkItemGetInput,
   type WorkItemCountsInput,
   type WorkItemCountsResult,
   type WorkItemListInput,
@@ -87,7 +89,22 @@ const makeProjectionWorkItemRepository = Effect.gen(function* () {
       } satisfies WorkItemCountsResult;
     }).pipe(Effect.mapError(readError(input.groupId)));
 
-  return { list, counts } satisfies ProjectionWorkItemRepositoryShape;
+  const get = (input: WorkItemGetInput) =>
+    Effect.gen(function* () {
+      const [row] = yield* sql<{ readonly record_json: string }>`
+        SELECT record_json FROM projection_work_items WHERE work_item_id = ${input.workItemId}
+      `;
+
+      if (row === undefined) return yield* Effect.fail({ message: "Work item not found." });
+
+      return yield* decodeWorkItem(row.record_json);
+    }).pipe(
+      Effect.mapError(
+        (cause) => new WorkItemGetError({ workItemId: input.workItemId, message: cause.message }),
+      ),
+    );
+
+  return { list, get, counts } satisfies ProjectionWorkItemRepositoryShape;
 });
 
 export const ProjectionWorkItemRepositoryLive = Layer.effect(

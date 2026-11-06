@@ -7,6 +7,7 @@ import {
   type OrchestrationEvent,
   WorkItemId,
   type WorkItem,
+  toWorkItemSummary,
 } from "@isnadi/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
@@ -27,7 +28,7 @@ const openItem: WorkItem = {
   id: workItemId,
   groupId: GroupId.make("group-1"),
   title: "Ship it",
-  brief: "",
+  brief: "long brief ".repeat(800),
   kind: "task",
   state: "queued",
   createdAt: now,
@@ -90,7 +91,7 @@ it.layer(NodeServices.layer)("shell stream work items", (it) => {
       );
 
       assert.deepEqual(Array.from(items), [
-        { kind: "work-item-upserted", sequence: 1, workItem: openItem },
+        { kind: "work-item-upserted", sequence: 1, workItem: toWorkItemSummary(openItem) },
         { kind: "work-item-removed", sequence: 2, workItemId: closedId },
         { kind: "work-item-removed", sequence: 3, workItemId: deletedId },
       ]);

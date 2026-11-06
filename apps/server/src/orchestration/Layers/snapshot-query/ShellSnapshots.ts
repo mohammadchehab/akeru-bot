@@ -1,4 +1,4 @@
-import { type OrchestrationThreadShell } from "@isnadi/contracts";
+import { toWorkItemSummary, type OrchestrationThreadShell } from "@isnadi/contracts";
 import * as Arr from "effect/Array";
 import * as Effect from "effect/Effect";
 import * as Result from "effect/Result";
@@ -506,7 +506,10 @@ export function createShellSnapshots({
               "ProjectionSnapshotQuery.getShellSnapshot:listWorkItems:decodeRows",
             ),
           ),
-          Effect.map((rows) => ({ ...snapshot, workItems: rows.map((row) => row.workItem) })),
+          Effect.map((rows) => ({
+            ...snapshot,
+            workItems: rows.map((row) => toWorkItemSummary(row.workItem)),
+          })),
         ),
       ),
     );

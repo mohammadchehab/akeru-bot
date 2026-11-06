@@ -22,7 +22,7 @@ import {
   RoutineSkillAssignment,
   SkillAssignmentId,
 } from "../routines.ts";
-import { WorkItem, WorkItemId } from "./workItems.ts";
+import { WorkItem, WorkItemId, WorkItemSummary } from "./workItems.ts";
 import { DelegationIdSchema } from "./identities.ts";
 import {
   ModelSelection,
@@ -159,7 +159,7 @@ export const OrchestrationShellSnapshot = Schema.Struct({
   ),
   mcpServers: Schema.optional(Schema.Array(McpServer)),
   routines: Schema.optional(Schema.Array(Routine)),
-  workItems: Schema.optional(Schema.Array(WorkItem)),
+  workItems: Schema.optional(Schema.Array(WorkItemSummary)),
   routineReceiptSources: Schema.optional(Schema.Array(RoutineReceiptSource)),
   routineRuns: Schema.optional(Schema.Array(RoutineRun)),
   skillAssignments: Schema.optional(Schema.Array(RoutineSkillAssignment)),
@@ -218,7 +218,7 @@ export const OrchestrationShellStreamEvent = Schema.Union([
   Schema.Struct({
     kind: Schema.Literal("work-item-upserted"),
     sequence: NonNegativeInt,
-    workItem: WorkItem,
+    workItem: WorkItemSummary,
   }),
   Schema.Struct({
     kind: Schema.Literal("work-item-removed"),

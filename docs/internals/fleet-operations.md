@@ -73,6 +73,10 @@ state, trackerLink?, threadId?, prUrl?, createdAt, updatedAt }`.
   `workItemColumn(state)` in `packages/client-runtime/src/space/workItems.ts` is the one mapping.
 - A group holds at most 200 open items (anything but done or closed). Creating or reopening past that fails
   with "This space has 200 open items. Close some first."
+- The shell snapshot and stream carry open items as `WorkItemSummary`: the item without its brief, plus a
+  `briefPreview` of at most 280 characters cut at a word boundary. A client fetches the full brief with
+  `workItems.get({ workItemId })` (read scope) when the item is opened. Bot tools run on the server and read
+  the full brief directly.
 - The shell snapshot and stream carry open items only; `work-item-removed` fires when an item goes done or
   closed, or is deleted. `workItems.list({ groupId, state, cursor?, limit <= 50 })` pages the done and closed
   items, newest first, and `workItems.counts({ groupId, since })` returns `{ open, inProgress, doneSince }`.
