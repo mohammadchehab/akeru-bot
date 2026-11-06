@@ -2,8 +2,10 @@ import { assert, describe, it } from "@effect/vitest";
 import type { EgressOpenFrame } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import * as Predicate from "effect/Predicate";
+import * as Stream from "effect/Stream";
 
 import { serveEgressControl } from "./DesktopEgress.ts";
+import { denyAllHostPolicy as denyAll } from "./EgressDialer.ts";
 import type { EgressSocketLink } from "./EgressWebSocket.ts";
 
 const encode = (value: EgressOpenFrame | { readonly type: "nonsense" }) =>
@@ -45,7 +47,12 @@ describe("serveEgressControl", () => {
         }),
       ]);
 
-      yield* serveEgressControl({ control, openStream });
+      yield* serveEgressControl({
+        control,
+        openStream,
+        hostPolicy: denyAll,
+        revocations: Stream.empty,
+      });
 
       assert.deepStrictEqual(
         sent.map((text) => JSON.parse(text)),
@@ -61,7 +68,12 @@ describe("serveEgressControl", () => {
         new TextEncoder().encode("not json"),
       ]);
 
-      yield* serveEgressControl({ control, openStream });
+      yield* serveEgressControl({
+        control,
+        openStream,
+        hostPolicy: denyAll,
+        revocations: Stream.empty,
+      });
 
       assert.deepStrictEqual(sent, []);
     }),

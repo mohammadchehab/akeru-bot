@@ -1,6 +1,8 @@
 import { assert, describe, it } from "@effect/vitest";
 import * as Clock from "effect/Clock";
 import * as Effect from "effect/Effect";
+import * as PubSub from "effect/PubSub";
+import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 
 import { EgressRefused } from "./EgressDialer.ts";
@@ -29,6 +31,8 @@ const makeHarness = (
     readonly maxStreams?: number;
     readonly throttle?: (bytes: number) => Effect.Effect<void>;
     readonly openStreamLink?: EgressProviderDeps["openStreamLink"];
+    readonly stillAllowed?: EgressProviderDeps["stillAllowed"];
+    readonly revocations?: EgressProviderDeps["revocations"];
   } = {},
 ) => {
   const sent: Array<Parameters<EgressProviderDeps["sendControl"]>[0]> = [];
@@ -38,6 +42,8 @@ const makeHarness = (
 
   const provider = makeEgressProvider({
     dial,
+    stillAllowed: options.stillAllowed ?? (() => true),
+    revocations: options.revocations ?? Stream.empty,
     openStreamLink:
       options.openStreamLink ??
       ((streamId) =>
@@ -233,6 +239,112 @@ describe("EgressProvider", () => {
       yield* settle;
 
       assert.strictEqual(quiet.state.destroyed, 1);
+    }),
+  );
+
+  it.effect("a revoke ends a stream whose grant no longer holds", () =>
+    Effect.gen(function* () {
+      const pubsub = yield* PubSub.unbounded<{
+        readonly profileId: string;
+        readonly host?: string;
+      }>();
+
+      const state = { allowed: true };
+      const quiet = quietTarget();
+
+      const { provider, sent } = makeHarness(() => Effect.succeed(quiet.target), {
+        stillAllowed: () => state.allowed,
+        revocations: Stream.fromPubSub(pubsub),
+      });
+
+      yield* Effect.forkScoped(provider.watchRevocations);
+      yield* settle;
+      yield* provider.handleOpen(openFrame);
+      yield* settle;
+
+      assert.strictEqual(provider.liveStreams(), 1);
+
+      state.allowed = false;
+      yield* PubSub.publish(pubsub, { profileId: "p" });
+      yield* settle;
+
+      assert.strictEqual(quiet.state.destroyed, 1);
+      assert.strictEqual(provider.liveStreams(), 0);
+      assert.deepStrictEqual(sent, [{ type: "closed", streamId: "s1" }]);
+    }),
+  );
+
+  it.effect("a revoke for another profile leaves the stream alone", () =>
+    Effect.gen(function* () {
+      const pubsub = yield* PubSub.unbounded<{
+        readonly profileId: string;
+        readonly host?: string;
+      }>();
+
+      const quiet = quietTarget();
+
+      const { provider } = makeHarness(() => Effect.succeed(quiet.target), {
+        stillAllowed: () => true,
+        revocations: Stream.fromPubSub(pubsub),
+      });
+
+      yield* Effect.forkScoped(provider.watchRevocations);
+      yield* settle;
+      yield* provider.handleOpen(openFrame);
+      yield* settle;
+      yield* PubSub.publish(pubsub, { profileId: "other" });
+      yield* settle;
+
+      assert.strictEqual(quiet.state.destroyed, 0);
+      assert.strictEqual(provider.liveStreams(), 1);
+    }),
+  );
+
+  it.effect("a grant revoked while the dial waits refuses the open and destroys nothing", () =>
+    Effect.gen(function* () {
+      const pubsub = yield* PubSub.unbounded<{
+        readonly profileId: string;
+        readonly host?: string;
+      }>();
+
+      const state = { allowed: true };
+
+      const { provider, sent } = makeHarness(() => Effect.never, {
+        stillAllowed: () => state.allowed,
+        revocations: Stream.fromPubSub(pubsub),
+      });
+
+      yield* Effect.forkScoped(provider.watchRevocations);
+      yield* settle;
+      yield* provider.handleOpen({ ...openFrame, host: "example.com" });
+      yield* settle;
+
+      state.allowed = false;
+      yield* PubSub.publish(pubsub, { profileId: "p", host: "example.com" });
+      yield* settle;
+
+      assert.deepStrictEqual(sent, [
+        { type: "refused", streamId: "s1", reason: "host-not-granted" },
+      ]);
+    }),
+  );
+
+  it.effect("a grant gone after the dial destroys the socket and refuses", () =>
+    Effect.gen(function* () {
+      const quiet = quietTarget();
+
+      const { provider, sent, links } = makeHarness(() => Effect.succeed(quiet.target), {
+        stillAllowed: () => false,
+      });
+
+      yield* provider.handleOpen(openFrame);
+      yield* settle;
+
+      assert.strictEqual(quiet.state.destroyed, 1);
+      assert.deepStrictEqual(links, []);
+      assert.deepStrictEqual(sent, [
+        { type: "refused", streamId: "s1", reason: "host-not-granted" },
+      ]);
     }),
   );
 });

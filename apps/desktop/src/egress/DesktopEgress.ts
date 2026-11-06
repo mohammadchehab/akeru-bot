@@ -12,7 +12,7 @@ import * as Option from "effect/Option";
 import * as Queue from "effect/Queue";
 import * as Schema from "effect/Schema";
 
-import { denyAllHostPolicy, openEgressTarget } from "./EgressDialer.ts";
+import { openEgressTarget, type EgressHostPolicy } from "./EgressDialer.ts";
 import * as EgressLimits from "./EgressLimits.ts";
 import * as EgressProvider from "./EgressProvider.ts";
 import { EgressLinkError, openEgressSocket, type EgressSocketLink } from "./EgressWebSocket.ts";
@@ -85,6 +85,9 @@ const toEgressTarget = (socket: NodeNet.Socket): Effect.Effect<EgressProvider.Eg
 export const serveEgressControl = (input: {
   readonly control: EgressSocketLink;
   readonly openStream: EgressProvider.EgressProviderDeps["openStreamLink"];
+  /** The owner's grants for this connection's backend. Built by the grant store. */
+  readonly hostPolicy: EgressHostPolicy;
+  readonly revocations: EgressProvider.EgressProviderDeps["revocations"];
 }) =>
   Effect.gen(function* () {
     const bucket = EgressLimits.makeTokenBucket(
@@ -97,11 +100,12 @@ export const serveEgressControl = (input: {
         openEgressTarget(request, {
           resolve: lookupAll,
           connect: connectTcp,
-          // No per-profile grant store exists yet, so every host is refused until one does.
-          hostPolicy: denyAllHostPolicy,
+          hostPolicy: input.hostPolicy,
           interfaces: interfaceCidrs,
         }).pipe(Effect.flatMap((socket) => toEgressTarget(socket))),
       openStreamLink: (streamId, ticket) => input.openStream(streamId, ticket),
+      stillAllowed: input.hostPolicy.allows,
+      revocations: input.revocations,
       sendControl: (frame) => input.control.send(JSON.stringify(frame)),
       throttle: (bytes) =>
         Clock.currentTimeMillis.pipe(
@@ -115,6 +119,8 @@ export const serveEgressControl = (input: {
       idleTimeoutMs: EgressLimits.STREAM_IDLE_TIMEOUT_MS,
     });
 
+    yield* Effect.forkScoped(provider.watchRevocations);
+
     yield* input.control
       .run((data, isText) => {
         if (!isText) return Effect.void;
@@ -124,7 +130,7 @@ export const serveEgressControl = (input: {
         return Option.isSome(frame) ? provider.handleOpen(frame.value) : Effect.void;
       })
       .pipe(Effect.ensuring(provider.shutdown));
-  });
+  }).pipe(Effect.scoped);
 
 const openStreamLink = (
   httpBaseUrl: string,
@@ -154,6 +160,10 @@ const openStreamLink = (
  */
 export const runDesktopEgress = <E>(
   getSession: Effect.Effect<{ readonly httpBaseUrl: string; readonly bearerToken: string }, E>,
+  grants: {
+    readonly hostPolicy: EgressHostPolicy;
+    readonly revocations: EgressProvider.EgressProviderDeps["revocations"];
+  },
 ) => {
   const attempt = Effect.gen(function* () {
     const session = yield* getSession;
@@ -163,6 +173,7 @@ export const runDesktopEgress = <E>(
     });
 
     yield* serveEgressControl({
+      ...grants,
       control,
       openStream: (streamId, ticket) =>
         openStreamLink(session.httpBaseUrl, session.bearerToken, streamId, ticket),

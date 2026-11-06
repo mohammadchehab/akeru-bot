@@ -12,6 +12,10 @@
       "types": "./src/themePreview.ts",
       "import": "./src/themePreview.ts"
     },
+    "./siteDomain": {
+      "types": "./src/siteDomain.ts",
+      "import": "./src/siteDomain.ts"
+    },
     "./channelProject": {
       "types": "./src/channelProject.ts",
       "import": "./src/channelProject.ts"
@@ -240,6 +244,7 @@
   "dependencies": {
     "@isnadi/contracts": "workspace:*",
     "effect": "catalog:",
+    "tldts": "7.4.2",
     "yaml": "catalog:"
   },
   "devDependencies": {

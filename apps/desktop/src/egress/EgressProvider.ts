@@ -1,9 +1,13 @@
 import type { EgressOpenFrame, EgressRefusalReason } from "@isnadi/contracts";
+import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Result from "effect/Result";
+import * as Stream from "effect/Stream";
 
-import type { EgressRefused } from "./EgressDialer.ts";
+import { normalizeHost } from "@isnadi/shared/siteDomain";
+
+import { type EgressRefused } from "./EgressDialer.ts";
 import { createStreamCounter } from "./EgressLimits.ts";
 
 /** The dialed target, as the provider pumps it. The provider never sees a hostname. */
@@ -44,8 +48,19 @@ export interface EgressProviderDeps {
   ) => Effect.Effect<void>;
   /** Waits before moving `bytes`, per the session's token bucket. */
   readonly throttle: (bytes: number) => Effect.Effect<void>;
+  /** Whether the owner's grants still cover this host right now. Read after every dial. */
+  readonly stillAllowed: (profileId: string, host: string) => boolean;
+  /** Grant changes. A change ends every live or pending stream the grants no longer cover. */
+  readonly revocations: Stream.Stream<{ readonly profileId: string; readonly host?: string }>;
   readonly maxStreams: number;
   readonly idleTimeoutMs: number;
+}
+
+/** A stream the provider has accepted, indexed so a revocation can find it before it connects. */
+interface LiveStream {
+  readonly profileId: string;
+  readonly host: string;
+  readonly revoked: Deferred.Deferred<void>;
 }
 
 /**
@@ -58,18 +73,39 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
 
   const running = new Set<Fiber.Fiber<void>>();
 
+  const live = new Set<LiveStream>();
+
   const serve = (frame: EgressOpenFrame): Effect.Effect<void> => {
     const refuse = (reason: EgressRefusalReason) =>
       deps.sendControl({ type: "refused", streamId: frame.streamId, reason });
 
     return Effect.gen(function* () {
       if (!streams.tryAcquire()) return yield* refuse("stream-limit");
-      yield* Effect.gen(function* () {
+
+      // Registered before the dial so a revocation also reaches a stream still resolving or connecting.
+      const entry: LiveStream = {
+        profileId: frame.profileId,
+        host: normalizeHost(frame.host) ?? frame.host,
+        revoked: yield* Deferred.make<void>(),
+      };
+
+      live.add(entry);
+
+      let linked = false;
+
+      const stream = Effect.gen(function* () {
         const target = yield* deps
           .dial({ host: frame.host, port: frame.port, profileId: frame.profileId })
           .pipe(Effect.result);
 
         if (Result.isFailure(target)) return yield* refuse(target.failure.reason);
+
+        // The grant may have been revoked while the dial was in flight.
+        if (!deps.stillAllowed(frame.profileId, frame.host)) {
+          yield* target.success.destroy;
+
+          return yield* refuse("host-not-granted");
+        }
 
         const link = yield* deps.openStreamLink(frame.streamId, frame.ticket).pipe(
           Effect.onInterrupt(() => target.success.destroy),
@@ -81,6 +117,8 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
 
           return yield* refuse("connect-failed");
         }
+
+        linked = true;
 
         // Either side ending, or going quiet for the idle timeout, ends the stream.
         let touched = false;
@@ -118,7 +156,25 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
           ),
         );
         yield* deps.sendControl({ type: "closed", streamId: frame.streamId });
-      }).pipe(Effect.ensuring(Effect.sync(streams.release)));
+      });
+
+      const outcome = yield* Effect.raceFirst(
+        stream.pipe(Effect.as("ended" as const)),
+        Deferred.await(entry.revoked).pipe(Effect.as("revoked" as const)),
+      ).pipe(
+        Effect.ensuring(
+          Effect.sync(() => {
+            live.delete(entry);
+            streams.release();
+          }),
+        ),
+      );
+
+      if (outcome === "revoked") {
+        yield* linked
+          ? deps.sendControl({ type: "closed", streamId: frame.streamId })
+          : refuse("host-not-granted");
+      }
     });
   };
 
@@ -133,10 +189,25 @@ export const makeEgressProvider = (deps: EgressProviderDeps) => {
       });
     });
 
+  /** Ends every stream whose grant no longer allows it. Runs for the life of the control socket. */
+  const watchRevocations = deps.revocations.pipe(
+    Stream.runForEach((revocation) =>
+      Effect.forEach(
+        [...live].filter(
+          (entry) =>
+            entry.profileId === revocation.profileId &&
+            !deps.stillAllowed(entry.profileId, entry.host),
+        ),
+        (entry) => Deferred.succeed(entry.revoked, undefined),
+        { discard: true },
+      ),
+    ),
+  );
+
   /** Destroys every live stream. Call when the control socket closes. */
   const shutdown = Effect.suspend(() =>
     Fiber.interruptAll([...running]).pipe(Effect.andThen(Effect.sync(() => running.clear()))),
   );
 
-  return { handleOpen, shutdown, liveStreams: streams.live };
+  return { handleOpen, watchRevocations, shutdown, liveStreams: streams.live };
 };
