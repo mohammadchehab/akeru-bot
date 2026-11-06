@@ -207,8 +207,9 @@ All changes are additive, and older clients decode them.
   exports and imports the list.
 - `providerRuntime/sessionEvents.ts`: `ModelReroutedPayload` gains optional `fromInstanceId`,
   `toInstanceId`, and `failureClass`. `reason` stays a readable sentence.
-- `providerRuntime/base.ts`: `RuntimeErrorClass` gains `models_exhausted`, with `resumesAt` carried in the
-  error detail.
+- `providerRuntime/base.ts`: `RuntimeErrorClass` gains `models_exhausted`. A turn that cannot start fails with
+  the `provider.turn.start.failed` activity, which carries `class: "models_exhausted"` and `resumesAt`
+  (ISO time) in its payload.
 - `server/providers.ts`: `ServerProviderModel` gains optional
   `pause: { until, reason, requestsLeftToday? }`. Clients already receive this snapshot, so bot settings
   shows each entry's state without a new subscription.

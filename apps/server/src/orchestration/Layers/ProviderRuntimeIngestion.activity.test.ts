@@ -206,13 +206,11 @@ describe("runtimeEventToActivities models_exhausted", () => {
       payload: {
         message: "Every model is out of usage.",
         class: "models_exhausted",
-        resumesAt: "2026-11-06T02:00:00.000Z",
       },
     } satisfies ProviderRuntimeEvent;
 
     const payload = runtimeEventToActivities(event)[0]?.payload as Record<string, Schema.Json>;
 
     expect(payload.class).toBe("models_exhausted");
-    expect(payload.resumesAt).toBe("2026-11-06T02:00:00.000Z");
   });
 });

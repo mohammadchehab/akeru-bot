@@ -114,7 +114,7 @@ export interface AgentControllerShape {
     readonly fallback: ModelSelection;
     readonly mode: ProviderInteractionMode;
     readonly botConversation: boolean;
-    /** The provider registry, for the fallback policy. Without it only same-instance fallbacks are allowed. */
+    /** The provider registry, for the fallback policy. Without it, cross-instance fallbacks need history consent. */
     readonly providers?: ReadonlyArray<ServerProvider>;
   }) => Effect.Effect<AgentControllerEngineSelection, AgentControllerError>;
 

@@ -130,7 +130,13 @@ export function createTurns({
         return Effect.void;
       }
 
-      const { detail, unavailability, providerInstanceId } = formatFailure(cause);
+      const {
+        detail,
+        unavailability,
+        providerInstanceId,
+        class: failureClass,
+        resumesAt,
+      } = formatFailure(cause);
 
       // The failure activity lands before the session error clears the pending
       // turn start, so a restart either replays the turn start or finds the
@@ -150,6 +156,8 @@ export function createTurns({
           requestId: event.payload.messageId,
           unavailability,
           providerInstanceId,
+          class: failureClass,
+          resumesAt,
         });
         yield* setThreadSessionErrorOnTurnStartFailure({
           threadId: event.payload.threadId,

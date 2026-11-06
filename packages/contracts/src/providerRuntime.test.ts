@@ -255,13 +255,9 @@ describe("model fallback events", () => {
       payload: {
         message: "Every model is out of usage.",
         class: "models_exhausted",
-        resumesAt: "2026-11-06T02:00:00.000Z",
       },
     });
 
     expect(parsed.type === "runtime.error" && parsed.payload.class).toBe("models_exhausted");
-    expect(parsed.type === "runtime.error" && parsed.payload.resumesAt).toBe(
-      "2026-11-06T02:00:00.000Z",
-    );
   });
 });

@@ -109,7 +109,7 @@ describe("ProviderCommandReactor", () => {
       },
       mode: "default",
       botConversation: true,
-      providers: expect.any(Array),
+      providers: [{ instanceId: ProviderInstanceId.make("codex") }],
     });
     expect(harness.startSession.mock.calls[0]?.[1]).toMatchObject({
       provider: ProviderDriverKind.make(provider),
@@ -277,6 +277,49 @@ describe("ProviderCommandReactor", () => {
     );
     expect(harness.startSession).not.toHaveBeenCalled();
     expect(harness.sendTurn).not.toHaveBeenCalled();
+  });
+
+  it("keeps exhausted models typed with the time the bot is back", async () => {
+    const harness = await createHarness({
+      modelsExhaustedUntil: Date.parse("2026-11-06T02:00:00.000Z"),
+    });
+
+    await harness.run(
+      harness.engine.dispatch({
+        type: "thread.turn.start",
+        commandId: CommandId.make("cmd-turn-start-models-exhausted"),
+        threadId: ThreadId.make("thread-1"),
+        message: {
+          messageId: asMessageId("user-message-models-exhausted"),
+          role: "user",
+          text: "every model is paused",
+          attachments: [],
+        },
+        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+        runtimeMode: "approval-required",
+        createdAt: "2026-01-01T00:00:00.000Z",
+      }),
+    );
+
+    await harness.waitFor(() => harness.resolveEngine.mock.calls.length === 1);
+    await harness.drain();
+
+    const thread = (await harness.readModel()).threads.find(
+      (entry) => entry.id === ThreadId.make("thread-1"),
+    );
+
+    expect(thread?.activities).toContainEqual(
+      expect.objectContaining({
+        kind: "provider.turn.start.failed",
+        payload: {
+          detail: "No model can run this turn: Every model is out of usage.",
+          requestId: "user-message-models-exhausted",
+          class: "models_exhausted",
+          resumesAt: "2026-11-06T02:00:00.000Z",
+        },
+      }),
+    );
+    expect(harness.startSession).not.toHaveBeenCalled();
   });
 
   it("keeps a missing sign-in typed so the chat can point to Settings", async () => {

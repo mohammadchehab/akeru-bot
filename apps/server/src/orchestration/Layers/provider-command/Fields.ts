@@ -11,6 +11,7 @@ import * as Cause from "effect/Cause";
 import * as Duration from "effect/Duration";
 import * as Schema from "effect/Schema";
 import {
+  AgentControllerModelsExhaustedError,
   AgentControllerUnsupportedEngineError,
   ProviderAdapterRequestError,
 } from "../../../provider/Errors.ts";
@@ -19,6 +20,8 @@ import type { AgentControllerError } from "../../../provider/Errors.ts";
 export const isProviderAdapterRequestError = Schema.is(ProviderAdapterRequestError);
 
 export const isUnsupportedEngineError = Schema.is(AgentControllerUnsupportedEngineError);
+
+export const isModelsExhaustedError = Schema.is(AgentControllerModelsExhaustedError);
 
 export const isComposioOperationError = Schema.is(ComposioOperationError);
 
