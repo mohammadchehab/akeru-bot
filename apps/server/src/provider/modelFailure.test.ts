@@ -2,6 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   classifyModelFailure,
+  decodeProviderError,
   modelFailureInputFromError,
   type ModelFailureClass,
   type ModelFailureInput,
@@ -54,11 +55,11 @@ describe("modelFailureInputFromError", () => {
   it("reads status, Retry-After seconds and the provider error type", () => {
     expect(
       modelFailureInputFromError(
-        {
+        decodeProviderError({
           statusCode: 429,
           responseHeaders: { "retry-after": "30" },
           data: { error: { type: "rate_limit_error" } },
-        },
+        }),
         "slow down",
       ),
     ).toEqual({
@@ -72,14 +73,21 @@ describe("modelFailureInputFromError", () => {
   it("ignores an HTTP-date Retry-After and a missing body", () => {
     expect(
       modelFailureInputFromError(
-        { statusCode: 503, responseHeaders: { "retry-after": "Wed, 21 Oct 2026 07:28:00 GMT" } },
+        decodeProviderError({
+          statusCode: 503,
+          responseHeaders: { "retry-after": "Wed, 21 Oct 2026 07:28:00 GMT" },
+        }),
         "busy",
       ),
     ).toEqual({ message: "busy", statusCode: 503, retryAfterMs: undefined, errorType: undefined });
   });
 
   it("returns only the message for anything that is not an object", () => {
-    expect(modelFailureInputFromError("boom", "boom")).toEqual({ message: "boom" });
-    expect(modelFailureInputFromError(undefined, "x")).toEqual({ message: "x" });
+    expect(modelFailureInputFromError(decodeProviderError("boom"), "boom")).toEqual({
+      message: "boom",
+    });
+    expect(modelFailureInputFromError(decodeProviderError(undefined), "x")).toEqual({
+      message: "x",
+    });
   });
 });

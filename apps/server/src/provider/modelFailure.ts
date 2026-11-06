@@ -43,13 +43,16 @@ export function classifyModelFailure(input: ModelFailureInput): ModelFailureClas
   const text = input.errorType ? `${input.message} ${input.errorType}` : input.message;
 
   if (USAGE_LIMIT_PATTERN.test(text)) return "usage-limit";
+
   if (input.statusCode === 429 || RATE_LIMIT_PATTERN.test(text)) return "rate-limit";
+
   if (
     (input.statusCode !== undefined && OVERLOADED_STATUS.has(input.statusCode)) ||
     OVERLOADED_PATTERN.test(text)
   ) {
     return "overloaded";
   }
+
   if (input.statusCode === 401 || input.statusCode === 403 || UNAVAILABLE_PATTERN.test(text)) {
     return "unavailable";
   }
@@ -68,15 +71,19 @@ const ProviderErrorShape = Schema.Struct({
   ),
 });
 
-const decodeProviderError = Schema.decodeUnknownOption(ProviderErrorShape);
+export type ProviderErrorFields = typeof ProviderErrorShape.Type;
+
+/** Run this on a thrown value, then hand the result to `modelFailureInputFromError`. */
+export const decodeProviderError = Schema.decodeUnknownOption(ProviderErrorShape);
 
 /**
- * Reads the fields the classifier uses off an error thrown by the AI SDK (`APICallError`) without
- * importing it. Anything that is not shaped like one yields only the message.
+ * Reads the fields the classifier uses off an error thrown by the AI SDK (`APICallError`), decoded
+ * with `decodeProviderError`. Anything that is not shaped like one yields only the message.
  */
-export function modelFailureInputFromError(error: unknown, message: string): ModelFailureInput {
-  const parsed = decodeProviderError(error);
-
+export function modelFailureInputFromError(
+  parsed: Option.Option<ProviderErrorFields>,
+  message: string,
+): ModelFailureInput {
   if (Option.isNone(parsed)) return { message };
 
   const { statusCode, responseHeaders, data } = parsed.value;
