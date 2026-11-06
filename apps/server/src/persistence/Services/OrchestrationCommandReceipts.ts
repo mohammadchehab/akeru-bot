@@ -21,6 +21,7 @@ import {
   RoutineRunId,
   SkillAssignmentId,
   ThreadId,
+  WorkItemId,
 } from "@isnadi/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
@@ -42,6 +43,7 @@ export const OrchestrationCommandReceipt = Schema.Struct({
     RoutineRunId,
     SkillAssignmentId,
     ThreadId,
+    WorkItemId,
   ]),
   acceptedAt: IsoDateTime,
   resultSequence: NonNegativeInt,

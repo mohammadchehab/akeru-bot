@@ -111,6 +111,14 @@ export function itemForCommand(
       case "routine.skill.assign":
       case "routine.skill.unassign":
         return `skill-assignment:${command.assignmentId}`;
+      case "work-item.create":
+      case "work-item.assign":
+      case "work-item.update":
+      case "work-item.block":
+      case "work-item.unblock":
+      case "work-item.close":
+      case "work-item.reopen":
+        return `work-item:${command.workItemId}`;
       default:
         return `thread:${command.threadId}`;
     }
