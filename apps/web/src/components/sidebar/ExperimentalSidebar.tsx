@@ -1,5 +1,4 @@
 import { Match } from "effect";
-import { useAtomValue } from "@effect/atom-react";
 import {
   Analytics01Icon,
   BubbleChatIcon,
@@ -25,8 +24,7 @@ import { openPlugins } from "../../pluginsDialogStore";
 import { openProductFeedback } from "../../productFeedbackStore";
 import { openUsage } from "../../usageDialogStore";
 import { openSettings } from "../../settingsDialogStore";
-import { usePrimaryEnvironmentId } from "../../state/environments";
-import { environmentSnapshotAtom } from "../../state/shell";
+import { useEnvironmentSnapshot } from "../../state/environmentSnapshot";
 import BotRosterSidebar from "../roster/BotRosterSidebar";
 import { BotAvatarView } from "../roster/BotAvatarView";
 import { formatRosterTimestamp } from "../roster/roster.logic";
@@ -374,11 +372,4 @@ function RoutinesPanel() {
       </div>
     </>
   );
-}
-
-function useEnvironmentSnapshot() {
-  const environmentId = usePrimaryEnvironmentId();
-
-  // SAFETY: the empty environment ID is an inactive-query sentinel; the atom sends no request until an environment exists.
-  return useAtomValue(environmentSnapshotAtom(environmentId ?? ("" as never)));
 }

@@ -105,4 +105,14 @@ describe("space overview", () => {
       "2026-10-18T22:00:00.000Z",
     );
   });
+
+  it("starts the week on the locale's first day, falling back to Monday", () => {
+    // Wednesday 2026-11-04; Arabic weeks start on Saturday 10-31, English (US) on Sunday 11-01.
+    const now = new Date("2026-11-04T12:00:00Z");
+
+    expect(weekStart(now, "UTC", "ar")).toBe("2026-10-31T00:00:00.000Z");
+    expect(weekStart(now, "UTC", "en-US")).toBe("2026-11-01T00:00:00.000Z");
+    expect(weekStart(now, "UTC", "not a locale")).toBe("2026-11-02T00:00:00.000Z");
+    expect(weekStart(now, "UTC")).toBe("2026-11-02T00:00:00.000Z");
+  });
 });

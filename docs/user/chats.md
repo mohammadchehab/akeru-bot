@@ -20,6 +20,15 @@ waiting, the group says **Nothing waiting on you**. It shows five rows at first;
 for the rest. The collapsed bot rail has no Decisions group, but a bot's light still shows when it
 needs you.
 
+## Space tabs
+
+A space opens with four tabs: **Overview**, **Chat**, **Skills** and **Files**. **Chat** is the default,
+so a link to a space opens its chat as before. **Overview** shows what is waiting on you in the
+space, the number of active routines and the next run, and the space's recent chats, with chats
+that wait on you first. Select **Review** to open the chat that holds the prompt. **Skills** and
+**Files** are empty for now. The selected tab is kept in the address, so reloading or sharing the link
+keeps it.
+
 ## Chat actions
 
 On web and desktop, the roster keeps one row per bot or group, and a bot opens its newest chat.

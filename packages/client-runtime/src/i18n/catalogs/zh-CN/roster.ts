@@ -72,8 +72,8 @@ export const rosterCatalog = {
   "No bots yet": "还没有机器人",
   "Loading bots…": "正在加载机器人…",
   "Could not load bots": "无法加载机器人",
-  "Bots and groups": "机器人和群组",
-  Groups: "群组",
+  "Bots and spaces": "机器人和空间",
+  Spaces: "空间",
   "No bots match": "没有匹配的机器人",
   "Archived bots": "已归档的机器人",
   "{name} leaves the roster and stops taking messages. You can restore it from Settings > Archived for {days} days, then it is deleted. Its chats stay in your history.":
@@ -329,4 +329,14 @@ export const rosterCatalog = {
   "Let {name} find and load registry skills it has not been given.":
     "允许 {name} 查找并加载尚未授予它的注册表技能。",
   "What {name} can load on demand.": "{name} 可按需加载的内容。",
+  Dashboard: "仪表板",
+  "Published by {name}": "由 {name} 发布",
+  "updated {time}": "{time}更新",
+  "Nothing here yet": "这里还没有内容",
+  Space: "空间",
+  Overview: "概览",
+  Files: "文件",
+  Activity: "动态",
+  "Skills for this space show here.": "此空间的技能显示在这里。",
+  "Files you add to this space show here.": "你添加到此空间的文件显示在这里。",
 } as const;

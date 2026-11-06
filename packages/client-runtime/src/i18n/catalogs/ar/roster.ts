@@ -73,8 +73,8 @@ export const rosterCatalog = {
   "No bots yet": "لا توجد بوتات بعد",
   "Loading bots…": "جارٍ تحميل البوتات…",
   "Could not load bots": "تعذر تحميل البوتات",
-  "Bots and groups": "البوتات والمجموعات",
-  Groups: "المجموعات",
+  "Bots and spaces": "البوتات والمساحات",
+  Spaces: "المساحات",
   "No bots match": "لا توجد بوتات مطابقة",
   "Archived bots": "البوتات المؤرشفة",
   "{name} leaves the roster and stops taking messages. You can restore it from Settings > Archived for {days} days, then it is deleted. Its chats stay in your history.":
@@ -346,4 +346,14 @@ export const rosterCatalog = {
   "Let {name} find and load registry skills it has not been given.":
     "اسمح لـ {name} بالعثور على مهارات السجل التي لم تُمنح له وتحميلها.",
   "What {name} can load on demand.": "ما يمكن لـ {name} تحميله عند الحاجة.",
+  Dashboard: "لوحة المعلومات",
+  "Published by {name}": "نشرها {name}",
+  "updated {time}": "حُدّثت {time}",
+  "Nothing here yet": "لا شيء هنا بعد",
+  Space: "المساحة",
+  Overview: "نظرة عامة",
+  Files: "الملفات",
+  Activity: "النشاط",
+  "Skills for this space show here.": "تظهر هنا مهارات هذه المساحة.",
+  "Files you add to this space show here.": "تظهر هنا الملفات التي تضيفها إلى هذه المساحة.",
 } as const;

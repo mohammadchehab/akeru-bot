@@ -37,14 +37,13 @@ export function spaceMembers(group: SpaceGroup): ReadonlySet<string> {
   return ids;
 }
 
-function inSpace(
-  owner: {
-    readonly botId?: string | null | undefined;
-    readonly groupId?: string | null | undefined;
-  },
-  group: SpaceGroup,
-  members: ReadonlySet<string>,
-) {
+/** What places an item (decision, chat) in a space: its group, or the bot that owns it. */
+interface SpaceOwned {
+  readonly botId?: string | null | undefined;
+  readonly groupId?: string | null | undefined;
+}
+
+function inSpace(owner: SpaceOwned, group: SpaceGroup, members: ReadonlySet<string>) {
   if (owner.groupId === group.id) return true;
 
   return owner.groupId == null && owner.botId != null && members.has(owner.botId);
@@ -147,16 +146,37 @@ function zoneOffsetMs(instant: number, timeZone: string) {
   );
 }
 
+interface WeekInfoLocale {
+  readonly getWeekInfo?: () => { readonly firstDay: number };
+  readonly weekInfo?: { readonly firstDay: number };
+}
+
+/** First day of the week for `locale` (1 = Monday ... 7 = Sunday); Monday when the runtime has no week data. */
+function localeFirstDay(locale: string | undefined): number {
+  if (!locale) return 1;
+
+  try {
+    // Runtimes expose either the getWeekInfo() method or the older weekInfo property.
+    const intlLocale: WeekInfoLocale & Intl.Locale = new Intl.Locale(locale);
+    const firstDay = (intlLocale.getWeekInfo?.() ?? intlLocale.weekInfo)?.firstDay;
+
+    return firstDay !== undefined && firstDay >= 1 && firstDay <= 7 ? firstDay : 1;
+  } catch {
+    return 1;
+  }
+}
+
 /**
- * Monday 00:00 in `timeZone` for the week holding `now`, as an ISO instant. The wall-clock
- * Monday is converted back to an instant with the offset in force on that Monday, so a DST
- * change inside the week does not shift it by an hour.
+ * Start of the week (00:00 on the locale's first day, Monday by default) in `timeZone` for the
+ * week holding `now`, as an ISO instant. The wall-clock day is converted back to an instant with
+ * the offset in force on that day, so a DST change inside the week does not shift it by an hour.
  */
-export function weekStart(now: Date, timeZone: string): string {
+export function weekStart(now: Date, timeZone: string, locale?: string): string {
   const local = zoneParts(now.getTime(), timeZone);
-  const wallMonday = Date.UTC(local.year, local.month - 1, local.day - local.weekday);
-  const guess = wallMonday - zoneOffsetMs(wallMonday, timeZone);
-  const instant = wallMonday - zoneOffsetMs(guess, timeZone);
+  const daysBack = (local.weekday - (localeFirstDay(locale) - 1) + 7) % 7;
+  const wallStart = Date.UTC(local.year, local.month - 1, local.day - daysBack);
+  const guess = wallStart - zoneOffsetMs(wallStart, timeZone);
+  const instant = wallStart - zoneOffsetMs(guess, timeZone);
 
   return new Date(instant).toISOString();
 }

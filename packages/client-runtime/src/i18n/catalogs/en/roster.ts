@@ -75,8 +75,8 @@ export const rosterCatalog = {
   "No bots yet": "No bots yet",
   "Loading bots…": "Loading bots…",
   "Could not load bots": "Could not load bots",
-  "Bots and groups": "Bots and groups",
-  Groups: "Groups",
+  "Bots and spaces": "Bots and spaces",
+  Spaces: "Spaces",
   "No bots match": "No bots match",
   "Archived bots": "Archived bots",
   "{name} leaves the roster and stops taking messages. You can restore it from Settings > Archived for {days} days, then it is deleted. Its chats stay in your history.":
@@ -345,4 +345,14 @@ export const rosterCatalog = {
   "Let {name} find and load registry skills it has not been given.":
     "Let {name} find and load registry skills it has not been given.",
   "What {name} can load on demand.": "What {name} can load on demand.",
+  Dashboard: "Dashboard",
+  "Published by {name}": "Published by {name}",
+  "updated {time}": "updated {time}",
+  "Nothing here yet": "Nothing here yet",
+  Space: "Space",
+  Overview: "Overview",
+  Files: "Files",
+  Activity: "Activity",
+  "Skills for this space show here.": "Skills for this space show here.",
+  "Files you add to this space show here.": "Files you add to this space show here.",
 } as const;

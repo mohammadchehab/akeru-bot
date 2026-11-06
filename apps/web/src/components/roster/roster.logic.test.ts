@@ -67,13 +67,13 @@ describe("buildRosterSections", () => {
 describe("rosterZoneHeading", () => {
   it("names what the zone holds instead of calling a group a bot", () => {
     expect(rosterZoneHeading([{ kind: "bot", id: "one" }])).toBe("Bots");
-    expect(rosterZoneHeading([{ kind: "group", id: "product" }])).toBe("Groups");
+    expect(rosterZoneHeading([{ kind: "group", id: "product" }])).toBe("Spaces");
     expect(
       rosterZoneHeading([
         { kind: "bot", id: "one" },
         { kind: "group", id: "product" },
       ]),
-    ).toBe("Bots and groups");
+    ).toBe("Bots and spaces");
     expect(rosterZoneHeading([])).toBe("Bots");
   });
 });
