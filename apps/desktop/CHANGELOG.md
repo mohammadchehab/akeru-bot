@@ -1,5 +1,16 @@
 ## @isnadi/desktop@0.0.41
 
+## 0.1.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @isnadi/contracts@0.1.0
+  - @isnadi/client-runtime@0.0.7
+  - @isnadi/shared@0.0.7
+  - @isnadi/ssh@0.0.7
+  - @isnadi/tailscale@0.0.7
+
 ## 0.0.2
 
 ### Patch Changes
