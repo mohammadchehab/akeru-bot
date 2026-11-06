@@ -382,6 +382,8 @@ export type RuntimeWarningPayload = typeof RuntimeWarningPayload.Type;
 const RuntimeErrorPayload = Schema.Struct({
   message: TrimmedNonEmptyStringSchema,
   class: Schema.optional(RuntimeErrorClass),
+  /** When a `models_exhausted` turn's earliest model comes back. */
+  resumesAt: Schema.optional(IsoDateTime),
   detail: Schema.optional(Schema.Unknown),
 });
 

@@ -211,3 +211,57 @@ describe("classifyTaskAgentKind", () => {
     expect(classifyTaskAgentKind({ taskType: "local_agent", agentId: "owner" })).toBe("agent");
   });
 });
+
+describe("model fallback events", () => {
+  const base = {
+    eventId: "event-reroute",
+    provider: "codex",
+    createdAt: "2026-11-06T00:00:00.000Z",
+    threadId: "thread-1",
+  };
+
+  it("decodes an old model.rerouted payload without instance ids", () => {
+    const parsed = decodeRuntimeEvent({
+      ...base,
+      type: "model.rerouted",
+      payload: { fromModel: "a", toModel: "b", reason: "usage limit" },
+    });
+
+    expect(parsed.type).toBe("model.rerouted");
+  });
+
+  it("carries both instance ids and the failure class on model.rerouted", () => {
+    const parsed = decodeRuntimeEvent({
+      ...base,
+      type: "model.rerouted",
+      payload: {
+        fromModel: "a",
+        toModel: "b",
+        reason: "usage limit",
+        fromInstanceId: "codex",
+        toInstanceId: "claude",
+        failureClass: "usage-limit",
+      },
+    });
+
+    expect(parsed.type === "model.rerouted" && parsed.payload.toInstanceId).toBe("claude");
+    expect(parsed.type === "model.rerouted" && parsed.payload.fromInstanceId).toBe("codex");
+  });
+
+  it("round-trips the models_exhausted error class with its resume time", () => {
+    const parsed = decodeRuntimeEvent({
+      ...base,
+      type: "runtime.error",
+      payload: {
+        message: "Every model is out of usage.",
+        class: "models_exhausted",
+        resumesAt: "2026-11-06T02:00:00.000Z",
+      },
+    });
+
+    expect(parsed.type === "runtime.error" && parsed.payload.class).toBe("models_exhausted");
+    expect(parsed.type === "runtime.error" && parsed.payload.resumesAt).toBe(
+      "2026-11-06T02:00:00.000Z",
+    );
+  });
+});

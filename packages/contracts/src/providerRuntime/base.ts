@@ -111,6 +111,7 @@ export const RuntimeErrorClass = Schema.Literals([
   "transport_error",
   "permission_error",
   "validation_error",
+  "models_exhausted",
   "unknown",
 ]);
 

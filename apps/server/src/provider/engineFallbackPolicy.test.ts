@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@effect/vitest";
 import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@isnadi/contracts";
 
-import { validateEngineFallbacks } from "./engineFallbackPolicy.ts";
+import { fallbackAllowedAtTurn, validateEngineFallbacks } from "./engineFallbackPolicy.ts";
 
 const providerOf = (instanceId: string, driver: string): ServerProvider => ({
   instanceId: ProviderInstanceId.make(instanceId),
@@ -79,5 +79,42 @@ describe("validateEngineFallbacks", () => {
 
   it("accepts an entry on the primary's own instance without consent", () => {
     expect(validate("custom", [{ provider: "custom", model: "a" }])).toBeUndefined();
+  });
+});
+
+describe("fallbackAllowedAtTurn", () => {
+  const allowed = (
+    from: string,
+    entry: { provider: string; model: string; historyConsent?: boolean },
+  ) => fallbackAllowedAtTurn({ providers, from, entry });
+
+  it("allows a subscription instance", () => {
+    expect(allowed("codex", { provider: "claude", model: "a" })).toBe(true);
+  });
+
+  it("denies standard OpenCode", () => {
+    expect(allowed("codex", { provider: "opencode", model: "a" })).toBe(false);
+  });
+
+  it("denies a Custom API entry on another instance when consent was cleared by an import", () => {
+    expect(allowed("codex", { provider: "custom", model: "a" })).toBe(false);
+    expect(allowed("codex", { provider: "custom", model: "a", historyConsent: false })).toBe(false);
+  });
+
+  it("allows the same Custom API entry once consent is true", () => {
+    expect(allowed("codex", { provider: "custom", model: "a", historyConsent: true })).toBe(true);
+  });
+
+  it("denies an entry whose instance the registry does not report unless consented", () => {
+    expect(allowed("codex", { provider: "gone", model: "a" })).toBe(false);
+    expect(allowed("codex", { provider: "gone", model: "a", historyConsent: true })).toBe(true);
+  });
+
+  it("allows a Custom API entry on the instance the chain started on", () => {
+    expect(allowed("custom", { provider: "custom", model: "b" })).toBe(true);
+  });
+
+  it("denies a local or subscription instance moving to Custom API without consent", () => {
+    expect(allowed("claude", { provider: "custom-2", model: "a" })).toBe(false);
   });
 });
