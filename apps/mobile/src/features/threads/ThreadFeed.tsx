@@ -1,19 +1,16 @@
 import { Predicate } from "effect";
 import type { ThreadSilentRun } from "@isnadi/client-runtime/silent-run";
 import { useMobileI18n } from "../../lib/i18n";
-import * as Haptics from "expo-haptics";
 import { KeyboardAwareLegendList } from "@legendapp/list/keyboard";
 import type { LegendListRef } from "@legendapp/list/react-native";
 import type { BotId, EnvironmentId, MessageId, ThreadId, TurnId } from "@isnadi/contracts";
 import { classifyMarkdownImageSource } from "@isnadi/client-runtime/markdown-images";
 import { CHAT_LIST_ANCHOR_OFFSET, resolveChatListAnchoredEndSpace } from "@isnadi/shared/chatList";
 import { HeaderHeightContext } from "@react-navigation/elements";
-import { useNavigation } from "@react-navigation/native";
 import {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -34,8 +31,6 @@ import type { SharedValue } from "react-native-reanimated";
 import { useThemeColor } from "../../lib/useThemeColor";
 import { IOS_NAV_BAR_HEIGHT } from "../../lib/layoutMetrics";
 import { scopedThreadKey } from "../../lib/scopedEntities";
-import { copyTextWithHaptic } from "../../lib/copyTextWithHaptic";
-import { tryOpenExternalUrl } from "../../lib/openExternalUrl";
 import type {
   MarkdownImageRenderer,
   SelectableMarkdownSkill,
@@ -53,7 +48,6 @@ import {
 import { scaledTypographyLineHeight } from "../../lib/appearancePreferences";
 import { MOBILE_TYPOGRAPHY } from "../../lib/typography";
 import { useAppearancePreferences } from "../settings/appearance/AppearancePreferencesProvider";
-import { resolveMarkdownLinkPresentation } from "@isnadi/mobile-markdown-text/links";
 import {
   deriveGroupSpeakerLabels,
   deriveThreadFeedPresentation,
@@ -64,8 +58,6 @@ import {
 import type { ThreadContentPresentation } from "./threadContentPresentation";
 import { ThreadChannels } from "./ThreadChannels";
 import { collapsedWorkLogHeight, WORK_GROUP_TOGGLE_HEIGHT } from "./thread-work-log";
-import { isAppDeepLink } from "@isnadi/client-runtime/settings-deep-link";
-import { resolveMobileSettingsDestination } from "../settings/settingsDeepLink";
 import {
   ThreadMarkdownImage,
   ThreadMarkdownImageUnavailable,
@@ -73,7 +65,9 @@ import {
 } from "./thread-feed-images";
 import { useMarkdownStyles } from "./thread-feed-markdown";
 import { ThreadFeedPlaceholder, renderFeedEntry } from "./thread-feed-rows";
+import { useThreadFeedDisclosure } from "./use-thread-feed-disclosure";
 import { useThreadFeedFollow } from "./use-thread-feed-follow";
+import { useMarkdownLinkPress } from "./use-thread-feed-link-press";
 
 // Pre-measurement heights for getFixedItemSize, mirroring renderFeedEntry's
 // classNames. The fold row's min-h-11 (44px) stays taller than its single
@@ -148,7 +142,6 @@ function sameIds(left: ReadonlySet<string>, right: ReadonlySet<string>): boolean
 
 export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
   const { t, formatDate } = useMobileI18n();
-  const navigation = useNavigation();
   const replyPlayback = useOptionalReplyPlayback();
   const environment = useEnvironmentPresentation(props.environmentId);
   // Activity-only feed updates keep the previous array so reply playback does not re-observe.
@@ -170,8 +163,6 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
     connected: environment.presentation?.connection.phase === "connected",
   });
 
-  const copyFeedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const previousLatestTurnRef = useRef(props.latestTurn);
   const { width: windowWidth } = useWindowDimensions();
   const { appearance } = useAppearancePreferences();
 
@@ -180,20 +171,6 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
   );
 
   const [viewportHeight, setViewportHeight] = useState(0);
-
-  const [interactionState, setInteractionState] = useState<{
-    readonly copiedRowId: string | null;
-    readonly expandedWorkGroups: Record<string, boolean>;
-    readonly expandedWorkRows: Record<string, boolean>;
-    readonly expandedTurnIds: ReadonlySet<TurnId>;
-  }>({
-    copiedRowId: null,
-    expandedWorkGroups: {},
-    expandedWorkRows: {},
-    expandedTurnIds: new Set(),
-  });
-
-  const { copiedRowId, expandedWorkGroups, expandedWorkRows, expandedTurnIds } = interactionState;
 
   const [expandedImage, setExpandedImage] = useState<{
     uri: string;
@@ -239,47 +216,6 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
   const iconSubtleColor = useThemeColor("--color-icon-subtle");
   const userBubbleColor = useThemeColor("--color-user-bubble");
 
-  const onMarkdownLinkPress = useCallback(
-    (href: string) => {
-      if (isAppDeepLink(href)) {
-        const destination = resolveMobileSettingsDestination(href);
-
-        if (destination === null) return;
-        void Haptics.selectionAsync();
-
-        if (destination.kind === "health") {
-          navigation.navigate("SettingsSheet", {
-            screen: "SettingsContent",
-            params: {
-              screen: "SettingsProviderHealth",
-              params: {
-                environmentId: props.environmentId,
-                target: destination.target,
-              },
-            },
-          });
-        } else {
-          navigation.navigate("SettingsSheet", {
-            screen: "SettingsContent",
-            params: { screen: destination.kind === "home" ? "Settings" : destination.screen },
-          });
-        }
-
-        return;
-      }
-
-      const presentation = resolveMarkdownLinkPresentation(href);
-
-      // Mobile has no workspace file viewer; file links stay inert.
-      if (presentation.kind === "file") return;
-
-      if (presentation.href) {
-        void tryOpenExternalUrl(presentation.href, "markdown-link");
-      }
-    },
-    [props.environmentId, navigation],
-  );
-
   const renderMarkdownImage = useCallback<MarkdownImageRenderer>(
     (image) => {
       const imageSource = classifyMarkdownImageSource(image.href, props.workspaceRoot ?? null);
@@ -313,6 +249,7 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
     [props.environmentId, props.threadId, props.workspaceRoot],
   );
 
+  const onMarkdownLinkPress = useMarkdownLinkPress(props.environmentId);
   const markdownStyles = useMarkdownStyles(onMarkdownLinkPress, renderMarkdownImage);
 
   // Thread identity is env-scoped: two environments can hold the same
@@ -332,6 +269,20 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
     submittedMessageId: props.submittedMessageId,
     onEndFollowEnabledChange: props.onEndFollowEnabledChange,
     onHeaderMaterialVisibilityChange: props.onHeaderMaterialVisibilityChange,
+  });
+
+  const {
+    copiedRowId,
+    expandedWorkGroups,
+    expandedWorkRows,
+    expandedTurnIds,
+    onCopyWorkRow,
+    onToggleWorkGroup,
+    onToggleWorkRow,
+    onToggleTurnFold,
+  } = useThreadFeedDisclosure({
+    latestTurn: props.latestTurn,
+    suspendEndScrollMaintenanceForDisclosure,
   });
 
   const handleViewportLayout = useCallback((event: LayoutChangeEvent) => {
@@ -431,111 +382,6 @@ export const ThreadFeed = memo(function ThreadFeed(props: ThreadFeedProps) {
   const speakerLabels = useMemo(
     () => deriveGroupSpeakerLabels(presentedFeed, props.speakerGroup ?? null),
     [presentedFeed, props.speakerGroup],
-  );
-
-  useEffect(() => {
-    const previous = previousLatestTurnRef.current;
-    previousLatestTurnRef.current = props.latestTurn;
-
-    if (!props.latestTurn || !previous) {
-      return;
-    }
-
-    if (props.latestTurn.turnId === previous.turnId) {
-      if (previous.state === "running" && props.latestTurn.state === "interrupted") {
-        const interruptedTurnId = props.latestTurn.turnId;
-        setInteractionState((current) => ({
-          ...current,
-          expandedTurnIds: new Set(current.expandedTurnIds).add(interruptedTurnId),
-        }));
-      }
-
-      return;
-    }
-
-    setInteractionState((current) => {
-      if (!current.expandedTurnIds.has(previous.turnId)) {
-        return current;
-      }
-
-      const next = new Set(current.expandedTurnIds);
-      next.delete(previous.turnId);
-
-      return { ...current, expandedTurnIds: next };
-    });
-  }, [props.latestTurn]);
-
-  useEffect(() => {
-    return () => {
-      if (copyFeedbackTimeoutRef.current) {
-        clearTimeout(copyFeedbackTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const onCopyWorkRow = useCallback((rowId: string, value: string) => {
-    copyTextWithHaptic(value, {
-      target: "thread-work-row",
-      feedback: "selection",
-    });
-    setInteractionState((current) => ({ ...current, copiedRowId: rowId }));
-
-    if (copyFeedbackTimeoutRef.current) {
-      clearTimeout(copyFeedbackTimeoutRef.current);
-    }
-
-    copyFeedbackTimeoutRef.current = setTimeout(() => {
-      setInteractionState((current) =>
-        current.copiedRowId === rowId ? { ...current, copiedRowId: null } : current,
-      );
-      copyFeedbackTimeoutRef.current = null;
-    }, 1200);
-  }, []);
-
-  const onToggleWorkGroup = useCallback(
-    (groupId: string) => {
-      suspendEndScrollMaintenanceForDisclosure(`work-toggle:${groupId}`);
-      setInteractionState((current) => ({
-        ...current,
-        expandedWorkGroups: {
-          ...current.expandedWorkGroups,
-          [groupId]: !(current.expandedWorkGroups[groupId] ?? false),
-        },
-      }));
-    },
-    [suspendEndScrollMaintenanceForDisclosure],
-  );
-
-  const onToggleWorkRow = useCallback(
-    (rowId: string) => {
-      suspendEndScrollMaintenanceForDisclosure(rowId);
-      setInteractionState((current) => ({
-        ...current,
-        expandedWorkRows: {
-          ...current.expandedWorkRows,
-          [rowId]: !(current.expandedWorkRows[rowId] ?? false),
-        },
-      }));
-    },
-    [suspendEndScrollMaintenanceForDisclosure],
-  );
-
-  const onToggleTurnFold = useCallback(
-    (turnId: TurnId) => {
-      suspendEndScrollMaintenanceForDisclosure(`turn-fold:${turnId}`);
-      setInteractionState((current) => {
-        const next = new Set(current.expandedTurnIds);
-
-        if (next.has(turnId)) {
-          next.delete(turnId);
-        } else {
-          next.add(turnId);
-        }
-
-        return { ...current, expandedTurnIds: next };
-      });
-    },
-    [suspendEndScrollMaintenanceForDisclosure],
   );
 
   const onPressImage = useCallback((uri: string, headers?: Record<string, string>) => {
