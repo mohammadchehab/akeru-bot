@@ -25,6 +25,24 @@ directories so files hardlink. To rebuild it, create `/opt/pnpm-store` owned by 
 Never run `pnpm store prune` while runners are online. A prune deletes files that a running install still
 needs, and the install then fails with `ERR_PNPM_ENOENT`. Stop the runners first, or leave the store alone.
 
+### Hetzner runner cap
+
+The box has 16 cores. A heavy job uses about 1.5 to 2 cores, and one PR run is five heavy jobs, so six runners
+keep the cores busy without piling up: ten runners made the load average reach 35 to 70 and slowed every job.
+Only `hetzner-1` to `hetzner-6` run (`actions.runner.mohammadchehab-isnadibot.hetzner-N.service`).
+`hetzner-7` to `hetzner-10` are installed but stopped and disabled. Extra jobs wait in GitHub's queue, roughly
+first come first served. A queued job uses none of its `timeout-minutes`, and nothing is cancelled.
+
+To take a runner out of service, drain it first. Stopping a busy runner fails the job it is running, and with a
+queue no runner is ever idle for long. Remove its custom label so it takes no new jobs and finishes the one it
+has: `gh api -X DELETE repos/mohammadchehab/isnadibot/actions/runners/<id>/labels/hetzner`, with the id from
+`gh api repos/mohammadchehab/isnadibot/actions/runners`. When the runner has no `Runner.Worker` process, run
+`systemctl stop` and `systemctl disable` on its service. The workflow, `runs-on`, the shard matrix and the
+policy test do not change.
+
+To undo the cap, run `systemctl enable --now` for `hetzner-7` to `hetzner-10`, then give each its label back:
+`gh api -X POST repos/mohammadchehab/isnadibot/actions/runners/<id>/labels -f 'labels[]=hetzner'`.
+
 CI runs as parallel jobs, so a run takes as long as its slowest job instead of the sum of all steps:
 
 - **Changed files.** Decides whether a pull request changes anything besides `docs/`, `.changeset/`,
