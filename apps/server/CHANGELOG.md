@@ -1,5 +1,51 @@
 # isnadibot
 
+## 0.1.0
+
+### Minor Changes
+
+- [#100](https://github.com/mohammadchehab/isnadibot/pull/100) [`8b857f6`](https://github.com/mohammadchehab/isnadibot/commit/8b857f6e7ec4cfe3939cb3d7085e976de3e80fa8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Arabic (العربية) is now available on web and desktop. Choose it in Settings → Language: the interface mirrors right to left at once, messages follow their own text direction, and code and paths stay left to right.
+
+- [#121](https://github.com/mohammadchehab/isnadibot/pull/121) [`ba13240`](https://github.com/mohammadchehab/isnadibot/commit/ba1324027382325e4e0384d69426a658512973c2) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Bots can keep an ordered list of fallback models in their settings. The list is saved with the bot and shown on mobile as a count; turns do not use it yet.
+
+- [#136](https://github.com/mohammadchehab/isnadibot/pull/136) [`d17c968`](https://github.com/mohammadchehab/isnadibot/commit/d17c968c026e01273ca97ddf5a341f863c5a7c48) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Choose which skills each bot uses. Bot settings has a Skills panel with a switch per skill and a switch for registry skills, and mobile shows how many skills are on.
+
+- [#70](https://github.com/mohammadchehab/isnadibot/pull/70) [`3b98dd3`](https://github.com/mohammadchehab/isnadibot/commit/3b98dd3663d53f7ce2ed0665340e1096ae12cb97) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Group chats on web, desktop and mobile now let you address bots: mention several, use `@everyone`, or reply to a bot's message on web and desktop. The chat shows who answers next with a Stop button, and a reply budget limits how long bots chain replies.
+
+- [#73](https://github.com/mohammadchehab/isnadibot/pull/73) [`b157946`](https://github.com/mohammadchehab/isnadibot/commit/b1579463b04e8baae349d539393c5c40ec3dd156) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Group chats now let a bot hand the conversation to another member by mentioning it in a reply. Each chat has its own reply budget, from 1 to 20 and 6 by default, that caps how many replies a chain of mentions adds for one message. Bots you name yourself always answer, even past the budget, and a chain the budget cuts short is recorded so clients can say so.
+
+- [#68](https://github.com/mohammadchehab/isnadibot/pull/68) [`ff570fe`](https://github.com/mohammadchehab/isnadibot/commit/ff570fe9d19abaf020b25d3f27bf02852fd55469) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Group chats can now address specific bots, a reply, or everyone in a message. The server runs the addressed bots one at a time, in order, and shows who is next. Stop ends the whole answer, including the bots still waiting, and a restart resumes a waiting queue.
+
+- [#75](https://github.com/mohammadchehab/isnadibot/pull/75) [`aff4aba`](https://github.com/mohammadchehab/isnadibot/commit/aff4abaf66a9022784475bafe876a6fd3b801397) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - On mobile you can now reply to one bot's message in a group chat: press and hold the message, choose Reply, and that bot answers.
+
+- [#92](https://github.com/mohammadchehab/isnadibot/pull/92) [`0fa6098`](https://github.com/mohammadchehab/isnadibot/commit/0fa6098c078da18a5ff511bde66afdb633f99210) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Chat messages, the composer, and bot and chat names now take the direction of their own text, so Arabic, Hebrew, and other right-to-left text reads correctly in the English interface. Code, paths, and shortcut keys stay left to right.
+
+- [#105](https://github.com/mohammadchehab/isnadibot/pull/105) [`2bfbaa9`](https://github.com/mohammadchehab/isnadibot/commit/2bfbaa9a6bdff0c055a9882c4c995bc33cbc1746) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A new Decisions group at the top of the bot list shows every chat where a bot is waiting on you for an approval or a question. Select a row to jump to that chat; it clears when you answer.
+
+### Patch Changes
+
+- [#101](https://github.com/mohammadchehab/isnadibot/pull/101) [`e82b1b6`](https://github.com/mohammadchehab/isnadibot/commit/e82b1b6776bd3a187892b4ed6773244686d08eb5) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Arabic now mirrors the app layout: the sidebar, settings, chat and preview panels sit on the correct side, and back, next and expand arrows point the right way.
+
+- [#104](https://github.com/mohammadchehab/isnadibot/pull/104) [`b51a0b0`](https://github.com/mohammadchehab/isnadibot/commit/b51a0b02762cfae3db343ad4c082ac8cab83353b) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The composer banner keeps its solid background in browsers without backdrop blur.
+
+- [#122](https://github.com/mohammadchehab/isnadibot/pull/122) [`f57671d`](https://github.com/mohammadchehab/isnadibot/commit/f57671d9076de2cf41a0d313c970ec6d9c251453) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A bot can now hand work to a teammate, check on it, message it or stop it by the teammate's name, not only its ID. A name that matches two teammates is refused with both listed, and a name outside the current group is never revealed.
+
+- [#123](https://github.com/mohammadchehab/isnadibot/pull/123) [`ea5ea6d`](https://github.com/mohammadchehab/isnadibot/commit/ea5ea6dcae58a526affc08ecf5dde1000a2c1cb8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Importing a bot no longer brings along fallback models on standard OpenCode, which cannot be a fallback.
+
+- [#97](https://github.com/mohammadchehab/isnadibot/pull/97) [`a7b233e`](https://github.com/mohammadchehab/isnadibot/commit/a7b233ecac6c4efd4043209c4dfc2c7036731cba) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Relative times in the mobile chat list, archive, and image generation settings now follow the interface language instead of always showing English, and the usage and step meters format numbers, currency, percentages, and dates for it.
+
+- [#78](https://github.com/mohammadchehab/isnadibot/pull/78) [`047fbe3`](https://github.com/mohammadchehab/isnadibot/commit/047fbe346c47e0a38c074e2f6c2610fc823bc5fd) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The iOS app prebuild works again: the widget logo now comes from the app icon instead of a deleted marketing file.
+
+- [#82](https://github.com/mohammadchehab/isnadibot/pull/82) [`a49bd81`](https://github.com/mohammadchehab/isnadibot/commit/a49bd81444d426754a83aa2eeddbffc01dc746da) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Pressing Stop on an OpenCode bot right after sending a message now stops the turn instead of letting it run to the end.
+
+- [#94](https://github.com/mohammadchehab/isnadibot/pull/94) [`22029b7`](https://github.com/mohammadchehab/isnadibot/commit/22029b75b715240a9c45051f33e80c73ddc2006d) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - The server log no longer shows a warning each time a group chat hand-off finds no new bot to start.
+
+- [#106](https://github.com/mohammadchehab/isnadibot/pull/106) [`a171fe2`](https://github.com/mohammadchehab/isnadibot/commit/a171fe27689e05a25c076117c24ab9c45843a589) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A second server started on the same data directory now exits with a clear error naming the running server's pid and port, instead of running migrations against its database.
+
+- [#103](https://github.com/mohammadchehab/isnadibot/pull/103) [`b1b650f`](https://github.com/mohammadchehab/isnadibot/commit/b1b650f21525938d78f6fcb55ad7fd5a45fb88f8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - Each paragraph of a message you send now reads in its own direction, so an Arabic paragraph followed by an English one no longer share a single direction.
+
+- [#87](https://github.com/mohammadchehab/isnadibot/pull/87) [`501761e`](https://github.com/mohammadchehab/isnadibot/commit/501761e5b46ea75da27e17ed6d9b718312298ab8) Thanks [@mohammadchehab](https://github.com/mohammadchehab)! - A session revoked while its WebSocket was still connecting now closes that socket instead of staying open.
+
 ## 0.0.2
 
 ### Patch Changes

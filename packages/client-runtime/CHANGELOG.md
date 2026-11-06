@@ -1,5 +1,13 @@
 # @isnadi/client-runtime
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @isnadi/contracts@0.1.0
+  - @isnadi/shared@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes
