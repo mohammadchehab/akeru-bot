@@ -574,6 +574,7 @@ describe("ProviderCommandReactor", () => {
       },
       mode: "default",
       botConversation: true,
+      providers: expect.any(Array),
     });
     expect(harness.sendTurn.mock.calls[1]?.[0]).toMatchObject({
       modelSelection: { instanceId: "codex", model: "gpt-5.6-sol" },

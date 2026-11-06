@@ -109,6 +109,7 @@ describe("ProviderCommandReactor", () => {
       },
       mode: "default",
       botConversation: true,
+      providers: expect.any(Array),
     });
     expect(harness.startSession.mock.calls[0]?.[1]).toMatchObject({
       provider: ProviderDriverKind.make(provider),
