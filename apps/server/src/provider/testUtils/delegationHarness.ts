@@ -51,8 +51,6 @@ export const access = (overrides: Partial<IsnadiDelegationAccessGrant> = {}) => 
   hasUserComputer: false,
   enabledMcpServerIds: [],
   disabledMcpServerIds: [],
-  skills: [],
-  skillRegistryAccess: false,
   approvalCeiling: "send" as const,
   ...overrides,
 });
