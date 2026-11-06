@@ -1,6 +1,5 @@
 import * as NodeNet from "node:net";
 
-import { getDomain } from "tldts";
 import * as Context from "effect/Context";
 import * as Crypto from "effect/Crypto";
 import * as Effect from "effect/Effect";
@@ -13,8 +12,10 @@ import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
 import * as Stream from "effect/Stream";
 
+import { hasRegistrableDomain, normalizeHost } from "@isnadi/shared/siteDomain";
+
 import * as DesktopEnvironment from "../app/DesktopEnvironment.ts";
-import { denyAllHostPolicy, normalizeHost, type EgressHostPolicy } from "./EgressDialer.ts";
+import { denyAllHostPolicy, type EgressHostPolicy } from "./EgressDialer.ts";
 
 const FILE_MODE = 0o600;
 
@@ -129,7 +130,7 @@ const validateGrant = (grant: EgressGrant): Effect.Effect<EgressGrant, EgressGra
     return Effect.fail(new EgressGrantInvalid({ reason: "ip-suffix", value: grant.domain }));
   }
 
-  if (getDomain(domain) === null) {
+  if (!hasRegistrableDomain(domain)) {
     return Effect.fail(new EgressGrantInvalid({ reason: "public-suffix", value: grant.domain }));
   }
 

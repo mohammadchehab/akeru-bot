@@ -9,7 +9,7 @@ import * as PlatformError from "effect/PlatformError";
 import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 
-import { EgressRefused, normalizeHost, openEgressTarget } from "./EgressDialer.ts";
+import { EgressRefused, openEgressTarget } from "./EgressDialer.ts";
 import * as EgressGrantStore from "./EgressGrantStore.ts";
 
 const exact = (host: string) => ({ kind: "exact" as const, host });
@@ -38,20 +38,6 @@ const withStore = <A, E, R extends FileSystem.FileSystem | Path.Path | Crypto.Cr
   }).pipe(Effect.scoped, Effect.provide(NodeServices.layer));
 
 const INSTANCE = "primary";
-
-describe("normalizeHost", () => {
-  it("folds case, trailing dots and numeric IPv4 spellings", () => {
-    assert.strictEqual(normalizeHost("Example.COM."), "example.com");
-    assert.strictEqual(normalizeHost("0x7f000001"), "127.0.0.1");
-    assert.strictEqual(normalizeHost("2130706433"), "127.0.0.1");
-    assert.strictEqual(normalizeHost("[::1]"), "::1");
-  });
-
-  it("fails closed on a host that does not parse, including a zoned IPv6 literal", () => {
-    assert.strictEqual(normalizeHost("[::1%lo0]"), null);
-    assert.strictEqual(normalizeHost("exa mple.com"), null);
-  });
-});
 
 describe("DesktopEgressGrants", () => {
   it.effect("denies everything by default", () =>

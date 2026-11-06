@@ -5,7 +5,9 @@ import * as Fiber from "effect/Fiber";
 import * as Result from "effect/Result";
 import * as Stream from "effect/Stream";
 
-import { normalizeHost, type EgressRefused } from "./EgressDialer.ts";
+import { normalizeHost } from "@isnadi/shared/siteDomain";
+
+import { type EgressRefused } from "./EgressDialer.ts";
 import { createStreamCounter } from "./EgressLimits.ts";
 
 /** The dialed target, as the provider pumps it. The provider never sees a hostname. */

@@ -3,6 +3,8 @@ import * as NodeNet from "node:net";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
+import { normalizeHost } from "@isnadi/shared/siteDomain";
+
 import { classifyAddress } from "./EgressAddressPolicy.ts";
 
 const ALLOWED_PORTS: ReadonlySet<number> = new Set([80, 443]);
@@ -38,21 +40,6 @@ export interface EgressDialerDeps<Socket> {
   /** The PC's own subnets as CIDR strings, read fresh on every open. */
   readonly interfaces: () => ReadonlyArray<string>;
 }
-
-/**
- * The one host form every egress check compares: URL-normalized (so `0x7f.1` and `2130706433`
- * become dotted IPv4), lowercased, without v6 brackets, zone, or a trailing dot.
- */
-export const normalizeHost = (host: string): string | null => {
-  try {
-    return new URL(`http://${host}`).hostname
-      .replace(/^\[|\]$/g, "")
-      .replace(/%.*$/, "")
-      .replace(/\.$/, "");
-  } catch {
-    return null;
-  }
-};
 
 /**
  * Opens TCP for one CONNECT. The desktop's own checks decide: port 80/443, the owner's host
