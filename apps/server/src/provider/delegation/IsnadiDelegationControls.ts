@@ -93,6 +93,7 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.CheckAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
+
     const { bot } = availableBot(
       snapshot,
       parent,
@@ -140,6 +141,7 @@ export function createIsnadiDelegationControls(
     request: (typeof IsnadiToolInputSchemas.StopAgent)["Type"],
   ) => {
     const snapshot = await options.readSnapshot();
+
     const { bot } = availableBot(
       snapshot,
       parent,
