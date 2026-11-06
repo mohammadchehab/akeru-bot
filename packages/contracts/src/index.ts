@@ -91,3 +91,5 @@ export * from "./portability.ts";
 export * from "./rpc.ts";
 
 export * from "./remoteDiagnostics.ts";
+
+export * from "./fleet/roles.ts";
