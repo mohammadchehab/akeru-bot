@@ -208,6 +208,19 @@ export class AgentControllerUnsupportedEngineError extends Schema.TaggedErrorCla
   }
 }
 
+/** Every model in a bot's chain is paused or unavailable. `resumesAt` is epoch milliseconds, when known. */
+export class AgentControllerModelsExhaustedError extends Schema.TaggedErrorClass<AgentControllerModelsExhaustedError>()(
+  "AgentControllerModelsExhaustedError",
+  {
+    detail: Schema.String,
+    resumesAt: Schema.optional(Schema.Number),
+  },
+) {
+  override get message(): string {
+    return `No model can run this turn: ${this.detail}`;
+  }
+}
+
 export class AgentControllerRuntimeError extends Schema.TaggedErrorClass<AgentControllerRuntimeError>()(
   "AgentControllerRuntimeError",
   {
@@ -259,6 +272,7 @@ export type ProviderServiceError =
 export type AgentControllerError =
   | AgentControllerUnsupportedEngineError
   | AgentControllerRuntimeError
+  | AgentControllerModelsExhaustedError
   | AgentControllerRollbackUnsupportedError
   | ProviderServiceError;
 
