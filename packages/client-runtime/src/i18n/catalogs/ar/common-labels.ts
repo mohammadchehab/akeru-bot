@@ -128,6 +128,7 @@ export const commonLabelsCatalog = {
   "Stash entry may come back": "قد يعود إدخال الحفظ المؤقت",
   "Could not dictate": "تعذّر الإملاء",
   "Cancel reply": "ألغِ الرد",
+  "Open {host}": "افتح {host}",
   "Dictation unavailable": "الإملاء غير متاح",
   Mention: "إشارة",
   Mentions: "الإشارات",

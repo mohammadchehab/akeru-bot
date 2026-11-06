@@ -69,6 +69,7 @@ import type {
 } from "../../lib/threadActivity";
 import { PendingApprovalCard } from "./PendingApprovalCard";
 import { ComputerDesktopNotice } from "./ComputerDesktopNotice";
+import { setGroupReplyTarget, useGroupReplyTarget } from "../../state/group-reply-target";
 import { useUserInputComposerSlot } from "./use-user-input-composer-slot";
 import { PendingUserInputCard } from "./PendingUserInputCard";
 import {
@@ -326,6 +327,20 @@ export const ThreadDetailScreen = memo(function ThreadDetailScreen(props: Thread
   const contentMaxWidth = isSplitLayout ? CHAT_CONTENT_MAX_WIDTH : undefined;
   const selectedInstanceId = props.selectedThread.modelSelection.instanceId;
   useStreamingHaptics(props.selectedThread.id, props.selectedThreadFeed);
+
+  // The reply chip's message can leave the read model (deleted, or a different history window).
+  const replyThreadKey = scopedThreadKey(props.environmentId, props.selectedThread.id);
+  const replyTargetMessageId = useGroupReplyTarget(replyThreadKey)?.messageId ?? null;
+
+  useEffect(() => {
+    if (replyTargetMessageId === null) return;
+
+    const present = props.selectedThreadFeed.some(
+      (entry) => entry.type === "message" && entry.message.id === replyTargetMessageId,
+    );
+
+    if (!present) setGroupReplyTarget(replyThreadKey, null);
+  }, [props.selectedThreadFeed, replyTargetMessageId, replyThreadKey]);
 
   const selectedProvider = props.serverConfig?.providers.find(
     (provider) => provider.instanceId === selectedInstanceId,

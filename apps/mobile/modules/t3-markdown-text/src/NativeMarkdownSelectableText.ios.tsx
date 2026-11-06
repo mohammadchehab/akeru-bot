@@ -143,6 +143,10 @@ function runStyle(run: NativeMarkdownTextRun, textStyle: NativeMarkdownTextStyle
 }
 
 export function NativeMarkdownSelectableText(props: {
+  /** Defaults to true; group chat messages pass false. */
+  readonly selectable?: boolean;
+  /** Set, a long-press on a link calls this instead of opening the link. */
+  readonly onLongPress?: (() => void) | undefined;
   readonly runs: ReadonlyArray<NativeMarkdownTextRun>;
   readonly textStyle: NativeMarkdownTextStyle;
   readonly onLinkPress?: (href: string) => void;
@@ -195,7 +199,7 @@ export function NativeMarkdownSelectableText(props: {
     <MarkdownTextPrimitive
       key={appearanceKey}
       uiTextView
-      selectable
+      selectable={props.selectable ?? true}
       style={{
         flexShrink: 1,
         minWidth: 0,
@@ -219,6 +223,7 @@ export function NativeMarkdownSelectableText(props: {
                   : undefined
             }
             style={runStyle(run, props.textStyle)}
+            onLongPress={href && props.onLongPress ? props.onLongPress : undefined}
             onPress={
               href
                 ? () => {

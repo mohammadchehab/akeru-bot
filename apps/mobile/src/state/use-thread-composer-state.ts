@@ -23,6 +23,11 @@ import {
 import { isAtomCommandInterrupted } from "@isnadi/client-runtime/state/runtime";
 import { groupAddressing, resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
 import { deriveActiveWorkStartedAt } from "@isnadi/shared/orchestrationTiming";
+import {
+  getGroupReplyTarget,
+  restoreGroupReplyTargetAfterFailedSend,
+  setGroupReplyTarget,
+} from "./group-reply-target";
 import { groupMentionBots } from "../features/threads/composerMentionItems";
 import { createQueuedMessageMetadata } from "../lib/commandMetadata";
 import {
@@ -381,7 +386,16 @@ export function useThreadComposerState() {
       return null;
     }
 
-    const wireAddressing = groupAddressing(addressing);
+    // A reply chip counts only while its message is still in the read model.
+    const chipTarget = groupId ? getGroupReplyTarget(threadKey) : null;
+
+    const replyTo =
+      chipTarget &&
+      selectedThreadDetail?.messages.some((message) => message.id === chipTarget.messageId)
+        ? { messageId: chipTarget.messageId, respondingBotId: chipTarget.botId }
+        : undefined;
+
+    const wireAddressing = groupAddressing(addressing, replyTo);
     const metadata = createQueuedMessageMetadata();
     const messageId = MessageId.make(metadata.messageId);
 
@@ -409,7 +423,11 @@ export function useThreadComposerState() {
     });
 
     clearComposerDraftContent(threadKey);
+    setGroupReplyTarget(threadKey, null);
     enqueuePromise.catch((error) => {
+      // The reply chip goes back with the draft, so a failed send does not lose who it was for.
+      restoreGroupReplyTargetAfterFailedSend(threadKey, chipTarget, replyTo !== undefined);
+
       // Restore text via merge (idempotent) but attachments via the uncapped
       // append: the merge path slots existing attachments first and truncates
       // at the send limit, which would silently drop this message's images if

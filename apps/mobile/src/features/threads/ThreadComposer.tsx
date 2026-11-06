@@ -58,7 +58,14 @@ import { serverEnvironment } from "../../state/server";
 import { useEnvironmentQuery } from "../../state/query";
 import { ComposerCommandPopover, type ComposerCommandItem } from "./ComposerCommandPopover";
 import { buildComposerCommandItems } from "./composer-command-items";
-import { composerMentionItemToken, isThreadMentionQuery } from "./composerMentionItems";
+import {
+  composerMentionItemToken,
+  groupMentionBots,
+  isThreadMentionQuery,
+} from "./composerMentionItems";
+import { GroupReplyChip } from "./GroupReplyChip";
+import { resolveComposerAddressing } from "@isnadi/shared/composerBotMentions";
+import { setGroupReplyTarget, useGroupReplyTarget } from "../../state/group-reply-target";
 import { ComposerMentionPopover } from "./ComposerMentionPopover";
 import { useExistingThreadSettingsRoutePresentation } from "./ThreadSettingsSheet";
 import { useThreadSettingsSheetRoute } from "./use-thread-settings-sheet-presentation";
@@ -172,6 +179,22 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
   const composerBotName = composerIdentity.isGroup
     ? composerIdentity.title
     : (bot?.name ?? providerBotName(composerProviderDriver));
+
+  // A group reply's quote lives in memory per chat, not in the draft. It goes when the chat does.
+  const replyThreadKey = scopedThreadKey(props.environmentId, props.selectedThread.id);
+  const groupReplyTarget = useGroupReplyTarget(replyThreadKey);
+
+  useEffect(() => () => setGroupReplyTarget(replyThreadKey, null), [replyThreadKey]);
+
+  const draftAddressesSomeone =
+    groupReplyTarget !== null &&
+    resolveComposerAddressing(
+      props.draftMessage,
+      groupMentionBots(
+        groups.find((group) => group.id === props.selectedThread.groupId),
+        bots,
+      ),
+    ).kind !== "none";
 
   const responderLine = responderQueueLine(
     responderQueueNames(props.selectedThread.responderQueue, bots),
@@ -498,6 +521,14 @@ export const ThreadComposer = memo(function ThreadComposer(props: ThreadComposer
               {sendBlock.description}
             </Text>
           </View>
+        ) : null}
+
+        {groupReplyTarget ? (
+          <GroupReplyChip
+            target={groupReplyTarget}
+            quoting={draftAddressesSomeone}
+            onClear={() => setGroupReplyTarget(replyThreadKey, null)}
+          />
         ) : null}
 
         <ComposerSurface

@@ -11,9 +11,16 @@ import {
 import { stabilizeStreamingMarkdown } from "@isnadi/client-runtime/markdown-streaming";
 import { formatElapsed } from "@isnadi/shared/orchestrationTiming";
 import { formatTokens, formatUsd } from "@isnadi/shared/usageFormat";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, type ReactNode } from "react";
 import { Markdown } from "react-native-nitro-markdown";
-import { Platform, Text as NativeText, type ColorValue, View } from "react-native";
+import {
+  type AccessibilityActionEvent,
+  Platform,
+  Pressable,
+  Text as NativeText,
+  type ColorValue,
+  View,
+} from "react-native";
 import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 import { hasWideMarkdownBlock } from "../../lib/wideMarkdownBlocks";
 import {
@@ -34,6 +41,13 @@ import { useOptionalReplyPlayback } from "../replyPlayback/ReplyPlaybackProvider
 import { cn } from "../../lib/cn";
 import type { ThreadFeedEntry } from "../../lib/threadActivity";
 import { formatBotStepEngine, type BotStepMeterData } from "@isnadi/client-runtime/bot-step-usage";
+import {
+  extractMessageLinks,
+  groupMessageActions,
+  groupReplyTarget,
+  type GroupReplyTarget,
+} from "./groupReply";
+import { copyTextWithHaptic } from "../../lib/copyTextWithHaptic";
 import { ThreadWorkGroupToggle, ThreadWorkLog } from "./thread-work-log";
 import { MessageAttachmentFile, MessageAttachmentImage } from "./thread-feed-images";
 import type { MarkdownStyleSet, MarkdownStyleSets } from "./thread-feed-markdown";
@@ -62,6 +76,32 @@ function formatMessageTime(
 // remounts rows when they scroll back into view, and replaying an entrance for
 // old content would be its own kind of jank.
 const FRESH_ENTRY_WINDOW_MS = 3_000;
+
+/**
+ * A long-press anywhere on a group bot message opens the sheet. The message stays one
+ * accessibility element and carries its actions (Reply, Copy, Open <host>) as custom actions.
+ */
+function MessageActionsPress(props: {
+  readonly groupChat: boolean;
+  readonly actions: ReadonlyArray<{ readonly name: string; readonly label: string }>;
+  readonly onLongPress: () => void;
+  readonly onAction: (name: string) => void;
+  readonly children: ReactNode;
+}) {
+  if (!props.groupChat) return <>{props.children}</>;
+
+  return (
+    <Pressable
+      onLongPress={props.onLongPress}
+      accessibilityActions={[...props.actions]}
+      onAccessibilityAction={(event: AccessibilityActionEvent) =>
+        props.onAction(event.nativeEvent.actionName)
+      }
+    >
+      {props.children}
+    </Pressable>
+  );
+}
 
 function isFreshTimestamp(input: string): boolean {
   const timestamp = Date.parse(input);
@@ -95,6 +135,22 @@ type ThreadFeedRenderContext = {
   readonly replyPlayback: ReturnType<typeof useOptionalReplyPlayback>;
   readonly formatDate: (value: number, options: Intl.DateTimeFormatOptions) => string;
   readonly unknownBotLabel: string;
+  /** Group chats only: set when a long-press on a bot's message opens the Reply / Copy sheet. */
+  readonly groupMessageActions?:
+    | {
+        readonly labels: {
+          readonly reply: string;
+          readonly copy: string;
+          readonly openLink: (host: string) => string;
+        };
+        readonly onLongPress: (input: {
+          readonly target: GroupReplyTarget | null;
+          readonly text: string;
+          readonly title: string;
+        }) => void;
+        readonly onReply: (target: GroupReplyTarget) => void;
+      }
+    | undefined;
 };
 
 export function renderFeedEntry(
@@ -254,43 +310,94 @@ export function renderFeedEntry(
       ? stabilizeStreamingMarkdown(message.text)
       : message.text;
 
+    const group = props.groupMessageActions;
+
+    // The one sheet for this message, opened by a long-press on the row or on a link inside it.
+    const openMessageSheet = () =>
+      group?.onLongPress({
+        target: buildReplyTarget(),
+        text: message.text,
+        title: speakerBot?.name ?? props.unknownBotLabel,
+      });
+
+    // Built at press time: a streaming row re-renders on every token.
+    const buildReplyTarget = () =>
+      groupReplyTarget({
+        isGroup: true,
+        message,
+        botName:
+          (message.respondingBotId
+            ? props.botsById?.get(message.respondingBotId)?.name
+            : undefined) ?? props.unknownBotLabel,
+      });
+
     return (
       <Animated.View
         className={cn(showAssistantMeta ? "mb-5 px-1" : "mb-2 px-1")}
         {...(enterAnimated ? { entering: FadeIn.duration(220) } : {})}
       >
-        {speakerBotId ? (
-          <View className="mb-1.5 flex-row items-center gap-2">
-            <BotAvatarView
-              avatar={speakerBot?.avatar ?? seededBlobAvatar(speakerBotId)}
-              size={20}
-            />
-            <Text className="font-t3-medium text-sm text-foreground" numberOfLines={1}>
-              {speakerBot?.name ?? props.unknownBotLabel}
-            </Text>
-          </View>
-        ) : null}
-        {entry.botStepMeter ? <BotStepMeter meter={entry.botStepMeter} /> : null}
-        {message.text.trim().length > 0 ? (
-          hasNativeSelectableMarkdownText() ? (
-            <SelectableMarkdownText
-              markdown={assistantMarkdown}
-              skills={props.skills}
-              textStyle={styles.nativeTextStyle}
-              onLinkPress={props.onMarkdownLinkPress}
-              renderImage={props.renderMarkdownImage}
-            />
-          ) : (
-            <Markdown
-              options={{ gfm: true }}
-              renderers={styles.renderers}
-              styles={styles.styles}
-              theme={styles.theme}
-            >
-              {assistantMarkdown}
-            </Markdown>
-          )
-        ) : null}
+        <MessageActionsPress
+          groupChat={group !== undefined}
+          actions={
+            group
+              ? groupMessageActions({
+                  canReply: Boolean(message.respondingBotId),
+                  // Links are read once the message settles; a streaming row re-renders per token.
+                  text: message.streaming ? "" : message.text,
+                  labels: group.labels,
+                })
+              : []
+          }
+          onLongPress={openMessageSheet}
+          onAction={(name) => {
+            if (name === "reply") {
+              const target = buildReplyTarget();
+
+              if (target) group?.onReply(target);
+            } else if (name === "copy") {
+              copyTextWithHaptic(message.text, { target: "group message" });
+            } else if (name.startsWith("open-link:")) {
+              const link = extractMessageLinks(message.text)[Number(name.slice(10))];
+
+              if (link) props.onMarkdownLinkPress(link.href);
+            }
+          }}
+        >
+          {speakerBotId ? (
+            <View className="mb-1.5 flex-row items-center gap-2">
+              <BotAvatarView
+                avatar={speakerBot?.avatar ?? seededBlobAvatar(speakerBotId)}
+                size={20}
+              />
+              <Text className="font-t3-medium text-sm text-foreground" numberOfLines={1}>
+                {speakerBot?.name ?? props.unknownBotLabel}
+              </Text>
+            </View>
+          ) : null}
+          {entry.botStepMeter ? <BotStepMeter meter={entry.botStepMeter} /> : null}
+          {message.text.trim().length > 0 ? (
+            hasNativeSelectableMarkdownText() ? (
+              <SelectableMarkdownText
+                markdown={assistantMarkdown}
+                skills={props.skills}
+                textStyle={styles.nativeTextStyle}
+                onLinkPress={props.onMarkdownLinkPress}
+                renderImage={props.renderMarkdownImage}
+                selectable={group === undefined}
+                {...(group ? { onLongPress: openMessageSheet } : {})}
+              />
+            ) : (
+              <Markdown
+                options={{ gfm: true }}
+                renderers={styles.renderers}
+                styles={styles.styles}
+                theme={styles.theme}
+              >
+                {assistantMarkdown}
+              </Markdown>
+            )
+          ) : null}
+        </MessageActionsPress>
         {attachments.map((attachment) => {
           return attachment.type === "file" ? (
             <MessageAttachmentFile

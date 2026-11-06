@@ -127,6 +127,7 @@ export const commonLabelsCatalog = {
   "Copy ID": "复制 ID",
   "Stash entry may come back": "暂存条目可能会重新出现",
   "Could not dictate": "无法听写",
+  "Open {host}": "打开 {host}",
   Quoting: "引用",
   "Replying to": "回复",
   "Cancel reply": "取消回复",
