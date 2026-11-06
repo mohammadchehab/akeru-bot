@@ -87,6 +87,7 @@ export function createThreads({
             interactionMode: event.payload.interactionMode,
             branch: event.payload.branch,
             worktreePath: event.payload.worktreePath,
+            hopBudget: event.payload.hopBudget ?? null,
             linkedPullRequest: null,
             latestTurnId: null,
             createdAt: event.payload.createdAt,

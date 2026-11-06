@@ -521,6 +521,7 @@ export function mapGroupRow(
     name: row.name,
     bossBotId: row.bossBotId,
     members: row.members,
+    ...(row.hopBudget === null ? {} : { hopBudget: row.hopBudget }),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };

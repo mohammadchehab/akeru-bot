@@ -42,6 +42,7 @@ import {
   GroupBotMembership,
   GroupPersonMembership,
   GroupMembership,
+  GroupHopBudget,
 } from "./roster.ts";
 import {
   ChannelMessageOrigin,
@@ -58,7 +59,6 @@ import {
   ResponderQueueEntry,
   ResponderQueueReason,
   ResponderTrigger,
-  GroupHopBudget,
 } from "./thread.ts";
 
 export const OrchestrationEventType = Schema.Literals([
@@ -255,6 +255,7 @@ export const GroupCreatedPayload = Schema.Struct({
   // Defaults keep pre-membership group.created events replayable.
   bossBotId: Schema.NullOr(BotId).pipe(Schema.withDecodingDefault(Effect.succeed(null))),
   members: Schema.Array(GroupMembership).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
+  hopBudget: Schema.optional(GroupHopBudget),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
 });
@@ -338,6 +339,8 @@ export const ThreadCreatedPayload = Schema.Struct({
   ),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  // Copied from the group's default when the chat is created; absent means the default.
+  hopBudget: Schema.optional(GroupHopBudget),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
 });

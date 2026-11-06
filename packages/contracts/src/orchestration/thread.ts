@@ -27,7 +27,7 @@ import {
   DEFAULT_PROVIDER_INTERACTION_MODE,
 } from "./modelSelection.ts";
 import { ChatAttachment } from "./attachments.ts";
-import { ChannelProvider } from "./roster.ts";
+import { ChannelProvider, GroupHopBudget } from "./roster.ts";
 
 export const ChannelMessageOrigin = Schema.Struct({
   provider: ChannelProvider,
@@ -226,20 +226,6 @@ export const ResponderQueueEntry = Schema.Struct({
 });
 
 export type ResponderQueueEntry = typeof ResponderQueueEntry.Type;
-
-/** How many bot turns a chain of mentions may add for one user message in a group chat. */
-export const GROUP_HOP_BUDGET_MIN = 1;
-
-export const GROUP_HOP_BUDGET_MAX = 20;
-
-/** What a chat without its own setting uses. */
-export const GROUP_HOP_BUDGET_DEFAULT = 6;
-
-export const GroupHopBudget = Schema.Int.check(
-  Schema.isBetween({ minimum: GROUP_HOP_BUDGET_MIN, maximum: GROUP_HOP_BUDGET_MAX }),
-);
-
-export type GroupHopBudget = typeof GroupHopBudget.Type;
 
 export const ResponderQueueReason = Schema.Literals([
   "addressed",

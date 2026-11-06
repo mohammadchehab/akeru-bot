@@ -56,6 +56,7 @@ export function projectThreadLifecycle(
             interactionMode: payload.interactionMode,
             branch: payload.branch,
             worktreePath: payload.worktreePath,
+            ...(payload.hopBudget === undefined ? {} : { hopBudget: payload.hopBudget }),
             latestTurn: null,
             createdAt: payload.createdAt,
             updatedAt: payload.updatedAt,

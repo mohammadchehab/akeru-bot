@@ -1,4 +1,11 @@
-import { CommandId, ThreadId, type OrchestrationEvent } from "@isnadi/contracts";
+import {
+  AuthSessionId,
+  CommandId,
+  ProjectId,
+  ProviderInstanceId,
+  ThreadId,
+  type OrchestrationEvent,
+} from "@isnadi/contracts";
 import { expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
@@ -70,6 +77,58 @@ it.layer(NodeServices.layer)("group chat hop budget decider", (it) => {
       }).pipe(Effect.flip);
 
       expect(String(error)).toContain("thread-missing");
+    }),
+  );
+
+  const createInGroup = (group: ReturnType<typeof makeGroup>) =>
+    decideOrchestrationCommand({
+      command: {
+        type: "thread.create",
+        commandId: CommandId.make("cmd-create-in-group"),
+        threadId: ThreadId.make("thread-new"),
+        projectId: ProjectId.make("project-1"),
+        groupId: group.id,
+        title: "New chat",
+        modelSelection: { instanceId: ProviderInstanceId.make("default"), model: "default-model" },
+        runtimeMode: "full-access",
+        interactionMode: "default",
+        branch: null,
+        worktreePath: null,
+        createdAt: NOW,
+      },
+      readModel: {
+        ...makeReadModel({ groups: [group] }),
+        projects: [
+          {
+            id: ProjectId.make("project-1"),
+            title: "Project",
+            workspaceRoot: "/tmp/project",
+            defaultModelSelection: null,
+            scripts: [],
+            createdAt: NOW,
+            updatedAt: NOW,
+            deletedAt: null,
+          },
+        ],
+      },
+      actor: { personId: AuthSessionId.make("admin"), canManageGroups: true },
+    }).pipe(Effect.map((result) => (Array.isArray(result) ? result[0] : result)));
+
+  it.effect("seeds a new chat with the group's default budget", () =>
+    Effect.gen(function* () {
+      const event = yield* createInGroup({ ...makeGroup(), hopBudget: 9 });
+
+      if (event?.type !== "thread.created") throw new Error("Expected thread.created");
+      expect(event.payload.hopBudget).toBe(9);
+    }),
+  );
+
+  it.effect("leaves the budget unset when the group has no default", () =>
+    Effect.gen(function* () {
+      const event = yield* createInGroup(makeGroup());
+
+      if (event?.type !== "thread.created") throw new Error("Expected thread.created");
+      expect(event.payload.hopBudget).toBeUndefined();
     }),
   );
 

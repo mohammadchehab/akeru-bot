@@ -26,6 +26,7 @@ import {
   ChannelProvider,
   ChannelBinding,
   GroupMembershipRole,
+  GroupHopBudget,
   GroupPersonMembership,
 } from "./roster.ts";
 
@@ -332,6 +333,8 @@ export const GroupCreateCommand = Schema.Struct({
   bossBotId: Schema.optional(BotId),
   specialistBotIds: Schema.optional(Schema.Array(BotId)),
   creator: Schema.optional(GroupPersonMembership),
+  /** Seeds the hop budget of each new chat in this group. */
+  hopBudget: Schema.optional(GroupHopBudget),
   createdAt: IsoDateTime,
 });
 

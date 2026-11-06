@@ -91,6 +91,7 @@ export const decideGroups = Effect.fn("decideGroups")(function* ({
             })),
             ...(command.creator === undefined ? [] : [command.creator]),
           ],
+          ...(command.hopBudget === undefined ? {} : { hopBudget: command.hopBudget }),
           createdAt: command.createdAt,
           updatedAt: command.createdAt,
         },

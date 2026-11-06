@@ -389,11 +389,27 @@ export function isGroupPersonMember(member: GroupMembership): member is GroupPer
 export const GROUP_SHARED_WORKSPACE_WARNING =
   "Bots share this workspace. Anyone who can talk to a bot can reach anything the workspace can.";
 
+/** How many bot turns a chain of mentions may add for one user message in a group chat. */
+export const GROUP_HOP_BUDGET_MIN = 1;
+
+export const GROUP_HOP_BUDGET_MAX = 20;
+
+/** What a chat without its own setting uses. */
+export const GROUP_HOP_BUDGET_DEFAULT = 6;
+
+export const GroupHopBudget = Schema.Int.check(
+  Schema.isBetween({ minimum: GROUP_HOP_BUDGET_MIN, maximum: GROUP_HOP_BUDGET_MAX }),
+);
+
+export type GroupHopBudget = typeof GroupHopBudget.Type;
+
 export const OrchestrationGroup = Schema.Struct({
   id: GroupId,
   name: TrimmedNonEmptyString,
   bossBotId: Schema.NullOr(BotId).pipe(Schema.withDecodingDefault(Effect.succeed(null))),
   members: Schema.Array(GroupMembership).pipe(Schema.withDecodingDefault(Effect.succeed([]))),
+  /** Seeds the hop budget of each new chat in this group. Absent means GROUP_HOP_BUDGET_DEFAULT. */
+  hopBudget: Schema.optional(GroupHopBudget),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
 });
