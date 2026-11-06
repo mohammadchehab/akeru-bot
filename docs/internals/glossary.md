@@ -215,8 +215,9 @@ How a group of bots with a boss keeps working without someone driving it. See
 
 #### Work item
 
-One queued piece of work in a group, with an owner bot, a state and an optional tracker link. The dispatcher
-assigns queued items to idle bots.
+One piece of work in a group, with an owner bot, a state (queued through done, or closed) and an optional
+tracker link. The dispatcher assigns queued items to idle bots. Only open items reach the shell; finished ones
+are paged on demand.
 
 #### Dispatcher
 
