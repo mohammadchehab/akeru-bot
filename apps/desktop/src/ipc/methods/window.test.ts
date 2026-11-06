@@ -67,6 +67,24 @@ describe("getLocalEnvironmentBootstraps", () => {
     }).pipe(Effect.provide(DesktopBackendPool.layerTest([defaultWslInstance]))),
   );
 
+  it.effect("never publishes the egress provider token to the renderer", () => {
+    const withEgress: DesktopBackendManager.DesktopBackendInstance = {
+      ...defaultWslInstance,
+      currentConfig: Effect.succeed(
+        Option.some({
+          ...readyWslConfig,
+          bootstrap: { ...readyWslConfig.bootstrap, egressProviderToken: "egress-secret" },
+        }),
+      ),
+    };
+
+    return Effect.gen(function* () {
+      const result = yield* getLocalEnvironmentBootstraps.handler();
+
+      assert.notInclude(JSON.stringify(result), "egress-secret");
+    }).pipe(Effect.provide(DesktopBackendPool.layerTest([withEgress])));
+  });
+
   it.effect("publishes a pending bootstrap only while a transient retry is scheduled", () => {
     const retryingConfig: DesktopBackendManager.DesktopBackendStartConfig = {
       ...readyWslConfig,

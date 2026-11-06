@@ -22,6 +22,8 @@ export const defaultThreadId = ThreadId.make("thread-default");
 
 export const defaultDesktopBootstrapToken = "test-desktop-bootstrap-token";
 
+export const defaultEgressProviderToken = "test-egress-provider-token";
+
 export const defaultModelSelection = {
   instanceId: ProviderInstanceId.make("codex"),
   model: "gpt-5-codex",

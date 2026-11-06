@@ -14,6 +14,9 @@ import type { EgressOpenFrame, EgressRefusalReason } from "@isnadi/contracts";
 /** Single-use tickets expire this long after the `open` frame is sent. */
 export const EGRESS_TICKET_TTL_MS = 10_000;
 
+/** Chunks buffered per stream before the stream socket stops reading, which backpressures the desktop. */
+export const EGRESS_INBOUND_CAPACITY = 64;
+
 export class ProviderGone extends Schema.TaggedErrorClass<ProviderGone>()("ProviderGone", {}) {}
 
 export class EgressStreamRefused extends Schema.TaggedErrorClass<EgressStreamRefused>()(
@@ -83,7 +86,15 @@ export class EgressBroker extends Context.Service<
     readonly registerProvider: (
       owner: string,
       sendFrame: (frame: EgressOpenFrame) => Effect.Effect<void>,
+      /** Closes this control socket; run when a newer provider socket for the same owner replaces it. */
+      close?: Effect.Effect<void>,
     ) => Effect.Effect<EgressProvider, never, Scope.Scope>;
+    /** True when the ticket would attach now. Does not consume it, so the route can refuse before upgrading. */
+    readonly checkTicket: (
+      owner: string,
+      streamId: string,
+      ticket: string,
+    ) => Effect.Effect<boolean>;
     /** Asks the owner's desktop to open a stream. Fails closed with ProviderGone when none is connected. */
     readonly open: (
       owner: string,
@@ -100,7 +111,14 @@ export class EgressBroker extends Context.Service<
 >()("isnadibot/egress/EgressBroker") {}
 
 export const make = Effect.sync(() => {
-  const providers = new Map<string, (frame: EgressOpenFrame) => Effect.Effect<void>>();
+  const providers = new Map<
+    string,
+    {
+      readonly send: (frame: EgressOpenFrame) => Effect.Effect<void>;
+      readonly close: Effect.Effect<void>;
+    }
+  >();
+
   const streams = new Map<string, PendingStream & { readonly end: Effect.Effect<void> }>();
   const streamsByOwner = new Map<string, Set<string>>();
 
@@ -134,51 +152,65 @@ export const make = Effect.sync(() => {
       { discard: true },
     );
 
-  const registerProvider: EgressBroker["Service"]["registerProvider"] = (owner, sendFrame) =>
-    Effect.acquireRelease(
-      Effect.sync(() => {
-        providers.set(owner, sendFrame);
+  const registerProvider: EgressBroker["Service"]["registerProvider"] = (
+    owner,
+    sendFrame,
+    close = Effect.void,
+  ) => {
+    const entry = { send: sendFrame, close };
 
-        return {
-          owner,
-          onFrame: (frame) => {
-            const stream = streams.get(frame.streamId);
-            // A frame for another owner's stream is ignored.
+    return Effect.acquireRelease(
+      Effect.suspend(() => {
+        // One provider per owner: a newer socket replaces the older one and closes it.
+        const previous = providers.get(owner);
 
-            if (stream === undefined || stream.owner !== owner) return Effect.void;
+        providers.set(owner, entry);
 
-            if (frame.type === "refused") {
-              return Deferred.fail(
-                stream.attached,
-                new EgressStreamRefused({ reason: frame.reason }),
-              ).pipe(
-                Effect.andThen(Queue.end(stream.inbound)),
-                Effect.andThen(drop(frame.streamId)),
-              );
-            }
+        return (previous === undefined ? Effect.void : previous.close).pipe(
+          Effect.as({
+            owner,
+            onFrame: (frame) => {
+              const stream = streams.get(frame.streamId);
+              // A frame for another owner's stream is ignored.
 
-            return stream.end;
-          },
-        } satisfies EgressProvider;
+              if (stream === undefined || stream.owner !== owner) return Effect.void;
+
+              if (frame.type === "refused") {
+                return Deferred.fail(
+                  stream.attached,
+                  new EgressStreamRefused({ reason: frame.reason }),
+                ).pipe(
+                  Effect.andThen(Queue.end(stream.inbound)),
+                  Effect.andThen(drop(frame.streamId)),
+                );
+              }
+
+              return stream.end;
+            },
+          } satisfies EgressProvider),
+        );
       }),
       () =>
         Effect.suspend(() => {
+          // A replaced socket releasing late must not unregister or fail the newer provider.
+          if (providers.get(owner) !== entry) return Effect.void;
           providers.delete(owner);
 
           return failOwnerStreams(owner, new ProviderGone());
         }),
     );
+  };
 
   const open: EgressBroker["Service"]["open"] = (owner, target) =>
     Effect.gen(function* () {
       const now = yield* Clock.currentTimeMillis;
-      const send = providers.get(owner);
+      const send = providers.get(owner)?.send;
 
       if (send === undefined) return yield* new ProviderGone();
       const streamId = yield* randomId;
       const ticket = yield* randomId;
       const attached = yield* Deferred.make<SendToDesktop, EgressStreamRefused | ProviderGone>();
-      const inbound = yield* Queue.unbounded<Uint8Array, Cause.Done>();
+      const inbound = yield* Queue.bounded<Uint8Array, Cause.Done>(EGRESS_INBOUND_CAPACITY);
       const end = Queue.end(inbound).pipe(Effect.asVoid, Effect.andThen(drop(streamId)));
       streams.set(streamId, {
         owner,
@@ -239,7 +271,22 @@ export const make = Effect.sync(() => {
       } satisfies EgressStreamHandlers;
     });
 
-  return EgressBroker.of({ registerProvider, open, attach });
+  const checkTicket: EgressBroker["Service"]["checkTicket"] = (owner, streamId, ticket) =>
+    Clock.currentTimeMillis.pipe(
+      Effect.map((now) => {
+        const stream = streams.get(streamId);
+
+        return (
+          stream !== undefined &&
+          stream.owner === owner &&
+          !stream.used &&
+          stream.ticket === ticket &&
+          now <= stream.expiresAt
+        );
+      }),
+    );
+
+  return EgressBroker.of({ registerProvider, checkTicket, open, attach });
 });
 
 export const layer = Layer.effect(EgressBroker, make);

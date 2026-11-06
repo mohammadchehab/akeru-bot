@@ -94,6 +94,22 @@ describe("openEgressTarget", () => {
     }),
   );
 
+  it.effect("a host the user granted by private literal is still blocked", () =>
+    Effect.gen(function* () {
+      for (const host of ["10.0.0.5", "192.168.1.1", "[fd00::1]"]) {
+        const { calls, deps } = makeDeps({
+          lookups: [[PUBLIC_IP]],
+          hostPolicy: { allows: (_profileId, granted) => granted === host.replace(/^\[|\]$/g, "") },
+        });
+
+        const reason = yield* refusal(openEgressTarget({ host, port: 443, profileId: "p" }, deps));
+
+        assert.strictEqual(reason, "blocked-address", host);
+        assert.deepStrictEqual(calls.connect, [], host);
+      }
+    }),
+  );
+
   it.effect("resolves once and connects to the checked IP, not the name", () =>
     Effect.gen(function* () {
       const { calls, deps } = makeDeps({ lookups: [[PUBLIC_IP], ["127.0.0.1"]] });

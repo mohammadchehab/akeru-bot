@@ -3,7 +3,7 @@ import * as Schema from "effect/Schema";
 
 import {
   AuthAdministrativeScopes,
-  AuthDesktopBootstrapScopes,
+  AuthEgressProviderScopes,
   AuthEgressProvideScope,
   AuthEnvironmentScopes,
   AuthStandardClientScopes,
@@ -37,8 +37,8 @@ describe("AuthEnvironmentScopes", () => {
 });
 
 describe("egress:provide scope", () => {
-  it("is granted by the desktop bootstrap and by no other credential set", () => {
-    expect(AuthDesktopBootstrapScopes).toContain(AuthEgressProvideScope);
+  it("is granted by the egress-provider grant and by no other credential set", () => {
+    expect(AuthEgressProviderScopes).toEqual([AuthEgressProvideScope]);
     expect(AuthAdministrativeScopes).not.toContain(AuthEgressProvideScope);
     expect(AuthStandardClientScopes).not.toContain(AuthEgressProvideScope);
   });

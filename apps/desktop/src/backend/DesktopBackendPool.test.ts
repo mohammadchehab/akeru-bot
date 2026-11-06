@@ -77,6 +77,7 @@ function makePoolLayer(
         Layer.succeed(DesktopBackendConfiguration.DesktopBackendConfiguration, {
           resolvePrimary: Effect.die("unexpected primary config resolve"),
           resolvePrimaryLabel: Ref.get(labelRef),
+          egressProviderToken: Effect.die("unexpected egress token read"),
           resolveWsl: () => Effect.die("unexpected WSL config resolve"),
         } satisfies DesktopBackendConfiguration.DesktopBackendConfiguration["Service"]),
         DesktopAppSettings.layerTest(),

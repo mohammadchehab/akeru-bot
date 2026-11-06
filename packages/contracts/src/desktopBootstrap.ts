@@ -12,6 +12,8 @@ export const DesktopBackendBootstrap = Schema.Struct({
   t3Home: Schema.optional(Schema.String),
   host: Schema.String,
   desktopBootstrapToken: Schema.String,
+  // Seeds the egress-provider grant. Main-process only: never sent to the renderer.
+  egressProviderToken: Schema.optionalKey(Schema.String),
   tailscaleServeEnabled: Schema.Boolean,
   tailscaleServePort: PortSchema,
   otlpTracesUrl: Schema.optional(Schema.String),

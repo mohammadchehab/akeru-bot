@@ -66,6 +66,27 @@ describe("DesktopBackendConfiguration", () => {
     ),
   );
 
+  it.effect(
+    "the egress provider token is its own main-process secret, seeded only on the primary",
+    () =>
+      withHarness(
+        Effect.gen(function* () {
+          const configuration = yield* DesktopBackendConfiguration.DesktopBackendConfiguration;
+
+          const primary = yield* configuration.resolvePrimary;
+          const again = yield* configuration.resolvePrimary;
+          const wsl = yield* configuration.resolveWsl({ port: 5000, distro: null });
+          const token = yield* configuration.egressProviderToken;
+
+          assert.match(token, /^[0-9a-f]{48}$/i);
+          assert.equal(primary.bootstrap.egressProviderToken, token);
+          assert.equal(again.bootstrap.egressProviderToken, token);
+          assert.notEqual(token, primary.bootstrap.desktopBootstrapToken);
+          assert.isUndefined(wsl.bootstrap.egressProviderToken);
+        }),
+      ),
+  );
+
   it.effect("resolveWsl reuses the primary's bootstrap token", () =>
     withHarness(
       Effect.gen(function* () {
