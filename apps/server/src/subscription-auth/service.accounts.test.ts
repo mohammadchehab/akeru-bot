@@ -438,3 +438,35 @@ it("keeps the provider blocked when the remaining account is still limited", asy
   await service.logout("openai-codex", accountScope("default"));
   expect(service.providerInstanceRequestHealth("codex")?.health).toBe("failed-first-request");
 });
+
+it("reports a provider as benched only while every linked account is out of its limit", async () => {
+  const { authPath } = fixture();
+  const service = await makeTestSubscriptionAuthService(authPath);
+  const first = await service.startLogin("openai-codex", { authMode: "api-key" });
+  await service.completeLogin(first.loginId, "first-key");
+
+  const second = await service.startLogin("openai-codex", {
+    authMode: "api-key",
+    addAccount: true,
+  });
+
+  await service.completeLogin(second.loginId, "second-key");
+  expect(service.benchedUntil("openai-codex")).toBeUndefined();
+
+  const limit = "You've hit your usage limit. Try again in 2 hours.";
+  service.recordRequestFailure("openai-codex", limit, new Date().toISOString());
+  // The second account is still free, so the provider is not benched.
+  expect(service.benchedUntil("openai-codex")).toBeUndefined();
+
+  service.recordRequestFailure("openai-codex", limit, new Date().toISOString());
+  const until = service.benchedUntil("openai-codex");
+
+  expect(until).toBeGreaterThan(Date.now());
+});
+
+it("does not bench a provider with no linked account", async () => {
+  const { authPath } = fixture();
+  const service = await makeTestSubscriptionAuthService(authPath);
+
+  expect(service.benchedUntil("openai-codex")).toBeUndefined();
+});

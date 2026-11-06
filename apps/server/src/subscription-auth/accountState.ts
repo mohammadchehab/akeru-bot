@@ -120,6 +120,37 @@ export class SubscriptionAccountState {
   }
 
   /**
+   * When the provider (or one instance-scoped credential) is usable again, or
+   * undefined while any linked account can still serve. Every account must be
+   * out of its limit before the provider counts as benched.
+   */
+  benchedUntil(
+    provider: SubscriptionProviderId,
+    scope?: string,
+    now = this.clock.currentTimeMillisUnsafe(),
+  ): number | undefined {
+    this.refreshAccountState();
+
+    const keys = isDefaultScope(provider, scope)
+      ? this.linkedAccountIds(provider).map((id) => credentialKey(provider, accountScope(id)))
+      : [credentialKey(provider, scope)];
+
+    if (keys.length === 0) return undefined;
+
+    let earliest: number | undefined;
+
+    for (const key of keys) {
+      const retryAt = this.health[key]?.nextRetryAt;
+      const until = retryAt === undefined ? Number.NaN : Date.parse(retryAt);
+
+      if (!(until > now)) return undefined;
+      earliest = earliest === undefined ? until : Math.min(earliest, until);
+    }
+
+    return earliest;
+  }
+
+  /**
    * The credential key default-scope requests use: the first linked account
    * that is ready, else the first linked account so its error still surfaces.
    */

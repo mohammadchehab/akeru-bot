@@ -389,6 +389,11 @@ export class SubscriptionAuthService {
     return this.healthService.awaitHealthCheck(provider, instanceId);
   }
 
+  /** When the provider's accounts are all usable again, or undefined while one can still serve. */
+  benchedUntil(provider: SubscriptionProviderId, instanceId?: string): number | undefined {
+    return this.accounts.benchedUntil(provider, instanceId);
+  }
+
   isConnected(provider: SubscriptionProviderId, instanceId?: string): boolean {
     return credentialAt(this.data, this.accounts.liveKey(provider, instanceId)) !== undefined;
   }
