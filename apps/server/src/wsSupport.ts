@@ -87,6 +87,12 @@ export const availablePortabilityProviderIds = (providers: ReadonlyArray<ServerP
     ),
   );
 
+/** Instances on the legacy OpenCode bridge, which cannot be a fallback model. */
+export const openCodePortabilityInstanceIds = (providers: ReadonlyArray<ServerProvider>) =>
+  new Set(
+    providers.flatMap((provider) => (provider.driver === "opencode" ? [provider.instanceId] : [])),
+  );
+
 export const validatePortabilityProjectFolders = Effect.fn("validatePortabilityProjectFolders")(
   function* (
     archive: PortabilityArchive,

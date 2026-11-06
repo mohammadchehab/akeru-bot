@@ -170,19 +170,24 @@ export function summarizePortabilityApply(
 
 /**
  * A fallback chain from an archive keeps only entries on providers this
- * environment has, and never carries history consent across machines: the
- * user grants it again where the bot lands.
+ * environment has, drops standard OpenCode instances (the legacy bridge cannot
+ * retry a turn, so saving one is refused), and never carries history consent
+ * across machines: the user grants it again where the bot lands.
  */
 function importedEngine<Engine extends BotEngine | null | undefined>(
   engine: Engine,
   availableProviderIds: ReadonlySet<string>,
+  openCodeInstanceIds: ReadonlySet<string>,
 ): Engine {
   if (!engine) return engine;
 
   return {
     ...engine,
     fallbacks: engine.fallbacks
-      .filter((entry) => availableProviderIds.has(entry.provider))
+      .filter(
+        (entry) =>
+          availableProviderIds.has(entry.provider) && !openCodeInstanceIds.has(entry.provider),
+      )
       .map(({ historyConsent: _historyConsent, ...entry }) => entry),
   };
 }
@@ -193,6 +198,7 @@ export function commandsForPortabilityImport(
   settings: ServerSettings,
   availableProviderIds: ReadonlySet<string>,
   projectFolders: PortabilityProjectFolderMap = {},
+  openCodeInstanceIds: ReadonlySet<string> = new Set(),
 ): CommandsForPortabilityImportResult {
   const preview = previewPortabilityImport(
     archive,
@@ -367,7 +373,7 @@ export function commandsForPortabilityImport(
       description: record.data.description,
       disabledMcpServerIds: record.data.disabledMcpServerIds,
       avatar: record.data.avatar,
-      engine: importedEngine(record.data.engine, availableProviderIds),
+      engine: importedEngine(record.data.engine, availableProviderIds, openCodeInstanceIds),
       sandbox: record.data.sandbox,
       runtimeMode: record.data.runtimeMode,
       imageProvider: record.data.imageProvider,
