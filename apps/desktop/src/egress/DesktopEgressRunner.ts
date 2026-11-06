@@ -6,6 +6,7 @@ import * as HttpClient from "effect/unstable/http/HttpClient";
 
 import * as DesktopBackendPool from "../backend/DesktopBackendPool.ts";
 import { runDesktopEgress } from "./DesktopEgress.ts";
+import { DesktopEgressGrants } from "./EgressGrantStore.ts";
 
 export class DesktopEgressNotConfiguredError extends Schema.TaggedErrorClass<DesktopEgressNotConfiguredError>()(
   "DesktopEgressNotConfiguredError",
@@ -24,6 +25,7 @@ export class DesktopEgressNotConfiguredError extends Schema.TaggedErrorClass<Des
 export const forkDesktopEgress = Effect.gen(function* () {
   const pool = yield* DesktopBackendPool.DesktopBackendPool;
   const primary = yield* pool.primary;
+  const grants = yield* DesktopEgressGrants;
   const httpClient = yield* HttpClient.HttpClient;
 
   const getSession = Effect.gen(function* () {
@@ -45,5 +47,10 @@ export const forkDesktopEgress = Effect.gen(function* () {
     return { httpBaseUrl: config.value.httpBaseUrl.href, bearerToken: session.access_token };
   });
 
-  yield* Effect.forkScoped(runDesktopEgress(getSession));
+  yield* Effect.forkScoped(
+    runDesktopEgress(getSession, {
+      hostPolicy: grants.policyFor(DesktopBackendPool.PRIMARY_INSTANCE_ID),
+      revocations: grants.revocations,
+    }),
+  );
 });

@@ -14,7 +14,8 @@ export type EgressRefusalReason = typeof EgressRefusalReason.Type;
 
 /**
  * Server to desktop on the `/egress` control socket. `host`, `port` and `profileId` are
- * advisory: the desktop applies its own port, grant, and address checks before any TCP.
+ * advisory: the desktop checks `profileId` against its own binding and applies its own port, grant,
+ * and address checks before any TCP.
  */
 export const EgressOpenFrame = Schema.Struct({
   type: Schema.Literal("open"),

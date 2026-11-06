@@ -39,9 +39,16 @@ export interface EgressDialerDeps<Socket> {
   readonly interfaces: () => ReadonlyArray<string>;
 }
 
-const normalizeHost = (host: string): string | null => {
+/**
+ * The one host form every egress check compares: URL-normalized (so `0x7f.1` and `2130706433`
+ * become dotted IPv4), lowercased, without v6 brackets, zone, or a trailing dot.
+ */
+export const normalizeHost = (host: string): string | null => {
   try {
-    return new URL(`http://${host}`).hostname.replace(/^\[|\]$/g, "");
+    return new URL(`http://${host}`).hostname
+      .replace(/^\[|\]$/g, "")
+      .replace(/%.*$/, "")
+      .replace(/\.$/, "");
   } catch {
     return null;
   }

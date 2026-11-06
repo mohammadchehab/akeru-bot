@@ -160,6 +160,12 @@ The provenance record on a thread or message that came from an external channel:
 
 The per-reply delivery state (`pending`, `sent`, `failed`, `unknown`) mirrored from the durable delivery store onto each channel-originated assistant message. `unknown` means provider acceptance could not be proven; Isnadi never reposts it automatically.
 
+### Egress
+
+#### Egress grant
+
+A host (exact, or a wildcard that also covers the apex) that a profile may reach through the desktop's egress provider. Grants are stored by [the desktop grant store](./egress.md#egress-grants), checked against the desktop's own profile binding, and never loosen the address checks.
+
 ### Dictation
 
 Hold-to-talk capture on the active client that transcribes into the current composer draft. The
