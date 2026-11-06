@@ -74,6 +74,7 @@ const defaultModel = (driver: ProviderDriverKind): string => {
 };
 
 // Avatar colours are the roster's BLOB_COLORS palette.
+// Shapes and colours follow Figma 2086:1308 (Start from a fleet).
 const BLUE = "#2E8EFF";
 
 const PURPLE = "#9A68FF";
@@ -91,8 +92,6 @@ const PINK = "#FF4FA8";
 const AMBER = "#FFA826";
 
 const BROWN = "#A0764F";
-
-const GREY = "#8E8E93";
 
 type Shape = Extract<BotAvatar, { kind: "blob" }>["shape"];
 
@@ -127,27 +126,27 @@ export const FLEET_ROLES: ReadonlyArray<FleetRole> = [
   role("scout", "Scout", "Sources candidates", ["circle", BLUE], claudeOpus, "high"),
   role("tailor", "Tailor", "Job posts and outreach", ["squircle", PURPLE], claudeSonnet, "medium"),
   role("tracker", "Tracker", "Pipeline and follow-ups", ["hex", TEAL], codex, "medium"),
-  role("coach", "Coach", "Interview kits", ["cloud", ORANGE], grok, "low"),
+  role("coach", "Coach", "Interview kits", ["cloud", AMBER], grok, "low"),
   // Video editing
-  role("producer", "Producer", "Plans the cut and the schedule", ["pill", AMBER], codex, "medium"),
-  role("editor", "Editor", "Cuts footage into a story", ["square", RED], claudeOpus, "high"),
-  role("captioner", "Captioner", "Captions and subtitles", ["drop", GREEN], claudeSonnet, "low"),
+  role("producer", "Producer", "Plans the cut and the schedule", ["drop", PINK], codex, "medium"),
+  role("editor", "Editor", "Cuts footage into a story", ["squircle", ORANGE], claudeOpus, "high"),
+  role("captioner", "Captioner", "Captions and subtitles", ["pill", GREEN], claudeSonnet, "low"),
   role(
     "designer",
     "Designer",
     "Thumbnails and title cards",
-    ["triangle", PINK],
+    ["triangle", RED],
     claudeSonnet,
     "medium",
   ),
   // Software engineering
-  role("planner", "Planner", "Plans the work and assigns it", ["hex", PURPLE], claudeOpus, "high"),
-  role("engineer", "Engineer", "Builds and tests changes", ["squircle", BLUE], codex, "high"),
+  role("planner", "Planner", "Plans the work and assigns it", ["hex", BLUE], claudeOpus, "high"),
+  role("engineer", "Engineer", "Builds and tests changes", ["circle", TEAL], codex, "high"),
   role(
     "reviewer",
     "Reviewer",
     "Reviews and merges pull requests",
-    ["circle", GREEN],
+    ["square", PURPLE],
     codex,
     "medium",
   ),
@@ -180,7 +179,7 @@ export const FLEET_ROLES: ReadonlyArray<FleetRole> = [
     "lead-researcher",
     "Lead researcher",
     "Frames questions and signs off findings",
-    ["hex", TEAL],
+    ["hex", GREEN],
     claudeOpus,
     "high",
   ),
@@ -196,7 +195,7 @@ export const FLEET_ROLES: ReadonlyArray<FleetRole> = [
     "trials-analyst",
     "Trials analyst",
     "Reads trial registries",
-    ["squircle", AMBER],
+    ["squircle", ORANGE],
     codex,
     "medium",
   ),
@@ -204,22 +203,22 @@ export const FLEET_ROLES: ReadonlyArray<FleetRole> = [
     "data-analyst",
     "Data analyst",
     "Runs the numbers on public data",
-    ["pill", PURPLE],
+    ["square", PURPLE],
     codex,
     "high",
   ),
   // Customer support
-  role("triage", "Triage", "Sorts the inbox and routes it", ["drop", ORANGE], claudeSonnet, "low"),
-  role("responder", "Responder", "Drafts replies", ["circle", GREEN], claudeSonnet, "medium"),
+  role("triage", "Triage", "Sorts the inbox and routes it", ["hex", TEAL], claudeSonnet, "low"),
+  role("responder", "Responder", "Drafts replies", ["circle", PINK], claudeSonnet, "medium"),
   role(
     "escalations",
     "Escalations",
     "Handles the hard cases",
-    ["triangle", RED],
+    ["squircle", RED],
     claudeOpus,
     "high",
   ),
-  role("knowledge", "Knowledge", "Keeps help articles current", ["cloud", BLUE], grok, "low"),
+  role("knowledge", "Knowledge", "Keeps help articles current", ["cloud", AMBER], grok, "low"),
   // Bookkeeping & procurement
   role(
     "controller",
@@ -233,12 +232,12 @@ export const FLEET_ROLES: ReadonlyArray<FleetRole> = [
     "bookkeeper",
     "Bookkeeper",
     "Records spend and matches invoices",
-    ["square", GREY],
+    ["squircle", BLUE],
     codex,
     "medium",
   ),
-  role("buyer", "Buyer", "Runs purchase requests", ["squircle", AMBER], claudeSonnet, "medium"),
-  role("auditor", "Auditor", "Checks entries for mistakes", ["circle", PURPLE], codex, "high"),
+  role("buyer", "Buyer", "Runs purchase requests", ["circle", GREEN], claudeSonnet, "medium"),
+  role("auditor", "Auditor", "Checks entries for mistakes", ["square", PURPLE], codex, "high"),
 ];
 
 const template = (

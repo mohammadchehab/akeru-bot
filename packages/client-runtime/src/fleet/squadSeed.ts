@@ -60,8 +60,8 @@ function defaultModelSlug(provider: ServerProvider): string | undefined {
 
 /**
  * Picks the engine a new squad member starts with. A role names a driver, so
- * the first ready instance of that driver wins; otherwise any ready instance
- * stands in with its own default model, and the notice says so.
+ * the first ready instance of that driver wins; otherwise the same driver's
+ * ready instance stands in with its default model, then any ready instance with its own default model, and the notice says so.
  */
 export function seedSquadMember(
   role: FleetRole,
@@ -75,7 +75,10 @@ export function seedSquadMember(
 
   const stand = exact
     ? undefined
-    : providers.find((provider) => providerAvailabilityReason(provider) === null);
+    : (providers.find(
+        (provider) =>
+          provider.driver === role.model.driver && providerAvailabilityReason(provider) === null,
+      ) ?? providers.find((provider) => providerAvailabilityReason(provider) === null));
 
   const provider = exact ?? stand;
   const model = exact ? role.model.model : provider ? defaultModelSlug(provider) : undefined;

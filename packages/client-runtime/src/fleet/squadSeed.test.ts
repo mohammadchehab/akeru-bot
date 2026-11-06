@@ -107,6 +107,18 @@ describe("seedSquadMember", () => {
     expect(seed.engine?.model).toBe("claude-opus-5-5");
   });
 
+  it("keeps the role's driver on its default model before switching drivers", () => {
+    const scout = role("scout");
+    const claudeWithoutOpus = provider("claudeAgent", "claude-sonnet-5-5");
+    const codex = provider("codex", "gpt-x");
+
+    const seed = seedSquadMember(scout, [codex, claudeWithoutOpus]);
+
+    expect(seed.notice).toBe("provider-fallback");
+    expect(seed.engine?.provider).toBe("claudeAgent");
+    expect(seed.engine?.model).toBe("claude-sonnet-5-5");
+  });
+
   it("skips instances that are disabled or signed out", () => {
     const scout = role("scout");
 
