@@ -10,7 +10,11 @@ export function liveBotThreadSettings(
   bot: OrchestrationBot | null,
   models: ReadonlyArray<ModelOption>,
 ): ExistingThreadSettingsRouteSession {
-  if (!session.engineBotRef || !bot?.engine || bot.archivedAt !== null) return session;
+  if (!session.engineBotRef || !bot || bot.archivedAt !== null) return session;
+
+  const skillsOnCount = bot.skills.filter((skill) => skill.enabled).length;
+
+  if (!bot.engine) return { ...session, skillsOnCount };
 
   const fallbackCount = bot.engine.fallbacks.length;
 
@@ -22,11 +26,12 @@ export function liveBotThreadSettings(
       candidate.selection.model === selection.model,
   );
 
-  if (!model) return { ...session, fallbackCount };
+  if (!model) return { ...session, fallbackCount, skillsOnCount };
 
   return {
     ...session,
     fallbackCount,
+    skillsOnCount,
     selectedModel: selection,
     providerGroups: groupByProvider(models).filter(
       (group) => group.providerKey === selection.instanceId,

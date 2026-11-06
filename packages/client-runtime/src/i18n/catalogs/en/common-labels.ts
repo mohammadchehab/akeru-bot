@@ -330,6 +330,7 @@ export const commonLabelsCatalog = {
   "Clear observations": "Clear observations",
   "Markdown and observations": "Markdown and observations",
   "Fallback models": "Fallback models",
+  "Skills on": "Skills on",
   "Not loaded": "Not loaded",
   Unknown: "Unknown",
   "Keep mine": "Keep mine",

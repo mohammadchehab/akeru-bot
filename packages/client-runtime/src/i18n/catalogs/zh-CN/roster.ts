@@ -316,4 +316,17 @@ export const rosterCatalog = {
   "More replies": "增加回复",
   "{names} are next": "接下来回复：{names}",
   "Every member": "所有成员",
+  "What this bot can load on demand.": "此机器人可按需加载的内容。",
+  "Manage bot skills": "管理机器人技能",
+  "No skills": "没有技能",
+  "{on} of {total} on": "已开启 {on}/{total}",
+  "Bot skills": "机器人技能",
+  "No skills yet": "还没有技能",
+  "Skills you give {name} show up here.": "你授予 {name} 的技能会显示在这里。",
+  "Turn off {skill} for {name}": "为 {name} 关闭 {skill}",
+  "Turn on {skill} for {name}": "为 {name} 开启 {skill}",
+  "Use other skills from the registry": "使用注册表中的其他技能",
+  "Let {name} find and load registry skills it has not been given.":
+    "允许 {name} 查找并加载尚未授予它的注册表技能。",
+  "What {name} can load on demand.": "{name} 可按需加载的内容。",
 } as const;

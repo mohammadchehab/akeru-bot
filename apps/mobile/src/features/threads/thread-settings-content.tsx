@@ -237,6 +237,8 @@ export function ThreadSettingsOptionsItem(props: {
 
   const fallbackCount = session.fallbackCount ?? 0;
   const hasFallbacks = fallbackCount > 0;
+  const skillsOnCount = session.skillsOnCount;
+  const hasSkills = skillsOnCount !== undefined && skillsOnCount > 0;
 
   const bottomToolbarInset =
     Platform.OS === "ios" && NATIVE_MAIL_SEARCH_TOOLBAR_SUPPORTED
@@ -306,16 +308,27 @@ export function ThreadSettingsOptionsItem(props: {
           <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
             <HopBudgetRow
               hopBudget={session.hopBudget}
-              isLast={!hasFallbacks && !session.memoryThreadRef && !session.routinesRef}
+              isLast={
+                !hasFallbacks && !hasSkills && !session.memoryThreadRef && !session.routinesRef
+              }
             />
           </Animated.View>
         ) : null}
         {hasFallbacks ? (
           <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
             <InfoRow
-              isLast={!session.memoryThreadRef && !session.routinesRef}
+              isLast={!hasSkills && !session.memoryThreadRef && !session.routinesRef}
               label={t("Fallback models")}
               value={String(fallbackCount)}
+            />
+          </Animated.View>
+        ) : null}
+        {hasSkills ? (
+          <Animated.View layout={THREAD_SETTINGS_OPTIONS_LAYOUT_TRANSITION}>
+            <InfoRow
+              isLast={!session.memoryThreadRef && !session.routinesRef}
+              label={t("Skills on")}
+              value={String(skillsOnCount)}
             />
           </Animated.View>
         ) : null}

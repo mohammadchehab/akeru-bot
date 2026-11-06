@@ -264,6 +264,8 @@ function expectedUpdate(bot: Bot, overrides: TestProps) {
       voiceEnabled: false,
       imageProvider: null,
       disabledMcpServerIds: [],
+      skills: [],
+      skillRegistryAccess: false,
       ...overrides,
     },
   };

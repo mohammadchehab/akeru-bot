@@ -1,4 +1,4 @@
-import { EnvironmentId, ProviderInstanceId } from "@isnadi/contracts";
+import { EnvironmentId, ProviderInstanceId, SkillId } from "@isnadi/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { makeMobileBot } from "../../lib/mobile-fixtures.test-support";
 import type { ModelOption } from "../../lib/modelOptions";
@@ -95,5 +95,17 @@ describe("live bot settings sheet", () => {
 
     expect(liveBotThreadSettings(settings(), bot, [model]).fallbackCount).toBe(1);
     expect(liveBotThreadSettings(settings(), bot, []).fallbackCount).toBe(1);
+  });
+
+  it("reports how many of the bot's skills are on, even without an engine", () => {
+    const skills = [
+      { skillId: SkillId.make("triage"), enabled: true },
+      { skillId: SkillId.make("release-notes"), enabled: false },
+    ];
+
+    expect(
+      liveBotThreadSettings(settings(), makeMobileBot({ engine: null, skills }), [model])
+        .skillsOnCount,
+    ).toBe(1);
   });
 });
