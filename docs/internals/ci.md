@@ -25,29 +25,20 @@ directories so files hardlink. To rebuild it, create `/opt/pnpm-store` owned by 
 Never run `pnpm store prune` while runners are online. A prune deletes files that a running install still
 needs, and the install then fails with `ERR_PNPM_ENOENT`. Stop the runners first, or leave the store alone.
 
-### Hetzner job gate
+### Hetzner runner cap
 
-The box has 16 cores and ten runners, and one PR run is five heavy jobs, so two PRs fill every runner and the
-rest wait. [`scripts/ci/hetzner-gate.sh`](../../scripts/ci/hetzner-gate.sh) caps how many jobs run at once. It
-changes nothing in the workflow: `runs-on`, the shard matrix and the policy test stay as they are, and a job
-over the cap waits for a slot and is never cancelled.
+The box has 16 cores. A heavy job uses about 1.5 to 2 cores, and one PR run is five heavy jobs, so six runners
+keep the cores busy without piling up: ten runners made the load average reach 35 to 70 and slowed every job.
+Only `hetzner-1` to `hetzner-6` run (`actions.runner.mohammadchehab-isnadibot.hetzner-N.service`).
+`hetzner-7` to `hetzner-10` are installed but stopped and disabled. Extra jobs wait in GitHub's queue, roughly
+first come first served. A queued job uses none of its `timeout-minutes`, and nothing is cancelled.
 
-Each runner calls the script from its job hooks. A job that finds every slot taken waits and re-checks every
-five seconds. The cap is the number in `/opt/ci-gate/limit` (default 6), read on every call, so changing it
-needs no restart. A slot whose job has died is reclaimed. The gate fails open: after 20 minutes of waiting, or
-on any error, the job runs anyway, so a gate bug can slow CI but cannot block it. A waiting job still counts
-against its `timeout-minutes`. Waits are logged to `/opt/ci-gate/gate.log`.
+To change the cap, start and enable, or stop and disable, services from the top number down. Stop a runner only
+when it is idle. Check `gh api repos/mohammadchehab/isnadibot/actions/runners --jq '.runners[]|[.name,.busy]'`
+first, because stopping a busy runner fails the job it is running. The workflow, `runs-on`, the shard matrix
+and the policy test do not change.
 
-To install it on the box, as root:
-
-1. `install -d -o runner -g runner /opt/ci-gate/slots`, copy the script to `/opt/ci-gate/hetzner-gate.sh`, and
-   link `job-started.sh` and `job-completed.sh` to it in the same directory.
-2. Write the cap: `echo 6 > /opt/ci-gate/limit`.
-3. Add `ACTIONS_RUNNER_HOOK_JOB_STARTED=/opt/ci-gate/job-started.sh` and
-   `ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/opt/ci-gate/job-completed.sh` to each `/opt/actions-runner*/.env`.
-   Runners read `.env` when they start, so restart each one between jobs.
-
-To turn it off, remove the two lines from the `.env` files and restart the runners, or set the cap to 16.
+To undo the cap, run `systemctl enable --now` for `hetzner-7` to `hetzner-10`.
 
 CI runs as parallel jobs, so a run takes as long as its slowest job instead of the sum of all steps:
 
