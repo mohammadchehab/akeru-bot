@@ -11,6 +11,8 @@ This is a living glossary for IsnadiBot. It explains what common terms mean in t
 - [Roster organization](#roster-organization)
 - [Orchestration](#orchestration)
 - [Channels](#channels)
+- [Fleet operations](#fleet-operations)
+- [Skills](#skills)
 - [Provider runtime](#provider-runtime)
 - [Subscription provider](#subscription-provider)
 - [Image provider](#image-provider)
@@ -194,6 +196,51 @@ A client-local preference for interface copy. Web, Electron, and native mobile e
 ### LTR island
 
 An element pinned to left-to-right whatever the interface direction: code, diffs, the terminal, paths, URLs, model ids, and shortcut chords. In an Arabic interface the layout mirrors around them, but their content is never reordered. See [interface-translations.md](./interface-translations.md#right-to-left-languages).
+
+### Fleet operations
+
+How a group of bots with a boss keeps working without someone driving it. See
+[fleet operations](./fleet-operations.md).
+
+#### Work item
+
+One queued piece of work in a group, with an owner bot, a state and an optional tracker link. The dispatcher
+assigns queued items to idle bots.
+
+#### Dispatcher
+
+The server reactor that assigns the next queued work item when a bot goes idle, and wakes the boss only when a
+choice needs judgement. It runs only in groups with Keep busy on.
+
+#### Handoff
+
+A bot's state doc (item, branch, what is done, the next step, what it waits on, what not to do), written
+before its context resets. The next turn starts from it.
+
+#### Context epoch
+
+A counter on a thread. Turns before the current epoch, and the thread's observations, no longer reach the
+model; the visible transcript stays.
+
+### Skills
+
+A skill is a folder holding a `SKILL.md` and its files, which a bot loads when a task needs it. See
+[the skills registry](./skills-registry.md).
+
+#### Skill registry
+
+The server-owned list of every skill in one environment: built in, space, yours (all spaces), Community and
+provider. Clients read it with `skills.list`, so local, remote and mobile clients see the same list.
+
+#### Skill index
+
+The short list of skill names and one-line descriptions joined into a Mastra bot's instructions. The bot calls
+`load_skill` or `read_skill_file` to read a skill in full, and each load shows in the chat.
+
+#### Community skill
+
+A skill added from a GitHub URL or a .zip. It reaches no bot until the user approves it, and the approval is
+pinned to its content hash, so a changed skill needs approval again (D28).
 
 ## Provider runtime
 
