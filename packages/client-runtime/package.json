@@ -120,6 +120,10 @@
       "types": "./src/durableMemory.ts",
       "default": "./src/durableMemory.ts"
     },
+    "./space/work-items": {
+      "types": "./src/space/workItems.ts",
+      "default": "./src/space/workItems.ts"
+    },
     "./routines": {
       "types": "./src/routines.ts",
       "default": "./src/routines.ts"

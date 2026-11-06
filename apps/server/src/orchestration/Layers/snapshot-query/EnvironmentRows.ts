@@ -11,6 +11,7 @@ import {
   ProjectionBotDbRowSchema,
   ProjectionGroupDbRowSchema,
   ProjectionDelegationDbRowSchema,
+  ProjectionWorkItemDbRowSchema,
   ThreadIdLookupInput,
   ProjectionThreadDbRowSchema,
   ProjectionThreadMessageDbRowSchema,
@@ -81,6 +82,29 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
       SELECT record_json AS delegation
       FROM projection_delegations
       ORDER BY json_extract(record_json, '$.createdAt') ASC, delegation_id ASC
+    `,
+  });
+
+  // Every work item: the command read model needs closed ones to reopen them.
+  const listWorkItemRows = SqlSchema.findAll({
+    Request: Schema.Void,
+    Result: ProjectionWorkItemDbRowSchema,
+    execute: () => sql`
+      SELECT record_json AS "workItem"
+      FROM projection_work_items
+      ORDER BY json_extract(record_json, '$.createdAt') ASC, work_item_id ASC
+    `,
+  });
+
+  // The shell carries open items only; finished ones page in through `workItems.list`.
+  const listOpenWorkItemRows = SqlSchema.findAll({
+    Request: Schema.Void,
+    Result: ProjectionWorkItemDbRowSchema,
+    execute: () => sql`
+      SELECT record_json AS "workItem"
+      FROM projection_work_items
+      WHERE state NOT IN ('done', 'closed')
+      ORDER BY json_extract(record_json, '$.createdAt') ASC, work_item_id ASC
     `,
   });
 
@@ -630,6 +654,8 @@ export function createEnvironmentRows({ sql }: Pick<ProjectionSnapshotDependenci
     listGroupRows,
     listDelegationRows,
     listShellDelegationRows,
+    listWorkItemRows,
+    listOpenWorkItemRows,
     getBotRowById,
     getGroupRowById,
     listDelegationRowsByThread,

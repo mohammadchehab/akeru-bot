@@ -1,6 +1,7 @@
 import * as Match from "effect/Match";
 import {
   IsnadiDelegationRecord,
+  WorkItem,
   BotAvatar,
   BotSkill,
   BotEngine,
@@ -100,6 +101,10 @@ export const ProjectionBotDbRowSchema = ProjectionBot.mapFields(
 export const ProjectionGroupDbRowSchema = ProjectionGroup.mapFields(
   Struct.assign({ members: Schema.fromJsonString(Schema.Array(GroupMembership)) }),
 );
+
+export const ProjectionWorkItemDbRowSchema = Schema.Struct({
+  workItem: Schema.fromJsonString(WorkItem),
+});
 
 export const ProjectionDelegationDbRowSchema = Schema.Struct({
   delegation: Schema.fromJsonString(IsnadiDelegationRecord),
@@ -321,6 +326,7 @@ export const REQUIRED_SNAPSHOT_PROJECTORS = [
   ORCHESTRATION_PROJECTOR_NAMES.delegations,
   ORCHESTRATION_PROJECTOR_NAMES.mcpServers,
   ORCHESTRATION_PROJECTOR_NAMES.routines,
+  ORCHESTRATION_PROJECTOR_NAMES.workItems,
   ORCHESTRATION_PROJECTOR_NAMES.threads,
   ORCHESTRATION_PROJECTOR_NAMES.threadMessages,
   ORCHESTRATION_PROJECTOR_NAMES.threadProposedPlans,

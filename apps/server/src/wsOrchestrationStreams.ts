@@ -11,6 +11,7 @@ import {
   type OrchestrationShellStreamItem,
   type ProjectId,
   ThreadId,
+  toWorkItemSummary,
 } from "@isnadi/contracts";
 import { toShellDelegation } from "./orchestration/ShellDelegations.ts";
 import { toRoutineReceiptSource } from "./orchestration/routineReceiptSources.ts";
@@ -108,6 +109,39 @@ export const createWsOrchestrationStreams = ({
             kind: "delegation-upserted" as const,
             sequence: event.sequence,
             delegation: toShellDelegation(event.payload.delegation),
+          }),
+        );
+      case "work-item.created":
+      case "work-item.assigned":
+      case "work-item.updated":
+      case "work-item.blocked":
+      case "work-item.unblocked":
+      case "work-item.closed":
+      case "work-item.reopened": {
+        // The shell carries open items only; finishing one removes it from the shell.
+        const { workItem } = event.payload;
+
+        return Effect.succeed(
+          workItem.state === "done" || workItem.state === "closed"
+            ? Option.some({
+                kind: "work-item-removed" as const,
+                sequence: event.sequence,
+                workItemId: workItem.id,
+              })
+            : Option.some({
+                kind: "work-item-upserted" as const,
+                sequence: event.sequence,
+                workItem: toWorkItemSummary(workItem),
+              }),
+        );
+      }
+
+      case "work-item.deleted":
+        return Effect.succeed(
+          Option.some({
+            kind: "work-item-removed" as const,
+            sequence: event.sequence,
+            workItemId: event.payload.workItemId,
           }),
         );
       case "routine.drafted":

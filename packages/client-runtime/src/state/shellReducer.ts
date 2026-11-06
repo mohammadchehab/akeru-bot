@@ -106,6 +106,23 @@ export function applyShellStreamEvent(
       };
     }
 
+    case "work-item-upserted": {
+      const workItems = snapshot.workItems ?? [];
+
+      const nextWorkItems = workItems.some((item) => item.id === event.workItem.id)
+        ? Arr.map(workItems, (item) => (item.id === event.workItem.id ? event.workItem : item))
+        : Arr.append(workItems, event.workItem);
+
+      return { ...snapshot, workItems: nextWorkItems, snapshotSequence: event.sequence };
+    }
+
+    case "work-item-removed":
+      return {
+        ...snapshot,
+        workItems: Arr.filter(snapshot.workItems ?? [], (item) => item.id !== event.workItemId),
+        snapshotSequence: event.sequence,
+      };
+
     case "routine-upserted": {
       const routines = snapshot.routines ?? [];
 

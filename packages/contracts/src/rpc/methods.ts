@@ -111,6 +111,9 @@ export const WS_METHODS = {
   portabilityApplyImport: "portability.applyImport",
   routinesListRuns: "routines.listRuns",
   routinesListThreadRuns: "routines.listThreadRuns",
+  workItemsList: "workItems.list",
+  workItemsCounts: "workItems.counts",
+  workItemsGet: "workItems.get",
 
   // Streaming subscriptions
   subscribePreviewEvents: "subscribePreviewEvents",

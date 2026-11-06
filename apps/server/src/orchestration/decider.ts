@@ -9,6 +9,7 @@ import { projectEvent } from "./projector.ts";
 import { decideProjects } from "./decider/projects.ts";
 import { decideBots } from "./decider/bots.ts";
 import { decideGroups } from "./decider/groups.ts";
+import { decideWorkItems } from "./decider/workItems.ts";
 import { decideMcpServers } from "./decider/mcpServers.ts";
 import { decideDelegations } from "./decider/delegations.ts";
 import { decideRoutines } from "./decider/routines.ts";
@@ -130,6 +131,18 @@ export const decideOrchestrationCommand = Effect.fn("decideOrchestrationCommand"
     case "group.leave":
     case "group.boss.set":
       return yield* decideGroups({ command, readModel, ...(actor !== undefined ? { actor } : {}) });
+    case "work-item.create":
+    case "work-item.assign":
+    case "work-item.update":
+    case "work-item.block":
+    case "work-item.unblock":
+    case "work-item.close":
+    case "work-item.reopen":
+      return yield* decideWorkItems({
+        command,
+        readModel,
+        ...(actor !== undefined ? { actor } : {}),
+      });
     case "mcp-server.create":
     case "mcp-server.update":
     case "mcp-server.instructions.set":

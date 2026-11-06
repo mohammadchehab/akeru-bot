@@ -153,6 +153,16 @@ import {
   PortabilityPreviewImportInput,
 } from "../portability.ts";
 import {
+  WorkItem,
+  WorkItemCountsInput,
+  WorkItemCountsResult,
+  WorkItemGetError,
+  WorkItemGetInput,
+  WorkItemListInput,
+  WorkItemListResult,
+  WorkItemReadError,
+} from "../orchestration/workItems.ts";
+import {
   RoutineListRunsInput,
   RoutineListRunsResult,
   RoutineListThreadRunsResult,
@@ -605,6 +615,24 @@ export const WsRoutinesListThreadRunsRpc = Rpc.make(WS_METHODS.routinesListThrea
   payload: RoutineListThreadRunsInput,
   success: RoutineListThreadRunsResult,
   error: Schema.Union([RoutineThreadReadError, EnvironmentAuthorizationError]),
+});
+
+export const WsWorkItemsListRpc = Rpc.make(WS_METHODS.workItemsList, {
+  payload: WorkItemListInput,
+  success: WorkItemListResult,
+  error: Schema.Union([WorkItemReadError, EnvironmentAuthorizationError]),
+});
+
+export const WsWorkItemsCountsRpc = Rpc.make(WS_METHODS.workItemsCounts, {
+  payload: WorkItemCountsInput,
+  success: WorkItemCountsResult,
+  error: Schema.Union([WorkItemReadError, EnvironmentAuthorizationError]),
+});
+
+export const WsWorkItemsGetRpc = Rpc.make(WS_METHODS.workItemsGet, {
+  payload: WorkItemGetInput,
+  success: WorkItem,
+  error: Schema.Union([WorkItemGetError, EnvironmentAuthorizationError]),
 });
 
 export const WsShellOpenInEditorRpc = Rpc.make(WS_METHODS.shellOpenInEditor, {

@@ -20,6 +20,7 @@ export function createEmptyReadModel(nowIso: string): OrchestrationReadModel {
     routines: [],
     routineRuns: [],
     skillAssignments: [],
+    workItems: [],
     threads: [],
     updatedAt: nowIso,
   };
@@ -36,6 +37,14 @@ export function projectEvent(
   };
 
   switch (event.type) {
+    case "work-item.created":
+    case "work-item.assigned":
+    case "work-item.updated":
+    case "work-item.blocked":
+    case "work-item.unblocked":
+    case "work-item.closed":
+    case "work-item.reopened":
+    case "work-item.deleted":
     case "delegation.created":
     case "delegation.updated":
     case "project.created":

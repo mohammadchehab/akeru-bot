@@ -14,6 +14,8 @@ import {
   RoutineRunningPayload,
   RoutineSkillAssignedPayload,
   RoutineSkillUnassignedPayload,
+  WorkItemChangedPayload,
+  WorkItemDeletedPayload,
 } from "@isnadi/contracts";
 import * as Effect from "effect/Effect";
 import {
@@ -49,6 +51,32 @@ export function projectEnvironment(
                 entry.delegationId === payload.delegation.delegationId ? payload.delegation : entry,
               )
             : [...nextBase.delegations, payload.delegation],
+        })),
+      );
+    case "work-item.created":
+    case "work-item.assigned":
+    case "work-item.updated":
+    case "work-item.blocked":
+    case "work-item.unblocked":
+    case "work-item.closed":
+    case "work-item.reopened":
+      return decodeForEvent(WorkItemChangedPayload, event.payload, event.type, "payload").pipe(
+        Effect.map(({ workItem }) => {
+          const items = nextBase.workItems ?? [];
+
+          return {
+            ...nextBase,
+            workItems: items.some((entry) => entry.id === workItem.id)
+              ? items.map((entry) => (entry.id === workItem.id ? workItem : entry))
+              : [...items, workItem],
+          };
+        }),
+      );
+    case "work-item.deleted":
+      return decodeForEvent(WorkItemDeletedPayload, event.payload, event.type, "payload").pipe(
+        Effect.map(({ workItemId }) => ({
+          ...nextBase,
+          workItems: (nextBase.workItems ?? []).filter((entry) => entry.id !== workItemId),
         })),
       );
     case "project.created":

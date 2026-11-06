@@ -320,6 +320,14 @@ function requireMutationActorAuthorized(input: {
   );
 }
 
+export function requireGroupWorkItemMutationAuthorized(input: {
+  readonly group: OrchestrationGroup;
+  readonly command: OrchestrationCommand;
+  readonly actor: OrchestrationDispatchActor | undefined;
+}): Effect.Effect<void, OrchestrationCommandInvariantError> {
+  return requireMutationActorAuthorized(input);
+}
+
 export function requireGroupThreadCreateAuthorized(input: {
   readonly group: OrchestrationGroup;
   readonly command: Extract<OrchestrationCommand, { readonly type: "thread.create" }>;

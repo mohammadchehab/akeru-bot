@@ -51,6 +51,7 @@ import { createProjects } from "./projection/Projects.ts";
 import { createBots } from "./projection/Bots.ts";
 import { createGroups } from "./projection/Groups.ts";
 import { createDelegations } from "./projection/Delegations.ts";
+import { createWorkItems, WORK_ITEM_EVENT_TYPES } from "./projection/WorkItems.ts";
 import { createRoutines } from "./projection/Routines.ts";
 import { createMcpServers } from "./projection/McpServers.ts";
 import { createThreads } from "./projection/Threads.ts";
@@ -84,6 +85,7 @@ const makeOrchestrationProjectionPipeline = Effect.fn("makeOrchestrationProjecti
     const { applyGroupsProjection } = createGroups({ projectionGroupRepository });
     const { applyDelegationsProjection, delegationParentLink } = createDelegations({ sql });
     const { applyRoutinesProjection } = createRoutines({ sql });
+    const { applyWorkItemsProjection } = createWorkItems({ sql });
     const { applyMcpServersProjection } = createMcpServers({ projectionMcpServerRepository });
 
     const { applyThreadsProjection } = createThreads({
@@ -154,6 +156,11 @@ const makeOrchestrationProjectionPipeline = Effect.fn("makeOrchestrationProjecti
         name: ORCHESTRATION_PROJECTOR_NAMES.delegations,
         eventTypes: projectorEventTypes(["delegation.created", "delegation.updated"]),
         apply: applyDelegationsProjection,
+      },
+      {
+        name: ORCHESTRATION_PROJECTOR_NAMES.workItems,
+        eventTypes: projectorEventTypes(WORK_ITEM_EVENT_TYPES),
+        apply: applyWorkItemsProjection,
       },
       {
         name: ORCHESTRATION_PROJECTOR_NAMES.mcpServers,

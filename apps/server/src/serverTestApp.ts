@@ -1,7 +1,7 @@
 import { ProviderInstanceRegistryMutator } from "./provider/Services/ProviderInstanceRegistryMutator.ts";
 import { HostProcessEnvironment } from "@isnadi/shared/hostProcess";
 
-import { DEFAULT_SERVER_SETTINGS, type PreviewEvent } from "@isnadi/contracts";
+import { DEFAULT_SERVER_SETTINGS, WorkItemGetError, type PreviewEvent } from "@isnadi/contracts";
 
 import * as Context from "effect/Context";
 
@@ -49,6 +49,7 @@ import { OrchestrationCommandReceiptRepository } from "./persistence/Services/Or
 import * as ProjectionBots from "./persistence/Services/ProjectionBots.ts";
 
 import * as ProjectionGroups from "./persistence/Services/ProjectionGroups.ts";
+import * as ProjectionWorkItems from "./persistence/Services/ProjectionWorkItems.ts";
 
 import { EntityMemoryRepositoryLive } from "./memory/Layers/EntityMemoryRepository.ts";
 
@@ -605,6 +606,17 @@ export const buildAppUnderTest = (options?: {
             deleteById: () => Effect.void,
             ...options?.layers?.projectionGroups,
           } satisfies ProjectionGroups.ProjectionGroupRepositoryShape),
+          Layer.succeed(ProjectionWorkItems.ProjectionWorkItemRepository, {
+            list: () => Effect.succeed({ items: [] }),
+            get: (input) =>
+              Effect.fail(
+                new WorkItemGetError({
+                  workItemId: input.workItemId,
+                  message: "Work item not found.",
+                }),
+              ),
+            counts: () => Effect.succeed({ open: 0, inProgress: 0, doneSince: 0 }),
+          } satisfies ProjectionWorkItems.ProjectionWorkItemRepositoryShape),
           Layer.mock(ProjectionSnapshotQuery.ProjectionSnapshotQuery)({
             getCommandReadModel: () => Effect.succeed(defaultOrchestrationReadModel()),
             getSnapshot: () => Effect.succeed(defaultOrchestrationReadModel()),

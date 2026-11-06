@@ -31,6 +31,7 @@ import {
   RoutineSkillUnassignedPayload,
   SkillAssignmentId,
 } from "../routines.ts";
+import { WorkItemChangedPayload, WorkItemDeletedPayload, WorkItemId } from "./workItems.ts";
 import { DelegationIdSchema } from "./identities.ts";
 import {
   OrchestrationAggregateKind,
@@ -128,6 +129,7 @@ const EventBaseFields = {
     McpServerId,
     Schema.suspend(() => DelegationIdSchema),
     RoutineId,
+    WorkItemId,
     RoutineRunId,
     SkillAssignmentId,
     ThreadId,
@@ -244,6 +246,46 @@ export const OrchestrationEvent = Schema.Union([
     ...EventBaseFields,
     type: Schema.Literal("mcp-server.disabled"),
     payload: McpServerDisabledPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.created"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.assigned"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.updated"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.blocked"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.unblocked"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.closed"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.reopened"),
+    payload: WorkItemChangedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("work-item.deleted"),
+    payload: WorkItemDeletedPayload,
   }),
   Schema.Struct({
     ...EventBaseFields,

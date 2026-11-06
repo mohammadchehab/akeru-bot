@@ -67,8 +67,20 @@ Rejected: **a client-side scheduler.** It stops when the laptop sleeps, and two 
 A work item belongs to one group: `{ id, groupId, title, brief, kind: "task" | "bug", role?, ownerBotId?,
 state, trackerLink?, threadId?, prUrl?, createdAt, updatedAt }`.
 
-- `state` is `queued`, `assigned`, `in-progress`, `review`, `blocked` or `done`. `blocked` carries who
-  unblocks it.
+- `state` is `queued`, `assigned`, `in-progress`, `blocked`, `review`, `done` or `closed`. `blocked` carries
+  who unblocks it. `closed` is a dropped item; `done` is a finished one. Both can be reopened.
+- Board columns: New = queued + assigned; In progress = in-progress + blocked; Draft = review; Done; Closed.
+  `workItemColumn(state)` in `packages/client-runtime/src/space/workItems.ts` is the one mapping.
+- A group holds at most 200 open items (anything but done or closed). Creating or reopening past that fails
+  with "This space has 200 open items. Close some first."
+- The shell snapshot and stream carry open items as `WorkItemSummary`: the item without its brief, plus a
+  `briefPreview` of at most 280 characters cut at a word boundary. A client fetches the full brief with
+  `workItems.get({ workItemId })` (read scope) when the item is opened. Bot tools run on the server and read
+  the full brief directly.
+- The shell snapshot and stream carry open items only; `work-item-removed` fires when an item goes done or
+  closed, or is deleted. `workItems.list({ groupId, state, cursor?, limit <= 50 })` pages the done and closed
+  items, newest first, and `workItems.counts({ groupId, since })` returns `{ open, inProgress, doneSince }`.
+  Both need the orchestration read scope.
 - `trackerLink` is a GitHub issue or PR URL, a Jira key, or nothing. Isnadi stores the link and shows it; it
   does not sync the tracker in this epic.
 - Commands `work-item.create`, `.assign`, `.update`, `.block`, `.unblock`, `.close`, `.reopen`. Events and a
