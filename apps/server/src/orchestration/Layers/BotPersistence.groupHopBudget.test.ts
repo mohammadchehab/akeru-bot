@@ -58,19 +58,21 @@ it.layer(TestLayer)("group hop budget persistence", (it) => {
       const columns = yield* sql<{ readonly id: string; readonly hopBudget: number | null }>`
         SELECT group_id AS "id", hop_budget AS "hopBudget" FROM projection_groups ORDER BY group_id
       `;
+
       assert.deepEqual(columns, [
         { id: "no-budget", hopBudget: null },
         { id: "with-budget", hopBudget: 9 },
       ]);
 
       const check = (
-        groups: ReadonlyArray<{ readonly id: string; readonly hopBudget?: number }>,
+        groups: ReadonlyArray<{ readonly id: string; readonly hopBudget?: number | undefined }>,
       ) => {
         assert.equal(groups.find((group) => group.id === "with-budget")?.hopBudget, 9);
         const bare = groups.find((group) => group.id === "no-budget");
         assert.isDefined(bare);
         assert.isFalse(bare !== undefined && "hopBudget" in bare);
       };
+
       check((yield* snapshots.getShellSnapshot()).groups);
 
       yield* sql`DELETE FROM projection_groups`;
