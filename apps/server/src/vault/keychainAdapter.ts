@@ -27,7 +27,7 @@ const messageOf = (cause: unknown): string =>
  * `unavailable`, a missing item is `not-found`, and a locked or denied
  * keychain or any other failure is `error`, which never regenerates a key.
  */
-export function makeKeyringPort(
+export function createKeyringPort(
   createEntry: KeyringEntryFactory | undefined,
   account: string,
 ): KeychainPort {

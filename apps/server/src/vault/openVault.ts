@@ -1,14 +1,14 @@
 import {
   type KeyringEntryFactory,
   keychainAccountFor,
-  makeKeyringPort,
+  createKeyringPort,
 } from "./keychainAdapter.ts";
 import { type MasterKeyFailure, type MasterKeySource, resolveMasterKey } from "./masterKey.ts";
-import { type InMemorySecretVault, makeInMemorySecretVault } from "./SecretVault.ts";
+import { type InMemorySecretVault, createInMemorySecretVault } from "./SecretVault.ts";
 import {
   canonicalHomeDir,
-  makeVaultFileKeyStore,
-  makeVaultFilePersistence,
+  createVaultFileKeyStore,
+  createVaultFilePersistence,
   vaultFilePath,
 } from "./vaultFile.ts";
 
@@ -42,11 +42,11 @@ export function openVault(input: OpenVaultInput): OpenVaultResult {
   try {
     const key = resolveMasterKey({
       env: input.env,
-      keychain: makeKeyringPort(
+      keychain: createKeyringPort(
         input.createKeyringEntry,
         keychainAccountFor(canonicalHomeDir(input.homeDir)),
       ),
-      store: makeVaultFileKeyStore(vaultPath),
+      store: createVaultFileKeyStore(vaultPath),
     });
 
     if (!key.ok) return key;
@@ -55,7 +55,7 @@ export function openVault(input: OpenVaultInput): OpenVaultResult {
       ok: true,
       keyId: key.keyId,
       source: key.source,
-      ...makeInMemorySecretVault(Date.now, makeVaultFilePersistence(vaultPath, key.key)),
+      ...createInMemorySecretVault(Date.now, createVaultFilePersistence(vaultPath, key.key)),
     };
   } catch {
     return { ok: false, reason: "vault-file-unreadable" };

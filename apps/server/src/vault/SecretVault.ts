@@ -63,7 +63,7 @@ export type VaultPersistence = {
  * Holds values in memory. Without `persistence` nothing reaches disk; with
  * it, `save` is the only place a value leaves, and the caller seals it there.
  */
-export function makeInMemorySecretVault(
+export function createInMemorySecretVault(
   now: () => number = Date.now,
   persistence?: VaultPersistence,
 ): InMemorySecretVault {

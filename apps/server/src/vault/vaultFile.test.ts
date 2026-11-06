@@ -5,8 +5,8 @@ import * as NodePath from "node:path";
 import { assert, describe, it } from "@effect/vitest";
 
 import { resolveMasterKey } from "./masterKey.ts";
-import { makeInMemorySecretVault } from "./SecretVault.ts";
-import { makeVaultFileKeyStore, makeVaultFilePersistence } from "./vaultFile.ts";
+import { createInMemorySecretVault } from "./SecretVault.ts";
+import { createVaultFileKeyStore, createVaultFilePersistence } from "./vaultFile.ts";
 
 const KEY = Buffer.alloc(32, 7).toString("base64");
 
@@ -17,12 +17,12 @@ const open = (filePath: string, env: Record<string, string>) => {
   const resolved = resolveMasterKey({
     env,
     keychain: { read: () => ({ kind: "unavailable" }), write: () => false },
-    store: makeVaultFileKeyStore(filePath),
+    store: createVaultFileKeyStore(filePath),
   });
 
   if (!resolved.ok) throw new Error(resolved.reason);
 
-  return makeInMemorySecretVault(Date.now, makeVaultFilePersistence(filePath, resolved.key));
+  return createInMemorySecretVault(Date.now, createVaultFilePersistence(filePath, resolved.key));
 };
 
 describe("vault file", () => {

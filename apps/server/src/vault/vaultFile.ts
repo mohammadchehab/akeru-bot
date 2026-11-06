@@ -70,7 +70,7 @@ export function canonicalHomeDir(dir: string): string {
   }
 }
 
-export function makeVaultFileKeyStore(filePath: string): MasterKeyStore {
+export function createVaultFileKeyStore(filePath: string): MasterKeyStore {
   const update = (patch: Partial<StoredVault>) => write(filePath, { ...read(filePath), ...patch });
 
   return {
@@ -93,7 +93,7 @@ export function makeVaultFileKeyStore(filePath: string): MasterKeyStore {
  * key. A record that does not open is dropped from memory but kept on disk
  * untouched until the credential is deleted or replaced.
  */
-export function makeVaultFilePersistence(filePath: string, key: Buffer): VaultPersistence {
+export function createVaultFilePersistence(filePath: string, key: Buffer): VaultPersistence {
   const stored = read(filePath);
 
   const initial = stored.credentials.flatMap(({ sealed, ...metadata }) => {

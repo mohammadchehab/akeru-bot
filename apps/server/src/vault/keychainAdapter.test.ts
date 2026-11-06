@@ -3,7 +3,7 @@ import { assert, describe, it } from "@effect/vitest";
 import {
   keychainAccountFor,
   loadKeyringEntryFactory,
-  makeKeyringPort,
+  createKeyringPort,
   type KeyringEntry,
 } from "./keychainAdapter.ts";
 
@@ -17,13 +17,13 @@ const fake = (entry: Partial<KeyringEntry>) => () => ({
 
 describe("keyring port", () => {
   it("is unavailable when there is no keyring module", () => {
-    assert.deepStrictEqual(makeKeyringPort(undefined, "a").read(), { kind: "unavailable" });
+    assert.deepStrictEqual(createKeyringPort(undefined, "a").read(), { kind: "unavailable" });
   });
 
   it("maps a missing item to not-found and a stored key to found", () => {
-    assert.deepStrictEqual(makeKeyringPort(fake({}), "a").read(), { kind: "not-found" });
+    assert.deepStrictEqual(createKeyringPort(fake({}), "a").read(), { kind: "not-found" });
     assert.deepStrictEqual(
-      makeKeyringPort(fake({ getPassword: () => KEY.toString("base64") }), "a").read(),
+      createKeyringPort(fake({ getPassword: () => KEY.toString("base64") }), "a").read(),
       { kind: "found", key: KEY },
     );
   });
@@ -35,8 +35,8 @@ describe("keyring port", () => {
       },
     });
 
-    assert.deepStrictEqual(makeKeyringPort(locked, "a").read(), { kind: "error" });
-    assert.deepStrictEqual(makeKeyringPort(fake({ getPassword: () => "c2hvcnQ=" }), "a").read(), {
+    assert.deepStrictEqual(createKeyringPort(locked, "a").read(), { kind: "error" });
+    assert.deepStrictEqual(createKeyringPort(fake({ getPassword: () => "c2hvcnQ=" }), "a").read(), {
       kind: "error",
     });
   });
@@ -48,16 +48,16 @@ describe("keyring port", () => {
       },
     });
 
-    assert.deepStrictEqual(makeKeyringPort(none, "a").read(), { kind: "unavailable" });
+    assert.deepStrictEqual(createKeyringPort(none, "a").read(), { kind: "unavailable" });
   });
 
   it("writes base64 and reports a refused write as false", () => {
     const written: string[] = [];
 
-    assert.isTrue(makeKeyringPort(fake({ setPassword: (p) => written.push(p) }), "a").write(KEY));
+    assert.isTrue(createKeyringPort(fake({ setPassword: (p) => written.push(p) }), "a").write(KEY));
     assert.deepStrictEqual(written, [KEY.toString("base64")]);
     assert.isFalse(
-      makeKeyringPort(
+      createKeyringPort(
         fake({
           setPassword: () => {
             throw new Error("denied");
@@ -81,7 +81,7 @@ describe.skipIf(process.env.ISNADI_REAL_KEYCHAIN_TEST !== "1")("real macOS keych
 
     assert.isDefined(factory);
 
-    const port = makeKeyringPort(factory, `test-${process.pid}-${Date.now()}`);
+    const port = createKeyringPort(factory, `test-${process.pid}-${Date.now()}`);
 
     assert.deepStrictEqual(port.read(), { kind: "not-found" });
     assert.isTrue(port.write(KEY));
