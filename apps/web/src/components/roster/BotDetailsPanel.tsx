@@ -66,7 +66,10 @@ export function BotOverview({
         </h3>
         {bot.label ? <p className="mt-0.5 text-sm text-muted-foreground">{bot.label}</p> : null}
         {bot.description ? (
-          <p className="mt-3 line-clamp-3 max-w-64 text-sm leading-relaxed text-muted-foreground">
+          <p
+            dir="auto"
+            className="mt-3 line-clamp-3 max-w-64 text-sm leading-relaxed text-muted-foreground"
+          >
             {bot.description}
           </p>
         ) : null}
@@ -239,7 +242,7 @@ export function BotDetailsPanel({
         <>
           <header className="relative flex h-(--workspace-topbar-height) shrink-0 items-center justify-center px-4 min-[981px]:h-0">
             <h2 className="text-sm font-medium min-[981px]:sr-only">{t("Bot")}</h2>
-            <div className="absolute right-3 flex items-center min-[981px]:fixed min-[981px]:right-(--workspace-controls-right) min-[981px]:top-(--workspace-controls-top) min-[981px]:z-40 min-[981px]:h-(--workspace-topbar-height)">
+            <div className="absolute end-3 flex items-center min-[981px]:fixed min-[981px]:end-(--workspace-controls-right) min-[981px]:top-(--workspace-controls-top) min-[981px]:z-40 min-[981px]:h-(--workspace-topbar-height)">
               {closeButton}
             </div>
           </header>
@@ -277,7 +280,7 @@ export function BotDetailsPanel({
         data-state={desktopPanel.state}
         onTransitionEnd={desktopPanel.onTransitionEnd}
         className={cn(
-          "hidden h-full shrink-0 flex-col items-end overflow-hidden border-l border-border bg-background min-[981px]:flex",
+          "hidden h-full shrink-0 flex-col items-end overflow-hidden border-s border-border bg-background min-[981px]:flex",
           browserExpanded ? "details-width-wide" : "details-width",
         )}
       >
@@ -312,7 +315,7 @@ export function BotDetailsPanel({
       {!desktopOpen ? (
         <div
           className={cn(
-            "fixed right-(--workspace-controls-right) top-(--workspace-controls-top) z-40 hidden h-(--workspace-topbar-height) items-center min-[981px]:flex",
+            "fixed end-(--workspace-controls-right) top-(--workspace-controls-top) z-40 hidden h-(--workspace-topbar-height) items-center min-[981px]:flex",
             desktopPanel.toggled && "motion-fade-in",
           )}
         >
@@ -338,7 +341,7 @@ export function BotDetailsPanel({
           </Tooltip>
         </div>
       ) : null}
-      <div className="fixed right-(--workspace-controls-right) top-(--workspace-controls-top) z-40 flex h-(--workspace-topbar-height) items-center min-[981px]:hidden">
+      <div className="fixed end-(--workspace-controls-right) top-(--workspace-controls-top) z-40 flex h-(--workspace-topbar-height) items-center min-[981px]:hidden">
         <Button
           aria-label={t("Open {name} bot sidebar", { name: bot.name })}
           size="icon-sm"

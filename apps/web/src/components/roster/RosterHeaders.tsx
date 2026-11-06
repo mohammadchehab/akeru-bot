@@ -93,7 +93,7 @@ export function RosterPanelHeader({
   return (
     <SidebarHeader
       dragRegion={isElectron}
-      className="h-(--workspace-topbar-height) shrink-0 flex-row items-center gap-1 py-0 pl-4 pr-2.5"
+      className="h-(--workspace-topbar-height) shrink-0 flex-row items-center gap-1 py-0 ps-4 pe-2.5"
     >
       <Link
         to="/"

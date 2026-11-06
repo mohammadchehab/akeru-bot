@@ -63,7 +63,7 @@ export function GroupDetailsPanel(props: {
     <>
       <header className="relative flex h-(--workspace-topbar-height) shrink-0 items-center justify-center px-4">
         <h2 className="text-sm font-medium">{t("Group")}</h2>
-        <div className="absolute right-3 flex items-center min-[981px]:fixed min-[981px]:right-(--workspace-controls-right) min-[981px]:top-(--workspace-controls-top) min-[981px]:z-40 min-[981px]:h-(--workspace-topbar-height)">
+        <div className="absolute end-3 flex items-center min-[981px]:fixed min-[981px]:end-(--workspace-controls-right) min-[981px]:top-(--workspace-controls-top) min-[981px]:z-40 min-[981px]:h-(--workspace-topbar-height)">
           {closeButton}
         </div>
       </header>
@@ -80,7 +80,7 @@ export function GroupDetailsPanel(props: {
         data-details-panel=""
         data-state={desktopPanel.state}
         onTransitionEnd={desktopPanel.onTransitionEnd}
-        className="hidden h-full shrink-0 flex-col items-end overflow-hidden border-l border-border bg-background details-width min-[981px]:flex"
+        className="hidden h-full shrink-0 flex-col items-end overflow-hidden border-s border-border bg-background details-width min-[981px]:flex"
       >
         <div data-details-column="" className="flex min-h-0 flex-1 flex-col">
           {content(
@@ -110,7 +110,7 @@ export function GroupDetailsPanel(props: {
       {!desktopOpen ? (
         <div
           className={cn(
-            "fixed right-(--workspace-controls-right) top-(--workspace-controls-top) z-40 hidden h-(--workspace-topbar-height) items-center min-[981px]:flex",
+            "fixed end-(--workspace-controls-right) top-(--workspace-controls-top) z-40 hidden h-(--workspace-topbar-height) items-center min-[981px]:flex",
             desktopPanel.toggled && "motion-fade-in",
           )}
         >
@@ -124,7 +124,7 @@ export function GroupDetailsPanel(props: {
           </Button>
         </div>
       ) : null}
-      <div className="fixed right-(--workspace-controls-right) top-(--workspace-controls-top) z-40 flex h-(--workspace-topbar-height) items-center min-[981px]:hidden">
+      <div className="fixed end-(--workspace-controls-right) top-(--workspace-controls-top) z-40 flex h-(--workspace-topbar-height) items-center min-[981px]:hidden">
         <Button
           aria-label={t("Open {name} group sidebar", { name: props.group.name })}
           size="icon-sm"

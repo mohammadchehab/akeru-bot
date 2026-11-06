@@ -33,7 +33,7 @@ export function GroupMemberStack({
           name={bot.name}
           className={cn(
             "absolute size-17/25",
-            index === 0 ? "left-0 top-0" : "bottom-0 right-0 z-10",
+            index === 0 ? "start-0 top-0" : "bottom-0 end-0 z-10",
           )}
         />
       ))}

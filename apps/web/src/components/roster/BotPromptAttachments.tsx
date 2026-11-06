@@ -116,7 +116,7 @@ export function BotPromptAttachments({
             type="button"
             aria-label={t("Remove {name}", { name: attachment.file.name })}
             onClick={() => onRemove(attachment.id)}
-            className="absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground hover:bg-background hover:text-foreground"
+            className="absolute end-1 top-1 flex size-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground hover:bg-background hover:text-foreground"
           >
             <XIcon className="size-3" />
           </button>

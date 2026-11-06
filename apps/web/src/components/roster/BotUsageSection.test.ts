@@ -141,10 +141,8 @@ describe("formatUsageMeasurement", () => {
     const markup = render();
 
     expect(markup).toContain("1,250+");
-    expect(markup).toContain('>Estimated cost</span><span class="text-right">Unavailable</span>');
-    expect(markup).toContain(
-      '>Subscription pool</span><span class="text-right">Unavailable</span>',
-    );
+    expect(markup).toContain('>Estimated cost</span><span class="text-end">Unavailable</span>');
+    expect(markup).toContain('>Subscription pool</span><span class="text-end">Unavailable</span>');
     expect(markup).toContain("Some provider usage is unavailable.");
     expect(markup).not.toContain("Reserved</span>");
   });

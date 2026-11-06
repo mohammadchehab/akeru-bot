@@ -438,7 +438,7 @@ export function BotSettingsForm({
         className="flex shrink-0 items-center justify-end gap-3 border-t border-border/70 px-5 py-3 sm:px-6"
         data-testid="bot-settings-save-bar"
       >
-        <span aria-live="polite" className="mr-auto text-xs text-muted-foreground">
+        <span aria-live="polite" className="me-auto text-xs text-muted-foreground">
           {draft.saved ? (
             <span className="text-success">{t("Saved")}</span>
           ) : draft.dirty ? (
