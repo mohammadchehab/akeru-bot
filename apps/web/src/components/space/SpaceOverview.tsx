@@ -53,6 +53,7 @@ export function SpaceOverview({ group }: { group: Group }) {
     waiting,
   );
 
+  const updated = relativeRunTime(group.updatedAt, Date.now(), i18n);
   const boss = bots.find((bot) => bot.id === group.bossBotId);
 
   const open = (chat: { environmentId: string; threadId: string }) => void openChat(chat);
@@ -69,7 +70,7 @@ export function SpaceOverview({ group }: { group: Group }) {
         {t("Dashboard")}
         {boss ? <bdi> · {t("Published by {name}", { name: boss.name })}</bdi> : null}
         {" · "}
-        {t("updated {time}", { time: relativeRunTime(group.updatedAt, Date.now(), i18n) })}
+        {t("updated {time}", { time: updated })}
       </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <Tile title={t("Decisions")}>
