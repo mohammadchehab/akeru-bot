@@ -54,6 +54,22 @@ function write(filePath: string, vault: StoredVault): void {
 }
 
 /** The non-secret half of the vault file: salt and params, key check, and how many sealed records exist. */
+export const VAULT_FILE_NAME = "vault.json";
+
+/** Where the sealed vault file lives inside a state directory. */
+export function vaultFilePath(stateDir: string): string {
+  return NodePath.join(stateDir, VAULT_FILE_NAME);
+}
+
+/** The real path of an Isnadi home when it exists, else its absolute form; names the keychain item. */
+export function canonicalHomeDir(dir: string): string {
+  try {
+    return NodeFS.realpathSync(dir);
+  } catch {
+    return NodePath.resolve(dir);
+  }
+}
+
 export function makeVaultFileKeyStore(filePath: string): MasterKeyStore {
   const update = (patch: Partial<StoredVault>) => write(filePath, { ...read(filePath), ...patch });
 

@@ -123,7 +123,6 @@
             // and needs realpath plus an atomic mode-0600 rename.
             "include": [
               "**/apps/server/src/vault/vaultFile.ts",
-              "**/apps/server/src/vault/openVault.ts",
               "**/apps/server/src/bootstrap.ts",
               "**/apps/server/src/http.ts",
               "**/apps/server/src/orchestration/workflowScriptQuery.ts",

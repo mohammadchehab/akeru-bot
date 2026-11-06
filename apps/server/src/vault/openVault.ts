@@ -1,6 +1,3 @@
-import * as NodeFS from "node:fs";
-import * as NodePath from "node:path";
-
 import {
   type KeyringEntryFactory,
   keychainAccountFor,
@@ -8,9 +5,14 @@ import {
 } from "./keychainAdapter.ts";
 import { type MasterKeyFailure, type MasterKeySource, resolveMasterKey } from "./masterKey.ts";
 import { type InMemorySecretVault, makeInMemorySecretVault } from "./SecretVault.ts";
-import { makeVaultFileKeyStore, makeVaultFilePersistence } from "./vaultFile.ts";
+import {
+  canonicalHomeDir,
+  makeVaultFileKeyStore,
+  makeVaultFilePersistence,
+  vaultFilePath,
+} from "./vaultFile.ts";
 
-export const VAULT_FILE_NAME = "vault.json";
+export { VAULT_FILE_NAME } from "./vaultFile.ts";
 
 export type OpenVaultInput = {
   /** Isnadi home; the keychain item is per home, so a dev home never reads the real install's key. */
@@ -29,28 +31,20 @@ export type OpenVaultResult =
     })
   | { readonly ok: false; readonly reason: MasterKeyFailure | "vault-file-unreadable" };
 
-const canonical = (dir: string): string => {
-  try {
-    return NodeFS.realpathSync(dir);
-  } catch {
-    return NodePath.resolve(dir);
-  }
-};
-
 /**
  * Resolves the master key and opens the sealed vault file in the state directory.
  * Never throws: every failure is a reason, and the vault stays closed. Call it once
  * the server holds the home lock, because key generation relies on that lock.
  */
 export function openVault(input: OpenVaultInput): OpenVaultResult {
-  const vaultPath = NodePath.join(input.stateDir, VAULT_FILE_NAME);
+  const vaultPath = vaultFilePath(input.stateDir);
 
   try {
     const key = resolveMasterKey({
       env: input.env,
       keychain: makeKeyringPort(
         input.createKeyringEntry,
-        keychainAccountFor(canonical(input.homeDir)),
+        keychainAccountFor(canonicalHomeDir(input.homeDir)),
       ),
       store: makeVaultFileKeyStore(vaultPath),
     });
