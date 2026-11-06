@@ -71,6 +71,8 @@ export const decideBots = Effect.fn("decideBots")(function* ({
           label: command.label ?? null,
           description: command.description ?? null,
           disabledMcpServerIds: command.disabledMcpServerIds ?? [],
+          skills: command.skills ?? [],
+          skillRegistryAccess: command.skillRegistryAccess ?? false,
           avatar: command.avatar,
           engine: command.engine,
           sandbox: command.sandbox,
@@ -209,6 +211,10 @@ export const decideBots = Effect.fn("decideBots")(function* ({
           ...(command.description !== undefined ? { description: command.description } : {}),
           ...(command.disabledMcpServerIds !== undefined
             ? { disabledMcpServerIds: command.disabledMcpServerIds }
+            : {}),
+          ...(command.skills !== undefined ? { skills: command.skills } : {}),
+          ...(command.skillRegistryAccess !== undefined
+            ? { skillRegistryAccess: command.skillRegistryAccess }
             : {}),
           ...(command.avatar !== undefined ? { avatar: command.avatar } : {}),
           ...(command.engine !== undefined ? { engine: command.engine } : {}),

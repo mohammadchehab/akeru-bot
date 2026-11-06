@@ -153,6 +153,8 @@ export const makeChannelTestBot = () => ({
   label: null,
   description: null,
   disabledMcpServerIds: [],
+  skills: [],
+  skillRegistryAccess: false,
   avatar: { kind: "dither" as const, seed: "channel-bot" },
   engine: null,
   sandbox: "local" as const,

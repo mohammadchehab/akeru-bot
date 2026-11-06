@@ -79,6 +79,8 @@ describe("sidebar footer", () => {
           channelBindings: [],
           groupId: null,
           disabledMcpServerIds: [],
+          skills: [],
+          skillRegistryAccess: false,
           avatar: { kind: "blob", shape: "circle", color: "#5B7FD4" },
           archivedAt: null,
           createdAt: "2026-08-27T00:00:00.000Z",

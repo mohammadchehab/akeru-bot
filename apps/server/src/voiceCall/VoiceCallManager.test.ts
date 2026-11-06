@@ -106,6 +106,8 @@ const bot = {
   label: null,
   description: "Helps Leo get work done.",
   disabledMcpServerIds: [],
+  skills: [],
+  skillRegistryAccess: false,
   avatar: { kind: "blob" as const, shape: "circle" as const, color: "#5B7FD4" },
   engine: null,
   sandbox: null,

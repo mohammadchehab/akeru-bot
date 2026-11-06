@@ -13,6 +13,7 @@ import {
   TrimmedNonEmptyString,
 } from "../baseSchemas.ts";
 import { McpServerId, McpServerInstructions, McpServerUrl } from "../mcpServer.ts";
+import { BotSkill } from "../botSkills.ts";
 import { ImageProviderId } from "../imageGeneration.ts";
 import { ModelSelection, RuntimeMode } from "./modelSelection.ts";
 import {
@@ -68,6 +69,8 @@ export const BotCreateCommand = Schema.Struct({
   label: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   description: Schema.optional(Schema.NullOr(Schema.String)),
   disabledMcpServerIds: Schema.optional(Schema.Array(McpServerId)),
+  skills: Schema.optional(Schema.Array(BotSkill)),
+  skillRegistryAccess: Schema.optional(Schema.Boolean),
   avatar: BotAvatar,
   engine: Schema.NullOr(BotEngine),
   sandbox: Schema.NullOr(BotSandbox),
@@ -88,6 +91,8 @@ export const BotUpdateCommand = Schema.Struct({
   label: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   description: Schema.optional(Schema.NullOr(Schema.String)),
   disabledMcpServerIds: Schema.optional(Schema.Array(McpServerId)),
+  skills: Schema.optional(Schema.Array(BotSkill)),
+  skillRegistryAccess: Schema.optional(Schema.Boolean),
   avatar: Schema.optional(BotAvatar),
   engine: Schema.optional(Schema.NullOr(BotEngine)),
   sandbox: Schema.optional(Schema.NullOr(BotSandbox)),
@@ -108,6 +113,8 @@ export const ClientBotUpdateCommand = Schema.Struct({
   label: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   description: Schema.optional(Schema.NullOr(Schema.String)),
   disabledMcpServerIds: Schema.optional(Schema.Array(McpServerId)),
+  skills: Schema.optional(Schema.Array(BotSkill)),
+  skillRegistryAccess: Schema.optional(Schema.Boolean),
   avatar: Schema.optional(BotAvatar),
   engine: Schema.optional(Schema.NullOr(BotEngine)),
   sandbox: Schema.optional(Schema.NullOr(BotSandbox)),

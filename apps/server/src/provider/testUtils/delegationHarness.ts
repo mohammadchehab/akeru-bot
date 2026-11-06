@@ -51,6 +51,8 @@ export const access = (overrides: Partial<IsnadiDelegationAccessGrant> = {}) => 
   hasUserComputer: false,
   enabledMcpServerIds: [],
   disabledMcpServerIds: [],
+  skills: [],
+  skillRegistryAccess: false,
   approvalCeiling: "send" as const,
   ...overrides,
 });
@@ -63,6 +65,8 @@ export function bot(id: BotId, overrides: Partial<OrchestrationBot> = {}): Orche
     label: null,
     description: null,
     disabledMcpServerIds: [],
+    skills: [],
+    skillRegistryAccess: false,
     avatar: { kind: "dither", seed: id },
     engine: null,
     sandbox: "local",

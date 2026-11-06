@@ -35,6 +35,8 @@ export function makeBot(input: {
     label: null,
     description: null,
     disabledMcpServerIds: [],
+    skills: [],
+    skillRegistryAccess: false,
     avatar: { kind: "dither", seed: input.id },
     engine: null,
     sandbox: "local",

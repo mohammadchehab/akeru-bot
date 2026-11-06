@@ -16,6 +16,7 @@ import {
   TurnId,
 } from "../baseSchemas.ts";
 import { McpServer, McpServerId } from "../mcpServer.ts";
+import { BotSkill, BotSkillRegistryAccess, BotSkills } from "../botSkills.ts";
 import { IsnadiDelegationRecord } from "../isnadiDelegation.ts";
 import { ImageProviderId } from "../imageGeneration.ts";
 import { DelegationIdSchema } from "./identities.ts";
@@ -190,6 +191,8 @@ export const BotCreatedPayload = Schema.Struct({
   disabledMcpServerIds: Schema.Array(McpServerId).pipe(
     Schema.withDecodingDefault(Effect.succeed([])),
   ),
+  skills: BotSkills,
+  skillRegistryAccess: BotSkillRegistryAccess,
   avatar: BotAvatar,
   engine: Schema.NullOr(BotEngine),
   sandbox: PersistedBotSandbox,
@@ -216,6 +219,8 @@ export const BotUpdatedPayload = Schema.Struct({
   label: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   description: Schema.optional(Schema.NullOr(Schema.String)),
   disabledMcpServerIds: Schema.optional(Schema.Array(McpServerId)),
+  skills: Schema.optional(Schema.Array(BotSkill)),
+  skillRegistryAccess: Schema.optional(Schema.Boolean),
   avatar: Schema.optional(BotAvatar),
   engine: Schema.optional(Schema.NullOr(BotEngine)),
   sandbox: Schema.optional(PersistedBotSandbox),

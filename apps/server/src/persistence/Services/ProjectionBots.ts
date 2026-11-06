@@ -1,5 +1,6 @@
 import {
   BotAvatar,
+  BotSkill,
   BotEngine,
   BotId,
   ImageProviderId,
@@ -25,6 +26,8 @@ export const ProjectionBot = Schema.Struct({
   label: Schema.NullOr(Schema.String),
   description: Schema.NullOr(Schema.String),
   disabledMcpServerIds: Schema.Array(McpServerId),
+  skills: Schema.Array(BotSkill),
+  skillRegistryAccess: Schema.Boolean,
   avatar: BotAvatar,
   engine: Schema.NullOr(BotEngine),
   sandbox: PersistedBotSandbox,

@@ -14,6 +14,7 @@ import {
   TrimmedNonEmptyString,
 } from "../baseSchemas.ts";
 import { McpServerId } from "../mcpServer.ts";
+import { BotSkillRegistryAccess, BotSkills } from "../botSkills.ts";
 import { ImageProviderId } from "../imageGeneration.ts";
 import { ModelSelection, RuntimeMode, DEFAULT_RUNTIME_MODE } from "./modelSelection.ts";
 
@@ -326,6 +327,8 @@ export const OrchestrationBot = Schema.Struct({
   disabledMcpServerIds: Schema.Array(McpServerId).pipe(
     Schema.withDecodingDefault(Effect.succeed([])),
   ),
+  skills: BotSkills,
+  skillRegistryAccess: BotSkillRegistryAccess,
   avatar: BotAvatar,
   engine: Schema.NullOr(BotEngine),
   sandbox: PersistedBotSandbox,

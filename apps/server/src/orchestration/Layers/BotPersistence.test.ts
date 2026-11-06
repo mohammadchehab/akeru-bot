@@ -160,6 +160,8 @@ it.layer(TestLayer)("bot persistence", (it) => {
         label: "Discovery",
         description: "Investigates the highest-risk assumptions.",
         disabledMcpServerIds: [McpServerId.make("mcp-github")],
+        skills: [],
+        skillRegistryAccess: false,
         avatar: { kind: "dither", seed: "pathfinder" },
         engine: {
           provider: "codex",

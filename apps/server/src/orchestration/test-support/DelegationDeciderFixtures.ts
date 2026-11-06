@@ -45,6 +45,8 @@ export function makeBot(id: BotId): OrchestrationBot {
     label: null,
     description: null,
     disabledMcpServerIds: [],
+    skills: [],
+    skillRegistryAccess: false,
     avatar: { kind: "dither", seed: id },
     engine: null,
     sandbox: "local",

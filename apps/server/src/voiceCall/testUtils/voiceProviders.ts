@@ -27,6 +27,8 @@ const repository = {
         label: null,
         description: null,
         disabledMcpServerIds: [],
+        skills: [],
+        skillRegistryAccess: false,
         avatar: { kind: "blob" as const, shape: "circle" as const, color: "#123456" },
         engine: null,
         sandbox: null,

@@ -22,6 +22,8 @@ export function makeMobileBot(overrides: Partial<OrchestrationBot> = {}): Orches
     label: null,
     description: null,
     disabledMcpServerIds: [],
+    skills: [],
+    skillRegistryAccess: false,
     avatar: { kind: "blob", shape: "circle", color: "#E0645C" },
     engine: null,
     sandbox: null,
