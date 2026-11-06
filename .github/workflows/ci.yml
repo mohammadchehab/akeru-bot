@@ -205,6 +205,9 @@ jobs:
           '
 
       - name: Test shipped desktop and shared packages
+        env:
+          # Each package's vitest otherwise starts its own default worker pool. 4 packages x 2 workers keeps the step near 8.
+          VITEST_MAX_WORKERS: "2"
         run: vp run --parallel --concurrency-limit 4 --filter '!isnadibot' --filter '!@isnadi/monorepo' --filter '!@isnadi/mobile' test
 
       - name: Exercise release-only configuration

@@ -7,14 +7,14 @@ on every push to `main`. Draft pull requests do not use a runner. A new revision
 for that pull request. Runs on `main` are never cancelled, and each push has its own concurrency group keyed by commit SHA
 (a shared group would cancel the one queued run when a newer one arrived), so every merge gets its own
 verdict and a broken `main` points at the merge that broke it. Maintainers can also dispatch the workflow manually
-for diagnostics. The heavy jobs (desktop and the server shards) run on the ten self-hosted `hetzner` runners
+for diagnostics. The heavy jobs (desktop and the server shards) run on the three self-hosted `hetzner` runners
 for the repository's own branches, and on GitHub-hosted `ubuntu-24.04` runners for pull requests from forks, so
 fork code never runs on our box. The other jobs use GitHub-hosted `ubuntu-24.04` runners, and the issue-label
 and PR-size jobs use Tenki Linux runners.
 
 ### Hetzner pnpm store
 
-The ten runners share one user (`runner`, home `/opt/actions-runner`) and one persistent pnpm store at
+The three runners share one user (`runner`, home `/opt/actions-runner`) and one persistent pnpm store at
 `/opt/pnpm-store`, so a hetzner job links dependencies from disk instead of restoring a cache tarball. The
 [install action](../../.github/actions/install/action.yml) selects it with `pnpm_config_store_dir` on
 self-hosted runners; GitHub-hosted jobs keep `cache: true`. The box also sets `storeDir: /opt/pnpm-store` in
@@ -30,7 +30,8 @@ needs, and the install then fails with `ERR_PNPM_ENOENT`. Stop the runners first
 The box has 16 cores and also hosts other work. A heavy job runs vitest with one worker per core, so each runner
 can take the whole box on its own: six runners put the load average at 32 to 47 and made the timing assertions in
 the test suite fail at random on unrelated PRs. Three runners keep the load sane; a PR run still finishes in about
-the same time because its jobs were waiting on CPU, not on slots.
+the same time because its jobs were waiting on CPU, not on slots. The desktop job's test step also sets
+`VITEST_MAX_WORKERS=2` with `--concurrency-limit 4`, so it runs about eight workers instead of about sixty.
 Only `hetzner-1` to `hetzner-3` run (`actions.runner.mohammadchehab-isnadibot.hetzner-N.service`).
 `hetzner-4` to `hetzner-10` are installed but stopped, disabled and without the `hetzner` label. Extra jobs wait in GitHub's queue, roughly
 first come first served. A queued job uses none of its `timeout-minutes`, and nothing is cancelled.
