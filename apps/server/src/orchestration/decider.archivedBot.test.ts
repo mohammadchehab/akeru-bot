@@ -34,6 +34,8 @@ function makeBot(archivedAt: string | null = null): OrchestrationBot {
     label: null,
     description: null,
     disabledMcpServerIds: [],
+    skills: [],
+    skillRegistryAccess: false,
     avatar: { kind: "dither", seed: BOT_ID },
     engine: null,
     sandbox: "local",

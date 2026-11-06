@@ -93,6 +93,8 @@ it.describe("ws bot engine model routing preflight", () => {
       label: null,
       description: null,
       disabledMcpServerIds: [],
+      skills: [],
+      skillRegistryAccess: false,
       avatar: { kind: "dither" as const, seed: "preflight-bot" },
       engine,
       sandbox: "local" as const,

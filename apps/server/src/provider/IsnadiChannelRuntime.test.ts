@@ -30,6 +30,8 @@ const bot = (id: BotId, groupId: GroupId | null) => ({
   label: null,
   description: null,
   disabledMcpServerIds: [],
+  skills: [],
+  skillRegistryAccess: false,
   avatar: { kind: "dither" as const, seed: id },
   engine: null,
   sandbox: "local" as const,

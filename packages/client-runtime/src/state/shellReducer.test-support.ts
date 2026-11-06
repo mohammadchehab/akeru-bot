@@ -105,6 +105,8 @@ export const stubBot = {
   label: null,
   description: null,
   disabledMcpServerIds: [],
+  skills: [],
+  skillRegistryAccess: false,
   avatar: { kind: "dither" as const, seed: "builder" },
   engine: null,
   sandbox: "local" as const,

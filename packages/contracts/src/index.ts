@@ -42,6 +42,8 @@ export * from "./providerRuntime.ts";
 
 export * from "./model.ts";
 
+export * from "./botSkills.ts";
+
 export * from "./mcpServer.ts";
 
 export * from "./composio.ts";

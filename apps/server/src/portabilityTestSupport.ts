@@ -131,6 +131,8 @@ export function makeSnapshot(
           "~/.ssh/id_rsa",
         ].join("\n"),
         disabledMcpServerIds: [STDIO_MCP_ID, McpServerId.make("deleted-server")],
+        skills: [],
+        skillRegistryAccess: false,
         avatar: {
           kind: "image",
           assetPath: "/Users/leo/.isnadi/avatars/private.png",

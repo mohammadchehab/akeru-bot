@@ -35,6 +35,8 @@ export function projectBotsAndGroups(
             label: payload.label,
             description: payload.description,
             disabledMcpServerIds: payload.disabledMcpServerIds,
+            skills: payload.skills,
+            skillRegistryAccess: payload.skillRegistryAccess,
             avatar: payload.avatar,
             engine: payload.engine,
             sandbox: payload.sandbox,
@@ -70,6 +72,10 @@ export function projectBotsAndGroups(
             ...(payload.description !== undefined ? { description: payload.description } : {}),
             ...(payload.disabledMcpServerIds !== undefined
               ? { disabledMcpServerIds: payload.disabledMcpServerIds }
+              : {}),
+            ...(payload.skills !== undefined ? { skills: payload.skills } : {}),
+            ...(payload.skillRegistryAccess !== undefined
+              ? { skillRegistryAccess: payload.skillRegistryAccess }
               : {}),
             ...(payload.avatar !== undefined ? { avatar: payload.avatar } : {}),
             ...(payload.engine !== undefined ? { engine: payload.engine } : {}),

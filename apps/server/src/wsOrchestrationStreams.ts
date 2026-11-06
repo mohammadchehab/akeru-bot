@@ -249,6 +249,8 @@ export const createWsOrchestrationStreams = ({
                   label: nextBot.label,
                   description: nextBot.description,
                   disabledMcpServerIds: nextBot.disabledMcpServerIds,
+                  skills: nextBot.skills,
+                  skillRegistryAccess: nextBot.skillRegistryAccess,
                   avatar: nextBot.avatar,
                   engine: nextBot.engine,
                   sandbox: nextBot.sandbox,
