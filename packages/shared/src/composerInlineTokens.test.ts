@@ -187,12 +187,19 @@ describe("collectComposerInlineTokens", () => {
     expect(collectComposerInlineTokens(`see [${label}](src/${label}) ok`)).toEqual([]);
   });
 
-  it("stays fast on unterminated bracket runs", () => {
+  it("bounds the file link label so unterminated bracket runs cannot rescan the text", () => {
     // Unbounded, the label body rescanned the rest of the text from every
-    // whitespace: this input took seconds.
-    const started = performance.now();
+    // whitespace: this input took seconds. The label cap is what keeps each
+    // attempt constant-bounded, so pin the cap instead of timing the scan.
+    const linkWithLabelOfLength = (length: number) => {
+      const name = "a".repeat(length);
+
+      return `[${name}](src/${name}) `;
+    };
+
     expect(collectComposerInlineTokens(" [[".repeat(40_000))).toEqual([]);
-    expect(performance.now() - started).toBeLessThan(1_000);
+    expect(collectComposerInlineTokens(linkWithLabelOfLength(512))).toHaveLength(1);
+    expect(collectComposerInlineTokens(linkWithLabelOfLength(513))).toEqual([]);
   });
 });
 
