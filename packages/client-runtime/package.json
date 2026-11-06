@@ -28,6 +28,10 @@
       "types": "./src/replyPlayback/index.ts",
       "default": "./src/replyPlayback/index.ts"
     },
+    "./space": {
+      "types": "./src/space/overview.ts",
+      "default": "./src/space/overview.ts"
+    },
     "./decisions": {
       "types": "./src/decisions.ts",
       "default": "./src/decisions.ts"
