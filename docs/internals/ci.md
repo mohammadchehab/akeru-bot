@@ -33,12 +33,15 @@ Only `hetzner-1` to `hetzner-6` run (`actions.runner.mohammadchehab-isnadibot.he
 `hetzner-7` to `hetzner-10` are installed but stopped and disabled. Extra jobs wait in GitHub's queue, roughly
 first come first served. A queued job uses none of its `timeout-minutes`, and nothing is cancelled.
 
-To change the cap, start and enable, or stop and disable, services from the top number down. Stop a runner only
-when it is idle. Check `gh api repos/mohammadchehab/isnadibot/actions/runners --jq '.runners[]|[.name,.busy]'`
-first, because stopping a busy runner fails the job it is running. The workflow, `runs-on`, the shard matrix
-and the policy test do not change.
+To take a runner out of service, drain it first. Stopping a busy runner fails the job it is running, and with a
+queue no runner is ever idle for long. Remove its custom label so it takes no new jobs and finishes the one it
+has: `gh api -X DELETE repos/mohammadchehab/isnadibot/actions/runners/<id>/labels/hetzner`, with the id from
+`gh api repos/mohammadchehab/isnadibot/actions/runners`. When the runner has no `Runner.Worker` process, run
+`systemctl stop` and `systemctl disable` on its service. The workflow, `runs-on`, the shard matrix and the
+policy test do not change.
 
-To undo the cap, run `systemctl enable --now` for `hetzner-7` to `hetzner-10`.
+To undo the cap, run `systemctl enable --now` for `hetzner-7` to `hetzner-10`, then give each its label back:
+`gh api -X POST repos/mohammadchehab/isnadibot/actions/runners/<id>/labels -f 'labels[]=hetzner'`.
 
 CI runs as parallel jobs, so a run takes as long as its slowest job instead of the sum of all steps:
 
