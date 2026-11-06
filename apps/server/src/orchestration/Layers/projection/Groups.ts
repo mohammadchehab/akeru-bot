@@ -15,6 +15,7 @@ export function createGroups({
             name: event.payload.name,
             bossBotId: event.payload.bossBotId,
             members: event.payload.members,
+            hopBudget: event.payload.hopBudget ?? null,
             createdAt: event.payload.createdAt,
             updatedAt: event.payload.updatedAt,
           });

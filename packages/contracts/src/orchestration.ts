@@ -73,6 +73,10 @@ export {
   isGroupPersonMember,
   GROUP_SHARED_WORKSPACE_WARNING,
   OrchestrationGroup,
+  GROUP_HOP_BUDGET_DEFAULT,
+  GROUP_HOP_BUDGET_MAX,
+  GROUP_HOP_BUDGET_MIN,
+  GroupHopBudget,
 } from "./orchestration/roster.ts";
 
 export {
@@ -95,10 +99,6 @@ export {
   ThreadSilentRunActivityPayload,
   type OrchestrationLatestTurnState,
   OrchestrationLatestTurn,
-  GROUP_HOP_BUDGET_DEFAULT,
-  GROUP_HOP_BUDGET_MAX,
-  GROUP_HOP_BUDGET_MIN,
-  GroupHopBudget,
   ResponderQueue,
   ResponderQueueEntry,
   ResponderQueueReason,

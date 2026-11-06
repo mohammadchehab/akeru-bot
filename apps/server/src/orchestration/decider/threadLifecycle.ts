@@ -71,8 +71,12 @@ export const decideThreadLifecycle = Effect.fn("decideThreadLifecycle")(function
         yield* requireBotNotArchived({ readModel, command, botId: command.botId });
       }
 
-      if (command.groupId != null) {
-        const group = yield* requireGroup({ readModel, command, groupId: command.groupId });
+      const group =
+        command.groupId == null
+          ? undefined
+          : yield* requireGroup({ readModel, command, groupId: command.groupId });
+
+      if (group !== undefined) {
         yield* requireGroupThreadCreateAuthorized({ group, command, actor });
       }
 
@@ -103,6 +107,7 @@ export const decideThreadLifecycle = Effect.fn("decideThreadLifecycle")(function
           interactionMode: command.interactionMode,
           branch: command.branch,
           worktreePath: command.worktreePath,
+          ...(group?.hopBudget === undefined ? {} : { hopBudget: group.hopBudget }),
           createdAt: command.createdAt,
           updatedAt: command.createdAt,
         },

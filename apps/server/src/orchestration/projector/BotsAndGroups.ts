@@ -131,6 +131,7 @@ export function projectBotsAndGroups(
             name: payload.name,
             bossBotId: payload.bossBotId,
             members: payload.members,
+            ...(payload.hopBudget === undefined ? {} : { hopBudget: payload.hopBudget }),
             createdAt: payload.createdAt,
             updatedAt: payload.updatedAt,
           };

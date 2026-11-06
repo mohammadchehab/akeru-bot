@@ -25,9 +25,9 @@ import {
   ProviderUserInputAnswers,
 } from "./modelSelection.ts";
 import { ChatAttachment, UploadChatAttachment } from "./attachments.ts";
+import { GroupHopBudget } from "./roster.ts";
 import {
   ChannelMessageOrigin,
-  GroupHopBudget,
   SourceProposedPlanReference,
   ThreadLinkedPullRequest,
 } from "./thread.ts";

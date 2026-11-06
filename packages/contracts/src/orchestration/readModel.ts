@@ -35,13 +35,13 @@ import {
   OrchestrationProject,
   OrchestrationBot,
   OrchestrationGroup,
+  GroupHopBudget,
 } from "./roster.ts";
 import {
   OrchestrationSession,
   OrchestrationLatestTurn,
   ThreadTitleRegeneration,
   ThreadLinkedPullRequest,
-  GroupHopBudget,
   ResponderQueue,
   OrchestrationThread,
 } from "./thread.ts";

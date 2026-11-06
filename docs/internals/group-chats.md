@@ -103,6 +103,8 @@ Rules:
   group thread carries it as `hopBudget` (an integer from 1 to 20). A thread command changes it,
   with the same authorization as other group-thread changes. It is in the read model, so every
   client shows it in the chat's settings. A chat with no value uses 6.
+  A group can carry its own `hopBudget` (set by `group.create`); a new chat in that group copies it
+  when `thread.create` runs. Later changes to the group do not touch existing chats.
   - Every turn the queue starts for that message counts, whether addressing or a mention added it.
     Delegation `send` and the auto routing call do not count.
   - The bots a user names, or `@everyone`, always run, even past the budget. The budget only limits
