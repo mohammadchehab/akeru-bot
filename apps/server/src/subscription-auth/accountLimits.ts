@@ -2,15 +2,14 @@ import * as Effect from "effect/Effect";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
 
+import { RATE_LIMIT_PATTERN, USAGE_LIMIT_PATTERN } from "../provider/modelFailure.ts";
+
 // How long an account that hit a limit sits out when the provider did not say
 // when it resets. Requests use the next linked account meanwhile.
 const LIMIT_COOLDOWN_MS = 60 * 60_000;
 
-const LIMIT_PATTERN =
-  /usage limit|rate limit|too many requests|quota|usage cap|limit reached|hit your .*limit|spending limit|budget exceeded|max usage|\b429\b/i;
-
 export function isAccountLimitMessage(message: string): boolean {
-  return LIMIT_PATTERN.test(message);
+  return RATE_LIMIT_PATTERN.test(message) || USAGE_LIMIT_PATTERN.test(message);
 }
 
 /** When an account that hit a limit may be tried again, from the provider's wording when it gives one. */
