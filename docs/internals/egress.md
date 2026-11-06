@@ -7,7 +7,7 @@ A server-side browser can reach the network only through the user's desktop. The
 - `GET /egress` is the control WebSocket. One per desktop. It carries `open` frames down and `refused` / `closed` frames up (`packages/contracts/src/egress.ts`).
 - `GET /egress/stream/:streamId?ticket=` is one WebSocket per CONNECT stream, carrying raw bytes.
 
-Both require the user-only scope `egress:provide`. It is granted only by the desktop-bootstrap seed (`AuthDesktopBootstrapScopes`), never to standard, administrative, bot, or pairing credentials. The desktop should exchange its bootstrap token asking for `egress:provide` alone rather than reuse the renderer bearer, which asks for no scope and so receives all of the grant's scopes.
+Both require a session whose scopes are exactly `[egress:provide]`. It is granted only by the separate `egress-provider` grant, whose token the desktop main process keeps (`bootstrap.egressProviderToken`) and never gives to a renderer or any other credential. The desktop exchanges that token asking for `egress:provide` alone.
 
 ## Server: `EgressBroker`
 
@@ -17,6 +17,8 @@ Both require the user-only scope `egress:provide`. It is granted only by the des
 
 Every `open` goes through `openEgressTarget` (`EgressDialer`), so a blocked address is refused before any TCP. Limits: 64 streams per session, five minutes idle, 5 MiB/s token bucket (`EgressLimits`).
 
-## Not yet wired
+## Desktop: `DesktopEgress`
 
-`makeEgressProvider` is not yet connected to a real control socket in `DesktopApp`. That binding (scoped token exchange, real resolver and connector, stream sockets) is the follow-up before TASK-39.
+`forkDesktopEgress` (started from `DesktopApp.bootstrap`) exchanges the egress provider token for an `[egress:provide]` bearer, opens the `/egress` control socket, and serves `open` frames with `makeEgressProvider`. It dials with `dns.lookup` (all addresses, verbatim) and `node:net`, reads the PC's interface CIDRs fresh on every open, and opens `/egress/stream/:id?ticket=` for each stream. When the control socket closes it destroys every live stream, then reconnects with a 1s, 5s, 30s backoff (reset after a connection that held for a minute). The WSL backend has no egress token and does not provide egress.
+
+The host policy is `denyAllHostPolicy`: until the per-profile grant store exists, every `open` is refused with `host-not-granted` before any TCP. Wiring the grant store is the follow-up that makes egress usable.
