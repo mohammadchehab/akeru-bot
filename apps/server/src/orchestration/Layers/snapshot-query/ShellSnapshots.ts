@@ -34,6 +34,7 @@ export function createShellSnapshots({
   listBotRows,
   listGroupRows,
   listShellDelegationRows,
+  listOpenWorkItemRows,
   projectionMcpServerRepository,
   routineRepository,
   listActiveThreadRows,
@@ -55,6 +56,7 @@ export function createShellSnapshots({
   | "listBotRows"
   | "listGroupRows"
   | "listShellDelegationRows"
+  | "listOpenWorkItemRows"
   | "projectionMcpServerRepository"
   | "routineRepository"
   | "listActiveThreadRows"
@@ -68,7 +70,7 @@ export function createShellSnapshots({
   | "listArchivedThreadSessionRows"
   | "listArchivedLatestTurnRows"
 >) {
-  const getShellSnapshot: ProjectionSnapshotQueryShape["getShellSnapshot"] = () =>
+  const getShellSnapshotWithoutWorkItems: ProjectionSnapshotQueryShape["getShellSnapshot"] = () =>
     sql
       .withTransaction(
         Effect.all([
@@ -493,6 +495,21 @@ export function createShellSnapshots({
           );
         }),
       );
+
+  const getShellSnapshot: ProjectionSnapshotQueryShape["getShellSnapshot"] = () =>
+    getShellSnapshotWithoutWorkItems().pipe(
+      Effect.flatMap((snapshot) =>
+        listOpenWorkItemRows(undefined).pipe(
+          Effect.mapError(
+            toPersistenceSqlOrDecodeError(
+              "ProjectionSnapshotQuery.getShellSnapshot:listWorkItems:query",
+              "ProjectionSnapshotQuery.getShellSnapshot:listWorkItems:decodeRows",
+            ),
+          ),
+          Effect.map((rows) => ({ ...snapshot, workItems: rows.map((row) => row.workItem) })),
+        ),
+      ),
+    );
 
   return { getShellSnapshot, getArchivedShellSnapshot };
 }
