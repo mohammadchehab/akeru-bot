@@ -174,7 +174,23 @@ export const decideGroups = Effect.fn("decideGroups")(function* ({
         }),
       );
 
-      return [...botUpdatedEvents, ...threadUpdatedEvents, deletedEvent];
+      const workItemDeletedEvents = yield* Effect.forEach(
+        (readModel.workItems ?? []).filter((item) => item.groupId === command.groupId),
+        Effect.fn(function* (item) {
+          return {
+            ...(yield* withEventBase({
+              aggregateKind: "work-item",
+              aggregateId: item.id,
+              occurredAt,
+              commandId: command.commandId,
+            })),
+            type: "work-item.deleted" as const,
+            payload: { workItemId: item.id, groupId: item.groupId, deletedAt: occurredAt },
+          };
+        }),
+      );
+
+      return [...botUpdatedEvents, ...threadUpdatedEvents, ...workItemDeletedEvents, deletedEvent];
     }
 
     case "group.member.assign": {
