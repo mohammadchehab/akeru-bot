@@ -54,7 +54,23 @@ function write(filePath: string, vault: StoredVault): void {
 }
 
 /** The non-secret half of the vault file: salt and params, key check, and how many sealed records exist. */
-export function makeVaultFileKeyStore(filePath: string): MasterKeyStore {
+export const VAULT_FILE_NAME = "vault.json";
+
+/** Where the sealed vault file lives inside a state directory. */
+export function vaultFilePath(stateDir: string): string {
+  return NodePath.join(stateDir, VAULT_FILE_NAME);
+}
+
+/** The real path of an Isnadi home when it exists, else its absolute form; names the keychain item. */
+export function canonicalHomeDir(dir: string): string {
+  try {
+    return NodeFS.realpathSync(dir);
+  } catch {
+    return NodePath.resolve(dir);
+  }
+}
+
+export function createVaultFileKeyStore(filePath: string): MasterKeyStore {
   const update = (patch: Partial<StoredVault>) => write(filePath, { ...read(filePath), ...patch });
 
   return {
@@ -77,7 +93,7 @@ export function makeVaultFileKeyStore(filePath: string): MasterKeyStore {
  * key. A record that does not open is dropped from memory but kept on disk
  * untouched until the credential is deleted or replaced.
  */
-export function makeVaultFilePersistence(filePath: string, key: Buffer): VaultPersistence {
+export function createVaultFilePersistence(filePath: string, key: Buffer): VaultPersistence {
   const stored = read(filePath);
 
   const initial = stored.credentials.flatMap(({ sealed, ...metadata }) => {

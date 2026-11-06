@@ -6,14 +6,14 @@ import {
   requestSecret,
   type SecretFieldBrowser,
 } from "./requestSecret.ts";
-import { makeInMemorySecretVault } from "./SecretVault.ts";
+import { createInMemorySecretVault } from "./SecretVault.ts";
 
 const SENTINEL = "s3ntinel-p4ssword-DO-NOT-LEAK";
 
 const BANK = "https://bank.example";
 
 const setup = (frames: ReadonlyArray<InjectionTarget>, failFill = false) => {
-  const { vault, reader } = makeInMemorySecretVault(() => 1);
+  const { vault, reader } = createInMemorySecretVault(() => 1);
   const audit = makeInMemorySecretUseAudit();
   vault.set({ id: "bank", label: "Bank", origins: [BANK], value: SENTINEL });
   const filled: Array<string> = [];
@@ -158,7 +158,7 @@ describe("requestSecret", () => {
 
 describe("SecretVault", () => {
   it("rejects a credential with no https origin or an empty value", () => {
-    const { vault } = makeInMemorySecretVault();
+    const { vault } = createInMemorySecretVault();
     assert.deepStrictEqual(
       vault.set({ id: "a", label: "A", origins: ["http://a.test"], value: "x" }),
       {
@@ -173,7 +173,7 @@ describe("SecretVault", () => {
   });
 
   it("replaces and deletes without ever returning the value", async () => {
-    const { vault, reader } = makeInMemorySecretVault();
+    const { vault, reader } = createInMemorySecretVault();
     vault.set({ id: "a", label: "A", origins: [BANK], value: "one" });
     assert.isTrue(vault.replaceValue("a", "two"));
     const seen: Array<string> = [];
@@ -185,7 +185,7 @@ describe("SecretVault", () => {
   });
 
   it("refuses to set over an existing id, so origins cannot be rebound", () => {
-    const { vault } = makeInMemorySecretVault();
+    const { vault } = createInMemorySecretVault();
     vault.set({ id: "a", label: "A", origins: [BANK], value: "one" });
     assert.deepStrictEqual(
       vault.set({ id: "a", label: "A", origins: ["https://evil.test"], value: "one" }),

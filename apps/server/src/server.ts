@@ -36,6 +36,7 @@ import {
   persistServerRuntimeState,
 } from "./serverRuntimeState.ts";
 import * as ServerHomeLock from "./serverHomeLock.ts";
+import * as VaultService from "./vault/VaultService.ts";
 import { orchestrationHttpApiLayer } from "./orchestration/http.ts";
 import { disableTailscaleServe, ensureTailscaleServe } from "@isnadi/tailscale";
 import { ServerActivation } from "./serverActivation.ts";
@@ -299,6 +300,7 @@ export const makeServerLayer = Layer.unwrap(
       httpListeningLayer,
       runtimeStateLayer,
       tailscaleServeLayer,
+      VaultService.layer,
     );
 
     return serverApplicationLayer.pipe(

@@ -35,3 +35,7 @@ Credentials persist in one file under the Isnadi home (`vault.json`, mode 0600, 
 Scrypt parameters are read back from the file, so they are bounded before use (N up to 2^20, r up to 16, p up to 4, salt at least 16 bytes); anything else fails closed as `kdf-params-out-of-bounds`.
 
 `@napi-rs/keyring` backs `KeychainPort` (`keychainAdapter.ts`). The item is per Isnadi home, so a dev home never reads the real install's key. No keyring on the platform is `unavailable` (the chain falls to the passphrase), a missing item is `not-found`, and a locked, denied or corrupt item is `error` (never regenerates). `ISNADI_REAL_KEYCHAIN_TEST=1` enables the real macOS keychain test on a developer machine.
+
+## Startup
+
+`VaultService` (`vault/VaultService.ts`) opens the vault once per server start, after `ServerHomeLock` is held, so key generation cannot race a second server. It reads key material from `capturedMasterKeyEnv`, never `process.env`, and keeps the vault file at `<stateDir>/vault.json`. The result is `ready` (with the write-only `SecretVault` and the broker-only `SecretReader`) or `disabled` with a reason: no master key source, a wrong or missing key, or an unreadable file. A disabled vault never stops the server; it logs the reason (never key material) and runs without credentials. `openVault` does the work and never throws.
